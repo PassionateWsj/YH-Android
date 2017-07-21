@@ -1,5 +1,6 @@
 package com.intfocus.yh_android.subject.adapter
 
+import android.content.Context
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseExpandableListAdapter
@@ -13,26 +14,29 @@ import android.widget.BaseExpandableListAdapter
  * desc:
  * ****************************************************
  */
-class ElvQueryOptionRadioBoxExpandableListAdapter : BaseExpandableListAdapter() {
+class ElvQueryOptionRadioBoxExpandableListAdapter(mContext: Context) : BaseExpandableListAdapter() {
+    var mGroupData: List<String>? = null
+    var mChildData: List<String>? = null
+
     /**
      * 得到当前position父项
      */
     override fun getGroup(groupPosition: Int): Any {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return if (mGroupData == null) Unit else mGroupData!![0]
     }
 
     /**
      * 子项是否可选中
      */
     override fun isChildSelectable(groupPosition: Int, childPosition: Int): Boolean {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return true
     }
 
     /**
      * 按函数的名字来理解应该是是否具有稳定的id，这个方法目前一直都是返回false，没有去改动过
      */
     override fun hasStableIds(): Boolean {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return false
     }
 
     /**
@@ -46,21 +50,21 @@ class ElvQueryOptionRadioBoxExpandableListAdapter : BaseExpandableListAdapter() 
      * 得到子项数量
      */
     override fun getChildrenCount(groupPosition: Int): Int {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return if (mGroupData == null) 0 else mChildData!!.size
     }
 
     /**
      * 得到子项
      */
     override fun getChild(groupPosition: Int, childPosition: Int): Any {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return if (mGroupData == null) Unit else mChildData!![childPosition]
     }
 
     /**
      * 得到当前父项position
      */
     override fun getGroupId(groupPosition: Int): Long {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return if (mGroupData == null) 0 else 1
     }
 
     /**
@@ -74,13 +78,13 @@ class ElvQueryOptionRadioBoxExpandableListAdapter : BaseExpandableListAdapter() 
      * 得到当前子项position
      */
     override fun getChildId(groupPosition: Int, childPosition: Int): Long {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return childPosition.toLong()
     }
 
     /**
      * 获取父项数量
      */
     override fun getGroupCount(): Int {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return if (mGroupData == null) 0 else 1
     }
 }

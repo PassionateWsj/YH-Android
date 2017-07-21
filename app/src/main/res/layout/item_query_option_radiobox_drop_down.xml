@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/ll_query_option_radio_box_drop_down_item"
+              android:layout_width="match_parent"
+              android:layout_height="35dp"
+              android:gravity="center_vertical"
+              android:orientation="horizontal">
+
+    <ImageView
+        android:id="@+id/iv_query_option_radio_box_drop_down_item_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/icon_radio_button"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginRight="40dp"
+        android:gravity="center_vertical"
+        android:paddingLeft="10dp"
+        android:text="100%"
+        android:textColor="@color/query_options_grouping_title_color"
+        android:textSize="12sp"/>
+</LinearLayout>

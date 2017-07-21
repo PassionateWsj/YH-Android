@@ -230,7 +230,8 @@
                                 android:button="@drawable/icon_selector_query_option_radio_button"
                                 android:paddingLeft="10dp"
                                 android:text="选项1"
-                                android:textColor="@color/query_options_grouping_title_color"/>
+                                android:textColor="@color/query_options_grouping_title_color"
+                                android:textSize="12sp"/>
 
                             <RadioButton
                                 android:layout_width="wrap_content"
@@ -238,7 +239,8 @@
                                 android:button="@drawable/icon_selector_query_option_radio_button"
                                 android:paddingLeft="10dp"
                                 android:text="选项2"
-                                android:textColor="@color/query_options_grouping_title_color"/>
+                                android:textColor="@color/query_options_grouping_title_color"
+                                android:textSize="12sp"/>
 
                         </RadioGroup>
                     </LinearLayout>

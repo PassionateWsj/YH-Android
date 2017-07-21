@@ -2,6 +2,7 @@ package com.intfocus.yh_android.subject.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
@@ -41,10 +42,18 @@ class QueryOptionRadioListAdapter(mContext: Context, mData: List<String>) : Base
 //            holder.mTvRadioListItem.setBackgroundColor(ContextCompat.getColor(mContext, R.color.white))
 //        }
         holder.mTvRadioListItem.setOnClickListener {
+
             holder!!.mPos = position
             notifyDataSetChanged()
         }
-
+        holder.mTvRadioListItem.setOnTouchListener { v, event ->
+            if (event.action == MotionEvent.ACTION_DOWN) {
+                parent!!.requestDisallowInterceptTouchEvent(true)
+            } else {
+                parent!!.requestDisallowInterceptTouchEvent(false)
+            }
+            false
+        }
         return convertView
     }
 

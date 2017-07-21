@@ -1,16 +1,12 @@
 package com.intfocus.yh_android.subject
 
 import android.app.DatePickerDialog
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
-import android.view.ViewGroup
-import android.widget.BaseAdapter
 import android.widget.CheckBox
 import android.widget.RadioButton
 import android.widget.TextView
@@ -18,6 +14,7 @@ import com.google.gson.Gson
 import com.intfocus.yh_android.R
 import com.intfocus.yh_android.bean.QueryOptions
 import com.intfocus.yh_android.scanner.QueryOptionsScannerActivity
+import com.intfocus.yh_android.subject.adapter.ElvQueryOptionRadioBoxExpandableListAdapter
 import com.intfocus.yh_android.subject.adapter.QueryOptionRadioListAdapter
 import com.intfocus.yh_android.util.DisplayUtil
 import com.zbl.lib.baseframe.utils.ToastUtil
@@ -222,6 +219,7 @@ class QueryOptionsActivity : AppCompatActivity() {
             mRadioListPos = position
             ToastUtil.showToast(this, "mRadioListPos:::" + position)
         }
+
         lv_query_option_radio_list.setOnTouchListener { _, event ->
             if (event.action == MotionEvent.ACTION_UP) {
                 sv_query_options.requestDisallowInterceptTouchEvent(false)
@@ -230,7 +228,6 @@ class QueryOptionsActivity : AppCompatActivity() {
             }
             false
         }
-
         ibtn_query_option_scan.setOnClickListener {
             startActivityForResult(Intent(this, QueryOptionsScannerActivity::class.java), mRequestCode)
         }
@@ -278,7 +275,7 @@ class QueryOptionsActivity : AppCompatActivity() {
                         val mCheckBox = CheckBox(this)
                         mCheckBox.buttonDrawable = resources.getDrawable(R.drawable.icon_selector_query_option_check_box)
                         mCheckBox.text = s
-                        mCheckBox.height = DisplayUtil.dip2px(this,36f)
+                        mCheckBox.height = DisplayUtil.dip2px(this, 36f)
                         ll_query_option_check_box_container.addView(mCheckBox)
                     }
                 }
@@ -287,8 +284,10 @@ class QueryOptionsActivity : AppCompatActivity() {
 //                    var radioBoxSpinnerAdapter = ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, queryOptionsData[i].data)
 //                    radioBoxSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
 //                    elv_query_option_radio_box.adapter = radioBoxSpinnerAdapter
-//var mElvRadioBoxExpandableListAdapter = ElvQueryOptionRadioBoxExpandableListAdapter
-                    elv_query_option_radio_box.expandableListAdapter
+                    var mElvRadioBoxExpandableListAdapter = ElvQueryOptionRadioBoxExpandableListAdapter(this)
+                    mElvRadioBoxExpandableListAdapter.mChildData = listOf(queryOptionsData[i].typeName)
+                    mElvRadioBoxExpandableListAdapter.mChildData = queryOptionsData[i].data
+                    elv_query_option_radio_box.setAdapter(mElvRadioBoxExpandableListAdapter)
                 }
                 "check_box_spinner" -> {
                     ll_query_option_check_box_drop_down_input.visibility = View.VISIBLE
@@ -329,7 +328,7 @@ class QueryOptionsActivity : AppCompatActivity() {
                 ToastUtil.showToast(this, "暂不支持二维码")
             }
         }
-        et_query_option_scan_input.text.replace(0,et_query_option_scan_input.text.length, barCode)
+        et_query_option_scan_input.text.replace(0, et_query_option_scan_input.text.length, barCode)
 
 
     }
