@@ -1,11 +1,12 @@
 package com.intfocus.yh_android.subject.adapter
 
 import android.content.Context
+import android.support.v4.content.ContextCompat
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import android.widget.LinearLayout
 import android.widget.TextView
 import com.intfocus.yh_android.R
 
@@ -22,6 +23,7 @@ import com.intfocus.yh_android.R
 class QueryOptionRadioListAdapter(mContext: Context, mData: List<String>) : BaseAdapter() {
     val mContext = mContext
     val mData = mData
+    var mPos: Int = 0
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         var convertView = convertView
@@ -34,26 +36,20 @@ class QueryOptionRadioListAdapter(mContext: Context, mData: List<String>) : Base
             holder = convertView.tag as QueryOptionRadioListHolder
         }
         holder.mTvRadioListItem.text = mData[position]
-//        if (position == holder.mPos) {
-//            holder.mTvRadioListItem.setTextColor(ContextCompat.getColor(mContext, R.color.white))
-//            holder.mTvRadioListItem.setBackgroundColor(ContextCompat.getColor(mContext, R.color.list_title_base))
-//        } else {
-//            holder.mTvRadioListItem.setTextColor(ContextCompat.getColor(mContext, R.color.query_options_grouping_title_color))
-//            holder.mTvRadioListItem.setBackgroundColor(ContextCompat.getColor(mContext, R.color.white))
-//        }
-        holder.mTvRadioListItem.setOnClickListener {
+        if (position == mPos) {
+            holder.mLinearLayout.setBackgroundDrawable(mContext.resources.getDrawable(R.drawable.background_radius_grey))
+        } else {
+            holder.mLinearLayout.setBackgroundColor(ContextCompat.getColor(mContext, R.color.white))
+        }
 
-            holder!!.mPos = position
-            notifyDataSetChanged()
-        }
-        holder.mTvRadioListItem.setOnTouchListener { v, event ->
-            if (event.action == MotionEvent.ACTION_DOWN) {
-                parent!!.requestDisallowInterceptTouchEvent(true)
-            } else {
-                parent!!.requestDisallowInterceptTouchEvent(false)
-            }
-            false
-        }
+//        holder.mTvRadioListItem.setOnTouchListener { v, event ->
+//            if (event.action == MotionEvent.ACTION_DOWN) {
+//                parent!!.requestDisallowInterceptTouchEvent(true)
+//            } else {
+//                parent!!.requestDisallowInterceptTouchEvent(false)
+//            }
+//            false
+//        }
         return convertView
     }
 
@@ -70,8 +66,9 @@ class QueryOptionRadioListAdapter(mContext: Context, mData: List<String>) : Base
     }
 
     class QueryOptionRadioListHolder(view: View, mPos: Int = 0) {
-        var mTvRadioListItem: TextView = view.findViewById(R.id.tv_radio_list_item) as TextView
+        var mTvRadioListItem = view.findViewById(R.id.tv_radio_list_item) as TextView
+        var mLinearLayout = view.findViewById(R.id.ll_radio_list_item_container) as LinearLayout
         // 记录当前选中item的position
-        var mPos: Int = mPos
+//        var mPos: Int = mPos
     }
 }

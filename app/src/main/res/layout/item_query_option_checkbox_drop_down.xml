@@ -10,7 +10,7 @@
         android:id="@+id/iv_query_option_check_box_drop_down_item_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/icon_radio_button"/>
+        android:src="@drawable/icon_check_box"/>
 
     <TextView
         android:layout_width="wrap_content"

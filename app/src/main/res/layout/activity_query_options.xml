@@ -264,7 +264,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="5dp"
-                        android:layout_marginLeft="36dp"
+                        android:layout_marginLeft="20dp"
                         android:layout_marginTop="5dp"
                         android:orientation="vertical">
 
@@ -273,7 +273,7 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/ll_query_option_radio_box_spinner_input"
+                    android:id="@+id/ll_query_option_radio_box_drop_down_input"
                     style="@style/ll_query_option_group_item"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/ll_query_option_check_box_input">
@@ -286,27 +286,30 @@
                         android:text="单选下拉框"/>
 
                     <RelativeLayout
+                        android:id="@+id/rl_query_option_radio_box_drop_down_container"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginBottom="5dp"
                         android:layout_marginLeft="8dp"
                         android:layout_marginTop="5dp"
-                        android:background="@drawable/select_query_option_input_box_bg"
-                        android:paddingLeft="36dp">
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"
-                            android:layout_marginRight="12dp"
-                            android:src="@drawable/icon_down_arrow"/>
+                        android:background="@drawable/select_query_option_input_box_bg">
 
                         <ExpandableListView
                             android:id="@+id/elv_query_option_radio_box"
                             android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:divider="@null"
+                            android:groupIndicator="@null"/>
+
+                        <ImageView
+                            android:id="@+id/iv_query_option_radio_box_arrow"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:paddingRight="44dp"/>
+                            android:layout_alignParentRight="true"
+                            android:layout_marginRight="12dp"
+                            android:layout_marginTop="12dp"
+                            android:src="@drawable/icon_down_arrow"/>
+
                     </RelativeLayout>
                 </LinearLayout>
 
@@ -314,7 +317,7 @@
                     android:id="@+id/ll_query_option_check_box_drop_down_input"
                     style="@style/ll_query_option_group_item"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/ll_query_option_radio_box_spinner_input">
+                    android:layout_below="@id/ll_query_option_radio_box_drop_down_input">
 
                     <TextView
                         style="@style/query_options_group_title_item"
@@ -324,27 +327,30 @@
                         android:text="多选下拉框"/>
 
                     <RelativeLayout
+                        android:id="@+id/rl_query_option_check_box_drop_down_container"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginBottom="5dp"
                         android:layout_marginLeft="8dp"
                         android:layout_marginTop="5dp"
-                        android:background="@drawable/select_query_option_input_box_bg"
-                        android:paddingLeft="36dp">
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"
-                            android:layout_marginRight="12dp"
-                            android:src="@drawable/icon_down_arrow"/>
+                        android:background="@drawable/select_query_option_input_box_bg">
 
                         <ExpandableListView
                             android:id="@+id/elv_query_option_check_box"
                             android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:divider="@null"
+                            android:groupIndicator="@null"/>
+
+                        <ImageView
+                            android:id="@+id/iv_query_option_check_box_arrow"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:paddingRight="44dp"/>
+                            android:layout_alignParentRight="true"
+                            android:layout_marginRight="12dp"
+                            android:layout_marginTop="12dp"
+                            android:src="@drawable/icon_down_arrow"/>
+
                     </RelativeLayout>
                 </LinearLayout>
 
@@ -368,7 +374,7 @@
                         android:layout_marginLeft="8dp"
                         android:layout_marginTop="5dp"
                         android:background="@drawable/query_options_text_background"
-                        android:paddingLeft="36dp">
+>
 
                         <ImageView
                             android:id="@+id/iv_query_option_radio_list_search"
@@ -376,6 +382,7 @@
                             android:layout_height="50dp"
                             android:layout_alignParentRight="true"
                             android:layout_marginRight="12dp"
+                            android:visibility="gone"
                             android:layout_marginTop="8dp"
                             android:src="@drawable/icon_query_option_search_pressed"/>
 
@@ -385,6 +392,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="15dp"
                             android:layout_marginRight="12dp"
+                            android:layout_marginLeft="12dp"
                             android:layout_marginTop="15dp"
                             android:layout_toLeftOf="@+id/iv_query_option_radio_list_search"
                             android:divider="#00000000"

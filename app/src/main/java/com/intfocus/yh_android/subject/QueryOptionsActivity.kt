@@ -74,30 +74,199 @@ class QueryOptionsActivity : AppCompatActivity() {
             "\t]\n" +
             "}"
 
-
+    /**
+     * 起始时间
+     */
     private var query_option_start_time: Long = 0
+    /**
+     * 结束时间
+     */
     private var query_option_end_time: Long = 0
+    /**
+     * 单选列表当前选择的position
+     */
     private var mRadioListPos: Int = 0
-
+    /**
+     * 控制单选下拉框高度的开关
+     */
+    private var elv_query_option_radio_box_switch = false
+    /**
+     * 控制多选下拉框高度的开关
+     */
+    private var elv_query_option_check_box_switch = false
+    /**
+     * 跳转扫一扫activity的请求code
+     */
     private val mRequestCode = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_query_options)
 
-        //解析初始数据
+        //解析的数据
         val queryOptions = Gson().fromJson(testData, QueryOptions::class.java)
 
         val queryOptionsData = queryOptions!!.data
 
         val mSubmitData = hashMapOf<String, String>()
 
+        //初始化数据
         initData(queryOptionsData)
 
-        initListener()
+        //初始化监听器
+        initListener(queryOptionsData, mSubmitData)
+    }
 
+    /**
+     * 动态加载视图
+     */
+    private fun initData(queryOptionsData: List<QueryOptions.DataBean>) {
+        for (i in queryOptionsData.indices) {
+            when (queryOptionsData[i].typeName) {
+                "text_input" -> {
+                    ll_query_option_text_input.visibility = View.VISIBLE
+                    et_query_option_text_input.text.clear()
+                }
+                "scan_input" -> {
+                    ll_query_option_scan_input.visibility = View.VISIBLE
+                    et_query_option_scan_input.text.clear()
+                }
+                "radio_box" -> {
+                    ll_query_option_radio_box_input.visibility = View.VISIBLE
+                    (rg_query_option.getChildAt(0) as RadioButton).text = queryOptionsData[i].data[0]
+                    (rg_query_option.getChildAt(1) as RadioButton).text = queryOptionsData[i].data[1]
+                    (rg_query_option.getChildAt(0) as RadioButton).isChecked = true
+                }
+                "check_box" -> {
+                    ll_query_option_check_box_input.visibility = View.VISIBLE
+                    for (s in queryOptionsData[i].data) {
+                        val mCheckBox = CheckBox(this)
+                        mCheckBox.buttonDrawable = resources.getDrawable(R.drawable.icon_selector_query_option_check_box)
+                        mCheckBox.text = s
+                        mCheckBox.textSize = 12f
+                        mCheckBox.height = DisplayUtil.dip2px(this, 36f)
+                        mCheckBox.setPadding(DisplayUtil.dip2px(this, 10f), 0, 0, 0)
+                        ll_query_option_check_box_container.addView(mCheckBox)
+                    }
+                }
+                "radio_box_spinner" -> {
+                    ll_query_option_radio_box_drop_down_input.visibility = View.VISIBLE
+                    val mElvRadioBoxExpandableListAdapter = ElvQueryOptionRadioBoxExpandableListAdapter(this, ElvQueryOptionRadioBoxExpandableListAdapter.RADIO_BOX_TYPE)
+                    mElvRadioBoxExpandableListAdapter.mGroupData = listOf(queryOptionsData[i].data[0])
+                    mElvRadioBoxExpandableListAdapter.mChildData = queryOptionsData[i].data
+                    elv_query_option_radio_box.setAdapter(mElvRadioBoxExpandableListAdapter)
 
-        // 提交的监听
+                }
+                "check_box_spinner" -> {
+                    ll_query_option_check_box_drop_down_input.visibility = View.VISIBLE
+                    val mElvCheckBoxExpandableListAdapter = ElvQueryOptionRadioBoxExpandableListAdapter(this, ElvQueryOptionRadioBoxExpandableListAdapter.CHECK_BOX_TYPE)
+                    mElvCheckBoxExpandableListAdapter.mGroupData = listOf(queryOptionsData[i].data[0])
+                    mElvCheckBoxExpandableListAdapter.mChildData = queryOptionsData[i].data
+                    elv_query_option_check_box.setAdapter(mElvCheckBoxExpandableListAdapter)
+                }
+                "radio_list" -> {
+                    ll_query_option_radio_list_input.visibility = View.VISIBLE
+                    lv_query_option_radio_list.adapter = QueryOptionRadioListAdapter(this, queryOptionsData[i].data)
+                }
+                "time_select" -> {
+                    ll_query_option_time_select_input.visibility = View.VISIBLE
+                }
+                "start_and_end_time" -> {
+                    ll_query_option_start_time_input.visibility = View.VISIBLE
+                    ll_query_option_end_time_input.visibility = View.VISIBLE
+                }
+                else -> {
+                }
+            }
+        }
+    }
+
+    /**
+     * 初始化监听器
+     */
+    private fun initListener(queryOptionsData: MutableList<QueryOptions.DataBean>, mSubmitData: HashMap<String, String>) {
+        //日历icon设置点击事件 弹出时间选择Dialog
+        initCalenderListener()
+
+        //单选列表item点击监听
+        lv_query_option_radio_list.setOnItemClickListener { _, _, position, _ ->
+            var queryOptionRadioListAdapter = lv_query_option_radio_list.adapter as QueryOptionRadioListAdapter
+            queryOptionRadioListAdapter.mPos = position
+            queryOptionRadioListAdapter.notifyDataSetChanged()
+            ToastUtil.showToast(this, "mRadioListPos:::" + position)
+        }
+
+        //单选列表触摸事件监听，处理ScrollView嵌套ListView滑动冲突
+        lv_query_option_radio_list.setOnTouchListener { _, event ->
+            if (event.action == MotionEvent.ACTION_UP) {
+                sv_query_options.requestDisallowInterceptTouchEvent(false)
+            } else {
+                sv_query_options.requestDisallowInterceptTouchEvent(true)
+            }
+            false
+        }
+        sv_query_options.smoothScrollTo(0, 20)
+
+        //扫一扫
+        ibtn_query_option_scan.setOnClickListener {
+            startActivityForResult(Intent(this, QueryOptionsScannerActivity::class.java), mRequestCode)
+        }
+
+        //单选下拉框父项点击监听
+        elv_query_option_radio_box.setOnGroupClickListener { parent, v, groupPosition, id ->
+            var measuredHeight: Int
+            if (elv_query_option_radio_box_switch) {
+                measuredHeight = DisplayUtil.dip2px(this, 40f)
+                iv_query_option_radio_box_arrow.setImageDrawable(resources.getDrawable(R.drawable.icon_down_arrow))
+                elv_query_option_radio_box_switch = false
+            } else {
+                measuredHeight = DisplayUtil.dip2px(this, 40f + 4 * 35f)
+                iv_query_option_radio_box_arrow.setImageDrawable(resources.getDrawable(R.drawable.icon_up_arrow))
+                elv_query_option_radio_box_switch = true
+            }
+            rl_query_option_radio_box_drop_down_container.layoutParams.height = measuredHeight
+            false
+        }
+
+        //单选下拉框子项item点击监听
+        elv_query_option_radio_box.setOnChildClickListener { parent, _, _, childPosition, _ ->
+            var adapter = parent.expandableListAdapter as ElvQueryOptionRadioBoxExpandableListAdapter
+            adapter.mGroupData = listOf(adapter.mChildData!![childPosition])
+            adapter.mClickedItemPos = childPosition
+            adapter.notifyDataSetChanged()
+            false
+        }
+
+        //多选下拉框父项点击监听
+        elv_query_option_check_box.setOnGroupClickListener { parent, v, groupPosition, id ->
+            var measuredHeight: Int
+            if (elv_query_option_check_box_switch) {
+                measuredHeight = DisplayUtil.dip2px(this, 40f)
+                iv_query_option_check_box_arrow.setImageDrawable(resources.getDrawable(R.drawable.icon_down_arrow))
+                elv_query_option_check_box_switch = false
+            } else {
+                measuredHeight = DisplayUtil.dip2px(this, 40f + 4 * 35f)
+                iv_query_option_check_box_arrow.setImageDrawable(resources.getDrawable(R.drawable.icon_up_arrow))
+                elv_query_option_check_box_switch = true
+            }
+            rl_query_option_check_box_drop_down_container.layoutParams.height = measuredHeight
+            false
+        }
+
+        //多选下拉框子项item点击监听
+        elv_query_option_check_box.setOnChildClickListener { parent, _, _, childPosition, _ ->
+            var adapter = parent.expandableListAdapter as ElvQueryOptionRadioBoxExpandableListAdapter
+            adapter.mGroupData = listOf(adapter.mGroupData!![0] + "," + adapter.mChildData!![childPosition])
+            if (adapter.mCheckedItemsPos.contains(childPosition)) {
+                adapter.mCheckedItemsPos.remove(childPosition)
+            } else {
+                adapter.mCheckedItemsPos.add(childPosition)
+            }
+            adapter.notifyDataSetChanged()
+            false
+        }
+
+        // 提交的监听,获取各选项中的数据到StringBuilder中
         btn_query_option_submit.setOnClickListener(View.OnClickListener {
             for (i in queryOptionsData!!.indices) {
                 when (queryOptionsData!![i].typeName) {
@@ -119,19 +288,20 @@ class QueryOptionsActivity : AppCompatActivity() {
                         mSubmitData.put("radio_box", rg_query_option.checkedRadioButtonId.toString())
                     }
                     "check_box" -> {
-                        val mCheckBoxBulider: StringBuilder = StringBuilder()
+                        val mCheckBoxBuilder: StringBuilder = StringBuilder()
                         for (s in queryOptionsData[i].data.indices) {
                             val checkbox = (ll_query_option_check_box_container.getChildAt(s)) as CheckBox
                             if (checkbox.isChecked) {
-                                mCheckBoxBulider.append(s)
-                                mCheckBoxBulider.append("-")
+                                mCheckBoxBuilder.append(s)
+                                mCheckBoxBuilder.append("-")
                             }
                         }
-                        mCheckBoxBulider.replace(queryOptionsData[i].data.size - 2, queryOptionsData[i].data.size - 1, "")
-                        mSubmitData.put("check_box", mCheckBoxBulider.toString())
+                        mCheckBoxBuilder.replace(queryOptionsData[i].data.size - 2, queryOptionsData[i].data.size - 1, "")
+                        mSubmitData.put("check_box", mCheckBoxBuilder.toString())
                     }
                     "radio_box_spinner" -> {
-//                        mSubmitData.put("radio_box_spinner", elv_query_option_radio_box.selectedItem.toString())
+                        mSubmitData.put("radio_box_spinner", (elv_query_option_radio_box.expandableListAdapter as ElvQueryOptionRadioBoxExpandableListAdapter)
+                                .mGroupViewText.text.toString())
                     }
                     "check_box_spinner" -> {
                     }
@@ -170,28 +340,22 @@ class QueryOptionsActivity : AppCompatActivity() {
             }
 
         })
+
+        //查询历史记录的点击监听
         ibtn_query_option_history.setOnClickListener {
             val queryResult: StringBuilder = StringBuilder()
             for ((key, value) in mSubmitData) {
                 Log.i(TAG, "key = $key, value = $value")
                 queryResult.append("key = $key, value = $value\n")
             }
-
             ToastUtil.showToast(this, String(queryResult))
         }
     }
 
     /**
-     * 将 yyyy年MM月dd日 格式时间转为时间戳
+     * 日历icon设置点击事件 弹出时间选择Dialog
      */
-    private fun getTimeMillis(text: String?): Long {
-        return SimpleDateFormat("yyyy年MM月dd日").parse(text).time
-    }
-
-    /**
-     * 初始化监听器
-     */
-    private fun initListener() {
+    private fun initCalenderListener() {
         tv_query_option_time_select.setOnClickListener {
             getDatePickerDialog(tv_query_option_time_select)
         }
@@ -214,25 +378,6 @@ class QueryOptionsActivity : AppCompatActivity() {
         ibtn_query_end_time_select.setOnClickListener {
             getDatePickerDialog(tv_query_option_end_time)
         }
-
-        lv_query_option_radio_list.setOnItemClickListener { _, _, position, _ ->
-            mRadioListPos = position
-            ToastUtil.showToast(this, "mRadioListPos:::" + position)
-        }
-
-        lv_query_option_radio_list.setOnTouchListener { _, event ->
-            if (event.action == MotionEvent.ACTION_UP) {
-                sv_query_options.requestDisallowInterceptTouchEvent(false)
-            } else {
-                sv_query_options.requestDisallowInterceptTouchEvent(true)
-            }
-            false
-        }
-        ibtn_query_option_scan.setOnClickListener {
-            startActivityForResult(Intent(this, QueryOptionsScannerActivity::class.java), mRequestCode)
-        }
-        sv_query_options.smoothScrollTo(0, 20)
-
     }
 
     /**
@@ -242,78 +387,21 @@ class QueryOptionsActivity : AppCompatActivity() {
         val calendar = Calendar.getInstance()
         DatePickerDialog(this, DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
             calendar.set(year, monthOfYear, dayOfMonth)
-            val df = SimpleDateFormat("yyyy年MM月dd日")
+            val df = SimpleDateFormat("yyyy/MM/dd")
             textView.text = df.format(calendar.time)
         }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show()
     }
 
     /**
-     * 动态加载视图
+     * 将 yyyy年MM月dd日 格式时间转为时间戳
      */
-    private fun initData(queryOptionsData: List<QueryOptions.DataBean>) {
-        for (i in queryOptionsData.indices) {
-            when (queryOptionsData[i].typeName) {
-                "text_input" -> {
-                    ll_query_option_text_input.visibility = View.VISIBLE
-                    et_query_option_text_input.text.clear()
-//                    et_query_option_text_input.text.insert(0, queryOptionsData[i].data[0])
-                }
-                "scan_input" -> {
-                    ll_query_option_scan_input.visibility = View.VISIBLE
-                    et_query_option_scan_input.text.clear()
-//                    et_query_option_scan_input.text.insert(0, queryOptionsData[i].data[0])
-                }
-                "radio_box" -> {
-                    ll_query_option_radio_box_input.visibility = View.VISIBLE
-                    (rg_query_option.getChildAt(0) as RadioButton).text = queryOptionsData[i].data[0]
-                    (rg_query_option.getChildAt(1) as RadioButton).text = queryOptionsData[i].data[1]
-                    (rg_query_option.getChildAt(0) as RadioButton).isChecked = true
-                }
-                "check_box" -> {
-                    ll_query_option_check_box_input.visibility = View.VISIBLE
-                    for (s in queryOptionsData[i].data) {
-                        val mCheckBox = CheckBox(this)
-                        mCheckBox.buttonDrawable = resources.getDrawable(R.drawable.icon_selector_query_option_check_box)
-                        mCheckBox.text = s
-                        mCheckBox.height = DisplayUtil.dip2px(this, 36f)
-                        ll_query_option_check_box_container.addView(mCheckBox)
-                    }
-                }
-                "radio_box_spinner" -> {
-                    ll_query_option_radio_box_spinner_input.visibility = View.VISIBLE
-//                    var radioBoxSpinnerAdapter = ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, queryOptionsData[i].data)
-//                    radioBoxSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-//                    elv_query_option_radio_box.adapter = radioBoxSpinnerAdapter
-                    var mElvRadioBoxExpandableListAdapter = ElvQueryOptionRadioBoxExpandableListAdapter(this)
-                    mElvRadioBoxExpandableListAdapter.mChildData = listOf(queryOptionsData[i].typeName)
-                    mElvRadioBoxExpandableListAdapter.mChildData = queryOptionsData[i].data
-                    elv_query_option_radio_box.setAdapter(mElvRadioBoxExpandableListAdapter)
-                }
-                "check_box_spinner" -> {
-                    ll_query_option_check_box_drop_down_input.visibility = View.VISIBLE
-                }
-                "radio_list" -> {
-                    ll_query_option_radio_list_input.visibility = View.VISIBLE
-                    lv_query_option_radio_list.adapter = QueryOptionRadioListAdapter(this, queryOptionsData[i].data)
-                }
-                "time_select" -> {
-                    ll_query_option_time_select_input.visibility = View.VISIBLE
-                }
-                "start_and_end_time" -> {
-                    ll_query_option_start_time_input.visibility = View.VISIBLE
-                    ll_query_option_end_time_input.visibility = View.VISIBLE
-                }
-                else -> {
-                }
-            }
-        }
+    private fun getTimeMillis(text: String?): Long {
+        return SimpleDateFormat("yyyy/MM/dd").parse(text).time
     }
 
-    companion object {
-
-        private val TAG = "hjjzz"
-    }
-
+    /**
+     * 扫一扫返回的逻辑
+     */
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         var barCode: String? = null
         when (resultCode) {
@@ -329,7 +417,10 @@ class QueryOptionsActivity : AppCompatActivity() {
             }
         }
         et_query_option_scan_input.text.replace(0, et_query_option_scan_input.text.length, barCode)
+    }
 
+    companion object {
 
+        private val TAG = "hjjzz"
     }
 }
