@@ -41,15 +41,6 @@ class QueryOptionRadioListAdapter(mContext: Context, mData: List<String>) : Base
         } else {
             holder.mLinearLayout.setBackgroundColor(ContextCompat.getColor(mContext, R.color.white))
         }
-
-//        holder.mTvRadioListItem.setOnTouchListener { v, event ->
-//            if (event.action == MotionEvent.ACTION_DOWN) {
-//                parent!!.requestDisallowInterceptTouchEvent(true)
-//            } else {
-//                parent!!.requestDisallowInterceptTouchEvent(false)
-//            }
-//            false
-//        }
         return convertView
     }
 

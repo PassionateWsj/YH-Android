@@ -414,7 +414,7 @@
 
 
     <style name="ll_query_option_group_item">
-        <item name="android:visibility">visible</item>
+        <item name="android:visibility">gone</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:minHeight">50dp</item>
         <item name="android:layout_marginLeft">13dp</item>

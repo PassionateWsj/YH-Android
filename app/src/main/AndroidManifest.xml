@@ -57,12 +57,12 @@
             android:screenOrientation="portrait"
             android:theme="@style/LauncherTheme">
 
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.MAIN"/> -->
+             <intent-filter>
+             <action android:name="android.intent.action.MAIN"/>
 
 
-            <!-- <category android:name="android.intent.category.LAUNCHER"/> -->
-            <!-- </intent-filter> -->
+             <category android:name="android.intent.category.LAUNCHER"/>
+             </intent-filter>
         </activity>
 
         <!-- 登录 -->
@@ -224,14 +224,13 @@
         </activity>
         <activity
             android:name=".subject.QueryOptionsActivity"
+            android:configChanges="orientation|screenSize"
             android:theme="@style/LauncherTheme">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN"/>-->
 
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
-        </activity>
-        <activity android:name=".Main2Activity">
+                <!--<category android:name="android.intent.category.LAUNCHER"/>-->
+            <!--</intent-filter>-->
         </activity>
         <activity android:name=".scanner.QueryOptionsScannerActivity">
         </activity>

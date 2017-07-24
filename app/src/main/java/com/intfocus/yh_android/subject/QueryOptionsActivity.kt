@@ -44,7 +44,7 @@ class QueryOptionsActivity : AppCompatActivity() {
             "\t\t{\n" +
             "\t\t\t\"typeName\":\"check_box\",\n" +
             "\t\t\t\"typeId\":\"4\",\n" +
-            "\t\t\t\"data\":[\"优惠活动1\",\"优惠活动2\",\"优惠活动3\"]\n" +
+            "\t\t\t\"data\":[\"优惠活动1\",\"优惠活动2\",\"优惠活动3\",\"优惠活动4\",\"优惠活动5\",\"优惠活动6\"]\n" +
             "\t\t},\n" +
             "\t\t{\n" +
             "\t\t\t\"typeName\":\"radio_box_spinner\",\n" +
@@ -54,22 +54,7 @@ class QueryOptionsActivity : AppCompatActivity() {
             "\t\t{\n" +
             "\t\t\t\"typeName\":\"check_box_spinner\",\n" +
             "\t\t\t\"typeId\":\"5\",\n" +
-            "\t\t\t\"data\":[\"100%\",\"75%\",\"50%\",\"25%\"]\n" +
-            "\t\t},\n" +
-            "\t\t{\n" +
-            "\t\t\t\"typeName\":\"radio_list\",\n" +
-            "\t\t\t\"typeId\":\"6\",\n" +
-            "\t\t\t\"data\":[\"门店1\",\"门店2\",\"门店3\",\"门店4\",\"门店5\",\"门店6\",\"门店7\",\"门店8\",\"门店9\",\"门店10\",\"门店11\"]\n" +
-            "\t\t},\n" +
-            "\t\t{\n" +
-            "\t\t\t\"typeName\":\"time_select\",\n" +
-            "\t\t\t\"typeId\":\"7\",\n" +
-            "\t\t\t\"data\":[\"\"]\n" +
-            "\t\t},\n" +
-            "\t\t{\n" +
-            "\t\t\t\"typeName\":\"start_and_end_time\",\n" +
-            "\t\t\t\"typeId\":\"8\",\n" +
-            "\t\t\t\"data\":[\"\"]\n" +
+            "\t\t\t\"data\":[\"25%\",\"50%\",\"75%\",\"100%\"]\n" +
             "\t\t}\n" +
             "\t]\n" +
             "}"
@@ -289,21 +274,27 @@ class QueryOptionsActivity : AppCompatActivity() {
                     }
                     "check_box" -> {
                         val mCheckBoxBuilder: StringBuilder = StringBuilder()
+                        var mAnyChecked = false
                         for (s in queryOptionsData[i].data.indices) {
                             val checkbox = (ll_query_option_check_box_container.getChildAt(s)) as CheckBox
                             if (checkbox.isChecked) {
                                 mCheckBoxBuilder.append(s)
                                 mCheckBoxBuilder.append("-")
+                                mAnyChecked = true
                             }
                         }
-                        mCheckBoxBuilder.replace(queryOptionsData[i].data.size - 2, queryOptionsData[i].data.size - 1, "")
-                        mSubmitData.put("check_box", mCheckBoxBuilder.toString())
+                        if (mAnyChecked) {
+                            mCheckBoxBuilder.replace(queryOptionsData[i].data.size - 2, queryOptionsData[i].data.size - 1, "")
+                            mSubmitData.put("check_box", mCheckBoxBuilder.toString())
+                        }
                     }
                     "radio_box_spinner" -> {
                         mSubmitData.put("radio_box_spinner", (elv_query_option_radio_box.expandableListAdapter as ElvQueryOptionRadioBoxExpandableListAdapter)
                                 .mGroupViewText.text.toString())
                     }
                     "check_box_spinner" -> {
+                        mSubmitData.put("check_box_spinner", (elv_query_option_radio_box.expandableListAdapter as ElvQueryOptionRadioBoxExpandableListAdapter)
+                                .mGroupViewText.text.toString())
                     }
                     "radio_list" -> {
                         mSubmitData.put("radio_list", mRadioListPos.toString())
