@@ -1,12 +1,19 @@
 package com.intfocus.yonghuitest.util;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.AsyncTask;
+import android.os.PowerManager;
 import android.telephony.TelephonyManager;
 import android.util.Log;
+import android.widget.Toast;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -22,6 +29,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+
 import okhttp3.Headers;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -29,13 +37,11 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 public class HttpUtil {
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
     public static final String kUserAgent = "User-Agent";
-    public static final String kContentType ="Content-Type";
+    public static final String kContentType = "Content-Type";
     public static final String kFailedToConnectTo = "failed to connect to";
     public static final String kUnauthorized = "unauthorized";
     public static final String kUnableToResolveHost = "unable to resolve host";
@@ -51,6 +57,7 @@ public class HttpUtil {
     //@throws UnsupportedEncodingException
     public static Map<String, String> httpGet(String urlString, Map<String, String> headers) {
         LogUtil.d("GET", urlString);
+
         Map<String, String> retMap = new HashMap<>();
         OkHttpClient client = new OkHttpClient.Builder()
                 .connectTimeout(5, TimeUnit.SECONDS)
@@ -80,15 +87,15 @@ public class HttpUtil {
             }
             retMap.put(URLs.kCode, String.format("%d", response.code()));
             retMap.put(URLs.kBody, response.body().string());
-            LogUtil.d("BODY", retMap.get("body"));
+//            LogUtil.d("BODY", retMap.get("body"));
 
-            if(isJSON) {
+            if (isJSON) {
                 LogUtil.d("code", retMap.get("code"));
                 LogUtil.d("responseBody", retMap.get("body"));
             }
         } catch (UnknownHostException e) {
             // 400: Unable to resolve host "yonghui.idata.mobi": No address associated with hostname
-            if(e != null && e.getMessage() != null) {
+            if (e != null && e.getMessage() != null) {
                 LogUtil.d("UnknownHostException2", e.getMessage());
             }
             retMap.put(URLs.kCode, "400");
@@ -98,7 +105,7 @@ public class HttpUtil {
             retMap.put(URLs.kCode, "400");
             retMap.put(URLs.kBody, "{\"info\": \"请检查网络环境！\"}");
 
-            if(e != null && e.getMessage() != null) {
+            if (e != null && e.getMessage() != null) {
                 String errorMessage = e.getMessage().toLowerCase();
                 LogUtil.d("Exception", errorMessage);
                 if (errorMessage.contains(kUnableToResolveHost) || errorMessage.contains(kFailedToConnectTo)) {
@@ -139,7 +146,7 @@ public class HttpUtil {
             Bitmap bm = BitmapFactory.decodeStream(is);
             return bm;
         } catch (UnknownHostException e) {
-            if(e != null && e.getMessage() != null) {
+            if (e != null && e.getMessage() != null) {
             }
             return null;
         } catch (Exception e) {
@@ -152,7 +159,7 @@ public class HttpUtil {
      */
     //@throws UnsupportedEncodingException
     //@throws JSONException
-    public static Map<String, String> httpPost(String urlString, Map params){
+    public static Map<String, String> httpPost(String urlString, Map params) {
         LogUtil.d("POST", urlString);
         Map<String, String> retMap = new HashMap<>();
         OkHttpClient client = new OkHttpClient.Builder()
@@ -203,8 +210,6 @@ public class HttpUtil {
             int headerSize = responseHeaders.size();
             for (int i = 0; i < headerSize; i++) {
                 retMap.put(responseHeaders.name(i), responseHeaders.value(i));
-                LogUtil.d("HEADER", String.format("Key : %s, Value: %s", responseHeaders.name(i),
-                        responseHeaders.value(i)));
             }
 
             retMap.put(URLs.kCode, String.format("%d", response.code()));
@@ -213,7 +218,7 @@ public class HttpUtil {
             LogUtil.d("code", retMap.get("code"));
             LogUtil.d("responseBody", retMap.get("body"));
         } catch (UnknownHostException e) {
-            if(e != null && e.getMessage() != null) {
+            if (e != null && e.getMessage() != null) {
                 LogUtil.d("UnknownHostException", e.getMessage());
             }
             retMap.put(URLs.kCode, "400");
@@ -223,7 +228,7 @@ public class HttpUtil {
             retMap.put(URLs.kCode, "400");
             retMap.put(URLs.kBody, "{\"info\": \"请检查网络环境！\"}");
 
-            if(e != null && e.getMessage() != null) {
+            if (e != null && e.getMessage() != null) {
                 String errorMessage = e.getMessage().toLowerCase();
                 LogUtil.d("Exception", errorMessage);
                 if (errorMessage.contains(kUnableToResolveHost) || errorMessage.contains(kFailedToConnectTo)) {
@@ -278,7 +283,7 @@ public class HttpUtil {
             LogUtil.d("code", retMap.get("code"));
             LogUtil.d("responseBody", retMap.get("body"));
         } catch (UnknownHostException e) {
-            if(e != null && e.getMessage() != null) {
+            if (e != null && e.getMessage() != null) {
                 LogUtil.d("UnknownHostException2", e.getMessage());
             }
             retMap.put(URLs.kCode, "400");
@@ -287,7 +292,7 @@ public class HttpUtil {
             retMap.put(URLs.kCode, "400");
             retMap.put(URLs.kBody, "{\"info\": \"请检查网络环境！\"}");
 
-            if(e != null && e.getMessage() != null) {
+            if (e != null && e.getMessage() != null) {
                 String errorMessage = e.getMessage().toLowerCase();
                 LogUtil.d("Exception2", errorMessage);
                 if (errorMessage.contains(kUnableToResolveHost) || errorMessage.contains("failed to connect to")) {
@@ -305,7 +310,7 @@ public class HttpUtil {
     /**
      * ִ执行一个HTTP POST请求，上传文件
      */
-    public static Map<String,String> httpPostFile(String urlString,String fileType,String fileKey,String filePath) {
+    public static Map<String, String> httpPostFile(String urlString, String fileType, String fileKey, String filePath) {
         Map<String, String> retMap = new HashMap<>();
         OkHttpClient client = new OkHttpClient.Builder()
                 .connectTimeout(5, TimeUnit.SECONDS)
@@ -332,7 +337,7 @@ public class HttpUtil {
             retMap.put(URLs.kCode, String.format("%d", response.code()));
             retMap.put("body", response.body().string());
         } catch (UnknownHostException e) {
-            if(e != null && e.getMessage() != null) {
+            if (e != null && e.getMessage() != null) {
                 LogUtil.d("UnknownHostException2", e.getMessage());
             }
             retMap.put(URLs.kCode, "400");
@@ -344,7 +349,7 @@ public class HttpUtil {
         return retMap;
     }
 
-    public static String UrlToFileName(String urlString) {
+    public static String urlToFileName(String urlString) {
         String path = "default";
         try {
             urlString = urlString.replace(K.kBaseUrl, "");
@@ -380,20 +385,22 @@ public class HttpUtil {
 
     /**
      * Get the network info
+     *
      * @param context
      * @return
      */
-    public static NetworkInfo getNetworkInfo(Context context){
+    public static NetworkInfo getNetworkInfo(Context context) {
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         return cm.getActiveNetworkInfo();
     }
 
     /**
      * Check if there is any connectivity
+     *
      * @param context
      * @return
      */
-    public static boolean isConnected(Context context){
+    public static boolean isConnected(Context context) {
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo info = cm.getActiveNetworkInfo();
         TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
@@ -402,47 +409,51 @@ public class HttpUtil {
 
     /**
      * Check if there is any connectivity to a Wifi network
+     *
      * @param context
-     * @param type
+     * @param
      * @return
      */
-    public static boolean isConnectedWifi(Context context){
+    public static boolean isConnectedWifi(Context context) {
         NetworkInfo info = HttpUtil.getNetworkInfo(context);
         return (info != null && info.isConnected() && info.getType() == ConnectivityManager.TYPE_WIFI);
     }
 
     /**
      * Check if there is any connectivity to a mobile network
+     *
      * @param context
-     * @param type
+     * @param
      * @return
      */
-    public static boolean isConnectedMobile(Context context){
+    public static boolean isConnectedMobile(Context context) {
         NetworkInfo info = HttpUtil.getNetworkInfo(context);
         return (info != null && info.isConnected() && info.getType() == ConnectivityManager.TYPE_MOBILE);
     }
 
     /**
      * Check if there is fast connectivity
+     *
      * @param context
      * @return
      */
-    public static boolean isConnectedFast(Context context){
+    public static boolean isConnectedFast(Context context) {
         NetworkInfo info = HttpUtil.getNetworkInfo(context);
-        return (info != null && info.isConnected() && HttpUtil.isConnectionFast(info.getType(),info.getSubtype()));
+        return (info != null && info.isConnected() && HttpUtil.isConnectionFast(info.getType(), info.getSubtype()));
     }
 
     /**
      * Check if the connection is fast
+     *
      * @param type
      * @param subType
      * @return
      */
-    public static boolean isConnectionFast(int type, int subType){
-        if(type== ConnectivityManager.TYPE_WIFI){
+    public static boolean isConnectionFast(int type, int subType) {
+        if (type == ConnectivityManager.TYPE_WIFI) {
             return true;
-        }else if(type==ConnectivityManager.TYPE_MOBILE){
-            switch(subType){
+        } else if (type == ConnectivityManager.TYPE_MOBILE) {
+            switch (subType) {
                 case TelephonyManager.NETWORK_TYPE_1xRTT:
                     return false; // ~ 50-100 kbps
                 case TelephonyManager.NETWORK_TYPE_CDMA:
@@ -482,12 +493,170 @@ public class HttpUtil {
                 default:
                     return false;
             }
-        }
-        else{
+        } else {
             return false;
         }
     }
 
+    public static class DownloadAssetsTask extends AsyncTask<String, Integer, String> {
+        private final Context context;
+        private PowerManager.WakeLock mWakeLock;
+        private final String assetFilename;
+        private final boolean isInAssets;
+        private ProgressDialog mProgressDialog;
+
+        public DownloadAssetsTask(Context context, String assetFilename, boolean isInAssets) {
+            this.context = context;
+            this.assetFilename = assetFilename;
+            this.isInAssets = isInAssets;
+
+            // 初始化进度条
+            mProgressDialog = new ProgressDialog(context);
+            mProgressDialog.setTitle("提示信息");
+            mProgressDialog.setMessage("正在更新静态资源，请稍候...");
+            mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+            mProgressDialog.setCancelable(false);
+            mProgressDialog.setCanceledOnTouchOutside(false);
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            InputStream input = null;
+            OutputStream output = null;
+            HttpURLConnection connection = null;
+
+            try {
+                URL url = new URL(params[0]);
+                connection = (HttpURLConnection) url.openConnection();
+                connection.connect();
+
+                // expect HTTP 200 OK, so we don't mistakenly save error report
+                // instead of the file
+                if (connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
+                    return "Server returned HTTP " + connection.getResponseCode() + " " + connection.getResponseMessage();
+                }
+
+                // this will be useful to display download percentage
+                // might be -1: server did not report the length
+                int fileLength = connection.getContentLength();
+                input = connection.getInputStream();
+                output = new FileOutputStream(params[1]);
+
+                byte data[] = new byte[4096];
+                long total = 0;
+                int count;
+                while ((count = input.read(data)) != -1) {
+                    // allow canceling with back button
+                    if (isCancelled()) {
+                        input.close();
+                        return null;
+                    }
+                    total += count;
+                    // publishing the progress....
+                    if (fileLength > 0) // only if total length is known
+                        publishProgress((int) (total * 100 / fileLength));
+                    output.write(data, 0, count);
+                }
+            } catch (Exception e) {
+                LogUtil.d("Exception", e.toString());
+                return e.toString();
+            } finally {
+                try {
+                    if (output != null)
+                        output.close();
+                    if (input != null)
+                        input.close();
+                } catch (IOException ignored) {
+                }
+                if (connection != null)
+                    connection.disconnect();
+            }
+            FileUtil.checkAssets(context, assetFilename, isInAssets);
+            return null;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            // take CPU lock to prevent CPU from going off if the user
+            // presses the power button during download
+            PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+            mWakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,
+                    getClass().getName());
+            mWakeLock.acquire();
+            mProgressDialog.show();
+            mProgressDialog.setProgress(0);
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... progress) {
+            super.onProgressUpdate(progress);
+            mProgressDialog.setProgress(progress[0]);
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            mWakeLock.release();
+
+            if (result != null) {
+                Toast.makeText(context, String.format("静态资源更新失败(%s)", result), Toast.LENGTH_LONG).show();
+            } else {
+                FileUtil.checkAssets(context, assetFilename, isInAssets);
+            }
+            mProgressDialog.cancel();
+        }
+    }
+
+    /**
+     * 检测服务器端静态文件是否更新
+     * to do
+     */
+    public static void checkAssetsUpdated(final Context context) {
+        checkAssetUpdated(context, URLs.kAssets, false);
+        checkAssetUpdated(context, URLs.kLoading, false);
+        checkAssetUpdated(context, URLs.kFonts, true);
+        checkAssetUpdated(context, URLs.kImages, true);
+        checkAssetUpdated(context, URLs.kIcons, true);
+        checkAssetUpdated(context, URLs.kStylesheets, true);
+        checkAssetUpdated(context, URLs.kJavaScripts, true);
+        checkAssetUpdated(context, URLs.kBarCodeScan, false);
+    }
+
+    public static boolean checkAssetUpdated(Context context, String assetName, boolean isInAssets) {
+        try {
+            boolean isShouldUpdateAssets = false;
+            String sharedPath = FileUtil.sharedPath(context);
+            String assetZipPath = String.format("%s/%s.zip", sharedPath, assetName);
+            isShouldUpdateAssets = !(new File(assetZipPath)).exists();
+
+            String userConfigPath = String.format("%s/%s", FileUtil.basePath(context), K.kUserConfigFileName);
+            JSONObject userJSON = FileUtil.readConfigFile(userConfigPath);
+            String localKeyName = String.format("local_%s_md5", assetName);
+            String keyName = String.format("%s_md5", assetName);
+            isShouldUpdateAssets = !isShouldUpdateAssets && !userJSON.getString(localKeyName).equals(userJSON.getString(keyName));
+            if (!isShouldUpdateAssets) {
+                return false;
+            }
+
+            LogUtil.d("checkAssetUpdated", String.format("%s: %s != %s", assetZipPath, userJSON.getString(localKeyName), userJSON.getString(keyName)));
+            // execute this when the downloader must be fired
+            final HttpUtil.DownloadAssetsTask downloadTask = new DownloadAssetsTask(context, assetName, isInAssets);
+
+            // AsyncTask并行下载
+            downloadTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, String.format(K.kDownloadAssetsAPIPath, K.kBaseUrl, assetName), assetZipPath);
+//            downloadTask.execute(String.format(K.kDownloadAssetsAPIPath, K.kBaseUrl, assetName), assetZipPath);
+            return true;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+
+    /*
+     * Zip 档下载
+     */
     public static Map<String, String> downloadZip(String urlString, String outputPath, Map<String, String> headers) {
         Map<String, String> response = new HashMap<>();
         InputStream input = null;
@@ -536,13 +705,11 @@ public class HttpUtil {
                 total += count;
                 output.write(data, 0, count);
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             LogUtil.d("Exception", e.toString());
-            response.put(URLs.kCode,"400");
+            response.put(URLs.kCode, "400");
             return response;
-        }
-        finally {
+        } finally {
             try {
                 if (output != null)
                     output.close();
@@ -555,5 +722,20 @@ public class HttpUtil {
                 connection.disconnect();
         }
         return response;
+    }
+
+    /*
+     * 判断当前网络状态是否为 WiFi
+     */
+    public static boolean isWifi(Context mContext) {
+        ConnectivityManager connectivityManager = (ConnectivityManager) mContext
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetInfo = connectivityManager.getActiveNetworkInfo();
+        if (activeNetInfo != null
+                && activeNetInfo.getType() == ConnectivityManager.TYPE_WIFI) {
+            return true;
+        }
+
+        return false;
     }
 }

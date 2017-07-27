@@ -3,15 +3,23 @@ package com.intfocus.yonghuitest.util;
 import android.annotation.TargetApi;
 import android.content.ContentUris;
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
+
+import com.google.gson.Gson;
+import com.intfocus.yonghuitest.subject.SubjectActivity;
+import com.intfocus.yonghuitest.subject.selecttree.SelectItems;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
@@ -31,6 +39,8 @@ import java.util.zip.ZipInputStream;
 import org.apache.commons.io.FileUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import static com.intfocus.yonghuitest.util.K.kUserId;
 
 public class FileUtil {
     public static String basePath(Context context) {
@@ -66,7 +76,6 @@ public class FileUtil {
                 return userJSON.getBoolean(URLs.kIsLogin) && userJSON.getBoolean(URLs.kUseGesturePassword) && !userJSON.getString(URLs.kGesturePassword).isEmpty();
             } else {
                 Log.i("ScreenLock", "userConfigPath not exist");
-
                 return false;
             }
         } catch (Exception e) {
@@ -76,17 +85,11 @@ public class FileUtil {
         return false;
     }
 
-    private static String userspace(Context context) {
+    public static String userspace(Context context) {
+        SharedPreferences mUserSP = context.getSharedPreferences("UserBean", Context.MODE_PRIVATE);
         String spacePath = "";
-        try {
-            String userConfigPath = String.format("%s/%s", FileUtil.basePath(context), K.kUserConfigFileName);
-            JSONObject json = FileUtil.readConfigFile(userConfigPath);
 
-            spacePath = String.format("%s/User-%d", FileUtil.basePath(context), json.getInt("user_id"));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
+        spacePath = String.format("%s/User-%d", FileUtil.basePath(context), mUserSP.getInt(kUserId, 0));
         return spacePath;
     }
 
@@ -119,21 +122,25 @@ public class FileUtil {
      */
     public static String readFile(String pathName) {
         String string = null;
-        try {
-            InputStream inputStream = new FileInputStream(new File(pathName));
-            InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "UTF-8");
-            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-            String line;
-            StringBuilder stringBuilder = new StringBuilder();
-            while ((line = bufferedReader.readLine()) != null) {
-                stringBuilder.append(line);
+        File file = new File(pathName);
+        if (file.exists()) {
+            try {
+                InputStream inputStream = new FileInputStream(new File(pathName));
+                InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "UTF-8");
+                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+                String line;
+                StringBuilder stringBuilder = new StringBuilder();
+                while ((line = bufferedReader.readLine()) != null) {
+                    stringBuilder.append(line);
+                }
+                bufferedReader.close();
+                inputStreamReader.close();
+                string = stringBuilder.toString();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-            bufferedReader.close();
-            inputStreamReader.close();
-            string = stringBuilder.toString();
-        }
-        catch (IOException e) {
-            e.printStackTrace();
+        } else {
+            string = "";
         }
 
         return string;
@@ -149,20 +156,19 @@ public class FileUtil {
                 FileOutputStream fs = new FileOutputStream(newPath);
                 byte[] buffer = new byte[1444];
                 int length;
-                while ( (byteread = inStream.read(buffer)) != -1) {
+                while ((byteread = inStream.read(buffer)) != -1) {
                     bytesum += byteread; //字节数 文件大小
-                    System.out.println(bytesum);
                     fs.write(buffer, 0, byteread);
                 }
+                fs.close();
                 inStream.close();
             }
-        }
-        catch (Exception e) {
+            Log.i("response", "file is copy");
+        } catch (Exception e) {
             System.out.println("复制单个文件操作出错");
             e.printStackTrace();
 
         }
-
     }
 
     /*
@@ -171,12 +177,11 @@ public class FileUtil {
     public static JSONObject readConfigFile(String jsonPath) {
         JSONObject jsonObject = new JSONObject();
         try {
-            if(new File(jsonPath).exists()) {
+            if (new File(jsonPath).exists()) {
                 String string = FileUtil.readFile(jsonPath);
                 jsonObject = new JSONObject(string);
             }
-        }
-        catch (JSONException e) {
+        } catch (JSONException e) {
             e.printStackTrace();
         }
         return jsonObject;
@@ -187,7 +192,9 @@ public class FileUtil {
      */
     public static void writeFile(String pathName, String content) throws IOException {
         File file = new File(pathName);
-        if (file.exists()) { file.delete(); }
+        if (file.exists()) {
+            file.delete();
+        }
 
         file.createNewFile();
         FileOutputStream out = new FileOutputStream(file, true);
@@ -202,7 +209,7 @@ public class FileUtil {
      *  3. 登录缓存页面
      */
     public static String sharedPath(Context context) {
-        String pathName = FileUtil.basePath(context) + "/" +K.kSharedDirName;
+        String pathName = FileUtil.basePath(context) + "/" + K.kSharedDirName;
         FileUtil.makeSureFolderExist(pathName);
 
         return pathName;
@@ -229,7 +236,7 @@ public class FileUtil {
      */
     private static String convertByteArrayToHexString(byte[] arrayBytes) {
         StringBuilder stringBuffer = new StringBuilder();
-        for (byte bytes: arrayBytes) {
+        for (byte bytes : arrayBytes) {
             stringBuffer.append(Integer.toString((bytes & 0xff) + 0x100, 16)
                     .substring(1));
         }
@@ -281,6 +288,7 @@ public class FileUtil {
         ZipInputStream zipInputStream = new ZipInputStream(inputStream);
         // 读取一个进入点
         ZipEntry zipEntry = zipInputStream.getNextEntry();
+        Log.i("response", outputDirectory + File.separator + zipEntry.getName());
         // 使用1Mbuffer
         byte[] buffer = new byte[10 * 1024 * 1024];
         // 解压时字节计数
@@ -312,7 +320,6 @@ public class FileUtil {
         }
         zipInputStream.close();
     }
-
 
     private static String MD5(InputStream inputStream) {
         try {
@@ -369,6 +376,9 @@ public class FileUtil {
 
                 String folderPath = sharedPath;
                 if (isInAssets) {
+                    if (fileName.equals("icons")) {
+                        fileName = "images";
+                    }
                     folderPath = String.format("%s/assets/%s/", sharedPath, fileName);
                 } else {
                     File file = new File(zipFolderPath);
@@ -430,7 +440,7 @@ public class FileUtil {
 
             data = null;
             content = new String(outStream.toByteArray(), "UTF-8");
-        } catch(IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
@@ -439,47 +449,56 @@ public class FileUtil {
 
     /**
      * 更新服务器商品条形码信息
-     * @param  responseString 服务器响应内容
+     *
+     * @param responseString 服务器响应内容
      * @return
      */
     public static void barCodeScanResult(Context mContext, String responseString) {
         try {
             String javascriptPath = FileUtil.sharedPath(mContext) + "/BarCodeScan/assets/javascripts/bar_code_data.js";
             String javascriptContent = new StringBuilder()
-                .append("(function() {")
-                .append("  window.BarCodeData = " + responseString)
-                .append("}).call(this);")
-                .toString();
+                    .append("(function() {")
+                    .append("  window.BarCodeData = " + responseString)
+                    .append("}).call(this);")
+                    .toString();
 
             Log.i("javascriptContent", javascriptContent);
             FileUtil.writeFile(javascriptPath, javascriptContent);
-        } catch(IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     /**
-     *  内部报表是否支持筛选功能
+     * 内部报表是否支持筛选功能
      *
-     *  @param groupID    群组ID
-     *  @param templateID 模板ID
-     *  @param reportID   报表ID
-     *
-     *  @return 是否支持筛选功能
+     * @param groupID    群组ID
+     * @param templateID 模板ID
+     * @param reportID   报表ID
+     * @return 是否支持筛选功能
      */
     public static boolean reportIsSupportSearch(Context context, String groupID, String templateID, String reportID) {
-        ArrayList<String> items = reportSearchItems(context, groupID, templateID, reportID);
-        return (items.size() > 0);
+        SelectItems items = reportSearchItems(context, groupID, templateID, reportID);
+        if (items == null) {
+            return false;
+        }
+
+        if (items != null) {
+            if (items.getMax_deep() == 0) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**
-     *  内部报表 JavaScript 文件路径
+     * 内部报表 JavaScript 文件路径
      *
-     *  @param groupID    群组ID
-     *  @param templateID 模板ID
-     *  @param reportID   报表ID
-     *
-     *  @return 文件路径
+     * @param groupID    群组ID
+     * @param templateID 模板ID
+     * @param reportID   报表ID
+     * @return 文件路径
      */
     public static String reportJavaScriptDataPath(Context context, String groupID, String templateID, String reportID) {
         String assetsPath = FileUtil.sharedPath(context);
@@ -487,47 +506,52 @@ public class FileUtil {
         return String.format("%s/assets/javascripts/%s", assetsPath, fileName);
     }
 
-    /**
-     *  内部报表具有筛选功能时，选项列表
-     *
-     *  @param groupID    群组ID
-     *  @param templateID 模板ID
-     *  @param reportID   报表ID
-     *
-     *  @return 选项列表
-     */
-    public static ArrayList<String> reportSearchItems(Context context, String groupID, String templateID, String reportID) {
-        ArrayList<String> searchItems = new ArrayList<>();
-        String searchItemsPath = String.format("%s.search_items", FileUtil.reportJavaScriptDataPath(context, groupID, templateID, reportID));
-        if(new File(searchItemsPath).exists()) {
-            String itemsString = FileUtil.readFile(searchItemsPath);
-            StringTokenizer items = new StringTokenizer(itemsString, "::");
-            while (items.hasMoreTokens()) {
-                searchItems.add(items.nextToken());
-            }
-        }
 
-        return searchItems;
+    /**
+     * 内部报表筛选文件路径
+     *
+     * @param groupID    群组ID
+     * @param templateID 模板ID
+     * @param reportID   报表ID
+     * @return 文件路径
+     */
+    public static String reportSelectDataPath(Context context, String groupID, String templateID, String reportID) {
+        String assetsPath = FileUtil.sharedPath(context);
+        String fileName = String.format(K.kReportDataFileName, groupID, templateID, reportID);
+        return String.format("%s/assets/javascripts/%s", assetsPath, fileName);
     }
 
+    /**
+     * 内部报表具有筛选功能时，选项列表
+     *
+     * @param groupID    群组ID
+     * @param templateID 模板ID
+     * @param reportID   报表ID
+     * @return 选项列表
+     */
+    public static SelectItems reportSearchItems(Context context, String groupID, String templateID, String reportID) {
+        String searchItemsPath = String.format("%s.search_items", FileUtil.reportJavaScriptDataPath(context, groupID, templateID, reportID));
+        String itemsString = FileUtil.readFile(searchItemsPath);
+        Gson gson = new Gson();
+        return gson.fromJson(itemsString, SelectItems.class);
+    }
 
     /**
-     *  内部报表具有筛选功能时，用户选择的选项，默认第一个选项
+     * 内部报表具有筛选功能时，用户选择的选项，默认第一个选项
      *
-     *  @param groupID    群组ID
-     *  @param templateID 模板ID
-     *  @param reportID   报表ID
-     *
-     *  @return 用户选择的选项，默认第一个选项
+     * @param groupID    群组ID
+     * @param templateID 模板ID
+     * @param reportID   报表ID
+     * @return 用户选择的选项，默认第一个选项
      */
     public static String reportSelectedItem(Context context, String groupID, String templateID, String reportID) {
         String selectedItem = "";
         String selectedItemPath = String.format("%s.selected_item", FileUtil.reportJavaScriptDataPath(context, groupID, templateID, reportID));
-        if(new File(selectedItemPath).exists()) {
+        if (new File(selectedItemPath).exists()) {
             selectedItem = FileUtil.readFile(selectedItemPath);
         }
 
-        return selectedItem.trim();
+        return selectedItem;
     }
     //json.put("size", searchItems.size());
     //for(int i = 0, len = searchItems.size(); i < len; i ++) {
@@ -537,112 +561,36 @@ public class FileUtil {
     //FileUtil.writeFile(searchItemsPath, json.toString());
 
     /*
-	 * 保存截屏文件
+     * 保存截屏文件
 	 *
 	 */
-	public static void saveImage(String filePath, Bitmap bmp) {
-		// 如果有目标文件，删除它
-		File file = new File(filePath);
-		if (file.exists()) {
-			file.delete();
-		}
-		// 声明输出流
-		FileOutputStream outStream = null;
-
-		try {
-			// 获得输出流，写入文件
-			outStream = new FileOutputStream(file);
-			bmp.compress(Bitmap.CompressFormat.JPEG, 90, outStream);
-			outStream.close();
-		} catch (IOException e) {
-			Log.e("snapshot", e.toString());
-		}
-	}
-
-    /*
-     * 用户习惯记录
-     */
-    public static void writeBehaviorFile(Context mContext,String urlString,int tabIndex) {
-        String behaviorPath = FileUtil.dirPath(mContext, K.kConfigDirName, K.kBehaviorConfigFileName);
-        try {
-            if (urlString.equals("") || urlString.equals(null)) {
-                return;
-            }else {
-                if (new File(behaviorPath).exists()) {
-                    JSONObject dashboardJson = FileUtil.readConfigFile(behaviorPath);
-                    JSONObject behaviorJson = new JSONObject(dashboardJson.getString("dashboard"));
-                    behaviorJson.put("tab_index", tabIndex);
-                    dashboardJson.put("dashboard", behaviorJson.toString());
-                    FileUtil.writeFile(behaviorPath,dashboardJson.toString());
-                }else {
-                    JSONObject dashboardJson = new JSONObject();
-                    JSONObject behaviorJson = new JSONObject();
-                    behaviorJson.put("tab_index", tabIndex);
-                    dashboardJson.put("dashboard",behaviorJson.toString());
-                    FileUtil.writeFile(behaviorPath,dashboardJson.toString());
-                }
-            }
-        } catch (JSONException | IOException e) {
-            e.printStackTrace();
+    public static File saveImage(String filePath, Bitmap bmp) {
+        // 如果有目标文件，删除它
+        File file = new File(filePath);
+        if (file.exists()) {
+            file.delete();
         }
+        // 声明输出流
+        FileOutputStream outStream = null;
+
+        try {
+            // 获得输出流，写入文件
+            outStream = new FileOutputStream(file);
+            bmp.compress(Bitmap.CompressFormat.JPEG, 30, outStream);
+            outStream.close();
+            return file;
+        } catch (IOException e) {
+            Log.e("snapshot", e.toString());
+        }
+        return null;
     }
 
-    public static void initLocalNotifications(Context mContext) {
-        try {
-            String noticePath = FileUtil.dirPath(mContext, K.kConfigDirName, K.kLocalNotificationConfigFileName);
-            JSONObject notificationJSON = FileUtil.readConfigFile(noticePath);
-			/*
-			 * 版本迭代的问题：
-			 * 1. 动态添加新字段
-			 * 2. 不可影响已存在字段存放的数据
-			 */
-            if (!notificationJSON.has("app")) {
-                notificationJSON.put("app", -1);
-            }
-            if (!notificationJSON.has(URLs.kTabKpi)) {
-                notificationJSON.put(URLs.kTabKpi, -1);
-            }
-            if (!notificationJSON.has("tab_kpi_last")) {
-                notificationJSON.put("tab_kpi_last", -1);
-            }
-            if (!notificationJSON.has(URLs.kTabAnalyse)) {
-                notificationJSON.put(URLs.kTabAnalyse, -1);
-            }
-            if (!notificationJSON.has("tab_analyse_last")) {
-                notificationJSON.put("tab_analyse_last", -1);
-            }
-            if (!notificationJSON.has(URLs.kTabApp)) {
-                notificationJSON.put(URLs.kTabApp, -1);
-            }
-            if (!notificationJSON.has("tab_app_last")) {
-                notificationJSON.put("tab_app_last", -1);
-            }
-            if (!notificationJSON.has(URLs.kTabMessage)) {
-                notificationJSON.put(URLs.kTabMessage, -1);
-            }
-            if (!notificationJSON.has("tab_message_last")) {
-                notificationJSON.put("tab_message_last", -1);
-            }
-            if (!notificationJSON.has(URLs.kSetting)) {
-                notificationJSON.put(URLs.kSetting, -1);
-            }
-            if (!notificationJSON.has(URLs.kSettingPgyer)) {
-                notificationJSON.put(URLs.kSettingPgyer, -1);
-            }
-            if (!notificationJSON.has(URLs.kSettingPassword)) {
-                notificationJSON.put(URLs.kSettingPassword, -1);
-            }
-            if (!notificationJSON.has(URLs.kSettingThursdaySay)) {
-                notificationJSON.put(URLs.kSettingThursdaySay, -1);
-            }
-            if (!notificationJSON.has("setting_thursday_say_last")) {
-                notificationJSON.put("setting_thursday_say_last", -1);
-            }
-
-            FileUtil.writeFile(noticePath, notificationJSON.toString());
-        } catch (JSONException | IOException e) {
-            e.printStackTrace();
-        }
+    /*
+     * 检查设备是否存在SDCard的工具方法
+     */
+    public static boolean hasSdcard() {
+        String state = Environment.getExternalStorageState();
+        return state.equals(Environment.MEDIA_MOUNTED);
     }
 
     //以下代码，原本uri返回的是file:///...，由于android4.4返回的是content:///... 需要转化格式
@@ -660,15 +608,13 @@ public class FileUtil {
                     return Environment.getExternalStorageDirectory() + "/" + split[1];
                 }
 
-            }
-            else if (isDownloadsDocument(uri)) {
+            } else if (isDownloadsDocument(uri)) {
                 final String id = DocumentsContract.getDocumentId(uri);
                 final Uri contentUri = ContentUris.withAppendedId(
                         Uri.parse("content://downloads/public_downloads"), Long.valueOf(id));
 
                 return getDataColumn(context, contentUri, null, null);
-            }
-            else if (isMediaDocument(uri)) {
+            } else if (isMediaDocument(uri)) {
                 final String docId = DocumentsContract.getDocumentId(uri);
                 final String[] split = docId.split(":");
                 final String type = split[0];
@@ -683,20 +629,18 @@ public class FileUtil {
                 }
 
                 final String selection = "_id=?";
-                final String[] selectionArgs = new String[] {
+                final String[] selectionArgs = new String[]{
                         split[1]
                 };
 
                 return getDataColumn(context, contentUri, selection, selectionArgs);
             }
-        }
-        else if ("content".equalsIgnoreCase(uri.getScheme())) {
+        } else if ("content".equalsIgnoreCase(uri.getScheme())) {
             if (isGooglePhotosUri(uri))
                 return uri.getLastPathSegment();
 
             return getDataColumn(context, uri, null, null);
-        }
-        else if ("file".equalsIgnoreCase(uri.getScheme())) {
+        } else if ("file".equalsIgnoreCase(uri.getScheme())) {
             return uri.getPath();
         }
 
@@ -740,5 +684,91 @@ public class FileUtil {
 
     public static boolean isGooglePhotosUri(Uri uri) {
         return "com.google.android.apps.photos.content".equals(uri.getAuthority());
+    }
+
+    public static class CacheCleanAsync extends AsyncTask<String, Integer, String> {
+        Context ctx;
+        String type;
+
+        public CacheCleanAsync(Context ctx, String type) {
+            this.ctx = ctx;
+            this.type = type;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            if (type.equals("new-install")) {
+                CacheCleanManager.cleanFiles(ctx);
+            }
+            else {
+                String sharedPath = FileUtil.sharedPath(ctx);
+                String userSpace = FileUtil.userspace(ctx);
+                CacheCleanManager.cleanCustomCache(sharedPath);
+                CacheCleanManager.cleanCustomCache(userSpace);
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            String sharedPath = FileUtil.sharedPath(ctx);
+
+            /*
+             *  基本目录结构
+             */
+            makeSureFolder(ctx, K.kSharedDirName);
+            makeSureFolder(ctx, K.kCachedDirName);
+
+            /*
+             *  新安装、或升级后，把代码包中的静态资源重新拷贝覆盖一下
+             *  避免再从服务器下载更新，浪费用户流量
+             */
+            copyAssetFiles(ctx, sharedPath);
+
+            /*
+             *  校正静态资源
+             *
+             *  sharedPath/filename.zip md5 值 <=> user.plist 中 filename_md5
+             *  不一致时，则删除原解压后文件夹，重新解压 zip
+             */
+            FileUtil.checkAssets(ctx, URLs.kAssets, false);
+            FileUtil.checkAssets(ctx, URLs.kLoading, false);
+            FileUtil.checkAssets(ctx, URLs.kFonts, true);
+            FileUtil.checkAssets(ctx, URLs.kImages, true);
+            FileUtil.checkAssets(ctx, URLs.kIcons, true);
+            FileUtil.checkAssets(ctx, URLs.kStylesheets, true);
+            FileUtil.checkAssets(ctx, URLs.kJavaScripts, true);
+            FileUtil.checkAssets(ctx, URLs.kBarCodeScan, false);
+            // FileUtil.checkAssets(mContext, URLs.kAdvertisement, false);
+        }
+    }
+
+    /**
+     * 新安装、或升级后，把代码包中的静态资源重新拷贝覆盖一下
+     * 避免再从服务器下载更新，浪费用户流量
+     */
+    public static void copyAssetFiles(Context ctx, String sharedPath) {
+        String assetZipPath;
+        File assetZipFile;
+        String[] assetsName = {URLs.kAssets, URLs.kLoading, URLs.kFonts, URLs.kImages, URLs.kIcons, URLs.kStylesheets, URLs.kJavaScripts, URLs.kBarCodeScan}; // ,URLs.kAdvertisement
+
+        for (String string : assetsName) {
+            assetZipPath = String.format("%s/%s.zip", sharedPath, string);
+            assetZipFile = new File(assetZipPath);
+            if (!assetZipFile.exists()) {
+                assetZipFile.delete();
+            }
+            FileUtil.copyAssetFile(ctx, String.format("%s.zip", string), assetZipPath);
+        }
+    }
+
+    public static void makeSureFolder(Context ctx, String folderName) {
+        String cachedPath = String.format("%s/%s", FileUtil.basePath(ctx), folderName);
+        FileUtil.makeSureFolderExist(cachedPath);
     }
 }

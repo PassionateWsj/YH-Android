@@ -18,7 +18,9 @@ public class K extends PrivateURLs implements Serializable {
    *  API#paths
    */
   public final static String kUserAuthenticateAPIPath = "%s/api/v1/%s/%s/%s/authentication";
+  public final static String kUserForgetAPIPath       = "%s/api/v1/:platform/reset_password";
   public final static String kReportDataAPIPath       = "%s/api/v1/group/%s/template/%s/report/%s/zip";
+  public final static String kReportJsonDataAPIPath   = "%s/api/v1/group/%s/template/%s/report/%s/jzip";
   public final static String kCommentAPIPath          = "%s/api/v1/user/%d/id/%d/type/%d";
   public final static String kScreenLockAPIPath       = "%s/api/v1/user_device/%s/screen_lock";
   public final static String kDeviceStateAPIPath      = "%s/api/v1/user_device/%d/state";
@@ -26,19 +28,40 @@ public class K extends PrivateURLs implements Serializable {
   public final static String kActionLogAPIPath        = "%s/api/v1/android/logger";
   public final static String kPushDeviceTokenAPIPath  = "%s/api/v1/device/%s/push_token/%s";
   public final static String kBarCodeScanAPIPath      = "%s/api/v1/group/%s/role/%s/user/%s/store/%s/barcode_scan?code_info=%s&code_type=%s";
+  public final static String kBarCodeScanAPIViewPath  = "%s/mobile/v2/store/%s/barcode/%s/view";
+  public final static String kBarCodeScanAPIDataPath  = "%s/mobile/v2/store/%s/barcode/%s/attachment";
   public final static String kDownloadAssetsAPIPath   = "%s/api/v1/download/%s.zip";
   public final static String kUploadGravatarAPIPath   = "%s/api/v1/device/%s/upload/user/%s/gravatar";
+  public final static String kDeviceTokenAPIPath      = "%s/api/v1/user/%s/devices";
+  public final static String kDeleteDeviceIdAPIPath   = "%s/api/v1/android/%s/logout";
 
   /**
    *  Mobile#View Path
    */
   public final static String kKPIMobilePath            = "%s/mobile/%s/group/%s/role/%s/kpi";
+  public final static String kKPIMobileDataPath        = "%s/mobile/%s/data/group/%s/role/%s/kpi";
+  public final static String kKPIApiDataPath           = "%s/api/v1/group/%s/role/%s/kpi";
+  public final static String kMessageDataMobilePath    = "%s/api/v1/role/%s/group/%s/user/%s/message";
   public final static String kMessageMobilePath        = "%s/mobile/%s/role/%s/group/%s/user/%s/message";
   public final static String kAppMobilePath            = "%s/mobile/%s/role/%s/app";
   public final static String kAnalyseMobilePath        = "%s/mobile/%s/role/%s/analyse";
   public final static String kCommentMobilePath        = "%s/mobile/%s/id/%s/type/%s/comment";
   public final static String kResetPwdMobilePath       = "%s/mobile/%s/update_user_password";
   public final static String kThursdaySayMobilePath    = "%s/mobile/%s/thursday_say";
+  public final static String kForgetPwdMobilePath      = "%s/mobile/%s/forget_user_password";
+
+  /**
+   * MinePage#API
+   */
+  public final static String KUserInfoPath             = "%s/api/v1/user/%s/group/%s/role/%s/statistics";
+  public final static String kNoticeListPath           = "%s/api/v1/user/%s/notices?type=%s&page=%s&limit=%s";
+  public final static String kNoticeContentPath        = "%s/api/v1/user/%s/notice/%s";
+  public final static String kIssueListPath            = "%s/api/v1/user/%s/page/%s/limit/%s/problems";
+  public final static String kIssueContentPath         = "%s/api/v1/user/%s/problem/%s";
+  public final static String KAppListPath              = "%s/api/v1/group/%s/role/%s/apps";
+  public final static String KReportsListPath          = "%s/api/v1/group/%s/role/%s/analyses";
+  public final static String KInstituteListPath        = "%s/api/v1/user/%s/page/%s/limit/%s/articles?keyword=%s";
+  public final static String KInstituteCollectionPath  = "%s/api/v1/user/%s/article/%s/favourite_status/%s";
 
   /**
    *  Config#Application
@@ -70,6 +93,8 @@ public class K extends PrivateURLs implements Serializable {
   public final static String kAppVersion = "app_version";
   public final static String kFontsMd5 = "fonts_md5";
   public final static String kImagesMd5 = "images_md5";
+  public final static String kAssetsMd5 = "assets_md5";
+  public final static String kIconsMd5 = "icons_md5";
   public final static String kStylesheetsMd5 = "stylesheets_md5";
   public final static String kJavaScriptsMd5 = "javascripts_md5";
   public final static String kInfo = "info";
@@ -77,6 +102,7 @@ public class K extends PrivateURLs implements Serializable {
   public final static String kUserId = "user_id";
   public final static String kUserName = "user_name";
   public final static String kUserDeviceId = "user_device_id";
+  public final static String kCurrentUIVersion = "current_ui_version";
 
   /**
    * Config#Push Message
@@ -90,5 +116,5 @@ public class K extends PrivateURLs implements Serializable {
    * Config#User Device Info
    */
   public final static int kMinSdkVersion = 14;
-  public final static int kMaxSdkVersion = 23;
+  public final static int kMaxSdkVersion = 25;
 }

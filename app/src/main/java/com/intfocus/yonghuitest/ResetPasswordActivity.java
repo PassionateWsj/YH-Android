@@ -5,12 +5,15 @@ import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.webkit.JavascriptInterface;
+import android.webkit.WebView;
 import android.widget.Toast;
 
-import com.handmark.pulltorefresh.library.PullToRefreshWebView;
+import com.intfocus.yonghuitest.base.BaseActivity;
+import com.intfocus.yonghuitest.login.LoginActivity;
 import com.intfocus.yonghuitest.util.ApiHelper;
 import com.intfocus.yonghuitest.util.K;
 import com.intfocus.yonghuitest.util.URLs;
@@ -25,6 +28,9 @@ import java.util.Map;
  */
 public class ResetPasswordActivity extends BaseActivity {
 
+    private int loadCount = 0;
+    private SharedPreferences mSharedPreferences;
+
     @Override
     @SuppressLint("SetJavaScriptEnabled")
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,9 +38,8 @@ public class ResetPasswordActivity extends BaseActivity {
         setContentView(R.layout.activity_reset_password);
         mMyApp.setCurrentActivity(this);
 
-        pullToRefreshWebView = (PullToRefreshWebView) findViewById(R.id.browser);
-        initPullWebView();
-        setPullToRefreshWebView(false);
+        mWebView = (WebView) findViewById(R.id.browser);
+        initSubWebView();
 
         mWebView.requestFocus();
         mWebView.addJavascriptInterface(new JavaScriptInterface(), URLs.kJSInterfaceName);
@@ -78,14 +83,11 @@ public class ResetPasswordActivity extends BaseActivity {
                                 new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        try {
-                                            JSONObject configJSON = new JSONObject();
-                                            configJSON.put("is_login", false);
+                                        modifiedUserConfig(false);
 
-                                            modifiedUserConfig(configJSON);
-                                        } catch (JSONException e) {
-                                            e.printStackTrace();
-                                        }
+                                        SharedPreferences.Editor mEditor = mSharedPreferences.edit();
+                                        mEditor.putBoolean("ScreenLock", false);
+                                        mEditor.commit();
 
                                         Intent intent = new Intent();
                                         intent.setClass(ResetPasswordActivity.this, LoginActivity.class);
@@ -140,6 +142,12 @@ public class ResetPasswordActivity extends BaseActivity {
                 logParams.put(URLs.kAction, "JS异常");
                 logParams.put(URLs.kObjTitle, String.format("重置密码页面/%s", ex));
                 new Thread(mRunnableForLogger).start();
+
+                //点击两次还是有异常 异常报出
+                if (loadCount < 2) {
+                    showWebViewExceptionForWithoutNetwork();
+                    loadCount++;
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }

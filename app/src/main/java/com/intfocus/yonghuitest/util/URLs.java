@@ -26,9 +26,10 @@ public class URLs implements Serializable {
     public final static String kJSInterfaceName          = "AndroidJSBridge";
 
     public final static String kAssets                   = "assets";
-    public final static String kLoding                   = "loading";
+    public final static String kLoading                  = "loading";
     public final static String kFonts                    = "fonts";
     public final static String kImages                   = "images";
+    public final static String kIcons                   = "icons";
     public final static String kStylesheets              = "stylesheets";
     public final static String kJavaScripts              = "javascripts";
     public final static String kBarCodeScan              = "BarCodeScan";
@@ -36,6 +37,8 @@ public class URLs implements Serializable {
 
     public final static String kAction                   = "action";
     public final static String kPassword                 = "password";
+    public final static String kLoginState               = "login_state";
+    public final static String kPlatform                 = "platform";
     public final static String kSettingThursdaySay       = "setting_thursday_say";
     public final static String kRoleId                   = "role_id";
     public final static String kGroupId                  = "group_id";
@@ -52,6 +55,9 @@ public class URLs implements Serializable {
     public final static String kObjType                  = "obj_type";
     public final static String kLink                     = "link";
     public final static String kUserNum                  = "user_num";
+    public final static String kUserName                 = "user_name";
+    public final static String kRoleName                 = "role_name";
+    public final static String kGroupName                = "group_name";
     public final static String kStore                    = "store";
     public final static String kStoreIds                 = "store_ids";
     public final static String kName                     = "name";
