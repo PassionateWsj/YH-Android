@@ -71,13 +71,13 @@ case "$1" in
     bundle exec ruby config/app_keeper.rb --app="$1" --gradle --mipmap --manifest --res --java
   ;;
   yh_android)
-    downloadurl="https://yonghui.idata.mobi"
+    downloadurl="http://yonghui.idata.mobi"
     filedirname="yh_android"
     download_assets
     bundle exec ruby config/app_keeper.rb --app="$1" --gradle --mipmap --manifest --res --java
   ;;
   yonghuitest)
-    downloadurl="https://development.shengyiplus.com"
+    downloadurl="http://yonghui-test.idata.mobi"
     filedirname="yonghuitest"
     download_assets
     bundle exec ruby config/app_keeper.rb --app="$1" --gradle --mipmap --manifest --res --java
@@ -89,11 +89,11 @@ case "$1" in
     bundle exec ruby config/app_keeper.rb --github
   ;;
   updata:yhtest)
-    downloadurl="https://development.shengyiplus.com"
+    downloadurl="http://yonghui-test.idata.mobi"
     download_assets
     ;;
   updata:yh)
-    downloadurl="https://yonghui.idata.mobi"
+    downloadurl="http://yonghui.idata.mobi"
     download_assets
     ;;
   view)

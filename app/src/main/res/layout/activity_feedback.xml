@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/co8_syr"
     android:orientation="vertical"
-    tools:context="com.intfocus.yonghuitest.dashboard.mine.FeedbackActivity">
+    tools:context="com.intfocus.yh_android.dashboard.mine.FeedbackActivity">
 
     <RelativeLayout
         android:id="@+id/rl_feedback_actionBar"
