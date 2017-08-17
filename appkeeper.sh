@@ -82,6 +82,12 @@ case "$1" in
     download_assets
     bundle exec ruby config/app_keeper.rb --app="$1" --gradle --mipmap --manifest --res --java
   ;;
+  yhdev)
+    downloadurl="http://yonghui-dev.idata.mobi"
+    filedirname="yhdev"
+    download_assets
+    bundle exec ruby config/app_keeper.rb --app="$1" --gradle --mipmap --manifest --res --java
+  ;;
   pgyer)
     bundle exec ruby config/app_keeper.rb --app="$(cat .current-app)" --apk --pgyer
   ;;

@@ -47,7 +47,7 @@
                     android:layout_weight="0"
                     android:paddingRight="@dimen/space_default_small_s" />
 
-                <com.intfocus.yh_android.view.RateCursor
+                <com.intfocus.yonghuitest.view.RateCursor
                     android:id="@+id/img_RateCursor"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
