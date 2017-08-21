@@ -1,7 +1,6 @@
 package com.intfocus.yhdev.dashboard
 
 import android.Manifest
-import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
@@ -29,16 +28,11 @@ import com.intfocus.yhdev.net.ApiException
 import com.intfocus.yhdev.net.CodeHandledSubscriber
 import com.intfocus.yhdev.net.RetrofitUtil
 import com.intfocus.yhdev.scanner.BarCodeScannerActivity
-import com.intfocus.yhdev.subject.HomeTricsActivity
-import com.intfocus.yhdev.subject.SubjectActivity
-import com.intfocus.yhdev.subject.TableActivity
-import com.intfocus.yhdev.subject.WebApplicationActivity
+import com.intfocus.yhdev.subject.*
 import com.intfocus.yhdev.subject.template_v2.ModularTwo_Mode_Activity
 import com.intfocus.yhdev.util.*
 import com.intfocus.yhdev.view.NoScrollViewPager
 import com.intfocus.yhdev.view.TabView
-import com.pgyersdk.update.PgyUpdateManager
-import com.pgyersdk.update.UpdateManagerListener
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -48,7 +42,6 @@ import rx.Observable
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
 import sumimakito.android.advtextswitcher.AdvTextSwitcher
-import java.io.IOException
 import java.sql.SQLException
 
 class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, AdvTextSwitcher.Callback {
@@ -419,6 +412,15 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
                     intent.putExtra("groupID", groupID)
                     intent.putExtra("reportID", reportID)
                     intent.putExtra("urlString", urlString)
+                    startActivity(intent)
+                }
+                "6" -> {
+                    val intent = Intent(this, WebApplicationActivityV6::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+                    intent.putExtra(URLs.kBannerName, objTitle)
+                    intent.putExtra(URLs.kLink, link)
+                    intent.putExtra(URLs.kObjectId, objectId)
+                    intent.putExtra(URLs.kObjectType, objectType)
                     startActivity(intent)
                 }
                 "-1" -> {
