@@ -46,7 +46,7 @@ class ReportsRightGVAdapter(var ctx: Context, var datas: List<GroupDataBean>?) :
                 convertView.layoutParams = laryoutParams
             else
                 convertView.layoutParams.height = DisplayUtil.dip2px(ctx, 100f)
-                convertView.layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT
+            convertView.layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT
 
         } else {
             viewTag = convertView.tag as ItemViewTag
@@ -55,7 +55,8 @@ class ReportsRightGVAdapter(var ctx: Context, var datas: List<GroupDataBean>?) :
         x.image().bind(viewTag.mIcon, datas!![position].icon_link)
 
         viewTag.llItem.setOnClickListener {
-            EventBus.getDefault().post(DashboardItemBean(datas!![position].link_path!!, datas!![position].name!!,datas!![position].id, 2))
+            EventBus.getDefault().post(DashboardItemBean(datas!![position].obj_link!!, datas!![position].obj_title!!,
+                    datas!![position].obj_id!!, datas!![position].template_id!!, 2))
         }
         return convertView
     }

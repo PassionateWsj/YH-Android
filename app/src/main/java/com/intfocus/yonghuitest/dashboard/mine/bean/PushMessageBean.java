@@ -32,13 +32,13 @@ public class PushMessageBean implements Serializable {
     @DatabaseField(columnName = "_id", generatedId = true)
     private Long _id;
 
-    @DatabaseField(columnName = "type", dataType = DataType.STRING,defaultValue = "")
+    @DatabaseField(columnName = "type", dataType = DataType.STRING, defaultValue = "")
     private String type;
 
-    @DatabaseField(columnName = "title", dataType = DataType.STRING,defaultValue = "")
+    @DatabaseField(columnName = "title", dataType = DataType.STRING, defaultValue = "")
     private String title;
 
-    @DatabaseField(columnName = "url", dataType = DataType.STRING,defaultValue = "")
+    @DatabaseField(columnName = "url", dataType = DataType.STRING, defaultValue = "")
     private String url;
 
     @DatabaseField(columnName = "obj_id", dataType = DataType.INTEGER)
@@ -47,26 +47,27 @@ public class PushMessageBean implements Serializable {
     @DatabaseField(columnName = "obj_type", dataType = DataType.INTEGER)
     private int obj_type;
 
-    @DatabaseField(columnName = "debug_timestamp", dataType = DataType.STRING,defaultValue = "")
+    @DatabaseField(columnName = "debug_timestamp", dataType = DataType.STRING, defaultValue = "")
     private String debug_timestamp;
 
-    @DatabaseField(columnName = "body_title", dataType = DataType.STRING,defaultValue = "")
+    @DatabaseField(columnName = "body_title", dataType = DataType.STRING, defaultValue = "")
     private String body_title;
 
-    @DatabaseField(columnName = "body_text", dataType = DataType.STRING,defaultValue = "")
+    @DatabaseField(columnName = "body_text", dataType = DataType.STRING, defaultValue = "")
     private String body_text;
 
-    @DatabaseField(columnName = "new_msg", dataType = DataType.BOOLEAN,defaultValue = "true")
+    @DatabaseField(columnName = "new_msg", dataType = DataType.BOOLEAN, defaultValue = "true")
     private boolean new_msg;
 
-    @DatabaseField(columnName = "user_id",dataType = DataType.INTEGER)
+    @DatabaseField(columnName = "user_id", dataType = DataType.INTEGER)
     private int user_id;
 
     //TODO 注意,必须要有无参数的构造方法。。。
     public PushMessageBean() {
     }
 
-    public PushMessageBean(String type, String title, String url, int obj_id, int obj_type, String debug_timestamp, String body_title, String body_text, boolean new_msg) {
+    public PushMessageBean(String type, String title, String url, int obj_id, int obj_type,
+                           String debug_timestamp, String body_title, String body_text, boolean new_msg) {
         this.type = type;
         this.title = title;
         this.url = url;

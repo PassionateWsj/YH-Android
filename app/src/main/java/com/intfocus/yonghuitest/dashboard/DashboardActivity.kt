@@ -132,9 +132,8 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
 
         // RxBus通知消息界面 ShowPushMessageActivity 更新数据
         RxBusUtil.getInstance().post("UpDatePushMessage")
-
         when (pushMessage.type) {
-            "report" -> pageLink(pushMessage.title + "", pushMessage.url + "", pushMessage.obj_id, 1)
+            "report" -> pageLink(pushMessage.title + "", pushMessage.url, pushMessage.obj_id, "-1", 1)
             "analyse" -> {
                 mViewPager!!.currentItem = PAGE_REPORTS
                 mTabView!![mViewPager!!.currentItem].setActive(true)
@@ -338,11 +337,12 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onMessageEvent(items: DashboardItemBean?) {
         if (items != null) {
-            val link = items.link
-            val bannerName = items.bannerName + ""
+            val link = items.obj_link
+            val bannerName = items.obj_title
+            val objectId = items.obj_id
+            val templateId = items.template_id
             val objectType = items.objectType
-            val objectId = items.objectId
-            pageLink(bannerName, link, objectType, objectId)
+            pageLink(bannerName, link, objectId.toInt(), templateId, objectType)
         } else {
             ToastUtils.show(this, "没有指定链接")
         }
@@ -351,99 +351,100 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
     /*
      * 页面跳转事件
      */
-    fun pageLink(mBannerName: String, link: String, objectType: Int, objectId: Int) {
-        if (link.indexOf("template") > 0 && link.indexOf("group") > 0) {
-            try {
-                val groupID = getSharedPreferences("UserBean", Context.MODE_PRIVATE).getString(URLs.kGroupId, "0")
-                val reportID = TextUtils.split(link, "report/")[1].split("/")[0]
-                var urlString: String
-                val intent: Intent
-
-                when {
-                    link.indexOf("template/2") > 0 -> {
-                        intent = Intent(this, SubjectActivity::class.java)
-                        intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-                        intent.putExtra(URLs.kBannerName, mBannerName)
-                        intent.putExtra(URLs.kLink, link)
-                        intent.putExtra(URLs.kObjectId, objectId)
-                        intent.putExtra(URLs.kObjectType, objectType)
-                        intent.putExtra("groupID", groupID)
-                        intent.putExtra("reportID", reportID)
-                        startActivity(intent)
-                    }
-                    link.indexOf("template/4") > 0 -> {
-                        intent = Intent(this, SubjectActivity::class.java)
-                        intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-                        intent.putExtra(URLs.kBannerName, mBannerName)
-                        intent.putExtra(URLs.kLink, link)
-                        intent.putExtra(URLs.kObjectId, objectId)
-                        intent.putExtra(URLs.kObjectType, objectType)
-                        intent.putExtra("groupID", groupID)
-                        intent.putExtra("reportID", reportID)
-                        startActivity(intent)
-                    }
-                    link.indexOf("template/3") > 0 -> {
-                        intent = Intent(this, HomeTricsActivity::class.java)
-                        urlString = String.format("%s/api/v1/group/%s/template/%s/report/%s/json",
-                                K.kBaseUrl, groupID, "3", reportID)
-                        intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-                        intent.putExtra(URLs.kBannerName, mBannerName)
-                        intent.putExtra(URLs.kObjectId, objectId)
-                        intent.putExtra(URLs.kObjectType, objectType)
-                        intent.putExtra("groupID", groupID)
-                        intent.putExtra("reportID", reportID)
-                        intent.putExtra("urlString", urlString)
-                        startActivity(intent)
-                    }
-                    link.indexOf("template/5") > 0 -> {
-                        intent = Intent(this, TableActivity::class.java)
-                        urlString = String.format("%s/api/v1/group/%s/template/%s/report/%s/json",
-                                K.kBaseUrl, groupID, "5", reportID)
-                        intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-                        intent.putExtra(URLs.kBannerName, mBannerName)
-                        intent.putExtra(URLs.kObjectId, objectId)
-                        intent.putExtra(URLs.kObjectType, objectType)
-                        intent.putExtra("groupID", groupID)
-                        intent.putExtra("reportID", reportID)
-                        intent.putExtra("urlString", urlString)
-                        startActivity(intent)
-                    }
-                    link.indexOf("template/1") > 0 -> {
-                        val intent = Intent(this, ModularTwo_Mode_Activity::class.java)
-                        intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-                        intent.putExtra(URLs.kBannerName, mBannerName)
-                        intent.putExtra(URLs.kObjectId, objectId)
-                        intent.putExtra(URLs.kObjectType, objectType)
-                        intent.putExtra("groupID", groupID)
-                        intent.putExtra("reportID", reportID)
-                        intent.putExtra(URLs.kLink, link)
-                        startActivity(intent)
-                    }
-                    else -> showTemplateErrorDialog()
-                }
-            } catch (e: JSONException) {
-                e.printStackTrace()
+    fun pageLink(mBannerName: String, link: String, objectId: Int, templateId: String, objectType: Int) {
+        try {
+            val groupID = getSharedPreferences("UserBean", Context.MODE_PRIVATE).getString(URLs.kGroupId, "0")
+            var reportID: String = ""
+            if (link.contains("report")) {
+                reportID = TextUtils.split(link, "report/")[1].split("/")[0]
             }
+            var urlString: String
+            val intent: Intent
 
-            var logParams = JSONObject()
-            logParams.put(URLs.kAction, "点击/" + objectTypeName[objectType - 1] + "/报表")
-            logParams.put(URLs.kObjTitle, mBannerName)
-            ActionLogUtil.actionLog(mAppContext, logParams)
-        } else {
-            val intent = Intent(this, WebApplicationActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-            intent.putExtra(URLs.kBannerName, mBannerName)
-            intent.putExtra(URLs.kLink, link)
-            intent.putExtra(URLs.kObjectId, objectId)
-            intent.putExtra(URLs.kObjectType, objectType)
-            startActivity(intent)
-
-            var logParams = JSONObject()
-            logParams.put(URLs.kAction, "点击/" + objectTypeName[objectType - 1] + "/链接")
-            logParams.put(URLs.kObjTitle, mBannerName)
-            ActionLogUtil.actionLog(mAppContext, logParams)
+            when (templateId) {
+                "1" -> {
+                    val intent = Intent(this, ModularTwo_Mode_Activity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+                    intent.putExtra(URLs.kBannerName, mBannerName)
+                    intent.putExtra(URLs.kObjectId, objectId)
+                    intent.putExtra(URLs.kObjectType, objectType)
+                    intent.putExtra("groupID", groupID)
+                    intent.putExtra("reportID", reportID)
+                    intent.putExtra(URLs.kLink, link)
+                    startActivity(intent)
+                }
+                "2" -> {
+                    intent = Intent(this, SubjectActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+                    intent.putExtra(URLs.kBannerName, mBannerName)
+                    intent.putExtra(URLs.kLink, link)
+                    intent.putExtra(URLs.kObjectId, objectId)
+                    intent.putExtra(URLs.kObjectType, objectType)
+                    intent.putExtra("groupID", groupID)
+                    intent.putExtra("reportID", reportID)
+                    startActivity(intent)
+                }
+                "3" -> {
+                    intent = Intent(this, HomeTricsActivity::class.java)
+                    urlString = String.format("%s/api/v1/group/%s/template/%s/report/%s/json",
+                            K.kBaseUrl, groupID, "3", reportID)
+                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+                    intent.putExtra(URLs.kBannerName, mBannerName)
+                    intent.putExtra(URLs.kObjectId, objectId)
+                    intent.putExtra(URLs.kObjectType, objectType)
+                    intent.putExtra("groupID", groupID)
+                    intent.putExtra("reportID", reportID)
+                    intent.putExtra("urlString", urlString)
+                    startActivity(intent)
+                }
+                "4" -> {
+                    intent = Intent(this, SubjectActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+                    intent.putExtra(URLs.kBannerName, mBannerName)
+                    intent.putExtra(URLs.kLink, link)
+                    intent.putExtra(URLs.kObjectId, objectId)
+                    intent.putExtra(URLs.kObjectType, objectType)
+                    intent.putExtra("groupID", groupID)
+                    intent.putExtra("reportID", reportID)
+                    startActivity(intent)
+                }
+                "5" -> {
+                    intent = Intent(this, TableActivity::class.java)
+                    urlString = String.format("%s/api/v1/group/%s/template/%s/report/%s/json",
+                            K.kBaseUrl, groupID, "5", reportID)
+                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+                    intent.putExtra(URLs.kBannerName, mBannerName)
+                    intent.putExtra(URLs.kObjectId, objectId)
+                    intent.putExtra(URLs.kObjectType, objectType)
+                    intent.putExtra("groupID", groupID)
+                    intent.putExtra("reportID", reportID)
+                    intent.putExtra("urlString", urlString)
+                    startActivity(intent)
+                }
+                "-1" -> {
+                    val intent = Intent(this, WebApplicationActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+                    intent.putExtra(URLs.kBannerName, mBannerName)
+                    intent.putExtra(URLs.kLink, link)
+                    intent.putExtra(URLs.kObjectId, objectId)
+                    intent.putExtra(URLs.kObjectType, objectType)
+                    startActivity(intent)
+                }
+                else -> showTemplateErrorDialog()
+            }
+        } catch (e: JSONException) {
+            e.printStackTrace()
         }
+
+        var logParams = JSONObject()
+        if ("-1".equals(templateId))
+            logParams.put(URLs.kAction, "点击/" + objectTypeName[objectType - 1] + "/链接")
+        else
+            logParams.put(URLs.kAction, "点击/" + objectTypeName[objectType - 1] + "/报表")
+        logParams.put(URLs.kObjTitle, mBannerName)
+        ActionLogUtil.actionLog(mAppContext, logParams)
     }
+
 
     internal fun showTemplateErrorDialog() {
         val builder = AlertDialog.Builder(this)
