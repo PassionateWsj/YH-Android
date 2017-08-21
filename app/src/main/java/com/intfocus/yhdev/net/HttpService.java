@@ -324,4 +324,16 @@ public interface HttpService {
      */
     @POST(K.KNewResetPwd)
     Observable<BaseResult> resetPwd(@Query("user_num") String userNum, @Query("mobile") String mobile);
+
+    /**
+     * 用户信息
+     *
+     * GET
+     * /api/v1.1/my/statistics
+     *
+     * user_num
+     */
+    @GET(K.KNewChoiceMenu)
+    Observable<MenuResult> getChoiceMenus(@Query("params") String params);
+
 }

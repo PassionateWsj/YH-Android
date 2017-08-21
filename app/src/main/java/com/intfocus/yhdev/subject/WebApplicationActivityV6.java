@@ -46,8 +46,13 @@ import com.intfocus.yhdev.CommentActivity;
 import com.intfocus.yhdev.R;
 import com.intfocus.yhdev.base.BaseActivity;
 import com.intfocus.yhdev.dashboard.mine.adapter.FilterMenuAdapter;
+import com.intfocus.yhdev.data.response.filter.Menu;
 import com.intfocus.yhdev.data.response.filter.MenuItem;
+import com.intfocus.yhdev.data.response.filter.MenuResult;
 import com.intfocus.yhdev.filter.MyFilterDialogFragment;
+import com.intfocus.yhdev.net.ApiException;
+import com.intfocus.yhdev.net.CodeHandledSubscriber;
+import com.intfocus.yhdev.net.RetrofitUtil;
 import com.intfocus.yhdev.subject.selecttree.SelectItems;
 import com.intfocus.yhdev.util.ActionLogUtil;
 import com.intfocus.yhdev.util.ApiHelper;
@@ -235,24 +240,21 @@ public class WebApplicationActivityV6 extends BaseActivity implements OnPageChan
                     }
                 }
                 //是否有筛选数据，有就显示出来
-//                if (locationDatas != null && locationDatas.size() > 0) {
-//                    rlAddressFilter.setVisibility(View.VISIBLE);
-//                    LogUtil.d("location", locationDatas.size() + "");
-//                } else {
-//                    rlAddressFilter.setVisibility(View.GONE);
-//                }
-//                if (menuDatas != null && menuDatas.size() > 0) {
-//                    LogUtil.d("faster_select", menuDatas.size() + "");
-//                    filterRecyclerView.setVisibility(View.VISIBLE);
-//                    viewLine.setVisibility(View.VISIBLE);
-//                    menuAdpter.setData(menuDatas);
-//                } else {
-//                    filterRecyclerView.setVisibility(View.GONE);
-//                    viewLine.setVisibility(View.GONE);
-//                }
-                rlAddressFilter.setVisibility(View.VISIBLE);
-//                filterRecyclerView.setVisibility(View.VISIBLE);
-//                viewLine.setVisibility(View.VISIBLE);
+                if (locationDatas != null && locationDatas.size() > 0) {
+                    rlAddressFilter.setVisibility(View.VISIBLE);
+                    LogUtil.d("location", locationDatas.size() + "");
+                } else {
+                    rlAddressFilter.setVisibility(View.GONE);
+                }
+                if (menuDatas != null && menuDatas.size() > 0) {
+                    LogUtil.d("faster_select", menuDatas.size() + "");
+                    filterRecyclerView.setVisibility(View.VISIBLE);
+                    viewLine.setVisibility(View.VISIBLE);
+                    menuAdpter.setData(menuDatas);
+                } else {
+                    filterRecyclerView.setVisibility(View.GONE);
+                    viewLine.setVisibility(View.GONE);
+                }
             }
 
             public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
@@ -1109,25 +1111,59 @@ public class WebApplicationActivityV6 extends BaseActivity implements OnPageChan
         @JavascriptInterface
         public void callRealTimeReportMenu(final String params) {
             LogUtil.d("hjjzz", "params:::" + params);
-//            if (!TextUtils.isEmpty(params)) {
-//                MenuResult msg = new Gson().fromJson(params, MenuResult.class);
-//                if (msg != null && msg.getData() != null && msg.getData().size() > 0) {
-//                    for (Menu menu : msg.getData()) {
-//                        igit f ("location".equals(menu.getType())) {
-//                            locationDatas = menu.getData();
-//                            String selectedItemPath = String.format("%s.selected_item", FileUtil.reportJavaScriptDataPath(WebApplicationActivityV6.this, groupID, templateID, reportID));
-//                            if (!new File(selectedItemPath).exists()) {
-//                                if (locationDatas != null) {
-//                                    tvLocationAddress.setText(menu.getCurrent_location().getDisplay());
-//                                }
-//                            }
-//                        }
-//                        if ("faster_select".equals(menu.getType())) {
-//                            menuDatas = menu.getData();
-//                        }
-//                    }
-//                }
-//            }
+
+            if (!TextUtils.isEmpty(params)) {
+                RetrofitUtil.getHttpService(mContext)
+                        .getChoiceMenus(params)
+                        .compose(new RetrofitUtil.CommonOptions<MenuResult>())
+                        .subscribe(new CodeHandledSubscriber<MenuResult>() {
+                            @Override
+                            public void onError(ApiException apiException) {
+
+                            }
+
+                            @Override
+                            public void onBusinessNext(MenuResult msg) {
+                                if (msg != null && msg.getData() != null && msg.getData().size() > 0) {
+                                    for (Menu menu : msg.getData()) {
+                                        if ("location".equals(menu.getType())) {
+                                            locationDatas = menu.getData();
+                                            String selectedItemPath = String.format("%s.selected_item", FileUtil.reportJavaScriptDataPath(WebApplicationActivityV6.this, groupID, templateID, reportID));
+                                            if (!new File(selectedItemPath).exists()) {
+                                                if (locationDatas != null) {
+                                                    tvLocationAddress.setText(menu.getCurrent_location().getDisplay());
+                                                }
+                                            }
+                                        }
+                                        if ("faster_select".equals(menu.getType())) {
+                                            menuDatas = menu.getData();
+                                        }
+                                    }
+                                }
+                                //是否有筛选数据，有就显示出来
+                                if (locationDatas != null && locationDatas.size() > 0) {
+                                    rlAddressFilter.setVisibility(View.VISIBLE);
+                                    LogUtil.d("location", locationDatas.size() + "");
+                                } else {
+                                    rlAddressFilter.setVisibility(View.GONE);
+                                }
+                                if (menuDatas != null && menuDatas.size() > 0) {
+                                    LogUtil.d("faster_select", menuDatas.size() + "");
+                                    filterRecyclerView.setVisibility(View.VISIBLE);
+                                    viewLine.setVisibility(View.VISIBLE);
+                                    menuAdpter.setData(menuDatas);
+                                } else {
+                                    filterRecyclerView.setVisibility(View.GONE);
+                                    viewLine.setVisibility(View.GONE);
+                                }
+                            }
+
+                            @Override
+                            public void onCompleted() {
+
+                            }
+                        });
+            }
         }
     }
 
