@@ -54,8 +54,6 @@ check_assets() {
 }
 
 download_assets() {
-  check_assets "BarCodeScan"
-  check_assets "advertisement"
   check_assets "assets"
   check_assets "fonts"
   check_assets "images"
