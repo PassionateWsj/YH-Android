@@ -51,7 +51,8 @@ class AppListItemAdapter(var ctx: Context, var datas: List<GroupDataBean>?) : Ba
         viewTag.mName.text = datas!![position].name
         x.image().bind(viewTag.mIcon, datas!![position].icon_link)
         viewTag.llItem.setOnClickListener {
-            EventBus.getDefault().post(DashboardItemBean(datas!![position].link_path!!, datas!![position].link_path!!, datas!![position].id, 3))
+            EventBus.getDefault().post(DashboardItemBean(datas!![position].obj_link!!, datas!![position].obj_title!!,
+                    datas!![position].obj_id!!, datas!![position].template_id!!, 3))
         }
 
         return convertView

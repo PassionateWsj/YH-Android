@@ -3,4 +3,4 @@ package com.intfocus.yonghuitest.bean
 /**
  * Created by liuruilin on 2017/8/1.
  */
-class DashboardItemBean(var link: String, var bannerName: String,var objectId: Int, var objectType: Int)
+class DashboardItemBean(var obj_link: String, var obj_title: String, var obj_id: String, var template_id: String, var objectType: Int)

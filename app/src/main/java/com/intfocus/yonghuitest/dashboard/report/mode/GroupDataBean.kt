@@ -5,30 +5,42 @@ package com.intfocus.yonghuitest.dashboard.report.mode
  */
 class GroupDataBean {
     /**
-     * id : 8
-     * name : 门店赛马结果
-     * group_name : 赛马结果
-     * link_path : http://123.59.75.85:8080/yhportal/appClientReport/horse/horseByShopReport.jsp
-     * publicly : null
-     * icon : icon-3门店赛马结果.png
-     * icon_link : http://yonghui-test.idata.mobi/images/icon-3门店赛马结果.png
-     * group_id : 8
+     * id : 9911
+     * name : 门店巡检
+     * report_title : 门店巡检
+     * category : 测试
+     * group_name : 测试
+     * link_path : http://development.shengyiplus.com/websites/shop-patrol/inspection/default.html
+     * template_id : -1
+     * obj_id : 9911
+     * obj_title : 门店巡检
+     * obj_link : http://development.shengyiplus.com/websites/shop-patrol/inspection/default.html
+     * publicly : 1
+     * icon : icon-default.png
+     * icon_link : http://yonghui-test.idata.mobi/images/icon-default.png
+     * group_id : 9911
      * health_value : 0
-     * group_order : 43
-     * item_order : 1
-     * created_at : 2016-05-18T18:05:00.000+08:00
+     * group_order : null
+     * item_order : null
+     * created_at : 2017-07-14T16:20:30.000+08:00
      */
 
     var id: Int = 0
     var name: String? = null
+    var report_title: String? = null
+    var category: String? = null
     var group_name: String? = null
     var link_path: String? = null
-    var publicly: Any? = null
+    var template_id: String? = null
+    var obj_id: String? = null
+    var obj_title: String? = null
+    var obj_link: String? = null
+    var publicly: Int = 0
     var icon: String? = null
     var icon_link: String? = null
     var group_id: Int = 0
     var health_value: Int = 0
-    var group_order: Int = 0
-    var item_order: Int = 0
+    var group_order: Any? = null
+    var item_order: Any? = null
     var created_at: String? = null
 }

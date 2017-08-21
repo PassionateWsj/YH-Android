@@ -47,16 +47,17 @@ class WorkBoxAdapter(var ctx: Context, var datas: List<WorkBoxItem>?) : BaseAdap
                 convertView.layoutParams = laryoutParams
             else
                 convertView.layoutParams.height = PhoneUtil.getScreenWidth(ctx) / 3
-                convertView.layoutParams.width = PhoneUtil.getScreenWidth(ctx) / 3
+            convertView.layoutParams.width = PhoneUtil.getScreenWidth(ctx) / 3
 
         } else {
-                viewTag = convertView.tag as WorkBoxAdapter.ItemViewTag
+            viewTag = convertView.tag as WorkBoxAdapter.ItemViewTag
         }
 
         viewTag.mName.text = datas!![position].name
         x.image().bind(viewTag.mIcon, datas!![position].icon_link)
         viewTag.rlItem.setOnClickListener {
-            EventBus.getDefault().post(DashboardItemBean(datas!![position].link_path!!, datas!![position].name!!,datas!![position].id, 3))
+            EventBus.getDefault().post(DashboardItemBean(datas!![position].obj_link!!, datas!![position].obj_title!!,
+                    datas!![position].obj_id!!, datas!![position].template_id!!, 3))
         }
 
         return convertView
