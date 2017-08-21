@@ -184,6 +184,11 @@
             android:name="com.intfocus.yhdev.subject.WebApplicationActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
+        <!-- 模版六外部链接 -->
+        <activity
+            android:name="com.intfocus.yhdev.subject.WebApplicationActivityV6"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"/>
         <!-- 评论页 -->
         <activity
             android:name="com.intfocus.yhdev.CommentActivity"

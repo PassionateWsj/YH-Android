@@ -145,7 +145,6 @@ public class K extends PrivateURLs implements Serializable {
     public final static String KNewResetPwd = "/api/v1.1/user/reset_password"; //重置密码
     public final static String KComment = "/api/v1.1/comment"; //发表评论
     /**
-     *
      * "api_token": "",
      * "user_num": ,
      * "title": "",
@@ -163,7 +162,7 @@ public class K extends PrivateURLs implements Serializable {
     public final static String kScreenLockAPIPath = "%s/api/v1.1/device/screen_lock"; //上传锁屏信息
     /**
      * /api/v1.1/download/assets
-     *
+     * <p>
      * filename=javascripts.zip
      */
     public final static String kDownloadAssetsAPIPath = "%s/api/v1.1/download/assets?api_token=d93c1a0dc03fe4ffad55a82febd1c94f&filename=%s.zip"; //下载静态资源
@@ -173,4 +172,5 @@ public class K extends PrivateURLs implements Serializable {
      */
     public final static String kDeviceTokenAPIPath = "/api/v1.1/user/devices";  //设备列表
     public final static String kNewUserIconUploadPath = "/api/v1.1/upload/gravatar"; //上传头像
+    public final static String KNewChoiceMenu = "/api/v1.1/report/choice_menus";
 }
