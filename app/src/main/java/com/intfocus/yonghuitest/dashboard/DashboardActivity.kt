@@ -368,6 +368,7 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
                     intent.putExtra(URLs.kLink, link)
                     intent.putExtra(URLs.kObjectId, objectId)
                     intent.putExtra(URLs.kObjectType, objectType)
+                    intent.putExtra(URLs.kTemplatedId, templateId)
                     intent.putExtra("groupID", groupID)
                     startActivity(intent)
                 }
@@ -379,6 +380,7 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
                     intent.putExtra(URLs.kBannerName, objTitle)
                     intent.putExtra(URLs.kObjectId, objectId)
                     intent.putExtra(URLs.kObjectType, objectType)
+                    intent.putExtra(URLs.kTemplatedId, templateId)
                     intent.putExtra("groupID", groupID)
                     intent.putExtra("urlString", urlString)
                     startActivity(intent)
@@ -390,6 +392,7 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
                     intent.putExtra(URLs.kLink, link)
                     intent.putExtra(URLs.kObjectId, objectId)
                     intent.putExtra(URLs.kObjectType, objectType)
+                    intent.putExtra(URLs.kTemplatedId, templateId)
                     intent.putExtra("groupID", groupID)
                     startActivity(intent)
                 }
@@ -401,6 +404,7 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
                     intent.putExtra(URLs.kBannerName, objTitle)
                     intent.putExtra(URLs.kObjectId, objectId)
                     intent.putExtra(URLs.kObjectType, objectType)
+                    intent.putExtra(URLs.kTemplatedId, templateId)
                     intent.putExtra("groupID", groupID)
                     intent.putExtra("urlString", urlString)
                     startActivity(intent)
@@ -412,6 +416,7 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
                     intent.putExtra(URLs.kLink, link)
                     intent.putExtra(URLs.kObjectId, objectId)
                     intent.putExtra(URLs.kObjectType, objectType)
+                    intent.putExtra(URLs.kTemplatedId, templateId)
                     startActivity(intent)
                 }
                 "-1" -> {
@@ -421,6 +426,7 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
                     intent.putExtra(URLs.kLink, link)
                     intent.putExtra(URLs.kObjectId, objectId)
                     intent.putExtra(URLs.kObjectType, objectType)
+                    intent.putExtra(URLs.kTemplatedId, templateId)
                     startActivity(intent)
                 }
                 else -> showTemplateErrorDialog()
@@ -441,7 +447,6 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
         logParams.put("obj_link", link)
         ActionLogUtil.actionLog(mAppContext, logParams)
     }
-
 
     private fun showTemplateErrorDialog() {
         val builder = AlertDialog.Builder(this)
