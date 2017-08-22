@@ -2,6 +2,7 @@ package com.intfocus.yhdev.scanner
 
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.util.Log
@@ -14,7 +15,10 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.PopupWindow
 import com.intfocus.yhdev.R
-import com.intfocus.yhdev.util.*
+import com.intfocus.yhdev.util.FileUtil
+import com.intfocus.yhdev.util.ImageUtil
+import com.intfocus.yhdev.util.ToastUtils
+import com.intfocus.yhdev.util.URLs
 import com.umeng.socialize.ShareAction
 import com.umeng.socialize.UMShareListener
 import com.umeng.socialize.bean.SHARE_MEDIA
@@ -29,29 +33,49 @@ import org.greenrobot.eventbus.ThreadMode
 import org.xutils.x
 
 class ScannerResultActivity : AbstractActivity<ScannerMode>() {
+
     lateinit var ctx: Context
     var barcode = ""
     lateinit var popupWindow: PopupWindow
+    lateinit var mStoreName: String
+    lateinit var mStoreId: String
+    lateinit var mStoreInfoSP: SharedPreferences
+    lateinit var mStoreInfoSPEdit: SharedPreferences.Editor
 
     override fun setSubject(): Subject {
         ctx = this
         return ScannerMode(ctx)
     }
 
+    companion object {
+        val REQUEST_CODE_CHOOSE = 1
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_scanner_result)
+
+        initData()
         EventBus.getDefault().register(this)
         initWebView()
+
+        onCreateFinish(savedInstanceState)
+        anim_loading.visibility = View.VISIBLE
+        model.requestData(barcode, mStoreId)
+        tv_banner_title.text = mStoreName
+    }
+
+    private fun initData() {
+        mStoreInfoSP = getSharedPreferences("StoreInfo", Context.MODE_PRIVATE)
+        mStoreName = mStoreInfoSP.getString(URLs.kStore, "扫一扫")
+        mStoreId = mStoreInfoSP.getString(URLs.kStoreIds, "")
+        mStoreInfoSPEdit = mStoreInfoSP.edit()
+
         var intent = intent
         barcode = intent.getStringExtra(URLs.kCodeInfo)
-        onCreateFinish(savedInstanceState)
     }
 
     override fun onResume() {
-        anim_loading.visibility = View.VISIBLE
-        model.requestData(barcode)
-        tv_banner_title.text = "扫一扫"
         super.onResume()
     }
 
@@ -107,18 +131,17 @@ class ScannerResultActivity : AbstractActivity<ScannerMode>() {
             anim_loading.visibility = View.VISIBLE
             popupWindow.dismiss()
             // 刷新
-            model.requestData(barcode)
+            model.requestData(barcode, mStoreId)
         }
     }
 
-    @Subscribe (threadMode = ThreadMode.MAIN)
+    @Subscribe(threadMode = ThreadMode.MAIN)
     fun loadHtml(result: ScannerRequest) {
-        anim_loading.visibility = View.GONE
+//        anim_loading.visibility = View.GONE
         if (result.isSuccess) {
             wv_scanner_view.loadUrl("file:///" + result.htmlPath)
-        }
-        else {
-            ToastUtils.show(ctx,  result.errorInfo)
+        } else {
+            ToastUtils.show(ctx, result.errorInfo)
             wv_scanner_view.loadUrl(String.format("file:///%s/loading/%s.html", FileUtil.sharedPath(ctx), "400"))
         }
     }
@@ -131,12 +154,7 @@ class ScannerResultActivity : AbstractActivity<ScannerMode>() {
         wv_scanner_view.addJavascriptInterface(JavaScriptInterface(), URLs.kJSInterfaceName)
         wv_scanner_view.setWebViewClient(object : WebViewClient() {
             override fun onPageFinished(view: WebView?, url: String?) {
-                var cachedPath = FileUtil.dirPath(ctx, K.kCachedDirName, K.kBarCodeResultFileName)
-                var cachedJSON = FileUtil.readConfigFile(cachedPath)
-                if (cachedJSON.has(URLs.kStore) && cachedJSON.getJSONObject(URLs.kStore).has("name")) {
-                    var storeName = cachedJSON.getJSONObject(URLs.kStore).getString("name")
-                    tv_banner_title.text = storeName
-                }
+                anim_loading.visibility = View.GONE
                 super.onPageFinished(view, url)
             }
         })
@@ -150,7 +168,7 @@ class ScannerResultActivity : AbstractActivity<ScannerMode>() {
         fun refreshBrowser() {
             runOnUiThread {
                 anim_loading.visibility = View.VISIBLE
-                model.requestData(barcode)
+                model.requestData(barcode, mStoreId)
             }
         }
     }
@@ -201,8 +219,25 @@ class ScannerResultActivity : AbstractActivity<ScannerMode>() {
     }
 
     private fun actionLaunchStoreSelectorActivity() {
-        val intent = Intent(this, StoreSelectorActivity::class.java)
-        intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-        this.startActivity(intent)
+        val intent = Intent(this, NewStoreSelectorActivity::class.java)
+        intent.putExtra(URLs.kStore, mStoreName)
+        startActivityForResult(intent, REQUEST_CODE_CHOOSE)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_CODE_CHOOSE && resultCode == NewStoreSelectorActivity.RESULT_CODE_CHOOSE) {
+            if (data != null) {
+                mStoreName = data.getStringExtra(URLs.kStore)
+                mStoreId = data.getStringExtra(URLs.kStoreIds)
+                mStoreInfoSPEdit.putString(URLs.kStore, mStoreName)
+                mStoreInfoSPEdit.putString(URLs.kStoreIds, mStoreId)
+                mStoreInfoSPEdit.commit()
+
+                tv_banner_title.text = mStoreName
+                anim_loading.visibility = View.VISIBLE
+                model.requestData(barcode, mStoreId)
+            }
+        }
     }
 }

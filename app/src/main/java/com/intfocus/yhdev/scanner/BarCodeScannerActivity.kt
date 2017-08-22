@@ -18,7 +18,6 @@ import android.widget.RelativeLayout
 import android.widget.TextView
 import cn.bingoogolapple.qrcode.core.QRCodeView
 import com.intfocus.yhdev.R
-import com.intfocus.yhdev.dashboard.mine.FeedbackActivity
 import com.intfocus.yhdev.util.*
 import com.zhihu.matisse.Matisse
 import com.zhihu.matisse.MimeType
@@ -169,7 +168,7 @@ class BarCodeScannerActivity : AppCompatActivity(), QRCodeView.Delegate, View.On
                         .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
                         .thumbnailScale(0.85f)
                         .imageEngine(GlideEngine())
-                        .forResult(FeedbackActivity.REQUEST_CODE_CHOOSE)
+                        .forResult(BarCodeScannerActivity.REQUEST_CODE_CHOOSE)
             }
         }
     }
