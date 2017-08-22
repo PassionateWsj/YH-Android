@@ -14,6 +14,7 @@ import com.intfocus.yhdev.dashboard.report.adapter.ReportsRightRVAdapter
 import com.intfocus.yhdev.dashboard.report.mode.CategoryBean
 import com.intfocus.yhdev.dashboard.report.mode.ReportListPageRequest
 import com.intfocus.yhdev.mode.ReportsListMode
+import com.intfocus.yhdev.net.RetrofitUtil
 import com.intfocus.yhdev.util.HttpUtil
 import com.intfocus.yhdev.util.ToastUtils
 import com.zbl.lib.baseframe.core.Subject
@@ -41,6 +42,7 @@ class ReportFragment : BaseModeFragment<ReportsListMode>(), ReportsLeftListAdapt
             rootView = inflater!!.inflate(R.layout.fragment_reports, container, false)
             model.requestData()
         }
+
         return rootView
     }
 

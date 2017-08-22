@@ -61,7 +61,7 @@ class BusinessOverViewAdapter(val context: Context,
         holder.tvNumberCompareText.text = itemData.memo2
         holder.rlBusinessOverview.setOnClickListener {
             EventBus.getDefault().post(DashboardItemBean(itemData.obj_link!!, itemData.obj_title!!,
-                    itemData.obj_id!!, itemData.template_id!!, 1))
+                    itemData.obj_id!!, itemData.template_id!!, "1"))
         }
     }
 

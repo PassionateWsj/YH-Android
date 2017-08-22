@@ -13,8 +13,8 @@ class CommentBody {
      */
     var user_num: String? = null
     var content: String? = null
-    var object_type: Int? = null
-    var object_id: Int? = null
+    var object_type: String? = null
+    var object_id: String? = null
     var object_title: String? = null
 
 }

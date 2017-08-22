@@ -76,6 +76,9 @@ import java.util.List;
 import java.util.Map;
 
 import static com.intfocus.yhdev.util.URLs.kBannerName;
+import static com.intfocus.yhdev.util.URLs.kGroupId;
+import static com.intfocus.yhdev.util.URLs.kObjectId;
+import static com.intfocus.yhdev.util.URLs.kObjectType;
 
 /**
  * Created by CANC on 2017/4/6.
@@ -172,10 +175,9 @@ public class HomeTricsActivity extends AppCompatActivity implements ProductListA
     private Context mContext;
     private String urlString;
     private String tvBannerName;
-    private int groupID;
-    private String reportID;
+    private String groupID;
     private String selectedProductName;
-    private int objectID, objectType;
+    private String objectID, objectType;
 
 
     private ArrayList<HashMap<String, Object>> listItem;
@@ -189,11 +191,10 @@ public class HomeTricsActivity extends AppCompatActivity implements ProductListA
         mContext = this;
         Intent intent = getIntent();
         urlString = intent.getStringExtra("urlString");
-        groupID = intent.getIntExtra("groupID", -1);
-        reportID = intent.getStringExtra("reportID");
+        groupID = intent.getStringExtra(kGroupId);
         tvBannerName = intent.getStringExtra(kBannerName);
-        objectID = intent.getIntExtra(URLs.kObjectId, -1);
-        objectType = intent.getIntExtra(URLs.kObjectType, -1);
+        objectID = intent.getStringExtra(kObjectId);
+        objectType = intent.getStringExtra(kObjectType);
         tvTitle.setText(tvBannerName);
         new LoadReportData().execute();
     }
@@ -210,7 +211,7 @@ public class HomeTricsActivity extends AppCompatActivity implements ProductListA
 
         @Override
         protected void onPostExecute(Map<String, String> response) {
-            String jsonFileName = String.format("group_%s_template_%s_report_%s.json", groupID, 3, reportID);
+            String jsonFileName = String.format("group_%s_template_%s_report_%s.json", groupID, 3, objectID);
             String jsonFilePath = FileUtil.dirPath(mContext, K.kCachedDirName, jsonFileName);
             if (response.get("code").equals("200") || response.get("code").equals("304")) {
                 initView();
@@ -825,8 +826,8 @@ public class HomeTricsActivity extends AppCompatActivity implements ProductListA
     public void actionLaunchCommentActivity() {
         Intent intent = new Intent(mContext, CommentActivity.class);
         intent.putExtra(URLs.kBannerName, tvBannerName);
-        intent.putExtra(URLs.kObjectId, objectID);
-        intent.putExtra(URLs.kObjectType, objectType);
+        intent.putExtra(kObjectId, objectID);
+        intent.putExtra(kObjectType, objectType);
         mContext.startActivity(intent);
     }
 }

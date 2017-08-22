@@ -102,7 +102,7 @@ public class ModularTwo_Mode_Activity extends BaseModeActivity<MeterDetalActMode
     private void init() {
         Intent intent = getIntent();
         group_id = String.valueOf(intent.getStringExtra("groupID"));
-        report_id = intent.getStringExtra("reportID");
+        report_id = intent.getStringExtra("objectID");
         banner_name = intent.getStringExtra("bannerName");
         rootTableListener = new RootTableCheckedChangeListener();
         setACTitle("标题");

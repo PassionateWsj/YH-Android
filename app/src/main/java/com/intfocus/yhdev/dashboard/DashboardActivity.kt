@@ -12,7 +12,6 @@ import android.provider.Settings
 import android.support.v4.app.FragmentActivity
 import android.support.v4.content.ContextCompat
 import android.support.v4.view.ViewPager
-import android.text.TextUtils
 import android.view.View
 import com.google.gson.Gson
 import com.intfocus.yhdev.R
@@ -126,7 +125,7 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
         // RxBus通知消息界面 ShowPushMessageActivity 更新数据
         RxBusUtil.getInstance().post("UpDatePushMessage")
         when (pushMessage.type) {
-            "report" -> pageLink(pushMessage.title + "", pushMessage.url, pushMessage.obj_id, "-1", pushMessage.obj_type)
+            "report" -> pageLink(pushMessage.title + "", pushMessage.url, pushMessage.obj_id.toString(), "-1", pushMessage.obj_type.toString())
             "analyse" -> {
                 mViewPager!!.currentItem = PAGE_REPORTS
                 mTabView!![mViewPager!!.currentItem].setActive(true)
@@ -353,7 +352,7 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
             val objectId = items.obj_id
             val templateId = items.template_id
             val objectType = items.objectType
-            pageLink(objTitle, link, objectId.toInt(), templateId, objectType)
+            pageLink(objTitle, link, objectId, templateId, objectType)
         } else {
             ToastUtils.show(this, "没有指定链接")
         }
@@ -362,13 +361,9 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
     /*
      * 页面跳转事件
      */
-    fun pageLink(objTitle: String, link: String, objectId: Int, templateId: String, objectType: Int) {
+    fun pageLink(objTitle: String, link: String, objectId: String, templateId: String, objectType: String) {
         try {
             val groupID = getSharedPreferences("UserBean", Context.MODE_PRIVATE).getString(URLs.kGroupId, "0")
-            var reportID: String = ""
-            if (link.contains("report")) {
-                reportID = TextUtils.split(link, "report/")[1].split("/")[0]
-            }
             var urlString: String
             val intent: Intent
 
@@ -379,9 +374,9 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
                     intent.putExtra(URLs.kBannerName, objTitle)
                     intent.putExtra(URLs.kObjectId, objectId)
                     intent.putExtra(URLs.kObjectType, objectType)
-                    intent.putExtra("groupID", groupID)
-                    intent.putExtra("reportID", reportID)
+                    intent.putExtra(URLs.kGroupId, groupID)
                     intent.putExtra(URLs.kLink, link)
+                    intent.putExtra(URLs.kTemplatedId, templateId)
                     startActivity(intent)
                 }
                 "2" -> {
@@ -391,20 +386,20 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
                     intent.putExtra(URLs.kLink, link)
                     intent.putExtra(URLs.kObjectId, objectId)
                     intent.putExtra(URLs.kObjectType, objectType)
+                    intent.putExtra(URLs.kTemplatedId, templateId)
                     intent.putExtra("groupID", groupID)
-                    intent.putExtra("reportID", reportID)
                     startActivity(intent)
                 }
                 "3" -> {
                     intent = Intent(this, HomeTricsActivity::class.java)
                     urlString = String.format("%s/api/v1/group/%s/template/%s/report/%s/json",
-                            K.kBaseUrl, groupID, "3", reportID)
+                            K.kBaseUrl, groupID, "3", objectId)
                     intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
                     intent.putExtra(URLs.kBannerName, objTitle)
                     intent.putExtra(URLs.kObjectId, objectId)
                     intent.putExtra(URLs.kObjectType, objectType)
+                    intent.putExtra(URLs.kTemplatedId, templateId)
                     intent.putExtra("groupID", groupID)
-                    intent.putExtra("reportID", reportID)
                     intent.putExtra("urlString", urlString)
                     startActivity(intent)
                 }
@@ -415,20 +410,20 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
                     intent.putExtra(URLs.kLink, link)
                     intent.putExtra(URLs.kObjectId, objectId)
                     intent.putExtra(URLs.kObjectType, objectType)
+                    intent.putExtra(URLs.kTemplatedId, templateId)
                     intent.putExtra("groupID", groupID)
-                    intent.putExtra("reportID", reportID)
                     startActivity(intent)
                 }
                 "5" -> {
                     intent = Intent(this, TableActivity::class.java)
                     urlString = String.format("%s/api/v1/group/%s/template/%s/report/%s/json",
-                            K.kBaseUrl, groupID, "5", reportID)
+                            K.kBaseUrl, groupID, "5", objectId)
                     intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
                     intent.putExtra(URLs.kBannerName, objTitle)
                     intent.putExtra(URLs.kObjectId, objectId)
                     intent.putExtra(URLs.kObjectType, objectType)
+                    intent.putExtra(URLs.kTemplatedId, templateId)
                     intent.putExtra("groupID", groupID)
-                    intent.putExtra("reportID", reportID)
                     intent.putExtra("urlString", urlString)
                     startActivity(intent)
                 }
@@ -439,6 +434,7 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
                     intent.putExtra(URLs.kLink, link)
                     intent.putExtra(URLs.kObjectId, objectId)
                     intent.putExtra(URLs.kObjectType, objectType)
+                    intent.putExtra(URLs.kTemplatedId, templateId)
                     startActivity(intent)
                 }
                 "-1" -> {
@@ -448,6 +444,7 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
                     intent.putExtra(URLs.kLink, link)
                     intent.putExtra(URLs.kObjectId, objectId)
                     intent.putExtra(URLs.kObjectType, objectType)
+                    intent.putExtra(URLs.kTemplatedId, templateId)
                     startActivity(intent)
                 }
                 else -> showTemplateErrorDialog()
@@ -458,16 +455,15 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
 
         var logParams = JSONObject()
         if ("-1".equals(templateId)) {
-            logParams.put(URLs.kAction, "点击/" + objectTypeName[objectType - 1] + "/链接")
+            logParams.put(URLs.kAction, "点击/" + objectTypeName[objectType.toInt() - 1] + "/链接")
         } else {
-            logParams.put(URLs.kAction, "点击/" + objectTypeName[objectType - 1] + "/报表")
+            logParams.put(URLs.kAction, "点击/" + objectTypeName[objectType.toInt() - 1] + "/报表")
         }
         logParams.put(URLs.kObjTitle, objTitle)
         logParams.put("obj_id", objectId)
         logParams.put("obj_link", link)
         ActionLogUtil.actionLog(mAppContext, logParams)
     }
-
 
     private fun showTemplateErrorDialog() {
         val builder = AlertDialog.Builder(this)

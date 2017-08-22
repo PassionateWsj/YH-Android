@@ -89,12 +89,13 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
     LinearLayout llCopyLinkl;
 
     private Boolean isInnerLink = false;
-    private String templateID, reportID;
+    private String templateID;
     private PDFView mPDFView;
     private File pdfFile;
     private String bannerName, link;
     private String groupID;
-    private int objectType, objectID;
+    private String objectID;
+    private String objectType;
     private String userNum;
     private RelativeLayout bannerView;
     private Context mContext;
@@ -197,7 +198,7 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
                 LogUtil.d("onPageFinished", String.format("%s - %s", URLs.timestamp(), url));
 
                 // 报表缓存列表:是否把报表标题存储
-                if (reportDataState && url.contains("report_" + reportID)) {
+                if (reportDataState && url.contains("report_" + objectID)) {
                     try {
                         SharedPreferences sp = getSharedPreferences("subjectCache", MODE_PRIVATE);
                         SharedPreferences.Editor editor = sp.edit();
@@ -295,9 +296,10 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
          */
         Intent intent = getIntent();
         link = intent.getStringExtra(URLs.kLink);
+        templateID = intent.getStringExtra(URLs.kTemplatedId);
         bannerName = intent.getStringExtra(URLs.kBannerName);
-        objectID = intent.getIntExtra(URLs.kObjectId, -1);
-        objectType = intent.getIntExtra(URLs.kObjectType, -1);
+        objectID = intent.getStringExtra(URLs.kObjectId);
+        objectType = intent.getStringExtra(URLs.kObjectType);
         isInnerLink = link.indexOf("template") > 0 && link.indexOf("group") > 0;
         mTitle.setText(bannerName);
 
@@ -379,41 +381,6 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
         super.onResume();
     }
 
-    protected void displayBannerTitleAndSearchIcon() {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                String selectedItem = FileUtil.reportSelectedItem(SubjectActivity.this, groupID, templateID, reportID);
-                if (selectedItem == null || selectedItem.length() == 0) {
-                    SelectItems items = FileUtil.reportSearchItems(SubjectActivity.this, groupID, templateID, reportID);
-                    String firstName = "";
-                    String secondName = "";
-                    String thirdName = "";
-                    if (items != null && items.getData().size() != 0) {
-                        firstName = items.getData().get(0).getTitles();
-
-                        if (items.getData().get(0).getInfos().size() != 0) {
-                            secondName = "·" + items.getData().get(0).getInfos().get(0).getTitles();
-
-                            if (items.getData().get(0).getInfos().get(0).getInfos().size() != 0) {
-                                thirdName = "·" + items.getData().get(0).getInfos().get(0).getInfos().get(0).getTitles();
-                            }
-                        }
-                    }
-
-                    selectedItem = firstName + secondName + thirdName;
-                } else {
-                    selectedItem = selectedItem.replace("||", "·");
-                }
-
-                if (selectedItem.equals("")) {
-                    selectedItem = bannerName;
-                }
-                mTitle.setText(selectedItem);
-            }
-        });
-    }
-
     /**
      * PDFView OnPageChangeListener CallBack
      *
@@ -491,8 +458,6 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
             // format: /mobile/v1/group/:group_id/template/:template_id/report/:report_id
             // deprecated
             // format: /mobile/report/:report_id/group/:group_id
-            templateID = TextUtils.split(link, "/")[6];
-            reportID = TextUtils.split(link, "/")[8];
             String urlPath = format(link.replace("%@", "%s"), groupID);
             urlString = String.format("%s%s", K.kBaseUrl, urlPath);
             webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
@@ -501,14 +466,14 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    reportDataState = ApiHelper.reportData(mAppContext, String.format("%s", groupID), templateID, reportID);
+                    reportDataState = ApiHelper.reportData(mAppContext, String.format("%s", groupID), templateID, objectID);
                     String jsFileName = "";
 
                     // 模板 4 的 groupID 为 0
                     if (Integer.valueOf(templateID) == 4) {
-                        jsFileName = String.format("group_%s_template_%s_report_%s.js", "0", templateID, reportID);
+                        jsFileName = String.format("group_%s_template_%s_report_%s.js", "0", templateID, objectID);
                     } else {
-                        jsFileName = String.format("group_%s_template_%s_report_%s.js", groupID, templateID, reportID);
+                        jsFileName = String.format("group_%s_template_%s_report_%s.js", groupID, templateID, objectID);
                     }
                     String javascriptPath = String.format("%s/assets/javascripts/%s", sharedPath, jsFileName);
                     if (new File(javascriptPath).exists()) {
@@ -723,9 +688,9 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
                     urlKey = urlString.contains("?") ? TextUtils.split(urlString, "?")[0] : urlString;
                     ApiHelper.clearResponseHeader(urlKey, assetsPath);
                 }
-                urlKey = String.format(K.kReportDataAPIPath, K.kBaseUrl, groupID, templateID, reportID);
+                urlKey = String.format(K.kReportDataAPIPath, K.kBaseUrl, groupID, templateID, objectID);
                 ApiHelper.clearResponseHeader(urlKey, FileUtil.sharedPath(mAppContext));
-                boolean reportDataState = ApiHelper.reportData(mAppContext, groupID, templateID, reportID);
+                boolean reportDataState = ApiHelper.reportData(mAppContext, groupID, templateID, objectID);
                 if (reportDataState) {
                     new Thread(mRunnableForDetecting).start();
                 } else {
@@ -822,14 +787,13 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
         @JavascriptInterface
         public void reportSearchItemsV2(final String arrayString) {
 
-
             if (!TextUtils.isEmpty(arrayString)) {
                 MenuResult msg = new Gson().fromJson(arrayString, MenuResult.class);
                 if (msg != null && msg.getData() != null && msg.getData().size() > 0) {
                     for (Menu menu : msg.getData()) {
                         if ("location".equals(menu.getType())) {
                             locationDatas = menu.getData();
-                            String selectedItemPath = String.format("%s.selected_item", FileUtil.reportJavaScriptDataPath(SubjectActivity.this, groupID, templateID, reportID));
+                            String selectedItemPath = String.format("%s.selected_item", FileUtil.reportJavaScriptDataPath(SubjectActivity.this, groupID, templateID, objectID));
                             if (!new File(selectedItemPath).exists()) {
                                 if (locationDatas != null) {
                                     tvLocationAddress.setText(menu.getCurrent_location().getDisplay());
@@ -861,7 +825,7 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
         @JavascriptInterface
         public String reportSelectedItem() {
             String item = "";
-            String selectedItemPath = String.format("%s.selected_item", FileUtil.reportJavaScriptDataPath(SubjectActivity.this, groupID, templateID, reportID));
+            String selectedItemPath = String.format("%s.selected_item", FileUtil.reportJavaScriptDataPath(SubjectActivity.this, groupID, templateID, objectID));
             if (new File(selectedItemPath).exists()) {
                 item = FileUtil.readFile(selectedItemPath);
                 final String filterText = item;
@@ -1036,7 +1000,7 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
             }
 
             addStr = addStr.substring(0, addStr.length() - 2);
-            String selectedItemPath = String.format("%s.selected_item", FileUtil.reportJavaScriptDataPath(SubjectActivity.this, groupID, templateID, reportID));
+            String selectedItemPath = String.format("%s.selected_item", FileUtil.reportJavaScriptDataPath(SubjectActivity.this, groupID, templateID, objectID));
             FileUtil.writeFile(selectedItemPath, addStr);
 
             animLoading.setVisibility(View.VISIBLE);

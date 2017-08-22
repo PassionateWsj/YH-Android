@@ -49,10 +49,12 @@ public class URLs implements Serializable {
     public final static String kCodeInfo                 = "code_info";
     public final static String kCodeType                 = "code_type";
     public final static String kBannerName               = "bannerName";
+    public final static String kReportId                 = "reportID";
     public final static String kObjectId                 = "objectID";
     public final static String kObjectType               = "objectType";
     public final static String kObjTitle                 = "obj_title";
     public final static String kObjType                  = "obj_type";
+    public final static String kTemplatedId = "templateId";
     public final static String kLink                     = "link";
     public final static String kUserNum                  = "user_num";
     public final static String kUserName                 = "user_name";

@@ -25,8 +25,8 @@ import org.json.JSONObject;
 public class CommentActivity extends BaseActivity {
 
     private String bannerName;
-    private int objectID;
-    private int objectType;
+    private String objectID;
+    private String objectType;
     private int loadCount = 0;
 
     @Override
@@ -45,8 +45,8 @@ public class CommentActivity extends BaseActivity {
 
         Intent intent = getIntent();
         bannerName = intent.getStringExtra(URLs.kBannerName);
-        objectID = intent.getIntExtra(URLs.kObjectId, -1);
-        objectType = intent.getIntExtra(URLs.kObjectType, -1);
+        objectID = intent.getStringExtra(URLs.kObjectId);
+        objectType = intent.getStringExtra(URLs.kObjectType);
 
         mTitle.setText(bannerName);
         urlString = String.format(K.kCommentMobilePath, K.kBaseUrl, URLs.currentUIVersion(mAppContext), objectID, objectType);

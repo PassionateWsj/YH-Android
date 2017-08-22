@@ -22,6 +22,7 @@ import com.intfocus.yhdev.util.K;
 import java.util.Map;
 
 import okhttp3.MultipartBody;
+import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Multipart;
@@ -334,6 +335,6 @@ public interface HttpService {
      * user_num
      */
     @GET(K.KNewChoiceMenu)
-    Observable<MenuResult> getChoiceMenus(@Query("params") String params);
+    Call<MenuResult> getChoiceMenus(@Query("params") String params);
 
 }

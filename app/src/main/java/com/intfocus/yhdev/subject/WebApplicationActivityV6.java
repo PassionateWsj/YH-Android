@@ -52,6 +52,7 @@ import com.intfocus.yhdev.data.response.filter.MenuResult;
 import com.intfocus.yhdev.filter.MyFilterDialogFragment;
 import com.intfocus.yhdev.net.ApiException;
 import com.intfocus.yhdev.net.CodeHandledSubscriber;
+import com.intfocus.yhdev.net.HttpService;
 import com.intfocus.yhdev.net.RetrofitUtil;
 import com.intfocus.yhdev.subject.selecttree.SelectItems;
 import com.intfocus.yhdev.util.ActionLogUtil;
@@ -86,6 +87,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import retrofit2.Response;
+import retrofit2.Retrofit;
+
 import static android.webkit.WebView.enableSlowWholeDocumentDraw;
 import static java.lang.String.format;
 
@@ -97,11 +101,11 @@ public class WebApplicationActivityV6 extends BaseActivity implements OnPageChan
     LinearLayout llCopyLinkl;
 
     private Boolean isInnerLink, isSupportSearch = false;
-    private String templateID, reportID;
+    private String templateID;
     private PDFView mPDFView;
     private File pdfFile;
     private String bannerName, link;
-    private int objectID, objectType;
+    private String objectID, objectType;
     private String groupID;
     private String userNum;
     private RelativeLayout bannerView;
@@ -131,11 +135,12 @@ public class WebApplicationActivityV6 extends BaseActivity implements OnPageChan
     private TextView tvAddressFilter;
     private RecyclerView filterRecyclerView;
     private View viewLine;
+
     /**
      * 地址选择
      */
     private List<MenuItem> locationDatas;
-    private String selectedItem;
+    private MenuResult msg;
     /**
      * 菜单
      */
@@ -211,7 +216,7 @@ public class WebApplicationActivityV6 extends BaseActivity implements OnPageChan
                 LogUtil.d("onPageFinished", String.format("%s - %s", URLs.timestamp(), url));
 
                 // 报表缓存列表:是否把报表标题存储
-                if (reportDataState && url.contains("report_" + reportID)) {
+                if (reportDataState && url.contains("report_" + objectID)) {
                     try {
                         SharedPreferences sp = getSharedPreferences("subjectCache", MODE_PRIVATE);
                         SharedPreferences.Editor editor = sp.edit();
@@ -448,9 +453,10 @@ public class WebApplicationActivityV6 extends BaseActivity implements OnPageChan
          */
         Intent intent = getIntent();
         link = intent.getStringExtra(URLs.kLink);
+        templateID = intent.getStringExtra(URLs.kTemplatedId);
         bannerName = intent.getStringExtra(URLs.kBannerName);
-        objectID = intent.getIntExtra(URLs.kObjectId, -1);
-        objectType = intent.getIntExtra(URLs.kObjectType, -1);
+        objectID = intent.getStringExtra(URLs.kObjectId);
+        objectType = intent.getStringExtra(URLs.kObjectType);
 
         isInnerLink = link.indexOf("template") > 0 && link.indexOf("group") > 0;
         mTitle.setText(bannerName);
@@ -548,42 +554,6 @@ public class WebApplicationActivityV6 extends BaseActivity implements OnPageChan
         super.onResume();
     }
 
-    protected void displayBannerTitleAndSearchIcon() {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                String selectedItem = FileUtil.reportSelectedItem(WebApplicationActivityV6.this, groupID, templateID, reportID);
-                if (selectedItem == null || selectedItem.length() == 0) {
-                    SelectItems items = FileUtil.reportSearchItems(WebApplicationActivityV6.this, groupID, templateID, reportID);
-                    String firstName = "";
-                    String secondName = "";
-                    String thirdName = "";
-                    if (items.getData().size() != 0) {
-                        firstName = items.getData().get(0).getTitles();
-
-                        if (items.getData().get(0).getInfos().size() != 0) {
-                            secondName = "·" + items.getData().get(0).getInfos().get(0).getTitles();
-
-                            if (items.getData().get(0).getInfos().get(0).getInfos().size() != 0) {
-                                thirdName = "·" + items.getData().get(0).getInfos().get(0).getInfos().get(0).getTitles();
-                            }
-                        }
-                    }
-
-                    selectedItem = firstName + secondName + thirdName;
-                } else {
-                    selectedItem = selectedItem.replace("||", "·");
-                }
-
-                if (selectedItem.equals("")) {
-                    selectedItem = bannerName;
-                }
-                TextView mTitle = (TextView) findViewById(R.id.bannerTitle);
-                mTitle.setText(selectedItem);
-            }
-        });
-    }
-
     /**
      * PDFView OnPageChangeListener CallBack
      *
@@ -628,86 +598,24 @@ public class WebApplicationActivityV6 extends BaseActivity implements OnPageChan
     }
 
     private void loadHtml() {
-        WebSettings webSettings = mWebView.getSettings();
-        if (isInnerLink) {
-            // format: /mobile/v1/group/:group_id/template/:template_id/report/:report_id
-            // deprecated
-            // format: /mobile/report/:report_id/group/:group_id
-            templateID = "6";
-            reportID = getIntent().getStringExtra(URLs.kObjectId);
-            String urlPath = format(link.replace("%@", "%s"), groupID);
-            urlString = String.format("%s%s", K.kBaseUrl, urlPath);
-            webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
-
-            /**
-             * 内部报表具有筛选功能时
-             *   - 如果用户已选择，则 banner 显示该选项名称
-             *   - 未设置时，默认显示筛选项列表中第一个
-             *
-             *  初次加载时，判断筛选功能的条件还未生效
-             *  此处仅在第二次及以后才会生效
-             */
-            isSupportSearch = FileUtil.reportIsSupportSearch(mAppContext, groupID, templateID, reportID);
-            if (isSupportSearch) {
-                displayBannerTitleAndSearchIcon();
-            }
-
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    reportDataState = ApiHelper.reportData(mAppContext, groupID, templateID, reportID);
-                    String jsFileName;
-
-                    // 模板 4 的 groupID 为 0
-                    if (Integer.valueOf(templateID) == 4) {
-                        jsFileName = String.format("group_%s_template_%s_report_%s.js", "0", templateID, reportID);
-                    } else {
-                        jsFileName = String.format("group_%s_template_%s_report_%s.js", groupID, templateID, reportID);
-                    }
-                    String javascriptPath = String.format("%s/assets/javascripts/%s", sharedPath, jsFileName);
-                    if (new File(javascriptPath).exists()) {
-                        new Thread(mRunnableForDetecting).start();
-                    } else {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-                                builder.setTitle("温馨提示")
-                                        .setMessage("报表数据下载失败,不再加载网页")
-                                        .setPositiveButton("确认", new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialog, int which) {
-                                                dialog.dismiss();
-                                                finish();
-                                            }
-                                        });
-                                builder.show();
-                            }
-                        });
-                    }
-                }
-            }).start();
-        } else {
-            urlString = link;
-
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    if (urlString.toLowerCase().endsWith(".pdf")) {
-                        new Thread(mRunnableForPDF).start();
-                    } else {
+        urlString = link;
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (urlString.toLowerCase().endsWith(".pdf")) {
+                    new Thread(mRunnableForPDF).start();
+                } else {
                         /*
                          * 外部链接传参: user_num, timestamp
                          */
-                        String appendParams = String.format("user_num=%s&timestamp=%s", userNum, URLs.timestamp());
-                        String splitString = urlString.contains("?") ? "&" : "?";
-                        urlString = String.format("%s%s%s", urlString, splitString, appendParams);
-                        mWebView.loadUrl(urlString);
-                        Log.i("OutLink", urlString);
-                    }
+                    String appendParams = String.format("user_num=%s&timestamp=%s", userNum, URLs.timestamp());
+                    String splitString = urlString.contains("?") ? "&" : "?";
+                    urlString = String.format("%s%s%s", urlString, splitString, appendParams);
+                    mWebView.loadUrl(urlString);
+                    Log.i("OutLink", urlString);
                 }
-            });
-        }
+            }
+        });
     }
 
     private final Handler mHandlerForPDF = new Handler() {
@@ -742,22 +650,6 @@ public class WebApplicationActivityV6 extends BaseActivity implements OnPageChan
             mHandlerForPDF.sendMessage(message);
         }
     };
-
-    /*
-     * 内部报表具有筛选功能时，调用筛选项界面
-     */
-    public void actionLaunchReportSelectorActivity(View v) {
-        if (isSupportSearch) {
-            String selectedItemPath = String.format("%s.selected_item", FileUtil.reportJavaScriptDataPath(WebApplicationActivityV6.this, groupID, templateID, reportID));
-            String searchItemsPath = String.format("%s.search_items", FileUtil.reportJavaScriptDataPath(WebApplicationActivityV6.this, groupID, templateID, reportID));
-            Intent intent = new Intent(mContext, SelectorTreeActivity.class);
-            intent.putExtra("searchItemsPath", searchItemsPath);
-            intent.putExtra("selectedItemPath", selectedItemPath);
-            mContext.startActivity(intent);
-        } else {
-            toast("该报表暂不支持筛选");
-        }
-    }
 
     /*
      * 拷贝链接
@@ -873,39 +765,7 @@ public class WebApplicationActivityV6 extends BaseActivity implements OnPageChan
             mTitle.setText(bannerName + "(离线)");
         }
         animLoading.setVisibility(View.VISIBLE);
-        new WebApplicationActivityV6.refreshTask().execute();
-    }
-
-    private class refreshTask extends AsyncTask<Void, Void, Void> {
-        @Override
-        protected Void doInBackground(Void... params) {
-            /*
-             *  浏览器刷新时，删除响应头文件，相当于无缓存刷新
-             */
-            if (isInnerLink) {
-                String urlKey;
-                if (urlString != null && !urlString.isEmpty()) {
-                    urlKey = urlString.contains("?") ? TextUtils.split(urlString, "?")[0] : urlString;
-                    ApiHelper.clearResponseHeader(urlKey, assetsPath);
-                }
-                urlKey = String.format(K.kReportDataAPIPath, K.kBaseUrl, groupID, templateID, reportID);
-                ApiHelper.clearResponseHeader(urlKey, FileUtil.sharedPath(mAppContext));
-                boolean reportDataState = ApiHelper.reportData(mAppContext, groupID, templateID, reportID);
-                if (reportDataState) {
-                    new Thread(mRunnableForDetecting).start();
-                } else {
-                    showWebViewExceptionForWithoutNetwork();
-                }
-            }
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-            loadHtml();
-        }
+        loadHtml();
     }
 
     private class JavaScriptInterface extends JavaScriptBase {
@@ -979,23 +839,23 @@ public class WebApplicationActivityV6 extends BaseActivity implements OnPageChan
 
         @JavascriptInterface
         public void reportSearchItems(final String arrayString) {
-            try {
-                String searchItemsPath = String.format("%s.search_items", FileUtil.reportJavaScriptDataPath(WebApplicationActivityV6.this, groupID, templateID, reportID));
-                FileUtil.writeFile(searchItemsPath, arrayString);
-
-                /**
-                 *  判断筛选的条件: arrayString 数组不为空
-                 *  报表第一次加载时，此处为判断筛选功能的关键点
-                 */
-                if (!arrayString.equals("{\"data\":[],\"max_deep\":0}")) {
-                    isSupportSearch = true;
-                    displayBannerTitleAndSearchIcon();
-                } else {
-                    isSupportSearch = false;
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+//            try {
+//                String searchItemsPath = String.format("%s.search_items", FileUtil.reportJavaScriptDataPath(WebApplicationActivityV6.this, groupID, templateID, objectID));
+//                FileUtil.writeFile(searchItemsPath, arrayString);
+//
+//                /**
+//                 *  判断筛选的条件: arrayString 数组不为空
+//                 *  报表第一次加载时，此处为判断筛选功能的关键点
+//                 */
+//                if (!arrayString.equals("{\"data\":[],\"max_deep\":0}")) {
+//                    isSupportSearch = true;
+//                    displayBannerTitleAndSearchIcon();
+//                } else {
+//                    isSupportSearch = false;
+//                }
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
         }
 
         @JavascriptInterface
@@ -1015,7 +875,7 @@ public class WebApplicationActivityV6 extends BaseActivity implements OnPageChan
         @JavascriptInterface
         public String reportSelectedItem() {
             String item = "";
-            String selectedItemPath = String.format("%s.selected_item", FileUtil.reportJavaScriptDataPath(WebApplicationActivityV6.this, groupID, templateID, reportID));
+            String selectedItemPath = String.format("%s.selected_item", FileUtil.reportJavaScriptDataPath(WebApplicationActivityV6.this, groupID, templateID, objectID));
             if (new File(selectedItemPath).exists()) {
                 item = FileUtil.readFile(selectedItemPath);
                 final String filterText = item;
@@ -1112,59 +972,58 @@ public class WebApplicationActivityV6 extends BaseActivity implements OnPageChan
         }
 
         @JavascriptInterface
-        public void callRealTimeReportMenu(final String params) {
+        public String callRealTimeReportMenu(final String params) {
+            String selectedItem = "";
             if (!TextUtils.isEmpty(params)) {
-                RetrofitUtil.getHttpService(mContext)
-                        .getChoiceMenus(params)
-                        .compose(new RetrofitUtil.CommonOptions<MenuResult>())
-                        .subscribe(new CodeHandledSubscriber<MenuResult>() {
-                            @Override
-                            public void onError(ApiException apiException) {
-
-                            }
-
-                            @Override
-                            public void onBusinessNext(MenuResult msg) {
-                                if (msg != null && msg.getData() != null && msg.getData().size() > 0) {
-                                    for (Menu menu : msg.getData()) {
-                                        if ("location".equals(menu.getType())) {
-                                            locationDatas = menu.getData();
-                                            String selectedItemPath = String.format("%s.selected_item", FileUtil.reportJavaScriptDataPath(WebApplicationActivityV6.this, groupID, "6", getIntent().getStringExtra(URLs.kObjectId)));
-                                            if (!new File(selectedItemPath).exists()) {
-                                                if (locationDatas != null) {
-                                                    tvLocationAddress.setText(menu.getCurrent_location().getDisplay());
-                                                }
-                                            }
-                                        }
-                                        if ("faster_select".equals(menu.getType())) {
-                                            menuDatas = menu.getData();
-                                        }
+                try {
+                    Response<MenuResult> menuResult = RetrofitUtil.getHttpService(mContext).getChoiceMenus(params).execute();
+                    msg = menuResult.body();
+                    if (msg != null && msg.getData() != null && msg.getData().size() > 0) {
+                        for (Menu menu : msg.getData()) {
+                            if ("location".equals(menu.getType())) {
+                                locationDatas = menu.getData();
+                                String selectedItemPath = String.format("%s.selected_item", FileUtil.reportJavaScriptDataPath(WebApplicationActivityV6.this, groupID, "6", getIntent().getStringExtra(URLs.kObjectId)));
+                                if (!new File(selectedItemPath).exists()) {
+                                    if (locationDatas != null) {
+                                        selectedItem = menu.getCurrent_location().getDisplay();
                                     }
-                                }
-                                //是否有筛选数据，有就显示出来
-                                if (locationDatas != null && locationDatas.size() > 0) {
-                                    rlAddressFilter.setVisibility(View.VISIBLE);
-                                    LogUtil.d("location", locationDatas.size() + "");
                                 } else {
-                                    rlAddressFilter.setVisibility(View.GONE);
-                                }
-                                if (menuDatas != null && menuDatas.size() > 0) {
-                                    LogUtil.d("faster_select", menuDatas.size() + "");
-                                    filterRecyclerView.setVisibility(View.VISIBLE);
-                                    viewLine.setVisibility(View.VISIBLE);
-                                    menuAdpter.setData(menuDatas);
-                                } else {
-                                    filterRecyclerView.setVisibility(View.GONE);
-                                    viewLine.setVisibility(View.GONE);
+                                    selectedItem = FileUtil.readFile(selectedItemPath);
                                 }
                             }
-
-                            @Override
-                            public void onCompleted() {
-
+                            if ("faster_select".equals(menu.getType())) {
+                                menuDatas = menu.getData();
                             }
-                        });
+                        }
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        tvLocationAddress.setText(msg.getData().get(0).getCurrent_location().getDisplay());
+                        //是否有筛选数据，有就显示出来
+                        if (locationDatas != null && locationDatas.size() > 0) {
+                            rlAddressFilter.setVisibility(View.VISIBLE);
+                            LogUtil.d("location", locationDatas.size() + "");
+                        } else {
+                            rlAddressFilter.setVisibility(View.GONE);
+                        }
+                        if (menuDatas != null && menuDatas.size() > 0) {
+                            LogUtil.d("faster_select", menuDatas.size() + "");
+                            filterRecyclerView.setVisibility(View.VISIBLE);
+                            viewLine.setVisibility(View.VISIBLE);
+                            menuAdpter.setData(menuDatas);
+                        } else {
+                            filterRecyclerView.setVisibility(View.GONE);
+                            viewLine.setVisibility(View.GONE);
+                        }
+                    }
+                });
             }
+            return selectedItem;
         }
     }
 

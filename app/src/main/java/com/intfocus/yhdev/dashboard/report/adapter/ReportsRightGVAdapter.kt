@@ -56,7 +56,7 @@ class ReportsRightGVAdapter(var ctx: Context, var datas: List<GroupDataBean>?) :
 
         viewTag.llItem.setOnClickListener {
             EventBus.getDefault().post(DashboardItemBean(datas!![position].obj_link!!, datas!![position].obj_title!!,
-                    datas!![position].obj_id!!, datas!![position].template_id!!, 2))
+                    datas!![position].obj_id!!, datas!![position].template_id!!, "2"))
         }
         return convertView
     }

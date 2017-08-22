@@ -61,7 +61,7 @@ class OperationalWarningAdapter(val context: Context,
         holder.tvNnumberCompare.typeface = mTypeface
         holder.rlNumberItem.setOnClickListener {
             EventBus.getDefault().post(DashboardItemBean(itemData.obj_link!!, itemData.obj_title!!,
-                    itemData.obj_id!!, itemData.template_id!!, 1))
+                    itemData.obj_id!!, itemData.template_id!!, "1"))
         }
     }
 
