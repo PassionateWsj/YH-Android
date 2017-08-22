@@ -135,6 +135,7 @@ public class WebApplicationActivityV6 extends BaseActivity implements OnPageChan
      * 地址选择
      */
     private List<MenuItem> locationDatas;
+    private String selectedItem;
     /**
      * 菜单
      */
@@ -395,16 +396,18 @@ public class WebApplicationActivityV6 extends BaseActivity implements OnPageChan
             }
 
             addStr = addStr.substring(0, addStr.length() - 2);
-            String selectedItemPath = String.format("%s.selected_item", FileUtil.reportJavaScriptDataPath(WebApplicationActivityV6.this, groupID, templateID, reportID));
+            String selectedItemPath = String.format("%s.selected_item", FileUtil.reportJavaScriptDataPath(WebApplicationActivityV6.this, groupID, "6", getIntent().getStringExtra(URLs.kObjectId)));
             FileUtil.writeFile(selectedItemPath, addStr);
 
-            animLoading.setVisibility(View.VISIBLE);
-            mWebView.post(new Runnable() {
-                @Override
-                public void run() {
-                    loadHtml();
-                }
-            });
+            mWebView.loadUrl("javascript:window.MobileBridge.responseRealTimeReportMenu('" + addStr + "')");
+
+//            animLoading.setVisibility(View.VISIBLE);
+//            mWebView.post(new Runnable() {
+//                @Override
+//                public void run() {
+//                    loadHtml();
+//                }
+//            });
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -630,8 +633,8 @@ public class WebApplicationActivityV6 extends BaseActivity implements OnPageChan
             // format: /mobile/v1/group/:group_id/template/:template_id/report/:report_id
             // deprecated
             // format: /mobile/report/:report_id/group/:group_id
-            templateID = TextUtils.split(link, "/")[6];
-            reportID = TextUtils.split(link, "/")[8];
+            templateID = "6";
+            reportID = getIntent().getStringExtra(URLs.kObjectId);
             String urlPath = format(link.replace("%@", "%s"), groupID);
             urlString = String.format("%s%s", K.kBaseUrl, urlPath);
             webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
@@ -653,7 +656,7 @@ public class WebApplicationActivityV6 extends BaseActivity implements OnPageChan
                 @Override
                 public void run() {
                     reportDataState = ApiHelper.reportData(mAppContext, groupID, templateID, reportID);
-                    String jsFileName = "";
+                    String jsFileName;
 
                     // 模板 4 的 groupID 为 0
                     if (Integer.valueOf(templateID) == 4) {
@@ -1110,8 +1113,6 @@ public class WebApplicationActivityV6 extends BaseActivity implements OnPageChan
 
         @JavascriptInterface
         public void callRealTimeReportMenu(final String params) {
-            LogUtil.d("hjjzz", "params:::" + params);
-
             if (!TextUtils.isEmpty(params)) {
                 RetrofitUtil.getHttpService(mContext)
                         .getChoiceMenus(params)
@@ -1128,7 +1129,7 @@ public class WebApplicationActivityV6 extends BaseActivity implements OnPageChan
                                     for (Menu menu : msg.getData()) {
                                         if ("location".equals(menu.getType())) {
                                             locationDatas = menu.getData();
-                                            String selectedItemPath = String.format("%s.selected_item", FileUtil.reportJavaScriptDataPath(WebApplicationActivityV6.this, groupID, templateID, reportID));
+                                            String selectedItemPath = String.format("%s.selected_item", FileUtil.reportJavaScriptDataPath(WebApplicationActivityV6.this, groupID, "6", getIntent().getStringExtra(URLs.kObjectId)));
                                             if (!new File(selectedItemPath).exists()) {
                                                 if (locationDatas != null) {
                                                     tvLocationAddress.setText(menu.getCurrent_location().getDisplay());
@@ -1238,7 +1239,7 @@ public class WebApplicationActivityV6 extends BaseActivity implements OnPageChan
         if (FileUtil.hasSdcard()) {
             Uri imageUri;
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                imageUri = FileProvider.getUriForFile(this, "com.intfocus.yonghuitest.fileprovider", new File(Environment.getExternalStorageDirectory(), "upload.jpg"));
+                imageUri = FileProvider.getUriForFile(this, "com.intfocus.yhdev.fileprovider", new File(Environment.getExternalStorageDirectory(), "upload.jpg"));
                 intentFromCapture.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 intentFromCapture.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
             } else {

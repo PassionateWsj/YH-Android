@@ -100,7 +100,6 @@ public class StoreSelectorActivity extends BaseActivity {
                             mListView.setAdapter(mArrayAdapter);
                             mListView.setTextFilterEnabled(true);
 
-
                             /*
                              * 搜索框事件监听
                              */

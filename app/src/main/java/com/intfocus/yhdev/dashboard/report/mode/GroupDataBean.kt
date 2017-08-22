@@ -35,7 +35,7 @@ class GroupDataBean {
     var obj_id: String? = null
     var obj_title: String? = null
     var obj_link: String? = null
-    var publicly: Int = 0
+    var publicly: Boolean = false
     var icon: String? = null
     var icon_link: String? = null
     var group_id: Int = 0
