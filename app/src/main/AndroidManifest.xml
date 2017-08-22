@@ -35,13 +35,12 @@
     <uses-permission android:name="android.permission.READ_LOGS"/>
     <!-- 获取logcat日志 -->
     <application
-        android:name="com.intfocus.yhdev.YHApplication"
+        android:name=".YHApplication"
         android:allowBackup="true"
         android:icon="@mipmap/launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme"
         tools:replace="android:icon,android:theme">
-
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="com.intfocus.yhdev.fileprovider"
@@ -63,13 +62,13 @@
             </intent-filter>
         </service>
 
-        <!--定位服务-->
-        <service android:name="com.intfocus.yhdev.service.LocationService" />
+        <!-- 定位服务 -->
+        <service android:name=".service.LocationService"/>
         <!-- 高德地图 -->
         <service android:name="com.amap.api.location.APSService"/>
 
         <activity
-            android:name="com.intfocus.yhdev.login.LauncherActivity"
+            android:name=".login.LauncherActivity"
             android:screenOrientation="portrait"
             android:theme="@style/LauncherTheme">
             <intent-filter>
@@ -81,169 +80,169 @@
 
         <!-- 登录 -->
         <activity
-            android:name="com.intfocus.yhdev.login.LoginActivity"
+            android:name=".login.LoginActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
 
         <!-- 模板三 -->
         <activity
-            android:name="com.intfocus.yhdev.subject.HomeTricsActivity"
+            android:name=".subject.HomeTricsActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
 
         <!-- 筛选 -->
         <activity
-            android:name="com.intfocus.yhdev.subject.SelectorTreeActivity"
+            android:name=".subject.SelectorTreeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
 
         <!-- 问题反馈 -->
         <activity
-            android:name="com.intfocus.yhdev.dashboard.mine.FeedbackActivity"
+            android:name=".dashboard.mine.FeedbackActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar"/>
         <!-- 公告详情 -->
         <activity
-            android:name="com.intfocus.yhdev.dashboard.mine.NoticeContentActivity"
+            android:name=".dashboard.mine.NoticeContentActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
         <!-- 模板五 -->
         <activity
-            android:name="com.intfocus.yhdev.subject.TableActivity"
+            android:name=".subject.TableActivity"
             android:screenOrientation="fullSensor"
             android:theme="@style/AppTheme"/>
         <!-- 忘记密码 -->
         <activity
-            android:name="com.intfocus.yhdev.login.ForgetPasswordActivity"
+            android:name=".login.ForgetPasswordActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
         <!-- 修改密码页 -->
         <activity
-            android:name="com.intfocus.yhdev.dashboard.mine.PassWordAlterActivity"
+            android:name=".dashboard.mine.PassWordAlterActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
         <!-- 文章收藏页 -->
         <activity
-            android:name="com.intfocus.yhdev.dashboard.mine.FavoriteActivity"
+            android:name=".dashboard.mine.FavoriteActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
         <!-- 筛选界面 -->
         <activity
-            android:name="com.intfocus.yhdev.filter.FilterActivity"
+            android:name=".filter.FilterActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
         <!-- 二维码录入 -->
         <!-- 扫码页 -->
         <activity
-            android:name="com.intfocus.yhdev.scanner.BarCodeScannerActivity"
+            android:name=".scanner.BarCodeScannerActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar"
             android:windowSoftInputMode="adjustResize"/>
         <!-- 个人信息 -->
         <activity
-            android:name="com.intfocus.yhdev.setting.SettingActivity"
+            android:name=".setting.SettingActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme2"/>
         <!-- 个人信息页信息展示 -->
         <activity
-            android:name="com.intfocus.yhdev.setting.SettingListActivity"
+            android:name=".setting.SettingListActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
         <!-- 选项配置 -->
         <activity
-            android:name="com.intfocus.yhdev.setting.SettingPreferenceActivity"
+            android:name=".setting.SettingPreferenceActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
 
         <!-- 主页面 -->
         <activity
-            android:name="com.intfocus.yhdev.dashboard.DashboardActivity"
+            android:name=".dashboard.DashboardActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppDashboardTheme"/>
 
         <!-- 模板二/主题页面 -->
         <activity
-            android:name="com.intfocus.yhdev.subject.SubjectActivity"
+            android:name=".subject.SubjectActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="fullSensor"
             android:theme="@style/AppTheme"/>
 
         <!-- 原生模板二/主题页面 -->
         <activity
-            android:name="com.intfocus.yhdev.subject.template_v2.ModularTwo_Mode_Activity"
+            android:name=".subject.template_v2.ModularTwo_Mode_Activity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
 
         <!-- 原生模板二/表格页面 -->
         <activity
-            android:name="com.intfocus.yhdev.subject.template_v2.ModularTwo_SubTableActivity"
+            android:name=".subject.template_v2.ModularTwo_SubTableActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
         <!-- 外部链接 -->
         <activity
-            android:name="com.intfocus.yhdev.subject.WebApplicationActivity"
+            android:name=".subject.WebApplicationActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
         <!-- 模版六外部链接 -->
         <activity
-            android:name="com.intfocus.yhdev.subject.WebApplicationActivityV6"
+            android:name=".subject.WebApplicationActivityV6"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
         <!-- 评论页 -->
         <activity
-            android:name="com.intfocus.yhdev.CommentActivity"
+            android:name=".CommentActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
         <!-- 扫码结果页 -->
         <activity
-            android:name="com.intfocus.yhdev.scanner.ScannerResultActivity"
+            android:name=".scanner.ScannerResultActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
         <!-- 门店选择页 -->
         <activity
-            android:name="com.intfocus.yhdev.scanner.StoreSelectorActivity"
+            android:name=".scanner.NewStoreSelectorActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
         <!-- 锁屏密码设置 -->
         <activity
-            android:name="com.intfocus.yhdev.screen_lock.InitPassCodeActivity"
+            android:name=".screen_lock.InitPassCodeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
         <!-- 锁屏登录 -->
         <activity
-            android:name="com.intfocus.yhdev.screen_lock.ConfirmPassCodeActivity"
+            android:name=".screen_lock.ConfirmPassCodeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
         <!-- 更新日志 -->
         <activity
-            android:name="com.intfocus.yhdev.setting.ThursdaySayActivity"
+            android:name=".setting.ThursdaySayActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
         <!-- 开发者选项 -->
         <activity
-            android:name="com.intfocus.yhdev.setting.DeveloperActivity"
+            android:name=".setting.DeveloperActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
         <activity
-            android:name="com.intfocus.yhdev.wxapi.WXEntryActivity"
+            android:name=".wxapi.WXEntryActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
-        <activity android:name="com.intfocus.yhdev.setting.ShowListMsgActivity"/>
-        <activity android:name="com.intfocus.yhdev.dashboard.mine.InstituteContentActivity"/>
+        <activity android:name=".setting.ShowListMsgActivity"/>
+        <activity android:name=".dashboard.mine.InstituteContentActivity"/>
         <activity
-            android:name="com.intfocus.yhdev.dashboard.mine.activity.ShowPushMessageActivity"
+            android:name=".dashboard.mine.activity.ShowPushMessageActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar"/>
-        <!--消息页-->
+        <!-- 消息页 -->
         <activity
-            android:name="com.intfocus.yhdev.dashboard.mine.activity.PushMessageContentActivity"
+            android:name=".dashboard.mine.activity.PushMessageContentActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar"/>
-        <!--引导页-->
+        <!-- 引导页 -->
         <activity
-            android:name="com.intfocus.yhdev.login.GuideActivity"
+            android:name=".login.GuideActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar"/>
 
@@ -262,5 +261,7 @@
         <meta-data
             android:name="UMENG_CHANNEL"
             android:value="Umeng"/>
+
     </application>
+
 </manifest>

@@ -118,8 +118,8 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
                 e.printStackTrace()
             }
         })
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { }
 
         // RxBus通知消息界面 ShowPushMessageActivity 更新数据
@@ -300,6 +300,7 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
     }
 
     fun getStoreList() {
+        var storeItemDao = OrmDBHelper.getInstance(this).storeItemDao
         RetrofitUtil.getHttpService(applicationContext).getStoreList(mUserSP.getString("user_num", "0"))
                 .compose(RetrofitUtil.CommonOptions<StoreListResult>())
                 .subscribe(object : CodeHandledSubscriber<StoreListResult>() {
@@ -311,7 +312,24 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
 
                     override fun onBusinessNext(data: StoreListResult) {
                         if (data.data != null && data.data!!.size > 0) {
+                            var mStoreInfoSP = getSharedPreferences("StoreInfo", Context.MODE_PRIVATE)
+                            if ("".equals(mStoreInfoSP.getString(URLs.kStore, ""))) {
+                                var mStoreInfoSPEdit = mStoreInfoSP.edit()
+                                mStoreInfoSPEdit.putString(URLs.kStore, data.data!![0].name)
+                                mStoreInfoSPEdit.putString(URLs.kStoreIds, data.data!![0].id)
+                                mStoreInfoSPEdit.commit()
+                            }
                             storeList = data.data
+                            Thread(Runnable {
+                                try {
+                                    storeItemDao.executeRaw("delete from store_data")
+                                    for (item in storeList!!) {
+                                        storeItemDao.createIfNotExists(item)
+                                    }
+                                } catch(e: SQLException) {
+                                    e.printStackTrace()
+                                }
+                            }).start()
                         }
                     }
                 })
@@ -438,8 +456,7 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
         var logParams = JSONObject()
         if ("-1".equals(templateId)) {
             logParams.put(URLs.kAction, "点击/" + objectTypeName[objectType.toInt() - 1] + "/链接")
-        }
-        else {
+        } else {
             logParams.put(URLs.kAction, "点击/" + objectTypeName[objectType.toInt() - 1] + "/报表")
         }
         logParams.put(URLs.kObjTitle, objTitle)

@@ -2,21 +2,18 @@ package com.intfocus.yhdev.scanner
 
 import android.content.Context
 import com.google.gson.Gson
-import com.intfocus.yhdev.data.response.scanner.StoreListResult
-import com.intfocus.yhdev.net.ApiException
-import com.intfocus.yhdev.net.CodeHandledSubscriber
-import com.intfocus.yhdev.net.RetrofitUtil
-import com.intfocus.yhdev.util.*
+import com.intfocus.yhdev.util.FileUtil
+import com.intfocus.yhdev.util.HttpUtil
+import com.intfocus.yhdev.util.K
 import com.zbl.lib.baseframe.core.AbstractMode
 import org.greenrobot.eventbus.EventBus
-import org.json.JSONObject
 import org.xutils.common.Callback
-import java.io.File
-import java.util.HashMap
-import org.xutils.http.RequestParams
 import org.xutils.common.Callback.CancelledException
-import org.xutils.x
 import org.xutils.common.task.PriorityExecutor
+import org.xutils.http.RequestParams
+import org.xutils.x
+import java.io.File
+import java.util.*
 
 
 /**
@@ -33,50 +30,13 @@ class ScannerMode(var ctx: Context) : AbstractMode() {
     var store_id = ""
     var currentBarcode = ""
 
-    fun requestData(barcode: String) {
-        RetrofitUtil.getHttpService(ctx).getStoreList(mUserSP.getString("user_num", "0"))
-                .compose(RetrofitUtil.CommonOptions<StoreListResult>())
-                .subscribe(object : CodeHandledSubscriber<StoreListResult>() {
-                    override fun onCompleted() {
-                    }
 
-                    override fun onError(apiException: ApiException?) {
-                        val result1 = ScannerRequest(false, 400)
-                        result1.errorInfo = apiException!!.message.toString()
-                        EventBus.getDefault().post(result1)
-                    }
-
-                    override fun onBusinessNext(data: StoreListResult) {
-                        var cachedPath = FileUtil.dirPath(ctx, K.kCachedDirName, K.kBarCodeResultFileName)
-                        var cachedJSON: JSONObject
-                        var storeJSON = JSONObject()
-                        cachedJSON = FileUtil.readConfigFile(cachedPath)
-                        var flag = false
-                        var storeName: String
-                        if (cachedJSON.has(URLs.kStore) && cachedJSON.getJSONObject(URLs.kStore).has("id") &&
-                                data != null) {
-                            storeName = cachedJSON.getJSONObject(URLs.kStore).getString("name")
-                            for (i in 0..data.data!!.size - 1) {
-                                if (data.data!![i].name == storeName) {
-                                    flag = true
-                                }
-                            }
-                        }
-
-                        if (!flag) {
-                            storeJSON.put("id", data!!.data!![0].id)
-                            storeJSON.put("name", data!!.data!![0].name)
-                            cachedJSON.put(URLs.kStore, storeJSON)
-                            FileUtil.writeFile(cachedPath, cachedJSON.toString())
-                        }
-
-                        currentBarcode = barcode
-                        store_id = cachedJSON.getJSONObject(URLs.kStore).getString("id")
-                        jsUrl = String.format(K.kBarCodeScanAPIDataPath, K.kBaseUrl, store_id, barcode)
-                        htmlUrl = String.format(K.kBarCodeScanAPIViewPath, K.kBaseUrl, store_id, barcode)
-                        requestData()
-                    }
-                })
+    fun requestData(barcode: String, storeId: String) {
+        currentBarcode = barcode
+        jsUrl = String.format(K.kBarCodeScanAPIDataPath, K.kBaseUrl, storeId, barcode)
+        htmlUrl = String.format(K.kBarCodeScanAPIViewPath, K.kBaseUrl, storeId, barcode)
+        store_id = storeId
+        requestData()
     }
 
     override fun requestData() {

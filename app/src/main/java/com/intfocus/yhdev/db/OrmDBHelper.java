@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.intfocus.yhdev.dashboard.mine.bean.PushMessageBean;
+import com.intfocus.yhdev.data.response.scanner.StoreItem;
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.support.ConnectionSource;
@@ -54,6 +55,9 @@ public class OrmDBHelper extends OrmLiteSqliteOpenHelper {
         try {
             // 创建一张 PushMessageBean 的表
             TableUtils.createTable(connectionSource, PushMessageBean.class);
+
+            // 创建一张 StoreItem 的表
+            TableUtils.createTable(connectionSource, StoreItem.class);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -73,5 +77,10 @@ public class OrmDBHelper extends OrmLiteSqliteOpenHelper {
     public Dao<PushMessageBean, Long> getPushMessageDao() throws SQLException {
         return getDao(PushMessageBean.class);
     }
+
+    public Dao<StoreItem, Long> getStoreItemDao() throws SQLException {
+        return getDao(StoreItem.class);
+    }
+
 
 }
