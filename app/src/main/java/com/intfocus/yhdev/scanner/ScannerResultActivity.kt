@@ -219,14 +219,14 @@ class ScannerResultActivity : AbstractActivity<ScannerMode>() {
     }
 
     private fun actionLaunchStoreSelectorActivity() {
-        val intent = Intent(this, NewStoreSelectorActivity::class.java)
+        val intent = Intent(this, StoreSelectorActivity::class.java)
         intent.putExtra(URLs.kStore, mStoreName)
         startActivityForResult(intent, REQUEST_CODE_CHOOSE)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_CODE_CHOOSE && resultCode == NewStoreSelectorActivity.RESULT_CODE_CHOOSE) {
+        if (requestCode == REQUEST_CODE_CHOOSE && resultCode == StoreSelectorActivity.RESULT_CODE_CHOOSE) {
             if (data != null) {
                 mStoreName = data.getStringExtra(URLs.kStore)
                 mStoreId = data.getStringExtra(URLs.kStoreIds)

@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".CommentActivity">
+                xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/ll_store_selector_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context=".CommentActivity">
 
     <RelativeLayout
         android:id="@+id/actionBar"
@@ -14,18 +15,12 @@
         <ImageView
             android:id="@+id/bannerBack"
             style="@style/BannerBackButton"
-            android:onClick="dismissActivity" />
-
-        <TextView
-            android:id="@+id/bannerBackText"
-            android:layout_toRightOf="@id/bannerBack"
-            style="@style/BannerBackText"
-            android:onClick="dismissActivity" />
+            android:onClick="backPress"/>
 
         <TextView
             android:id="@+id/bannerTitle"
-            android:text="筛选列表"
-            style="@style/BannerTitle" />
+            style="@style/BannerTitle"
+            android:text="筛选列表"/>
     </RelativeLayout>
 
     <RelativeLayout
@@ -33,20 +28,44 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/actionBar">
 
-        <SearchView
-            android:id="@+id/storeSearchView"
+        <LinearLayout
+            android:id="@+id/llStoreSearchView"
             android:layout_width="match_parent"
             android:layout_height="30dp"
-            android:layout_marginLeft="-15dp"
-            android:background="@color/white"
-            android:iconifiedByDefault="false"
-            android:queryHint="搜索"/>
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:src="@drawable/scanner_search"/>
+
+            <EditText
+                android:id="@+id/storeSearchView"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="10"
+                android:background="@color/white"
+                android:hint="搜索"
+                android:imeOptions="actionSearch"
+                android:singleLine="true"/>
+
+            <TextView
+                android:id="@+id/tv_store_selector_search"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="搜索"/>
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/store_list_head"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/storeSearchView"
+            android:layout_below="@id/llStoreSearchView"
             android:orientation="vertical">
 
             <TextView
