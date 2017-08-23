@@ -169,7 +169,7 @@ public class WebApplicationActivityV6 extends BaseActivity implements OnPageChan
 
         mWebFrameLayout = (FrameLayout) findViewById(R.id.browser);
         mWebView = new WebView(getApplicationContext());
-        mWebFrameLayout.addView(mWebView);
+        mWebFrameLayout.addView(mWebView, 0);
 
         llFilter = (LinearLayout) findViewById(R.id.ll_filter);
         rlAddressFilter = (RelativeLayout) findViewById(R.id.rl_address_filter);

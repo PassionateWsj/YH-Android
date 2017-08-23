@@ -41,7 +41,7 @@ public class CommentActivity extends BaseActivity {
 
         mWebFrameLayout = (FrameLayout) findViewById(R.id.browser);
         mWebView = new WebView(getApplicationContext());
-        mWebFrameLayout.addView(mWebView);
+        mWebFrameLayout.addView(mWebView, 0);
 
         initSubWebView();
 

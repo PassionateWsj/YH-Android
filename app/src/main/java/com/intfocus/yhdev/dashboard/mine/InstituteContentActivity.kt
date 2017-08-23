@@ -36,7 +36,7 @@ class InstituteContentActivity : Activity() {
 
     fun initWebView() {
         mWebView = WebView(this.applicationContext)
-        wv_institute_view.addView(mWebView)
+        wv_institute_view.addView(mWebView, 0)
 
         var webSettings = mWebView.settings
         webSettings.javaScriptEnabled = true

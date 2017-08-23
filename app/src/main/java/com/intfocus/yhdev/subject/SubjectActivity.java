@@ -199,7 +199,7 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
     private void initView() {
         mWebFrameLayout = (FrameLayout) findViewById(R.id.browser);
         mWebView = new WebView(getApplicationContext());
-        mWebFrameLayout.addView(mWebView);
+        mWebFrameLayout.addView(mWebView, 0);
 
         iv_BannerBack = (ImageView) findViewById(R.id.iv_banner_back);
         tv_BannerBack = (TextView) findViewById(R.id.tv_banner_back);

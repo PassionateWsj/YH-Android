@@ -153,7 +153,7 @@ class ScannerResultActivity : AbstractActivity<ScannerMode>() {
     fun initWebView() {
         mWebFrameLayout = findViewById(R.id.wv_scanner_view) as FrameLayout
         mWebView = WebView(this.applicationContext)
-        mWebFrameLayout.addView(mWebView)
+        mWebFrameLayout.addView(mWebView,0)
 
         var webSettings = mWebView.settings
         webSettings.javaScriptEnabled = true
