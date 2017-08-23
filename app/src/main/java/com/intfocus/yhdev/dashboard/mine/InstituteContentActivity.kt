@@ -1,5 +1,6 @@
 package com.intfocus.yhdev.dashboard.mine
 
+import android.app.Activity
 import android.content.Context
 import android.os.Bundle
 import android.view.View
@@ -7,12 +8,12 @@ import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import com.intfocus.yhdev.R
-import com.intfocus.yhdev.base.BaseActivity
 import com.intfocus.yhdev.util.K
 import kotlinx.android.synthetic.main.activity_institute_content.*
 
-class InstituteContentActivity : BaseActivity() {
+class InstituteContentActivity : Activity() {
     lateinit var ctx: Context
+    lateinit var mWebView: WebView
     var institute_id = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,9 +25,9 @@ class InstituteContentActivity : BaseActivity() {
         var intent = intent
         institute_id = intent.getStringExtra("id")
         tv_banner_title.text = "数据学院"
-        var link = String.format("%s/mobile/v2/user/%s/article/%s", K.kBaseUrl, mUserSP.getString(K.kUserId,"0").toString(), institute_id)
+        var link = String.format("%s/mobile/v2/user/%s/article/%s", K.kBaseUrl, mUserSP.getString(K.kUserId, "0").toString(), institute_id)
 //        var link = "https://ssl.sunny-tech.com/mobile_v2_group_165_template_2_report_67.html?from=groupmessage&isappinstalled=0";
-        wv_institute_view.loadUrl(link)
+        mWebView.loadUrl(link)
     }
 
     override fun onDestroy() {
@@ -34,11 +35,14 @@ class InstituteContentActivity : BaseActivity() {
     }
 
     fun initWebView() {
-        var webSettings = wv_institute_view.settings
+        mWebView = WebView(this.applicationContext)
+        wv_institute_view.addView(mWebView)
+
+        var webSettings = mWebView.settings
         webSettings.javaScriptEnabled = true
         webSettings.defaultTextEncodingName = "utf-8"
         webSettings.cacheMode = WebSettings.LOAD_NO_CACHE
-        wv_institute_view.setWebViewClient(object : WebViewClient() {
+        mWebView.setWebViewClient(object : WebViewClient() {
             override fun onPageFinished(view: WebView?, url: String?) {
                 anim_loading.visibility = View.GONE
                 super.onPageFinished(view, url)
@@ -54,7 +58,7 @@ class InstituteContentActivity : BaseActivity() {
     /*
      * 返回
      */
-    override fun dismissActivity(v: View) {
+    fun dismissActivity(v: View) {
         this@InstituteContentActivity.onBackPressed()
     }
 }

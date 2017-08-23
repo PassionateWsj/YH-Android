@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.intfocus.yhdev.base.BaseActivity;
@@ -28,6 +29,7 @@ public class CommentActivity extends BaseActivity {
     private String objectID;
     private String objectType;
     private int loadCount = 0;
+    private FrameLayout mWebFrameLayout;
 
     @Override
     @SuppressLint("SetJavaScriptEnabled")
@@ -36,7 +38,11 @@ public class CommentActivity extends BaseActivity {
         setContentView(R.layout.activity_comment);
 
         TextView mTitle = (TextView) findViewById(R.id.bannerTitle);
-        mWebView = (WebView) findViewById(R.id.browser);
+
+        mWebFrameLayout = (FrameLayout) findViewById(R.id.browser);
+        mWebView = new WebView(getApplicationContext());
+        mWebFrameLayout.addView(mWebView);
+
         initSubWebView();
 
         mWebView.requestFocus();

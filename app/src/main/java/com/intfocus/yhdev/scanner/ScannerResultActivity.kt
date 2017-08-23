@@ -13,6 +13,7 @@ import android.webkit.JavascriptInterface
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import android.widget.FrameLayout
 import android.widget.PopupWindow
 import com.intfocus.yhdev.R
 import com.intfocus.yhdev.util.FileUtil
@@ -35,6 +36,8 @@ import org.xutils.x
 class ScannerResultActivity : AbstractActivity<ScannerMode>() {
 
     lateinit var ctx: Context
+    lateinit var mWebView: WebView
+    lateinit var mWebFrameLayout: FrameLayout
     var barcode = ""
     lateinit var popupWindow: PopupWindow
     lateinit var mStoreName: String
@@ -66,6 +69,7 @@ class ScannerResultActivity : AbstractActivity<ScannerMode>() {
     }
 
     private fun initData() {
+
         mStoreInfoSP = getSharedPreferences("StoreInfo", Context.MODE_PRIVATE)
         mStoreName = mStoreInfoSP.getString(URLs.kStore, "扫一扫")
         mStoreId = mStoreInfoSP.getString(URLs.kStoreIds, "")
@@ -139,20 +143,24 @@ class ScannerResultActivity : AbstractActivity<ScannerMode>() {
     fun loadHtml(result: ScannerRequest) {
 //        anim_loading.visibility = View.GONE
         if (result.isSuccess) {
-            wv_scanner_view.loadUrl("file:///" + result.htmlPath)
+            mWebView.loadUrl("file:///" + result.htmlPath)
         } else {
             ToastUtils.show(ctx, result.errorInfo)
-            wv_scanner_view.loadUrl(String.format("file:///%s/loading/%s.html", FileUtil.sharedPath(ctx), "400"))
+            mWebView.loadUrl(String.format("file:///%s/loading/%s.html", FileUtil.sharedPath(ctx), "400"))
         }
     }
 
     fun initWebView() {
-        var webSettings = wv_scanner_view.settings
+        mWebFrameLayout = findViewById(R.id.wv_scanner_view) as FrameLayout
+        mWebView = WebView(this.applicationContext)
+        mWebFrameLayout.addView(mWebView)
+
+        var webSettings = mWebView.settings
         webSettings.javaScriptEnabled = true
         webSettings.defaultTextEncodingName = "utf-8"
         webSettings.cacheMode = WebSettings.LOAD_NO_CACHE
-        wv_scanner_view.addJavascriptInterface(JavaScriptInterface(), URLs.kJSInterfaceName)
-        wv_scanner_view.setWebViewClient(object : WebViewClient() {
+        mWebView.addJavascriptInterface(JavaScriptInterface(), URLs.kJSInterfaceName)
+        mWebView.setWebViewClient(object : WebViewClient() {
             override fun onPageFinished(view: WebView?, url: String?) {
                 anim_loading.visibility = View.GONE
                 super.onPageFinished(view, url)

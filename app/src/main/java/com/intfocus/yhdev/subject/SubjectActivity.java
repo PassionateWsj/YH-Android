@@ -6,7 +6,6 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -22,6 +21,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +30,7 @@ import android.webkit.JavascriptInterface;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -45,7 +46,6 @@ import com.intfocus.yhdev.data.response.filter.Menu;
 import com.intfocus.yhdev.data.response.filter.MenuItem;
 import com.intfocus.yhdev.data.response.filter.MenuResult;
 import com.intfocus.yhdev.filter.MyFilterDialogFragment;
-import com.intfocus.yhdev.subject.selecttree.SelectItems;
 import com.intfocus.yhdev.util.ActionLogUtil;
 import com.intfocus.yhdev.util.ApiHelper;
 import com.intfocus.yhdev.util.FileUtil;
@@ -75,7 +75,6 @@ import org.xutils.x;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import static android.webkit.WebView.enableSlowWholeDocumentDraw;
@@ -134,6 +133,7 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
     private List<MenuItem> menuDatas;
     private FilterMenuAdapter menuAdpter;
     private FilterPopupWindow filterPopupWindow;
+    private FrameLayout mWebFrameLayout;
 
     @Override
     @SuppressLint("SetJavaScriptEnabled")
@@ -147,34 +147,173 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
         }
         setContentView(R.layout.activity_subject);
 
+
+        initData();
+
+        initView();
+
+        initAdapter();
+
+        initListener();
+
+        initActiongBar();
+
+        initSubWebView();
+
+        isWeiXinShared = false;
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                try {
+//                    Thread.sleep(3000);
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+//                runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        if (isOffline) {
+//                            mTitle.setText(bannerName + "(离线)");
+//                        }
+//                    }
+//                });
+//            }
+//        }).start();
+
+        mMyApp.setCurrentActivity(this);
+    }
+
+
+    /**
+     * 初始化数据
+     */
+    private void initData() {
         mContext = this;
         groupID = mUserSP.getString(URLs.kGroupId, "-2");
         userNum = mUserSP.getString(URLs.kUserNum, "not-set");
+    }
+
+    /**
+     * 初始化视图
+     */
+    private void initView() {
+        mWebFrameLayout = (FrameLayout) findViewById(R.id.browser);
+        mWebView = new WebView(getApplicationContext());
+        mWebFrameLayout.addView(mWebView);
 
         iv_BannerBack = (ImageView) findViewById(R.id.iv_banner_back);
         tv_BannerBack = (TextView) findViewById(R.id.tv_banner_back);
         iv_BannerSetting = (ImageView) findViewById(R.id.iv_banner_setting);
-        mWebView = (WebView) findViewById(R.id.browser);
         llFilter = (LinearLayout) findViewById(R.id.ll_filter);
         rlAddressFilter = (RelativeLayout) findViewById(R.id.rl_address_filter);
         tvLocationAddress = (TextView) findViewById(R.id.tv_location_address);
         tvAddressFilter = (TextView) findViewById(R.id.tv_address_filter);
         filterRecyclerView = (RecyclerView) findViewById(R.id.filter_recycler_view);
         viewLine = findViewById(R.id.view_line);
+        animLoading = (RelativeLayout) findViewById(R.id.anim_loading);
+        bannerView = (RelativeLayout) findViewById(R.id.rl_action_bar);
+        mTitle = (TextView) findViewById(R.id.tv_banner_title);
+    }
 
+    /**
+     * 初始化适配器
+     */
+    private void initAdapter() {
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false);
         filterRecyclerView.setLayoutManager(mLayoutManager);
         menuAdpter = new FilterMenuAdapter(mContext, menuDatas, this);
         filterRecyclerView.setAdapter(menuAdpter);
+    }
+
+    /**
+     * 初始化监听器
+     */
+    private void initListener() {
+        // 筛选按钮监听
         tvAddressFilter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 showDialogFragment();
             }
         });
+    }
 
-        initActiongBar();
-        initSubWebView();
+    private void initActiongBar() {
+        /*
+         * Intent Data || JSON Data
+         */
+        Intent intent = getIntent();
+        link = intent.getStringExtra(URLs.kLink);
+        templateID = intent.getStringExtra(URLs.kTemplatedId);
+        bannerName = intent.getStringExtra(URLs.kBannerName);
+        objectID = intent.getStringExtra(URLs.kObjectId);
+        objectType = intent.getStringExtra(URLs.kObjectType);
+        isInnerLink = link.indexOf("template") > 0 && link.indexOf("group") > 0;
+        mTitle.setText(bannerName);
+
+        if (link.toLowerCase().endsWith(".pdf")) {
+            mPDFView = (PDFView) findViewById(R.id.pdfview);
+            mPDFView.setVisibility(View.INVISIBLE);
+        }
+        iv_BannerSetting.setVisibility(View.VISIBLE);
+    }
+
+    /**
+     * WebView 初始化设置
+     *
+     * @return
+     */
+    public WebView initSubWebView() {
+
+        WebSettings webSettings = mWebView.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+        webSettings.setDefaultTextEncodingName("utf-8");
+
+        mWebView.getSettings().setDomStorageEnabled(true);
+        mWebView.getSettings().setAppCacheMaxSize(1024 * 1024 * 8);
+        String appCachePath = getApplicationContext().getCacheDir().getAbsolutePath();
+        mWebView.getSettings().setAppCachePath(appCachePath);
+        mWebView.getSettings().setAllowFileAccess(true);
+
+        mWebView.getSettings().setAppCacheEnabled(true);
+
+        mWebView.setDrawingCacheEnabled(true);
+        mWebView.setWebViewClient(new WebViewClient() {
+            @Override
+            public boolean shouldOverrideUrlLoading(android.webkit.WebView view, String url) {
+                //返回值是true的时候控制去WebView打开，为false调用系统浏览器或第三方浏览器
+                view.loadUrl(url);
+                return true;
+            }
+
+            @Override
+            public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                super.onPageStarted(view, url, favicon);
+                LogUtil.d("onPageStarted", String.format("%s - %s", URLs.timestamp(), url));
+            }
+
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
+                animLoading.setVisibility(View.GONE);
+                isWeiXinShared = true;
+                LogUtil.d("onPageFinished", String.format("%s - %s", URLs.timestamp(), url));
+            }
+
+            public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+                LogUtil.d("onReceivedError",
+                        String.format("errorCode: %d, description: %s, url: %s", errorCode, description,
+                                failingUrl));
+            }
+        });
+
+        mWebView.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                return false;
+            }
+        });
+        setWebViewLongListener(true);
 
         mWebView.setWebViewClient(new WebViewClient() {
             @Override
@@ -198,35 +337,35 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
                 LogUtil.d("onPageFinished", String.format("%s - %s", URLs.timestamp(), url));
 
                 // 报表缓存列表:是否把报表标题存储
-                if (reportDataState && url.contains("report_" + objectID)) {
-                    try {
-                        SharedPreferences sp = getSharedPreferences("subjectCache", MODE_PRIVATE);
-                        SharedPreferences.Editor editor = sp.edit();
-                        String cache = sp.getString("cache", "");
-                        JSONObject json;
-                        if (cache.equals("")) {
-                            json = new JSONObject();
-                            json.put("0", bannerName);
-                        } else {
-                            boolean isAdd = true;
-                            json = new JSONObject(cache);
-                            Iterator<String> it = json.keys();
-                            while (it.hasNext()) {
-                                String key = it.next();
-                                if (json.getString(key).equals(bannerName)) {
-                                    isAdd = false;
-                                }
-                            }
-                            if (isAdd) {
-                                json.put("" + json.length(), bannerName);
-                            }
-                        }
-                        editor.putString("cache", json.toString());
-                        editor.commit();
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
+//                if (reportDataState && url.contains("report_" + objectID)) {
+//                    try {
+//                        SharedPreferences sp = getSharedPreferences("subjectCache", MODE_PRIVATE);
+//                        SharedPreferences.Editor editor = sp.edit();
+//                        String cache = sp.getString("cache", "");
+//                        JSONObject json;
+//                        if (cache.equals("")) {
+//                            json = new JSONObject();
+//                            json.put("0", bannerName);
+//                        } else {
+//                            boolean isAdd = true;
+//                            json = new JSONObject(cache);
+//                            Iterator<String> it = json.keys();
+//                            while (it.hasNext()) {
+//                                String key = it.next();
+//                                if (json.getString(key).equals(bannerName)) {
+//                                    isAdd = false;
+//                                }
+//                            }
+//                            if (isAdd) {
+//                                json.put("" + json.length(), bannerName);
+//                            }
+//                        }
+//                        editor.putString("cache", json.toString());
+//                        editor.commit();
+//                    } catch (JSONException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
                 //是否有筛选数据，有就显示出来
                 if (locationDatas != null && locationDatas.size() > 0) {
                     rlAddressFilter.setVisibility(View.VISIBLE);
@@ -263,51 +402,7 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
                 loadHtml();
             }
         });
-
-        isWeiXinShared = false;
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Thread.sleep(3000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (isOffline) {
-                            mTitle.setText(bannerName + "(离线)");
-                        }
-                    }
-                });
-            }
-        }).start();
-
-        mMyApp.setCurrentActivity(this);
-    }
-
-    private void initActiongBar() {
-        bannerView = (RelativeLayout) findViewById(R.id.rl_action_bar);
-        mTitle = (TextView) findViewById(R.id.tv_banner_title);
-
-		/*
-         * Intent Data || JSON Data
-         */
-        Intent intent = getIntent();
-        link = intent.getStringExtra(URLs.kLink);
-        templateID = intent.getStringExtra(URLs.kTemplatedId);
-        bannerName = intent.getStringExtra(URLs.kBannerName);
-        objectID = intent.getStringExtra(URLs.kObjectId);
-        objectType = intent.getStringExtra(URLs.kObjectType);
-        isInnerLink = link.indexOf("template") > 0 && link.indexOf("group") > 0;
-        mTitle.setText(bannerName);
-
-        if (link.toLowerCase().endsWith(".pdf")) {
-            mPDFView = (PDFView) findViewById(R.id.pdfview);
-            mPDFView.setVisibility(View.INVISIBLE);
-        }
-        iv_BannerSetting.setVisibility(View.VISIBLE);
+        return mWebView;
     }
 
     /*
@@ -375,10 +470,6 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
             }
         });
         popupWindow.showAsDropDown(clickView);
-    }
-
-    public void onResume() {
-        super.onResume();
     }
 
     /**
@@ -668,15 +759,15 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
     }
 
     public void refresh(View v) {
-        if (isOffline) {
-            mTitle.setText(bannerName + "(离线)");
-        }
+//        if (isOffline) {
+//            mTitle.setText(bannerName + "(离线)");
+//        }
         animLoading.setVisibility(View.VISIBLE);
-        new refreshTask().execute();
+        new RefreshTask().execute();
     }
 
 
-    private class refreshTask extends AsyncTask<Void, Void, Void> {
+    private class RefreshTask extends AsyncTask<Void, Void, Void> {
         @Override
         protected Void doInBackground(Void... params) {
             /*
