@@ -307,7 +307,7 @@ public class ModularTwo_UnitTablesContModeFragment extends BaseModeFragment<Modu
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
-        if (dataEntity.data.get(position).sub_data.equals("[]")) {
+        if (dataEntity.data.get(position).sub_data == null) {
             ToastUtils.INSTANCE.showDefault(ctx, dataEntity.data.get(position).main_data[0]);
             return;
         }
@@ -396,18 +396,18 @@ public class ModularTwo_UnitTablesContModeFragment extends BaseModeFragment<Modu
      * @param index
      */
     public void startSubTable(int index) {
-        String sub_data = dataEntity.data.get(index).sub_data;
-        if (StringUtil.isEmpty(sub_data)) {
-            String tableName = (String) nameAdapter.getItem(index);
-            ToastUtil.showToast(ctx, tableName);
-            return;
-        }
-
         try {
+            JSONObject sub_data = new JSONObject(dataEntity.data.get(index).sub_data);
+            if (sub_data == null) {
+                String tableName = (String) nameAdapter.getItem(index);
+                ToastUtil.showToast(ctx, tableName);
+                return;
+            }
+
             JSONObject jsonObject = new JSONObject();
-            String header = Arrays.toString(dataEntity.head);
+            String header = sub_data.getJSONArray("head").toString();
             jsonObject.put("head", new JSONArray(header));
-            JSONArray array = new JSONArray(dataEntity.data.get(index).sub_data);
+            JSONArray array = sub_data.getJSONArray("data");
             jsonObject.put("data", array);
             String subdata = jsonObject.toString();
 

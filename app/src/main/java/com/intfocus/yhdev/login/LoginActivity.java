@@ -131,7 +131,7 @@ public class LoginActivity extends FragmentActivity {
         findViewById(R.id.applyRegistTv).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ToastUtils.INSTANCE.show(LoginActivity.this, "请到数据化运营平台申请开通账号");
+                ToastUtils.INSTANCE.show(LoginActivity.this, "请至OA->门户首页->权限申请处申请");
             }
         });
 
