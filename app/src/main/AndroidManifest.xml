@@ -3,8 +3,8 @@
           xmlns:tools="http://schemas.android.com/tools"
           package="com.intfocus.yhdev"
           android:hardwareAccelerated="false"
-          android:versionCode="650"
-          android:versionName="3.1.10">
+          android:versionCode="6"
+          android:versionName="1.0.26">
 
     <!-- 扫描条形码或二维码 -->
     <uses-permission android:name="android.permission.CAMERA"/>
@@ -31,6 +31,7 @@
     <uses-permission android:name="android.permission.RECORD_AUDIO"/> <!-- 允许程序录制音频 -->
     <uses-permission android:name="android.permission.GET_TASKS"/> <!-- 得到当前运行的activity名字 -->
     <!-- 5.0 及以上系统不可使用 -->
+
     <!-- 可选 -->
     <uses-permission android:name="android.permission.READ_LOGS"/>
     <!-- 获取logcat日志 -->
