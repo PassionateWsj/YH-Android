@@ -764,6 +764,15 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
         }
 
         @JavascriptInterface
+        public String paste() {
+            ClipboardManager clipboardManager = (ClipboardManager)getSystemService(Context.CLIPBOARD_SERVICE);
+            if (clipboardManager.hasPrimaryClip()){
+                return clipboardManager.getPrimaryClip().getItemAt(0).getText().toString();
+            }
+            return "粘贴失败, 请确认内容是否已复制";
+        }
+
+        @JavascriptInterface
         public void goBack(String info) {
             mWebView.goBack();
         }
