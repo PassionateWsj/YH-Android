@@ -91,12 +91,8 @@ public class YHApplication extends Application {
          *  初始化 OpenUDID, 设备唯一化
          */
         OpenUDID_manager.sync(getApplicationContext());
+//
 
-        if (mSettingSP.getInt("Version", 0) != packageInfo.versionCode) {
-            mUserSP.edit().clear().commit();
-            mSettingSP.edit().clear().commit();
-            new FileUtil.CacheCleanAsync(appContext, "new-install").execute();
-        }
 
         /*
          *  手机待机再激活时发送开屏广播

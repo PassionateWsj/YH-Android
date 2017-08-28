@@ -25,6 +25,10 @@ import com.intfocus.yhdev.net.CodeHandledSubscriber;
 import com.intfocus.yhdev.net.RetrofitUtil;
 import com.intfocus.yhdev.subject.selecttree.SelectItems;
 
+import org.apache.commons.io.FileUtils;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -37,10 +41,6 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
-
-import org.apache.commons.io.FileUtils;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import static com.intfocus.yhdev.util.K.kUserId;
 
@@ -350,6 +350,7 @@ public class FileUtil {
      * @param fileName 静态文件名称
      */
     public static void checkAssets(Context mContext, String fileName, boolean isInAssets) {
+        InputStream zipStream = null;
         try {
             String sharedPath = FileUtil.sharedPath(mContext);
             String zipFileName = String.format("%s.zip", fileName);
@@ -363,7 +364,74 @@ public class FileUtil {
                 FileUtil.copyAssetFile(mContext, zipFileName, zipFilePath);
             }
 
-            InputStream zipStream = new FileInputStream(zipFilePath);
+            zipStream = mContext.getApplicationContext().getAssets().open(zipFileName);
+//            InputStream zipStream = new FileInputStream(zipFilePath);
+            String md5String = FileUtil.MD5(zipStream);
+            String keyName = String.format("local_%s_md5", fileName);
+
+            boolean isShouldUnZip = true;
+            isShouldUnZip = !(mAssetsSP.getString(keyName, "0").equals("0") && mAssetsSP.getString(keyName, "0").equals(md5String));
+
+
+            if (isShouldUnZip) {
+                Log.i("checkAssets", String.format("%s[%s] != %s", zipFileName, keyName, md5String));
+
+                String folderPath = sharedPath;
+                if (isInAssets) {
+                    if (fileName.equals("icons")) {
+                        fileName = "images";
+                    }
+                    folderPath = String.format("%s/assets/%s/", sharedPath, fileName);
+                } else {
+                    File file = new File(zipFolderPath);
+                    if (file.exists()) {
+                        FileUtils.deleteDirectory(file);
+                    }
+                }
+
+                // zipStream = mContext.getApplicationContext().getAssets().open(zipName);
+                zipStream = new FileInputStream(zipFilePath);
+                FileUtil.unZip(zipStream, folderPath, true);
+                Log.i("unZip", String.format("%s, %s", zipFileName, md5String));
+
+                mAssetsSPEdit.putString(keyName, md5String).commit();
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (zipStream != null) {
+                try {
+                    zipStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    /**
+     * 检测sharedPath/{assets.zip, loading.zip} md5值与缓存文件中是否相等
+     *
+     * @param mContext 上下文
+     * @param fileName 静态文件名称
+     */
+    public static void unZipAssets(Context mContext, String fileName, boolean isInAssets) {
+        try {
+            String sharedPath = FileUtil.sharedPath(mContext);
+            String zipFileName = String.format("%s.zip", fileName);
+            SharedPreferences mAssetsSP = mContext.getSharedPreferences("AssetsMD5", Context.MODE_PRIVATE);
+            SharedPreferences.Editor mAssetsSPEdit = mAssetsSP.edit();
+
+            // InputStream zipStream = mContext.getApplicationContext().getAssets().open(zipName);
+            String zipFilePath = String.format("%s/%s", sharedPath, zipFileName);
+            String zipFolderPath = String.format("%s/%s", sharedPath, fileName);
+            if (!(new File(zipFilePath)).exists()) {
+                FileUtil.copyAssetFile(mContext, zipFileName, zipFilePath);
+            }
+
+            InputStream zipStream = mContext.getApplicationContext().getAssets().open(zipFileName);
+//            InputStream zipStream = new FileInputStream(zipFilePath);
             String md5String = FileUtil.MD5(zipStream);
             String keyName = String.format("local_%s_md5", fileName);
 
@@ -717,7 +785,7 @@ public class FileUtil {
             String sharedPath = FileUtil.sharedPath(ctx);
 
             /*
-             *  基本目录结构
+             *  基本目录结构mSettingSP.getInt("Version", 0)
              */
             makeSureFolder(ctx, K.kSharedDirName);
             makeSureFolder(ctx, K.kCachedDirName);
@@ -792,9 +860,8 @@ public class FileUtil {
         for (String string : assetsName) {
             assetZipPath = String.format("%s/%s.zip", sharedPath, string);
             assetZipFile = new File(assetZipPath);
-            if (!assetZipFile.exists()) {
+            if (assetZipFile.exists())
                 assetZipFile.delete();
-            }
             FileUtil.copyAssetFile(ctx, String.format("%s.zip", string), assetZipPath);
         }
     }
