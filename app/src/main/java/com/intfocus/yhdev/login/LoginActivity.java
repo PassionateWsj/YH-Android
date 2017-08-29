@@ -29,6 +29,7 @@ import android.widget.LinearLayout;
 import com.intfocus.yhdev.R;
 import com.intfocus.yhdev.dashboard.DashboardActivity;
 import com.intfocus.yhdev.data.response.BaseResult;
+import com.intfocus.yhdev.data.response.login.RegisterResult;
 import com.intfocus.yhdev.listen.NoDoubleClickListener;
 import com.intfocus.yhdev.login.bean.Device;
 import com.intfocus.yhdev.login.bean.DeviceRequest;
@@ -127,11 +128,28 @@ public class LoginActivity extends FragmentActivity {
                 startActivity(intent);
             }
         });
+
         // 注册监听
         findViewById(R.id.applyRegistTv).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ToastUtils.INSTANCE.show(LoginActivity.this, "请至OA->门户首页->权限申请处申请");
+                RetrofitUtil.getHttpService(ctx).getRegister("prompt-info-when-register")
+                        .compose(new RetrofitUtil.CommonOptions<RegisterResult>())
+                        .subscribe(new CodeHandledSubscriber<RegisterResult>() {
+                            @Override
+                            public void onError(ApiException apiException) {
+                                ToastUtils.INSTANCE.show(LoginActivity.this, apiException.getDisplayMessage());
+                            }
+
+                            @Override
+                            public void onBusinessNext(RegisterResult data) {
+                                ToastUtils.INSTANCE.show(LoginActivity.this, data.getData());
+                            }
+
+                            @Override
+                            public void onCompleted() {
+                            }
+                        });
             }
         });
 
