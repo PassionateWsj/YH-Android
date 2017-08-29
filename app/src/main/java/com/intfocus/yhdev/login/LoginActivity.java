@@ -37,11 +37,9 @@ import com.intfocus.yhdev.net.CodeHandledSubscriber;
 import com.intfocus.yhdev.net.RetrofitUtil;
 import com.intfocus.yhdev.util.ActionLogUtil;
 import com.intfocus.yhdev.util.ApiHelper;
-import com.intfocus.yhdev.util.CacheCleanManager;
 import com.intfocus.yhdev.util.FileUtil;
 import com.intfocus.yhdev.util.HttpUtil;
 import com.intfocus.yhdev.util.K;
-import com.intfocus.yhdev.util.LogUtil;
 import com.intfocus.yhdev.util.ToastColor;
 import com.intfocus.yhdev.util.ToastUtils;
 import com.intfocus.yhdev.util.URLs;
@@ -54,11 +52,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Func1;
-import rx.schedulers.Schedulers;
 
 import static com.intfocus.yhdev.base.BaseActivity.kVersionCode;
 import static com.intfocus.yhdev.util.K.kCurrentUIVersion;
@@ -555,69 +548,4 @@ public class LoginActivity extends FragmentActivity {
             }
         });
     }
-
-    public void checkAssets() {
-        if (!HttpUtil.isConnected(ctx)) {
-            return;
-        }
-        SharedPreferences mSettingSP = getSharedPreferences("SettingPreference", Context.MODE_PRIVATE);
-        PackageInfo packageInfo = null;
-        try {
-            packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
-        if (mSettingSP.getInt("Version", 0) != packageInfo.versionCode) {
-            mUserSP.edit().clear().commit();
-            mSettingSP.edit().clear().commit();
-
-            // todo 删除旧资源文件夹
-            LogUtil.d("hjjzz", "MainThread:::" + Thread.currentThread().getName());
-            Observable.just(FileUtil.sharedPath(ctx))
-                    .subscribeOn(Schedulers.io())
-                    .map(new Func1<String, Boolean>() {
-                        @Override
-                        public Boolean call(String path) {
-                            boolean isClean = CacheCleanManager.cleanCustomCache(path);
-                                   /*  基本目录结构mSettingSP.getInt("Version", 0)
-                                    */
-                            makeSureFolder(ctx, K.kSharedDirName);
-                            makeSureFolder(ctx, K.kCachedDirName);
-                            return isClean;
-                        }
-                    })
-                    .flatMap(new Func1<Boolean, Observable<String>>() {
-                        @Override
-                        public Observable<String> call(Boolean isClean) {
-                            if (isClean) {
-                                String[] arr = new String[]{URLs.kAssets, URLs.kLoading, URLs.kFonts, URLs.kImages, URLs.kIcons, URLs.kStylesheets, URLs.kJavaScripts};
-                                return Observable.from(arr);
-                            }
-                            return null;
-                        }
-                    })
-                    .map(new Func1<String, Boolean>() {
-                        @Override
-                        public Boolean call(String assetsName) {
-                            if (URLs.kAssets.equals(assetsName))
-                                FileUtil.checkAssets(ctx, assetsName, false);
-                            else
-                                FileUtil.checkAssets(ctx, assetsName, true);
-                            return null;
-                        }
-                    })
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe();
-            // todo 获取本地 zip md5 存储到 sp 中
-        }
-// todo 请求服务器获取 最新静态资源 MD5
-
-    }
-
-    public void makeSureFolder(Context ctx, String folderName) {
-        String cachedPath = String.format("%s/%s", FileUtil.basePath(ctx), folderName);
-        FileUtil.makeSureFolderExist(cachedPath);
-    }
-
-
 }

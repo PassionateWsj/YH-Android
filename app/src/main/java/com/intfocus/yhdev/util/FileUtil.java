@@ -37,10 +37,13 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
+
+import okhttp3.ResponseBody;
 
 import static com.intfocus.yhdev.util.K.kUserId;
 
@@ -349,7 +352,7 @@ public class FileUtil {
      * @param mContext 上下文
      * @param fileName 静态文件名称
      */
-    public static void checkAssets(Context mContext, String fileName, boolean isInAssets) {
+    public static Boolean checkAssets(Context mContext, String fileName, boolean isInAssets) {
         InputStream zipStream = null;
         try {
             String sharedPath = FileUtil.sharedPath(mContext);
@@ -389,16 +392,17 @@ public class FileUtil {
                     }
                 }
 
-                // zipStream = mContext.getApplicationContext().getAssets().open(zipName);
+//                 zipStream = mContext.getApplicationContext().getAssets().open(zipName);
                 zipStream = new FileInputStream(zipFilePath);
                 FileUtil.unZip(zipStream, folderPath, true);
                 Log.i("unZip", String.format("%s, %s", zipFileName, md5String));
 
                 mAssetsSPEdit.putString(keyName, md5String).commit();
             }
-
+            return true;
         } catch (IOException e) {
             e.printStackTrace();
+            return false;
         } finally {
             if (zipStream != null) {
                 try {
@@ -936,6 +940,139 @@ public class FileUtil {
             e.printStackTrace();
         } catch (JSONException e) {
             e.printStackTrace();
+        }
+    }
+
+    public static boolean unZip(String assetName, String sharedPath) {
+        String assetsFolderPath;
+        String assetsLastFolderPath;
+        String fileName = assetName;
+
+        boolean isInAssets = true;
+        if (URLs.kAssets.equals(assetName) || URLs.kLoading.equals(assetName))
+            isInAssets = false;
+        if (isInAssets) {
+            if (fileName.equals("icons")) {
+                fileName = "images";
+            }
+            assetsFolderPath = String.format("%s/assets/%s", sharedPath, fileName);
+        } else {
+            assetsFolderPath = String.format("%s/%s", sharedPath, fileName);
+            CacheCleanManager.cleanCustomCache(assetsFolderPath);
+        }
+
+        // 创建解压目标目录
+        File file = new File(assetsFolderPath);
+        // 如果目标目录不存在，则创建
+        if (!file.exists()) {
+            file.mkdirs();
+        }
+        FileInputStream inputStream = null;
+        ZipInputStream zipInputStream = null;
+        try {
+            // 打开压缩文件
+            inputStream = new FileInputStream(assetsFolderPath + ".zip");
+            zipInputStream = new ZipInputStream(inputStream);
+            // 读取一个进入点
+            ZipEntry zipEntry = zipInputStream.getNextEntry();
+//        Log.i("response", outputDirectory + File.separator + zipEntry.getName());
+            // 使用1Mbuffer
+            byte[] buffer = new byte[10 * 1024 * 1024];
+            // 解压时字节计数
+            int count;
+            // 如果进入点为空说明已经遍历完所有压缩包中文件和目录
+            while (zipEntry != null) {
+                // 如果是一个目录
+                if (zipEntry.isDirectory()) {
+                    file = new File(assetsFolderPath + File.separator + zipEntry.getName());
+                    // 文件需要覆盖或者是文件不存在
+                    if (isInAssets || !file.exists()) {
+                        file.mkdir();
+                    }
+                } else {
+                    // 如果是文件
+                    file = new File(assetsFolderPath + File.separator + zipEntry.getName());
+                    // 文件需要覆盖或者文件不存在，则解压文件
+                    if (isInAssets || !file.exists()) {
+                        file.createNewFile();
+                        FileOutputStream fileOutputStream = new FileOutputStream(file);
+                        while ((count = zipInputStream.read(buffer)) > 0) {
+                            fileOutputStream.write(buffer, 0, count);
+                        }
+                        fileOutputStream.flush();
+                        fileOutputStream.close();
+                    }
+                }
+                // 定位到下一个文件入口
+                zipEntry = zipInputStream.getNextEntry();
+            }
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            try {
+                if (zipInputStream != null) {
+                    zipInputStream.close();
+                }
+                if (inputStream != null) {
+                    inputStream.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
+    }
+
+    public static boolean writeResponseBodyToDisk(ResponseBody body, String sharedPath, String assetsName) {
+        // todo change the file location/name according to your needs
+        File zipFilePath = new File(sharedPath);
+        String zipFile = String.format("%s/%s", sharedPath, assetsName);
+        if (!zipFilePath.exists()) {
+            zipFilePath.mkdirs();
+        }
+        InputStream inputStream = null;
+        OutputStream outputStream = null;
+
+        try {
+            byte[] fileReader = new byte[4096];
+
+            long fileSize = body.contentLength();
+            long fileSizeDownloaded = 0;
+
+            inputStream = body.byteStream();
+            outputStream = new FileOutputStream(zipFile);
+
+            while (true) {
+                int read = inputStream.read(fileReader);
+
+                if (read == -1) {
+                    break;
+                }
+
+                outputStream.write(fileReader, 0, read);
+
+                fileSizeDownloaded += read;
+
+                Log.d("hjjzz", "file download: " + fileSizeDownloaded + " of " + fileSize);
+            }
+
+            outputStream.flush();
+            return true;
+        } catch (IOException e) {
+            return false;
+        } finally {
+            try {
+                if (inputStream != null) {
+                    inputStream.close();
+                }
+                if (outputStream != null) {
+                    outputStream.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

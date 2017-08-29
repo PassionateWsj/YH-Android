@@ -22,6 +22,7 @@ import com.intfocus.yhdev.util.K;
 import java.util.Map;
 
 import okhttp3.MultipartBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -30,6 +31,7 @@ import retrofit2.http.POST;
 import retrofit2.http.Part;
 import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
+import retrofit2.http.Url;
 import rx.Observable;
 
 /**
@@ -337,4 +339,14 @@ public interface HttpService {
     @GET(K.KNewChoiceMenu)
     Call<MenuResult> getChoiceMenus(@Query("params") String params);
 
+    /**
+     * 下载静态资源
+     *
+     * GET
+     * /api/v1.1/download/assets
+     *
+     * filename
+     */
+    @GET
+    Call<ResponseBody> downloadFileWithDynamicUrlSync(@Url String fileUrl);
 }
