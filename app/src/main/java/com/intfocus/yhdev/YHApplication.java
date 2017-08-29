@@ -51,6 +51,8 @@ public class YHApplication extends Application {
 
     public static ExecutorService threadPool = Executors.newFixedThreadPool(2);
 
+
+    
     private Context appContext;
     public static Context globalContext;
     SharedPreferences mSettingSP;

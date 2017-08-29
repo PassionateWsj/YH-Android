@@ -6,15 +6,12 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -22,6 +19,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +28,7 @@ import android.webkit.JavascriptInterface;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -45,7 +44,6 @@ import com.intfocus.yhdev.data.response.filter.Menu;
 import com.intfocus.yhdev.data.response.filter.MenuItem;
 import com.intfocus.yhdev.data.response.filter.MenuResult;
 import com.intfocus.yhdev.filter.MyFilterDialogFragment;
-import com.intfocus.yhdev.subject.selecttree.SelectItems;
 import com.intfocus.yhdev.util.ActionLogUtil;
 import com.intfocus.yhdev.util.ApiHelper;
 import com.intfocus.yhdev.util.FileUtil;
@@ -75,8 +73,13 @@ import org.xutils.x;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
+
+import rx.Observable;
+import rx.Observer;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 import static android.webkit.WebView.enableSlowWholeDocumentDraw;
 import static java.lang.String.format;
@@ -99,18 +102,10 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
     private String userNum;
     private RelativeLayout bannerView;
     private Context mContext;
-    private int loadCount = 0;
     private TextView mTitle;
-    private boolean reportDataState;
     private ImageView iv_BannerBack;
     private TextView tv_BannerBack;
     private ImageView iv_BannerSetting;
-    private Intent mSourceIntent;
-    private Boolean isFromActivityResult = false;
-    /* 请求识别码 */
-    private static final int CODE_RESULT_REQUEST = 0xa2;
-    private static final int CODE_CAMERA_REQUEST = 0xa1;
-    private static final int CODE_CAMERA_RESULT = 0xa0;
 
     /**
      * 筛选
@@ -134,6 +129,7 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
     private List<MenuItem> menuDatas;
     private FilterMenuAdapter menuAdpter;
     private FilterPopupWindow filterPopupWindow;
+    private FrameLayout mWebFrameLayout;
 
     @Override
     @SuppressLint("SetJavaScriptEnabled")
@@ -147,34 +143,127 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
         }
         setContentView(R.layout.activity_subject);
 
+
+        initData();
+
+        initView();
+
+        initAdapter();
+
+        initListener();
+
+        initActiongBar();
+
+        initSubWebView();
+
+        isWeiXinShared = false;
+
+        mMyApp.setCurrentActivity(this);
+    }
+
+
+    /**
+     * 初始化数据
+     */
+    private void initData() {
         mContext = this;
         groupID = mUserSP.getString(URLs.kGroupId, "-2");
         userNum = mUserSP.getString(URLs.kUserNum, "not-set");
+    }
+
+    /**
+     * 初始化视图
+     */
+    private void initView() {
+        mWebFrameLayout = (FrameLayout) findViewById(R.id.browser);
+        mWebView = new WebView(getApplicationContext());
+        mWebFrameLayout.addView(mWebView, 0);
 
         iv_BannerBack = (ImageView) findViewById(R.id.iv_banner_back);
         tv_BannerBack = (TextView) findViewById(R.id.tv_banner_back);
         iv_BannerSetting = (ImageView) findViewById(R.id.iv_banner_setting);
-        mWebView = (WebView) findViewById(R.id.browser);
         llFilter = (LinearLayout) findViewById(R.id.ll_filter);
         rlAddressFilter = (RelativeLayout) findViewById(R.id.rl_address_filter);
         tvLocationAddress = (TextView) findViewById(R.id.tv_location_address);
         tvAddressFilter = (TextView) findViewById(R.id.tv_address_filter);
         filterRecyclerView = (RecyclerView) findViewById(R.id.filter_recycler_view);
         viewLine = findViewById(R.id.view_line);
+        animLoading = (RelativeLayout) findViewById(R.id.anim_loading);
+        bannerView = (RelativeLayout) findViewById(R.id.rl_action_bar);
+        mTitle = (TextView) findViewById(R.id.tv_banner_title);
+    }
 
+    /**
+     * 初始化适配器
+     */
+    private void initAdapter() {
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false);
         filterRecyclerView.setLayoutManager(mLayoutManager);
         menuAdpter = new FilterMenuAdapter(mContext, menuDatas, this);
         filterRecyclerView.setAdapter(menuAdpter);
+    }
+
+    /**
+     * 初始化监听器
+     */
+    private void initListener() {
+        // 筛选按钮监听
         tvAddressFilter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 showDialogFragment();
             }
         });
+    }
 
-        initActiongBar();
-        initSubWebView();
+    private void initActiongBar() {
+        /*
+         * Intent Data || JSON Data
+         */
+        Intent intent = getIntent();
+        link = intent.getStringExtra(URLs.kLink);
+        templateID = intent.getStringExtra(URLs.kTemplatedId);
+        bannerName = intent.getStringExtra(URLs.kBannerName);
+        objectID = intent.getStringExtra(URLs.kObjectId);
+        objectType = intent.getStringExtra(URLs.kObjectType);
+        isInnerLink = link.indexOf("template") > 0 && link.indexOf("group") > 0;
+        mTitle.setText(bannerName);
+
+        if (link.toLowerCase().endsWith(".pdf")) {
+            mPDFView = (PDFView) findViewById(R.id.pdfview);
+            mPDFView.setVisibility(View.INVISIBLE);
+        }
+        iv_BannerSetting.setVisibility(View.VISIBLE);
+    }
+
+    /**
+     * WebView 初始化设置
+     *
+     * @return
+     */
+    public WebView initSubWebView() {
+
+        WebSettings webSettings = mWebView.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+        webSettings.setDefaultTextEncodingName("utf-8");
+
+        webSettings.setDomStorageEnabled(true);
+        webSettings.setAppCacheMaxSize(1024 * 1024 * 8);
+        String appCachePath = getApplicationContext().getCacheDir().getAbsolutePath();
+        webSettings.setAppCachePath(appCachePath);
+        webSettings.setAllowFileAccess(true);
+
+        webSettings.setAppCacheEnabled(true);
+
+        mWebView.setDrawingCacheEnabled(true);
+
+        mWebView.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                return false;
+            }
+        });
+        setWebViewLongListener(true);
 
         mWebView.setWebViewClient(new WebViewClient() {
             @Override
@@ -197,36 +286,6 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
                 isWeiXinShared = true;
                 LogUtil.d("onPageFinished", String.format("%s - %s", URLs.timestamp(), url));
 
-                // 报表缓存列表:是否把报表标题存储
-                if (reportDataState && url.contains("report_" + objectID)) {
-                    try {
-                        SharedPreferences sp = getSharedPreferences("subjectCache", MODE_PRIVATE);
-                        SharedPreferences.Editor editor = sp.edit();
-                        String cache = sp.getString("cache", "");
-                        JSONObject json;
-                        if (cache.equals("")) {
-                            json = new JSONObject();
-                            json.put("0", bannerName);
-                        } else {
-                            boolean isAdd = true;
-                            json = new JSONObject(cache);
-                            Iterator<String> it = json.keys();
-                            while (it.hasNext()) {
-                                String key = it.next();
-                                if (json.getString(key).equals(bannerName)) {
-                                    isAdd = false;
-                                }
-                            }
-                            if (isAdd) {
-                                json.put("" + json.length(), bannerName);
-                            }
-                        }
-                        editor.putString("cache", json.toString());
-                        editor.commit();
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
                 //是否有筛选数据，有就显示出来
                 if (locationDatas != null && locationDatas.size() > 0) {
                     rlAddressFilter.setVisibility(View.VISIBLE);
@@ -257,57 +316,8 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
         mWebView.addJavascriptInterface(new JavaScriptInterface(), URLs.kJSInterfaceName);
         animLoading.setVisibility(View.VISIBLE);
 
-        mWebView.post(new Runnable() {
-            @Override
-            public void run() {
-                loadHtml();
-            }
-        });
-
-        isWeiXinShared = false;
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Thread.sleep(3000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (isOffline) {
-                            mTitle.setText(bannerName + "(离线)");
-                        }
-                    }
-                });
-            }
-        }).start();
-
-        mMyApp.setCurrentActivity(this);
-    }
-
-    private void initActiongBar() {
-        bannerView = (RelativeLayout) findViewById(R.id.rl_action_bar);
-        mTitle = (TextView) findViewById(R.id.tv_banner_title);
-
-		/*
-         * Intent Data || JSON Data
-         */
-        Intent intent = getIntent();
-        link = intent.getStringExtra(URLs.kLink);
-        templateID = intent.getStringExtra(URLs.kTemplatedId);
-        bannerName = intent.getStringExtra(URLs.kBannerName);
-        objectID = intent.getStringExtra(URLs.kObjectId);
-        objectType = intent.getStringExtra(URLs.kObjectType);
-        isInnerLink = link.indexOf("template") > 0 && link.indexOf("group") > 0;
-        mTitle.setText(bannerName);
-
-        if (link.toLowerCase().endsWith(".pdf")) {
-            mPDFView = (PDFView) findViewById(R.id.pdfview);
-            mPDFView.setVisibility(View.INVISIBLE);
-        }
-        iv_BannerSetting.setVisibility(View.VISIBLE);
+        loadHtml();
+        return mWebView;
     }
 
     /*
@@ -341,44 +351,34 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
         popupWindow.setTouchable(true);
         //进入退出的动画
 //        popupWindow.setAnimationStyle(R.style.AnimationPopupwindow);
-        contentView.findViewById(R.id.ll_share).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // 分享
-                actionShare2Weixin(view);
-                popupWindow.dismiss();
-            }
-        });
-        contentView.findViewById(R.id.ll_comment).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // 评论
-                actionLaunchCommentActivity(view);
-                popupWindow.dismiss();
-            }
-        });
-        contentView.findViewById(R.id.ll_copylink).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // 拷贝外部链接
-                actionCopyLink(view);
-                popupWindow.dismiss();
-            }
-        });
-        contentView.findViewById(R.id.ll_refresh).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                animLoading.setVisibility(View.VISIBLE);
-                popupWindow.dismiss();
-                // 刷新
-                refresh(view);
-            }
-        });
         popupWindow.showAsDropDown(clickView);
     }
 
-    public void onResume() {
-        super.onResume();
+    public void menuItemClick(View view) {
+        switch (view.getId()) {
+            case R.id.ll_share:
+                // 分享
+                actionShare2Weixin(view);
+                break;
+            case R.id.ll_comment:
+                // 评论
+                actionLaunchCommentActivity(view);
+                break;
+            case R.id.ll_copylink:
+                // 拷贝外部链接
+                actionCopyLink(view);
+                break;
+            case R.id.ll_refresh:
+                animLoading.setVisibility(View.VISIBLE);
+                // 刷新
+                refresh(view);
+                break;
+            default:
+                break;
+        }
+        if (popupWindow != null && popupWindow.isShowing()) {
+            popupWindow.dismiss();
+        }
     }
 
     /**
@@ -462,11 +462,10 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
             urlString = String.format("%s%s", K.kBaseUrl, urlPath);
             webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
 
-
-            new Thread(new Runnable() {
+            Observable.create(new Observable.OnSubscribe<String>() {
                 @Override
-                public void run() {
-                    reportDataState = ApiHelper.reportData(mAppContext, String.format("%s", groupID), templateID, objectID);
+                public void call(Subscriber<? super String> subscriber) {
+                    ApiHelper.reportData(mAppContext, String.format("%s", groupID), templateID, objectID);
                     String jsFileName = "";
 
                     // 模板 4 的 groupID 为 0
@@ -476,12 +475,31 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
                         jsFileName = String.format("group_%s_template_%s_report_%s.js", groupID, templateID, objectID);
                     }
                     String javascriptPath = String.format("%s/assets/javascripts/%s", sharedPath, jsFileName);
-                    if (new File(javascriptPath).exists()) {
-                        new Thread(mRunnableForDetecting).start();
-                    } else {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
+                    subscriber.onNext(javascriptPath);
+                    subscriber.onCompleted();
+                }
+            })
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Observer<String>() {
+                        @Override
+                        public void onCompleted() {
+
+                        }
+
+                        @Override
+                        public void onError(Throwable throwable) {
+
+                        }
+
+                        @Override
+                        public void onNext(String javascriptPath) {
+                            if (new File(javascriptPath).exists()) {
+                                mHandlerForDetecting.setVariables(mWebView, urlString, sharedPath, assetsPath, relativeAssetsPath);
+                                Message message = mHandlerForDetecting.obtainMessage();
+                                message.what = 200;
+                                mHandlerForDetecting.sendMessage(message);
+                            } else {
                                 AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
                                 builder.setTitle("温馨提示")
                                         .setMessage("报表数据下载失败,不再加载网页")
@@ -494,64 +512,70 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
                                         });
                                 builder.show();
                             }
-                        });
-                    }
-                }
-            }).start();
+                        }
+                    });
         } else {
             urlString = link;
-            runOnUiThread(new Runnable() {
+
+            Observable.create(new Observable.OnSubscribe<Boolean>() {
                 @Override
-                public void run() {
-                    if (urlString.toLowerCase().endsWith(".pdf")) {
-                        new Thread(mRunnableForPDF).start();
-                    } else {
-                        /*
-                         * 外部链接传参: user_num, timestamp
-                         */
-                        String appendParams = String.format("user_num=%s&timestamp=%s", userNum, URLs.timestamp());
-                        String splitString = urlString.contains("?") ? "&" : "?";
-                        urlString = String.format("%s%s%s", urlString, splitString, appendParams);
-                        mWebView.loadUrl(urlString);
-                        Log.i("OutLink", urlString);
+                public void call(Subscriber<? super Boolean> subscriber) {
+                    boolean isPDF = urlString.toLowerCase().endsWith(".pdf");
+                    if (isPDF) {
+                        String outputPath = String.format("%s/%s/%s.pdf", FileUtil.basePath(mAppContext), K.kCachedDirName, URLs.MD5(urlString));
+                        pdfFile = new File(outputPath);
+                        ApiHelper.downloadFile(mAppContext, urlString, pdfFile);
                     }
+                    subscriber.onNext(isPDF);
+                    subscriber.onCompleted();
                 }
-            });
+            })
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Observer<Boolean>() {
+                        @Override
+                        public void onCompleted() {
+
+                        }
+
+                        @Override
+                        public void onError(Throwable throwable) {
+
+                        }
+
+                        @Override
+                        public void onNext(Boolean isPDF) {
+                            if (isPDF) {
+                                if (pdfFile.exists()) {
+                                    // Log.i("PDF", pdfFile.getAbsolutePath());
+                                    mPDFView.fromFile(pdfFile)
+                                            .defaultPage(1)
+                                            .showMinimap(true)
+                                            .enableSwipe(true)
+                                            .swipeVertical(true)
+                                            .onLoad(SubjectActivity.this)
+                                            .onPageChange(SubjectActivity.this)
+                                            .onErrorOccured(SubjectActivity.this)
+                                            .load();
+                                    mWebView.setVisibility(View.INVISIBLE);
+                                    mPDFView.setVisibility(View.VISIBLE);
+                                } else {
+                                    toast("加载PDF失败");
+                                }
+                            } else {
+                                /*
+                                * 外部链接传参: user_num, timestamp
+                                */
+                                String appendParams = String.format("user_num=%s&timestamp=%s", userNum, URLs.timestamp());
+                                String splitString = urlString.contains("?") ? "&" : "?";
+                                urlString = String.format("%s%s%s", urlString, splitString, appendParams);
+                                mWebView.loadUrl(urlString);
+                                Log.i("OutLink", urlString);
+                            }
+                        }
+                    });
         }
     }
-
-    private final Handler mHandlerForPDF = new Handler() {
-        public void handleMessage(Message message) {
-//            Log.i("PDF", pdfFile.getAbsolutePath());
-            if (pdfFile.exists()) {
-                mPDFView.fromFile(pdfFile)
-                        .defaultPage(1)
-                        .showMinimap(true)
-                        .enableSwipe(true)
-                        .swipeVertical(true)
-                        .onLoad(SubjectActivity.this)
-                        .onPageChange(SubjectActivity.this)
-                        .onErrorOccured(SubjectActivity.this)
-                        .load();
-                mWebView.setVisibility(View.INVISIBLE);
-                mPDFView.setVisibility(View.VISIBLE);
-            } else {
-                toast("加载PDF失败");
-            }
-        }
-    };
-
-    private final Runnable mRunnableForPDF = new Runnable() {
-        @Override
-        public void run() {
-            String outputPath = String.format("%s/%s/%s.pdf", FileUtil.basePath(mAppContext), K.kCachedDirName, URLs.MD5(urlString));
-            pdfFile = new File(outputPath);
-            ApiHelper.downloadFile(mAppContext, urlString, pdfFile);
-
-            Message message = mHandlerForPDF.obtainMessage();
-            mHandlerForPDF.sendMessage(message);
-        }
-    };
 
     /*
      * 拷贝链接
@@ -668,46 +692,147 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
     }
 
     public void refresh(View v) {
-        if (isOffline) {
-            mTitle.setText(bannerName + "(离线)");
-        }
+//        if (isOffline) {
+//            mTitle.setText(bannerName + "(离线)");
+//        }
         animLoading.setVisibility(View.VISIBLE);
-        new refreshTask().execute();
+        Observable.create(new Observable.OnSubscribe<Boolean>() {
+            @Override
+            public void call(Subscriber<? super Boolean> subscriber) {
+                if (isInnerLink) {
+                    String urlKey;
+                    if (urlString != null && !urlString.isEmpty()) {
+                        urlKey = urlString.contains("?") ? TextUtils.split(urlString, "?")[0] : urlString;
+                        ApiHelper.clearResponseHeader(urlKey, assetsPath);
+                    }
+                    urlKey = String.format(K.kReportDataAPIPath, K.kBaseUrl, groupID, templateID, objectID);
+                    ApiHelper.clearResponseHeader(urlKey, FileUtil.sharedPath(mAppContext));
+                    subscriber.onNext(ApiHelper.reportData(mAppContext, groupID, templateID, objectID));
+                }
+                subscriber.onCompleted();
+            }
+        })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Boolean>() {
+                    @Override
+                    public void onCompleted() {
+                        loadHtml();
+                    }
+
+                    @Override
+                    public void onError(Throwable throwable) {
+
+                    }
+
+                    @Override
+                    public void onNext(Boolean reportDataState) {
+                        if (reportDataState) {
+                            mHandlerForDetecting.setVariables(mWebView, urlString, sharedPath, assetsPath, relativeAssetsPath);
+                            Message message = mHandlerForDetecting.obtainMessage();
+                            message.what = 200;
+                            mHandlerForDetecting.sendMessage(message);
+                        } else {
+                            String urlStringForLoading = String.format("file:///%s/loading/%s.html", sharedPath, "400");
+                            mWebView.loadUrl(urlStringForLoading);
+                        }
+                    }
+                });
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        super.onActivityResult(requestCode, resultCode, intent);
+        UMShareAPI.get(this).onActivityResult(requestCode, resultCode, intent);
+    }
 
-    private class refreshTask extends AsyncTask<Void, Void, Void> {
-        @Override
-        protected Void doInBackground(Void... params) {
-            /*
-             *  浏览器刷新时，删除响应头文件，相当于无缓存刷新
-             */
-            if (isInnerLink) {
-                String urlKey;
-                if (urlString != null && !urlString.isEmpty()) {
-                    urlKey = urlString.contains("?") ? TextUtils.split(urlString, "?")[0] : urlString;
-                    ApiHelper.clearResponseHeader(urlKey, assetsPath);
+    private void showDialogFragment() {
+        FragmentTransaction mFragTransaction = getSupportFragmentManager().beginTransaction();
+        Fragment fragment = getSupportFragmentManager().findFragmentByTag("dialogFragment");
+        if (fragment != null) {
+            //为了不重复显示dialog，在显示对话框之前移除正在显示的对话框
+            mFragTransaction.remove(fragment);
+        }
+        MyFilterDialogFragment dialogFragment = new MyFilterDialogFragment((ArrayList<MenuItem>) locationDatas, this);
+        dialogFragment.show(mFragTransaction, "dialogFragment"); //显示一个Fragment并且给该Fragment添加一个Tag，可通过findFragmentByTag找到该Fragment
+    }
+
+    /**
+     * 点击普通筛选栏
+     */
+    @Override
+    public void itemClick(int position) {
+        //标记点击位置
+        menuDatas.get(position).setArrorDirection(true);
+        menuAdpter.setData(menuDatas);
+        currentPosition = position;
+        showMenuPop(position);
+    }
+
+    private void showMenuPop(int position) {
+        if (filterPopupWindow == null) {
+            initMenuPopup(position);
+        } else {
+            filterPopupWindow.upDateDatas(menuDatas.get(position).getData());
+        }
+//        viewBg.visibility = View.VISIBLE
+        filterPopupWindow.showAsDropDown(viewLine);
+        filterPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                for (MenuItem menuItem : menuDatas) {
+                    menuItem.setArrorDirection(false);
                 }
-                urlKey = String.format(K.kReportDataAPIPath, K.kBaseUrl, groupID, templateID, objectID);
-                ApiHelper.clearResponseHeader(urlKey, FileUtil.sharedPath(mAppContext));
-                boolean reportDataState = ApiHelper.reportData(mAppContext, groupID, templateID, objectID);
-                if (reportDataState) {
-                    new Thread(mRunnableForDetecting).start();
-                } else {
-                    showWebViewExceptionForWithoutNetwork();
-                }
+                menuAdpter.setData(menuDatas);
+            }
+        });
+    }
+
+    private void initMenuPopup(int position) {
+        filterPopupWindow = new FilterPopupWindow(this, menuDatas.get(position).getData(), this);
+        filterPopupWindow.init();
+    }
+
+    /**
+     * 普通排序列表点击
+     *
+     * @param position
+     */
+    @Override
+    public void menuItemClick(int position) {
+        for (MenuItem menuItem : menuDatas.get(currentPosition).getData()) {
+            menuItem.setArrorDirection(false);
+        }
+
+        //标记点击位置
+        menuDatas.get(currentPosition).getData().get(position).setArrorDirection(true);
+        filterPopupWindow.dismiss();
+    }
+
+    @Override
+    public void complete(@NotNull ArrayList<MenuItem> data) {
+        try {
+            String addStr = "";
+            for (int i = 0; i < data.size(); i++) {
+                addStr += data.get(i).getName() + "||";
             }
 
-            return null;
-        }
+            addStr = addStr.substring(0, addStr.length() - 2);
+            String selectedItemPath = String.format("%s.selected_item", FileUtil.reportJavaScriptDataPath(SubjectActivity.this, groupID, templateID, objectID));
+            FileUtil.writeFile(selectedItemPath, addStr);
 
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
+            animLoading.setVisibility(View.VISIBLE);
             loadHtml();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
+    /**
+     * JavaScript 接口类
+     *
+     * @JavascriptInterface装饰方法 暴露给JS调用
+     */
     private class JavaScriptInterface extends JavaScriptBase {
 
         @JavascriptInterface
@@ -919,99 +1044,6 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
                     builder.show();
                 }
             });
-        }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
-        super.onActivityResult(requestCode, resultCode, intent);
-        UMShareAPI.get(this).onActivityResult(requestCode, resultCode, intent);
-    }
-
-    private void showDialogFragment() {
-        FragmentTransaction mFragTransaction = getSupportFragmentManager().beginTransaction();
-        Fragment fragment = getSupportFragmentManager().findFragmentByTag("dialogFragment");
-        if (fragment != null) {
-            //为了不重复显示dialog，在显示对话框之前移除正在显示的对话框
-            mFragTransaction.remove(fragment);
-        }
-        MyFilterDialogFragment dialogFragment = new MyFilterDialogFragment((ArrayList<MenuItem>) locationDatas, this);
-        dialogFragment.show(mFragTransaction, "dialogFragment"); //显示一个Fragment并且给该Fragment添加一个Tag，可通过findFragmentByTag找到该Fragment
-    }
-
-    /**
-     * 点击普通筛选栏
-     */
-    @Override
-    public void itemClick(int position) {
-        //标记点击位置
-        menuDatas.get(position).setArrorDirection(true);
-        menuAdpter.setData(menuDatas);
-        currentPosition = position;
-        showMenuPop(position);
-    }
-
-    private void showMenuPop(int position) {
-        if (filterPopupWindow == null) {
-            initMenuPopup(position);
-        } else {
-            filterPopupWindow.upDateDatas(menuDatas.get(position).getData());
-        }
-//        viewBg.visibility = View.VISIBLE
-        filterPopupWindow.showAsDropDown(viewLine);
-        filterPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
-            @Override
-            public void onDismiss() {
-                for (MenuItem menuItem : menuDatas) {
-                    menuItem.setArrorDirection(false);
-                }
-                menuAdpter.setData(menuDatas);
-            }
-        });
-    }
-
-    private void initMenuPopup(int position) {
-        filterPopupWindow = new FilterPopupWindow(this, menuDatas.get(position).getData(), this);
-        filterPopupWindow.init();
-    }
-
-    /**
-     * 普通排序列表点击
-     *
-     * @param position
-     */
-    @Override
-    public void menuItemClick(int position) {
-        for (MenuItem menuItem : menuDatas.get(currentPosition).getData()) {
-            menuItem.setArrorDirection(false);
-        }
-
-        //标记点击位置
-        menuDatas.get(currentPosition).getData().get(position).setArrorDirection(true);
-        filterPopupWindow.dismiss();
-    }
-
-    @Override
-    public void complete(@NotNull ArrayList<MenuItem> data) {
-        try {
-            String addStr = "";
-            for (int i = 0; i < data.size(); i++) {
-                addStr += data.get(i).getName() + "||";
-            }
-
-            addStr = addStr.substring(0, addStr.length() - 2);
-            String selectedItemPath = String.format("%s.selected_item", FileUtil.reportJavaScriptDataPath(SubjectActivity.this, groupID, templateID, objectID));
-            FileUtil.writeFile(selectedItemPath, addStr);
-
-            animLoading.setVisibility(View.VISIBLE);
-            mWebView.post(new Runnable() {
-                @Override
-                public void run() {
-                    loadHtml();
-                }
-            });
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 }

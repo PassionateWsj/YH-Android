@@ -11,10 +11,9 @@ import com.intfocus.yhdev.scanner.adapter.SelectorListAdapter
 import com.intfocus.yhdev.scanner.presenter.StoreSelectorPresenter
 import com.intfocus.yhdev.scanner.view.StoreSelectorView
 import com.intfocus.yhdev.util.URLs
-import com.zbl.lib.baseframe.utils.ToastUtil
-import kotlinx.android.synthetic.main.activity_new_store_selector.*
+import kotlinx.android.synthetic.main.activity_store_selector.*
 
-class NewStoreSelectorActivity : BaseActivity(), StoreSelectorView {
+class StoreSelectorActivity : BaseActivity(), StoreSelectorView {
     companion object {
         val RESULT_CODE_CHOOSE = 2
     }
@@ -24,7 +23,7 @@ class NewStoreSelectorActivity : BaseActivity(), StoreSelectorView {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_new_store_selector)
+        setContentView(R.layout.activity_store_selector)
 
         initAdapter()
         initData()

@@ -11,7 +11,6 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -35,6 +34,7 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -50,11 +50,7 @@ import com.intfocus.yhdev.data.response.filter.Menu;
 import com.intfocus.yhdev.data.response.filter.MenuItem;
 import com.intfocus.yhdev.data.response.filter.MenuResult;
 import com.intfocus.yhdev.filter.MyFilterDialogFragment;
-import com.intfocus.yhdev.net.ApiException;
-import com.intfocus.yhdev.net.CodeHandledSubscriber;
-import com.intfocus.yhdev.net.HttpService;
 import com.intfocus.yhdev.net.RetrofitUtil;
-import com.intfocus.yhdev.subject.selecttree.SelectItems;
 import com.intfocus.yhdev.util.ActionLogUtil;
 import com.intfocus.yhdev.util.ApiHelper;
 import com.intfocus.yhdev.util.FileUtil;
@@ -88,7 +84,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import retrofit2.Response;
-import retrofit2.Retrofit;
 
 import static android.webkit.WebView.enableSlowWholeDocumentDraw;
 import static java.lang.String.format;
@@ -148,6 +143,7 @@ public class WebApplicationActivityV6 extends BaseActivity implements OnPageChan
     private List<MenuItem> menuDatas;
     private FilterMenuAdapter menuAdpter;
     private FilterPopupWindow filterPopupWindow;
+    private FrameLayout mWebFrameLayout;
 
     @Override
     @SuppressLint("SetJavaScriptEnabled")
@@ -170,7 +166,10 @@ public class WebApplicationActivityV6 extends BaseActivity implements OnPageChan
         iv_BannerBack = (ImageView) findViewById(R.id.iv_banner_back);
         tv_BannerBack = (TextView) findViewById(R.id.tv_banner_back);
         iv_BannerSetting = (ImageView) findViewById(R.id.iv_banner_setting);
-        mWebView = (WebView) findViewById(R.id.browser);
+
+        mWebFrameLayout = (FrameLayout) findViewById(R.id.browser);
+        mWebView = new WebView(getApplicationContext());
+        mWebFrameLayout.addView(mWebView, 0);
 
         llFilter = (LinearLayout) findViewById(R.id.ll_filter);
         rlAddressFilter = (RelativeLayout) findViewById(R.id.rl_address_filter);
