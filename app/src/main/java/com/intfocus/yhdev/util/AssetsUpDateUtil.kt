@@ -42,7 +42,7 @@ object AssetsUpDateUtil {
                         var assetsMD5s = data!!.data!!
                         var mAssetsSP = ctx.getSharedPreferences("AssetsMD5", Context.MODE_PRIVATE)
                         var mAssetsSPEdit = mAssetsSP.edit()
-                        var md5Arr = listOf(URLs.kAssets, URLs.kFonts,
+                        var assetsNameArr = listOf(URLs.kAssets, URLs.kFonts,
                                 URLs.kIcons, URLs.kImages,
                                 URLs.kJavaScripts, URLs.kLoading,
                                 URLs.kStylesheets, URLs.kAdvertisement)
@@ -56,21 +56,21 @@ object AssetsUpDateUtil {
                         assetsMD5sMap.put(URLs.kStylesheets + "_md5", assetsMD5s.stylesheets_md5!!)
                         assetsMD5sMap.put(URLs.kAdvertisement + "_md5", assetsMD5s.advertisement_md5!!)
 
-                        Observable.from(md5Arr)
+                        Observable.from(assetsNameArr)
                                 .subscribeOn(Schedulers.io())
-                                .map { assetMd5 ->
+                                .map { assetName ->
                                     LogUtil.d("hjjzz", "unzip:::" + Thread.currentThread().name)
-                                    if (!assetsMD5sMap[assetMd5 + "_md5"].equals(mAssetsSP.getString(assetMd5 + "_md5", ""))) {
-                                        var fileUrl = K.kDownloadAssetsZip + "?api_token=d93c1a0dc03fe4ffad55a82febd1c94f&filename=" + assetMd5 + ".zip"
+                                    if (!assetsMD5sMap[assetName + "_md5"].equals(mAssetsSP.getString(assetName + "_md5", ""))) {
+                                        var fileUrl = K.kDownloadAssetsZip + "?api_token=d93c1a0dc03fe4ffad55a82febd1c94f&filename=" + assetName + ".zip"
                                         var response = Retrofit.Builder()
                                                 .baseUrl(K.kBaseUrl)
                                                 .build()
                                                 .create(HttpService::class.java).downloadFileWithDynamicUrlSync(fileUrl).execute()
-                                        var isWriteZipSuccess = FileUtil.writeResponseBodyToDisk(response!!.body()!!, sharedPath, assetMd5 + ".zip")
+                                        var isWriteZipSuccess = FileUtil.writeResponseBodyToDisk(response!!.body()!!, sharedPath, assetName + ".zip")
                                         if (isWriteZipSuccess) {
-                                            var isUnZipSuccess = FileUtil.unZip(assetMd5, sharedPath)
+                                            var isUnZipSuccess = FileUtil.unZipAssets(ctx, assetName)
                                             if (isUnZipSuccess) {
-                                                mAssetsSPEdit.putString(assetMd5 + "_md5", assetsMD5sMap[assetMd5 + "_md5"]).commit()
+                                                mAssetsSPEdit.putString(assetName + "_md5", assetsMD5sMap[assetName + "_md5"]).commit()
                                                 true
                                             }
                                             false

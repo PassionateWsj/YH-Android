@@ -46,6 +46,7 @@ import java.util.zip.ZipInputStream;
 import okhttp3.ResponseBody;
 
 import static com.intfocus.yhdev.util.K.kUserId;
+import static com.zbl.lib.baseframe.utils.FileUtils.deleteFile;
 
 public class FileUtil {
     public static String basePath(Context context) {
@@ -352,8 +353,7 @@ public class FileUtil {
      * @param mContext 上下文
      * @param fileName 静态文件名称
      */
-    public static Boolean checkAssets(Context mContext, String fileName, boolean isInAssets) {
-        InputStream zipStream = null;
+    public static void checkAssets(Context mContext, String fileName, boolean isInAssets) {
         try {
             String sharedPath = FileUtil.sharedPath(mContext);
             String zipFileName = String.format("%s.zip", fileName);
@@ -367,75 +367,7 @@ public class FileUtil {
                 FileUtil.copyAssetFile(mContext, zipFileName, zipFilePath);
             }
 
-            zipStream = mContext.getApplicationContext().getAssets().open(zipFileName);
-//            InputStream zipStream = new FileInputStream(zipFilePath);
-            String md5String = FileUtil.MD5(zipStream);
-            String keyName = String.format("local_%s_md5", fileName);
-
-            boolean isShouldUnZip = true;
-            isShouldUnZip = !(mAssetsSP.getString(keyName, "0").equals("0") && mAssetsSP.getString(keyName, "0").equals(md5String));
-
-
-            if (isShouldUnZip) {
-                Log.i("checkAssets", String.format("%s[%s] != %s", zipFileName, keyName, md5String));
-
-                String folderPath = sharedPath;
-                if (isInAssets) {
-                    if (fileName.equals("icons")) {
-                        fileName = "images";
-                    }
-                    folderPath = String.format("%s/assets/%s/", sharedPath, fileName);
-                } else {
-                    File file = new File(zipFolderPath);
-                    if (file.exists()) {
-                        FileUtils.deleteDirectory(file);
-                    }
-                }
-
-//                 zipStream = mContext.getApplicationContext().getAssets().open(zipName);
-                zipStream = new FileInputStream(zipFilePath);
-                FileUtil.unZip(zipStream, folderPath, true);
-                Log.i("unZip", String.format("%s, %s", zipFileName, md5String));
-
-                mAssetsSPEdit.putString(keyName, md5String).commit();
-            }
-            return true;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return false;
-        } finally {
-            if (zipStream != null) {
-                try {
-                    zipStream.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
-
-    /**
-     * 检测sharedPath/{assets.zip, loading.zip} md5值与缓存文件中是否相等
-     *
-     * @param mContext 上下文
-     * @param fileName 静态文件名称
-     */
-    public static void unZipAssets(Context mContext, String fileName, boolean isInAssets) {
-        try {
-            String sharedPath = FileUtil.sharedPath(mContext);
-            String zipFileName = String.format("%s.zip", fileName);
-            SharedPreferences mAssetsSP = mContext.getSharedPreferences("AssetsMD5", Context.MODE_PRIVATE);
-            SharedPreferences.Editor mAssetsSPEdit = mAssetsSP.edit();
-
-            // InputStream zipStream = mContext.getApplicationContext().getAssets().open(zipName);
-            String zipFilePath = String.format("%s/%s", sharedPath, zipFileName);
-            String zipFolderPath = String.format("%s/%s", sharedPath, fileName);
-            if (!(new File(zipFilePath)).exists()) {
-                FileUtil.copyAssetFile(mContext, zipFileName, zipFilePath);
-            }
-
-            InputStream zipStream = mContext.getApplicationContext().getAssets().open(zipFileName);
-//            InputStream zipStream = new FileInputStream(zipFilePath);
+            InputStream zipStream = new FileInputStream(zipFilePath);
             String md5String = FileUtil.MD5(zipStream);
             String keyName = String.format("local_%s_md5", fileName);
 
@@ -943,88 +875,6 @@ public class FileUtil {
         }
     }
 
-    public static boolean unZip(String assetName, String sharedPath) {
-        String assetsFolderPath;
-        String assetsLastFolderPath;
-        String fileName = assetName;
-
-        boolean isInAssets = true;
-        if (URLs.kAssets.equals(assetName) || URLs.kLoading.equals(assetName))
-            isInAssets = false;
-        if (isInAssets) {
-            if (fileName.equals("icons")) {
-                fileName = "images";
-            }
-            assetsFolderPath = String.format("%s/assets/%s", sharedPath, fileName);
-        } else {
-            assetsFolderPath = String.format("%s/%s", sharedPath, fileName);
-            CacheCleanManager.cleanCustomCache(assetsFolderPath);
-        }
-
-        // 创建解压目标目录
-        File file = new File(assetsFolderPath);
-        // 如果目标目录不存在，则创建
-        if (!file.exists()) {
-            file.mkdirs();
-        }
-        FileInputStream inputStream = null;
-        ZipInputStream zipInputStream = null;
-        try {
-            // 打开压缩文件
-            inputStream = new FileInputStream(assetsFolderPath + ".zip");
-            zipInputStream = new ZipInputStream(inputStream);
-            // 读取一个进入点
-            ZipEntry zipEntry = zipInputStream.getNextEntry();
-//        Log.i("response", outputDirectory + File.separator + zipEntry.getName());
-            // 使用1Mbuffer
-            byte[] buffer = new byte[10 * 1024 * 1024];
-            // 解压时字节计数
-            int count;
-            // 如果进入点为空说明已经遍历完所有压缩包中文件和目录
-            while (zipEntry != null) {
-                // 如果是一个目录
-                if (zipEntry.isDirectory()) {
-                    file = new File(assetsFolderPath + File.separator + zipEntry.getName());
-                    // 文件需要覆盖或者是文件不存在
-                    if (isInAssets || !file.exists()) {
-                        file.mkdir();
-                    }
-                } else {
-                    // 如果是文件
-                    file = new File(assetsFolderPath + File.separator + zipEntry.getName());
-                    // 文件需要覆盖或者文件不存在，则解压文件
-                    if (isInAssets || !file.exists()) {
-                        file.createNewFile();
-                        FileOutputStream fileOutputStream = new FileOutputStream(file);
-                        while ((count = zipInputStream.read(buffer)) > 0) {
-                            fileOutputStream.write(buffer, 0, count);
-                        }
-                        fileOutputStream.flush();
-                        fileOutputStream.close();
-                    }
-                }
-                // 定位到下一个文件入口
-                zipEntry = zipInputStream.getNextEntry();
-            }
-            return true;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return false;
-        } finally {
-            try {
-                if (zipInputStream != null) {
-                    zipInputStream.close();
-                }
-                if (inputStream != null) {
-                    inputStream.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-                return false;
-            }
-        }
-    }
-
     public static boolean writeResponseBodyToDisk(ResponseBody body, String sharedPath, String assetsName) {
         // todo change the file location/name according to your needs
         File zipFilePath = new File(sharedPath);
@@ -1074,5 +924,110 @@ public class FileUtil {
                 e.printStackTrace();
             }
         }
+    }
+
+    /**
+     * @param mContext  上下文
+     * @param assetName 静态文件名称 assets image
+     */
+    public static boolean unZipAssets(Context mContext, String assetName) {
+        boolean isInAssets = true;
+        String sharedPath = String.format("%s/%s", FileUtil.basePath(mContext), K.kSharedDirName);
+        if (URLs.kAssets == assetName || URLs.kLoading == assetName)
+            isInAssets = false;
+        try {
+            String zipFilePath = String.format("%s/%s", sharedPath, assetName + ".zip");
+
+            String outputDirectory = sharedPath;
+            if (isInAssets) {
+                outputDirectory = String.format("%s/assets/%s/", sharedPath, assetName);
+                if (assetName.equals("icons")) {
+                    outputDirectory = String.format("%s/assets/%s/", sharedPath, "images");
+                }
+            } else {
+                File file = new File(String.format("%s/%s", sharedPath, assetName));
+                if (file.exists()) {
+                    FileUtils.deleteDirectory(file);
+                }
+            }
+
+            InputStream inputStream = new FileInputStream(zipFilePath);
+//            FileUtil.unZip(zipStream, folderPath, true);
+            // 创建解压目标目录
+            File file = new File(outputDirectory);
+            // 如果目标目录不存在，则创建
+            if (!file.exists()) {
+                file.mkdirs();
+            }
+            // 打开压缩文件
+            ZipInputStream zipInputStream = new ZipInputStream(inputStream);
+            // 读取一个进入点
+            ZipEntry zipEntry = zipInputStream.getNextEntry();
+            // 使用1Mbuffer
+            byte[] buffer = new byte[10 * 1024 * 1024];
+            // 解压时字节计数
+            int count;
+            // 如果进入点为空说明已经遍历完所有压缩包中文件和目录
+            while (zipEntry != null) {
+                // 如果是一个目录
+                if (zipEntry.isDirectory()) {
+                    file = new File(outputDirectory + File.separator + zipEntry.getName());
+                    // 文件需要覆盖或者是文件不存在
+                    file.mkdir();
+                } else {
+                    // 如果是文件
+                    file = new File(outputDirectory + File.separator + zipEntry.getName());
+                    // 文件需要覆盖或者文件不存在，则解压文件
+                    file.createNewFile();
+                    FileOutputStream fileOutputStream = new FileOutputStream(file);
+                    while ((count = zipInputStream.read(buffer)) > 0) {
+                        fileOutputStream.write(buffer, 0, count);
+                    }
+                    fileOutputStream.close();
+                }
+                // 定位到下一个文件入口
+                zipEntry = zipInputStream.getNextEntry();
+            }
+            zipInputStream.close();
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * 删除文件夹以及目录下的文件
+     *
+     * @param filePath 被删除目录的文件路径
+     * @return 目录删除成功返回true，否则返回false
+     */
+    public static boolean deleteDirectory(String filePath) {
+        boolean flag = false;
+        //如果filePath不以文件分隔符结尾，自动添加文件分隔符
+        if (!filePath.endsWith(File.separator)) {
+            filePath = filePath + File.separator;
+        }
+        File dirFile = new File(filePath);
+        if (!dirFile.exists() || !dirFile.isDirectory()) {
+            return false;
+        }
+        flag = true;
+        File[] files = dirFile.listFiles();
+        //遍历删除文件夹下的所有文件(包括子目录)
+        for (int i = 0; i < files.length; i++) {
+            if (files[i].isFile()) {
+                //删除子文件
+                flag = deleteFile(files[i].getAbsolutePath());
+                if (!flag) break;
+            } else {
+                //删除子目录
+                flag = deleteDirectory(files[i].getAbsolutePath());
+                if (!flag) break;
+            }
+        }
+        if (!flag) return false;
+        //删除当前空目录
+        return dirFile.delete();
     }
 }

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/bg_startup"
-    android:orientation="vertical"
-    android:scaleType="fitXY">
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@drawable/bg_startup"
+              android:orientation="vertical"
+              android:scaleType="fitXY">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -19,7 +19,7 @@
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:alpha="1"
-            android:background="@drawable/startup_logo" />
+            android:background="@drawable/startup_logo"/>
 
     </RelativeLayout>
 
@@ -30,12 +30,25 @@
         android:orientation="vertical">
 
         <ImageView
+            android:id="@+id/iv_splash_adv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="44dp"
-            android:src="@drawable/slogan" />
+            android:src="@drawable/slogan"
+            android:visibility="visible"/>
+
+        <TextView
+            android:id="@+id/tv_splash_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="44dp"
+            android:textColor="@color/co10_syr"
+            android:visibility="gone"/>
+
     </RelativeLayout>
 
 
