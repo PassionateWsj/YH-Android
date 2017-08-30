@@ -7,6 +7,7 @@ import android.content.SharedPreferences
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.view.View
 import android.view.Window
 import android.view.WindowManager
 import android.view.animation.AlphaAnimation
@@ -68,6 +69,8 @@ class LauncherActivity : Activity(), Animation.AnimationListener {
     }
 
     override fun onAnimationEnd(p0: Animation?) {
+        number_progress_bar_splash.visibility  = View.VISIBLE
+        tv_splash_status.visibility  = View.VISIBLE
         checkAssets()
     }
 
@@ -114,7 +117,7 @@ class LauncherActivity : Activity(), Animation.AnimationListener {
             return
         }
         LogUtil.d("hjjzz", "MainThread:::" + Thread.currentThread().name)
-        AssetsUpDateUtil.checkAssetsUpdate(ctx, object : OnCheckAssetsUpdateResultListener {
+        AssetsUpDateUtil.checkAssetsUpdate(ctx, number_progress_bar_splash, object : OnCheckAssetsUpdateResultListener {
             override fun onResultSuccess() {
                 LogUtil.d("hjjzz", "onResultSuccess:::" + Thread.currentThread().name)
                 tv_splash_status.text = "已是最新资源"

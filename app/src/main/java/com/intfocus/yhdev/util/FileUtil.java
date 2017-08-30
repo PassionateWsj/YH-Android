@@ -46,7 +46,6 @@ import java.util.zip.ZipInputStream;
 import okhttp3.ResponseBody;
 
 import static com.intfocus.yhdev.util.K.kUserId;
-import static com.zbl.lib.baseframe.utils.FileUtils.deleteFile;
 
 public class FileUtil {
     public static String basePath(Context context) {
@@ -1010,7 +1009,7 @@ public class FileUtil {
         }
         File dirFile = new File(filePath);
         if (!dirFile.exists() || !dirFile.isDirectory()) {
-            return false;
+            return true;
         }
         flag = true;
         File[] files = dirFile.listFiles();
@@ -1029,5 +1028,19 @@ public class FileUtil {
         if (!flag) return false;
         //删除当前空目录
         return dirFile.delete();
+    }
+
+    /**
+     * 删除单个文件
+     *
+     * @param filePath 被删除文件的文件名
+     * @return 文件删除成功返回true，否则返回false
+     */
+    public static boolean deleteFile(String filePath) {
+        File file = new File(filePath);
+        if (file.isFile() && file.exists()) {
+            return file.delete();
+        }
+        return false;
     }
 }

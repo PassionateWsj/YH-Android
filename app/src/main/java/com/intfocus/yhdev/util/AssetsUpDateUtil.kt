@@ -1,6 +1,7 @@
 package com.intfocus.yhdev.util
 
 import android.content.Context
+import com.daimajia.numberprogressbar.NumberProgressBar
 import com.intfocus.yhdev.data.response.assets.AssetsResult
 import com.intfocus.yhdev.net.ApiException
 import com.intfocus.yhdev.net.CodeHandledSubscriber
@@ -22,8 +23,11 @@ import rx.schedulers.Schedulers
  * ****************************************************
  */
 object AssetsUpDateUtil {
-
     fun checkAssetsUpdate(ctx: Context, listener: OnCheckAssetsUpdateResultListener) {
+        checkAssetsUpdate(ctx, null, listener)
+    }
+
+    fun checkAssetsUpdate(ctx: Context, progressBar: NumberProgressBar?, listener: OnCheckAssetsUpdateResultListener) {
         var sharedPath = String.format("%s/%s", FileUtil.basePath(ctx), K.kSharedDirName)
         LogUtil.d("hjjzz", "MainThread:::" + Thread.currentThread().name)
         RetrofitUtil.getHttpService(ctx).assetsMD5
@@ -55,7 +59,8 @@ object AssetsUpDateUtil {
                         assetsMD5sMap.put(URLs.kLoading + "_md5", assetsMD5s.loading_md5!!)
                         assetsMD5sMap.put(URLs.kStylesheets + "_md5", assetsMD5s.stylesheets_md5!!)
                         assetsMD5sMap.put(URLs.kAdvertisement + "_md5", assetsMD5s.advertisement_md5!!)
-
+                        if (progressBar != null)
+                            progressBar.progress += 10
                         Observable.from(assetsNameArr)
                                 .subscribeOn(Schedulers.io())
                                 .map { assetName ->
@@ -87,12 +92,16 @@ object AssetsUpDateUtil {
 
                                     override fun onCompleted() {
                                         LogUtil.d("hjjzz", "unzip:onCompleted:::" + Thread.currentThread().name)
+                                        if (progressBar != null)
+                                            progressBar.progress += 10
                                         listener.onResultSuccess()
                                     }
 
                                     override fun onNext(isCheckSuccess: Boolean?) {
                                         if (!isCheckSuccess!!)
                                             this.onError(kotlin.Throwable("解压出错"))
+                                        if (progressBar != null)
+                                            progressBar.progress += 10
                                     }
                                 })
                     }
