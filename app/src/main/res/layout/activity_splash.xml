@@ -43,11 +43,11 @@
             android:id="@+id/tv_splash_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
+            android:layout_above="@id/iv_splash_adv"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="44dp"
+            android:layout_marginBottom="22dp"
             android:textColor="@color/co10_syr"
-            android:visibility="gone"/>
+            android:visibility="visible"/>
 
     </RelativeLayout>
 
