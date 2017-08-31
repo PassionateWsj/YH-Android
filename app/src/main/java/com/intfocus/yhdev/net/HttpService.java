@@ -14,6 +14,7 @@ import com.intfocus.yhdev.data.response.mine_page.NoticeContentResult;
 import com.intfocus.yhdev.data.response.mine_page.UserInfoResult;
 import com.intfocus.yhdev.data.response.notice.NoticesResult;
 import com.intfocus.yhdev.data.response.scanner.StoreListResult;
+import com.intfocus.yhdev.data.response.update.UpdateResult;
 import com.intfocus.yhdev.login.bean.Device;
 import com.intfocus.yhdev.login.bean.DeviceRequest;
 import com.intfocus.yhdev.login.bean.NewUser;
@@ -42,10 +43,10 @@ public interface HttpService {
 
     /**
      * 推送 push_token
-     *
+     * <p>
      * POST
      * /api/v1.1/device/push_token
-     *
+     * <p>
      * uuid
      * push_token
      */
@@ -54,7 +55,7 @@ public interface HttpService {
 
     /**
      * 获取AssetsMD5
-     *
+     * <p>
      * GET
      * /api/v1.1/assets/md5
      */
@@ -63,10 +64,10 @@ public interface HttpService {
 
     /**
      * 公告预警详情
-     *
+     * <p>
      * GET
      * /api/v1.1/my/view/notice
-     *
+     * <p>
      * notice_id
      * user_num
      */
@@ -75,10 +76,10 @@ public interface HttpService {
 
     /**
      * 发表评论
-     *
+     * <p>
      * POST
      * /api/v1.1/comment
-     *
+     * <p>
      * "user_num": "",
      * "content": "",
      * "object_type": ,
@@ -90,10 +91,10 @@ public interface HttpService {
 
     /**
      * 工具箱页
-     *
+     * <p>
      * GET
      * /api/v1.1/app/component/toolbox
-     *
+     * <p>
      * group_id
      * role_id
      */
@@ -102,10 +103,10 @@ public interface HttpService {
 
     /**
      * 报表页面列表
-     *
+     * <p>
      * GET
      * /api/v1.1/app/component/reports
-     *
+     * <p>
      * group_id
      * role_id
      */
@@ -114,10 +115,10 @@ public interface HttpService {
 
     /**
      * 门店列表
-     *
+     * <p>
      * GET
      * /api/v1.1/user/stores
-     *
+     * <p>
      * user_num
      */
     @GET(K.KStoreList)
@@ -125,10 +126,10 @@ public interface HttpService {
 
     /**
      * 用户信息
-     *
+     * <p>
      * GET
      * /api/v1.1/my/statistics
-     *
+     * <p>
      * user_num
      */
     @GET(K.KUserInfo)
@@ -136,10 +137,10 @@ public interface HttpService {
 
     /**
      * 获取概况页公告列表
-     *
+     * <p>
      * GET
      * /api/v1.1/user/notifications
-     *
+     * <p>
      * group_id
      * role_id
      */
@@ -148,10 +149,10 @@ public interface HttpService {
 
     /**
      * 扫码结果
-     *
+     * <p>
      * GET
      * /api/v1.1/scan/barcode
-     *
+     * <p>
      * store_id
      * code_info
      */
@@ -160,10 +161,10 @@ public interface HttpService {
 
     /**
      * 获取文章收藏列表
-     *
+     * <p>
      * GET
      * /api/v1.1/my/favourited/articles
-     *
+     * <p>
      * user_num
      * page
      * limit
@@ -173,10 +174,10 @@ public interface HttpService {
 
     /**
      * 收藏状态
-     *
+     * <p>
      * POST
      * /api/v1.1/my/article/favourite_status
-     *
+     * <p>
      * "user_num": "123",
      * "article_id": "1",
      * "favourite_status": "1
@@ -186,10 +187,10 @@ public interface HttpService {
 
     /**
      * 获取数据学院文章列表
-     *
+     * <p>
      * GET
      * /api/v1.1/my/articles
-     *
+     * <p>
      * user_num
      * page
      * limit
@@ -200,10 +201,10 @@ public interface HttpService {
 
     /**
      * 获取首页概况数据
-     *
+     * <p>
      * GET
      * /api/v1.1/app/component/overview
-     *
+     * <p>
      * group_id
      * role_id
      */
@@ -212,10 +213,10 @@ public interface HttpService {
 
     /**
      * 获取首页消息数据
-     *
+     * <p>
      * GET
      * /api/v1.1/user/notifications
-     *
+     * <p>
      * group_id
      * role_id
      */
@@ -224,10 +225,10 @@ public interface HttpService {
 
     /**
      * 公告预警列表
-     *
+     * <p>
      * GET
      * /api/v1.1/my/notices
-     *
+     * <p>
      * user_num
      * type
      * page
@@ -238,7 +239,7 @@ public interface HttpService {
 
     /**
      * 获取筛选菜单信息
-     *
+     * <p>
      * GET
      * /api/v1/report/menus
      */
@@ -248,10 +249,10 @@ public interface HttpService {
 
     /**
      * 头像上传
-     *
+     * <p>
      * POST
      * /api/v1.1/upload/gravatar
-     *
+     * <p>
      * "user_num": "",
      * "device_id": "",
      * "gravatar": ""
@@ -262,10 +263,10 @@ public interface HttpService {
 
     /**
      * 登录post请求
-     *
+     * <p>
      * POST
      * /api/v1.1/user/authentication
-     *
+     * <p>
      * user_num  　用户名
      * password 　密码
      */
@@ -274,31 +275,31 @@ public interface HttpService {
 
     /**
      * 上传设备信息
-     *
+     * <p>
      * POST
      * /api/v1.1/app/device
-     *
-     *   "user_num": "",
-     *   "device": {
-     *      "uuid": "",
-     *      "os": "",
-     *      "name": "",
-     *      "os_version": "",
-     *      "platform": ""
-     *   },
-     *   "app_version": "",
-     *   "ip": "",
-     *   "browser": ""
+     * <p>
+     * "user_num": "",
+     * "device": {
+     * "uuid": "",
+     * "os": "",
+     * "name": "",
+     * "os_version": "",
+     * "platform": ""
+     * },
+     * "app_version": "",
+     * "ip": "",
+     * "browser": ""
      */
     @POST(K.KNewDevice)
     Observable<Device> deviceUpLoad(@Body DeviceRequest deviceRequest);
 
     /**
      * 退出登录
-     *
+     * <p>
      * POST
      * /api/v1.1/user/logout
-     *
+     * <p>
      * user_device_id
      */
     @POST(K.KNewLogout)
@@ -306,10 +307,10 @@ public interface HttpService {
 
     /**
      * 更新密码
-     *
+     * <p>
      * POST
      * /api/v1.1/user/update_password
-     *
+     * <p>
      * user_num 　用户名
      * password  　新密码
      */
@@ -318,10 +319,10 @@ public interface HttpService {
 
     /**
      * 重置密码
-     *
+     * <p>
      * POST
      * /api/v1.1/user/reset_password
-     *
+     * <p>
      * user_num 　用户名
      * mobile 　手机号
      */
@@ -330,10 +331,10 @@ public interface HttpService {
 
     /**
      * 用户信息
-     *
+     * <p>
      * GET
      * /api/v1.1/my/statistics
-     *
+     * <p>
      * user_num
      */
     @GET(K.KNewChoiceMenu)
@@ -341,12 +342,23 @@ public interface HttpService {
 
     /**
      * 下载静态资源
-     *
+     * <p>
      * GET
      * /api/v1.1/download/assets
-     *
+     * <p>
      * filename
      */
     @GET
     Call<ResponseBody> downloadFileWithDynamicUrlSync(@Url String fileUrl);
+
+    /**
+     * 下载静态资源
+     * <p>
+     * GET
+     * /api/v1.1/download/assets
+     * <p>
+     * filename
+     */
+    @GET(K.KNewUpdate)
+    Observable<UpdateResult> getUpdateMsg(@Query("app_version") String app_version, @Query("uuid") String uuid);
 }

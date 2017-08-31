@@ -9,6 +9,9 @@ import android.view.View
 import android.widget.CompoundButton
 import com.intfocus.yhdev.R
 import com.intfocus.yhdev.base.BaseActivity
+import com.intfocus.yhdev.data.response.update.UpdateResult
+import com.intfocus.yhdev.login.listener.OnCheckAssetsUpdateResultListener
+import com.intfocus.yhdev.login.listener.OnUpdateResultListener
 import com.intfocus.yhdev.screen_lock.InitPassCodeActivity
 import com.intfocus.yhdev.util.*
 import kotlinx.android.synthetic.main.activity_setting_preference.*
@@ -21,6 +24,7 @@ import rx.schedulers.Schedulers
  */
 
 class SettingPreferenceActivity : BaseActivity() {
+    private val ctx = this
     private var mSharedPreferences: SharedPreferences? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -76,8 +80,6 @@ class SettingPreferenceActivity : BaseActivity() {
      */
     fun clearUserCache(v: View) {
         var mProgressDialog = ProgressDialog.show(this@SettingPreferenceActivity, "稍等", "正在清理缓存...")
-        if (!HttpUtil.isConnected(this))
-            return
 
         val sharedPath = FileUtil.sharedPath(this)
         val cachePath = String.format("%s/%s", FileUtil.basePath(this), K.kCachedDirName)
@@ -92,15 +94,24 @@ class SettingPreferenceActivity : BaseActivity() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { isClear ->
                     if (isClear) {
-                        AssetsUpDateUtil.checkAssetsUpdate(this, object : OnCheckAssetsUpdateResultListener {
-                            override fun onResultSuccess() {
-                                ToastUtils.show(applicationContext, "清除缓存成功", ToastColor.SUCCESS)
-                                mProgressDialog.dismiss()
+                        UpDateUtil.checkUpdate(this, packageManager.getPackageInfo(packageName, 0).versionName, object : OnUpdateResultListener {
+                            override fun onResultSuccess(data: UpdateResult.UpdateData) {
+                                UpDateUtil.checkAssetsUpdate(ctx, data!!.assets!!, null, object : OnCheckAssetsUpdateResultListener {
+                                    override fun onFailure(msg: String) {
+                                        ToastUtils.show(this@SettingPreferenceActivity, msg)
+                                        mProgressDialog.dismiss()
+                                    }
+
+                                    override fun onResultSuccess() {
+                                        ToastUtils.show(this@SettingPreferenceActivity, "清除缓存成功", ToastColor.SUCCESS)
+                                        UpDateUtil.unSubscribe()
+                                        mProgressDialog.dismiss()
+
+                                    }
+                                })
                             }
 
-                            override fun onFailure() {
-                                ToastUtils.show(applicationContext, "清除缓存失败，请重试")
-                                mProgressDialog.dismiss()
+                            override fun onFailure(msg: String) {
                             }
                         })
                     } else {
@@ -108,7 +119,10 @@ class SettingPreferenceActivity : BaseActivity() {
                         ToastUtils.show(applicationContext, "清除缓存失败，请重试")
                     }
                 }
+    }
 
-
+    override fun onDestroy() {
+        UpDateUtil.unSubscribe()
+        super.onDestroy()
     }
 }

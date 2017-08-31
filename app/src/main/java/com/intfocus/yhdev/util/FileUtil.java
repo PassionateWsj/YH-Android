@@ -20,6 +20,7 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.intfocus.yhdev.data.response.assets.AssetsMD5;
 import com.intfocus.yhdev.data.response.assets.AssetsResult;
+import com.intfocus.yhdev.login.listener.DownLoadProgressListener;
 import com.intfocus.yhdev.net.ApiException;
 import com.intfocus.yhdev.net.CodeHandledSubscriber;
 import com.intfocus.yhdev.net.RetrofitUtil;
@@ -874,15 +875,15 @@ public class FileUtil {
         }
     }
 
-    public static boolean writeResponseBodyToDisk(ResponseBody body, String sharedPath, String assetsName) {
-        File zipFilePath = new File(sharedPath);
-        String zipFile = String.format("%s/%s", sharedPath, assetsName);
-        File assetZip = new File(zipFile);
-        if (!zipFilePath.exists()) {
-            zipFilePath.mkdirs();
+    public static boolean writeResponseBodyToDisk(ResponseBody body, String filePathName, String fileName, DownLoadProgressListener percentListener) {
+        File filePath = new File(filePathName);
+        String fileAbsolutePath = String.format("%s/%s", filePathName, fileName);
+        File file = new File(fileAbsolutePath);
+        if (!filePath.exists()) {
+            filePath.mkdirs();
         }
-        if (assetZip.isFile() && assetZip.exists())
-            assetZip.delete();
+        if (file.isFile() && file.exists())
+            file.delete();
         InputStream inputStream = null;
         OutputStream outputStream = null;
 
@@ -893,7 +894,7 @@ public class FileUtil {
             long fileSizeDownloaded = 0;
 
             inputStream = body.byteStream();
-            outputStream = new FileOutputStream(zipFile);
+            outputStream = new FileOutputStream(fileAbsolutePath);
 
             while (true) {
                 int read = inputStream.read(fileReader);
@@ -905,7 +906,7 @@ public class FileUtil {
                 outputStream.write(fileReader, 0, read);
 
                 fileSizeDownloaded += read;
-
+                percentListener.updateProgress(fileSizeDownloaded / fileSize);
                 Log.d("hjjzz", "file download: " + fileSizeDownloaded + " of " + fileSize);
             }
 

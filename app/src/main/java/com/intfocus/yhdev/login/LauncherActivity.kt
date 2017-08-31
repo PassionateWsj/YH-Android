@@ -7,6 +7,8 @@ import android.content.SharedPreferences
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.support.v7.app.AlertDialog
+import android.view.KeyEvent
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
@@ -14,17 +16,16 @@ import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
 import android.widget.Toast
 import com.intfocus.yhdev.R
+import com.intfocus.yhdev.data.response.update.UpdateResult
+import com.intfocus.yhdev.login.listener.OnCheckAssetsUpdateResultListener
+import com.intfocus.yhdev.login.listener.OnUpdateResultListener
 import com.intfocus.yhdev.screen_lock.ConfirmPassCodeActivity
-import com.intfocus.yhdev.util.AssetsUpDateUtil
-import com.intfocus.yhdev.util.HttpUtil
-import com.intfocus.yhdev.util.LogUtil
-import com.intfocus.yhdev.util.OnCheckAssetsUpdateResultListener
+import com.intfocus.yhdev.util.UpDateUtil
 import kotlinx.android.synthetic.main.activity_splash.*
 import java.util.*
 
 
 class LauncherActivity : Activity(), Animation.AnimationListener {
-
     val ctx = this
     /**
      * 最短点击间隔时长 ms
@@ -49,7 +50,10 @@ class LauncherActivity : Activity(), Animation.AnimationListener {
 
         initData()
         initAnim()
+
+        checkUpdate()
     }
+
 
     private fun initData() {
         mSettingSP = getSharedPreferences("SettingPreference", Context.MODE_PRIVATE)
@@ -77,17 +81,64 @@ class LauncherActivity : Activity(), Animation.AnimationListener {
         logo.startAnimation(animation)
     }
 
+    /**
+     * 检测更新
+     */
+    private fun checkUpdate() {
+        UpDateUtil.checkUpdate(ctx, packageInfo.versionName, object : OnUpdateResultListener {
+            override fun onResultSuccess(data: UpdateResult.UpdateData) {
+                number_progress_bar_splash.progress = 10
+                when (data.app_version) {
+                    "1" -> {
+                        checkAssets(data.assets)
+                    }
+                    "2", "3" -> {
+                        showUpDateDialog(data)
+                    }
+                    else -> {
+                        tv_splash_status.text = "更新失败"
+                        finishIn2m()
+                    }
+                }
+            }
+
+            override fun onFailure(msg: String) {
+                tv_splash_status.text = msg
+                finishIn2m()
+            }
+
+        })
+    }
+
+    private fun showUpDateDialog(data: UpdateResult.UpdateData) {
+        val dialog = AlertDialog.Builder(ctx)
+                .setTitle("发现新版本 " + data.app_version)
+                .setMessage(data.description)
+                .setPositiveButton("更新") { dialog, _ ->
+                    UpDateUtil.downAPK(ctx, data.download_path, packageInfo.packageName, number_progress_bar_splash)
+                    dialog.dismiss()
+                }
+        if (data.is_update == "2")
+            dialog.setNegativeButton("暂不更新") { dialog, _ ->
+                checkAssets(data.assets)
+                dialog.dismiss()
+            }
+        dialog.setOnKeyListener { dialog, keyCode, event ->
+            keyCode == KeyEvent.KEYCODE_SEARCH || keyCode == KeyEvent.KEYCODE_BACK
+        }
+        dialog.create().show()
+    }
+
     override fun onAnimationRepeat(p0: Animation?) {
     }
 
     override fun onAnimationEnd(p0: Animation?) {
         number_progress_bar_splash.visibility = View.VISIBLE
         tv_splash_status.visibility = View.VISIBLE
-        checkAssets()
     }
 
     override fun onAnimationStart(p0: Animation?) {
-        tv_splash_status.text = "正在检测样式更新.."
+
     }
 
     private fun enter() {
@@ -118,33 +169,30 @@ class LauncherActivity : Activity(), Animation.AnimationListener {
         }
     }
 
-    private fun checkAssets() {
-        if (!HttpUtil.isConnected(ctx)) {
-            tv_splash_status.text = "请检查网络"
-            Timer().schedule(object : TimerTask() {
-                override fun run() {
-                    ctx.finish()
-                }
-            }, 2000)
-            return
-        }
-        LogUtil.d("hjjzz", "MainThread:::" + Thread.currentThread().name)
-        AssetsUpDateUtil.checkAssetsUpdate(ctx, number_progress_bar_splash, object : OnCheckAssetsUpdateResultListener {
+    /**
+     * 检测静态资源更新
+     */
+    private fun checkAssets(assets: List<UpdateResult.UpdateData.AssetsBean>?) {
+        tv_splash_status.text = "正在检测样式更新.."
+        UpDateUtil.checkAssetsUpdate(ctx, assets!!, number_progress_bar_splash, object : OnCheckAssetsUpdateResultListener {
             override fun onResultSuccess() {
-                LogUtil.d("hjjzz", "onResultSuccess:::" + Thread.currentThread().name)
                 tv_splash_status.text = "已是最新资源"
                 enter()
             }
 
-            override fun onFailure() {
-                tv_splash_status.text = "更新失败"
-                Timer().schedule(object : TimerTask() {
-                    override fun run() {
-                        ctx.finish()
-                    }
-                }, 2000)
+            override fun onFailure(msg: String) {
+                tv_splash_status.text = msg
+                finishIn2m()
             }
         })
+    }
+
+    fun finishIn2m() {
+        Timer().schedule(object : TimerTask() {
+            override fun run() {
+                ctx.finish()
+            }
+        }, 2000)
     }
 
     override fun onBackPressed() {
@@ -160,7 +208,7 @@ class LauncherActivity : Activity(), Animation.AnimationListener {
     }
 
     override fun onDestroy() {
-        AssetsUpDateUtil.unSubscribe()
+        UpDateUtil.unSubscribe()
         super.onDestroy()
     }
 }
