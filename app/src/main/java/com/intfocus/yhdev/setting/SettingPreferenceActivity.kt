@@ -87,8 +87,7 @@ class SettingPreferenceActivity : BaseActivity() {
                     var isClearSpSuccess = getSharedPreferences("AssetsMD5", Context.MODE_PRIVATE).edit().clear().commit()
                     var isCleanSharedPathSuccess = FileUtil.deleteDirectory(path)
                     var isCleanCacheSuccess = FileUtil.deleteDirectory(cachePath)
-                    var isCacheFolderExist = FileUtil.makeSureFolderExist(cachePath)
-                    isClearSpSuccess && isCleanSharedPathSuccess && isCleanCacheSuccess && isCacheFolderExist
+                    isClearSpSuccess && isCleanSharedPathSuccess && isCleanCacheSuccess
                 }
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { isClear ->

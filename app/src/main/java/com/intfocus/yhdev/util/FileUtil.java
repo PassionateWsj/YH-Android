@@ -875,12 +875,14 @@ public class FileUtil {
     }
 
     public static boolean writeResponseBodyToDisk(ResponseBody body, String sharedPath, String assetsName) {
-        // todo change the file location/name according to your needs
         File zipFilePath = new File(sharedPath);
         String zipFile = String.format("%s/%s", sharedPath, assetsName);
+        File assetZip = new File(zipFile);
         if (!zipFilePath.exists()) {
             zipFilePath.mkdirs();
         }
+        if (assetZip.isFile() && assetZip.exists())
+            assetZip.delete();
         InputStream inputStream = null;
         OutputStream outputStream = null;
 

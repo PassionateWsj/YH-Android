@@ -10,6 +10,7 @@ import com.intfocus.yhdev.net.RetrofitUtil
 import retrofit2.Retrofit
 import rx.Observable
 import rx.Observer
+import rx.Subscription
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
 
@@ -23,6 +24,8 @@ import rx.schedulers.Schedulers
  * ****************************************************
  */
 object AssetsUpDateUtil {
+    private lateinit var observable: Subscription
+
     fun checkAssetsUpdate(ctx: Context, listener: OnCheckAssetsUpdateResultListener) {
         checkAssetsUpdate(ctx, null, listener)
     }
@@ -43,14 +46,14 @@ object AssetsUpDateUtil {
 
                     override fun onBusinessNext(data: AssetsResult?) {
                         LogUtil.d("hjjzz", "getHttpService(ctx).assetsMD5:::" + Thread.currentThread().name)
-                        var assetsMD5s = data!!.data!!
-                        var mAssetsSP = ctx.getSharedPreferences("AssetsMD5", Context.MODE_PRIVATE)
-                        var mAssetsSPEdit = mAssetsSP.edit()
-                        var assetsNameArr = listOf(URLs.kAssets, URLs.kFonts,
+                        val assetsMD5s = data!!.data!!
+                        val mAssetsSP = ctx.getSharedPreferences("AssetsMD5", Context.MODE_PRIVATE)
+                        val mAssetsSPEdit = mAssetsSP.edit()
+                        val assetsNameArr = listOf(URLs.kJavaScripts, URLs.kAdvertisement,
                                 URLs.kIcons, URLs.kImages,
-                                URLs.kJavaScripts, URLs.kLoading,
-                                URLs.kStylesheets, URLs.kAdvertisement)
-                        var assetsMD5sMap = HashMap<String, String>()
+                                URLs.kLoading, URLs.kStylesheets,
+                                URLs.kAssets, URLs.kFonts)
+                        val assetsMD5sMap = HashMap<String, String>()
                         assetsMD5sMap.put(URLs.kAssets + "_md5", assetsMD5s.assets_md5!!)
                         assetsMD5sMap.put(URLs.kFonts + "_md5", assetsMD5s.fonts_md5!!)
                         assetsMD5sMap.put(URLs.kIcons + "_md5", assetsMD5s.icons_md5!!)
@@ -59,9 +62,11 @@ object AssetsUpDateUtil {
                         assetsMD5sMap.put(URLs.kLoading + "_md5", assetsMD5s.loading_md5!!)
                         assetsMD5sMap.put(URLs.kStylesheets + "_md5", assetsMD5s.stylesheets_md5!!)
                         assetsMD5sMap.put(URLs.kAdvertisement + "_md5", assetsMD5s.advertisement_md5!!)
+
                         if (progressBar != null)
                             progressBar.progress += 10
-                        Observable.from(assetsNameArr)
+
+                        observable = Observable.from(assetsNameArr)
                                 .subscribeOn(Schedulers.io())
                                 .map { assetName ->
                                     LogUtil.d("hjjzz", "unzip:::" + Thread.currentThread().name)
@@ -106,6 +111,14 @@ object AssetsUpDateUtil {
                                 })
                     }
                 })
+    }
+
+    /**
+     * 取消订阅
+     */
+    fun unSubscribe() {
+        if (observable != null && !observable.isUnsubscribed)
+            observable.unsubscribe()
     }
 }
 

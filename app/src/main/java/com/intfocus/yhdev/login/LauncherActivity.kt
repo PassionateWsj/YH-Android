@@ -12,6 +12,7 @@ import android.view.Window
 import android.view.WindowManager
 import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
+import android.widget.Toast
 import com.intfocus.yhdev.R
 import com.intfocus.yhdev.screen_lock.ConfirmPassCodeActivity
 import com.intfocus.yhdev.util.AssetsUpDateUtil
@@ -25,6 +26,15 @@ import java.util.*
 class LauncherActivity : Activity(), Animation.AnimationListener {
 
     val ctx = this
+    /**
+     * 最短点击间隔时长 ms
+     */
+    private val MIN_CLICK_DELAY_TIME = 2000
+    /**
+     * 上一次点击的时间
+     */
+    private var lastClickTime: Long = 0
+    private lateinit var toast: Toast
     private lateinit var mSettingSP: SharedPreferences
     private lateinit var mUserSP: SharedPreferences
     private lateinit var mAssetsSP: SharedPreferences
@@ -56,6 +66,8 @@ class LauncherActivity : Activity(), Animation.AnimationListener {
             mUserSP.edit().clear().commit()
             mSettingSP.edit().clear().commit()
         }
+
+        toast = Toast.makeText(ctx, "再按一次退出生意人", Toast.LENGTH_SHORT)
     }
 
     private fun initAnim() {
@@ -69,13 +81,13 @@ class LauncherActivity : Activity(), Animation.AnimationListener {
     }
 
     override fun onAnimationEnd(p0: Animation?) {
-        number_progress_bar_splash.visibility  = View.VISIBLE
-        tv_splash_status.visibility  = View.VISIBLE
+        number_progress_bar_splash.visibility = View.VISIBLE
+        tv_splash_status.visibility = View.VISIBLE
         checkAssets()
     }
 
     override fun onAnimationStart(p0: Animation?) {
-        tv_splash_status.text = "正在检测更新.."
+        tv_splash_status.text = "正在检测样式更新.."
     }
 
     private fun enter() {
@@ -133,6 +145,22 @@ class LauncherActivity : Activity(), Animation.AnimationListener {
                 }, 2000)
             }
         })
+    }
 
+    override fun onBackPressed() {
+        val currentTime = Calendar.getInstance().timeInMillis
+        if (currentTime - lastClickTime > MIN_CLICK_DELAY_TIME) {
+            lastClickTime = currentTime
+            toast.show()
+            return
+        }
+        toast.cancel()
+        finish()
+
+    }
+
+    override fun onDestroy() {
+        AssetsUpDateUtil.unSubscribe()
+        super.onDestroy()
     }
 }
