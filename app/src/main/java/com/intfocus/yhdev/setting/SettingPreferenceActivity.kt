@@ -5,14 +5,16 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.os.Handler
 import android.view.View
 import android.widget.CompoundButton
 import com.intfocus.yhdev.R
 import com.intfocus.yhdev.base.BaseActivity
 import com.intfocus.yhdev.screen_lock.InitPassCodeActivity
-import com.intfocus.yhdev.util.FileUtil
+import com.intfocus.yhdev.util.*
 import kotlinx.android.synthetic.main.activity_setting_preference.*
+import rx.Observable
+import rx.android.schedulers.AndroidSchedulers
+import rx.schedulers.Schedulers
 
 /**
  * Created by liuruilin on 2017/3/28.
@@ -74,7 +76,39 @@ class SettingPreferenceActivity : BaseActivity() {
      */
     fun clearUserCache(v: View) {
         var mProgressDialog = ProgressDialog.show(this@SettingPreferenceActivity, "稍等", "正在清理缓存...")
-        FileUtil.CacheCleanAsync(mAppContext, "cache-clean").execute()
-        Handler().postDelayed({ mProgressDialog.dismiss() }, 15000)
+        if (!HttpUtil.isConnected(this))
+            return
+
+        val sharedPath = FileUtil.sharedPath(this)
+        val cachePath = String.format("%s/%s", FileUtil.basePath(this), K.kCachedDirName)
+        Observable.just(sharedPath)
+                .subscribeOn(Schedulers.io())
+                .map { path ->
+                    var isClearSpSuccess = getSharedPreferences("AssetsMD5", Context.MODE_PRIVATE).edit().clear().commit()
+                    var isCleanSharedPathSuccess = FileUtil.deleteDirectory(path)
+                    var isCleanCacheSuccess = FileUtil.deleteDirectory(cachePath)
+                    isClearSpSuccess && isCleanSharedPathSuccess && isCleanCacheSuccess
+                }
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe { isClear ->
+                    if (isClear) {
+                        AssetsUpDateUtil.checkAssetsUpdate(this, object : OnCheckAssetsUpdateResultListener {
+                            override fun onResultSuccess() {
+                                ToastUtils.show(applicationContext, "清除缓存成功", ToastColor.SUCCESS)
+                                mProgressDialog.dismiss()
+                            }
+
+                            override fun onFailure() {
+                                ToastUtils.show(applicationContext, "清除缓存失败，请重试")
+                                mProgressDialog.dismiss()
+                            }
+                        })
+                    } else {
+                        mProgressDialog.dismiss()
+                        ToastUtils.show(applicationContext, "清除缓存失败，请重试")
+                    }
+                }
+
+
     }
 }

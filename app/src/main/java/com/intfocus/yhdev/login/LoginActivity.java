@@ -16,7 +16,6 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -244,7 +243,7 @@ public class LoginActivity extends FragmentActivity {
             }
         });
 
-        mBtnLogin.setOnClickListener(new NoDoubleClickListener(){
+        mBtnLogin.setOnClickListener(new NoDoubleClickListener() {
             @Override
             protected void onNoDoubleClick(View v) {
                 actionSubmit(v);
