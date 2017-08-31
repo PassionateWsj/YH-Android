@@ -113,4 +113,5 @@ dependencies {
     compile 'com.j256.ormlite:ormlite-android:5.0'
     compile 'com.tencent.bugly:crashreport:latest.release' // Bugly-SDK
     compile 'com.tencent.bugly:nativecrashreport:latest.release' // Bugly-NDK
+    compile 'com.daimajia.numberprogressbar:library:1.4@aar'
 }

@@ -40,7 +40,7 @@ class GuideActivity : AppCompatActivity() {
 
         getAuthority()
 
-        val fgmList = (0..totalPageCount - 1).map { GuideFragment().newInstance(it, totalPageCount) }
+        val fgmList = (0 until totalPageCount).map { GuideFragment().newInstance(it, totalPageCount) }
         vp_guide_pager.adapter = GuidePagerAdapter(supportFragmentManager, fgmList)
         vp_guide_pager.currentItem = 0
     }

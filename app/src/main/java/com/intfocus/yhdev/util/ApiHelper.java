@@ -451,6 +451,10 @@ public class ApiHelper {
             URL url = new URL(urlString);
             String headerPath = String.format("%s/%s/%s", FileUtil.basePath(context), K.kCachedDirName, K.kCachedHeaderConfigFileName);
 
+            File cachePath = new File(String.format("%s/%s", FileUtil.basePath(context), K.kCachedDirName));
+            if (!cachePath.exists()) {
+                cachePath.mkdirs();
+            }
             JSONObject headerJSON = new JSONObject();
             if ((new File(headerPath)).exists()) {
                 headerJSON = FileUtil.readConfigFile(headerPath);
