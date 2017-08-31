@@ -527,9 +527,7 @@ public class LoginActivity extends FragmentActivity {
 
                         return;
                     } else if (HttpUtil.isWifi(activity) && newVersionCode % 10 == 8) {
-
                         startDownloadTask(activity, appBean.getDownloadURL());
-
                         return;
                     }
                     new AlertDialog.Builder(activity)

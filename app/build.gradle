@@ -70,7 +70,7 @@ dependencies {
     compile project(':switchText') //文字滚动
     compile project(':PushSDK')
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile(name: 'blib-1.0', ext: 'aar') //张宝亮的基础库
+    compile(name: 'blib-1.0', ext: 'aar')
     compile files('libs/android-viewbadger.jar')
     compile files('libs/umeng_shareboard_widget.jar')
     compile files('libs/umeng_social_api.jar')
@@ -85,7 +85,7 @@ dependencies {
 //    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
     compile 'com.amap.api:location:latest.integration' //高德定位
     compile files('libs/pinyin4j-2.5.0.jar') //拼音
-    compile 'com.android.support.constraint:constraint-layout:1.0.2' // Bugly-SDK
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.pgyersdk:sdk:2.5.6' //蒲公英 SDK
     compile 'commons-io:commons-io:2.4'
     compile 'com.squareup.okhttp3:okhttp:3.8.1'

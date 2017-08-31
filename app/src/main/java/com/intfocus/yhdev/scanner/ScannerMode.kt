@@ -30,7 +30,6 @@ class ScannerMode(var ctx: Context) : AbstractMode() {
     var store_id = ""
     var currentBarcode = ""
 
-
     fun requestData(barcode: String, storeId: String) {
         currentBarcode = barcode
         jsUrl = String.format(K.kBarCodeScanAPIDataPath, K.kBaseUrl, storeId, barcode)
