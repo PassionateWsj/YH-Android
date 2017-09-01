@@ -90,7 +90,8 @@ class LauncherActivity : Activity(), Animation.AnimationListener {
                 number_progress_bar_splash.progress = 10
                 when (data.is_update) {
                     "1" -> {
-                        checkAssets(data.assets)
+                        firstUnZipAssets(data.assets)
+//                        checkAssets(data.assets)
                     }
                     "2", "3" -> {
                         showUpDateDialog(data)
@@ -120,7 +121,8 @@ class LauncherActivity : Activity(), Animation.AnimationListener {
                 }
         if (data.is_update == "2")
             dialog.setNegativeButton("暂不更新") { dialog, _ ->
-                checkAssets(data.assets)
+                firstUnZipAssets(data.assets)
+//                checkAssets(data.assets)
                 dialog.dismiss()
             }
 //        dialog.setOnKeyListener { dialog, keyCode, event ->
@@ -170,11 +172,26 @@ class LauncherActivity : Activity(), Animation.AnimationListener {
         }
     }
 
+    private fun firstUnZipAssets(assets: List<UpdateResult.UpdateData.AssetsBean>?) {
+        tv_splash_status.text = "正在检测样式更新.."
+        if (mSettingSP.getInt("Version", 0) == 0) {
+            UpDateUtil.checkFirstSetup(ctx, object : OnCheckAssetsUpdateResultListener {
+                override fun onResultSuccess() {
+                    checkAssets(assets)
+                }
+
+                override fun onFailure(msg: String) {
+                }
+            })
+        } else {
+            checkAssets(assets)
+        }
+    }
+
     /**
      * 检测静态资源更新
      */
     private fun checkAssets(assets: List<UpdateResult.UpdateData.AssetsBean>?) {
-        tv_splash_status.text = "正在检测样式更新.."
         UpDateUtil.checkAssetsUpdate(ctx, assets!!, number_progress_bar_splash, object : OnCheckAssetsUpdateResultListener {
             override fun onResultSuccess() {
                 tv_splash_status.text = "已是最新资源"

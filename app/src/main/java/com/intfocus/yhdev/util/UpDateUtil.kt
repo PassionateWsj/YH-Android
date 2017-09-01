@@ -120,7 +120,7 @@ object UpDateUtil {
         observable = Observable.from(assetsList)
                 .subscribeOn(Schedulers.io())
                 .map { assets ->
-                    if ((assets.md5) != mAssetsSP.getString(assets.file_name + "_md5", "no_md5")) {
+                    if ((assets.md5) != mAssetsSP.getString(assets.file_name + "_md5", "no_md5") && assets.file_name != "assets"&& assets.file_name != "loading") {
                         val fileUrl = K.kDownloadAssetsZip + "?api_token=d93c1a0dc03fe4ffad55a82febd1c94f&filename=" + assets.file_name + ".zip"
                         val response = Retrofit.Builder()
                                 .baseUrl(K.kBaseUrl)
@@ -187,5 +187,36 @@ object UpDateUtil {
             intent.setDataAndType(Uri.fromFile(File(Environment.getExternalStorageDirectory(), packageName + ".apk")), "application/vnd.android.package-archive")
             ctx.startActivity(intent)
         }
+    }
+
+    fun checkFirstSetup(ctx: Context, listener: OnCheckAssetsUpdateResultListener) {
+        val mAssetsSP = ctx.getSharedPreferences("AssetsMD5", Context.MODE_PRIVATE)
+        val mAssetsSPEdit = mAssetsSP.edit()
+        Observable.just("assets", "loading")
+                .subscribeOn(Schedulers.io())
+                .map { assetsName ->
+                    FileUtil.copyAssetFile(ctx, assetsName + ".zip", String.format("%s/%s/%s", FileUtil.basePath(ctx), K.kSharedDirName, assetsName + ".zip"))
+                    var isUnZipSuccess = FileUtil.unZipAssets(ctx, assetsName)
+                    if (isUnZipSuccess) {
+                        val mD5 = FileUtil.MD5(File(String.format("%s/%s/%s", FileUtil.basePath(ctx), K.kSharedDirName, assetsName + ".zip")))
+                        mAssetsSPEdit.putString(assetsName + "_md5", mD5).commit()
+                        true
+                    }
+                    false
+                }
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(object : Observer<Boolean> {
+                    override fun onError(p0: Throwable?) {
+
+                    }
+
+                    override fun onNext(p0: Boolean?) {
+                    }
+
+                    override fun onCompleted() {
+                        listener.onResultSuccess()
+                    }
+
+                })
     }
 }
