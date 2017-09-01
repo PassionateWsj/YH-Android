@@ -11,7 +11,7 @@ import com.intfocus.yhdev.data.response.update.UpdateResult
  * desc:
  * ****************************************************
  */
-public interface OnUpdateResultListener {
+interface OnUpdateResultListener {
     fun onResultSuccess(data: UpdateResult.UpdateData)
     fun onFailure(msg: String)
 }

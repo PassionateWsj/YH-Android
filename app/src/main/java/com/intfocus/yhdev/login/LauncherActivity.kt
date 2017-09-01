@@ -1,14 +1,13 @@
 package com.intfocus.yhdev.login
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.support.v7.app.AlertDialog
-import android.view.KeyEvent
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
@@ -17,6 +16,7 @@ import android.view.animation.Animation
 import android.widget.Toast
 import com.intfocus.yhdev.R
 import com.intfocus.yhdev.data.response.update.UpdateResult
+import com.intfocus.yhdev.login.listener.DownLoadProgressListener
 import com.intfocus.yhdev.login.listener.OnCheckAssetsUpdateResultListener
 import com.intfocus.yhdev.login.listener.OnUpdateResultListener
 import com.intfocus.yhdev.screen_lock.ConfirmPassCodeActivity
@@ -88,7 +88,7 @@ class LauncherActivity : Activity(), Animation.AnimationListener {
         UpDateUtil.checkUpdate(ctx, packageInfo.versionName, object : OnUpdateResultListener {
             override fun onResultSuccess(data: UpdateResult.UpdateData) {
                 number_progress_bar_splash.progress = 10
-                when (data.app_version) {
+                when (data.is_update) {
                     "1" -> {
                         checkAssets(data.assets)
                     }
@@ -97,14 +97,14 @@ class LauncherActivity : Activity(), Animation.AnimationListener {
                     }
                     else -> {
                         tv_splash_status.text = "更新失败"
-                        finishIn2m()
+                        finishIn2Minutes()
                     }
                 }
             }
 
             override fun onFailure(msg: String) {
                 tv_splash_status.text = msg
-                finishIn2m()
+                finishIn2Minutes()
             }
 
         })
@@ -123,9 +123,10 @@ class LauncherActivity : Activity(), Animation.AnimationListener {
                 checkAssets(data.assets)
                 dialog.dismiss()
             }
-        dialog.setOnKeyListener { dialog, keyCode, event ->
-            keyCode == KeyEvent.KEYCODE_SEARCH || keyCode == KeyEvent.KEYCODE_BACK
-        }
+//        dialog.setOnKeyListener { dialog, keyCode, event ->
+//            keyCode == KeyEvent.KEYCODE_SEARCH || keyCode == KeyEvent.KEYCODE_BACK
+//        }
+        dialog.setCancelable(false)
         dialog.create().show()
     }
 
@@ -182,12 +183,17 @@ class LauncherActivity : Activity(), Animation.AnimationListener {
 
             override fun onFailure(msg: String) {
                 tv_splash_status.text = msg
-                finishIn2m()
+                finishIn2Minutes()
+            }
+        }, object : DownLoadProgressListener {
+            override fun updateProgress(percent: Long) {
+                if (number_progress_bar_splash != null)
+                    number_progress_bar_splash.progress += (percent * 0.1).toInt()
             }
         })
     }
 
-    fun finishIn2m() {
+    fun finishIn2Minutes() {
         Timer().schedule(object : TimerTask() {
             override fun run() {
                 ctx.finish()

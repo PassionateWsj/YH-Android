@@ -9,6 +9,6 @@ package com.intfocus.yhdev.login.listener
  * desc:
  * ****************************************************
  */
-public interface DownLoadProgressListener {
+interface DownLoadProgressListener {
     fun updateProgress(percent: Long)
 }

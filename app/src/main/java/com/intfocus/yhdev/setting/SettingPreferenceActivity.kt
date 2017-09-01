@@ -108,7 +108,7 @@ class SettingPreferenceActivity : BaseActivity() {
                                         mProgressDialog.dismiss()
 
                                     }
-                                })
+                                },null)
                             }
 
                             override fun onFailure(msg: String) {

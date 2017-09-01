@@ -9,7 +9,7 @@ package com.intfocus.yhdev.login.listener
  * desc:
  * ****************************************************
  */
-public interface OnCheckAssetsUpdateResultListener {
+interface OnCheckAssetsUpdateResultListener {
     fun onResultSuccess()
     fun onFailure(msg: String)
 }

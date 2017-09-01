@@ -906,7 +906,9 @@ public class FileUtil {
                 outputStream.write(fileReader, 0, read);
 
                 fileSizeDownloaded += read;
-                percentListener.updateProgress(fileSizeDownloaded / fileSize);
+//                if (percentListener != null) {
+//                    percentListener.updateProgress(fileSizeDownloaded / fileSize);
+//                }
                 Log.d("hjjzz", "file download: " + fileSizeDownloaded + " of " + fileSize);
             }
 
