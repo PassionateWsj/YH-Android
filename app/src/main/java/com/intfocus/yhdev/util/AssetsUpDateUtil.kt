@@ -13,6 +13,7 @@ import rx.Observer
 import rx.Subscription
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
+import java.io.File
 
 /**
  * ****************************************************
@@ -26,11 +27,13 @@ import rx.schedulers.Schedulers
 object AssetsUpDateUtil {
     private lateinit var observable: Subscription
 
+
     fun checkAssetsUpdate(ctx: Context, listener: OnCheckAssetsUpdateResultListener) {
         checkAssetsUpdate(ctx, null, listener)
     }
 
     fun checkAssetsUpdate(ctx: Context, progressBar: NumberProgressBar?, listener: OnCheckAssetsUpdateResultListener) {
+
         var sharedPath = String.format("%s/%s", FileUtil.basePath(ctx), K.kSharedDirName)
         LogUtil.d("hjjzz", "MainThread:::" + Thread.currentThread().name)
         RetrofitUtil.getHttpService(ctx).assetsMD5
@@ -49,17 +52,14 @@ object AssetsUpDateUtil {
                         val assetsMD5s = data!!.data!!
                         val mAssetsSP = ctx.getSharedPreferences("AssetsMD5", Context.MODE_PRIVATE)
                         val mAssetsSPEdit = mAssetsSP.edit()
-                        val assetsNameArr = listOf(URLs.kJavaScripts, URLs.kAdvertisement,
-                                URLs.kIcons, URLs.kImages,
-                                URLs.kLoading, URLs.kStylesheets,
-                                URLs.kAssets, URLs.kFonts)
+                        val assetsNameArr = listOf(URLs.kFonts, URLs.kImages,
+                                URLs.kIcons, URLs.kStylesheets,
+                                URLs.kJavaScripts, URLs.kAdvertisement)
                         val assetsMD5sMap = HashMap<String, String>()
-                        assetsMD5sMap.put(URLs.kAssets + "_md5", assetsMD5s.assets_md5!!)
                         assetsMD5sMap.put(URLs.kFonts + "_md5", assetsMD5s.fonts_md5!!)
                         assetsMD5sMap.put(URLs.kIcons + "_md5", assetsMD5s.icons_md5!!)
                         assetsMD5sMap.put(URLs.kImages + "_md5", assetsMD5s.images_md5!!)
                         assetsMD5sMap.put(URLs.kJavaScripts + "_md5", assetsMD5s.javascripts_md5!!)
-                        assetsMD5sMap.put(URLs.kLoading + "_md5", assetsMD5s.loading_md5!!)
                         assetsMD5sMap.put(URLs.kStylesheets + "_md5", assetsMD5s.stylesheets_md5!!)
                         assetsMD5sMap.put(URLs.kAdvertisement + "_md5", assetsMD5s.advertisement_md5!!)
 
@@ -119,6 +119,37 @@ object AssetsUpDateUtil {
     fun unSubscribe() {
         if (observable != null && !observable.isUnsubscribed)
             observable.unsubscribe()
+    }
+
+    fun checkFirstSetup(ctx: Context, listener: OnCheckAssetsUpdateResultListener) {
+        val mAssetsSP = ctx.getSharedPreferences("AssetsMD5", Context.MODE_PRIVATE)
+        val mAssetsSPEdit = mAssetsSP.edit()
+        Observable.just("assets", "loading")
+                .subscribeOn(Schedulers.io())
+                .map { assetsName ->
+                    FileUtil.copyAssetFile(ctx, assetsName + ".zip", String.format("%s/%s/%s", FileUtil.basePath(ctx), K.kSharedDirName, assetsName + ".zip"))
+                    var isUnZipSuccess = FileUtil.unZipAssets(ctx, assetsName)
+                    if (isUnZipSuccess) {
+                        val mD5 = FileUtil.MD5(File(String.format("%s/%s/%s", FileUtil.basePath(ctx), K.kSharedDirName, assetsName + ".zip")))
+                        mAssetsSPEdit.putString(assetsName + "_md5", mD5).commit()
+                        true
+                    }
+                    false
+                }
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(object : Observer<Boolean> {
+                    override fun onError(p0: Throwable?) {
+
+                    }
+
+                    override fun onNext(p0: Boolean?) {
+                    }
+
+                    override fun onCompleted() {
+                        listener.onResultSuccess()
+                    }
+
+                })
     }
 }
 

@@ -34,11 +34,11 @@ class GuideFragment : Fragment() {
             R.drawable.pic_phone3)
 
 
-    lateinit var rlGuideDescribe: RelativeLayout
-    lateinit var ivGuideScreenshot: ImageView
-    lateinit var ivGuideText: ImageView
-    lateinit var llGuidePage: LinearLayout
-    lateinit var btnGuideEnter: Button
+    private lateinit var rlGuideDescribe: RelativeLayout
+    private lateinit var ivGuideScreenshot: ImageView
+    private lateinit var ivGuideText: ImageView
+    private lateinit var llGuidePage: LinearLayout
+    private lateinit var btnGuideEnter: Button
 
     var index: Int = 0
     var totalCount: Int = 0
@@ -90,7 +90,7 @@ class GuideFragment : Fragment() {
         btnGuideEnter.setOnClickListener { startLoginActivity() }
     }
 
-    fun startLoginActivity() {
+    private fun startLoginActivity() {
         val packageInfo = activity.packageManager.getPackageInfo(activity.packageName, 0)
         mSharedPreferences!!.edit().putInt("Version", packageInfo.versionCode).commit()
         var intent = Intent(activity, LoginActivity::class.java)

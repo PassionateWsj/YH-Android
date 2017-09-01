@@ -83,7 +83,7 @@ class LauncherActivity : Activity(), Animation.AnimationListener {
     override fun onAnimationEnd(p0: Animation?) {
         number_progress_bar_splash.visibility = View.VISIBLE
         tv_splash_status.visibility = View.VISIBLE
-        checkAssets()
+        firstUnZipAssets()
     }
 
     override fun onAnimationStart(p0: Animation?) {
@@ -118,7 +118,7 @@ class LauncherActivity : Activity(), Animation.AnimationListener {
         }
     }
 
-    private fun checkAssets() {
+    private fun firstUnZipAssets() {
         if (!HttpUtil.isConnected(ctx)) {
             tv_splash_status.text = "请检查网络"
             Timer().schedule(object : TimerTask() {
@@ -128,6 +128,21 @@ class LauncherActivity : Activity(), Animation.AnimationListener {
             }, 2000)
             return
         }
+        if (mSettingSP.getInt("Version", 0) == 0) {
+            AssetsUpDateUtil.checkFirstSetup(ctx, object : OnCheckAssetsUpdateResultListener {
+                override fun onResultSuccess() {
+                    checkAssets()
+                }
+
+                override fun onFailure() {
+                }
+            })
+        } else {
+            checkAssets()
+        }
+    }
+
+    private fun checkAssets() {
         LogUtil.d("hjjzz", "MainThread:::" + Thread.currentThread().name)
         AssetsUpDateUtil.checkAssetsUpdate(ctx, number_progress_bar_splash, object : OnCheckAssetsUpdateResultListener {
             override fun onResultSuccess() {
