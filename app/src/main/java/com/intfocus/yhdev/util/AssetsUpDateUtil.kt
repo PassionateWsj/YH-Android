@@ -49,15 +49,14 @@ object AssetsUpDateUtil {
                         val assetsMD5s = data!!.data!!
                         val mAssetsSP = ctx.getSharedPreferences("AssetsMD5", Context.MODE_PRIVATE)
                         val mAssetsSPEdit = mAssetsSP.edit()
-                        val assetsNameArr = listOf(URLs.kJavaScripts, URLs.kAdvertisement,
-                                URLs.kIcons, URLs.kImages,
-                                URLs.kLoading, URLs.kStylesheets,
-                                URLs.kAssets, URLs.kFonts)
+                        val assetsNameArr = listOf(
+                                URLs.kAssets, URLs.kLoading, URLs.kImages,
+                                URLs.kIcons, URLs.kJavaScripts,  URLs.kFonts, URLs.kStylesheets, URLs.kAdvertisement)
                         val assetsMD5sMap = HashMap<String, String>()
                         assetsMD5sMap.put(URLs.kAssets + "_md5", assetsMD5s.assets_md5!!)
                         assetsMD5sMap.put(URLs.kFonts + "_md5", assetsMD5s.fonts_md5!!)
-                        assetsMD5sMap.put(URLs.kIcons + "_md5", assetsMD5s.icons_md5!!)
                         assetsMD5sMap.put(URLs.kImages + "_md5", assetsMD5s.images_md5!!)
+                        assetsMD5sMap.put(URLs.kIcons + "_md5", assetsMD5s.icons_md5!!)
                         assetsMD5sMap.put(URLs.kJavaScripts + "_md5", assetsMD5s.javascripts_md5!!)
                         assetsMD5sMap.put(URLs.kLoading + "_md5", assetsMD5s.loading_md5!!)
                         assetsMD5sMap.put(URLs.kStylesheets + "_md5", assetsMD5s.stylesheets_md5!!)
