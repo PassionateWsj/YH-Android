@@ -92,17 +92,25 @@ class SettingPreferenceActivity : BaseActivity() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { isClear ->
                     if (isClear) {
-                        AssetsUpDateUtil.checkAssetsUpdate(this, object : OnCheckAssetsUpdateResultListener {
+                        AssetsUpDateUtil.checkFirstSetup(this, object : OnCheckAssetsUpdateResultListener {
                             override fun onResultSuccess() {
-                                ToastUtils.show(applicationContext, "清除缓存成功", ToastColor.SUCCESS)
-                                mProgressDialog.dismiss()
+                                AssetsUpDateUtil.checkAssetsUpdate(this@SettingPreferenceActivity, object : OnCheckAssetsUpdateResultListener {
+                                    override fun onResultSuccess() {
+                                        ToastUtils.show(applicationContext, "清除缓存成功", ToastColor.SUCCESS)
+                                        mProgressDialog.dismiss()
+                                    }
+
+                                    override fun onFailure() {
+                                        ToastUtils.show(applicationContext, "清除缓存失败，请重试")
+                                        mProgressDialog.dismiss()
+                                    }
+                                })
                             }
 
                             override fun onFailure() {
-                                ToastUtils.show(applicationContext, "清除缓存失败，请重试")
-                                mProgressDialog.dismiss()
                             }
                         })
+
                     } else {
                         mProgressDialog.dismiss()
                         ToastUtils.show(applicationContext, "清除缓存失败，请重试")
