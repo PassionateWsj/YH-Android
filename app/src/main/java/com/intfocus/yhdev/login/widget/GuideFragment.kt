@@ -1,8 +1,6 @@
 package com.intfocus.yhdev.login.widget
 
-import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
@@ -25,23 +23,22 @@ import com.intfocus.yhdev.login.LoginActivity
  * ****************************************************
  */
 class GuideFragment : Fragment() {
-    private var mSharedPreferences: SharedPreferences? = null
-    val imgPage = intArrayOf(R.drawable.text_gaikuan,
+    private val imgPage = intArrayOf(R.drawable.text_gaikuan,
             R.drawable.text_baobiao,
             R.drawable.text_gongju)
-    val imgScreenshot = intArrayOf(R.drawable.pic_phone1,
+    private val imgScreenshot = intArrayOf(R.drawable.pic_phone1,
             R.drawable.pic_phone2,
             R.drawable.pic_phone3)
 
 
-    lateinit var rlGuideDescribe: RelativeLayout
-    lateinit var ivGuideScreenshot: ImageView
-    lateinit var ivGuideText: ImageView
-    lateinit var llGuidePage: LinearLayout
-    lateinit var btnGuideEnter: Button
+    private lateinit var rlGuideDescribe: RelativeLayout
+    private lateinit var ivGuideScreenshot: ImageView
+    private lateinit var ivGuideText: ImageView
+    private lateinit var llGuidePage: LinearLayout
+    private lateinit var btnGuideEnter: Button
 
-    var index: Int = 0
-    var totalCount: Int = 0
+    private var index: Int = 0
+    private var totalCount: Int = 0
 
     fun newInstance(index: Int, totalCount: Int): GuideFragment {
         val args = Bundle()
@@ -56,7 +53,6 @@ class GuideFragment : Fragment() {
         super.onCreate(savedInstanceState)
         index = arguments.getInt("index")
         totalCount = arguments.getInt("totalCount")
-        mSharedPreferences = activity.getSharedPreferences("SettingPreference", Context.MODE_PRIVATE)
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -90,9 +86,7 @@ class GuideFragment : Fragment() {
         btnGuideEnter.setOnClickListener { startLoginActivity() }
     }
 
-    fun startLoginActivity() {
-        val packageInfo = activity.packageManager.getPackageInfo(activity.packageName, 0)
-        mSharedPreferences!!.edit().putInt("Version", packageInfo.versionCode).commit()
+    private fun startLoginActivity() {
         var intent = Intent(activity, LoginActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK and Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)

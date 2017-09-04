@@ -50,8 +50,6 @@ class LauncherActivity : Activity(), Animation.AnimationListener {
 
         initData()
         initAnim()
-
-        checkUpdate()
     }
 
 
@@ -87,16 +85,26 @@ class LauncherActivity : Activity(), Animation.AnimationListener {
     private fun checkUpdate() {
         UpDateUtil.checkUpdate(ctx, packageInfo.versionName, object : OnUpdateResultListener {
             override fun onResultSuccess(data: UpdateResult.UpdateData) {
-                number_progress_bar_splash.progress = 10
-                when (data.is_update) {
-                    "1" -> {
-                        firstUnZipAssets(data.assets)
-//                        checkAssets(data.assets)
+                when (data.upgrade_level) {
+                    -1 -> {
+                        number_progress_bar_splash.visibility = View.VISIBLE
+                        tv_splash_status.visibility = View.VISIBLE
+                        tv_splash_status.text = "已是最新版本"
+                        unZipAssetsFromLocal(data.assets)
                     }
-                    "2", "3" -> {
+                    1 -> {
+                        number_progress_bar_splash.visibility = View.VISIBLE
+                        tv_splash_status.visibility = View.VISIBLE
+                        tv_splash_status.text = "未发现新版本"
+                        unZipAssetsFromLocal(data.assets)
+                    }
+                    2, 3 -> {
+                        tv_splash_status.visibility = View.VISIBLE
+                        tv_splash_status.text = "发现新版本"
                         showUpDateDialog(data)
                     }
                     else -> {
+                        tv_splash_status.visibility = View.VISIBLE
                         tv_splash_status.text = "更新失败"
                         finishIn2Minutes()
                     }
@@ -104,6 +112,8 @@ class LauncherActivity : Activity(), Animation.AnimationListener {
             }
 
             override fun onFailure(msg: String) {
+                number_progress_bar_splash.visibility = View.VISIBLE
+                tv_splash_status.visibility = View.VISIBLE
                 tv_splash_status.text = msg
                 finishIn2Minutes()
             }
@@ -113,21 +123,19 @@ class LauncherActivity : Activity(), Animation.AnimationListener {
 
     private fun showUpDateDialog(data: UpdateResult.UpdateData) {
         val dialog = AlertDialog.Builder(ctx)
-                .setTitle("发现新版本 " + data.app_version)
+                .setTitle("发现新版本 " + data.version)
                 .setMessage(data.description)
                 .setPositiveButton("更新") { dialog, _ ->
-                    UpDateUtil.downAPK(ctx, data.download_path, packageInfo.packageName, number_progress_bar_splash)
+                    number_progress_bar_splash.visibility = View.VISIBLE
+                    UpDateUtil.downAPK(ctx, data.download_url, packageInfo.packageName, number_progress_bar_splash)
                     dialog.dismiss()
                 }
-        if (data.is_update == "2")
+        if (data.upgrade_level == 2)
             dialog.setNegativeButton("暂不更新") { dialog, _ ->
-                firstUnZipAssets(data.assets)
-//                checkAssets(data.assets)
+                number_progress_bar_splash.visibility = View.VISIBLE
+                unZipAssetsFromLocal(data.assets)
                 dialog.dismiss()
             }
-//        dialog.setOnKeyListener { dialog, keyCode, event ->
-//            keyCode == KeyEvent.KEYCODE_SEARCH || keyCode == KeyEvent.KEYCODE_BACK
-//        }
         dialog.setCancelable(false)
         dialog.create().show()
     }
@@ -136,8 +144,7 @@ class LauncherActivity : Activity(), Animation.AnimationListener {
     }
 
     override fun onAnimationEnd(p0: Animation?) {
-        number_progress_bar_splash.visibility = View.VISIBLE
-        tv_splash_status.visibility = View.VISIBLE
+        checkUpdate()
     }
 
     override fun onAnimationStart(p0: Animation?) {
@@ -155,7 +162,12 @@ class LauncherActivity : Activity(), Animation.AnimationListener {
 
                 finish()
             }
+
             mSettingSP.getInt("Version", 0) != packageInfo.versionCode -> {
+                val mSharedPreferences = getSharedPreferences("SettingPreference", Context.MODE_PRIVATE)
+                val packageInfo = packageManager.getPackageInfo(packageName, 0)
+                mSharedPreferences!!.edit().putInt("Version", packageInfo.versionCode).commit()
+
                 intent = Intent(this, GuideActivity::class.java)
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK and Intent.FLAG_ACTIVITY_SINGLE_TOP)
                 this.startActivity(intent)
@@ -172,7 +184,8 @@ class LauncherActivity : Activity(), Animation.AnimationListener {
         }
     }
 
-    private fun firstUnZipAssets(assets: List<UpdateResult.UpdateData.AssetsBean>?) {
+    private fun unZipAssetsFromLocal(assets: List<UpdateResult.UpdateData.AssetsBean>?) {
+        number_progress_bar_splash.progress = 10
         tv_splash_status.text = "正在检测样式更新.."
         if (mSettingSP.getInt("Version", 0) == 0) {
             UpDateUtil.checkFirstSetup(ctx, object : OnCheckAssetsUpdateResultListener {

@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.Intent.ACTION_VIEW
 import android.net.Uri
 import android.os.Environment
+import android.widget.Toast
 import com.daimajia.numberprogressbar.NumberProgressBar
 import com.google.gson.Gson
 import com.intfocus.yhdev.data.response.update.UpdateResult
@@ -32,58 +33,57 @@ import java.io.File
  * ****************************************************
  */
 object UpDateUtil {
-    private var observable: Subscription? = null
+    private var checkAssetsUpdateObservable: Subscription? = null
+    private var downAPKObservable: Subscription? = null
+    private var checkFirstSetupObservable: Subscription? = null
     private var json = "{\n" +
-            "  \"code\": 200,\n" +
-            "  \"message\": \"successfully\",\n" +
-            "  \"data\": {\n" +
-            "    \"app_version\": \"1.0.1\",\n" +
-            "    \"is_update\": \"1\", \n" +
-            "    \"description\": \"版本说明版本说明版本说明版本说明版本说明版本说明版本说明版本说明版本说明\", \n" +
-            "    \"download_path\": \"http://app-global.pgyer.com/9fddda1e5f82fd104d693be09cb19706.apk?e=1504231421&attname=app-release.apk&token=6fYeQ7_TVB5L0QSzosNFfw2HU8eJhAirMF5VxV9G:FCYRbUf690dQTNid4F2tWNTqv9g=&sign=a7b8f0c3b618ecc68ab738bd3f41e4fa&t=59a8bffd\", \n" +
-            "    \"assets\": [\n" +
-            "      {\n" +
-            "        \"file_name\": \"assets\",\n" +
-            "        \"md5\": \"\",\n" +
-            "        \"is_assets\": false  \n" +
-            "      },\n" +
-            "      {\n" +
-            "        \"file_name\": \"loading\",\n" +
-            "        \"md5\": \"\",\n" +
-            "        \"is_assets\": false\n" +
-            "      },\n" +
-            "      {\n" +
-            "        \"file_name\": \"javascripts\",\n" +
-            "        \"md5\": \"\",\n" +
-            "        \"is_assets\": true\n" +
-            "      },\n" +
-            "      {\n" +
-            "        \"file_name\": \"fonts\",\n" +
-            "        \"md5\": \"\",\n" +
-            "        \"is_assets\": true\n" +
-            "      },\n" +
-            "      {\n" +
-            "        \"file_name\": \"images\",\n" +
-            "        \"md5\": \"\",\n" +
-            "        \"is_assets\": true\n" +
-            "      },\n" +
-            "      {\n" +
-            "        \"file_name\": \"icons\",\n" +
-            "        \"md5\": \"\",\n" +
-            "        \"is_assets\": true\n" +
-            "      },\n" +
-            "      {\n" +
-            "        \"file_name\": \"stylesheets\",\n" +
-            "        \"md5\": \"\",\n" +
-            "        \"is_assets\": true\n" +
-            "      },\n" +
-            "      {\n" +
-            "        \"file_name\": \"advertisement\",\n" +
-            "        \"md5\": \"\",\n" +
-            "        \"is_assets\": true\n" +
-            "      }\n" +
-            "    ]\n" +
-            "  }\n" +
+            "    \"data\": {\n" +
+            "        \"title\": \"1\",\n" +
+            "        \"version\": \"1.0.8\",\n" +
+            "        \"build\": 2,\n" +
+            "        \"download_url\": \"https://www.pgyer.com/apiv1/app/install?aId=d4eaa112b6713a256b1442dd9c078c2d&_api_key=45be6d228e747137bd192c4c47d4f64a\",\n" +
+            "        \"upgrade_level\": 1,\n" +
+            "        \"description\": \"1\",\n" +
+            "        \"assets\": [\n" +
+            "            {\n" +
+            "                \"file_name\": \"assets\",\n" +
+            "                \"md5\": \"e4acc7fbd00fc107c756eebaa365ac00\",\n" +
+            "                \"is_assets\": false\n" +
+            "            },\n" +
+            "            {\n" +
+            "                \"file_name\": \"loading\",\n" +
+            "                \"md5\": \"8bd5c6a91d38848d3160e6c8a462b852\",\n" +
+            "                \"is_assets\": false\n" +
+            "            },\n" +
+            "            {\n" +
+            "                \"file_name\": \"fonts\",\n" +
+            "                \"md5\": \"5901960c857600316c3d141401c3af08\",\n" +
+            "                \"is_assets\": true\n" +
+            "            },\n" +
+            "            {\n" +
+            "                \"file_name\": \"icons\",\n" +
+            "                \"md5\": \"7afa625cca643d01a6b12d80a19d4756\",\n" +
+            "                \"is_assets\": true\n" +
+            "            },\n" +
+            "            {\n" +
+            "                \"file_name\": \"images\",\n" +
+            "                \"md5\": \"65266455bea40469dcb9f022f63ce769\",\n" +
+            "                \"is_assets\": true\n" +
+            "            },\n" +
+            "            {\n" +
+            "                \"file_name\": \"javascripts\",\n" +
+            "                \"md5\": \"e55b643bbde61075119fb25ffc9c8b5d\",\n" +
+            "                \"is_assets\": true\n" +
+            "            },\n" +
+            "            {\n" +
+            "                \"file_name\": \"stylesheets\",\n" +
+            "                \"md5\": \"923b05c441a8cef0daf32ed392aee633\",\n" +
+            "                \"is_assets\": true\n" +
+            "            }\n" +
+            "        ]\n" +
+            "    },\n" +
+            "    \"code\": 200,\n" +
+            "    \"message\": \"default successfully\"\n" +
             "}"
 
     fun checkUpdate(ctx: Context, currentVersionCode: String, listener: OnUpdateResultListener) {
@@ -117,10 +117,10 @@ object UpDateUtil {
         val mAssetsSP = ctx.getSharedPreferences("AssetsMD5", Context.MODE_PRIVATE)
         val mAssetsSPEdit = mAssetsSP.edit()
 
-        observable = Observable.from(assetsList)
+        checkAssetsUpdateObservable = Observable.from(assetsList)
                 .subscribeOn(Schedulers.io())
                 .map { assets ->
-                    if ((assets.md5) != mAssetsSP.getString(assets.file_name + "_md5", "no_md5") && assets.file_name != "assets"&& assets.file_name != "loading") {
+                    if ((assets.md5) != mAssetsSP.getString(assets.file_name + "_md5", "no_md5") && assets.isIs_assets) {
                         val fileUrl = K.kDownloadAssetsZip + "?api_token=d93c1a0dc03fe4ffad55a82febd1c94f&filename=" + assets.file_name + ".zip"
                         val response = Retrofit.Builder()
                                 .baseUrl(K.kBaseUrl)
@@ -163,38 +163,50 @@ object UpDateUtil {
                 })
     }
 
-    /**
-     * 取消订阅
-     */
-    fun unSubscribe() {
-        if (observable != null && !observable!!.isUnsubscribed)
-            observable!!.unsubscribe()
-    }
-
     fun downAPK(ctx: LauncherActivity, download_path: String?, packageName: String?, progressBar: NumberProgressBar?) {
-        val response = Retrofit.Builder()
-                .baseUrl("")
-                .build()
-                .create(HttpService::class.java).downloadFileWithDynamicUrlSync(download_path).execute()
-        val isWriteApkSuccess = FileUtil.writeResponseBodyToDisk(response!!.body()!!,
-                Environment.getExternalStorageDirectory().path, packageName + ".apk", object : DownLoadProgressListener {
-            override fun updateProgress(percent: Long) {
-                progressBar!!.progress += (percent * 0.9).toInt()
-            }
-        })
-        if (isWriteApkSuccess) {
-            val intent = Intent(ACTION_VIEW)
-            intent.setDataAndType(Uri.fromFile(File(Environment.getExternalStorageDirectory(), packageName + ".apk")), "application/vnd.android.package-archive")
-            ctx.startActivity(intent)
-        }
+        downAPKObservable = Observable.just(download_path)
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.newThread())
+                .map { downloadPath ->
+                    val response = Retrofit.Builder()
+                            .baseUrl("http://app-global.pgyer.com")
+                            .build()
+                            .create(HttpService::class.java).downloadFileWithDynamicUrlSync(downloadPath).execute()
+                    response
+                }
+                .map { response ->
+                    if (response?.body() != null) {
+                        val isWriteApkSuccess = FileUtil.writeResponseBodyToDisk(response.body(),
+                                Environment.getExternalStorageDirectory().path, packageName + ".apk", object : DownLoadProgressListener {
+                            override fun updateProgress(percent: Long) {
+//                progressBar!!.progress += (percent * 0.9).toInt()
+                            }
+                        })
+                        isWriteApkSuccess
+                    }
+                    false
+                }
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe { isWriteApkSuccess ->
+                    if (isWriteApkSuccess) {
+                        val intent = Intent(ACTION_VIEW)
+                        intent.setDataAndType(Uri.fromFile(File(Environment.getExternalStorageDirectory(), packageName + ".apk")), "application/vnd.android.package-archive")
+                        ctx.startActivity(intent)
+                    } else {
+                        Toast.makeText(ctx, "更新失败", Toast.LENGTH_SHORT)
+                        ctx.finishIn2Minutes()
+                    }
+                }
+
     }
 
     fun checkFirstSetup(ctx: Context, listener: OnCheckAssetsUpdateResultListener) {
         val mAssetsSP = ctx.getSharedPreferences("AssetsMD5", Context.MODE_PRIVATE)
         val mAssetsSPEdit = mAssetsSP.edit()
-        Observable.just("assets", "loading")
+        checkFirstSetupObservable = Observable.just("assets", "loading")
                 .subscribeOn(Schedulers.io())
                 .map { assetsName ->
+//                    FileUtil.makeSureFolderExist(String.format("%s/%s", FileUtil.basePath(ctx), K.kSharedDirName))
                     FileUtil.copyAssetFile(ctx, assetsName + ".zip", String.format("%s/%s/%s", FileUtil.basePath(ctx), K.kSharedDirName, assetsName + ".zip"))
                     var isUnZipSuccess = FileUtil.unZipAssets(ctx, assetsName)
                     if (isUnZipSuccess) {
@@ -218,5 +230,18 @@ object UpDateUtil {
                     }
 
                 })
+    }
+
+
+    /**
+     * 取消订阅
+     */
+    fun unSubscribe() {
+        if (checkFirstSetupObservable != null && !checkFirstSetupObservable!!.isUnsubscribed)
+            checkFirstSetupObservable!!.unsubscribe()
+        if (downAPKObservable != null && !downAPKObservable!!.isUnsubscribed)
+            downAPKObservable!!.unsubscribe()
+        if (checkAssetsUpdateObservable != null && !checkAssetsUpdateObservable!!.isUnsubscribed)
+            checkAssetsUpdateObservable!!.unsubscribe()
     }
 }
