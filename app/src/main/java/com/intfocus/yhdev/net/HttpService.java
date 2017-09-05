@@ -360,5 +360,5 @@ public interface HttpService {
      * filename
      */
     @GET(K.KNewUpdate)
-    Observable<UpdateResult> getUpdateMsg(@Query("app_os") String app_os, @Query("app_version") String app_version, @Query("app_build") String app_build, @Query("uuid") String uuid);
+    Observable<UpdateResult> getUpdateMsg(@Query("app_os") String app_os, @Query("app_build") int app_build, @Query("app_version") String app_version, @Query("uuid") String uuid);
 }

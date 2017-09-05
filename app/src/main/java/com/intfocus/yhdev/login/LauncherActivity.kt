@@ -1,13 +1,14 @@
 package com.intfocus.yhdev.login
 
-import android.app.Activity
-import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.os.Handler
+import android.support.v7.app.AlertDialog
+import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
@@ -20,12 +21,13 @@ import com.intfocus.yhdev.login.listener.DownLoadProgressListener
 import com.intfocus.yhdev.login.listener.OnCheckAssetsUpdateResultListener
 import com.intfocus.yhdev.login.listener.OnUpdateResultListener
 import com.intfocus.yhdev.screen_lock.ConfirmPassCodeActivity
+import com.intfocus.yhdev.util.LogUtil
 import com.intfocus.yhdev.util.UpDateUtil
 import kotlinx.android.synthetic.main.activity_splash.*
 import java.util.*
 
 
-class LauncherActivity : Activity(), Animation.AnimationListener {
+class LauncherActivity : AppCompatActivity(), Animation.AnimationListener {
     val ctx = this
     /**
      * 最短点击间隔时长 ms
@@ -83,7 +85,7 @@ class LauncherActivity : Activity(), Animation.AnimationListener {
      * 检测更新
      */
     private fun checkUpdate() {
-        UpDateUtil.checkUpdate(ctx, packageInfo.versionName, object : OnUpdateResultListener {
+        UpDateUtil.checkUpdate(ctx, packageInfo.versionCode, packageInfo.versionName, object : OnUpdateResultListener {
             override fun onResultSuccess(data: UpdateResult.UpdateData) {
                 when (data.upgrade_level) {
                     -1 -> {
@@ -126,15 +128,25 @@ class LauncherActivity : Activity(), Animation.AnimationListener {
                 .setTitle("发现新版本 " + data.version)
                 .setMessage(data.description)
                 .setPositiveButton("更新") { dialog, _ ->
-                    number_progress_bar_splash.visibility = View.VISIBLE
-                    UpDateUtil.downAPK(ctx, data.download_url, packageInfo.packageName, number_progress_bar_splash)
-                    dialog.dismiss()
+                    if (data.upgrade_level == 2) {
+                        UpDateUtil.downAPKInBackground(ctx, data.download_url, ctx.resources.getString(R.string.app_name))
+//                        dialog.dismiss()
+                        tv_splash_status.text = "已在后台下载新版本应用.."
+                        LogUtil.d("hjjzz", "mainThread:::" + Thread.currentThread().name)
+                        Handler().postDelayed({
+                            unZipAssetsFromLocal(data.assets)
+                        }, 2000)
+                    } else {
+                        number_progress_bar_splash.visibility = View.VISIBLE
+                        UpDateUtil.downAPKInUI(ctx, data.download_url, ctx.resources.getString(R.string.app_name), number_progress_bar_splash)
+                        dialog.dismiss()
+                    }
                 }
         if (data.upgrade_level == 2)
             dialog.setNegativeButton("暂不更新") { dialog, _ ->
                 number_progress_bar_splash.visibility = View.VISIBLE
                 unZipAssetsFromLocal(data.assets)
-                dialog.dismiss()
+//                dialog.dismiss()
             }
         dialog.setCancelable(false)
         dialog.create().show()

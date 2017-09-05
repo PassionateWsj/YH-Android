@@ -94,7 +94,7 @@ class SettingPreferenceActivity : BaseActivity() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { isClear ->
                     if (isClear) {
-                        UpDateUtil.checkUpdate(this, packageManager.getPackageInfo(packageName, 0).versionName, object : OnUpdateResultListener {
+                        UpDateUtil.checkUpdate(this, packageManager.getPackageInfo(packageName, 0).versionCode, packageManager.getPackageInfo(packageName, 0).versionName, object : OnUpdateResultListener {
                             override fun onResultSuccess(data: UpdateResult.UpdateData) {
                                 UpDateUtil.checkAssetsUpdate(ctx, data!!.assets!!, null, object : OnCheckAssetsUpdateResultListener {
                                     override fun onFailure(msg: String) {
@@ -108,7 +108,7 @@ class SettingPreferenceActivity : BaseActivity() {
                                         mProgressDialog.dismiss()
 
                                     }
-                                },null)
+                                }, null)
                             }
 
                             override fun onFailure(msg: String) {

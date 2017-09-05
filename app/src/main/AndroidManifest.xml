@@ -262,7 +262,11 @@
         <meta-data
             android:name="UMENG_CHANNEL"
             android:value="Umeng"/>
-
+        <receiver android:name=".login.listener.ApkInstallReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.DOWNLOAD_COMPLETE" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

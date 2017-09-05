@@ -1,19 +1,20 @@
 package com.intfocus.yhdev.util
 
+import android.app.DownloadManager
 import android.content.Context
-import android.content.Intent
-import android.content.Intent.ACTION_VIEW
 import android.net.Uri
 import android.os.Environment
-import android.widget.Toast
 import com.daimajia.numberprogressbar.NumberProgressBar
-import com.google.gson.Gson
 import com.intfocus.yhdev.data.response.update.UpdateResult
 import com.intfocus.yhdev.login.LauncherActivity
 import com.intfocus.yhdev.login.listener.DownLoadProgressListener
 import com.intfocus.yhdev.login.listener.OnCheckAssetsUpdateResultListener
 import com.intfocus.yhdev.login.listener.OnUpdateResultListener
+import com.intfocus.yhdev.net.ApiException
+import com.intfocus.yhdev.net.CodeHandledSubscriber
 import com.intfocus.yhdev.net.HttpService
+import com.intfocus.yhdev.net.RetrofitUtil
+import org.OpenUDID.OpenUDID_manager
 import retrofit2.Retrofit
 import rx.Observable
 import rx.Observer
@@ -34,82 +35,34 @@ import java.io.File
  */
 object UpDateUtil {
     private var checkAssetsUpdateObservable: Subscription? = null
-    private var downAPKObservable: Subscription? = null
     private var checkFirstSetupObservable: Subscription? = null
-    private var json = "{\n" +
-            "    \"data\": {\n" +
-            "        \"title\": \"1\",\n" +
-            "        \"version\": \"1.0.8\",\n" +
-            "        \"build\": 2,\n" +
-            "        \"download_url\": \"https://www.pgyer.com/apiv1/app/install?aId=d4eaa112b6713a256b1442dd9c078c2d&_api_key=45be6d228e747137bd192c4c47d4f64a\",\n" +
-            "        \"upgrade_level\": 1,\n" +
-            "        \"description\": \"1\",\n" +
-            "        \"assets\": [\n" +
-            "            {\n" +
-            "                \"file_name\": \"assets\",\n" +
-            "                \"md5\": \"e4acc7fbd00fc107c756eebaa365ac00\",\n" +
-            "                \"is_assets\": false\n" +
-            "            },\n" +
-            "            {\n" +
-            "                \"file_name\": \"loading\",\n" +
-            "                \"md5\": \"8bd5c6a91d38848d3160e6c8a462b852\",\n" +
-            "                \"is_assets\": false\n" +
-            "            },\n" +
-            "            {\n" +
-            "                \"file_name\": \"fonts\",\n" +
-            "                \"md5\": \"5901960c857600316c3d141401c3af08\",\n" +
-            "                \"is_assets\": true\n" +
-            "            },\n" +
-            "            {\n" +
-            "                \"file_name\": \"icons\",\n" +
-            "                \"md5\": \"7afa625cca643d01a6b12d80a19d4756\",\n" +
-            "                \"is_assets\": true\n" +
-            "            },\n" +
-            "            {\n" +
-            "                \"file_name\": \"images\",\n" +
-            "                \"md5\": \"65266455bea40469dcb9f022f63ce769\",\n" +
-            "                \"is_assets\": true\n" +
-            "            },\n" +
-            "            {\n" +
-            "                \"file_name\": \"javascripts\",\n" +
-            "                \"md5\": \"e55b643bbde61075119fb25ffc9c8b5d\",\n" +
-            "                \"is_assets\": true\n" +
-            "            },\n" +
-            "            {\n" +
-            "                \"file_name\": \"stylesheets\",\n" +
-            "                \"md5\": \"923b05c441a8cef0daf32ed392aee633\",\n" +
-            "                \"is_assets\": true\n" +
-            "            }\n" +
-            "        ]\n" +
-            "    },\n" +
-            "    \"code\": 200,\n" +
-            "    \"message\": \"default successfully\"\n" +
-            "}"
 
-    fun checkUpdate(ctx: Context, currentVersionCode: String, listener: OnUpdateResultListener) {
+    fun checkUpdate(ctx: Context, currentVersionCode: Int, currentVersionName: String, listener: OnUpdateResultListener) {
         if (!HttpUtil.isConnected(ctx)) {
             listener.onFailure("请检查网络")
             return
         }
-        val data = Gson().fromJson<UpdateResult>(json, UpdateResult::class.java)
-        listener.onResultSuccess(data!!.data!!)
-//        RetrofitUtil.getHttpService(ctx)
-//                .getUpdateMsg(currentVersionCode, OpenUDID_manager.getOpenUDID())
-//                .compose(RetrofitUtil.CommonOptions<UpdateResult>())
-//                .subscribe(object : CodeHandledSubscriber<UpdateResult>() {
-//                    override fun onBusinessNext(data: UpdateResult?) {
-//                        listener.onResultSuccess(data!!.data!!)
-//                    }
-//
-//                    override fun onCompleted() {
-//
-//                    }
-//
-//                    override fun onError(apiException: ApiException?) {
-//
-//                    }
-//
-//                })
+//        val data = Gson().fromJson<UpdateResult>(json, UpdateResult::class.java)
+//        listener.onResultSuccess(data!!.data!!)
+        RetrofitUtil.getHttpService(ctx)
+                .getUpdateMsg("android", currentVersionCode, currentVersionName, OpenUDID_manager.getOpenUDID())
+                .compose(RetrofitUtil.CommonOptions<UpdateResult>())
+                .subscribe(object : CodeHandledSubscriber<UpdateResult>() {
+                    override fun onBusinessNext(data: UpdateResult?) {
+                        if (data!!.data!!.download_url != null)
+                            listener.onResultSuccess(data!!.data!!)
+                        else
+                            listener.onFailure("下载链接异常")
+                    }
+
+                    override fun onCompleted() {
+
+                    }
+
+                    override fun onError(apiException: ApiException?) {
+
+                    }
+                })
     }
 
     fun checkAssetsUpdate(ctx: Context, assetsList: List<UpdateResult.UpdateData.AssetsBean>, progressBar: NumberProgressBar?, listener: OnCheckAssetsUpdateResultListener, progressPercent: DownLoadProgressListener?) {
@@ -163,41 +116,56 @@ object UpDateUtil {
                 })
     }
 
-    fun downAPK(ctx: LauncherActivity, download_path: String?, packageName: String?, progressBar: NumberProgressBar?) {
-        downAPKObservable = Observable.just(download_path)
-                .subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.newThread())
-                .map { downloadPath ->
-                    val response = Retrofit.Builder()
-                            .baseUrl("http://app-global.pgyer.com")
-                            .build()
-                            .create(HttpService::class.java).downloadFileWithDynamicUrlSync(downloadPath).execute()
-                    response
-                }
-                .map { response ->
-                    if (response?.body() != null) {
-                        val isWriteApkSuccess = FileUtil.writeResponseBodyToDisk(response.body(),
-                                Environment.getExternalStorageDirectory().path, packageName + ".apk", object : DownLoadProgressListener {
-                            override fun updateProgress(percent: Long) {
-//                progressBar!!.progress += (percent * 0.9).toInt()
-                            }
-                        })
-                        isWriteApkSuccess
-                    }
-                    false
-                }
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { isWriteApkSuccess ->
-                    if (isWriteApkSuccess) {
-                        val intent = Intent(ACTION_VIEW)
-                        intent.setDataAndType(Uri.fromFile(File(Environment.getExternalStorageDirectory(), packageName + ".apk")), "application/vnd.android.package-archive")
-                        ctx.startActivity(intent)
-                    } else {
-                        Toast.makeText(ctx, "更新失败", Toast.LENGTH_SHORT)
-                        ctx.finishIn2Minutes()
-                    }
-                }
+    fun downAPKInBackground(ctx: LauncherActivity, download_path: String?, appName: String?) {
+        val request = DownloadManager.Request(Uri.parse(download_path))
+        //设置在什么网络情况下进行下载
+//        request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI)
+        //设置通知栏标题
+        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE)
+        request.setTitle(appName + ".apk")
+        request.setDescription("正在下载 永辉生意人")
+        request.setAllowedOverRoaming(false)
+        //设置文件存放目录
+        request.setDestinationInExternalFilesDir(ctx, Environment.DIRECTORY_DOWNLOADS, appName + ".apk")
+        var downManager = ctx.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+        var id = downManager.enqueue(request)
+    }
 
+    fun downAPKInUI(ctx: LauncherActivity, download_path: String?, appName: String?, numberProgress: NumberProgressBar) {
+        DownLoadApkAsyncTask(ctx,numberProgress, appName).execute(download_path)
+//        downAPKObservable = Observable.just(download_path)
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(Schedulers.newThread())
+//                .map { downloadPath ->
+//                    val response = Retrofit.Builder()
+//                            .baseUrl("http://app-global.pgyer.com")
+//                            .build()
+//                            .create(HttpService::class.java).downloadFileWithDynamicUrlSync(downloadPath).execute()
+//                    response
+//                }
+//                .map { response ->
+//                    if (response?.body() != null) {
+//                        val isWriteApkSuccess = FileUtil.writeResponseBodyToDisk(response.body(),
+//                                Environment.getExternalStorageDirectory().path, appName + ".apk", object : DownLoadProgressListener {
+//                            override fun updateProgress(percent: Long) {
+////                progressBar!!.progress += (percent * 0.9).toInt()
+//                            }
+//                        })
+//                        isWriteApkSuccess
+//                    }
+//                    false
+//                }
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe { isWriteApkSuccess ->
+//                    if (isWriteApkSuccess) {
+//                        val intent = Intent(ACTION_VIEW)
+//                        intent.setDataAndType(Uri.fromFile(File(Environment.getExternalStorageDirectory(), appName + ".apk")), "application/vnd.android.package-archive")
+//                        ctx.startActivity(intent)
+//                    } else {
+//                        Toast.makeText(ctx, "更新失败", Toast.LENGTH_SHORT)
+//                        ctx.finishIn2Minutes()
+//                    }
+//                }
     }
 
     fun checkFirstSetup(ctx: Context, listener: OnCheckAssetsUpdateResultListener) {
@@ -206,7 +174,7 @@ object UpDateUtil {
         checkFirstSetupObservable = Observable.just("assets", "loading")
                 .subscribeOn(Schedulers.io())
                 .map { assetsName ->
-//                    FileUtil.makeSureFolderExist(String.format("%s/%s", FileUtil.basePath(ctx), K.kSharedDirName))
+                    FileUtil.makeSureFolderExist(String.format("%s/%s", FileUtil.basePath(ctx), K.kSharedDirName))
                     FileUtil.copyAssetFile(ctx, assetsName + ".zip", String.format("%s/%s/%s", FileUtil.basePath(ctx), K.kSharedDirName, assetsName + ".zip"))
                     var isUnZipSuccess = FileUtil.unZipAssets(ctx, assetsName)
                     if (isUnZipSuccess) {
@@ -232,16 +200,67 @@ object UpDateUtil {
                 })
     }
 
-
     /**
      * 取消订阅
      */
     fun unSubscribe() {
         if (checkFirstSetupObservable != null && !checkFirstSetupObservable!!.isUnsubscribed)
             checkFirstSetupObservable!!.unsubscribe()
-        if (downAPKObservable != null && !downAPKObservable!!.isUnsubscribed)
-            downAPKObservable!!.unsubscribe()
         if (checkAssetsUpdateObservable != null && !checkAssetsUpdateObservable!!.isUnsubscribed)
             checkAssetsUpdateObservable!!.unsubscribe()
     }
+
+//    class DownLoadApkAsyncTask(val ctx: Context,private var numberProgress: NumberProgressBar, private val appName: String?) : AsyncTask<String, Int, String>() {
+//        override fun onPreExecute() {
+//            numberProgress.visibility = View.VISIBLE
+//            super.onPreExecute()
+//        }
+//
+//        override fun doInBackground(vararg params: String): String? {
+//            var ips: InputStream? = null
+//            var fops: FileOutputStream? = null
+//            val filePath = Environment.getExternalStorageDirectory().path
+//            try {
+//                fops = FileOutputStream(File(filePath, appName + ".apk"))
+//                val url = URL(params[0])
+//                val conn = url.openConnection()
+//                conn.connect()
+//                ips = conn.getInputStream()
+//                val fileLength = conn.contentLength
+//                var len = 0
+//                var total_length = 0
+//                val data = ByteArray(4096)
+//                while (true) {
+//                    len = ips.read(data)
+//                    if (len == -1) {
+//                        break
+//                    }
+//                    total_length += len
+//                    fops.write(data, 0, len)
+//                    publishProgress((total_length / fileLength))
+//                }
+//
+//            } catch (e: Exception) {
+//
+//            } finally {
+//
+//            }
+//
+//            return null
+//        }
+//
+//
+//        override fun onProgressUpdate(vararg values: Int?) {
+//            numberProgress.progress = values[0]!!
+//            super.onProgressUpdate(*values)
+//        }
+//
+//        override fun onPostExecute(filePath: String) {
+//            val intent = Intent(Intent.ACTION_VIEW)
+//                        intent.setDataAndType(Uri.fromFile(File(filePath, appName + ".apk")), "application/vnd.android.package-archive")
+//                        ctx.startActivity(intent)
+//            super.onPostExecute(filePath)
+//        }
+//    }
 }
+
