@@ -34,7 +34,7 @@
                 android:layout_height="match_parent"
                 android:orientation="horizontal">
 
-                <com.intfocus.yh_android.view.NotScrollListView
+                <com.intfocus.yhdev.view.NotScrollListView
                     android:id="@+id/nslistView_unit_table_LineName"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
@@ -46,7 +46,7 @@
                     android:layout_height="match_parent"
                     android:background="@color/co9" />
 
-                <com.intfocus.yh_android.view.TableHorizontalScrollView
+                <com.intfocus.yhdev.view.TableHorizontalScrollView
                     android:id="@+id/thscroll_unit_table_data"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -58,7 +58,7 @@
                         android:id="@+id/fl_tableValue_container"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
-                </com.intfocus.yh_android.view.TableHorizontalScrollView>
+                </com.intfocus.yhdev.view.TableHorizontalScrollView>
 
             </LinearLayout>
         </LinearLayout>
