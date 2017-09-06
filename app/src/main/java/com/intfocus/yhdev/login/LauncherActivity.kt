@@ -5,7 +5,9 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
 import android.os.Handler
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
@@ -17,13 +19,13 @@ import android.view.animation.Animation
 import android.widget.Toast
 import com.intfocus.yhdev.R
 import com.intfocus.yhdev.data.response.update.UpdateResult
-import com.intfocus.yhdev.login.listener.DownLoadProgressListener
 import com.intfocus.yhdev.login.listener.OnCheckAssetsUpdateResultListener
 import com.intfocus.yhdev.login.listener.OnUpdateResultListener
 import com.intfocus.yhdev.screen_lock.ConfirmPassCodeActivity
-import com.intfocus.yhdev.util.LogUtil
+import com.intfocus.yhdev.util.FileUtil
 import com.intfocus.yhdev.util.UpDateUtil
 import kotlinx.android.synthetic.main.activity_splash.*
+import java.io.File
 import java.util.*
 
 
@@ -54,6 +56,14 @@ class LauncherActivity : AppCompatActivity(), Animation.AnimationListener {
         initAnim()
     }
 
+    override fun onResume() {
+        super.onResume()
+    }
+
+    override fun onDestroy() {
+        UpDateUtil.unSubscribe()
+        super.onDestroy()
+    }
 
     private fun initData() {
         mSettingSP = getSharedPreferences("SettingPreference", Context.MODE_PRIVATE)
@@ -70,7 +80,6 @@ class LauncherActivity : AppCompatActivity(), Animation.AnimationListener {
             mUserSP.edit().clear().commit()
             mSettingSP.edit().clear().commit()
         }
-
         toast = Toast.makeText(ctx, "再按一次退出生意人", Toast.LENGTH_SHORT)
     }
 
@@ -85,22 +94,27 @@ class LauncherActivity : AppCompatActivity(), Animation.AnimationListener {
      * 检测更新
      */
     private fun checkUpdate() {
+        // 检查更新
         UpDateUtil.checkUpdate(ctx, packageInfo.versionCode, packageInfo.versionName, object : OnUpdateResultListener {
             override fun onResultSuccess(data: UpdateResult.UpdateData) {
+                // 清除下载未完成的 apk 安装包
+                FileUtil.deleteFile(ctx.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).path + "/" + ctx.resources.getString(R.string.app_name) + ".apk.download")
                 when (data.upgrade_level) {
-                    -1 -> {
+                    -1 -> { // 不需要更新
+                        FileUtil.deleteFile(ctx.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).path + "/" + ctx.resources.getString(R.string.app_name) + ".apk")
                         number_progress_bar_splash.visibility = View.VISIBLE
                         tv_splash_status.visibility = View.VISIBLE
                         tv_splash_status.text = "已是最新版本"
                         unZipAssetsFromLocal(data.assets)
                     }
-                    1 -> {
+                    1 -> { // 有新版本，不提示更新
+                        FileUtil.deleteFile(ctx.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).path + "/" + ctx.resources.getString(R.string.app_name) + ".apk")
                         number_progress_bar_splash.visibility = View.VISIBLE
                         tv_splash_status.visibility = View.VISIBLE
                         tv_splash_status.text = "未发现新版本"
                         unZipAssetsFromLocal(data.assets)
                     }
-                    2, 3 -> {
+                    2, 3 -> { // 有新版本，提示更新
                         tv_splash_status.visibility = View.VISIBLE
                         tv_splash_status.text = "发现新版本"
                         showUpDateDialog(data)
@@ -123,30 +137,38 @@ class LauncherActivity : AppCompatActivity(), Animation.AnimationListener {
         })
     }
 
+    /**
+     * 提示更新弹窗
+     */
     private fun showUpDateDialog(data: UpdateResult.UpdateData) {
         val dialog = AlertDialog.Builder(ctx)
                 .setTitle("发现新版本 " + data.version)
                 .setMessage(data.description)
                 .setPositiveButton("更新") { dialog, _ ->
+                    // 先判断是否下载过 apk ，如下载过，用户点击更新时直接调用下载过的apk
+                    val apkFile = File(ctx.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).path + "/" + ctx.resources.getString(R.string.app_name) + ".apk")
+                    if (apkFile.exists()) {
+                        val intent = Intent(Intent.ACTION_VIEW)
+                        intent.setDataAndType(Uri.fromFile(apkFile), "application/vnd.android.package-archive")
+                        ctx.startActivity(intent)
+                        ctx.finish()
+                        return@setPositiveButton
+                    }
                     if (data.upgrade_level == 2) {
                         UpDateUtil.downAPKInBackground(ctx, data.download_url, ctx.resources.getString(R.string.app_name))
-//                        dialog.dismiss()
                         tv_splash_status.text = "已在后台下载新版本应用.."
-                        LogUtil.d("hjjzz", "mainThread:::" + Thread.currentThread().name)
                         Handler().postDelayed({
                             unZipAssetsFromLocal(data.assets)
                         }, 2000)
                     } else {
                         number_progress_bar_splash.visibility = View.VISIBLE
-                        UpDateUtil.downAPKInUI(ctx, data.download_url, ctx.resources.getString(R.string.app_name), number_progress_bar_splash)
-                        dialog.dismiss()
+                        UpDateUtil.downAPKInUI(ctx, data.download_url, number_progress_bar_splash)
                     }
                 }
         if (data.upgrade_level == 2)
-            dialog.setNegativeButton("暂不更新") { dialog, _ ->
+            dialog.setNegativeButton("暂不更新") { _, _ ->
                 number_progress_bar_splash.visibility = View.VISIBLE
                 unZipAssetsFromLocal(data.assets)
-//                dialog.dismiss()
             }
         dialog.setCancelable(false)
         dialog.create().show()
@@ -163,6 +185,9 @@ class LauncherActivity : AppCompatActivity(), Animation.AnimationListener {
 
     }
 
+    /**
+     * 跳转 activity
+     */
     private fun enter() {
         val packageInfo = this.packageManager.getPackageInfo(this.packageName, 0)
         when {
@@ -176,6 +201,7 @@ class LauncherActivity : AppCompatActivity(), Animation.AnimationListener {
             }
 
             mSettingSP.getInt("Version", 0) != packageInfo.versionCode -> {
+                // 在 SP 中存入版本号
                 val mSharedPreferences = getSharedPreferences("SettingPreference", Context.MODE_PRIVATE)
                 val packageInfo = packageManager.getPackageInfo(packageName, 0)
                 mSharedPreferences!!.edit().putInt("Version", packageInfo.versionCode).commit()
@@ -196,6 +222,10 @@ class LauncherActivity : AppCompatActivity(), Animation.AnimationListener {
         }
     }
 
+    /**
+     * 如是第一次安装，从本地解压 assets 和 loading
+     * 再进行静态资源更新
+     */
     private fun unZipAssetsFromLocal(assets: List<UpdateResult.UpdateData.AssetsBean>?) {
         number_progress_bar_splash.progress = 10
         tv_splash_status.text = "正在检测样式更新.."
@@ -227,14 +257,13 @@ class LauncherActivity : AppCompatActivity(), Animation.AnimationListener {
                 tv_splash_status.text = msg
                 finishIn2Minutes()
             }
-        }, object : DownLoadProgressListener {
-            override fun updateProgress(percent: Long) {
-                if (number_progress_bar_splash != null)
-                    number_progress_bar_splash.progress += (percent * 0.1).toInt()
-            }
         })
     }
 
+
+    /**
+     * 两秒后退出
+     */
     fun finishIn2Minutes() {
         Timer().schedule(object : TimerTask() {
             override fun run() {
@@ -253,10 +282,5 @@ class LauncherActivity : AppCompatActivity(), Animation.AnimationListener {
         toast.cancel()
         finish()
 
-    }
-
-    override fun onDestroy() {
-        UpDateUtil.unSubscribe()
-        super.onDestroy()
     }
 }

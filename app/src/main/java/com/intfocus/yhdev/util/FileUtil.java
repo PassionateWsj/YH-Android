@@ -20,7 +20,6 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.intfocus.yhdev.data.response.assets.AssetsMD5;
 import com.intfocus.yhdev.data.response.assets.AssetsResult;
-import com.intfocus.yhdev.login.listener.DownLoadProgressListener;
 import com.intfocus.yhdev.net.ApiException;
 import com.intfocus.yhdev.net.CodeHandledSubscriber;
 import com.intfocus.yhdev.net.RetrofitUtil;
@@ -220,6 +219,17 @@ public class FileUtil {
 
         return pathName;
     }
+
+    /*
+     *  缓存目录
+     */
+    public static String cachedPath(Context context) {
+        String pathName = FileUtil.basePath(context) + "/" + K.kCachedDirName;
+        FileUtil.makeSureFolderExist(pathName);
+
+        return pathName;
+    }
+
 
     public static boolean makeSureFolderExist(String pathName) {
         File folder = new File(pathName);
@@ -875,7 +885,7 @@ public class FileUtil {
         }
     }
 
-    public static boolean writeResponseBodyToDisk(ResponseBody body, String filePathName, String fileName, DownLoadProgressListener percentListener) {
+    public static boolean writeResponseBodyToDisk(ResponseBody body, String filePathName, String fileName) {
         File filePath = new File(filePathName);
         String fileAbsolutePath = String.format("%s/%s", filePathName, fileName);
         File file = new File(fileAbsolutePath);

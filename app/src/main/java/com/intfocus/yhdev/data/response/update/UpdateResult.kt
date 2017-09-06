@@ -48,7 +48,7 @@ class UpdateResult : BaseResult() {
 
             var file_name: String? = null
             var md5: String? = null
-            var isIs_assets: Boolean = false
+            var is_assets: Boolean = false
         }
     }
 }

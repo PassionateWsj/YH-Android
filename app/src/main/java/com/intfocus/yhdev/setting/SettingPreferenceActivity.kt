@@ -13,7 +13,10 @@ import com.intfocus.yhdev.data.response.update.UpdateResult
 import com.intfocus.yhdev.login.listener.OnCheckAssetsUpdateResultListener
 import com.intfocus.yhdev.login.listener.OnUpdateResultListener
 import com.intfocus.yhdev.screen_lock.InitPassCodeActivity
-import com.intfocus.yhdev.util.*
+import com.intfocus.yhdev.util.FileUtil
+import com.intfocus.yhdev.util.ToastColor
+import com.intfocus.yhdev.util.ToastUtils
+import com.intfocus.yhdev.util.UpDateUtil
 import kotlinx.android.synthetic.main.activity_setting_preference.*
 import rx.Observable
 import rx.android.schedulers.AndroidSchedulers
@@ -81,14 +84,12 @@ class SettingPreferenceActivity : BaseActivity() {
     fun clearUserCache(v: View) {
         var mProgressDialog = ProgressDialog.show(this@SettingPreferenceActivity, "稍等", "正在清理缓存...")
 
-        val sharedPath = FileUtil.sharedPath(this)
-        val cachePath = String.format("%s/%s", FileUtil.basePath(this), K.kCachedDirName)
         Observable.just(sharedPath)
                 .subscribeOn(Schedulers.io())
                 .map { path ->
-                    var isClearSpSuccess = getSharedPreferences("AssetsMD5", Context.MODE_PRIVATE).edit().clear().commit()
-                    var isCleanSharedPathSuccess = FileUtil.deleteDirectory(path)
-                    var isCleanCacheSuccess = FileUtil.deleteDirectory(cachePath)
+                    val isClearSpSuccess = getSharedPreferences("AssetsMD5", Context.MODE_PRIVATE).edit().clear().commit()
+                    val isCleanSharedPathSuccess = FileUtil.deleteDirectory(path)
+                    val isCleanCacheSuccess = FileUtil.deleteDirectory(FileUtil.cachedPath(this))
                     isClearSpSuccess && isCleanSharedPathSuccess && isCleanCacheSuccess
                 }
                 .observeOn(AndroidSchedulers.mainThread())
@@ -96,7 +97,7 @@ class SettingPreferenceActivity : BaseActivity() {
                     if (isClear) {
                         UpDateUtil.checkUpdate(this, packageManager.getPackageInfo(packageName, 0).versionCode, packageManager.getPackageInfo(packageName, 0).versionName, object : OnUpdateResultListener {
                             override fun onResultSuccess(data: UpdateResult.UpdateData) {
-                                UpDateUtil.checkAssetsUpdate(ctx, data!!.assets!!, null, object : OnCheckAssetsUpdateResultListener {
+                                UpDateUtil.checkAssetsUpdate(ctx, data.assets!!, null, object : OnCheckAssetsUpdateResultListener {
                                     override fun onFailure(msg: String) {
                                         ToastUtils.show(this@SettingPreferenceActivity, msg)
                                         mProgressDialog.dismiss()
@@ -108,7 +109,7 @@ class SettingPreferenceActivity : BaseActivity() {
                                         mProgressDialog.dismiss()
 
                                     }
-                                }, null)
+                                })
                             }
 
                             override fun onFailure(msg: String) {

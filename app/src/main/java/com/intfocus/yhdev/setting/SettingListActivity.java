@@ -1,11 +1,14 @@
 package com.intfocus.yhdev.setting;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
@@ -14,11 +17,17 @@ import android.widget.TextView;
 
 import com.intfocus.yhdev.R;
 import com.intfocus.yhdev.base.BaseActivity;
+import com.intfocus.yhdev.data.response.update.UpdateResult;
+import com.intfocus.yhdev.login.listener.OnUpdateResultListener;
 import com.intfocus.yhdev.subject.SimpleListAdapter;
+import com.intfocus.yhdev.util.FileUtil;
 import com.intfocus.yhdev.util.K;
 import com.intfocus.yhdev.util.ToastColor;
+import com.intfocus.yhdev.util.ToastUtils;
+import com.intfocus.yhdev.util.UpDateUtil;
 import com.umeng.message.PushAgent;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -26,6 +35,7 @@ import java.util.HashMap;
  * Created by liuruilin on 2017/3/29.
  */
 public class SettingListActivity extends BaseActivity {
+    private Context ctx;
     private ArrayList<HashMap<String, Object>> listItem;
     private SimpleListAdapter mSimpleAdapter;
     private String[] mItemNameList;
@@ -38,7 +48,8 @@ public class SettingListActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting_list);
-        mBannerTitle = (TextView)findViewById(R.id.bannerTitle);
+        ctx = this;
+        mBannerTitle = (TextView) findViewById(R.id.bannerTitle);
         mListType = getIntent().getStringExtra("type");
         mBannerTitle.setText(mListType);
         initListInfo(mListType);
@@ -46,7 +57,7 @@ public class SettingListActivity extends BaseActivity {
 
     private void initListInfo(String type) {
         switch (type) {
-            case "应用信息" :
+            case "应用信息":
                 PackageInfo packageInfo = null;
                 try {
                     packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
@@ -62,7 +73,7 @@ public class SettingListActivity extends BaseActivity {
                 mItemContentList = new String[]{appName, "当前版本: " + versionInfo, deviceInfo, apiDomain, appPackageInfo};
                 break;
 
-            case "消息推送" :
+            case "消息推送":
                 PushAgent mPushAgent = PushAgent.getInstance(mAppContext);
                 String isPushOpened = isPushOpened(mPushAgent);
                 mItemNameList = new String[]{"消息推送", "关联的设备列表", "推送的消息列表"};
@@ -79,11 +90,11 @@ public class SettingListActivity extends BaseActivity {
 
     private String isPushOpened(PushAgent mPushAgent) {
         try {
-            String deviceToken  = mPushAgent.getRegistrationId();
+            String deviceToken = mPushAgent.getRegistrationId();
             if (deviceToken.length() == 44) {
                 return "开启";
             }
-        }catch (NullPointerException e){
+        } catch (NullPointerException e) {
             return "关闭";
         }
         return "关闭";
@@ -116,7 +127,7 @@ public class SettingListActivity extends BaseActivity {
         public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
             TextView mItemText = (TextView) arg1.findViewById(R.id.item_setting_key);
             switch (mItemText.getText().toString()) {
-                case "应用标识" :
+                case "应用标识":
                     if (System.currentTimeMillis() - mLastExitTime < 2000) {
                         Intent developerActivityIntent = new Intent(SettingListActivity.this, DeveloperActivity.class);
                         developerActivityIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -128,8 +139,9 @@ public class SettingListActivity extends BaseActivity {
                     }
                     break;
 
-                case "检测更新" :
-                    checkPgyerVersionUpgrade(SettingListActivity.this, true);
+                case "检测更新":
+                    checkUpdate();
+//                    checkPgyerVersionUpgrade(SettingListActivity.this, true);
                     break;
 
                 case "关联的设备列表":
@@ -163,10 +175,10 @@ public class SettingListActivity extends BaseActivity {
                 case "推送的消息列表":
                     try {
                         SharedPreferences sp = getSharedPreferences("allPushMessage", MODE_PRIVATE);
-                        String allMessage = sp.getString("message","false");
-                        if (allMessage.equals("false")){
+                        String allMessage = sp.getString("message", "false");
+                        if (allMessage.equals("false")) {
                             toast("从未接收到推送消息");
-                        }else {
+                        } else {
                             Intent intent = new Intent(SettingListActivity.this, ShowListMsgActivity.class);
                             intent.putExtra("type", "pushMessage");
                             intent.putExtra("title", "推送的消息列表");
@@ -179,4 +191,41 @@ public class SettingListActivity extends BaseActivity {
             }
         }
     };
+
+    /**
+     * 检测更新
+     */
+    private void checkUpdate() {
+        // 检查更新
+        try {
+            UpDateUtil.INSTANCE.checkUpdate(ctx, getPackageManager().getPackageInfo(getPackageName(), 0).versionCode, getPackageManager().getPackageInfo(getPackageName(), 0).versionName, new OnUpdateResultListener() {
+                @Override
+                public void onFailure(String msg) {
+                }
+
+                @Override
+                public void onResultSuccess(UpdateResult.UpdateData data) {
+                    // 清除下载未完成的 apk 安装包
+                    FileUtil.deleteFile(getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).getPath() + "/" + getResources().getString(R.string.app_name) + ".apk.download");
+                    if (data.getUpgrade_level() == 1 || data.getUpgrade_level() == 2 || data.getUpgrade_level() == 3) {
+                        // 先判断是否下载过 apk ，如下载过，用户点击更新时直接调用下载过的apk
+                        File apkFile = new File(ctx.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).getPath() + "/" + getResources().getString(R.string.app_name) + ".apk");
+                        if (apkFile.exists()) {
+                            Intent intent = new Intent(Intent.ACTION_VIEW);
+                            intent.setDataAndType(Uri.fromFile(apkFile), "application/vnd.android.package-archive");
+                            startActivity(intent);
+                            return;
+                        }
+                        UpDateUtil.INSTANCE.downAPKInBackground(ctx, data.getDownload_url(), getResources().getString(R.string.app_name));
+                        ToastUtils.INSTANCE.show(ctx, "已在后台下载新版本应用..", ToastColor.SUCCESS);
+                    } else {
+                        FileUtil.deleteFile(ctx.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).getPath() + "/" + getResources().getString(R.string.app_name) + ".apk");
+                        ToastUtils.INSTANCE.show(ctx, "已是最新版本", ToastColor.SUCCESS);
+                    }
+                }
+            });
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
 }

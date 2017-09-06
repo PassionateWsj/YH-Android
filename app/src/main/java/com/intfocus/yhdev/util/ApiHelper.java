@@ -451,7 +451,7 @@ public class ApiHelper {
             URL url = new URL(urlString);
             String headerPath = String.format("%s/%s/%s", FileUtil.basePath(context), K.kCachedDirName, K.kCachedHeaderConfigFileName);
 
-            File cachePath = new File(String.format("%s/%s", FileUtil.basePath(context), K.kCachedDirName));
+            File cachePath = new File(FileUtil.cachedPath(context));
             if (!cachePath.exists()) {
                 cachePath.mkdirs();
             }

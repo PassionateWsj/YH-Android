@@ -35,6 +35,10 @@ public class ApkInstallReceiver extends BroadcastReceiver {
      * 安装apk
      */
     private void installApk(Context context) {
+        File file = new File(context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS), context.getResources().getString(R.string.app_name) + ".apk.download");
+        if (file.exists()) {
+            file.renameTo(new File(context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS), context.getResources().getString(R.string.app_name) + ".apk"));
+        }
         // 获取存储ID
         Uri downloadFileUri = Uri.fromFile(new File(context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS), context.getResources().getString(R.string.app_name) + ".apk"));
         if (downloadFileUri != null) {
