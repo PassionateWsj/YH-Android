@@ -28,6 +28,7 @@ import com.intfocus.yhdev.net.CodeHandledSubscriber
 import com.intfocus.yhdev.net.RetrofitUtil
 import com.intfocus.yhdev.scanner.BarCodeScannerActivity
 import com.intfocus.yhdev.subject.*
+import com.intfocus.yhdev.subject.metrics.HomeTricsActivity
 import com.intfocus.yhdev.subject.template_v2.ModularTwo_Mode_Activity
 import com.intfocus.yhdev.util.*
 import com.intfocus.yhdev.view.NoScrollViewPager

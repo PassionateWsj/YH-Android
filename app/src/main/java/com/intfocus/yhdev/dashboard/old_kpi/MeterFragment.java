@@ -29,7 +29,7 @@ import com.intfocus.yhdev.dashboard.old_kpi.adapter.MeterVPAdapter;
 import com.intfocus.yhdev.dashboard.old_kpi.adapter.SaleDataAdapter;
 import com.intfocus.yhdev.listen.CustPagerTransformer;
 import com.intfocus.yhdev.mode.MeterMode;
-import com.intfocus.yhdev.subject.HomeTricsActivity;
+import com.intfocus.yhdev.subject.metrics.HomeTricsActivity;
 import com.intfocus.yhdev.subject.SubjectActivity;
 import com.intfocus.yhdev.subject.TableActivity;
 import com.intfocus.yhdev.util.DisplayUtil;

@@ -87,7 +87,7 @@
 
         <!-- 模板三 -->
         <activity
-            android:name=".subject.HomeTricsActivity"
+            android:name=".subject.metrics.HomeTricsActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
 

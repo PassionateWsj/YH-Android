@@ -1,4 +1,4 @@
-package com.intfocus.yhdev.subject;
+package com.intfocus.yhdev.subject.metrics;
 
 import android.content.Context;
 import android.content.Intent;
@@ -42,8 +42,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.intfocus.yhdev.CommentActivity;
 import com.intfocus.yhdev.R;
-import com.intfocus.yhdev.subject.metrics.MetricsAdapter;
-import com.intfocus.yhdev.subject.metrics.ProductListAdapter;
 import com.intfocus.yhdev.util.FileUtil;
 import com.intfocus.yhdev.util.HttpUtil;
 import com.intfocus.yhdev.util.ImageUtil;
