@@ -55,11 +55,6 @@ check_assets() {
 
 download_assets() {
   check_assets "assets"
-  check_assets "fonts"
-  check_assets "images"
-  check_assets "icons"
-  check_assets "javascripts"
-  check_assets "stylesheets"
   check_assets "loading"
 }
 

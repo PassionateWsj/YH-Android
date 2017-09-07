@@ -205,7 +205,7 @@ public class HomeTricsActivity extends AppCompatActivity implements ProductListA
     class LoadReportData extends AsyncTask<String, Void, Map<String, String>> {
         @Override
         protected Map<String, String> doInBackground(String... params) {
-            Map<String, String> response = HttpUtil.httpGet(urlString, new HashMap<String, String>());
+            Map<String, String> response = HttpUtil.httpGet(mContext, urlString, new HashMap<String, String>());
             return response;
         }
 

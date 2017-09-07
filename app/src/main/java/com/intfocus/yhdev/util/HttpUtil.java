@@ -30,6 +30,7 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Headers;
+import okhttp3.HttpUrl;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
@@ -54,8 +55,12 @@ public class HttpUtil {
      * @return 返回请求响应的HTML
      */
     //@throws UnsupportedEncodingException
-    public static Map<String, String> httpGet(String urlString, Map<String, String> headers) {
+    public static Map<String, String> httpGet(Context ctx, String urlString, Map<String, String> headers) {
         LogUtil.d("GET", urlString);
+        SharedPreferences mUserSP = ctx.getSharedPreferences("UserBean", Context.MODE_PRIVATE);
+        String userNum = mUserSP.getString("user_num", "0");
+        String userDeviceId = mUserSP.getString("user_device_id", "0");
+        String appVision = mUserSP.getString("app_version", "0");
 
         Map<String, String> retMap = new HashMap<>();
         OkHttpClient client = new OkHttpClient.Builder()
@@ -63,9 +68,10 @@ public class HttpUtil {
                 .writeTimeout(10, TimeUnit.SECONDS)
                 .readTimeout(10, TimeUnit.SECONDS)
                 .build();
-        okhttp3.Request.Builder builder = new Request.Builder()
-                .url(urlString)
-                .addHeader(kUserAgent, HttpUtil.webViewUserAgent());
+
+        okhttp3.Request.Builder builder = new Request.Builder();
+
+        builder.url(urlString).addHeader(kUserAgent, HttpUtil.webViewUserAgent());
 
         if (headers.containsKey(URLs.kETag)) {
             builder = builder.addHeader("IF-None-Match", headers.get(URLs.kETag));
@@ -74,9 +80,31 @@ public class HttpUtil {
             builder = builder.addHeader("If-Modified-Since", headers.get(URLs.kLastModified));
         }
         Response response;
-        Request request = builder.build();
+        Request baseRequest = builder.build();
+
+        //提取api_path
+        String apiPath = baseRequest.url().toString().replace(K.kBaseUrl, "");
+        if (apiPath.contains("?")) {
+            apiPath = apiPath.substring(0, apiPath.indexOf("?"));
+        }
+
+        //根据规则加密生成api_token
+        String apiToken = Utils.getApiToken(apiPath);
+
+        HttpUrl.Builder httpUrl = baseRequest.url().newBuilder()
+                .addQueryParameter(K.API_TOKEN, apiToken)
+                .addQueryParameter("_user_num", userNum)
+                .addQueryParameter("_user_device_id", userDeviceId)
+                .addQueryParameter("_app_version", appVision);
+
+        // 新的请求--添加参数
+        Request newRequest = baseRequest.newBuilder()
+                .method(baseRequest.method(), baseRequest.body())
+                .url(httpUrl.build())
+                .build();
+
         try {
-            response = client.newCall(request).execute();
+            response = client.newCall(newRequest).execute();
             Headers responseHeaders = response.headers();
             boolean isJSON = false;
             for (int i = 0, len = responseHeaders.size(); i < len; i++) {
@@ -117,40 +145,6 @@ public class HttpUtil {
             }
         }
         return retMap;
-    }
-
-    /**
-     * ִ执行一个HTTP GET请求，返回请求响应的 Bitmap
-     *
-     * @param urlString 请求的URL地址
-     * @return 返回请求响应的  Bitmap
-     */
-    public static Bitmap httpGetBitmap(String urlString) {
-        OkHttpClient client = new OkHttpClient.Builder()
-                .connectTimeout(5, TimeUnit.SECONDS)
-                .writeTimeout(10, TimeUnit.SECONDS)
-                .readTimeout(10, TimeUnit.SECONDS)
-                .build();
-        okhttp3.Request.Builder builder = new Request.Builder()
-                .url(urlString);
-
-        Response response;
-        Request request = builder.build();
-        try {
-            response = client.newCall(request).execute();
-            if (response.code() != 200) {
-                return null;
-            }
-            InputStream is = response.body().byteStream();
-            Bitmap bm = BitmapFactory.decodeStream(is);
-            return bm;
-        } catch (UnknownHostException e) {
-            if (e != null && e.getMessage() != null) {
-            }
-            return null;
-        } catch (Exception e) {
-            return null;
-        }
     }
 
     /**

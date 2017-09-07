@@ -249,16 +249,15 @@ public class ApiHelper {
         }
     }
 
-    public static Map<String, String> httpGetWithHeader(String urlString, String assetsPath, String relativeAssetsPath) {
+    public static Map<String, String> httpGetWithHeader(Context ctx, String urlString, String assetsPath, String relativeAssetsPath) {
         Map<String, String> retMap = new HashMap<>();
 
         String urlKey = urlString.contains("?") ? TextUtils.split(urlString, "?")[0] : urlString;
 
         try {
-//            Map<String, String> headers = ApiHelper.checkResponseHeader(urlString, assetsPath);
 
             Map<String, String> headers = new HashMap<>();
-            Map<String, String> response = HttpUtil.httpGet(urlKey, headers);
+            Map<String, String> response = HttpUtil.httpGet(ctx, urlKey, headers);
 
             String statusCode = response.get(URLs.kCode);
             retMap.put(URLs.kCode, statusCode);
@@ -285,46 +284,6 @@ public class ApiHelper {
         }
         return retMap;
     }
-
-    public static Map<String, String> httpGetBarcode(String urlString, String assetsPath, String relativeAssetsPath) {
-        Map<String, String> retMap = new HashMap<>();
-        try {
-            Map<String, String> response = HttpUtil.httpGet(urlString, new HashMap<String, String>());
-
-            String statusCode = response.get(URLs.kCode);
-            retMap.put(URLs.kCode, statusCode);
-            if (statusCode.equals("200")) {
-                String htmlContent = response.get(URLs.kBody);
-                htmlContent = htmlContent.replace("/javascripts/", String.format("%s/javascripts/", relativeAssetsPath));
-                htmlContent = htmlContent.replace("/stylesheets/", String.format("%s/stylesheets/", relativeAssetsPath));
-                htmlContent = htmlContent.replace("/images/", String.format("%s/images/", relativeAssetsPath));
-                retMap.put(URLs.kBody, htmlContent);
-            } else {
-                retMap.put(URLs.kCode, statusCode);
-            }
-        } catch (Exception e) {
-            retMap.put(URLs.kCode, "500");
-            e.printStackTrace();
-        }
-
-        return retMap;
-    }
-
-//    public static Map<String, String> resetPassword(String userID, String newPassword) {
-//        Map<String, String> retMap = new HashMap<>();
-//        try {
-//            String urlString = String.format(K.kRsetPwdAPIPath, K.kBaseUrl, userID);
-//
-//            Map<String, String> params = new HashMap<>();
-//            params.put(URLs.kPassword, newPassword);
-//            retMap = HttpUtil.httpPost(urlString, params);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            retMap.put(URLs.kCode, "500");
-//            retMap.put(URLs.kBody, e.getLocalizedMessage());
-//        }
-//        return retMap;
-//    }
 
     /*
      * 缓存文件中，清除指定链接的内容

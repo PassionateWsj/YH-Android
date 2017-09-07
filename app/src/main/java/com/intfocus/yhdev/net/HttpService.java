@@ -10,6 +10,7 @@ import com.intfocus.yhdev.data.response.home.HomeMsgResult;
 import com.intfocus.yhdev.data.response.home.KpiResult;
 import com.intfocus.yhdev.data.response.home.ReportListResult;
 import com.intfocus.yhdev.data.response.home.WorkBoxResult;
+import com.intfocus.yhdev.data.response.login.RegisterResult;
 import com.intfocus.yhdev.data.response.mine_page.NoticeContentResult;
 import com.intfocus.yhdev.data.response.mine_page.UserInfoResult;
 import com.intfocus.yhdev.data.response.notice.NoticesResult;
@@ -40,6 +41,17 @@ import rx.Observable;
  */
 
 public interface HttpService {
+
+    /**
+     * 申请注册
+     *
+     * GET
+     * /api/v1.1/config/info
+     *
+     * keyname
+     */
+    @GET(K.KRegister)
+    Observable<RegisterResult> getRegister(@Query("keyname") String keyName);
 
     /**
      * 推送 push_token

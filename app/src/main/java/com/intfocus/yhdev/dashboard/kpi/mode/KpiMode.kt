@@ -46,7 +46,7 @@ class KpiMode(var ctx: Context) : AbstractMode() {
         Thread(Runnable {
             urlString = getUrl()
             if (!urlString.isEmpty()) {
-                val response = HttpUtil.httpGet(urlString, HashMap<String, String>())
+                val response = HttpUtil.httpGet(ctx, urlString, HashMap<String, String>())
                 result = response["body"]
                 if (StringUtil.isEmpty(result)) {
                     val result1 = KpiRequest(false, 400, "返回数据为空")
@@ -121,7 +121,7 @@ class KpiMode(var ctx: Context) : AbstractMode() {
         }
 
         val gson = Gson()
-        val response = HttpUtil.httpGet(messageUrlString, HashMap<String, String>())
+        val response = HttpUtil.httpGet(ctx, messageUrlString, HashMap<String, String>())
 
         if (response["code"].equals("200")) {
             val returnData = JsonParser().parse(response["body"]).asJsonObject
@@ -142,7 +142,7 @@ class KpiMode(var ctx: Context) : AbstractMode() {
         Thread(Runnable {
             messageUrlString = getMessageUrl()
             if (!messageUrlString.isEmpty()) {
-                val response = HttpUtil.httpGet(messageUrlString, HashMap<String, String>())
+                val response = HttpUtil.httpGet(ctx, messageUrlString, HashMap<String, String>())
                 result = response["body"]
                 if (StringUtil.isEmpty(result)) {
                     val result1 = KpiRequest(false, 400, "空数据")

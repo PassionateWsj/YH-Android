@@ -144,6 +144,8 @@ public class K extends PrivateURLs implements Serializable {
     public final static String KNewUpdatePwd = "/api/v1.1/user/update_password"; //更新密码
     public final static String KNewResetPwd = "/api/v1.1/user/reset_password"; //重置密码
     public final static String KComment = "/api/v1.1/comment"; //发表评论
+    public final static String KRegister = "/api/v1.1/config/info"; //申请注册
+
     /**
      * "api_token": "",
      * "user_num": ,

@@ -17,6 +17,8 @@ import com.zbl.lib.baseframe.utils.TimeUtil;
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Map;
@@ -55,40 +57,52 @@ public class MeterDetalActMode extends AbstractMode {
             @Override
             public void run() {
 //                try {
-                Log.i(TAG, "requestStartTime:" + TimeUtil.getNowTime());
-                String urlString = String.format(K.kReportJsonAPIPath, K.kBaseUrl, group_id, "1", report_id);
-                String assetsPath = FileUtil.sharedPath(ctx);
-                String itemsString;
-                Map<String, String> headers = ApiHelper.checkResponseHeader(urlString, assetsPath);
-                Map<String, String> response = HttpUtil.httpGet(urlString, headers);
-                Log.i(TAG, "requestEndTime:" + TimeUtil.getNowTime());
-                if (!response.get("code").equals("200") && !response.get("code").equals("304")) {
-                    MDetalActRequestResult result1 = new MDetalActRequestResult(true, 400, null);
-                    EventBus.getDefault().post(result1);
-                    return;
+
+                InputStream is = null;
+                try {
+                    is = ctx.getAssets().open("kpi_detaldata.json");
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-                ApiHelper.storeResponseHeader(urlString, assetsPath, response);
-                //请求数据成功
-                itemsString = response.get("body").toString();
-                if (TextUtils.isEmpty(itemsString)) {
-                    itemsString = FileUtil.readFile(assetsPath + K.kTemplateV1);//取数据
-                } else {
-                    try {
-                        FileUtil.writeFile(assetsPath + K.kTemplateV1, itemsString);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-                if (TextUtils.isEmpty(itemsString)) {
-                    MDetalActRequestResult result1 = new MDetalActRequestResult(true, 400, null);
-                    EventBus.getDefault().post(result1);
-                    return;
-                }
-                StringReader stringReader = new StringReader(itemsString);
-                Log.i(TAG, "analysisDataStartTime:" + TimeUtil.getNowTime());
-                JSONReader reader = new JSONReader(stringReader);
+                InputStreamReader isr = new InputStreamReader(is);
+                JSONReader reader = new JSONReader(isr);
                 reader.startArray();
                 reader.startObject();
+//
+//                Log.i(TAG, "requestStartTime:" + TimeUtil.getNowTime());
+//                String urlString = String.format(K.kReportJsonAPIPath, K.kBaseUrl, group_id, "1", report_id);
+//                String assetsPath = FileUtil.sharedPath(ctx);
+//                String itemsString;
+//                Map<String, String> headers = ApiHelper.checkResponseHeader(urlString, assetsPath);
+//                Map<String, String> response = HttpUtil.httpGet(urlString, headers);
+//                Log.i(TAG, "requestEndTime:" + TimeUtil.getNowTime());
+//                if (!response.get("code").equals("200") && !response.get("code").equals("304")) {
+//                    MDetalActRequestResult result1 = new MDetalActRequestResult(true, 400, null);
+//                    EventBus.getDefault().post(result1);
+//                    return;
+//                }
+//                ApiHelper.storeResponseHeader(urlString, assetsPath, response);
+//                //请求数据成功
+//                itemsString = response.get("body").toString();
+//                if (TextUtils.isEmpty(itemsString)) {
+//                    itemsString = FileUtil.readFile(assetsPath + K.kTemplateV1);//取数据
+//                } else {
+//                    try {
+//                        FileUtil.writeFile(assetsPath + K.kTemplateV1, itemsString);
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//                if (TextUtils.isEmpty(itemsString)) {
+//                    MDetalActRequestResult result1 = new MDetalActRequestResult(true, 400, null);
+//                    EventBus.getDefault().post(result1);
+//                    return;
+//                }
+//                StringReader stringReader = new StringReader(itemsString);
+//                Log.i(TAG, "analysisDataStartTime:" + TimeUtil.getNowTime());
+//                JSONReader reader = new JSONReader(stringReader);
+//                reader.startArray();
+//                reader.startObject();
 
                 entity = new MererDetalEntity();
                 entity.data = new ArrayList<>();

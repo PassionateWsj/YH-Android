@@ -30,7 +30,6 @@ class ScannerMode(var ctx: Context) : AbstractMode() {
     var store_id = ""
     var currentBarcode = ""
 
-
     fun requestData(barcode: String, storeId: String) {
         currentBarcode = barcode
         jsUrl = String.format(K.kBarCodeScanAPIDataPath, K.kBaseUrl, storeId, barcode)
@@ -71,7 +70,7 @@ class ScannerMode(var ctx: Context) : AbstractMode() {
             var htmlName = String.format("mobile_v2_store_%s_barcode_%s.html", store_id, currentBarcode)
             var htmlPath = String.format("%s/%s", FileUtil.dirPath(ctx, K.kHTMLDirName), htmlName)
 
-            var response = HttpUtil.httpGet(htmlUrl, HashMap<String, String>())
+            var response = HttpUtil.httpGet(ctx, htmlUrl, HashMap<String, String>())
 
             if (response["code"].equals("200")) {
                 var htmlContent = response["body"]

@@ -182,7 +182,6 @@ class LauncherActivity : AppCompatActivity(), Animation.AnimationListener {
     }
 
     override fun onAnimationStart(p0: Animation?) {
-
     }
 
     /**

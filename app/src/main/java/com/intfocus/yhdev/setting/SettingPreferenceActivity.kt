@@ -107,7 +107,6 @@ class SettingPreferenceActivity : BaseActivity() {
                                         ToastUtils.show(this@SettingPreferenceActivity, "清除缓存成功", ToastColor.SUCCESS)
                                         UpDateUtil.unSubscribe()
                                         mProgressDialog.dismiss()
-
                                     }
                                 })
                             }
@@ -115,6 +114,7 @@ class SettingPreferenceActivity : BaseActivity() {
                             override fun onFailure(msg: String) {
                             }
                         })
+
                     } else {
                         mProgressDialog.dismiss()
                         ToastUtils.show(applicationContext, "清除缓存失败，请重试")
