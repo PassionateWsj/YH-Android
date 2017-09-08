@@ -25,7 +25,7 @@ import com.intfocus.yhdev.R;
  * ****************************************************
  */
 
-public class ClearEditText extends EditText implements
+public class ClearEditText extends android.support.v7.widget.AppCompatEditText implements
         OnFocusChangeListener, TextWatcher {
     /**
      * 删除按钮的引用
@@ -107,6 +107,7 @@ public class ClearEditText extends EditText implements
 
     /**
      * 设置清除图标的显示与隐藏，调用setCompoundDrawables为EditText绘制上去
+     *
      * @param visible
      */
     public void setClearIconVisible(boolean visible) {
@@ -122,7 +123,7 @@ public class ClearEditText extends EditText implements
     @Override
     public void onTextChanged(CharSequence s, int start, int count,
                               int after) {
-        if(hasFoucs){
+        if (hasFoucs) {
             setClearIconVisible(s.length() > 0);
         }
     }
@@ -142,17 +143,18 @@ public class ClearEditText extends EditText implements
     /**
      * 设置晃动动画
      */
-    public void setShakeAnimation(){
+    public void setShakeAnimation() {
         this.setAnimation(shakeAnimation(5));
     }
 
 
     /**
      * 晃动动画
+     *
      * @param counts 1秒钟晃动多少下
      * @return
      */
-    public static Animation shakeAnimation(int counts){
+    public static Animation shakeAnimation(int counts) {
         Animation translateAnimation = new TranslateAnimation(0, 10, 0, 0);
         translateAnimation.setInterpolator(new CycleInterpolator(counts));
         translateAnimation.setDuration(1000);

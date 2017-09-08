@@ -56,6 +56,6 @@ class TableContentItemAdapter(private val context: Context, private var heads: L
     }
 
     interface ContentItemListener {
-    fun itemClick(position: Int)
-}
+        fun itemClick(position: Int)
+    }
 }

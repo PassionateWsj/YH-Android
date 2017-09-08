@@ -59,7 +59,7 @@ public class ModularTwo_SubTableActivity extends AppCompatActivity {
             if (StringUtil.isEmpty(subData))
                 finish();
 
-            ModularTwo_UnitTablesContModeFragment toFragment = ModularTwo_UnitTablesContModeFragment.newInstance(suRootID,subData);
+            ModularTwo_UnitTablesContModeFragment toFragment = ModularTwo_UnitTablesContModeFragment.newInstance(suRootID, subData);
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
             ft.replace(R.id.fl_subtable_container, toFragment);

@@ -50,7 +50,7 @@ public class MeterMode extends AbstractMode {
     public String getKpiUrl() {
         mUserSP = ctx.getSharedPreferences("UserBean", MODE_PRIVATE);
         String url = String.format(K.kKPIMobileDataPath, K.kBaseUrl, mUserSP.getString(kCurrentUIVersion, "v2"),
-                                String.valueOf(mUserSP.getString(kGroupId, "0")), String.valueOf(mUserSP.getString(kRoleId, "0")));
+                String.valueOf(mUserSP.getString(kGroupId, "0")), String.valueOf(mUserSP.getString(kRoleId, "0")));
         return url;
     }
 
@@ -77,8 +77,7 @@ public class MeterMode extends AbstractMode {
                         return;
                     }
                     analysisData(result);
-                }
-                else {
+                } else {
                     MeterRequestResult result1 = new MeterRequestResult(false, 400);
                     EventBus.getDefault().post(result1);
                     return;
@@ -88,8 +87,8 @@ public class MeterMode extends AbstractMode {
     }
 
     /**
-     *
      * 获取公告栏消息
+     *
      * @return message
      */
     public String[] getMessage() {

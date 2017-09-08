@@ -39,8 +39,7 @@ public final class TypedObject {
 
             declaredMethod.setAccessible(true);
             declaredMethod.invoke(methodOwner, objects);
-        }
-        catch (final Throwable ignored) {
+        } catch (final Throwable ignored) {
             ignored.printStackTrace();
         }
     }

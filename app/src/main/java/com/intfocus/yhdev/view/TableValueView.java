@@ -108,7 +108,7 @@ public class TableValueView extends View {
         int nlSize = tableValues.size();
         float endX = getWidth();
         for (int i = 0; i < nlSize; i++) {
-            float starty = itemHeight * (i + deviderHeight/2) + (i + deviderHeight/2);
+            float starty = itemHeight * (i + deviderHeight / 2) + (i + deviderHeight / 2);
             canvas.drawLine(0, starty, endX, starty, deviderPaint);
         }
 

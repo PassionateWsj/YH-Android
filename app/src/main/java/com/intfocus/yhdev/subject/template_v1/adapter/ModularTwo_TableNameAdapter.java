@@ -81,9 +81,9 @@ public class ModularTwo_TableNameAdapter extends BaseAdapter {
             viewHolder.img_dot.setVisibility(View.INVISIBLE);
             viewHolder.tv_name.setTextColor(defauteColor);
         } else {
-        viewHolder.tv_name.setTextColor(hasSubColor);
-        viewHolder.img_dot.setVisibility(View.VISIBLE);
-    }
+            viewHolder.tv_name.setTextColor(hasSubColor);
+            viewHolder.img_dot.setVisibility(View.VISIBLE);
+        }
         viewHolder.tv_name.setText(entity.main_data[0]);
         return convertView;
     }

@@ -40,7 +40,7 @@ class SelectorTreeActivity : BaseActivity() {
             var id = 1
             var first: Int
             var second: Int
-            if (selectItems!=null) {
+            if (selectItems != null) {
                 for (selectItem in selectItems.data!!.iterator()) {
                     mDatas.add(Bean(id, 0, selectItem.titles))
                     first = id

@@ -32,7 +32,7 @@ class ShowPushMessageAdapter(val mContext: Context, val listener: OnPushMessageL
 
             holder!!.tvPushMsgTitle.text = mData[position].title
             holder.tvPushMsgContent.text = mData[position].body_text
-            holder.tvPushMsgTime.text = mData[position].debug_timestamp.substring(0,19)
+            holder.tvPushMsgTime.text = mData[position].debug_timestamp.substring(0, 19)
 
             holder.llPushMsgItem.setOnClickListener {
                 listener.onItemClick(position)

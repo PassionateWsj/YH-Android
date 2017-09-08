@@ -112,10 +112,10 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
         pushMessage.user_id = userID
         var personDao = OrmDBHelper.getInstance(this).pushMessageDao
         //  RxJava异步存储推送过来的数据
-        Observable.create(Observable.OnSubscribe <PushMessageBean> {
+        Observable.create(Observable.OnSubscribe<PushMessageBean> {
             try {
                 personDao.createIfNotExists(pushMessage)
-            } catch(e: SQLException) {
+            } catch (e: SQLException) {
                 e.printStackTrace()
             }
         })
@@ -327,7 +327,7 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
                                     for (item in storeList!!) {
                                         storeItemDao.createIfNotExists(item)
                                     }
-                                } catch(e: SQLException) {
+                                } catch (e: SQLException) {
                                     e.printStackTrace()
                                 }
                             }).start()

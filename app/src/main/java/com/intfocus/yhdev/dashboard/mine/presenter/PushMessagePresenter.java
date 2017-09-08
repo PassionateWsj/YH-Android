@@ -34,7 +34,7 @@ public class PushMessagePresenter {
      */
     private int mUserId;
 
-    public PushMessagePresenter(Context context, PushMessageView pushMessageView,int userId) {
+    public PushMessagePresenter(Context context, PushMessageView pushMessageView, int userId) {
         mContext = context;
         mView = pushMessageView;
         mModel = new PushMessageModelImpl();
@@ -45,7 +45,7 @@ public class PushMessagePresenter {
      * 通知 model 请求数据
      */
     public void loadData() {
-        mModel.loadData(mContext,new OnPushMessageDataResultListener() {
+        mModel.loadData(mContext, new OnPushMessageDataResultListener() {
             @Override
             public void onPushMessageDataResultSuccess(List<PushMessageBean> data) {
                 mView.onResultSuccess(data);
@@ -56,6 +56,6 @@ public class PushMessagePresenter {
                 mView.onResultFailure();
             }
 
-        },mUserId);
+        }, mUserId);
     }
 }

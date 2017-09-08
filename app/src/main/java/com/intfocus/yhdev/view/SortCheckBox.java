@@ -52,6 +52,8 @@ public class SortCheckBox extends View {
     private float textWidth;
     private float textHeight;
 
+    private int boxWidth;
+
     private PointF originP;
     private Bitmap mBitmap;
 
@@ -59,6 +61,10 @@ public class SortCheckBox extends View {
 
     public void setText(String text) {
         this.text = text;
+    }
+
+    public void setBoxWidth(int w) {
+        this.boxWidth = w;
     }
 
     public SortCheckBox(Context context) {
@@ -135,7 +141,7 @@ public class SortCheckBox extends View {
 
         int bitmapW = mBitmap.getWidth();
 //        int width = (int) (textWidth + bitmapW + drawablePadding + getPaddingLeft() + getPaddingRight());
-        int width = 200;
+        int width = boxWidth;
         setMeasuredDimension(width, sizeHeight);
         originP = new PointF(getPaddingLeft(), sizeHeight / 2 - textHeight / 2);
         if (sizeListener != null) {

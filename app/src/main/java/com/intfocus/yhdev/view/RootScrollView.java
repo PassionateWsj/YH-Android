@@ -5,7 +5,6 @@ import android.util.AttributeSet;
 import android.widget.ScrollView;
 
 /**
- *
  * Created by zbaoliang on 17-6-15.
  */
 public class RootScrollView extends ScrollView {

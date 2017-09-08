@@ -36,8 +36,7 @@ public class SimpleListAdapter extends SimpleAdapter {
         mItemArrow.setVisibility(View.GONE);
         if (listItem.get(position).get("ItemContent").equals("arrow")) {
             mItemArrow.setVisibility(View.VISIBLE);
-        }
-        else {
+        } else {
             mItemContent.setVisibility(View.VISIBLE);
         }
 

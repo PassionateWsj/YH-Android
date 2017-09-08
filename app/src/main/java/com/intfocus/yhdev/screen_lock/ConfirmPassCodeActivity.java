@@ -56,7 +56,7 @@ public class ConfirmPassCodeActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_confirm_passcode);
 
-        mMyApp = (YHApplication)this.getApplicationContext();
+        mMyApp = (YHApplication) this.getApplicationContext();
         mContext = ConfirmPassCodeActivity.this;
         stringBuilder = new StringBuilder();
         initViews();
@@ -67,7 +67,7 @@ public class ConfirmPassCodeActivity extends Activity {
 
     protected void onResume() {
         super.onResume();
-            mMyApp.setCurrentActivity(this);
+        mMyApp.setCurrentActivity(this);
     }
 
     private void initViews() {

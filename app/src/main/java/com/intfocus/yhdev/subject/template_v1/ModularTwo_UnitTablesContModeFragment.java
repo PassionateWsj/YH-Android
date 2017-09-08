@@ -68,13 +68,11 @@ public class ModularTwo_UnitTablesContModeFragment extends BaseModeFragment<Modu
     /**
      * 标题列
      */
-//    @ViewInject(R.id.tv_unit_table_header)
     private TextView tv_header;
 
     /**
-     * 水平滑动的类型ScrollView
+     * 水平滑动的表头ScrollView
      */
-//    @ViewInject(R.id.thscroll_unit_table_header)
     private TableHorizontalScrollView thscroll_header;
 
     /**
@@ -84,7 +82,7 @@ public class ModularTwo_UnitTablesContModeFragment extends BaseModeFragment<Modu
     private TableHorizontalScrollView thscroll_data;
 
     /**
-     * 动态加载类型的列表
+     * 动态加载表头的列表
      */
 //    @ViewInject(R.id.ll_unit_table_header)
     private LinearLayout linear_header;
@@ -94,14 +92,14 @@ public class ModularTwo_UnitTablesContModeFragment extends BaseModeFragment<Modu
     @ViewInject(R.id.fl_tableValue_container)
     private FrameLayout fl_tableValue_container;
     /**
-     * 动态加载行名的列表
+     * 动态加载首列的列表
      */
     @ViewInject(R.id.nslistView_unit_table_LineName)
     private NotScrollListView nslistView_LineName;
 
+    ArrayList<String> lineData = new ArrayList<>();
     ArrayList<Integer> al_HeaderLenght = new ArrayList<>();
     ArrayList<SortCheckBox> al_SortView = new ArrayList<>();
-
 
     private ModularTwo_UnitTableEntity dataEntity;
     private int headerSize;
@@ -116,6 +114,7 @@ public class ModularTwo_UnitTablesContModeFragment extends BaseModeFragment<Modu
     private String TAG = ModularTwo_UnitTablesContModeFragment.class.getSimpleName();
 
     private int offsetTop;
+
     /**
      * 最上层跟跟标签ID
      */
@@ -188,7 +187,9 @@ public class ModularTwo_UnitTablesContModeFragment extends BaseModeFragment<Modu
             rootView = inflater.inflate(R.layout.modulartwo_unittablescontfragment, container, false);
             x.view().inject(this, rootView);
             nslistView_LineName.setFocusable(false);
+
             dataComparator = new TableDataComparator();
+
             suspensionView = LayoutInflater.from(ctx).inflate(R.layout.item_suspension, null);
             fl_tableTitle_container.addView(suspensionView);
             tv_header = (TextView) suspensionView.findViewById(R.id.tv_unit_table_header);
@@ -239,17 +240,25 @@ public class ModularTwo_UnitTablesContModeFragment extends BaseModeFragment<Modu
      */
     private void bindData(ModularTwo_UnitTableEntity result) {
         this.dataEntity = result;
-        String[] header = result.head;
+        String[] header = result.head; // 表头数据
         tv_header.setText(header[0]);
 
         headerSize = header.length - 1;
         LayoutInflater inflater = LayoutInflater.from(ctx);
         SortViewClickListener listener = new SortViewClickListener();
+
         al_SortView.clear();
         linear_header.removeAllViews();
+
+        for (int i = 0; i < headerSize; i++) {
+            lineData.add(header[i + 1]);
+        }
+
+        // 遍历表头数据, 添加到 al_SortView
         for (int i = 0; i < headerSize; i++) {
             SortCheckBox box = (SortCheckBox) inflater.inflate(R.layout.item_table_sortcheckbox, null);
             box.setText(header[i + 1]);
+            box.setBoxWidth(100);
             box.setTag(i + 1);
             box.setOnClickListener(listener);
             box.setOnSortViewSizeListener(this);
@@ -264,21 +273,30 @@ public class ModularTwo_UnitTablesContModeFragment extends BaseModeFragment<Modu
         if (index == 1)
             al_HeaderLenght.clear();
         al_HeaderLenght.add(index - 1, width);
-        if (al_HeaderLenght.size() == headerSize)
-            loadTableData();
+
+        // 表头加载完成后, 开始加载表格首列及表格内容
+        if (al_HeaderLenght.size() == headerSize) {
+            loadTableLeftData(); // 加载首列数据
+            loadTableContentData(); // 加载表格内容
+        }
     }
 
-    /**
+    /*
      * 加载首列数据
      */
-    private void loadTableData() {
+    private void loadTableLeftData() {
         nameAdapter = new ModularTwo_TableNameAdapter(ctx, dataEntity.data);
         nslistView_LineName.setAdapter(nameAdapter);
         ViewGroup.LayoutParams params = nslistView_LineName.getLayoutParams();
         params.height = nslistView_LineName.getTotalHeight();
         nslistView_LineName.setLayoutParams(params);
         nslistView_LineName.setOnItemClickListener(this);
+    }
 
+    /*
+     * 加载表格内容
+     */
+    private void loadTableContentData() {
         ArrayList<ModularTwo_UnitTableEntity.TableRowEntity> datas = dataEntity.data;
         ArrayMap<Integer, String[]> lables = new ArrayMap<>();
         int dataSize = datas.size();
@@ -287,14 +305,14 @@ public class ModularTwo_UnitTablesContModeFragment extends BaseModeFragment<Modu
         }
 
         int itemHeight = getResources().getDimensionPixelSize(R.dimen.size_default_small);
-        int deviderCloor = getResources().getColor(R.color.co9);
-        int textCloor = getResources().getColor(R.color.co3);
+        int dividerColor = getResources().getColor(R.color.co9);
+        int textColor = getResources().getColor(R.color.co3);
         tableValue = new TableValueView(ctx);
         tableValue.setItemHeight(itemHeight);
         tableValue.setHeaderLenghts(al_HeaderLenght);
         tableValue.setTableValues(lables);
-        tableValue.setDeviderColor(deviderCloor);
-        tableValue.setTextColor(textCloor);
+        tableValue.setDeviderColor(dividerColor);
+        tableValue.setTextColor(textColor);
         fl_tableValue_container.addView(tableValue);
     }
 

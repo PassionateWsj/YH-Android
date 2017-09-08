@@ -26,12 +26,12 @@ import org.greenrobot.eventbus.ThreadMode
  * 主页 - 专题
  * Created by liuruilin on 2017/6/15.
  */
-class AppFragment: BaseModeFragment<AppListMode>(), SwipeRefreshLayout.OnRefreshListener {
-    var rootView : View? = null
+class AppFragment : BaseModeFragment<AppListMode>(), SwipeRefreshLayout.OnRefreshListener {
+    var rootView: View? = null
     var datas: List<CategoryBean>? = null
 
     override fun setSubject(): Subject {
-        return AppListMode(ctx,"app")
+        return AppListMode(ctx, "app")
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {

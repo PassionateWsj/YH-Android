@@ -194,7 +194,7 @@ class InstituteFragment : BaseModeFragment<InstituteMode>(), InstituteAdapter.No
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun setData(result: CollectionRquest) {
         if (result.isSuccess) {
-            ToastUtils.show(context, result!!.collectionBean!!.message.toString(),ToastColor.SUCCESS)
+            ToastUtils.show(context, result!!.collectionBean!!.message.toString(), ToastColor.SUCCESS)
             getData(true)
         } else {
             ToastUtils.show(context, result!!.errorMsg)

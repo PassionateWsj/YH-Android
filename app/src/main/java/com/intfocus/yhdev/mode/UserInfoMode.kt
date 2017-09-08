@@ -60,11 +60,11 @@ class UserInfoMode(var ctx: Context) : AbstractMode() {
             FileUtil.saveImage(gravatarImgPath, bitmap)
             var requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), File(gravatarImgPath))
             var multiPartBody = MultipartBody.Part.createFormData("gravatar", mUserSP.getString(kUserId, "0") + "icon", requestBody)
-            RetrofitUtil.getHttpService(ctx).userIconUpload(mUserSP.getString(kUserDeviceId, "0"), mUserSP.getString(URLs.kUserNum, "0"),multiPartBody)
+            RetrofitUtil.getHttpService(ctx).userIconUpload(mUserSP.getString(kUserDeviceId, "0"), mUserSP.getString(URLs.kUserNum, "0"), multiPartBody)
                     .compose(RetrofitUtil.CommonOptions<BaseResult>())
                     .subscribe(object : CodeHandledSubscriber<BaseResult>() {
                         override fun onBusinessNext(data: BaseResult?) {
-                            ToastUtils.show(ctx, "头像已上传",ToastColor.SUCCESS)
+                            ToastUtils.show(ctx, "头像已上传", ToastColor.SUCCESS)
                         }
 
                         override fun onError(apiException: ApiException?) {

@@ -22,9 +22,10 @@ class PushMessageContentActivity : AppCompatActivity(), View.OnClickListener {
         tv_push_message_content.text = bean.body_text
 
     }
+
     override fun onClick(v: View?) {
-        when(v!!.id) {
-            R.id.iv_back->{
+        when (v!!.id) {
+            R.id.iv_back -> {
                 finish()
             }
         }

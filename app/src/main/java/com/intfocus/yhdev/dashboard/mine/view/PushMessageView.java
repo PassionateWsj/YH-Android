@@ -16,5 +16,6 @@ import java.util.List;
 
 public interface PushMessageView {
     void onResultFailure();
+
     void onResultSuccess(List<PushMessageBean> data);
 }

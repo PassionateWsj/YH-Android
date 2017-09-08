@@ -222,8 +222,7 @@ public class HomeTricsActivity extends AppCompatActivity implements ProductListA
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-            }
-            else {
+            } else {
                 if (new File(jsonFilePath).exists()) {
                     initView();
                     initData(FileUtil.readFile(jsonFilePath));
@@ -779,7 +778,9 @@ public class HomeTricsActivity extends AppCompatActivity implements ProductListA
      */
     public void actionShare2Weixin() {
         Bitmap bmpScrennShot = ImageUtil.takeScreenShot(HomeTricsActivity.this);
-        if (bmpScrennShot == null) { ToastUtils.INSTANCE.show(this, "截图失败");}
+        if (bmpScrennShot == null) {
+            ToastUtils.INSTANCE.show(this, "截图失败");
+        }
         UMImage image = new UMImage(this, bmpScrennShot);
         new ShareAction(this)
                 .withText("截图分享")

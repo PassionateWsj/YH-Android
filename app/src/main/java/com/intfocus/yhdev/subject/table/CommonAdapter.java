@@ -12,7 +12,7 @@ import java.util.List;
  * Created by CANC on 2017/4/19.
  */
 
-public abstract class CommonAdapter <T> extends BaseAdapter {
+public abstract class CommonAdapter<T> extends BaseAdapter {
     protected Context context;
     protected List<T> datas;
     protected LayoutInflater inflater;
@@ -41,26 +41,26 @@ public abstract class CommonAdapter <T> extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-            ViewHolder holder;
+        ViewHolder holder;
 
-            holder = ViewHolder.get(context, convertView, parent, layoutId, position);
+        holder = ViewHolder.get(context, convertView, parent, layoutId, position);
 
-            convert(holder, getItem(position));
+        convert(holder, getItem(position));
 
-            convertView = holder.getConvertView();
+        convertView = holder.getConvertView();
 
         return convertView;
     }
 
-    public void setData(List<T> datas){
-        this.datas=datas;
+    public void setData(List<T> datas) {
+        this.datas = datas;
         this.notifyDataSetChanged();
     }
 
     public abstract void convert(ViewHolder holder, T t);
 
     //清理数据
-    public void onDestroy(){
+    public void onDestroy() {
 
     }
 
