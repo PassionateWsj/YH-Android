@@ -1,6 +1,6 @@
 package com.intfocus.yhdev.util;
 
-import com.intfocus.yhdev.subject.template_v2.entity.BargraphComparator;
+import com.intfocus.yhdev.subject.template_v1.entity.BargraphComparator;
 
 import java.util.Comparator;
 

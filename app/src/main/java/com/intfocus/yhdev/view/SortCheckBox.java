@@ -134,7 +134,8 @@ public class SortCheckBox extends View {
         textHeight = rect.height();
 
         int bitmapW = mBitmap.getWidth();
-        int width = (int) (textWidth + bitmapW + drawablePadding + getPaddingLeft() + getPaddingRight());
+//        int width = (int) (textWidth + bitmapW + drawablePadding + getPaddingLeft() + getPaddingRight());
+        int width = 200;
         setMeasuredDimension(width, sizeHeight);
         originP = new PointF(getPaddingLeft(), sizeHeight / 2 - textHeight / 2);
         if (sizeListener != null) {

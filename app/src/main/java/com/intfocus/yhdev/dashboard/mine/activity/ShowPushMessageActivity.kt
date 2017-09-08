@@ -20,7 +20,7 @@ import com.intfocus.yhdev.subject.metrics.HomeTricsActivity
 import com.intfocus.yhdev.subject.SubjectActivity
 import com.intfocus.yhdev.subject.TableActivity
 import com.intfocus.yhdev.subject.WebApplicationActivity
-import com.intfocus.yhdev.subject.template_v2.ModularTwo_Mode_Activity
+import com.intfocus.yhdev.subject.template_v1.ModularTwo_Mode_Activity
 import com.intfocus.yhdev.util.*
 import kotlinx.android.synthetic.main.activity_show_push_message.*
 import org.json.JSONException

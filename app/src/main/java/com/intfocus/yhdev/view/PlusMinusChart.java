@@ -14,7 +14,7 @@ import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
 
 import com.intfocus.yhdev.R;
-import com.intfocus.yhdev.subject.template_v2.entity.BargraphComparator;
+import com.intfocus.yhdev.subject.template_v1.entity.BargraphComparator;
 import com.intfocus.yhdev.util.BargraphDataComparator;
 
 import java.util.Collections;
