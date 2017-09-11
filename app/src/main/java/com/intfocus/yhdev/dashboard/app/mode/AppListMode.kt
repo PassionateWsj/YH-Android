@@ -19,7 +19,7 @@ import java.util.HashMap
  * 主页 - 专题 Model
  * Created by liuruilin on 2017/6/15.
  */
-class AppListMode(ctx: Context, var type: String?) : AbstractMode() {
+class AppListMode(var ctx: Context, var type: String?) : AbstractMode() {
     lateinit var urlString: String
     var result: String? = null
     val mListPageSP: SharedPreferences = ctx.getSharedPreferences("ListPage", Context.MODE_PRIVATE)
@@ -36,7 +36,7 @@ class AppListMode(ctx: Context, var type: String?) : AbstractMode() {
         Thread(Runnable {
             urlString = getUrl()
             if (!urlString.isEmpty()) {
-                val response = HttpUtil.httpGet(urlString, HashMap<String, String>())
+                val response = HttpUtil.httpGet(ctx, urlString, HashMap<String, String>())
                 result = response["body"]
                 if (StringUtil.isEmpty(result)) {
                     val result1 = AppListPageRequest(false, 400)

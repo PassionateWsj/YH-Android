@@ -69,7 +69,7 @@ public class MeterMode extends AbstractMode {
                 urlString = getKpiUrl();
                 if (!urlString.isEmpty()) {
                     Log.i("kpiUrl", urlString);
-                    Map<String, String> response = HttpUtil.httpGet(urlString, new HashMap<String, String>());
+                    Map<String, String> response = HttpUtil.httpGet(ctx, urlString, new HashMap<String, String>());
                     String result = response.get("body");
                     if (StringUtil.isEmpty(result)) {
                         MeterRequestResult result1 = new MeterRequestResult(true, 400);
@@ -100,7 +100,7 @@ public class MeterMode extends AbstractMode {
         }
 
         Gson gson = new Gson();
-        Map<String, String> response = HttpUtil.httpGet(messageUrlString, new HashMap<String, String>());
+        Map<String, String> response = HttpUtil.httpGet(ctx, messageUrlString, new HashMap<String, String>());
         JsonObject returnData = new JsonParser().parse(response.get("body")).getAsJsonObject();
         Message mMessage = gson.fromJson(returnData, Message.class);
 

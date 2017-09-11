@@ -19,7 +19,7 @@ import java.util.*
 /**
  * Created by CANC on 2017/7/25.
  */
-class InstituteMode(ctx: Context) : AbstractMode() {
+class InstituteMode(var ctx: Context) : AbstractMode() {
     lateinit var urlString: String
     var result: String? = null
     var mUserSP = ctx.getSharedPreferences("UserBean", Context.MODE_PRIVATE)
@@ -49,7 +49,7 @@ class InstituteMode(ctx: Context) : AbstractMode() {
         Thread(Runnable {
             urlString = getUrl()
             if (!urlString.isEmpty()) {
-                val response = HttpUtil.httpGet(urlString, HashMap<String, String>())
+                val response = HttpUtil.httpGet(ctx, urlString, HashMap<String, String>())
                 result = response["body"]
                 if (StringUtil.isEmpty(result)) {
                     val result1 = InstituteRquest(false, 400, errorMsg!!)

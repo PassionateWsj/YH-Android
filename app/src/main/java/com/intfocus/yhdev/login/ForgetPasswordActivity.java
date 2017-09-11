@@ -106,7 +106,7 @@ public class ForgetPasswordActivity extends BaseActivity {
      * @param mobile
      */
     public void startPost(String userNum, String mobile) {
-        show(this, "稍等", "正在重置密码...");
+        mRequestDialog = ProgressDialog.show(this, "稍等", "正在重置密码...");
         RetrofitUtil.getHttpService(getApplicationContext()).resetPwd(userNum, mobile)
                 .compose(new RetrofitUtil.CommonOptions<BaseResult>())
                 .subscribe(new CodeHandledSubscriber<BaseResult>() {

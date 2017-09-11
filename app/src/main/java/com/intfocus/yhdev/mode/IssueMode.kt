@@ -40,7 +40,7 @@ class IssueMode(var ctx: Context) : AbstractMode() {
         Thread(Runnable {
             urlString = getUrl()
             if (!urlString.isEmpty()) {
-                val response = HttpUtil.httpGet(urlString, HashMap<String, String>())
+                val response = HttpUtil.httpGet(ctx, urlString, HashMap<String, String>())
                 result = response["body"]
                 if (StringUtil.isEmpty(result)) {
                     val result1 = IssueListRequest(false, 400)

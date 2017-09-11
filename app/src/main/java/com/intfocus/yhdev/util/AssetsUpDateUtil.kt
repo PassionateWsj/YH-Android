@@ -25,8 +25,7 @@ import java.io.File
  * ****************************************************
  */
 object AssetsUpDateUtil {
-    private lateinit var observable: Subscription
-
+    private var observable: Subscription? = null
 
     fun checkAssetsUpdate(ctx: Context, listener: OnCheckAssetsUpdateResultListener) {
         checkAssetsUpdate(ctx, null, listener)
@@ -57,8 +56,8 @@ object AssetsUpDateUtil {
                                 URLs.kJavaScripts, URLs.kAdvertisement)
                         val assetsMD5sMap = HashMap<String, String>()
                         assetsMD5sMap.put(URLs.kFonts + "_md5", assetsMD5s.fonts_md5!!)
-                        assetsMD5sMap.put(URLs.kIcons + "_md5", assetsMD5s.icons_md5!!)
                         assetsMD5sMap.put(URLs.kImages + "_md5", assetsMD5s.images_md5!!)
+                        assetsMD5sMap.put(URLs.kIcons + "_md5", assetsMD5s.icons_md5!!)
                         assetsMD5sMap.put(URLs.kJavaScripts + "_md5", assetsMD5s.javascripts_md5!!)
                         assetsMD5sMap.put(URLs.kStylesheets + "_md5", assetsMD5s.stylesheets_md5!!)
                         assetsMD5sMap.put(URLs.kAdvertisement + "_md5", assetsMD5s.advertisement_md5!!)
@@ -117,11 +116,13 @@ object AssetsUpDateUtil {
      * 取消订阅
      */
     fun unSubscribe() {
-        if (observable != null && !observable.isUnsubscribed)
-            observable.unsubscribe()
+        if (observable != null && !observable!!.isUnsubscribed)
+            observable!!.unsubscribe()
     }
 
     fun checkFirstSetup(ctx: Context, listener: OnCheckAssetsUpdateResultListener) {
+        makeSureFolderExist(ctx, K.kSharedDirName)
+        makeSureFolderExist(ctx, K.kCachedDirName)
         val mAssetsSP = ctx.getSharedPreferences("AssetsMD5", Context.MODE_PRIVATE)
         val mAssetsSPEdit = mAssetsSP.edit()
         Observable.just("assets", "loading")
@@ -139,7 +140,6 @@ object AssetsUpDateUtil {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(object : Observer<Boolean> {
                     override fun onError(p0: Throwable?) {
-
                     }
 
                     override fun onNext(p0: Boolean?) {
@@ -150,6 +150,11 @@ object AssetsUpDateUtil {
                     }
 
                 })
+    }
+
+    private fun makeSureFolderExist(ctx: Context, folderName: String) {
+        val cachedPath = String.format("%s/%s", FileUtil.basePath(ctx), folderName)
+        FileUtil.makeSureFolderExist(cachedPath)
     }
 }
 

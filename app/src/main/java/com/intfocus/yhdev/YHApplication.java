@@ -51,8 +51,6 @@ public class YHApplication extends Application {
 
     public static ExecutorService threadPool = Executors.newFixedThreadPool(2);
 
-
-    
     private Context appContext;
     public static Context globalContext;
     SharedPreferences mSettingSP;
@@ -94,7 +92,6 @@ public class YHApplication extends Application {
          */
         OpenUDID_manager.sync(getApplicationContext());
 //
-
 
         /*
          *  手机待机再激活时发送开屏广播

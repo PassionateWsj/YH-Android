@@ -87,7 +87,7 @@ class LauncherActivity : Activity(), Animation.AnimationListener {
     }
 
     override fun onAnimationStart(p0: Animation?) {
-        tv_splash_status.text = "正在检测样式更新.."
+        tv_splash_status.text = "正在下载报表样式文件.."
     }
 
     private fun enter() {
@@ -129,6 +129,7 @@ class LauncherActivity : Activity(), Animation.AnimationListener {
             return
         }
         if (mSettingSP.getInt("Version", 0) == 0) {
+
             AssetsUpDateUtil.checkFirstSetup(ctx, object : OnCheckAssetsUpdateResultListener {
                 override fun onResultSuccess() {
                     checkAssets()

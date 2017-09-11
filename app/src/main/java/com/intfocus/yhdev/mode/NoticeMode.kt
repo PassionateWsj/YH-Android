@@ -17,7 +17,7 @@ import java.util.*
 /**
  * Created by liuruilin on 2017/6/12.
  */
-class NoticeMode(ctx: Context) : AbstractMode() {
+class NoticeMode(var ctx: Context) : AbstractMode() {
     lateinit var urlString: String
     var result: String? = null
     var mUserSP = ctx.getSharedPreferences("UserBean", Context.MODE_PRIVATE)
@@ -43,7 +43,7 @@ class NoticeMode(ctx: Context) : AbstractMode() {
         Thread(Runnable {
             urlString = getUrl()
             if (!urlString.isEmpty()) {
-                val response = HttpUtil.httpGet(urlString, HashMap<String, String>())
+                val response = HttpUtil.httpGet(ctx, urlString, HashMap<String, String>())
                 result = response["body"]
                 if (StringUtil.isEmpty(result)) {
                     val result1 = NoticeListRquest(true, 400, "数据为空")

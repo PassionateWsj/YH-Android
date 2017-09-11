@@ -77,7 +77,7 @@ public class ModularTwo_TableNameAdapter extends BaseAdapter {
 
         ModularTwo_UnitTableEntity.TableRowEntity entity = ltdata.get(position);
 
-        if (entity.sub_data.equals("[]")) {
+        if (entity.sub_data == null) {
             viewHolder.img_dot.setVisibility(View.INVISIBLE);
             viewHolder.tv_name.setTextColor(defauteColor);
         } else {
