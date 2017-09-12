@@ -26,8 +26,8 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import com.intfocus.yhdev.R;
+import com.intfocus.yhdev.bean.PushMessage;
 import com.intfocus.yhdev.dashboard.DashboardActivity;
-import com.intfocus.yhdev.data.response.BaseResult;
 import com.intfocus.yhdev.data.response.login.RegisterResult;
 import com.intfocus.yhdev.listen.NoDoubleClickListener;
 import com.intfocus.yhdev.login.bean.Device;
@@ -44,6 +44,7 @@ import com.intfocus.yhdev.util.K;
 import com.intfocus.yhdev.util.ToastColor;
 import com.intfocus.yhdev.util.ToastUtils;
 import com.intfocus.yhdev.util.URLs;
+import com.mixpush.client.core.MixPushClient;
 import com.pgyersdk.javabean.AppBean;
 import com.pgyersdk.update.PgyUpdateManager;
 import com.pgyersdk.update.UpdateManagerListener;
@@ -377,7 +378,7 @@ public class LoginActivity extends FragmentActivity {
 
                             // 判断是否包含推送信息，如果包含 登录成功直接跳转推送信息指定页面
                             if (getIntent().hasExtra("msgData")) {
-                                Bundle msgData = getIntent().getBundleExtra("msgData");
+                                PushMessage msgData = (PushMessage) getIntent().getSerializableExtra("msgData");
                                 Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 intent.putExtra("msgData", msgData);
@@ -450,23 +451,26 @@ public class LoginActivity extends FragmentActivity {
                         mUserSPEdit.putBoolean("device_state", data.getMResult().getDevice_state()).commit();
                         mUserSPEdit.putString("user_device_id", String.valueOf(data.getMResult().getUser_device_id())).commit();
 
-                        RetrofitUtil.getHttpService(ctx).putPushToken(data.getMResult().getDevice_uuid(), mPushSP.getString("push_token", ""))
-                                .compose(new RetrofitUtil.CommonOptions<BaseResult>())
-                                .subscribe(new CodeHandledSubscriber<BaseResult>() {
-                                    @Override
-                                    public void onError(ApiException apiException) {
+                        MixPushClient.setAlias(getApplicationContext(), userNum);
+                        // TODO: 上传推送信息
 
-                                    }
-
-                                    @Override
-                                    public void onBusinessNext(BaseResult data) {
-                                    }
-
-                                    @Override
-                                    public void onCompleted() {
-
-                                    }
-                                });
+//                        RetrofitUtil.getHttpService(ctx).putPushToken(data.getMResult().getDevice_uuid(), mPushSP.getString("push_token", ""))
+//                                .compose(new RetrofitUtil.CommonOptions<BaseResult>())
+//                                .subscribe(new CodeHandledSubscriber<BaseResult>() {
+//                                    @Override
+//                                    public void onError(ApiException apiException) {
+//
+//                                    }
+//
+//                                    @Override
+//                                    public void onBusinessNext(BaseResult data) {
+//                                    }
+//
+//                                    @Override
+//                                    public void onCompleted() {
+//
+//                                    }
+//                                });
                     }
 
                     @Override

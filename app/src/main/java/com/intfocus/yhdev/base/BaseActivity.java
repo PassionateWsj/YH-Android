@@ -56,7 +56,6 @@ import com.intfocus.yhdev.util.URLs;
 import com.pgyersdk.javabean.AppBean;
 import com.pgyersdk.update.PgyUpdateManager;
 import com.pgyersdk.update.UpdateManagerListener;
-import com.umeng.message.PushAgent;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -112,7 +111,7 @@ public class BaseActivity extends FragmentActivity {
         mAppContext = mMyApp.getAppContext();
 
         //统计应用启动数据
-        PushAgent.getInstance(mAppContext).onAppStart();
+//        PushAgent.getInstance(mAppContext).onAppStart();
 
         sharedPath = FileUtil.sharedPath(mAppContext);
         assetsPath = sharedPath;

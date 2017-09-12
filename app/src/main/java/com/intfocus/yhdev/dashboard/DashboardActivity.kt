@@ -17,6 +17,7 @@ import com.google.gson.Gson
 import com.intfocus.yhdev.R
 import com.intfocus.yhdev.YHApplication
 import com.intfocus.yhdev.bean.DashboardItemBean
+import com.intfocus.yhdev.bean.PushMessage
 import com.intfocus.yhdev.dashboard.kpi.bean.NoticeBoardRequest
 import com.intfocus.yhdev.dashboard.mine.PassWordAlterActivity
 import com.intfocus.yhdev.dashboard.mine.bean.PushMessageBean
@@ -85,9 +86,11 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
         initViewPaper(mDashboardFragmentAdapter!!)
         getStoreList()
 
-        var intent = intent
+        val intent = intent
         if (intent.hasExtra("msgData")) {
-            handlePushMessage(intent.getBundleExtra("msgData").getString("message"))
+//            handlePushMessage(intent.getBundleExtra("msgData").getString("message"))
+            val message = intent.getSerializableExtra("msgData") as PushMessage
+            handlePushMessage(message)
         }
     }
 
@@ -103,18 +106,19 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
     /*
      * 推送消息处理
      */
-    fun handlePushMessage(message: String) {
-        var pushMessage = mGson!!.fromJson(message, PushMessageBean::class.java)
-        pushMessage.body_title = intent.getBundleExtra("msgData").getString("message_body_title")
-        pushMessage.body_text = intent.getBundleExtra("msgData").getString("message_body_text")
+    fun handlePushMessage(message: PushMessage) {
+//        var originalPushMessage = mGson!!.fromJson(message, PushMessage::class.java)
+        val pushMessage = message.body!!.custom!!
+        pushMessage.body_title =message.body!!.title
+        pushMessage.body_text = message.body!!.text
         pushMessage.new_msg = true
         pushMessage.user_id = userID
         var personDao = OrmDBHelper.getInstance(this).pushMessageDao
         //  RxJava异步存储推送过来的数据
-        Observable.create(Observable.OnSubscribe <PushMessageBean> {
+        Observable.create(Observable.OnSubscribe<PushMessageBean> {
             try {
                 personDao.createIfNotExists(pushMessage)
-            } catch(e: SQLException) {
+            } catch (e: SQLException) {
                 e.printStackTrace()
             }
         })
@@ -326,7 +330,7 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
                                     for (item in storeList!!) {
                                         storeItemDao.createIfNotExists(item)
                                     }
-                                } catch(e: SQLException) {
+                                } catch (e: SQLException) {
                                     e.printStackTrace()
                                 }
                             }).start()

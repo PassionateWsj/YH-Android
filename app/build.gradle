@@ -17,6 +17,12 @@ android {
             // 设置支持的SO库架构
             abiFilters 'armeabi', 'x86', 'armeabi-v7a', 'x86_64', 'arm64-v8a', 'mips', 'mips64'
         }
+        manifestPlaceholders = [
+                GETUI_APP_ID    : "WvJjRdIs9G6hmhiSlI6Tn6",
+                GETUI_APP_KEY   : "qoGw7Q4mOf9sDf2wvl2Eo7",
+                GETUI_APP_SECRET: "RCI1hzVBrZ6YZL7sUn3tC2",
+                PACKAGE_NAME    : "com.intfocus.yhdev"
+        ]
     }
     if (System.getenv().containsKey("KEYSTORE"))
         signingConfigs {
@@ -68,7 +74,7 @@ dependencies {
     compile project(':HomeMetrics') //模板三相关
     compile project(':jgraph') //模板二/KPI 图标
     compile project(':switchText') //文字滚动
-    compile project(':PushSDK')
+//    compile project(':PushSDK')
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile(name: 'blib-1.0', ext: 'aar')
     compile files('libs/android-viewbadger.jar')
@@ -114,4 +120,8 @@ dependencies {
     compile 'com.tencent.bugly:crashreport:latest.release' // Bugly-SDK
     compile 'com.tencent.bugly:nativecrashreport:latest.release' // Bugly-NDK
     compile 'com.daimajia.numberprogressbar:library:1.4@aar'
+    compile 'com.github.joyrun.MixPush:client-core:1.2.0'    //必填
+    compile 'com.github.joyrun.MixPush:client-mipush:1.2.0'    // 小米推送
+    compile 'com.github.joyrun.MixPush:client-getui:1.2.0'    // 个推
+    compile 'com.github.joyrun.MixPush:client-meizu:1.2.0'    // 魅族推送，魅族推送只支持Flyme系统，务必需要注意
 }

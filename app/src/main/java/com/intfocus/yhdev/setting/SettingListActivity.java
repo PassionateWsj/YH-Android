@@ -17,7 +17,6 @@ import com.intfocus.yhdev.base.BaseActivity;
 import com.intfocus.yhdev.subject.SimpleListAdapter;
 import com.intfocus.yhdev.util.K;
 import com.intfocus.yhdev.util.ToastColor;
-import com.umeng.message.PushAgent;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -63,10 +62,10 @@ public class SettingListActivity extends BaseActivity {
                 break;
 
             case "消息推送" :
-                PushAgent mPushAgent = PushAgent.getInstance(mAppContext);
-                String isPushOpened = isPushOpened(mPushAgent);
+//                PushAgent mPushAgent = PushAgent.getInstance(mAppContext);
+//                String isPushOpened = isPushOpened(mPushAgent);
                 mItemNameList = new String[]{"消息推送", "关联的设备列表", "推送的消息列表"};
-                mItemContentList = new String[]{isPushOpened, "arrow", "arrow"};
+                mItemContentList = new String[]{"开启", "arrow", "arrow"};
                 break;
 
             default:
@@ -77,17 +76,17 @@ public class SettingListActivity extends BaseActivity {
         initListView(mItemNameList, mItemContentList);
     }
 
-    private String isPushOpened(PushAgent mPushAgent) {
-        try {
-            String deviceToken  = mPushAgent.getRegistrationId();
-            if (deviceToken.length() == 44) {
-                return "开启";
-            }
-        }catch (NullPointerException e){
-            return "关闭";
-        }
-        return "关闭";
-    }
+//    private String isPushOpened(PushAgent mPushAgent) {
+//        try {
+//            String deviceToken  = mPushAgent.getRegistrationId();
+//            if (deviceToken.length() == 44) {
+//                return "开启";
+//            }
+//        }catch (NullPointerException e){
+//            return "关闭";
+//        }
+//        return "关闭";
+//    }
 
     /*
      * ListView 内容填充

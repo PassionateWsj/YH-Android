@@ -32,13 +32,9 @@ import com.intfocus.yhdev.net.ApiException
 import com.intfocus.yhdev.net.CodeHandledSubscriber
 import com.intfocus.yhdev.net.RetrofitUtil
 import com.intfocus.yhdev.setting.SettingActivity
-import com.intfocus.yhdev.util.ActionLogUtil
-import com.intfocus.yhdev.util.DisplayUtil
+import com.intfocus.yhdev.util.*
 import com.intfocus.yhdev.util.ImageUtil.*
 import com.intfocus.yhdev.util.K.kUserDeviceId
-import com.intfocus.yhdev.util.ToastUtils
-import com.intfocus.yhdev.util.URLs
-import com.taobao.accs.utl.UtilityImpl.isNetworkConnected
 import com.zbl.lib.baseframe.core.Subject
 import kotlinx.android.synthetic.main.activity_dashboard.*
 import kotlinx.android.synthetic.main.fragment_user.*
@@ -250,7 +246,7 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
      */
     fun logout() {
         // 判断有无网络
-        if (!isNetworkConnected(ctx)) {
+        if (!HttpUtil.isConnected(ctx)) {
             ToastUtils.show(ctx, "未连接网络, 无法退出")
             return
         }

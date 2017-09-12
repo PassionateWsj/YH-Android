@@ -14,6 +14,7 @@ import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
 import android.widget.Toast
 import com.intfocus.yhdev.R
+import com.intfocus.yhdev.bean.PushMessage
 import com.intfocus.yhdev.screen_lock.ConfirmPassCodeActivity
 import com.intfocus.yhdev.util.AssetsUpDateUtil
 import com.intfocus.yhdev.util.HttpUtil
@@ -109,8 +110,14 @@ class LauncherActivity : Activity(), Animation.AnimationListener {
                 finish()
             }
             else -> {
-                intent = Intent(this, LoginActivity::class.java)
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK and Intent.FLAG_ACTIVITY_SINGLE_TOP)
+                if (intent != null && intent.hasExtra("msgData")) {
+                    val msgData = intent.getSerializableExtra("msgData") as PushMessage
+                    intent = Intent(this, LoginActivity::class.java)
+                    intent.putExtra("msgData", msgData)
+                } else {
+                    intent = Intent(this, LoginActivity::class.java)
+                }
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP and Intent.FLAG_ACTIVITY_NEW_TASK and Intent.FLAG_ACTIVITY_SINGLE_TOP)
                 this.startActivity(intent)
 
                 finish()

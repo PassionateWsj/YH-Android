@@ -263,6 +263,7 @@
             android:name="UMENG_CHANNEL"
             android:value="Umeng"/>
 
+        <service android:name=".service.PushIntentService"/>
     </application>
 
 </manifest>

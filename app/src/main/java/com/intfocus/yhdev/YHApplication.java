@@ -11,21 +11,19 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
-import android.os.Bundle;
 import android.support.multidex.MultiDex;
 import android.util.Log;
 
 import com.intfocus.yhdev.constant.Constants;
-import com.intfocus.yhdev.dashboard.DashboardActivity;
-import com.intfocus.yhdev.login.LoginActivity;
 import com.intfocus.yhdev.screen_lock.ConfirmPassCodeActivity;
+import com.intfocus.yhdev.service.PushIntentService;
 import com.intfocus.yhdev.util.FileUtil;
-import com.intfocus.yhdev.util.URLs;
+import com.mixpush.client.core.MixPushClient;
+import com.mixpush.client.core.MixPushManager;
+import com.mixpush.client.getui.GeTuiManager;
+import com.mixpush.client.meizu.MeizuPushManager;
+import com.mixpush.client.mipush.MiPushManager;
 import com.tencent.bugly.crashreport.CrashReport;
-import com.umeng.message.IUmengRegisterCallback;
-import com.umeng.message.PushAgent;
-import com.umeng.message.UmengNotificationClickHandler;
-import com.umeng.message.entity.UMessage;
 import com.umeng.socialize.PlatformConfig;
 import com.umeng.socialize.UMShareAPI;
 
@@ -33,10 +31,10 @@ import org.OpenUDID.OpenUDID_manager;
 import org.xutils.x;
 
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import static com.intfocus.yhdev.util.K.kPushDeviceToken;
 import static com.intfocus.yhdev.util.PrivateURLs.kWXAppId;
 import static com.intfocus.yhdev.util.PrivateURLs.kWXAppSecret;
 
@@ -56,6 +54,11 @@ public class YHApplication extends Application {
     SharedPreferences mSettingSP;
     SharedPreferences mUserSP;
     PackageInfo packageInfo;
+
+    public static final String MEIZU_APP_ID = "111233";
+    public static final String MEIZU_APP_KEY = "3de4a507446641298a0ec188fba1e8c2";
+    public static final String MIPUSH_APP_ID = "2882303761517614945";
+    public static final String MIPUSH_APP_KEY = "5701761482945";
 
     @Override
     public void onCreate() {
@@ -103,26 +106,29 @@ public class YHApplication extends Application {
          */
 //         refWatcher = LeakCanary.install(this);
 
+        // 初始化多平台推送
+        initPush();
+
         /*
          * 注册推送服务，每次调用register方法都会回调该接口
          */
-        PushAgent mPushAgent = PushAgent.getInstance(this);
-        mPushAgent.register(new IUmengRegisterCallback() {
-
-            @Override
-            public void onSuccess(String deviceToken) {
-                SharedPreferences mPushSP = getSharedPreferences("PushMessage", MODE_PRIVATE);
-                SharedPreferences.Editor mPushSPEdit = mPushSP.edit();
-
-                mPushSPEdit.putString(kPushDeviceToken, deviceToken).commit();
-            }
-
-            @Override
-            public void onFailure(String s, String s1) {
-                // 向服务器推送: 设备信息,
-            }
-        });
-        mPushAgent.setNotificationClickHandler(pushMessageHandler);
+//        PushAgent mPushAgent = PushAgent.getInstance(this);
+//        mPushAgent.register(new IUmengRegisterCallback() {
+//
+//            @Override
+//            public void onSuccess(String deviceToken) {
+//                SharedPreferences mPushSP = getSharedPreferences("PushMessage", MODE_PRIVATE);
+//                SharedPreferences.Editor mPushSPEdit = mPushSP.edit();
+//
+//                mPushSPEdit.putString(kPushDeviceToken, deviceToken).commit();
+//            }
+//
+//            @Override
+//            public void onFailure(String s, String s1) {
+//                // 向服务器推送: 设备信息,
+//            }
+//        });
+//        mPushAgent.setNotificationClickHandler(pushMessageHandler);
     }
 
     private void initXutils() {
@@ -130,28 +136,28 @@ public class YHApplication extends Application {
         x.Ext.setDebug(BuildConfig.DEBUG);
     }
 
-    final UmengNotificationClickHandler pushMessageHandler = new UmengNotificationClickHandler() {
-
-        @Override
-        public void dealWithCustomAction(Context context, UMessage uMessage) {
-            super.dealWithCustomAction(context, uMessage);
-
-            Intent intent = null;
-            boolean isLogin = getApplicationContext().getSharedPreferences("UserBean", MODE_PRIVATE).getBoolean(URLs.kIsLogin, false);
-            if (isLogin) {
-                intent = new Intent(appContext, DashboardActivity.class);
-            } else {
-                intent = new Intent(appContext, LoginActivity.class);
-            }
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-            Bundle bundle = new Bundle();
-            bundle.putString("message", uMessage.custom);
-            bundle.putString("message_body_title", uMessage.title);
-            bundle.putString("message_body_text", uMessage.text);
-            intent.putExtra("msgData", bundle);
-            startActivity(intent);
-        }
-    };
+//    final UmengNotificationClickHandler pushMessageHandler = new UmengNotificationClickHandler() {
+//
+//        @Override
+//        public void dealWithCustomAction(Context context, UMessage uMessage) {
+//            super.dealWithCustomAction(context, uMessage);
+//
+//            Intent intent = null;
+//            boolean isLogin = getApplicationContext().getSharedPreferences("UserBean", MODE_PRIVATE).getBoolean(URLs.kIsLogin, false);
+//            if (isLogin) {
+//                intent = new Intent(appContext, DashboardActivity.class);
+//            } else {
+//                intent = new Intent(appContext, LoginActivity.class);
+//            }
+//            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+//            Bundle bundle = new Bundle();
+//            bundle.putString("message", uMessage.custom);
+//            bundle.putString("message_body_title", uMessage.title);
+//            bundle.putString("message_body_text", uMessage.text);
+//            intent.putExtra("msgData", bundle);
+//            startActivity(intent);
+//        }
+//    };
 
     @Override
     protected void attachBaseContext(Context base) {
@@ -239,6 +245,33 @@ public class YHApplication extends Application {
 
         return isBackground;
     }
+
+    /**
+     * 初始化多平台推送
+     */
+    private void initPush() {
+        MixPushClient.addPushManager(new MeizuPushManager(MEIZU_APP_ID, MEIZU_APP_KEY));
+        MixPushClient.addPushManager(new MiPushManager(MIPUSH_APP_ID, MIPUSH_APP_KEY));
+        MixPushClient.addPushManager(new GeTuiManager());
+        MixPushClient.setPushIntentService(PushIntentService.class);
+        MixPushClient.setSelector(new MixPushClient.Selector() {
+            @Override
+            public String select(Map<String, MixPushManager> pushAdapterMap, String brand) {
+                // return GeTuiManager.NAME;
+                //底层已经做了小米推送、魅族推送、个推判断，也可以按照自己的需求来选择推送
+                return super.select(pushAdapterMap, brand);
+            }
+        });
+        // 配置接收推送消息的服务类
+        MixPushClient.setPushIntentService(PushIntentService.class);
+        // 注册推送
+        MixPushClient.registerPush(this);
+//        // 绑定别名，一般是填写用户的ID，便于定向推送
+//        MixPushClient.setAlias(this, );
+//        // 设置标签，用于对用户进行划分
+//        MixPushClient.setTags(this, MixPushClient.getUsePushName());
+    }
+
 }
 
 
