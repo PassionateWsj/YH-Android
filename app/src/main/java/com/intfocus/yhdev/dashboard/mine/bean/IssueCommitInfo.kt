@@ -11,5 +11,5 @@ class IssueCommitInfo {
     var app_version = ""
     var platform = ""
     var platform_version = ""
-    var image_list : MutableList<File> = mutableListOf()
+    var image_list: MutableList<File> = mutableListOf()
 }

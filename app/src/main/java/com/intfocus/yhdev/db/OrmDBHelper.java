@@ -71,6 +71,7 @@ public class OrmDBHelper extends OrmLiteSqliteOpenHelper {
      * 获得某个表的DAO类。。。 DAO也叫作数据库中的业务类,这个类里边会封装CURD的方法
      * 第一个: 表示你要操作哪张表 对应的 object对象
      * 第二个: 当前表对应的Object对象中id对应的类型
+     *
      * @return
      * @throws SQLException
      */

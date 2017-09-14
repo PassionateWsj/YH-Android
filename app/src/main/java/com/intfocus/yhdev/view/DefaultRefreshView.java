@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.lcodecore.tkrefreshlayout.IHeaderView;
 import com.lcodecore.tkrefreshlayout.OnAnimEndListener;
 import com.lcodecore.tkrefreshlayout.R.id;
@@ -28,7 +29,7 @@ public class DefaultRefreshView extends FrameLayout implements IHeaderView {
     private String refreshingStr;
 
     public DefaultRefreshView(Context context) {
-        this(context, (AttributeSet)null);
+        this(context, (AttributeSet) null);
     }
 
     public DefaultRefreshView(Context context, AttributeSet attrs) {
@@ -44,10 +45,10 @@ public class DefaultRefreshView extends FrameLayout implements IHeaderView {
     }
 
     private void init() {
-        View rootView = View.inflate(this.getContext(), layout.view_sinaheader, (ViewGroup)null);
-        this.refreshArrow = (ImageView)rootView.findViewById(id.iv_arrow);
-        this.refreshTextView = (TextView)rootView.findViewById(id.tv);
-        this.loadingView = (ImageView)rootView.findViewById(id.iv_loading);
+        View rootView = View.inflate(this.getContext(), layout.view_sinaheader, (ViewGroup) null);
+        this.refreshArrow = (ImageView) rootView.findViewById(id.iv_arrow);
+        this.refreshTextView = (TextView) rootView.findViewById(id.tv);
+        this.loadingView = (ImageView) rootView.findViewById(id.iv_loading);
         this.addView(rootView);
     }
 
@@ -76,11 +77,11 @@ public class DefaultRefreshView extends FrameLayout implements IHeaderView {
     }
 
     public void onPullingDown(float fraction, float maxHeadHeight, float headHeight) {
-        if(fraction < 1.0F) {
+        if (fraction < 1.0F) {
             this.refreshTextView.setText(this.pullDownStr);
         }
 
-        if(fraction > 1.0F) {
+        if (fraction > 1.0F) {
             this.refreshTextView.setText(this.releaseRefreshStr);
         }
 
@@ -88,12 +89,12 @@ public class DefaultRefreshView extends FrameLayout implements IHeaderView {
     }
 
     public void onPullReleasing(float fraction, float maxHeadHeight, float headHeight) {
-        if(fraction < 1.0F) {
+        if (fraction < 1.0F) {
             this.refreshTextView.setText(this.pullDownStr);
             this.refreshArrow.setRotation(fraction * headHeight / maxHeadHeight * 180.0F);
-            if(this.refreshArrow.getVisibility() == 8) {
-                this.refreshArrow.setVisibility(0);
-                this.loadingView.setVisibility(8);
+            if (this.refreshArrow.getVisibility() == View.GONE) {
+                this.refreshArrow.setVisibility(View.VISIBLE);
+                this.loadingView.setVisibility(View.GONE);
             }
         }
 
@@ -101,9 +102,9 @@ public class DefaultRefreshView extends FrameLayout implements IHeaderView {
 
     public void startAnim(float maxHeadHeight, float headHeight) {
         this.refreshTextView.setText(this.refreshingStr);
-        this.refreshArrow.setVisibility(8);
-        this.loadingView.setVisibility(0);
-        ((AnimationDrawable)this.loadingView.getDrawable()).start();
+        this.refreshArrow.setVisibility(View.GONE);
+        this.loadingView.setVisibility(View.VISIBLE);
+        ((AnimationDrawable) this.loadingView.getDrawable()).start();
     }
 
     public void onFinish(OnAnimEndListener listener) {
@@ -111,8 +112,8 @@ public class DefaultRefreshView extends FrameLayout implements IHeaderView {
     }
 
     public void reset() {
-        this.refreshArrow.setVisibility(0);
-        this.loadingView.setVisibility(8);
+        this.refreshArrow.setVisibility(View.VISIBLE);
+        this.loadingView.setVisibility(View.GONE);
         this.refreshTextView.setText(this.pullDownStr);
     }
 }

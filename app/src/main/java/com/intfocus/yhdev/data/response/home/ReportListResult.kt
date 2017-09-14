@@ -7,7 +7,7 @@ import com.intfocus.yhdev.data.response.BaseResult
 /**
  * Created by liuruilin on 2017/8/11.
  */
-class ReportListResult: BaseResult() {
+class ReportListResult : BaseResult() {
     @SerializedName("data")
-    var data:  List<CategoryBean>? = null
+    var data: List<CategoryBean>? = null
 }

@@ -78,7 +78,7 @@ public class BaseActivity extends FragmentActivity {
     public final static String kVersionCode = "versionCode";
     public String sharedPath;
     public String relativeAssetsPath;
-//    public String urlStringForDetecting;
+    //    public String urlStringForDetecting;
     public ProgressDialog mProgressDialog;
     public YHApplication mMyApp;
     public PopupWindow popupWindow;
@@ -669,7 +669,6 @@ public class BaseActivity extends FragmentActivity {
         popupWindow.setOutsideTouchable(false);
         popupWindow.setFocusable(true);
     }
-
 
 
     protected void toast(String info, ToastColor toastColor) {

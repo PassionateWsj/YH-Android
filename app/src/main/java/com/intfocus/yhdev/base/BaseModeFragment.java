@@ -44,7 +44,7 @@ public abstract class BaseModeFragment<Target extends Subject> extends AbstractF
     }
 
 
-    protected void showDialog(Context context) {
+    protected void showLoading(Context context) {
         loadingDialog = LoadingUtils.createLoadingDialog(context);
         loadingDialog.show();
     }

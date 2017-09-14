@@ -60,17 +60,17 @@ class MinePageFragment : BaseFragment(), ViewPager.OnPageChangeListener {
 
             override fun onPageSelected(position: Int) {
                 if (position == 0) {
-                    line_orange.visibility=View.VISIBLE
-                    line_green.visibility=View.INVISIBLE
-                    line_blue.visibility=View.INVISIBLE
+                    line_orange.visibility = View.VISIBLE
+                    line_green.visibility = View.INVISIBLE
+                    line_blue.visibility = View.INVISIBLE
                 } else if (position == 1) {
-                    line_orange.visibility=View.INVISIBLE
-                    line_green.visibility=View.VISIBLE
-                    line_blue.visibility=View.INVISIBLE
+                    line_orange.visibility = View.INVISIBLE
+                    line_green.visibility = View.VISIBLE
+                    line_blue.visibility = View.INVISIBLE
                 } else {
-                    line_orange.visibility=View.INVISIBLE
-                    line_green.visibility=View.INVISIBLE
-                    line_blue.visibility=View.VISIBLE
+                    line_orange.visibility = View.INVISIBLE
+                    line_green.visibility = View.INVISIBLE
+                    line_blue.visibility = View.VISIBLE
                 }
             }
 

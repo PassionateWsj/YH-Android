@@ -36,6 +36,7 @@ public class RxBusUtil {
 
     /**
      * 发送事件
+     *
      * @param object
      */
     public void post(Object object) {
@@ -44,6 +45,7 @@ public class RxBusUtil {
 
     /**
      * 接收事件
+     *
      * @param eventType
      * @param <T>
      * @return

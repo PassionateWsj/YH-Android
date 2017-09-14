@@ -10,7 +10,7 @@ import org.xutils.x
 /**
  * Created by liuruilin on 2017/6/26.
  */
-class GuidePageAdapter(var ctx: Context, var imageViews: List<ImageView>,var imageIDList: List<String>): PagerAdapter(){
+class GuidePageAdapter(var ctx: Context, var imageViews: List<ImageView>, var imageIDList: List<String>) : PagerAdapter() {
     override fun getCount(): Int {
         return imageViews.size
     }

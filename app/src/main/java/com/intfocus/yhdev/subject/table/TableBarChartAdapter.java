@@ -60,13 +60,11 @@ public class TableBarChartAdapter extends CommonAdapter<TableBarChart> {
         viewBar.setBackgroundColor(Color.parseColor(color));
 
         double a = 0;
-        if (maxValue > 0 && mainData >0) {
-            a = mainData/maxValue;
-        }
-        else if (maxValue <=0 && mainData <=0){
-            a =  maxValue/mainData;
-        }
-        else if (maxValue >0 && mainData <=0){
+        if (maxValue > 0 && mainData > 0) {
+            a = mainData / maxValue;
+        } else if (maxValue <= 0 && mainData <= 0) {
+            a = maxValue / mainData;
+        } else if (maxValue > 0 && mainData <= 0) {
             a = 0;
         }
         LayoutParams layoutParams = (LayoutParams) viewBar.getLayoutParams();

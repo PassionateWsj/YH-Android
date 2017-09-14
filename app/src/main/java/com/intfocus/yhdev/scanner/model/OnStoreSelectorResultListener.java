@@ -16,5 +16,6 @@ import java.util.List;
 
 public interface OnStoreSelectorResultListener {
     void onResultFailure(Throwable e);
+
     void onResultSuccess(List<StoreItem> data);
 }

@@ -63,23 +63,22 @@ public class DisplayUtil {
         return (int) (spValue * fontScale + 0.5f);
     }
 
-    public static Bitmap makeRoundCorner(Bitmap bitmap)
-    {
+    public static Bitmap makeRoundCorner(Bitmap bitmap) {
         int width = bitmap.getWidth();
         int height = bitmap.getHeight();
         int left = 0, top = 0, right = width, bottom = height;
-        float roundPx = height/2;
+        float roundPx = height / 2;
         if (width > height) {
-            left = (width - height)/2;
+            left = (width - height) / 2;
             top = 0;
             right = left + height;
             bottom = height;
         } else if (height > width) {
             left = 0;
-            top = (height - width)/2;
+            top = (height - width) / 2;
             right = width;
             bottom = top + width;
-            roundPx = width/2;
+            roundPx = width / 2;
         }
 
         Bitmap output = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);

@@ -29,7 +29,7 @@ import com.intfocus.yhdev.dashboard.old_kpi.adapter.MeterVPAdapter;
 import com.intfocus.yhdev.dashboard.old_kpi.adapter.SaleDataAdapter;
 import com.intfocus.yhdev.listen.CustPagerTransformer;
 import com.intfocus.yhdev.mode.MeterMode;
-import com.intfocus.yhdev.subject.HomeTricsActivity;
+import com.intfocus.yhdev.subject.metrics.HomeTricsActivity;
 import com.intfocus.yhdev.subject.SubjectActivity;
 import com.intfocus.yhdev.subject.TableActivity;
 import com.intfocus.yhdev.util.DisplayUtil;
@@ -79,7 +79,7 @@ public class MeterFragment extends BaseSwipeHomeFragment {
     @ViewInject(R.id.anim_loading)
     RelativeLayout mAnimLoading;
 
-//    @ViewInject(R.id.whl_vp_meter)
+    //    @ViewInject(R.id.whl_vp_meter)
     WidthHeightLinearLayou mWHllayout;
     @ViewInject(R.id.vp_meter)
     ViewPager vp_meter;

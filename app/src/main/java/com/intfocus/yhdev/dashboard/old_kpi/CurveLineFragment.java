@@ -30,7 +30,7 @@ import java.util.List;
  */
 public class CurveLineFragment extends BaseModeFragment {
     private MererEntity entity;
-    private int[]colors = Colors.INSTANCE.getColorsRGY();
+    private int[] colors = Colors.INSTANCE.getColorsRGY();
     private View rootView;
 
     @ViewInject(R.id.ll_ragment_curve)

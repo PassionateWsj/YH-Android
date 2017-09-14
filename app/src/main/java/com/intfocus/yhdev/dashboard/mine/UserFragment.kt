@@ -115,7 +115,7 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
     }
 
     fun initView() {
-        userNum= activity.getSharedPreferences("UserBean", Context.MODE_PRIVATE).getString(URLs.kUserNum, "")
+        userNum = activity.getSharedPreferences("UserBean", Context.MODE_PRIVATE).getString(URLs.kUserNum, "")
         RetrofitUtil.getHttpService(ctx).getUserInfo(userNum)
                 .compose(RetrofitUtil.CommonOptions<UserInfoResult>())
                 .subscribe(object : CodeHandledSubscriber<UserInfoResult>() {
@@ -144,7 +144,7 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
         rl_logout.setOnClickListener { showLogoutPopupWindow(this.context) }
     }
 
-    fun refreshData(){
+    fun refreshData() {
         RetrofitUtil.getHttpService(ctx).getUserInfo(userNum)
                 .compose(RetrofitUtil.CommonOptions<UserInfoResult>())
                 .subscribe(object : CodeHandledSubscriber<UserInfoResult>() {

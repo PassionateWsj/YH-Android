@@ -28,7 +28,8 @@ import com.intfocus.yhdev.net.CodeHandledSubscriber
 import com.intfocus.yhdev.net.RetrofitUtil
 import com.intfocus.yhdev.scanner.BarCodeScannerActivity
 import com.intfocus.yhdev.subject.*
-import com.intfocus.yhdev.subject.template_v2.ModularTwo_Mode_Activity
+import com.intfocus.yhdev.subject.metrics.HomeTricsActivity
+import com.intfocus.yhdev.subject.template_v1.ModularTwo_Mode_Activity
 import com.intfocus.yhdev.util.*
 import com.intfocus.yhdev.view.NoScrollViewPager
 import com.intfocus.yhdev.view.TabView
@@ -111,10 +112,10 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
         pushMessage.user_id = userID
         var personDao = OrmDBHelper.getInstance(this).pushMessageDao
         //  RxJava异步存储推送过来的数据
-        Observable.create(Observable.OnSubscribe <PushMessageBean> {
+        Observable.create(Observable.OnSubscribe<PushMessageBean> {
             try {
                 personDao.createIfNotExists(pushMessage)
-            } catch(e: SQLException) {
+            } catch (e: SQLException) {
                 e.printStackTrace()
             }
         })
@@ -326,7 +327,7 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
                                     for (item in storeList!!) {
                                         storeItemDao.createIfNotExists(item)
                                     }
-                                } catch(e: SQLException) {
+                                } catch (e: SQLException) {
                                     e.printStackTrace()
                                 }
                             }).start()

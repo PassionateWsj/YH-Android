@@ -14,7 +14,7 @@ import com.intfocus.yhdev.view.MyGridView
  * Created by liuruilin on 2017/6/17.
  */
 class ReportsRightRVAdapter(var ctx: Context, var datas: List<ListGroupBean>?)
-                            : RecyclerView.Adapter<ReportsRightRVAdapter.ReportsRightListHolder>() {
+    : RecyclerView.Adapter<ReportsRightRVAdapter.ReportsRightListHolder>() {
 
     var inflater = LayoutInflater.from(ctx)
 
@@ -37,7 +37,7 @@ class ReportsRightRVAdapter(var ctx: Context, var datas: List<ListGroupBean>?)
         return if (datas == null) 0 else datas!!.size
     }
 
-    class ReportsRightListHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+    class ReportsRightListHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var tvReportsListTitle = itemView.findViewById(R.id.tv_reports_right_list_title) as TextView
         var gvReportsListItem = itemView.findViewById(R.id.gv_reports_right_list_item) as MyGridView
     }

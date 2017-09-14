@@ -7,7 +7,7 @@ import com.intfocus.yhdev.data.response.BaseResult
 /**
  * Created by liuruilin on 2017/8/13.
  */
-class NoticeContentResult: BaseResult() {
+class NoticeContentResult : BaseResult() {
     @SerializedName("data")
     var data: NoticeContentBean? = null
 }

@@ -460,12 +460,10 @@
 
     <style name="tv_unit_chart_m">
         <item name="android:layout_width">0dp</item>
-        <item name="android:maxLines">1</item>
-        <item name="android:singleLine">true</item>
         <item name="android:ellipsize">end</item>
         <item name="android:layout_weight">1</item>
         <item name="android:layout_height">match_parent</item>
-        <item name="android:textSize">@dimen/font_medium</item>
+        <item name="android:textSize">@dimen/font_cont</item>
         <item name="android:textColor">@color/co3_syr</item>
         <item name="android:gravity">center_vertical</item>
     </style>
@@ -478,6 +476,17 @@
         <item name="android:layout_weight">1</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:textSize">@dimen/font_medium</item>
+        <item name="android:textColor">@color/co3</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
+    <style name="tv_unit_chart_m_three">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:maxLines">2</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/font_cont</item>
         <item name="android:textColor">@color/co3</item>
         <item name="android:gravity">center_vertical</item>
     </style>

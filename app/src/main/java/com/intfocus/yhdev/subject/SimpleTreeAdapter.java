@@ -14,55 +14,47 @@ import com.intfocus.yhdev.subject.selecttree.Node;
 import com.intfocus.yhdev.subject.selecttree.TreeListViewAdapter;
 
 
-public class SimpleTreeAdapter<T> extends TreeListViewAdapter<T>
-{
+public class SimpleTreeAdapter<T> extends TreeListViewAdapter<T> {
 
-	public SimpleTreeAdapter(ListView mTree, Context context, List<T> datas,
-			int defaultExpandLevel) throws IllegalArgumentException,
-			IllegalAccessException
-	{
-		super(mTree, context, datas, defaultExpandLevel);
-	}
+    public SimpleTreeAdapter(ListView mTree, Context context, List<T> datas,
+                             int defaultExpandLevel) throws IllegalArgumentException,
+            IllegalAccessException {
+        super(mTree, context, datas, defaultExpandLevel);
+    }
 
-	@Override
-	public View getConvertView(Node node , int position, View convertView, ViewGroup parent)
-	{
-		
-		ViewHolder viewHolder = null;
-		if (convertView == null)
-		{
-			convertView = mInflater.inflate(R.layout.list_item, parent, false);
-			viewHolder = new ViewHolder();
-			viewHolder.icon = (ImageView) convertView
-					.findViewById(R.id.id_treenode_icon);
-			viewHolder.label = (TextView) convertView
-					.findViewById(R.id.id_treenode_label);
-			convertView.setTag(viewHolder);
+    @Override
+    public View getConvertView(Node node, int position, View convertView, ViewGroup parent) {
 
-		} else
-		{
-			viewHolder = (ViewHolder) convertView.getTag();
-		}
+        ViewHolder viewHolder = null;
+        if (convertView == null) {
+            convertView = mInflater.inflate(R.layout.list_item, parent, false);
+            viewHolder = new ViewHolder();
+            viewHolder.icon = (ImageView) convertView
+                    .findViewById(R.id.id_treenode_icon);
+            viewHolder.label = (TextView) convertView
+                    .findViewById(R.id.id_treenode_label);
+            convertView.setTag(viewHolder);
 
-		if (node.getIcon() == -1)
-		{
-			viewHolder.icon.setVisibility(View.INVISIBLE);
-		} else
-		{
-			viewHolder.icon.setVisibility(View.VISIBLE);
-			viewHolder.icon.setImageResource(node.getIcon());
-		}
+        } else {
+            viewHolder = (ViewHolder) convertView.getTag();
+        }
 
-		viewHolder.label.setText(node.getName());
-		
-		
-		return convertView;
-	}
+        if (node.getIcon() == -1) {
+            viewHolder.icon.setVisibility(View.INVISIBLE);
+        } else {
+            viewHolder.icon.setVisibility(View.VISIBLE);
+            viewHolder.icon.setImageResource(node.getIcon());
+        }
 
-	private final class ViewHolder
-	{
-		ImageView icon;
-		TextView label;
-	}
+        viewHolder.label.setText(node.getName());
+
+
+        return convertView;
+    }
+
+    private final class ViewHolder {
+        ImageView icon;
+        TextView label;
+    }
 
 }

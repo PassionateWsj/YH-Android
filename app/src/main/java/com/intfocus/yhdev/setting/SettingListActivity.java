@@ -38,7 +38,7 @@ public class SettingListActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting_list);
-        mBannerTitle = (TextView)findViewById(R.id.bannerTitle);
+        mBannerTitle = (TextView) findViewById(R.id.bannerTitle);
         mListType = getIntent().getStringExtra("type");
         mBannerTitle.setText(mListType);
         initListInfo(mListType);
@@ -46,7 +46,7 @@ public class SettingListActivity extends BaseActivity {
 
     private void initListInfo(String type) {
         switch (type) {
-            case "应用信息" :
+            case "应用信息":
                 PackageInfo packageInfo = null;
                 try {
                     packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
@@ -62,7 +62,7 @@ public class SettingListActivity extends BaseActivity {
                 mItemContentList = new String[]{appName, "当前版本: " + versionInfo, deviceInfo, apiDomain, appPackageInfo};
                 break;
 
-            case "消息推送" :
+            case "消息推送":
                 PushAgent mPushAgent = PushAgent.getInstance(mAppContext);
                 String isPushOpened = isPushOpened(mPushAgent);
                 mItemNameList = new String[]{"消息推送", "关联的设备列表", "推送的消息列表"};
@@ -79,11 +79,11 @@ public class SettingListActivity extends BaseActivity {
 
     private String isPushOpened(PushAgent mPushAgent) {
         try {
-            String deviceToken  = mPushAgent.getRegistrationId();
+            String deviceToken = mPushAgent.getRegistrationId();
             if (deviceToken.length() == 44) {
                 return "开启";
             }
-        }catch (NullPointerException e){
+        } catch (NullPointerException e) {
             return "关闭";
         }
         return "关闭";
@@ -116,7 +116,7 @@ public class SettingListActivity extends BaseActivity {
         public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
             TextView mItemText = (TextView) arg1.findViewById(R.id.item_setting_key);
             switch (mItemText.getText().toString()) {
-                case "应用标识" :
+                case "应用标识":
                     if (System.currentTimeMillis() - mLastExitTime < 2000) {
                         Intent developerActivityIntent = new Intent(SettingListActivity.this, DeveloperActivity.class);
                         developerActivityIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -128,7 +128,7 @@ public class SettingListActivity extends BaseActivity {
                     }
                     break;
 
-                case "检测更新" :
+                case "检测更新":
                     checkPgyerVersionUpgrade(SettingListActivity.this, true);
                     break;
 
@@ -163,10 +163,10 @@ public class SettingListActivity extends BaseActivity {
                 case "推送的消息列表":
                     try {
                         SharedPreferences sp = getSharedPreferences("allPushMessage", MODE_PRIVATE);
-                        String allMessage = sp.getString("message","false");
-                        if (allMessage.equals("false")){
+                        String allMessage = sp.getString("message", "false");
+                        if (allMessage.equals("false")) {
                             toast("从未接收到推送消息");
-                        }else {
+                        } else {
                             Intent intent = new Intent(SettingListActivity.this, ShowListMsgActivity.class);
                             intent.putExtra("type", "pushMessage");
                             intent.putExtra("title", "推送的消息列表");

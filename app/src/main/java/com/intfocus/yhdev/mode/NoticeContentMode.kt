@@ -18,7 +18,7 @@ import org.json.JSONObject
 /**
  * Created by liuruilin on 2017/6/15.
  */
-class NoticeContentMode(var ctx : Context) : AbstractMode() {
+class NoticeContentMode(var ctx: Context) : AbstractMode() {
     lateinit var urlString: String
     var result: String? = null
     val mNoticeContentSP: SharedPreferences = ctx.getSharedPreferences("NoticeContent", Context.MODE_PRIVATE)
@@ -27,7 +27,7 @@ class NoticeContentMode(var ctx : Context) : AbstractMode() {
     var id = ""
 
     fun getUrl(): String {
-        var url = K.kBaseUrl + "/api/v1/user/" + mUserSP.getString(K.kUserId,"0") + "/notice/" + id
+        var url = K.kBaseUrl + "/api/v1/user/" + mUserSP.getString(K.kUserId, "0") + "/notice/" + id
         return url
     }
 
@@ -35,8 +35,9 @@ class NoticeContentMode(var ctx : Context) : AbstractMode() {
         this.id = id
         requestData()
     }
+
     override fun requestData() {
-        RetrofitUtil.getHttpService(ctx).getNoticeContent(id, mUserSP.getString(K.kUserId,"0"))
+        RetrofitUtil.getHttpService(ctx).getNoticeContent(id, mUserSP.getString(K.kUserId, "0"))
                 .compose(RetrofitUtil.CommonOptions<NoticeContentResult>())
                 .subscribe(object : CodeHandledSubscriber<NoticeContentResult>() {
                     override fun onError(apiException: ApiException?) {

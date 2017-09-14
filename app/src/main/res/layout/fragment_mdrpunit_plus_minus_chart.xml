@@ -6,7 +6,7 @@
     android:layout_marginTop="@dimen/space_default"
     android:background="@color/co10"
     android:orientation="vertical"
-    tools:context="com.intfocus.yhdev.subject.template_v2.ui.ModularTwo_UnitPlusMinusChartFragment">
+    tools:context="com.intfocus.yhdev.subject.template_v1.ui.ModularTwo_UnitPlusMinusChartFragment">
 
 
     <LinearLayout
