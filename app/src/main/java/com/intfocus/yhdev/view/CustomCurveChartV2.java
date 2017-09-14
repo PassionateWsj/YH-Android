@@ -26,8 +26,6 @@ import java.util.List;
  * Created by zbaoliang on 17-5-10.
  */
 public class CustomCurveChartV2 extends View implements ValueAnimator.AnimatorUpdateListener {
-
-    private final String TAG = com.intfocus.yhdev.view.CustomCurveChart.class.getSimpleName();
     private String unit;
     /**
      * 坐标单位
@@ -192,7 +190,7 @@ public class CustomCurveChartV2 extends View implements ValueAnimator.AnimatorUp
      */
     private void drawAxesLine(Canvas canvas, Paint paint) {
         // X
-        canvas.drawLine(xPoint - barWidth, yPoint + 10, this.getWidth(), yPoint + 10, paint);
+        canvas.drawLine(xPoint - barWidth, yPoint, this.getWidth(), yPoint, paint);
     }
 
     /**
@@ -204,14 +202,8 @@ public class CustomCurveChartV2 extends View implements ValueAnimator.AnimatorUp
     private void drawCoordinate(Canvas canvas, Paint paint) {
         // X轴坐标
         paint.setTextAlign(Paint.Align.CENTER);
-
         int xlength = xLabel.length;
         for (int i = 0; i < xlength; i++) {
-
-            if (i % 2 == 0) {
-                continue;
-            }
-
             float startX = 0;
             if (mChartStyle == ChartStyle.BAR)
                 startX = barWidth / 2;
@@ -232,8 +224,7 @@ public class CustomCurveChartV2 extends View implements ValueAnimator.AnimatorUp
             }
 
             paint.setColor(color);
-//            canvas.drawText(xLabel[i], startX, this.getHeight() - padding / 2 - textSize / 2, paint);
-            canvas.drawText(xLabel[i], startX, yPoint + 40, paint);
+            canvas.drawText(xLabel[i], startX, this.getHeight() - padding / 2 - textSize / 2, paint);
             xpoints.add(startX);
         }
 
@@ -461,6 +452,7 @@ public class CustomCurveChartV2 extends View implements ValueAnimator.AnimatorUp
         }
         mVa.start();
     }
+
 
     /**
      * 设置默认颜色

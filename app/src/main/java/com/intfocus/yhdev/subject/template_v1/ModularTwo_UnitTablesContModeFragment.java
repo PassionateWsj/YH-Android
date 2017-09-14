@@ -6,7 +6,12 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.util.ArrayMap;
+import android.text.Layout;
+import android.text.StaticLayout;
+import android.text.TextPaint;
 import android.util.Log;
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +28,7 @@ import com.intfocus.yhdev.subject.template_v1.entity.DataHolder;
 import com.intfocus.yhdev.subject.template_v1.entity.ModularTwo_UnitTableEntity;
 import com.intfocus.yhdev.subject.template_v1.entity.msg.EventRefreshTableRect;
 import com.intfocus.yhdev.subject.template_v1.mode.ModularTwo_UnitTableContMode;
+import com.intfocus.yhdev.util.DisplayUtil;
 import com.intfocus.yhdev.util.ToastUtils;
 import com.intfocus.yhdev.view.NotScrollListView;
 import com.intfocus.yhdev.view.RootScrollView;
@@ -97,7 +103,8 @@ public class ModularTwo_UnitTablesContModeFragment extends BaseModeFragment<Modu
     @ViewInject(R.id.nslistView_unit_table_LineName)
     private NotScrollListView nslistView_LineName;
 
-    ArrayList<String> lineData = new ArrayList<>();
+    ArrayList<ArrayList<String>> lineData = new ArrayList<>();
+    ArrayList<String> headerData = new ArrayList<>();
     ArrayList<Integer> al_HeaderLenght = new ArrayList<>();
     ArrayList<SortCheckBox> al_SortView = new ArrayList<>();
 
@@ -151,7 +158,7 @@ public class ModularTwo_UnitTablesContModeFragment extends BaseModeFragment<Modu
         ModularTwo_UnitTablesModeFragment parentFt = (ModularTwo_UnitTablesModeFragment) getParentFragment();
         if (parentFt == null)
             return;
-        int surootID = suRootID;
+        final int surootID = suRootID;
         if (event.eventTag == surootID) {
             ((ModularTwo_Mode_Activity) getActivity()).rScrollView.setOnScrollListener(new RootScrollView.OnScrollListener() {
                 @Override
@@ -159,16 +166,18 @@ public class ModularTwo_UnitTablesContModeFragment extends BaseModeFragment<Modu
 
                     Rect rect = new Rect();
                     rootView.getGlobalVisibleRect(rect);
-
                     synchronized (this) {
                         if (fl_tableTitle_container.getChildCount() != 0) {
                             if (rect.top <= offsetTop && rect.bottom - 150 > offsetTop) {
+                                Log.i("testlog", "1");
                                 fl_tableTitle_container.removeView(suspensionView);
                                 ((ModularTwo_Mode_Activity) getActivity()).suspendContainer.addView(suspensionView);
                             }
-                        } else {
+                        }
+                        else {
                             int viewCont = ((ModularTwo_Mode_Activity) getActivity()).suspendContainer.getChildCount();
                             if (rect.top > offsetTop || rect.bottom - 150 < offsetTop && viewCont != 0) {
+                                Log.i("testlog", "2");
                                 ((ModularTwo_Mode_Activity) getActivity()).suspendContainer.removeView(suspensionView);
                                 fl_tableTitle_container.addView(suspensionView);
                             }
@@ -198,13 +207,14 @@ public class ModularTwo_UnitTablesContModeFragment extends BaseModeFragment<Modu
 
             thscroll_header.setScrollView(thscroll_data);
             thscroll_data.setScrollView(thscroll_header);
-
+            hideLoading();
             rootView.post(new Runnable() {
                 @Override
                 public void run() {
                     Rect frame = new Rect();
                     act.getWindow().getDecorView().getWindowVisibleDisplayFrame(frame);
                     offsetTop = frame.top + 150 - 30;//状态栏+标题栏高度-间隙
+
                     Log.i(TAG, "offsetTop:" + offsetTop);
                 }
             });
@@ -251,14 +261,51 @@ public class ModularTwo_UnitTablesContModeFragment extends BaseModeFragment<Modu
         linear_header.removeAllViews();
 
         for (int i = 0; i < headerSize; i++) {
-            lineData.add(header[i + 1]);
+            headerData.add(header[i + 1]);
+        }
+
+        lineData.add(headerData);
+        for (int i = 0; i < headerSize; i++) {
+            for (int j = 0; j < result.data.size(); j++) {
+                ArrayList<String> data = new ArrayList<>();
+                for (int k = 1; k < result.data.get(j).main_data.length; k++) {
+                    data.add(result.data.get(j).main_data[k]);
+                }
+                lineData.add(data);
+            }
+        }
+
+        ArrayList<Integer> mColumnMaxWidths = new ArrayList<Integer>();
+        //初始化每列最大宽度
+        for (int i = 0; i < lineData.size(); i++) {
+            ArrayList<String> rowDatas = lineData.get(i);
+            for (int j = 0; j < rowDatas.size(); j++) {
+                TextView textView = new TextView(ctx);
+                textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+                textView.setText(rowDatas.get(j));
+                textView.setGravity(Gravity.CENTER);
+                //设置布局
+                LinearLayout.LayoutParams textViewParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT);
+                textViewParams.setMargins(30, 30, 30, 30);
+                textView.setLayoutParams(textViewParams);
+                if (i == 0) {
+                    mColumnMaxWidths.add(measureTextWidth(textView, rowDatas.get(j)));
+                } else {
+                    int length = mColumnMaxWidths.get(j);
+                    int current = measureTextWidth(textView, rowDatas.get(j));
+                    if (current > length) {
+                        mColumnMaxWidths.set(j, current);
+                    }
+                }
+            }
         }
 
         // 遍历表头数据, 添加到 al_SortView
         for (int i = 0; i < headerSize; i++) {
             SortCheckBox box = (SortCheckBox) inflater.inflate(R.layout.item_table_sortcheckbox, null);
             box.setText(header[i + 1]);
-            box.setBoxWidth(100);
+            box.setBoxWidth(DisplayUtil.dip2px(ctx, mColumnMaxWidths.get(i)));
             box.setTag(i + 1);
             box.setOnClickListener(listener);
             box.setOnSortViewSizeListener(this);
@@ -304,7 +351,7 @@ public class ModularTwo_UnitTablesContModeFragment extends BaseModeFragment<Modu
             lables.put(i, datas.get(i).main_data);
         }
 
-        int itemHeight = getResources().getDimensionPixelSize(R.dimen.size_default_small);
+        int itemHeight = getResources().getDimensionPixelSize(R.dimen.size_table_small);
         int dividerColor = getResources().getColor(R.color.co9);
         int textColor = getResources().getColor(R.color.co3);
         tableValue = new TableValueView(ctx);
@@ -425,18 +472,37 @@ public class ModularTwo_UnitTablesContModeFragment extends BaseModeFragment<Modu
             Intent intent = new Intent(ctx, ModularTwo_SubTableActivity.class);
             String itemName = dataEntity.data.get(index).main_data[0];
             intent.putExtra("Title", itemName);
-//            intent.putExtra("Data", subdata);
             DataHolder.getInstance().setData(subdata);
             int checkId = suRootID;
             intent.putExtra("suRootID", checkId);
-            //去除动画效果，动画导致返回上移报表数据丢失
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//                startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(act).toBundle());
-//            } else {
             startActivity(intent);
-//            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * 根据最大最小值，计算TextView的宽度
+     *
+     * @param textView
+     * @param text
+     * @return
+     */
+    private int measureTextWidth(TextView textView, String text) {
+        if (textView != null) {
+            textView.measure(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) textView.getLayoutParams();
+            int width = DisplayUtil.px2dip(ctx, layoutParams.leftMargin) +
+                    DisplayUtil.px2dip(ctx, layoutParams.rightMargin) +
+                    DisplayUtil.px2dip(ctx, textView.getMeasuredWidth());
+            if (width <= 10) {
+                return 10;
+            } else if (width > 10 && width <= 1000) {
+                return width;
+            } else {
+                return 1000;
+            }
+        }
+        return 0;
     }
 }

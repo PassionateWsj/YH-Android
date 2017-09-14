@@ -56,6 +56,8 @@ public class ModularTwo_UnitCurveChartModeFragment extends BaseModeFragment<MDRP
     TextView tv_target2;
     @ViewInject(R.id.tv_chart_table_target2name)
     TextView tv_target2name;
+    @ViewInject(R.id.tv_chart_table_target3name)
+    TextView tv_target3name;
     @ViewInject(R.id.tv_chart_table_rate)
     TextView tv_rate;
     @ViewInject(R.id.img_RateCursor)
@@ -77,9 +79,6 @@ public class ModularTwo_UnitCurveChartModeFragment extends BaseModeFragment<MDRP
 
     public static ModularTwo_UnitCurveChartModeFragment newInstance(String param1) {
         ModularTwo_UnitCurveChartModeFragment fragment = new ModularTwo_UnitCurveChartModeFragment();
-//        Bundle args = new Bundle();
-//        args.putString(ARG_PARAM1, param1);
-//        fragment.setArguments(args);
         mCurrentParam = param1;
         return fragment;
     }
@@ -87,9 +86,6 @@ public class ModularTwo_UnitCurveChartModeFragment extends BaseModeFragment<MDRP
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        if (getArguments() != null) {
-//            mParam1 = getArguments().getString(ARG_PARAM1);
-//        }
         mParam1 = mCurrentParam;
     }
 
@@ -150,7 +146,6 @@ public class ModularTwo_UnitCurveChartModeFragment extends BaseModeFragment<MDRP
                 seriesLables.add(lables);
             } else {
                 datas = datas.trim().substring(1, datas.length() - 1).trim();
-//                String[] topW = datas.trim().split("[^\\d]");
                 String[] topW = datas.trim().split(",");
                 int dataLength = topW.length;
                 Float[] lables = new Float[dataLength];
@@ -222,7 +217,6 @@ public class ModularTwo_UnitCurveChartModeFragment extends BaseModeFragment<MDRP
 
     @Override
     public void onPointClick(int index) {
-        if (seriesLables.size() == 2) {
             String xlabel = xLabel[index];
             String name1 = curveChartEntity.legend[0];
             Float[] values1 = seriesLables.get(0);
@@ -236,101 +230,85 @@ public class ModularTwo_UnitCurveChartModeFragment extends BaseModeFragment<MDRP
             tv_target1.setText(df.format(target1));
             tv_target1name.setText(name1);
 
-            String name2 = curveChartEntity.legend[1];
-            Float[] values2 = seriesLables.get(1);
-            Float target2 = 0f;
-            if (values2.length > index) {
-                target2 = values2[index];
-            }
-            tv_target2.setText(df.format(target2));
-            tv_target2.setTextColor(coGroup[1]);
-            tv_target2name.setText(name2);
-            //TODO 计算变化率 公式：（指标1 - 指标2）/ 指标2
-/*
-            float rate = (target1 - target2) / target2;
-            float absmv = Math.abs(rate);
+            if (seriesLables.size() > 1) {
+                String name2 = curveChartEntity.legend[1];
+                Float[] values2 = seriesLables.get(1);
+                Float target2 = 0f;
 
-            boolean isPlus;
-//            int cursorIndex;//红黄绿
-            if (absmv <= 0.1f) {
-//                cursorIndex = 1;
-                if (rate > 0)
-                    isPlus = false;
-                else
-                    isPlus = true;
-            } else if (rate < -0.1f) {
-//                cursorIndex = 0;
-                isPlus = false;
-            } else {
-//                if (rate > 0){
-//                    isPlus = false;
-//
-//                }
-//                else{
-//                    isPlus = true;
-//
-//                }
+                if (values2.length > index) {
+                    target2 = values2[index];
+                }
 
+                tv_target2.setText(df.format(target2));
+                tv_target2.setTextColor(coGroup[1]);
+                tv_target2name.setText(name2);
 
-//                cursorIndex = 2;
-                isPlus = true;
-            }*/
+                if (seriesLables.size() == 2) {
+                    int baseColor;
+                    int cursorIndex = -1;
+                    int colorSize = color.length;
+                    if (index < colorSize) {
+                        switch (color[index]) {
+                            case 0:
+                            case 3:
+                                cursorIndex = 0;
+                                break;
 
+                            case 1:
+                            case 4:
+                                cursorIndex = 1;
+                                break;
 
-            int baseColor;
-            int cursorIndex = -1;
-            int colorSize = color.length;
-            if (index < colorSize) {
-                switch (color[index]) {
-                    case 0:
-                    case 3:
-                        cursorIndex = 0;
-                        break;
+                            case 2:
+                            case 5:
+                                cursorIndex = 2;
+                                break;
 
-                    case 1:
-                    case 4:
-                        cursorIndex = 1;
-                        break;
+                            default:
+                                cursorIndex = 0;
+                        }
+                    }
 
-                    case 2:
-                    case 5:
-                        cursorIndex = 2;
-                        break;
+                    String strRate;
+                    float rate = 0;
+                    if (target1 == 0 || target2 == 0) {
+                        strRate = "暂无数据";
+                        cursorIndex = -1;
+                    } else {
+                        rate = (target1 - target2) / target2;
+                        strRate = df_rate.format(rate);
+                    }
 
-                    default:
-                        cursorIndex = 0;
+                    boolean isPlus;
+                    if (rate > 0)
+                        isPlus = true;
+                    else
+                        isPlus = false;
+
+                    if (cursorIndex == -1)
+                        baseColor = 0x73737373;
+                    else
+                        baseColor = coCursor[cursorIndex];
+
+                    tv_rate.setTextColor(baseColor);
+                    rateCursor.setCursorState(cursorIndex, !isPlus);
+
+                    tv_rate.setText(strRate);
+                    chart.setBarSelectColor(baseColor);
                 }
             }
 
-
-            String strRate;
-            float rate = 0;
-            if (target1 == 0 || target2 == 0) {
-                strRate = "暂无数据";
-                cursorIndex = -1;
-            } else {
-                rate = (target1 - target2) / target2;
-                strRate = df_rate.format(rate);
+            if (seriesLables.size() > 2) {
+                String name3 = curveChartEntity.legend[2];
+                Float[] values3 = seriesLables.get(2);
+                Float target3 = 0f;
+                if (values3.length > index) {
+                    target3 = values3[index];
+                }
+                tv_rate.setText(df.format(target3));
+                tv_rate.setTextColor(coGroup[1]);
+                tv_target3name.setText(name3);
             }
-
-            boolean isPlus;
-            if (rate > 0)
-                isPlus = true;
-            else
-                isPlus = false;
-
-
-            if (cursorIndex == -1)
-                baseColor = 0x73737373;
-            else
-                baseColor = coCursor[cursorIndex];
-
-            tv_rate.setTextColor(baseColor);
-            rateCursor.setCursorState(cursorIndex, !isPlus);
-
-            tv_rate.setText(strRate);
-            chart.setBarSelectColor(baseColor);
-        }
     }
 }
 

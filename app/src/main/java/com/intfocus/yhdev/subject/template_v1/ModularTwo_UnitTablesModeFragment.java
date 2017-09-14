@@ -172,12 +172,10 @@ public class ModularTwo_UnitTablesModeFragment extends BaseModeFragment<ModularT
             ToastUtil.showToast(ctx, "数据实体为空");
     }
 
-
     /**
      * 切换页面的重载，优化了fragment的切换
      */
     public void switchFragment(int checkId) {
-
         for (int i = 0; i < datas.size(); i++) {
             datas.get(i).isCheck = (i == checkId);
         }
@@ -196,22 +194,22 @@ public class ModularTwo_UnitTablesModeFragment extends BaseModeFragment<ModularT
         FragmentTransaction ft = fm.beginTransaction();
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
 
-        if (!toFragment.isAdded()) {
-            // 隐藏当前的fragment，add下一个到Activity中
-            if (currFragment == null)
-                ft.add(R.id.fl_mdetal_table_cont_container,
+//        if (!toFragment.isAdded()) {
+//            // 隐藏当前的fragment，add下一个到Activity中
+//            if (currFragment == null)
+                ft.replace(R.id.fl_mdetal_table_cont_container,
                         toFragment, currentFtName).commitAllowingStateLoss();
-            else
-                ft.hide(currFragment).add(R.id.fl_mdetal_table_cont_container,
-                        toFragment, currentFtName)
-                        .commitAllowingStateLoss();
-        } else {
-            // 隐藏当前的fragment，显示下一个
-            if (currFragment == null)
-                ft.show(toFragment).commitAllowingStateLoss();
-            else
-                ft.hide(currFragment).show(toFragment).commitAllowingStateLoss();
-        }
+//            else
+//                ft.hide(currFragment).add(R.id.fl_mdetal_table_cont_container,
+//                        toFragment, currentFtName)
+//                        .commitAllowingStateLoss();
+//        } else {
+//            // 隐藏当前的fragment，显示下一个
+//            if (currFragment == null)
+//                ft.show(toFragment).commitAllowingStateLoss();
+//            else
+//                ft.hide(currFragment).show(toFragment).commitAllowingStateLoss();
+//        }
         currFragment = toFragment;
     }
 

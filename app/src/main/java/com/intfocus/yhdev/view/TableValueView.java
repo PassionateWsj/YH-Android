@@ -23,7 +23,7 @@ public class TableValueView extends View {
     private Paint textPaint;
 
     public int deviderHeight = 1;
-    public int textSize = 16;
+    public int textSize = 14;
     public int textColor = 0x73737373;
     public int deviderColor = 0x73737373;
 

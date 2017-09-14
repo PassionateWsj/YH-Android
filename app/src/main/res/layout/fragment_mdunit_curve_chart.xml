@@ -70,6 +70,7 @@
                 style="@style/tv_unit_chart_m" />
 
             <TextView
+                android:id="@+id/tv_chart_table_target3name"
                 style="@style/tv_unit_chart_m"
                 android:textSize="12sp"
                 android:text="变化率" />

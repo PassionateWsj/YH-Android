@@ -133,7 +133,7 @@ class InstituteFragment : BaseModeFragment<InstituteMode>(), InstituteAdapter.No
         if (HttpUtil.isConnected(context)) {
             if (isShowDialog) {
                 if (loadingDialog == null || !loadingDialog.isShowing) {
-                    showDialog(activity)
+                    showLoading(activity)
                 }
             }
             model.requestData(page, keyWord!!)
@@ -153,7 +153,7 @@ class InstituteFragment : BaseModeFragment<InstituteMode>(), InstituteAdapter.No
      */
     fun operatingCollection(articleId: String, favouritStatus: String) {
         if (HttpUtil.isConnected(context)) {
-            showDialog(activity)
+            showLoading(activity)
             model.operatingCollection(articleId, favouritStatus)
         } else {
             hideLoading()

@@ -1,6 +1,7 @@
 package com.intfocus.yhdev.subject.template_v1.adapter;
 
 import android.content.Context;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -77,14 +78,15 @@ public class ModularTwo_TableNameAdapter extends BaseAdapter {
 
         ModularTwo_UnitTableEntity.TableRowEntity entity = ltdata.get(position);
 
-        if (entity.sub_data == null) {
-            viewHolder.img_dot.setVisibility(View.INVISIBLE);
+        if (entity.sub_data.equals("{}")) {
+            viewHolder.img_dot.setVisibility(View.GONE);
             viewHolder.tv_name.setTextColor(defauteColor);
         } else {
             viewHolder.tv_name.setTextColor(hasSubColor);
-            viewHolder.img_dot.setVisibility(View.VISIBLE);
+            viewHolder.img_dot.setVisibility(View.GONE);
         }
         viewHolder.tv_name.setText(entity.main_data[0]);
+        viewHolder.tv_name.setGravity(Gravity.LEFT);
         return convertView;
     }
 

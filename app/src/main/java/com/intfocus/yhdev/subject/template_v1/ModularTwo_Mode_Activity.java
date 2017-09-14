@@ -46,6 +46,7 @@ public class ModularTwo_Mode_Activity extends BaseModeActivity<MeterDetalActMode
 
     @ViewInject(R.id.fl_mdetal_top_suspend_container)
     public FrameLayout suspendContainer;
+    public int suspendRootId;
 
     private FragmentManager fm;
     private FragmentTransaction ft;
@@ -101,7 +102,7 @@ public class ModularTwo_Mode_Activity extends BaseModeActivity<MeterDetalActMode
 
     private void init() {
         Intent intent = getIntent();
-        group_id = String.valueOf(intent.getStringExtra("groupID"));
+        group_id = intent.getStringExtra("group_id");
         report_id = intent.getStringExtra("objectID");
         banner_name = intent.getStringExtra("bannerName");
         rootTableListener = new RootTableCheckedChangeListener();
@@ -127,20 +128,20 @@ public class ModularTwo_Mode_Activity extends BaseModeActivity<MeterDetalActMode
         FragmentTransaction ft = fm.beginTransaction();
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
 
-        if (!toFragment.isAdded()) {
+//        if (!toFragment.isAdded()) {
             // 隐藏当前的fragment，add下一个到Activity中
-            if (currFragment == null)
-                ft.add(R.id.fl_mdetal_cont_container, toFragment, currentFtName).commitAllowingStateLoss();
-            else
-                ft.hide(currFragment).add(R.id.fl_mdetal_cont_container, toFragment, currentFtName)
-                        .commitAllowingStateLoss();
-        } else {
-            // 隐藏当前的fragment，显示下一个
-            if (currFragment == null)
-                ft.show(toFragment).commitAllowingStateLoss();
-            else
-                ft.hide(currFragment).show(toFragment).commitAllowingStateLoss();
-        }
+//            if (currFragment == null)
+                ft.replace(R.id.fl_mdetal_cont_container, toFragment, currentFtName).commitAllowingStateLoss();
+//            else
+//                ft.hide(currFragment).add(R.id.fl_mdetal_cont_container, toFragment, currentFtName)
+//                        .commitAllowingStateLoss();
+//        } else {
+//            // 隐藏当前的fragment，显示下一个
+//            if (currFragment == null)
+//                ft.show(toFragment).commitAllowingStateLoss();
+//            else
+//                ft.hide(currFragment).show(toFragment).commitAllowingStateLoss();
+//        }
 
         currFragment = toFragment;
 
