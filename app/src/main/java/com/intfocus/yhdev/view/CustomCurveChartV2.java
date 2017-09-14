@@ -364,6 +364,7 @@ public class CustomCurveChartV2 extends View implements ValueAnimator.AnimatorUp
             case MotionEvent.ACTION_DOWN:
                 break;
             case MotionEvent.ACTION_MOVE:
+                onActionUpEvent(event);
                 break;
             case MotionEvent.ACTION_UP:
                 onActionUpEvent(event);
