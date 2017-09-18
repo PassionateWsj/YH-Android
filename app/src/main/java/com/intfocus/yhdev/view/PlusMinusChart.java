@@ -131,7 +131,8 @@ public class PlusMinusChart extends View implements ValueAnimator.AnimatorUpdate
         float bottom;
 
         for (int i = 0; i < dsize; i++) {
-            float value = lt_data.get(i).data;
+            float value = Float.parseFloat(lt_data.get(i).data.replace("%", ""));
+
             float length = toX(value * (1 + (ratio - 1)));
             float y = yPoint + yScale * (i + 1) - yOffset;
             if (value < 0) {
@@ -236,8 +237,10 @@ public class PlusMinusChart extends View implements ValueAnimator.AnimatorUpdate
         datas.addAll(lt_data);
         Collections.sort(datas, new BargraphDataComparator());
 
-        float maxminus = datas.get(0).data;
-        float maxplus = datas.get(datasize - 1).data;
+
+
+        float maxminus = Float.parseFloat(datas.get(0).data.replace("%", ""));
+        float maxplus = Float.parseFloat(datas.get(datasize - 1).data.replace("%", ""));
 
         float count;
         if (maxminus < 0 || maxplus < 0) {

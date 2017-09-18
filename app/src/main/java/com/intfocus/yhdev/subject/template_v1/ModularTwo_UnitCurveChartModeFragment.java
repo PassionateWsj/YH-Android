@@ -152,8 +152,9 @@ public class ModularTwo_UnitCurveChartModeFragment extends BaseModeFragment<MDRP
                 for (int i = 0; i < dataLength; i++) {
                     String strValue = topW[i].trim();
                     strValue = strValue.replace("\"", "");
-                    if (StringUtil.isEmpty(strValue))
+                    if (StringUtil.isEmpty(strValue)) {
                         strValue = "0";
+                    }
                     Float lableV = Float.valueOf(strValue);
                     lables[i] = lableV;
                     seriesA.add(lableV);
@@ -295,6 +296,7 @@ public class ModularTwo_UnitCurveChartModeFragment extends BaseModeFragment<MDRP
 
                     tv_rate.setText(strRate);
                     chart.setBarSelectColor(baseColor);
+                    tv_target3name.setText("变化率");
                 }
             }
 

@@ -169,15 +169,12 @@ public class ModularTwo_UnitTablesContModeFragment extends BaseModeFragment<Modu
                     synchronized (this) {
                         if (fl_tableTitle_container.getChildCount() != 0) {
                             if (rect.top <= offsetTop && rect.bottom - 150 > offsetTop) {
-                                Log.i("testlog", "1");
                                 fl_tableTitle_container.removeView(suspensionView);
                                 ((ModularTwo_Mode_Activity) getActivity()).suspendContainer.addView(suspensionView);
                             }
-                        }
-                        else {
+                        } else {
                             int viewCont = ((ModularTwo_Mode_Activity) getActivity()).suspendContainer.getChildCount();
                             if (rect.top > offsetTop || rect.bottom - 150 < offsetTop && viewCont != 0) {
-                                Log.i("testlog", "2");
                                 ((ModularTwo_Mode_Activity) getActivity()).suspendContainer.removeView(suspensionView);
                                 fl_tableTitle_container.addView(suspensionView);
                             }
@@ -283,6 +280,15 @@ public class ModularTwo_UnitTablesContModeFragment extends BaseModeFragment<Modu
                 TextView textView = new TextView(ctx);
                 textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
                 textView.setText(rowDatas.get(j));
+                if (i != 0) {
+                    try {
+                        textView.setText(new JSONObject(rowDatas.get(j)).getString("value"));
+                    } catch (JSONException e) {
+                        textView.setText("00000");
+                        e.printStackTrace();
+                    }
+                }
+
                 textView.setGravity(Gravity.CENTER);
                 //设置布局
                 LinearLayout.LayoutParams textViewParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
@@ -417,12 +423,12 @@ public class ModularTwo_UnitTablesContModeFragment extends BaseModeFragment<Modu
         }
 
         public int compare(ModularTwo_UnitTableEntity.TableRowEntity obj1, ModularTwo_UnitTableEntity.TableRowEntity obj2) {
-            String strv1 = obj1.main_data[index];
-            String strv2 = obj2.main_data[index];
-
             float v1 = 0;
             float v2 = 0;
             try {
+                String strv1 = new JSONObject(obj1.main_data[index]).getString("value");
+                String strv2 = new JSONObject(obj2.main_data[index]).getString("value");
+
                 if (strv1.contains("%"))
                     v1 = new Float(strv1.substring(0, strv1.indexOf("%"))) / 100;
                 else
@@ -470,8 +476,8 @@ public class ModularTwo_UnitTablesContModeFragment extends BaseModeFragment<Modu
             String subdata = jsonObject.toString();
 
             Intent intent = new Intent(ctx, ModularTwo_SubTableActivity.class);
-            String itemName = dataEntity.data.get(index).main_data[0];
-            intent.putExtra("Title", itemName);
+            String itemData = dataEntity.data.get(index).main_data[0];
+            intent.putExtra("Title", new JSONObject(itemData).getString("value"));
             DataHolder.getInstance().setData(subdata);
             int checkId = suRootID;
             intent.putExtra("suRootID", checkId);

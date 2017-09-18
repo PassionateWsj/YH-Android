@@ -8,12 +8,13 @@
         android:id="@+id/tv_info"
         style="@style/tv_mererMinTitle_stytle"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/size_default_medium"
+        android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/space_default"
+        android:padding="10dp"
         android:paddingLeft="@dimen/space_float"
         android:background="@color/co10"
         android:text="TextView"
         android:textColor="@color/co3_syr"
         android:textSize="@dimen/font_medium"
-        android:textStyle="bold" />
+        android:textStyle="bold"/>
 </LinearLayout>

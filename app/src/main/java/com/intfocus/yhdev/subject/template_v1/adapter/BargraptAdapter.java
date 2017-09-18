@@ -24,7 +24,6 @@ import java.util.LinkedList;
 public class BargraptAdapter extends BaseAdapter {
     private Context ctx;
     private LinkedList<BargraphComparator> ltdata;
-    private DecimalFormat dataFormat;
     private Drawable herearrow;
     private int selectItemIndex = 0;
     private int defauteColor;
@@ -44,7 +43,6 @@ public class BargraptAdapter extends BaseAdapter {
         if (ltdata == null)
             return;
         this.ltdata = ltdata;
-        dataFormat = new DecimalFormat(".##%");
     }
 
     public void updateData(LinkedList<BargraphComparator> ltdata) {
@@ -98,8 +96,7 @@ public class BargraptAdapter extends BaseAdapter {
         }
 
         viewHolder.tv_name.setText(ltdata.get(position).name);
-        float percentage = ltdata.get(position).data;
-        viewHolder.tv_percentage.setText(dataFormat.format(percentage));
+        viewHolder.tv_percentage.setText(ltdata.get(position).data);
         return convertView;
     }
 

@@ -22,7 +22,6 @@ import com.google.gson.Gson
 import com.intfocus.yhdev.R
 import com.intfocus.yhdev.base.BaseModeFragment
 import com.intfocus.yhdev.dashboard.mine.activity.ShowPushMessageActivity
-import com.intfocus.yhdev.dashboard.mine.bean.UserInfoBean
 import com.intfocus.yhdev.dashboard.mine.bean.UserInfoRequest
 import com.intfocus.yhdev.data.response.BaseResult
 import com.intfocus.yhdev.data.response.mine_page.UserInfoResult
@@ -32,12 +31,10 @@ import com.intfocus.yhdev.net.ApiException
 import com.intfocus.yhdev.net.CodeHandledSubscriber
 import com.intfocus.yhdev.net.RetrofitUtil
 import com.intfocus.yhdev.setting.SettingActivity
-import com.intfocus.yhdev.util.ActionLogUtil
-import com.intfocus.yhdev.util.DisplayUtil
+import com.intfocus.yhdev.subject.WebApplicationActivity
+import com.intfocus.yhdev.util.*
 import com.intfocus.yhdev.util.ImageUtil.*
 import com.intfocus.yhdev.util.K.kUserDeviceId
-import com.intfocus.yhdev.util.ToastUtils
-import com.intfocus.yhdev.util.URLs
 import com.taobao.accs.utl.UtilityImpl.isNetworkConnected
 import com.zbl.lib.baseframe.core.Subject
 import kotlinx.android.synthetic.main.activity_dashboard.*
@@ -59,12 +56,9 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
 
     lateinit var mUserInfoSP: SharedPreferences
     lateinit var mUserSP: SharedPreferences
-    var mUserInfo: UserInfoBean? = null
-    var mUserInfoString: String? = null
     var rootView: View? = null
     var gson = Gson()
     var imageOptions: ImageOptions? = null
-    var localImageOptions: ImageOptions? = null
     var userNum: String? = null
 
     /* 请求识别码 */
@@ -142,9 +136,10 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
         rl_favorite.setOnClickListener { startFavoriteActivity() }
         rl_message.setOnClickListener { startMessageActivity() }
         rl_logout.setOnClickListener { showLogoutPopupWindow(this.context) }
+        rl_user_location.setOnClickListener { startUserLocationPage() }
     }
 
-    fun refreshData() {
+    private fun refreshData() {
         RetrofitUtil.getHttpService(ctx).getUserInfo(userNum)
                 .compose(RetrofitUtil.CommonOptions<UserInfoResult>())
                 .subscribe(object : CodeHandledSubscriber<UserInfoResult>() {
@@ -178,7 +173,7 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
         }
     }
 
-    fun startPassWordAlterActivity() {
+    private fun startPassWordAlterActivity() {
         var intent = Intent(activity, PassWordAlterActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
         startActivity(intent)
@@ -188,34 +183,45 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
         ActionLogUtil.actionLog(ctx, logParams)
     }
 
-    fun startFavoriteActivity() {
+    private fun startFavoriteActivity() {
         var intent = Intent(activity, FavoriteActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
         startActivity(intent)
     }
 
-    fun startMessageActivity() {
+    private fun startMessageActivity() {
         var intent = Intent(activity, ShowPushMessageActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
         startActivity(intent)
     }
 
-    fun startIssueActivity() {
+    private fun startIssueActivity() {
         var intent = Intent(activity, FeedbackActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
         startActivity(intent)
     }
 
-    fun startSettingActivity() {
+    private fun startSettingActivity() {
         var intent = Intent(activity, SettingActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+        startActivity(intent)
+    }
+
+    private fun startUserLocationPage() {
+        var intent = Intent(activity, WebApplicationActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+        intent.putExtra(URLs.kBannerName, "归属部门")
+        intent.putExtra(URLs.kLink, String.format("%s/websites/yonghuxinxiziweihu/home/apply.html", K.kBaseUrl))
+        intent.putExtra(URLs.kObjectId, "-1")
+        intent.putExtra(URLs.kObjectType, "-1")
+        intent.putExtra(URLs.kTemplatedId, "-1")
         startActivity(intent)
     }
 
     /**
      * 退出登录选择窗
      */
-    internal fun showLogoutPopupWindow(ctx: Context) {
+    private fun showLogoutPopupWindow(ctx: Context) {
         val contentView = LayoutInflater.from(ctx).inflate(R.layout.popup_logout, null)
         //设置弹出框的宽度和高度
         var popupWindow = PopupWindow(contentView,
@@ -248,7 +254,7 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
     /**
      * 退出登录
      */
-    fun logout() {
+    private fun logout() {
         // 判断有无网络
         if (!isNetworkConnected(ctx)) {
             ToastUtils.show(ctx, "未连接网络, 无法退出")
@@ -324,7 +330,7 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
     /**
      * 显示头像选择菜单
      */
-    internal fun showIconSelectPopWindow(ctx: Context) {
+    private fun showIconSelectPopWindow(ctx: Context) {
         val contentView = LayoutInflater.from(ctx).inflate(R.layout.popup_mine_icon_select, null)
         //设置弹出框的宽度和高度
         var popupWindow = PopupWindow(contentView,

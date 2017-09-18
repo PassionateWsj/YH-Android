@@ -31,17 +31,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
-            <!--<RadioButton-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:background="@drawable/selector_mdetal_rbtn"-->
-            <!--android:checked="true"-->
-            <!--android:text="11111111111111111111"-->
-            <!--android:textColor="@color/color_mdetal_rbtn"-->
-            <!--tools:layout_editor_absoluteX="0dp"-->
-            <!--tools:layout_editor_absoluteY="200dp" />-->
-
-
         </LinearLayout>
     </com.intfocus.yhdev.view.RootScrollView>
 

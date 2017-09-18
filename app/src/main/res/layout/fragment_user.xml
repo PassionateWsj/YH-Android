@@ -28,6 +28,7 @@
             android:layout_height="10dp"/>
 
         <RelativeLayout
+            android:id="@+id/rl_user_location"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:background="@color/co10_syr">

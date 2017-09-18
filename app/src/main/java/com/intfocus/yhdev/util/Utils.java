@@ -32,34 +32,6 @@ import java.util.regex.Pattern;
 
 public class Utils {
     /**
-     * 从asset路径下读取对应文件转String输出
-     *
-     * @param mContext
-     * @return
-     */
-    public static String getJson(Context mContext, String fileName) {
-        String newString = "";
-        try {
-            InputStreamReader isr = new InputStreamReader(mContext.getAssets().open(fileName), "UTF-8");
-            BufferedReader br = new BufferedReader(isr);
-            String line;
-            StringBuilder builder = new StringBuilder();
-            while ((line = br.readLine()) != null) {
-                builder.append(line);
-            }
-            br.close();
-            isr.close();
-//            JSONObject testjson = new JSONObject(builder.toString());//builder读取了JSON中的数据。
-            newString = builder.toString();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return newString;
-    }
-
-
-    /**
      * 获得屏幕宽度
      *
      * @param context

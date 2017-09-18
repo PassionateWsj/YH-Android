@@ -3,25 +3,43 @@ package com.intfocus.yhdev.base;
 import android.Manifest;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.util.ArrayMap;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import com.intfocus.yhdev.CommentActivity;
 import com.intfocus.yhdev.R;
 import com.intfocus.yhdev.constant.Permissions;
+import com.intfocus.yhdev.subject.SubjectActivity;
+import com.intfocus.yhdev.util.ActionLogUtil;
+import com.intfocus.yhdev.util.ImageUtil;
 import com.intfocus.yhdev.util.LoadingUtils;
 import com.intfocus.yhdev.util.ToastUtils;
+import com.intfocus.yhdev.util.URLs;
+import com.umeng.socialize.ShareAction;
+import com.umeng.socialize.UMShareListener;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.media.UMImage;
 import com.zbl.lib.baseframe.core.AbstractActivity;
 import com.zbl.lib.baseframe.core.ActManager;
 import com.zbl.lib.baseframe.core.Subject;
+
+import org.json.JSONObject;
+import org.xutils.x;
 
 import java.util.List;
 
@@ -43,12 +61,15 @@ public abstract class BaseModeActivity<T extends Subject> extends AbstractActivi
      * Header的根布局
      */
     protected ViewStub stub_header;
+
     /**
      * 左边的TextView
      */
     protected TextView tv_left;
     protected TextView tv_title;
     protected LinearLayout topRightLayout;
+
+    protected PopupWindow popupWindow;
 
     /**
      * 容器
@@ -175,13 +196,6 @@ public abstract class BaseModeActivity<T extends Subject> extends AbstractActivi
 
     //TODO =====================================界面处理=====================================================
 
-    /**
-     * 返回键回掉方法
-     */
-    protected void onBack() {
-        ActManager.getActManager().finishActivity();
-    }
-
     @Override
     public int setLayoutRes() {
         return 0;
@@ -230,6 +244,7 @@ public abstract class BaseModeActivity<T extends Subject> extends AbstractActivi
         tv_left.setOnClickListener(viewListener);
         tv_title = (TextView) findViewById(R.id.tv_baseUI_title);
         topRightLayout = (LinearLayout) findViewById(R.id.ll_baseUI_title_RightView);
+        topRightLayout.setOnClickListener(viewListener);
     }
 
     class BaseUIonClick implements View.OnClickListener {
@@ -240,8 +255,41 @@ public abstract class BaseModeActivity<T extends Subject> extends AbstractActivi
                 case R.id.tv_baseUI_back:
                     onBack();
                     break;
+
+                case R.id.ll_baseUI_title_RightView:
+                    showComplaintsPopWindow(v);
+                    break;
             }
         }
+    }
+
+    /**
+     * 返回键回掉方法
+     */
+    protected void onBack() {
+        ActManager.getActManager().finishActivity();
+    }
+
+    /**
+     * 显示菜单
+     *
+     * @param clickView
+     */
+    void showComplaintsPopWindow(View clickView) {
+        View contentView = LayoutInflater.from(this).inflate(R.layout.pop_menu_v2, null);
+        x.view().inject(this, contentView);
+        //设置弹出框的宽度和高度
+        popupWindow = new PopupWindow(contentView,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+        popupWindow.setFocusable(true);// 取得焦点
+        //注意  要是点击外部空白处弹框消息  那么必须给弹框设置一个背景色  不然是不起作用的
+        popupWindow.setBackgroundDrawable(new BitmapDrawable());
+        //点击外部消失
+        popupWindow.setOutsideTouchable(true);
+        //设置可以点击
+        popupWindow.setTouchable(true);
+        popupWindow.showAsDropDown(clickView);
     }
 
     /**
@@ -307,7 +355,6 @@ public abstract class BaseModeActivity<T extends Subject> extends AbstractActivi
 
                     @Override
                     public void noPermission(Boolean hasPermanentlyDenied) {
-//                        noticeLocationListener(null);
                         if (hasPermanentlyDenied) {
                             //只是提供跳转系统设置的提示 系统返回后不做检查处理
 //                            alertAppSetPermission(getString(R.string.permission_storage_deny_again));
@@ -318,8 +365,6 @@ public abstract class BaseModeActivity<T extends Subject> extends AbstractActivi
                     }
                 });
     }
-
-    // ------------------------------------------------------------------------------
 
     /**
      * 隐藏软件盘
@@ -350,21 +395,6 @@ public abstract class BaseModeActivity<T extends Subject> extends AbstractActivi
         }
     }
 
-//    /**
-//     * 显示Loding
-//     */
-//    public void showProgress() {
-//        progressBar.setVisibility(View.VISIBLE);
-//    }
-//
-//    /**
-//     * 隐藏Loding
-//     */
-//    public void dismissProgress() {
-//        progressBar.setVisibility(View.GONE);
-//    }
-
-    //===================================================================================================
     @Override
     protected void onDestroy() {
         super.onDestroy();

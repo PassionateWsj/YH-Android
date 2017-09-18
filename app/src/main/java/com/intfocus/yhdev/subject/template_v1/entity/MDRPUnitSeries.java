@@ -8,5 +8,4 @@ import java.io.Serializable;
 public class MDRPUnitSeries implements Serializable {
     public float value;
     public int color;
-
 }

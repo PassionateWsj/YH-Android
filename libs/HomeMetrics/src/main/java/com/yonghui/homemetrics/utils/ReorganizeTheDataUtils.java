@@ -80,7 +80,7 @@ public class ReorganizeTheDataUtils {
 
         if (isAsc) {
             for (int i = 0; i < datas.size(); i++) {
-                for (int j = 0; j < datas.size() - i - 1; j++) {
+                for (int j = 0; j < datas.size() - i - 1;  j++) {
                     if (datas.get(j).items.get(position).main_data.getData()
                             > datas.get(j + 1).items.get(position).main_data.getData()) {
                         Product product = datas.get(j);

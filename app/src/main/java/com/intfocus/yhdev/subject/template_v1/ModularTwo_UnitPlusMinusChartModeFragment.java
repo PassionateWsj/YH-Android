@@ -117,7 +117,7 @@ public class ModularTwo_UnitPlusMinusChartModeFragment extends BaseModeFragment 
                 break;
         }
         adapter.updateData(lt_data);
-        ArrayList<Float> chartData = new ArrayList<>();
+        ArrayList<String> chartData = new ArrayList<>();
         for (BargraphComparator bargraphComparator : lt_data) {
             chartData.add(bargraphComparator.data);
         }
@@ -131,7 +131,7 @@ public class ModularTwo_UnitPlusMinusChartModeFragment extends BaseModeFragment 
         ArrayList<MDRPUnitBargraph.Series.Data> data_value = entityData.series.data;
         for (int i = 0; i < data_name.length; i++) {
             String name = data_name[i];
-            Float value = data_value.get(i).value;
+            String value = data_value.get(i).value;
             int color = data_value.get(i).color;
             lt_data.add(new BargraphComparator(name, value, color));
         }

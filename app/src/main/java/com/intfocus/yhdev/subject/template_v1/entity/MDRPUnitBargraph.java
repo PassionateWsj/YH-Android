@@ -18,7 +18,7 @@ public class MDRPUnitBargraph {
 
 
         public static class Data {
-            public float value;
+            public String value;
             public int color;
         }
     }

@@ -267,6 +267,9 @@ public class CustomCurveChartV2 extends View implements ValueAnimator.AnimatorUp
         int dsize = data.length;
         int loopingcont = xsize > dsize ? dsize : xsize;
         for (int i = 0; i < loopingcont; i++) {
+            if (data[i] == 0f) {
+                continue;
+            }
             float yPoint = toY(data[i]);
             if (i == 0) {
                 path.moveTo(xPoint, yPoint);
