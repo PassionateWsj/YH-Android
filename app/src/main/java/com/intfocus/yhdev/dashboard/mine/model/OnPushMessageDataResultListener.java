@@ -16,5 +16,6 @@ import java.util.List;
 
 public interface OnPushMessageDataResultListener {
     void onPushMessageDataResultSuccess(List<PushMessageBean> data);
+
     void onPushMessageDataResultFailure();
 }

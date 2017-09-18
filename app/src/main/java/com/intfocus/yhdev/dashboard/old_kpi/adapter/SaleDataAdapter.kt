@@ -50,7 +50,7 @@ class SaleDataAdapter(ctx: Context, internal var fm: FragmentManager, internal v
         when (holder.entity.dashboard_type) {
             "line", "bar" -> lparams = ViewGroup.LayoutParams(viewWidth, viewHeigt * 2)
             "ring" -> lparams = ViewGroup.LayoutParams(viewWidth, viewHeigt)
-             else -> lparams = ViewGroup.LayoutParams(viewWidth, viewHeigt)
+            else -> lparams = ViewGroup.LayoutParams(viewWidth, viewHeigt)
         }
         holder.layout.layoutParams = lparams
     }

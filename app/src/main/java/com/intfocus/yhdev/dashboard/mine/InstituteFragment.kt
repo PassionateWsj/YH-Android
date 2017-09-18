@@ -133,7 +133,7 @@ class InstituteFragment : BaseModeFragment<InstituteMode>(), InstituteAdapter.No
         if (HttpUtil.isConnected(context)) {
             if (isShowDialog) {
                 if (loadingDialog == null || !loadingDialog.isShowing) {
-                    showDialog(activity)
+                    showLoading(activity)
                 }
             }
             model.requestData(page, keyWord!!)
@@ -153,7 +153,7 @@ class InstituteFragment : BaseModeFragment<InstituteMode>(), InstituteAdapter.No
      */
     fun operatingCollection(articleId: String, favouritStatus: String) {
         if (HttpUtil.isConnected(context)) {
-            showDialog(activity)
+            showLoading(activity)
             model.operatingCollection(articleId, favouritStatus)
         } else {
             hideLoading()
@@ -194,7 +194,7 @@ class InstituteFragment : BaseModeFragment<InstituteMode>(), InstituteAdapter.No
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun setData(result: CollectionRquest) {
         if (result.isSuccess) {
-            ToastUtils.show(context, result!!.collectionBean!!.message.toString(),ToastColor.SUCCESS)
+            ToastUtils.show(context, result!!.collectionBean!!.message.toString(), ToastColor.SUCCESS)
             getData(true)
         } else {
             ToastUtils.show(context, result!!.errorMsg)

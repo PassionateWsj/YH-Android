@@ -16,7 +16,7 @@ import java.util.List;
  * Created by liuruilin on 2017/5/15.
  */
 
-public abstract class ContentCommonAdapter <T> extends BaseAdapter {
+public abstract class ContentCommonAdapter<T> extends BaseAdapter {
     protected Context context;
     protected List<T> datas;
     protected LayoutInflater inflater;
@@ -55,8 +55,7 @@ public abstract class ContentCommonAdapter <T> extends BaseAdapter {
             holder.mRecyclerView.setLayoutManager(mLayoutManager);
             convertView.setTag(holder);
             convert(true, holder.mRecyclerView, getItem(position));
-        }
-        else {
+        } else {
             holder = (ViewHolder) convertView.getTag();
             convert(false, holder.mRecyclerView, getItem(position));
         }
@@ -64,15 +63,15 @@ public abstract class ContentCommonAdapter <T> extends BaseAdapter {
         return convertView;
     }
 
-    public void setData(List<T> datas){
-        this.datas=datas;
+    public void setData(List<T> datas) {
+        this.datas = datas;
         this.notifyDataSetChanged();
     }
 
     public abstract void convert(boolean isNew, RecyclerView recyclerView, T t);
 
     //清理数据
-    public void onDestroy(){
+    public void onDestroy() {
 
     }
 

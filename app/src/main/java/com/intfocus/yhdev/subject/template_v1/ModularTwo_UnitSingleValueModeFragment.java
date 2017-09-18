@@ -25,6 +25,7 @@ public class ModularTwo_UnitSingleValueModeFragment extends BaseModeFragment {
     private static final String ARG_PARAM1 = "SingleValueParam";
     public static String mCurrentParam;
     private String mParam1;
+    private int showCount = 0;
 
     private View rootView;
 
@@ -46,6 +47,7 @@ public class ModularTwo_UnitSingleValueModeFragment extends BaseModeFragment {
 
     private String diffValue;
     private String diffRate;
+    private float mainValue;
     private boolean isSwitch;
 
     public ModularTwo_UnitSingleValueModeFragment() {
@@ -89,18 +91,18 @@ public class ModularTwo_UnitSingleValueModeFragment extends BaseModeFragment {
 
         tv_d1name.setText(valueData.main_data.name);
         tv_d2name.setText(valueData.sub_data.name);
-        float maindata = Float.parseFloat(valueData.main_data.data.replace("%", ""));
-        tv_d1.setText(df.format(maindata));
+        mainValue = Float.parseFloat(valueData.main_data.data.replace("%", ""));
+        tv_d1.setText(df.format(mainValue));
         float subdata = Float.parseFloat(valueData.sub_data.data.replace("%", ""));
         tv_d2.setText(df.format(subdata));
 
         tv_d1.setTextColor(color);
         tv_rate.setTextColor(color);
-        float rate = (maindata - subdata) / subdata;
-        float diff = maindata - subdata;
+        float rate = (mainValue - subdata) / subdata;
+        float diff = mainValue - subdata;
         diffValue = df.format(diff);
         diffRate = new DecimalFormat(".##%").format(rate);
-        tv_rate.setText(diffRate);
+        tv_rate.setText(mainValue + "");
 
         float absmv = Math.abs(rate);
         boolean isPlus;
@@ -123,10 +125,25 @@ public class ModularTwo_UnitSingleValueModeFragment extends BaseModeFragment {
 
     @Event(R.id.tv_singlevalue_ratio)
     private void onViewClick(View view) {
-        if (isSwitch)
-            tv_rate.setText(diffRate);
-        else
-            tv_rate.setText(diffValue);
-        isSwitch = !isSwitch;
+        switch (showCount) {
+            case 0:
+                tv_rate.setText(diffValue);
+                break;
+
+            case 1:
+                tv_rate.setText(diffRate);
+                break;
+
+            case 2:
+                tv_rate.setText(mainValue + "");
+                showCount = -1;
+                break;
+
+            default:
+                tv_rate.setText(mainValue + "");
+                break;
+        }
+
+        showCount++;
     }
 }

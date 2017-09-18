@@ -17,7 +17,7 @@ import com.intfocus.yhdev.dashboard.work_box.WorkBoxFragment
 
 class DashboardFragmentAdapter(fragmentManager: FragmentManager) : FragmentPagerAdapter(fragmentManager) {
     private val PAGER_COUNT = 4
-//    private var mKpiFragment = KpiFragment()
+    //    private var mKpiFragment = KpiFragment()
     private var mMeterFragment = HomeFragment()
     private var mAnalysisFragment = ReportFragment()
     private var mAppFragment = WorkBoxFragment()

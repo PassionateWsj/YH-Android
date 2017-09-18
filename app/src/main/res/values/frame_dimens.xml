@@ -7,6 +7,7 @@
     <!-- =======================================默认尺寸============================== -->
     <dimen name="size_default">40dp</dimen>
     <dimen name="size_default_small">32dp</dimen>
+    <dimen name="size_table_small">36dp</dimen>
     <dimen name="size_default_xsmall">44dp</dimen>
     <dimen name="size_default_medium">46dp</dimen>
     <dimen name="size_default_large">50dp</dimen>

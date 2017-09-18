@@ -46,7 +46,6 @@ public class Permissions {
     permission:android.permission.READ_CELL_BROADCASTS*/
 
 
-
     //Dangerous Permission，一般是涉及到用户隐私的，需要用户进行授权
     public static final String WRITE_CONTACTS = "android.permission.WRITE_CONTACTS";
     public static final String GET_ACCOUNTS = "android.permission.GET_ACCOUNTS";
@@ -75,30 +74,29 @@ public class Permissions {
     public static final String READ_CELL_BROADCASTS = "android.permission.READ_CELL_BROADCASTS";
 
 
-
-    public static final int WRITE_CONTACTS_CODE= 0x1601;
-    public static final int GET_ACCOUNTS_CODE= 0x1602;
-    public static final int READ_CONTACTS_CODE= 0x1603;
-    public static final int READ_CALL_LOG_CODE= 0x1604;
-    public static final int READ_PHONE_STATE_CODE= 0x1605;
-    public static final int CALL_PHONE_CODE= 0x1606;
-    public static final int WRITE_CALL_LOG_CODE= 0x1607;
-    public static final int USE_SIP_CODE= 0x1608;
-    public static final int PROCESS_OUTGOING_CALLS_CODE= 0x1609;
-    public static final int ADD_VOICEMAIL_CODE= 0x1610;
-    public static final int READ_CALENDAR_CODE= 0x1611;
-    public static final int WRITE_CALENDAR_CODE= 0x1612;
-    public static final int CAMERA_CODE= 0x1613;
-    public static final int BODY_SENSORS_CODE= 0x1614;
-    public static final int ACCESS_FINE_LOCATION_CODE= 0x1615;
-    public static final int ACCESS_COARSE_LOCATION_CODE= 0x1616;
-    public static final int READ_EXTERNAL_STORAGE_CODE= 0x1617;
-    public static final int WRITE_EXTERNAL_STORAGE_CODE= 0x1618;
-    public static final int RECORD_AUDIO_CODE= 0x1619;
-    public static final int READ_SMS_CODE= 0x1620;
-    public static final int RECEIVE_WAP_PUSH_CODE= 0x1621;
-    public static final int RECEIVE_MMS_CODE= 0x1622;
-    public static final int RECEIVE_SMS_CODE= 0x1623;
-    public static final int SEND_SMS_CODE= 0x1624;
-    public static final int READ_CELL_BROADCASTS_CODE= 0x1625;
+    public static final int WRITE_CONTACTS_CODE = 0x1601;
+    public static final int GET_ACCOUNTS_CODE = 0x1602;
+    public static final int READ_CONTACTS_CODE = 0x1603;
+    public static final int READ_CALL_LOG_CODE = 0x1604;
+    public static final int READ_PHONE_STATE_CODE = 0x1605;
+    public static final int CALL_PHONE_CODE = 0x1606;
+    public static final int WRITE_CALL_LOG_CODE = 0x1607;
+    public static final int USE_SIP_CODE = 0x1608;
+    public static final int PROCESS_OUTGOING_CALLS_CODE = 0x1609;
+    public static final int ADD_VOICEMAIL_CODE = 0x1610;
+    public static final int READ_CALENDAR_CODE = 0x1611;
+    public static final int WRITE_CALENDAR_CODE = 0x1612;
+    public static final int CAMERA_CODE = 0x1613;
+    public static final int BODY_SENSORS_CODE = 0x1614;
+    public static final int ACCESS_FINE_LOCATION_CODE = 0x1615;
+    public static final int ACCESS_COARSE_LOCATION_CODE = 0x1616;
+    public static final int READ_EXTERNAL_STORAGE_CODE = 0x1617;
+    public static final int WRITE_EXTERNAL_STORAGE_CODE = 0x1618;
+    public static final int RECORD_AUDIO_CODE = 0x1619;
+    public static final int READ_SMS_CODE = 0x1620;
+    public static final int RECEIVE_WAP_PUSH_CODE = 0x1621;
+    public static final int RECEIVE_MMS_CODE = 0x1622;
+    public static final int RECEIVE_SMS_CODE = 0x1623;
+    public static final int SEND_SMS_CODE = 0x1624;
+    public static final int READ_CELL_BROADCASTS_CODE = 0x1625;
 }

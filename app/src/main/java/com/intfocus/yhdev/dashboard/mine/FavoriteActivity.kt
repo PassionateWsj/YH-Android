@@ -136,7 +136,7 @@ class FavoriteActivity : RefreshActivity(), InstituteAdapter.NoticeItemListener 
 
                     override fun onBusinessNext(data: BaseResult) {
                         getData(true)
-                        ToastUtils.show(mActivity, data.message + "",ToastColor.SUCCESS)
+                        ToastUtils.show(mActivity, data.message + "", ToastColor.SUCCESS)
                     }
                 })
     }
@@ -144,7 +144,7 @@ class FavoriteActivity : RefreshActivity(), InstituteAdapter.NoticeItemListener 
     override fun itemClick(instituteDataBean: InstituteDataBean) {
         var intent = Intent(mActivity, WebApplicationActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-        var link = String.format("%s/mobile/v2/user/%s/article/%s", K.kBaseUrl, mUserSP.getString(K.kUserId,"0").toString(), instituteDataBean!!.acticleId.toString())
+        var link = String.format("%s/mobile/v2/user/%s/article/%s", K.kBaseUrl, mUserSP.getString(K.kUserId, "0").toString(), instituteDataBean!!.acticleId.toString())
         intent.putExtra(URLs.kBannerName, instituteDataBean!!.title.toString())
         intent.putExtra(URLs.kLink, link)
         startActivity(intent)

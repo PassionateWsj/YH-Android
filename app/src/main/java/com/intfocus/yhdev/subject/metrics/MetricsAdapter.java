@@ -58,12 +58,12 @@ public class MetricsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         if (items.size() == 6) {
             viewHolder.ll6.setVisibility(View.VISIBLE);
             Item item = items.get(5);
-                    viewHolder.ll6.setBackgroundResource(item.isSelected ?
-                            R.drawable.background_square_green_boder_white :
-                            R.drawable.background_square_black_boder_white);
-                    viewHolder.ll6.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
+            viewHolder.ll6.setBackgroundResource(item.isSelected ?
+                    R.drawable.background_square_green_boder_white :
+                    R.drawable.background_square_black_boder_white);
+            viewHolder.ll6.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
                     mLastTime = mCurTime;
                     mCurTime = System.currentTimeMillis();
                     if (mCurTime - mLastTime < DOUBLE_CLICK_TIME) {
@@ -239,13 +239,13 @@ public class MetricsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     public int getArrowImg(Item item) {
         if ("up".equalsIgnoreCase(item.state.getArrow())) {
             switch (item.state.getColor()) {
-                case "#F4BC45" :
+                case "#F4BC45":
                     return R.drawable.arrow_yellow_up;
 
-                case "#F57685" :
+                case "#F57685":
                     return R.drawable.arrow_red_up;
 
-                case "#91C941" :
+                case "#91C941":
                     return R.drawable.arrow_green_up;
 
                 default:
@@ -253,13 +253,13 @@ public class MetricsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             }
         } else {
             switch (item.state.getColor()) {
-                case "#F4BC45" :
+                case "#F4BC45":
                     return R.drawable.arrow_yellow_down;
 
-                case "#F57685" :
+                case "#F57685":
                     return R.drawable.arrow_red_down;
 
-                case "#91C941" :
+                case "#91C941":
                     return R.drawable.arrow_green_down;
 
                 default:

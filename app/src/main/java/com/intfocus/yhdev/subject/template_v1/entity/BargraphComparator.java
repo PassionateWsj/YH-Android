@@ -6,10 +6,10 @@ package com.intfocus.yhdev.subject.template_v1.entity;
  */
 public class BargraphComparator {
     public String name;
-    public float data;
+    public String data;
     public int color;
 
-    public BargraphComparator(String name, float data, int color) {
+    public BargraphComparator(String name, String data, int color) {
         this.name = name;
         this.data = data;
         this.color = color;

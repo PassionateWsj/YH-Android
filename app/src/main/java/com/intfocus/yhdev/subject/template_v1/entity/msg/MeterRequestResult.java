@@ -9,8 +9,8 @@ import java.util.ArrayList;
  * Created by zbaoliang on 17-4-28.
  */
 public class MeterRequestResult {
-    public boolean isSuccress ;
-    public int stateCode ;
+    public boolean isSuccress;
+    public int stateCode;
     public ArrayList<MererEntity> topDatas;
     public ArrayList<MererEntity> bodyDatas;
 

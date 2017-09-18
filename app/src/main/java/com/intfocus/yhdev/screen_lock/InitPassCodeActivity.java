@@ -67,7 +67,7 @@ public class InitPassCodeActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_input_passcode);
 
-        mMyApp = (YHApplication)this.getApplicationContext();
+        mMyApp = (YHApplication) this.getApplicationContext();
         mContext = InitPassCodeActivity.this;
         stringBuilder = new StringBuilder();
 

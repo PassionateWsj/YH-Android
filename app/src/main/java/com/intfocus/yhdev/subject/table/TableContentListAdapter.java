@@ -38,8 +38,7 @@ public class TableContentListAdapter extends ContentCommonAdapter<List<MainData>
         if (isNew) {
             TableContentItemAdapter adapter = new TableContentItemAdapter(context, heads, mainData, rowHeight, listener);
             recyclerView.setAdapter(adapter);
-        }
-        else {
+        } else {
             TableContentItemAdapter adapter = (TableContentItemAdapter) recyclerView.getAdapter();
             adapter.setData(heads, mainData, rowHeight);
         }

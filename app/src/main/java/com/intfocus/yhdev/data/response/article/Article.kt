@@ -11,7 +11,7 @@ import com.intfocus.yhdev.data.response.BaseResult
 class ArticleResult : BaseResult() {
     @SerializedName("data")
     var data: List<InstituteDataBean> = listOf()
-    
+
     var current_page: Int = 0
     var page_size: Int = 0
     var total_count: Int = 0

@@ -42,7 +42,7 @@ public class SSLSocketFactoryCompat extends SSLSocketFactory {
                 /* set up reasonable cipher suites */
                 if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
                     // choose known secure cipher suites
-                    SSLSocketFactoryCompat.cipherSuites =concat(socket.getSupportedCipherSuites(),socket.getEnabledCipherSuites());
+                    SSLSocketFactoryCompat.cipherSuites = concat(socket.getSupportedCipherSuites(), socket.getEnabledCipherSuites());
                 }
             }
         } catch (IOException e) {

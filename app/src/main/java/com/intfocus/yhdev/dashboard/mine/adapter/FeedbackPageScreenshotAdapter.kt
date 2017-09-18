@@ -51,14 +51,14 @@ class FeedbackPageScreenshotAdapter(val mContext: Context, val listener: Screens
                 setAddScreenshotView(holder)
                 holder!!.rlFeedbackPageScreenshotContainer.visibility = View.GONE
                 for (file in mData) {
-                    LogUtil.d("hjjzz","1:::"+file.path)
+                    LogUtil.d("hjjzz", "1:::" + file.path)
                 }
 
             }
             position == itemCount - 1 -> {
                 setAddScreenshotView(holder)
                 for (file in mData) {
-                    LogUtil.d("hjjzz","2:::"+file.path)
+                    LogUtil.d("hjjzz", "2:::" + file.path)
                 }
             }
             else -> {

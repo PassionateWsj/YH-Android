@@ -14,7 +14,7 @@ import com.intfocus.yhdev.view.MyGridView
  * Created by liuruilin on 2017/6/15.
  */
 class AppListAdapter(val ctx: Context, var appListDatas: List<ListGroupBean>?)
-                                    : RecyclerView.Adapter<AppListAdapter.AppListViewHolder>() {
+    : RecyclerView.Adapter<AppListAdapter.AppListViewHolder>() {
 
     var inflater = LayoutInflater.from(ctx)
 
@@ -32,7 +32,7 @@ class AppListAdapter(val ctx: Context, var appListDatas: List<ListGroupBean>?)
         return if (appListDatas == null) 0 else appListDatas!!.size
     }
 
-    class AppListViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+    class AppListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var tvAppListTitle = itemView.findViewById(R.id.tv_app_list_title) as TextView
         var gvAppListItem = itemView.findViewById(R.id.gv_app_list_item) as MyGridView
     }

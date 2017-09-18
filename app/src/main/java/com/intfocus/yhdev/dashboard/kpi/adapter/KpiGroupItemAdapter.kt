@@ -27,7 +27,7 @@ class KpiGroupItemAdapter(var ctx: Context, internal var fm: FragmentManager, in
     init {
         val sw = PhoneUtil.getScreenWidth(ctx)
         view2width = PhoneUtil.dip2px(ctx, 350.toFloat())
-        viewWidth = sw/2
+        viewWidth = sw / 2
         viewHeight = (viewWidth * 0.8).toInt()
     }
 

@@ -327,7 +327,7 @@ public class TableActivity extends BaseActivity implements ColumAdapter.ColumnLi
                         @Override
                         public void onClick(View view) {
                             sort(finalValuePosition, finalTextViewPosition);
-                            toast( head.getValue() + ":排序",ToastColor.SUCCESS);
+                            toast(head.getValue() + ":排序", ToastColor.SUCCESS);
                         }
                     });
                     textViews.add(textView);
@@ -1106,7 +1106,9 @@ public class TableActivity extends BaseActivity implements ColumAdapter.ColumnLi
      */
     public void actionShare2Weixin() {
         Bitmap bmpScrennShot = ImageUtil.takeScreenShot(TableActivity.this);
-        if (bmpScrennShot == null) {toast("截图失败");}
+        if (bmpScrennShot == null) {
+            toast("截图失败");
+        }
         UMImage image = new UMImage(this, bmpScrennShot);
         new ShareAction(this)
                 .withText("截图分享")
@@ -1119,10 +1121,12 @@ public class TableActivity extends BaseActivity implements ColumAdapter.ColumnLi
 
     private UMShareListener umShareListener = new UMShareListener() {
         @Override
-        public void onStart(SHARE_MEDIA platform) {}
+        public void onStart(SHARE_MEDIA platform) {
+        }
 
         @Override
-        public void onResult(SHARE_MEDIA platform) {}
+        public void onResult(SHARE_MEDIA platform) {
+        }
 
         @Override
         public void onError(SHARE_MEDIA platform, Throwable t) {
@@ -1133,7 +1137,8 @@ public class TableActivity extends BaseActivity implements ColumAdapter.ColumnLi
         }
 
         @Override
-        public void onCancel(SHARE_MEDIA platform) {}
+        public void onCancel(SHARE_MEDIA platform) {
+        }
     };
 
     @Override

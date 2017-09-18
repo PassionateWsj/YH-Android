@@ -127,7 +127,7 @@ public class ApiHelper {
     public static boolean reportData(Context context, String groupID, String templateID, String reportID) {
 //        String urlString = String.format(K.kReportDataAPIPath, K.kBaseUrl, groupID, templateID, reportID);
         // %s/api/v1.1/report/data?api_token=%s&group_id=%s&template_id=%s&report_id=%s&disposition=zip
-        String urlString = String.format(K.KReportZipData, K.kBaseUrl, URLs.MD5(K.ANDROID_API_KEY + K.KReportBaseApi  + K.ANDROID_API_KEY), groupID, templateID, reportID);
+        String urlString = String.format(K.KReportZipData, K.kBaseUrl, URLs.MD5(K.ANDROID_API_KEY + K.KReportBaseApi + K.ANDROID_API_KEY), groupID, templateID, reportID);
         String assetsPath = FileUtil.sharedPath(context);
         String headerPath = String.format("%s/%s", assetsPath, K.kCachedHeaderConfigFileName);
         File headerFile = new File(headerPath);
@@ -575,6 +575,6 @@ public class ApiHelper {
     }
 
     public static String checkApiToken(String url) {
-        return URLs.MD5(K.ANDROID_API_KEY + url + K.ANDROID_API_KEY );
+        return URLs.MD5(K.ANDROID_API_KEY + url + K.ANDROID_API_KEY);
     }
 }

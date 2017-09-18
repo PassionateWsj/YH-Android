@@ -36,7 +36,7 @@ class PushMessage {
     var debug_timestamp: String? = null
     var body_title: String? = null
     var body_text: String? = null
-    var is_new_msg:Boolean = true
+    var is_new_msg: Boolean = true
 
 }
 

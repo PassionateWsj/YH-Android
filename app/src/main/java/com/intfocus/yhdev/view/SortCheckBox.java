@@ -10,6 +10,9 @@ import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.Rect;
 import android.support.annotation.Nullable;
+import android.text.Layout;
+import android.text.StaticLayout;
+import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -24,6 +27,7 @@ import com.intfocus.yhdev.util.DisplayUtil;
 public class SortCheckBox extends View {
     private Context ctx;
     private Paint paint;
+    private TextPaint mTextPaint;
 
     private int sort_upicon = 0;
     private int sort_downicon = 0;
@@ -52,6 +56,8 @@ public class SortCheckBox extends View {
     private float textWidth;
     private float textHeight;
 
+    private int boxWidth;
+
     private PointF originP;
     private Bitmap mBitmap;
 
@@ -59,6 +65,10 @@ public class SortCheckBox extends View {
 
     public void setText(String text) {
         this.text = text;
+    }
+
+    public void setBoxWidth(int w) {
+        this.boxWidth = w;
     }
 
     public SortCheckBox(Context context) {
@@ -85,10 +95,18 @@ public class SortCheckBox extends View {
     }
 
     private void initPaint() {
+        mTextPaint = new TextPaint();
+        mTextPaint.setAntiAlias(true);
+        mTextPaint.setColor(textColor);
+        mTextPaint.setTextSize(textSize);
+        mTextPaint.setStrokeWidth(2);
+        mTextPaint.setStyle(Paint.Style.FILL);
+        mTextPaint.setTextAlign(Paint.Align.LEFT);
+
         paint = new Paint();
         paint.setAntiAlias(true);
         paint.setColor(textColor);
-        paint.setTextSize(textSize - 10);
+        paint.setTextSize(textSize);
         paint.setStrokeWidth(2);
         paint.setStyle(Paint.Style.FILL);
         paint.setTextAlign(Paint.Align.LEFT);
@@ -109,10 +127,11 @@ public class SortCheckBox extends View {
                 R.attr.sort_placeicon,
                 R.attr.checked,
         };
+
         TypedArray array = ctx.getTheme().obtainStyledAttributes(attrs,
                 attrsArray, 0, 0);
         textColor = array.getColor(0, Color.BLACK);
-        textSize = array.getDimensionPixelSize(1, 20);
+        textSize = array.getDimensionPixelSize(1, 14);
         textSize = DisplayUtil.sp2px(getContext(), textSize);
         text = array.getString(2);
         drawablePadding = array.getDimensionPixelSize(3, 0);
@@ -128,14 +147,21 @@ public class SortCheckBox extends View {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         int sizeHeight = MeasureSpec.getSize(heightMeasureSpec);
+
         Rect rect = new Rect();
-        paint.getTextBounds(text, 0, text.length(), rect);
+        mTextPaint.getTextBounds(text, 0, text.length(), rect);
         textWidth = rect.width();
         textHeight = rect.height();
 
         int bitmapW = mBitmap.getWidth();
-//        int width = (int) (textWidth + bitmapW + drawablePadding + getPaddingLeft() + getPaddingRight());
-        int width = 200;
+        int width;
+
+        if (boxWidth != 0) {
+            width = boxWidth + bitmapW;
+        } else {
+            width = (int) (textWidth + bitmapW + drawablePadding + getPaddingLeft() + getPaddingRight());
+        }
+
         setMeasuredDimension(width, sizeHeight);
         originP = new PointF(getPaddingLeft(), sizeHeight / 2 - textHeight / 2);
         if (sizeListener != null) {
@@ -156,14 +182,14 @@ public class SortCheckBox extends View {
     /**
      * 设置选中状态
      *
-     * @param ischecked
+     * @param isChecked
      */
-    public void setChecked(Boolean ischecked) {
-        this.ischecked = ischecked;
+    public void setChecked(Boolean isChecked) {
+        this.ischecked = isChecked;
         if (mClickListener != null)
             mClickListener.onClick(this);
 
-        if (ischecked) {
+        if (isChecked) {
             mBitmap.recycle();
             checkedState = CheckedState.sort_downicon;
             mBitmap = BitmapFactory.decodeResource(getResources(), sort_downicon);
@@ -203,10 +229,19 @@ public class SortCheckBox extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        canvas.drawText(text, originP.x, originP.y + textHeight - drawablePadding / 2, paint);
-        float left = originP.x + textWidth + drawablePadding;
-        float top = getHeight() / 2 - mBitmap.getHeight() / 2;
-        canvas.drawBitmap(mBitmap, left, top, paint);
+        if (boxWidth != 0) {
+            StaticLayout textLayout = new StaticLayout(text, mTextPaint, (int) mTextPaint.measureText(text), Layout.Alignment.ALIGN_CENTER, 1f, 0.0f, false);
+            canvas.translate(boxWidth / 2 - textLayout.getWidth() / 2, getHeight() / 2 - textLayout.getHeight() / 2);
+            textLayout.draw(canvas);
+            float left = (boxWidth - textLayout.getWidth()) / 2 + textWidth - 20;
+            float top = textLayout.getHeight() / 2 - mBitmap.getHeight() / 2;
+            canvas.drawBitmap(mBitmap, left, top, mTextPaint);
+        } else {
+            canvas.drawText(text, originP.x, originP.y + textHeight - drawablePadding / 2, mTextPaint);
+            float left = originP.x + textWidth + drawablePadding;
+            float top = getHeight() / 2 - mBitmap.getHeight() / 2;
+            canvas.drawBitmap(mBitmap, left, top, mTextPaint);
+        }
     }
 
     /**

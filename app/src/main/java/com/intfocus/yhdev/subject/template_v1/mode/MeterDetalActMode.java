@@ -1,11 +1,16 @@
 package com.intfocus.yhdev.subject.template_v1.mode;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.alibaba.fastjson.JSONReader;
 import com.intfocus.yhdev.subject.template_v1.entity.MererDetalEntity;
 import com.intfocus.yhdev.subject.template_v1.entity.msg.MDetalActRequestResult;
+import com.intfocus.yhdev.util.ApiHelper;
+import com.intfocus.yhdev.util.FileUtil;
+import com.intfocus.yhdev.util.HttpUtil;
+import com.intfocus.yhdev.util.K;
 import com.zbl.lib.baseframe.core.AbstractMode;
 import com.zbl.lib.baseframe.utils.TimeUtil;
 
@@ -14,7 +19,10 @@ import org.greenrobot.eventbus.EventBus;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.intfocus.yhdev.YHApplication.threadPool;
 
@@ -61,13 +69,13 @@ public class MeterDetalActMode extends AbstractMode {
                 JSONReader reader = new JSONReader(isr);
                 reader.startArray();
                 reader.startObject();
-//
+
 //                Log.i(TAG, "requestStartTime:" + TimeUtil.getNowTime());
 //                String urlString = String.format(K.kReportJsonAPIPath, K.kBaseUrl, group_id, "1", report_id);
 //                String assetsPath = FileUtil.sharedPath(ctx);
 //                String itemsString;
 //                Map<String, String> headers = ApiHelper.checkResponseHeader(urlString, assetsPath);
-//                Map<String, String> response = HttpUtil.httpGet(urlString, headers);
+//                Map<String, String> response = HttpUtil.httpGet(ctx, urlString, new HashMap<String, String>());
 //                Log.i(TAG, "requestEndTime:" + TimeUtil.getNowTime());
 //                if (!response.get("code").equals("200") && !response.get("code").equals("304")) {
 //                    MDetalActRequestResult result1 = new MDetalActRequestResult(true, 400, null);
@@ -138,11 +146,6 @@ public class MeterDetalActMode extends AbstractMode {
                 reader.endArray();
                 EventBus.getDefault().post(new MDetalActRequestResult(true, 200, entity));
                 Log.i(TAG, "analysisDataEndTime:" + TimeUtil.getNowTime());
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                    MDetalActRequestResult result1 = new MDetalActRequestResult(true, 400, null);
-//                    EventBus.getDefault().post(result1);
-//                }
             }
         });
     }

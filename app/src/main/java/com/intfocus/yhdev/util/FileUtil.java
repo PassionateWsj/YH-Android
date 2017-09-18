@@ -427,74 +427,6 @@ public class FileUtil {
     }
 
     /**
-     * 读取 assets 文件内容
-     */
-    public static String assetsFileContent(Context mContext, String assetName) {
-        String content = "";
-        try {
-            InputStream in = mContext.getApplicationContext().getAssets().open(assetName);
-            ByteArrayOutputStream outStream = new ByteArrayOutputStream();
-            byte[] data = new byte[1024];
-            int count = -1;
-            while ((count = in.read(data, 0, 1024)) != -1) {
-                outStream.write(data, 0, count);
-            }
-
-            data = null;
-            content = new String(outStream.toByteArray(), "UTF-8");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return content;
-    }
-
-    /**
-     * 更新服务器商品条形码信息
-     *
-     * @param responseString 服务器响应内容
-     * @return
-     */
-    public static void barCodeScanResult(Context mContext, String responseString) {
-        try {
-            String javascriptPath = FileUtil.sharedPath(mContext) + "/BarCodeScan/assets/javascripts/bar_code_data.js";
-            String javascriptContent = new StringBuilder()
-                    .append("(function() {")
-                    .append("  window.BarCodeData = " + responseString)
-                    .append("}).call(this);")
-                    .toString();
-
-            Log.i("javascriptContent", javascriptContent);
-            FileUtil.writeFile(javascriptPath, javascriptContent);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * 内部报表是否支持筛选功能
-     *
-     * @param groupID    群组ID
-     * @param templateID 模板ID
-     * @param reportID   报表ID
-     * @return 是否支持筛选功能
-     */
-    public static boolean reportIsSupportSearch(Context context, String groupID, String templateID, String reportID) {
-        SelectItems items = reportSearchItems(context, groupID, templateID, reportID);
-        if (items == null) {
-            return false;
-        }
-
-        if (items != null) {
-            if (items.getMax_deep() == 0) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    /**
      * 内部报表 JavaScript 文件路径
      *
      * @param groupID    群组ID
@@ -503,21 +435,6 @@ public class FileUtil {
      * @return 文件路径
      */
     public static String reportJavaScriptDataPath(Context context, String groupID, String templateID, String reportID) {
-        String assetsPath = FileUtil.sharedPath(context);
-        String fileName = String.format(K.kReportDataFileName, groupID, templateID, reportID);
-        return String.format("%s/assets/javascripts/%s", assetsPath, fileName);
-    }
-
-
-    /**
-     * 内部报表筛选文件路径
-     *
-     * @param groupID    群组ID
-     * @param templateID 模板ID
-     * @param reportID   报表ID
-     * @return 文件路径
-     */
-    public static String reportSelectDataPath(Context context, String groupID, String templateID, String reportID) {
         String assetsPath = FileUtil.sharedPath(context);
         String fileName = String.format(K.kReportDataFileName, groupID, templateID, reportID);
         return String.format("%s/assets/javascripts/%s", assetsPath, fileName);
@@ -539,32 +456,7 @@ public class FileUtil {
     }
 
     /**
-     * 内部报表具有筛选功能时，用户选择的选项，默认第一个选项
-     *
-     * @param groupID    群组ID
-     * @param templateID 模板ID
-     * @param reportID   报表ID
-     * @return 用户选择的选项，默认第一个选项
-     */
-    public static String reportSelectedItem(Context context, String groupID, String templateID, String reportID) {
-        String selectedItem = "";
-        String selectedItemPath = String.format("%s.selected_item", FileUtil.reportJavaScriptDataPath(context, groupID, templateID, reportID));
-        if (new File(selectedItemPath).exists()) {
-            selectedItem = FileUtil.readFile(selectedItemPath);
-        }
-
-        return selectedItem;
-    }
-    //json.put("size", searchItems.size());
-    //for(int i = 0, len = searchItems.size(); i < len; i ++) {
-    //    json.put(String.format("item%d", i), searchItems.get(i).toString());
-    //}
-    //
-    //FileUtil.writeFile(searchItemsPath, json.toString());
-
-    /*
      * 保存截屏文件
-	 *
 	 */
     public static File saveImage(String filePath, Bitmap bmp) {
         // 如果有目标文件，删除它

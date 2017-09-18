@@ -8,7 +8,7 @@ import android.view.ViewGroup
 /**
  * Created by liuruilin on 2017/6/23.
  */
-class KpiStickAdapter(fragmentManager: FragmentManager, val mFragmentList: MutableList<Fragment>): FragmentStatePagerAdapter(fragmentManager) {
+class KpiStickAdapter(fragmentManager: FragmentManager, val mFragmentList: MutableList<Fragment>) : FragmentStatePagerAdapter(fragmentManager) {
 
     var mCurrentFragment: Fragment? = null
 

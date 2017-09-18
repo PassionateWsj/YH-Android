@@ -6,7 +6,7 @@ import com.intfocus.yhdev.data.response.BaseResult
 /**
  * Created by liuruilin on 2017/8/11.
  */
-class NotificationsResult: BaseResult() {
+class NotificationsResult : BaseResult() {
     @SerializedName("data")
     var data: List<Notifications>? = null
 }

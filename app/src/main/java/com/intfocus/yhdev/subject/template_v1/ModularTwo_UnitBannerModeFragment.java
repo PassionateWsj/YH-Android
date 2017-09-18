@@ -49,9 +49,6 @@ public class ModularTwo_UnitBannerModeFragment extends BaseModeFragment {
 
     public static ModularTwo_UnitBannerModeFragment newInstance(String param1) {
         ModularTwo_UnitBannerModeFragment fragment = new ModularTwo_UnitBannerModeFragment();
-//        Bundle args = new Bundle();
-//        args.putString(ARG_PARAM1, param1);
-//        fragment.setArguments(args);
         mCurrentParam = param1;
         return fragment;
     }
@@ -59,9 +56,6 @@ public class ModularTwo_UnitBannerModeFragment extends BaseModeFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        if (getArguments() != null) {
-////            mParam1 = getArguments().getString(ARG_PARAM1);
-//        }
         mParam1 = mCurrentParam;
     }
 
@@ -106,7 +100,6 @@ public class ModularTwo_UnitBannerModeFragment extends BaseModeFragment {
 
     private void bindData() {
         try {
-//            DecimalFormat df = new DecimalFormat("###/##/##");
             JSONObject jsonObject = new JSONObject(mParam1);
             if (jsonObject.has("title")) {
                 String name = jsonObject.getString("title");
@@ -136,6 +129,7 @@ public class ModularTwo_UnitBannerModeFragment extends BaseModeFragment {
     @Event(R.id.imgb_mdrp_unit_banner_info)
     private void onViewClick(View view) {
         //设置PopupWindow显示的位置
-        popupWindow.showAsDropDown(view);
+        ModularTwo_Mode_Activity activity = (ModularTwo_Mode_Activity) getActivity();
+        popupWindow.showAsDropDown(activity.actionbar);
     }
 }

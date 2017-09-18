@@ -18,6 +18,7 @@ import com.intfocus.yhdev.subject.template_v1.entity.MDetalUnitEntity;
 import com.intfocus.yhdev.subject.template_v1.entity.msg.MDetalRootPageRequestResult;
 import com.intfocus.yhdev.subject.template_v1.mode.MDetalRootPageMode;
 import com.zbl.lib.baseframe.core.Subject;
+import com.zzhoujay.richtext.RichText;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -135,7 +136,7 @@ public class ModularTwo_RootPageModeFragment extends BaseModeFragment<MDetalRoot
                         View view = LayoutInflater.from(ctx).inflate(R.layout.item_info_layout, null);
                         TextView tv = (TextView) view.findViewById(R.id.tv_info);
                         String info = new JSONObject(entity.config).getString("title");
-                        tv.setText(info);
+                        RichText.from(info).into(tv);
                         ll_mdrp_container.addView(view);
                     } catch (Exception e) {
                     }

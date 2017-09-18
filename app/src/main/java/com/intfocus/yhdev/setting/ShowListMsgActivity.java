@@ -69,14 +69,14 @@ public class ShowListMsgActivity extends BaseActivity {
     }
 
     private void initListInfo(String type) {
-        switch (type){
+        switch (type) {
             case "subjectCache":
                 try {
                     SharedPreferences sp = getSharedPreferences("subjectCache", MODE_PRIVATE);
-                    String cache = sp.getString("cache","");
+                    String cache = sp.getString("cache", "");
                     JSONObject json = new JSONObject(cache);
                     Iterator<String> it = json.keys();
-                    while (it.hasNext()){
+                    while (it.hasNext()) {
                         HashMap<String, Object> map = new HashMap<>();
                         String key = it.next();
                         map.put("ItemName", json.getString(key));
@@ -93,18 +93,18 @@ public class ShowListMsgActivity extends BaseActivity {
             case "cacheHeaders":
                 try {
                     String cacheHeaderPath = FileUtil.dirPath(mAppContext, "HTML", K.kCachedHeaderConfigFileName);
-                    if (new File(cacheHeaderPath).exists()){
+                    if (new File(cacheHeaderPath).exists()) {
                         JSONObject json = FileUtil.readConfigFile(cacheHeaderPath);
                         Iterator<String> it = json.keys();
-                        while (it.hasNext()){
+                        while (it.hasNext()) {
                             HashMap<String, Object> map = new HashMap<>();
                             String key = it.next();
-                            map.put("ItemName", key+" :");
+                            map.put("ItemName", key + " :");
                             map.put("ItemContent", "");
                             listItem.add(map);
                             map = new HashMap<>();
                             map.put("ItemName", "");
-                            map.put("ItemContent", ((JSONObject)json.get(key)).toString());
+                            map.put("ItemContent", ((JSONObject) json.get(key)).toString());
                             listItem.add(map);
                         }
                         mSimpleAdapter = new SimpleListAdapter(this, listItem, R.layout.list_info_setting, new String[]{"ItemName", "ItemContent"}, new int[]{R.id.item_setting_key, R.id.item_setting_info});
@@ -119,12 +119,12 @@ public class ShowListMsgActivity extends BaseActivity {
                 String userConfigPath = String.format("%s/%s", FileUtil.basePath(mAppContext), K.kUserConfigFileName);
                 JSONObject user = FileUtil.readConfigFile(userConfigPath);
                 Iterator<String> it = user.keys();
-                while (it.hasNext()){
+                while (it.hasNext()) {
                     try {
                         HashMap<String, Object> map = new HashMap<>();
                         String key = it.next();
-                        if (!key.equals("assets")){
-                            map.put("ItemName", key+" :");
+                        if (!key.equals("assets")) {
+                            map.put("ItemName", key + " :");
                             map.put("ItemContent", "");
                             listItem.add(map);
                             map = new HashMap<>();

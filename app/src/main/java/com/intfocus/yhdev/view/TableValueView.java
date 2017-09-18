@@ -10,7 +10,11 @@ import android.support.v4.util.SimpleArrayMap;
 import android.view.View;
 
 
+import com.intfocus.yhdev.constant.Colors;
 import com.intfocus.yhdev.util.DisplayUtil;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -21,9 +25,10 @@ public class TableValueView extends View {
 
     private Paint deviderPaint;
     private Paint textPaint;
+    private int[] colors = Colors.INSTANCE.getColorsRGY();
 
     public int deviderHeight = 1;
-    public int textSize = 16;
+    public int textSize = 14;
     public int textColor = 0x73737373;
     public int deviderColor = 0x73737373;
 
@@ -104,25 +109,32 @@ public class TableValueView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        canvas.drawColor(Color.WHITE);
-        int nlSize = tableValues.size();
-        float endX = getWidth();
-        for (int i = 0; i < nlSize; i++) {
-            float starty = itemHeight * (i + deviderHeight/2) + (i + deviderHeight/2);
-            canvas.drawLine(0, starty, endX, starty, deviderPaint);
-        }
-
-        for (int i = 0; i < nlSize; i++) {
-            String[] tabrowValues = tableValues.get(i);
-            int headerSize = headerLenghts.size();
-            float y = YAxesCenterPopint.get(i) + textSize + i;
-            for (int n = 0; n < headerSize; n++) {
-                float x = XAxesCenterPopint.get(n);
-                canvas.drawText(tabrowValues[n + 1], x, y, textPaint);
+        try {
+            canvas.drawColor(Color.WHITE);
+            int nlSize = tableValues.size();
+            float endX = getWidth();
+            for (int i = 0; i < nlSize; i++) {
+                float starty = itemHeight * (i + deviderHeight / 2) + (i + deviderHeight / 2);
+                canvas.drawLine(0, starty, endX, starty, deviderPaint);
             }
+
+            for (int i = 0; i < nlSize; i++) {
+                String[] tabrowValues = tableValues.get(i);
+                int headerSize = headerLenghts.size();
+                float y = YAxesCenterPopint.get(i) + textSize + i;
+                for (int n = 0; n < headerSize; n++) {
+                    float x = XAxesCenterPopint.get(n);
+                    JSONObject rowData = new JSONObject(tabrowValues[n + 1]);
+                    if (!rowData.getString("color").equals("-1")) {
+                       textPaint.setColor(colors[Integer.parseInt(rowData.getString("color"))]);
+                    }
+                    canvas.drawText(rowData.getString("value"), x, y, textPaint);
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
     }
-
 
     public int itemHeight;
     public ArrayList<Integer> headerLenghts = new ArrayList<>();
@@ -132,6 +144,7 @@ public class TableValueView extends View {
      * X轴文本中心点
      */
     private ArrayMap<Integer, Float> XAxesCenterPopint = new ArrayMap<>();
+
     /**
      * Y轴文本中心点
      */

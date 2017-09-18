@@ -18,10 +18,10 @@ class NoticeListBean {
      * code : 200
      */
 
-    var total : Int = 0
-    var curr_page : Int = 0
-    var page_size : Int = 0
-    var total_page : Int = 0
-    var code : Int = 0
-    var data : List<NoticeListDataBean> = listOf()
+    var total: Int = 0
+    var curr_page: Int = 0
+    var page_size: Int = 0
+    var total_page: Int = 0
+    var code: Int = 0
+    var data: List<NoticeListDataBean> = listOf()
 }

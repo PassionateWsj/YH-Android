@@ -7,8 +7,8 @@ import com.intfocus.yhdev.subject.template_v1.entity.MererDetalEntity;
  * Created by zbaoliang on 17-4-28.
  */
 public class MDetalActRequestResult {
-    public boolean isSuccress ;
-    public int stateCode ;
+    public boolean isSuccress;
+    public int stateCode;
     public MererDetalEntity datas;
 
     public MDetalActRequestResult(boolean isSuccress, int stateCode, MererDetalEntity datas) {

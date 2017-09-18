@@ -10,11 +10,11 @@ public class Constants {
      */
     public final static String BUGLY_APP_ID = "dc170466f6";
     public final static String GAODE_MAP_APP_KEY = "8ca31ea2137dd24eb49a261bdd9ab844";
-    public final static String WEIXIN_APP_ID      = "wx50edd59f119da198";
-    public final static String WEIXIN_APP_SECET  = "e8fa301d58ff838b93268eb0e6b14ccb";
-    public final static String PGY_APPID  = "c586f556015342bcf89f8300ccfbebc2";
-    public final static String UMENG_APP_KEY  = "c586f556015342bcf89f8300ccfbebc2";
-    public final static String UMENG_MESSAGE_SECRET  = "c586f556015342bcf89f8300ccfbebc2";
+    public final static String WEIXIN_APP_ID = "wx50edd59f119da198";
+    public final static String WEIXIN_APP_SECET = "e8fa301d58ff838b93268eb0e6b14ccb";
+    public final static String PGY_APPID = "c586f556015342bcf89f8300ccfbebc2";
+    public final static String UMENG_APP_KEY = "c586f556015342bcf89f8300ccfbebc2";
+    public final static String UMENG_MESSAGE_SECRET = "c586f556015342bcf89f8300ccfbebc2";
 
     /*
      * 测试环境

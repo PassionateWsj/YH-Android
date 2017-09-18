@@ -18,8 +18,8 @@ import org.greenrobot.eventbus.ThreadMode
 /**
  * Created by liuruilin on 2017/7/28.
  */
-class WorkBoxFragment: BaseModeFragment<WorkBoxMode>(), SwipeRefreshLayout.OnRefreshListener {
-    var rootView : View? = null
+class WorkBoxFragment : BaseModeFragment<WorkBoxMode>(), SwipeRefreshLayout.OnRefreshListener {
+    var rootView: View? = null
     var datas: List<WorkBoxItem>? = null
 
     override fun setSubject(): Subject {

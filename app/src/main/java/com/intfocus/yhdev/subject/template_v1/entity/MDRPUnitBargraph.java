@@ -17,8 +17,8 @@ public class MDRPUnitBargraph {
         public String percentage;
 
 
-        public static class Data{
-            public float value;
+        public static class Data {
+            public String value;
             public int color;
         }
     }

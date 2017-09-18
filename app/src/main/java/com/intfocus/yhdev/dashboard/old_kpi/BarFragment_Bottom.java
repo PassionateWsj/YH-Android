@@ -108,7 +108,7 @@ public class BarFragment_Bottom extends BaseModeFragment {
 
         tv_title.setText(entity.getTitle());
         double number = entity.getData().getHigh_light().getNumber();
-        if (number==0)
+        if (number == 0)
             tv_number.setText("0");
         else
             tv_number.setText(formatNumber(String.valueOf(df.format(number))));
@@ -117,7 +117,7 @@ public class BarFragment_Bottom extends BaseModeFragment {
         MererEntity.LineEntity.HighLight high_light = entity.getData().getHigh_light();
         if (high_light.getCompare() != 0) {//显示百分比
             float compare = (float) ((high_light.getNumber() - high_light.getCompare()) / high_light.getCompare() * 100);
-            if (high_light.getNumber()-high_light.getCompare()>0) {//上箭头
+            if (high_light.getNumber() - high_light.getCompare() > 0) {//上箭头
                 tv_compare.setText("+" + df.format(compare) + "%");
             } else {
                 tv_compare.setText("" + df.format(compare) + "%");
@@ -128,8 +128,7 @@ public class BarFragment_Bottom extends BaseModeFragment {
             img_cursor.setVisibility(View.VISIBLE);
             tv_compare.setTextColor(colors[high_light.getArrow()]);
             tv_number.setTextColor(colors[high_light.getArrow()]);
-        }
-        else
+        } else
             img_cursor.setVisibility(View.GONE);
         img_cursor.setCursorState(high_light.getArrow());
 

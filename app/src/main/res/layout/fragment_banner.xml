@@ -46,6 +46,5 @@
             android:background="@android:color/transparent"
             android:scaleType="centerInside"
             android:src="@drawable/btn_inf"/>
-
     </LinearLayout>
 </FrameLayout>
