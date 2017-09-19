@@ -168,7 +168,7 @@ public class ModularTwo_UnitTablesContModeFragment extends BaseModeFragment<Modu
                     rootView.getGlobalVisibleRect(rect);
                     synchronized (this) {
                         if (fl_tableTitle_container.getChildCount() != 0) {
-                            if (rect.top <= offsetTop && rect.bottom - 150 > offsetTop) {
+                            if (rect.top <= offsetTop && rect.bottom - 165 > offsetTop) {
                                 fl_tableTitle_container.removeView(suspensionView);
                                 ((ModularTwo_Mode_Activity) getActivity()).suspendContainer.addView(suspensionView);
                             }
@@ -210,7 +210,7 @@ public class ModularTwo_UnitTablesContModeFragment extends BaseModeFragment<Modu
                 public void run() {
                     Rect frame = new Rect();
                     act.getWindow().getDecorView().getWindowVisibleDisplayFrame(frame);
-                    offsetTop = frame.top + 150 - 30;//状态栏+标题栏高度-间隙
+                    offsetTop = frame.top + 165 - 30;//状态栏+标题栏高度-间隙
 
                     Log.i(TAG, "offsetTop:" + offsetTop);
                 }
