@@ -17,7 +17,7 @@
         android:textSize="13sp"
         android:textStyle="bold"/>
 
-    <com.intfocus.yhdev.view.MyGridView
+    <com.intfocus.yonghuitest.view.MyGridView
         android:id="@+id/gv_reports_right_list_item"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

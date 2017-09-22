@@ -275,6 +275,535 @@
                     }
                   ]
                 }
+              },
+              {
+                "title": "区域-门店",
+                "table": {
+                  "head": [
+                    "大区",
+                    "昨日销售(万)",
+                    "本月销售(万)",
+                    "昨日毛利(万)",
+                    "本月毛利(万)",
+                    "昨日客流(万)",
+                    "本月客流(万)",
+                    "同比",
+                    "环比"
+                  ],
+                  "data": [
+                    {
+                      "main_data": [
+                        {
+                          "value": "福建三区",
+                          "color": 1
+                        },
+                        {
+                          "value": "-10.1",
+                          "color": 2
+                        },
+                        {
+                          "value": "43.8",
+                          "color": 3
+                        },
+                        {
+                          "value": "2.1",
+                          "color": 4
+                        },
+                        {
+                          "value": "10.2",
+                          "color": 5
+                        },
+                        {
+                          "value": "1",
+                          "color": 2
+                        },
+                        {
+                          "value": "2",
+                          "color": 4
+                        },
+                        {
+                          "value": "-25.5%",
+                          "color": 2
+                        },
+                        {
+                          "value": "12.8%",
+                          "color": 1
+                        }
+                      ],
+                      "sub_data": {}
+                    },
+                    {
+                      "main_data": [
+                        {
+                          "value": "福建四区",
+                          "color": 1
+                        },
+                        {
+                          "value": "120.1",
+                          "color": 2
+                        },
+                        {
+                          "value": "43.8",
+                          "color": 3
+                        },
+                        {
+                          "value": "2.1",
+                          "color": 4
+                        },
+                        {
+                          "value": "10.2",
+                          "color": 5
+                        },
+                        {
+                          "value": "1",
+                          "color": 2
+                        },
+                        {
+                          "value": "2",
+                          "color": 4
+                        },
+                        {
+                          "value": "-25.5%",
+                          "color": 2
+                        },
+                        {
+                          "value": "12.8%",
+                          "color": 1
+                        }
+                      ],
+                      "sub_data": {}
+                    },
+                    {
+                      "main_data": [
+                        {
+                          "value": "福建四区",
+                          "color": 1
+                        },
+                        {
+                          "value": "5.1",
+                          "color": 2
+                        },
+                        {
+                          "value": "43.8",
+                          "color": 3
+                        },
+                        {
+                          "value": "2.1",
+                          "color": 4
+                        },
+                        {
+                          "value": "10.2",
+                          "color": 5
+                        },
+                        {
+                          "value": "1",
+                          "color": 2
+                        },
+                        {
+                          "value": "2",
+                          "color": 4
+                        },
+                        {
+                          "value": "-25.5%",
+                          "color": 2
+                        },
+                        {
+                          "value": "12.8%",
+                          "color": 1
+                        }
+                      ],
+                      "sub_data": {}
+                    },
+                    {
+                      "main_data": [
+                        {
+                          "value": "福建四区",
+                          "color": 1
+                        },
+                        {
+                          "value": "20.1",
+                          "color": 2
+                        },
+                        {
+                          "value": "43.8",
+                          "color": 3
+                        },
+                        {
+                          "value": "2.1",
+                          "color": 4
+                        },
+                        {
+                          "value": "10.2",
+                          "color": 5
+                        },
+                        {
+                          "value": "1",
+                          "color": 2
+                        },
+                        {
+                          "value": "2",
+                          "color": 4
+                        },
+                        {
+                          "value": "-25.5%",
+                          "color": 2
+                        },
+                        {
+                          "value": "12.8%",
+                          "color": 1
+                        }
+                      ],
+                      "sub_data": {}
+                    },{
+                      "main_data": [
+                        {
+                          "value": "福建四区",
+                          "color": 1
+                        },
+                        {
+                          "value": "1000.1",
+                          "color": 2
+                        },
+                        {
+                          "value": "43.8",
+                          "color": 3
+                        },
+                        {
+                          "value": "2.1",
+                          "color": 4
+                        },
+                        {
+                          "value": "10.2",
+                          "color": 5
+                        },
+                        {
+                          "value": "1",
+                          "color": 2
+                        },
+                        {
+                          "value": "2",
+                          "color": 4
+                        },
+                        {
+                          "value": "-25.5%",
+                          "color": 2
+                        },
+                        {
+                          "value": "12.8%",
+                          "color": 1
+                        }
+                      ],
+                      "sub_data": {}
+                    },{
+                      "main_data": [
+                        {
+                          "value": "福建四区",
+                          "color": 1
+                        },
+                        {
+                          "value": "10.1",
+                          "color": 2
+                        },
+                        {
+                          "value": "43.8",
+                          "color": 3
+                        },
+                        {
+                          "value": "2.1",
+                          "color": 4
+                        },
+                        {
+                          "value": "10.2",
+                          "color": 5
+                        },
+                        {
+                          "value": "1",
+                          "color": 2
+                        },
+                        {
+                          "value": "2",
+                          "color": 4
+                        },
+                        {
+                          "value": "-25.5%",
+                          "color": 2
+                        },
+                        {
+                          "value": "12.8%",
+                          "color": 1
+                        }
+                      ],
+                      "sub_data": {}
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "type": "tables",
+            "config": [
+              {
+                "title": "区域-门店-小店",
+                "table": {
+                  "head": [
+                    "大区",
+                    "昨日销售 \n (万)",
+                    "本月销售 \n (万)",
+                    "昨日毛利 \n (万)",
+                    "本月毛利 \n (万)",
+                    "昨日客流\n (万)",
+                    "本月客流 \n (万)",
+                    "同比",
+                    "环比"
+                  ],
+                  "data": [
+                    {
+                      "main_data": [
+                        {
+                          "value": "福建三区",
+                          "color": 1
+                        },
+                        {
+                          "value": "-10.1",
+                          "color": 2
+                        },
+                        {
+                          "value": "43.8",
+                          "color": 3
+                        },
+                        {
+                          "value": "2.1",
+                          "color": 4
+                        },
+                        {
+                          "value": "10.2",
+                          "color": 5
+                        },
+                        {
+                          "value": "1",
+                          "color": 2
+                        },
+                        {
+                          "value": "2",
+                          "color": 4
+                        },
+                        {
+                          "value": "-25.5%",
+                          "color": 2
+                        },
+                        {
+                          "value": "12.8%",
+                          "color": 1
+                        }
+                      ],
+                      "sub_data": {}
+                    },
+                    {
+                      "main_data": [
+                        {
+                          "value": "福建四区",
+                          "color": 1
+                        },
+                        {
+                          "value": "120.1",
+                          "color": 2
+                        },
+                        {
+                          "value": "43.8",
+                          "color": 3
+                        },
+                        {
+                          "value": "2.1",
+                          "color": 4
+                        },
+                        {
+                          "value": "10.2",
+                          "color": 5
+                        },
+                        {
+                          "value": "1",
+                          "color": 2
+                        },
+                        {
+                          "value": "2",
+                          "color": 4
+                        },
+                        {
+                          "value": "-25.5%",
+                          "color": 2
+                        },
+                        {
+                          "value": "12.8%",
+                          "color": 1
+                        }
+                      ],
+                      "sub_data": {}
+                    },
+                    {
+                      "main_data": [
+                        {
+                          "value": "福建四区",
+                          "color": 1
+                        },
+                        {
+                          "value": "5.1",
+                          "color": 2
+                        },
+                        {
+                          "value": "43.8",
+                          "color": 3
+                        },
+                        {
+                          "value": "2.1",
+                          "color": 4
+                        },
+                        {
+                          "value": "10.2",
+                          "color": 5
+                        },
+                        {
+                          "value": "1",
+                          "color": 2
+                        },
+                        {
+                          "value": "2",
+                          "color": 4
+                        },
+                        {
+                          "value": "-25.5%",
+                          "color": 2
+                        },
+                        {
+                          "value": "12.8%",
+                          "color": 1
+                        }
+                      ],
+                      "sub_data": {}
+                    },
+                    {
+                      "main_data": [
+                        {
+                          "value": "福建四区",
+                          "color": 1
+                        },
+                        {
+                          "value": "20.1",
+                          "color": 2
+                        },
+                        {
+                          "value": "43.8",
+                          "color": 3
+                        },
+                        {
+                          "value": "2.1",
+                          "color": 4
+                        },
+                        {
+                          "value": "10.2",
+                          "color": 5
+                        },
+                        {
+                          "value": "1",
+                          "color": 2
+                        },
+                        {
+                          "value": "2",
+                          "color": 4
+                        },
+                        {
+                          "value": "-25.5%",
+                          "color": 2
+                        },
+                        {
+                          "value": "12.8%",
+                          "color": 1
+                        }
+                      ],
+                      "sub_data": {}
+                    },{
+                      "main_data": [
+                        {
+                          "value": "福建四区",
+                          "color": 1
+                        },
+                        {
+                          "value": "1000.1",
+                          "color": 2
+                        },
+                        {
+                          "value": "43.8",
+                          "color": 3
+                        },
+                        {
+                          "value": "2.1",
+                          "color": 4
+                        },
+                        {
+                          "value": "10.2",
+                          "color": 5
+                        },
+                        {
+                          "value": "1",
+                          "color": 2
+                        },
+                        {
+                          "value": "2",
+                          "color": 4
+                        },
+                        {
+                          "value": "-25.5%",
+                          "color": 2
+                        },
+                        {
+                          "value": "12.8%",
+                          "color": 1
+                        }
+                      ],
+                      "sub_data": {}
+                    },{
+                      "main_data": [
+                        {
+                          "value": "福建四区",
+                          "color": 1
+                        },
+                        {
+                          "value": "10.1",
+                          "color": 2
+                        },
+                        {
+                          "value": "43.8",
+                          "color": 3
+                        },
+                        {
+                          "value": "2.1",
+                          "color": 4
+                        },
+                        {
+                          "value": "10.2",
+                          "color": 5
+                        },
+                        {
+                          "value": "1",
+                          "color": 2
+                        },
+                        {
+                          "value": "2",
+                          "color": 4
+                        },
+                        {
+                          "value": "-25.5%",
+                          "color": 2
+                        },
+                        {
+                          "value": "12.8%",
+                          "color": 1
+                        }
+                      ],
+                      "sub_data": {}
+                    }
+                  ]
+                }
               }
             ]
           },
