@@ -1,17 +1,14 @@
 package com.intfocus.yhdev.subject.template_v1.adapter
 
 import android.content.Context
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.TextView
-
 import com.intfocus.yhdev.R
 import com.intfocus.yhdev.subject.template_v1.entity.ModularTwo_UnitTableEntity
-
 import org.json.JSONObject
 import org.xutils.view.annotation.ViewInject
 import org.xutils.x
@@ -27,8 +24,8 @@ class ModularTwo_TableNameAdapter(private val ctx: Context, ltdata: List<Modular
     private val hasSubColor: Int
 
     init {
-        defauteColor = ctx.resources.getColor(R.color.co3)
-        hasSubColor = ctx.resources.getColor(R.color.co14)
+        defauteColor = ctx.resources.getColor(R.color.co6)
+        hasSubColor = ctx.resources.getColor(R.color.co15)
         setData(ltdata)
     }
 
@@ -70,15 +67,15 @@ class ModularTwo_TableNameAdapter(private val ctx: Context, ltdata: List<Modular
         val entity = ltdata!![position]
 
         if (entity.sub_data == "{}") {
-            viewHolder.img_dot!!.visibility = View.GONE
             viewHolder.tv_name!!.setTextColor(defauteColor)
+            viewHolder.img_dot!!.visibility = View.GONE
         } else {
             viewHolder.tv_name!!.setTextColor(hasSubColor)
-            viewHolder.img_dot!!.visibility = View.GONE
+            viewHolder.img_dot!!.visibility = View.VISIBLE
         }
 
         viewHolder.tv_name!!.text = JSONObject(entity.main_data[0]).getString("value")
-        viewHolder.tv_name!!.gravity = Gravity.LEFT
+//        viewHolder.tv_name!!.gravity = Gravity.LEFT
         return convertView
     }
 
