@@ -9,7 +9,6 @@ import android.support.v4.util.ArrayMap;
 import android.support.v4.util.SimpleArrayMap;
 import android.view.View;
 
-
 import com.intfocus.yhdev.constant.Colors;
 import com.intfocus.yhdev.util.DisplayUtil;
 
@@ -54,6 +53,7 @@ public class TableValueView extends View {
     public void setTextColor(int textColor) {
         this.textColor = textColor;
         textPaint.setColor(textColor);
+        invalidate();
     }
 
     public void setDeviderColor(int deviderColor) {
@@ -121,14 +121,22 @@ public class TableValueView extends View {
             for (int i = 0; i < nlSize; i++) {
                 String[] tabrowValues = tableValues.get(i);
                 int headerSize = headerLenghts.size();
-                float y = YAxesCenterPopint.get(i) + textSize + i;
+                Paint.FontMetrics fontMetrics = textPaint.getFontMetrics();
+                float y = (int) (YAxesCenterPopint.get(i) - fontMetrics.top/2 - fontMetrics.bottom/2);
                 for (int n = 0; n < headerSize; n++) {
                     float x = XAxesCenterPopint.get(n);
                     JSONObject rowData = new JSONObject(tabrowValues[n + 1]);
                     if (!rowData.getString("color").equals("-1")) {
-                       textPaint.setColor(colors[Integer.parseInt(rowData.getString("color"))]);
+                        textPaint.setColor(colors[Integer.parseInt(rowData.getString("color"))]);
                     }
-                    canvas.drawText(rowData.getString("value"), x, y, textPaint);
+                    String value = rowData.getString("value");
+                    if (value.contains(".") && !value.contains("%")) {
+                        value = (value + "00").substring(0, value.indexOf(".") + 3);
+                    } else if (value.contains("%")) {
+                        value.replace("%", "");
+                        value = (value + "00").substring(0, value.indexOf(".") + 3) + "%";
+                    }
+                    canvas.drawText(value, x, y, textPaint);
                 }
             }
         } catch (JSONException e) {
