@@ -21,9 +21,9 @@ public class Constants {
      */
 //    public final static String BUGLY_APP_ID = "1690ecea95";
 //    public final static String GAODE_MAP_APP_KEY = "a9de6a6686b42561f41ef209079fb708";
-//    public final static String WEIXIN_APP_ID      = "wxcff211a335b17088";
-//    public final static String WEIXIN_APP_SECET  = "af964fd476b59bf54682bb15f23a0569";
-//    public final static String PGY_APPID  = "a0fb26faac52207f08129f092274f8c6";
+//    public final static String WEIXIN_APP_ID = "wxcff211a335b17088";
+//    public final static String WEIXIN_APP_SECET = "af964fd476b59bf54682bb15f23a0569";
+//    public final static String PGY_APPID = "a0fb26faac52207f08129f092274f8c6";
 
     /*
      * 开发环境
