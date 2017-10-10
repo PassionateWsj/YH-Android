@@ -9,7 +9,7 @@ android {
     compileSdkVersion 25
     buildToolsVersion '25.0.3'
     defaultConfig {
-        applicationId 'com.intfocus.yonghuitest'
+        applicationId 'com.intfocus.yhdev'
         minSdkVersion 19
         targetSdkVersion 25
         multiDexEnabled true
