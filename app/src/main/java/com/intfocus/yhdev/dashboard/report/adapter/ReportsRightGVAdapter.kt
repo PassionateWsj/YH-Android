@@ -5,12 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import com.bumptech.glide.Glide
 import com.intfocus.yhdev.R
 import com.intfocus.yhdev.bean.DashboardItemBean
 import com.intfocus.yhdev.dashboard.report.mode.GroupDataBean
 import com.intfocus.yhdev.util.DisplayUtil
 import org.greenrobot.eventbus.EventBus
-import org.xutils.x
 
 /**
  * Created by liuruilin on 2017/6/17.
@@ -19,17 +19,11 @@ class ReportsRightGVAdapter(var ctx: Context, var datas: List<GroupDataBean>?) :
     var mInflater: LayoutInflater = LayoutInflater.from(ctx)
     var laryoutParams = AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, DisplayUtil.dip2px(ctx, 100f))
 
-    override fun getCount(): Int {
-        return datas!!.size
-    }
+    override fun getCount(): Int = datas!!.size
 
-    override fun getItem(position: Int): Any {
-        return datas!![position]
-    }
+    override fun getItem(position: Int): Any = datas!![position]
 
-    override fun getItemId(position: Int): Long {
-        return position.toLong()
-    }
+    override fun getItemId(position: Int): Long = position.toLong()
 
     override fun getView(position: Int, v: View?, parent: ViewGroup): View {
         var convertView = v
@@ -52,7 +46,10 @@ class ReportsRightGVAdapter(var ctx: Context, var datas: List<GroupDataBean>?) :
             viewTag = convertView.tag as ItemViewTag
         }
         viewTag.mName.text = datas!![position].name
-        x.image().bind(viewTag.mIcon, datas!![position].icon_link)
+//        x.image().bind(viewTag.mIcon, datas!![position].icon_link)
+        Glide.with(ctx)
+                .load(datas!![position].icon_link)
+                .into(viewTag.mIcon)
 
         viewTag.llItem.setOnClickListener {
             EventBus.getDefault().post(DashboardItemBean(datas!![position].obj_link!!, datas!![position].obj_title!!,
@@ -69,7 +66,7 @@ class ReportsRightGVAdapter(var ctx: Context, var datas: List<GroupDataBean>?) :
 
     fun getItemBackground(position: Int, size: Int): Int {
 
-        var background: Int = 0
+        var background = 0
         if (size == 1) {
             background = R.drawable.btn_bg_ab
         }

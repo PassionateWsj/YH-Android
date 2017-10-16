@@ -5,11 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import com.bumptech.glide.Glide
 import com.intfocus.yhdev.R
 import com.intfocus.yhdev.bean.DashboardItemBean
 import com.zbl.lib.baseframe.utils.PhoneUtil
 import org.greenrobot.eventbus.EventBus
-import org.xutils.x
 
 /**
  * Created by liuruilin on 2017/7/28.
@@ -54,7 +54,10 @@ class WorkBoxAdapter(var ctx: Context, var datas: List<WorkBoxItem>?) : BaseAdap
         }
 
         viewTag.mName.text = datas!![position].name
-        x.image().bind(viewTag.mIcon, datas!![position].icon_link)
+//        x.image().bind(viewTag.mIcon, datas!![position].icon_link)
+        Glide.with(ctx)
+                .load(datas!![position].icon_link)
+                .into(viewTag.mIcon)
         viewTag.rlItem.setOnClickListener {
             EventBus.getDefault().post(DashboardItemBean(datas!![position].obj_link!!, datas!![position].obj_title!!,
                     datas!![position].obj_id!!, datas!![position].template_id!!, "3"))

@@ -8,11 +8,11 @@ import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import com.bumptech.glide.Glide
 import com.intfocus.yhdev.R
 import com.intfocus.yhdev.bean.DashboardItemBean
 import com.intfocus.yhdev.dashboard.report.mode.GroupDataBean
 import org.greenrobot.eventbus.EventBus
-import org.xutils.x
 
 /**
  * Created by liuruilin on 2017/6/16.
@@ -49,7 +49,10 @@ class AppListItemAdapter(var ctx: Context, var datas: List<GroupDataBean>?) : Ba
         }
 
         viewTag.mName.text = datas!![position].name
-        x.image().bind(viewTag.mIcon, datas!![position].icon_link)
+//        x.image().bind(viewTag.mIcon, datas!![position].icon_link)
+        Glide.with(ctx)
+                .load(datas!![position].icon_link)
+                .into(viewTag.mIcon)
         viewTag.llItem.setOnClickListener {
             EventBus.getDefault().post(DashboardItemBean(datas!![position].obj_link!!, datas!![position].obj_title!!,
                     datas!![position].obj_id!!, datas!![position].template_id!!, "3"))

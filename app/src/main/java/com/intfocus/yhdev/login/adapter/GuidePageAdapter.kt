@@ -5,7 +5,7 @@ import android.support.v4.view.PagerAdapter
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import org.xutils.x
+import com.bumptech.glide.Glide
 
 /**
  * Created by liuruilin on 2017/6/26.
@@ -69,7 +69,10 @@ class GuidePageAdapter(var ctx: Context, var imageViews: List<ImageView>, var im
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT
         )
-        x.image().bind(imageView, imageIDList[position])
+//        x.image().bind(imageView, imageIDList[position])
+        Glide.with(ctx)
+                .load(imageIDList[position])
+                .into(imageView)
         container.addView(imageView, viewLayoutParams)//设置图片的宽高
         return imageView
     }
