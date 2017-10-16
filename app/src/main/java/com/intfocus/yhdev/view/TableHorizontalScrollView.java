@@ -26,6 +26,7 @@ public class TableHorizontalScrollView extends HorizontalScrollView {
         super(context);
     }
 
+    @Override
     protected void onScrollChanged(int l, int t, int oldl, int oldt) {
         super.onScrollChanged(l, t, oldl, oldt);
         if (mView != null) {

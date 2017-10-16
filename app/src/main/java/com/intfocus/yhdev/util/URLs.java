@@ -148,8 +148,9 @@ public class URLs implements Serializable {
 
         for (byte bytes : md5Bytes) {
             int val = ((int) bytes) & 0xff;
-            if (val < 16)
+            if (val < 16) {
                 hexValue.append("0");
+            }
             hexValue.append(Integer.toHexString(val));
         }
 

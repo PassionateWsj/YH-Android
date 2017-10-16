@@ -123,7 +123,7 @@ public class ShowListMsgActivity extends BaseActivity {
                     try {
                         HashMap<String, Object> map = new HashMap<>();
                         String key = it.next();
-                        if (!key.equals("assets")) {
+                        if (!"assets".equals(key)) {
                             map.put("ItemName", key + " :");
                             map.put("ItemContent", "");
                             listItem.add(map);
@@ -159,6 +159,7 @@ public class ShowListMsgActivity extends BaseActivity {
         }
     }
 
+    @Override
     public void dismissActivity(View v) {
         this.onBackPressed();
     }

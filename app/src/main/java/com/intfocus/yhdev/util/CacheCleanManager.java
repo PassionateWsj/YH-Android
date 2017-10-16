@@ -87,8 +87,9 @@ public class CacheCleanManager {
     private static boolean deleteFilesByDirectory(File directory) {
         if (directory != null && directory.exists() && directory.isDirectory()) {
             for (File item : directory.listFiles()) {
-                if (!item.delete())
+                if (!item.delete()) {
                     return false;
+                }
             }
         }
         return true;

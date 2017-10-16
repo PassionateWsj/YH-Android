@@ -38,8 +38,9 @@ public class ModularTwo_TableValueAdapter extends BaseAdapter {
     }
 
     private void setData(List<ModularTwo_UnitTableEntity.TableRowEntity> ltdata) {
-        if (ltdata == null)
+        if (ltdata == null) {
             return;
+        }
         this.ltdata = ltdata;
     }
 
@@ -50,8 +51,9 @@ public class ModularTwo_TableValueAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        if (ltdata == null)
+        if (ltdata == null) {
             return 0;
+        }
         return ltdata.size();
     }
 

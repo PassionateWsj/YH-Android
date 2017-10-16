@@ -81,7 +81,7 @@ public class MeterDetalActMode extends AbstractMode {
                 Map<String, String> headers = ApiHelper.checkResponseHeader(urlString, assetsPath);
                 Map<String, String> response = HttpUtil.httpGet(ctx, urlString, new HashMap<String, String>());
                 Log.i(TAG, "requestEndTime:" + TimeUtil.getNowTime());
-                if (!response.get("code").equals("200") && !response.get("code").equals("304")) {
+                if (!"200".equals(response.get("code")) && !"304".equals(response.get("code"))) {
                     MDetalActRequestResult result1 = new MDetalActRequestResult(true, 400, null);
                     EventBus.getDefault().post(result1);
                     return;

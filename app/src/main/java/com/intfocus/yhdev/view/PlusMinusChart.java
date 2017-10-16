@@ -230,8 +230,9 @@ public class PlusMinusChart extends View implements ValueAnimator.AnimatorUpdate
      */
     private void onMeasureScale() {
         int datasize = lt_data.size();
-        if (datasize <= 0)
+        if (datasize <= 0) {
             return;
+        }
 
         LinkedList<BargraphComparator> datas = new LinkedList<>();
         datas.addAll(lt_data);

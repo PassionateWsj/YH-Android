@@ -266,7 +266,7 @@ public class ApiHelper {
             String htmlPath = String.format("%s/%s", assetsPath, htmlName);
             retMap.put("path", htmlPath);
 
-            if (statusCode.equals("200")) {
+            if ("200".equals(statusCode)) {
                 ApiHelper.storeResponseHeader(urlKey, assetsPath, response);
 
                 String htmlContent = response.get(URLs.kBody);
@@ -515,7 +515,7 @@ public class ApiHelper {
     public static void getAMapLocation(final Context ctx) {
         //初始化client
         AMapLocationClient locationClient = new AMapLocationClient(ctx);
-        locationClient.setApiKey(Constants.GAODE_MAP_APP_KEY);
+        AMapLocationClient.setApiKey(Constants.GAODE_MAP_APP_KEY);
         AMapLocationClientOption locationOption = getDefaultOption();
         //设置定位参数
         locationClient.setLocationOption(locationOption);

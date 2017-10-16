@@ -60,6 +60,7 @@ public class CommentActivity extends BaseActivity {
         new Thread(mRunnableForDetecting).start();
     }
 
+    @Override
     protected void onResume() {
         mMyApp.setCurrentActivity(this);
         super.onResume();
@@ -68,6 +69,7 @@ public class CommentActivity extends BaseActivity {
     /*
      * 返回
      */
+    @Override
     public void dismissActivity(View v) {
         CommentActivity.this.onBackPressed();
     }

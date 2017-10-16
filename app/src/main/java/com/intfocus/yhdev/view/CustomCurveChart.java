@@ -254,10 +254,11 @@ public class CustomCurveChart extends View {
 
         for (int i = 0; i < loopingcont; i++) {
             float yPoint;
-            if (i == 0)
+            if (i == 0) {
                 yPoint = toY(data[0]);
-            else
+            } else {
                 yPoint = toY(data[i]);
+            }
 
             if (i == selectItem) {
                 paint_circle.setColor(drawColor & 64);
@@ -317,8 +318,9 @@ public class CustomCurveChart extends View {
             // dipToPx(8)乘以2为了适当增大触摸面积
             if (x > (xpoints.get(i) - dipToPx(8) * 2) && x < (xpoints.get(i) + dipToPx(8) * 2)) {
                 selectItem = i;
-                if (listener != null)
+                if (listener != null) {
                     listener.onPointClick(selectItem);
+                }
                 return true;
             }
         }

@@ -135,11 +135,13 @@ public class ModularTwo_Mode_Activity extends BaseModeActivity<MeterDetalActMode
         currentFtName = fragmentTag + checkId;
         toFragment = (BaseModeFragment) getSupportFragmentManager().findFragmentByTag(currentFtName);
 
-        if (currFragment != null && currFragment == toFragment)
+        if (currFragment != null && currFragment == toFragment) {
             return;
+        }
 
-        if (toFragment == null)
+        if (toFragment == null) {
             toFragment = ModularTwo_RootPageModeFragment.newInstance(checkId, entity.datas.data.get(checkId).parts);
+        }
 
         FragmentTransaction ft = fm.beginTransaction();
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
@@ -196,8 +198,9 @@ public class ModularTwo_Mode_Activity extends BaseModeActivity<MeterDetalActMode
                     rbtn.setText(entity.datas.data.get(i).title);
                     radioGroup.addView(rbtn, params_rb);
                     rbtn.setOnCheckedChangeListener(rootTableListener);
-                    if (i == 0)
+                    if (i == 0) {
                         rbtn.setChecked(true);
+                    }
                 }
             } else if (dataSize == 1) {    // 只有一个根页签
 //                View single_title = LayoutInflater.from(ctx)
@@ -208,8 +211,9 @@ public class ModularTwo_Mode_Activity extends BaseModeActivity<MeterDetalActMode
                 fl_titleContainer.setVisibility(View.GONE);
                 switchFragment(0);
             }
-        } else
+        } else {
             ToastUtils.INSTANCE.show(ctx, "数据实体为空");
+        }
         hideLoading();
     }
 

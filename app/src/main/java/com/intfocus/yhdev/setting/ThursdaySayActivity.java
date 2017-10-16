@@ -34,6 +34,7 @@ public class ThursdaySayActivity extends BaseActivity {
         mMyApp.setCurrentActivity(this);
     }
 
+    @Override
     public void dismissActivity(View v) {
         ThursdaySayActivity.this.onBackPressed();
     }

@@ -284,10 +284,12 @@ public class LoginActivity extends FragmentActivity {
         }
     }
 
+    @Override
     protected void onResume() {
         super.onResume();
     }
 
+    @Override
     protected void onDestroy() {
         PgyUpdateManager.unregister();
         super.onDestroy();

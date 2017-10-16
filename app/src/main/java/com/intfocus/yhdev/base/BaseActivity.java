@@ -129,6 +129,7 @@ public class BaseActivity extends FragmentActivity {
         }
     }
 
+    @Override
     protected void onDestroy() {
         clearReferences();
         fixInputMethodManager(BaseActivity.this);
@@ -245,6 +246,7 @@ public class BaseActivity extends FragmentActivity {
                 LogUtil.d("onPageFinished", String.format("%s - %s", URLs.timestamp(), url));
             }
 
+            @Override
             public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
                 LogUtil.d("onReceivedError",
                         String.format("errorCode: %d, description: %s, url: %s", errorCode, description,
@@ -399,7 +401,9 @@ public class BaseActivity extends FragmentActivity {
         @Override
         public void handleMessage(Message message) {
             BaseActivity activity = weakActivity.get();
-            if (activity == null) return;
+            if (activity == null) {
+                return;
+            }
 
             switch (message.what) {
                 case 200:
@@ -765,8 +769,9 @@ public class BaseActivity extends FragmentActivity {
             // 获取NetworkInfo对象
             NetworkInfo networkInfo = manager.getActiveNetworkInfo();
             //判断NetworkInfo对象是否为空
-            if (networkInfo != null)
+            if (networkInfo != null) {
                 return networkInfo.isAvailable();
+            }
         }
         return false;
     }

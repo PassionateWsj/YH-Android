@@ -56,8 +56,9 @@ public class ModularTwo_SubTableActivity extends AppCompatActivity {
             subData = DataHolder.getInstance().getData();
             suRootID = bundle.getInt("suRootID");
             title.setText(titel);
-            if (StringUtil.isEmpty(subData))
+            if (StringUtil.isEmpty(subData)) {
                 finish();
+            }
 
             ModularTwo_UnitTablesContModeFragment toFragment = ModularTwo_UnitTablesContModeFragment.newInstance(suRootID, subData);
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();

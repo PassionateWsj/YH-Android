@@ -371,7 +371,7 @@ public class FileUtil {
             String keyName = String.format("local_%s_md5", fileName);
 
             boolean isShouldUnZip = true;
-            isShouldUnZip = !(mAssetsSP.getString(keyName, "0").equals("0") && mAssetsSP.getString(keyName, "0").equals(md5String));
+            isShouldUnZip = !("0".equals(mAssetsSP.getString(keyName, "0")) && mAssetsSP.getString(keyName, "0").equals(md5String));
 
 
             if (isShouldUnZip) {
@@ -379,7 +379,7 @@ public class FileUtil {
 
                 String folderPath = sharedPath;
                 if (isInAssets) {
-                    if (fileName.equals("icons")) {
+                    if ("icons".equals(fileName)) {
                         fileName = "images";
                     }
                     folderPath = String.format("%s/assets/%s/", sharedPath, fileName);
@@ -530,8 +530,9 @@ public class FileUtil {
                 return getDataColumn(context, contentUri, selection, selectionArgs);
             }
         } else if ("content".equalsIgnoreCase(uri.getScheme())) {
-            if (isGooglePhotosUri(uri))
+            if (isGooglePhotosUri(uri)) {
                 return uri.getLastPathSegment();
+            }
 
             return getDataColumn(context, uri, null, null);
         } else if ("file".equalsIgnoreCase(uri.getScheme())) {
@@ -558,8 +559,9 @@ public class FileUtil {
                 return cursor.getString(index);
             }
         } finally {
-            if (cursor != null)
+            if (cursor != null) {
                 cursor.close();
+            }
         }
         return null;
     }
@@ -596,7 +598,7 @@ public class FileUtil {
 
         @Override
         protected String doInBackground(String... params) {
-            if (type.equals("new-install")) {
+            if ("new-install".equals(type)) {
                 CacheCleanManager.cleanFiles(ctx);
             } else {
                 String sharedPath = FileUtil.sharedPath(ctx);
@@ -637,7 +639,7 @@ public class FileUtil {
             FileUtil.checkAssets(ctx, URLs.kStylesheets, true);
             FileUtil.checkAssets(ctx, URLs.kJavaScripts, true);
 
-            if (type.equals("cache-clean")) {
+            if ("cache-clean".equals(type)) {
                 RetrofitUtil.getHttpService(ctx).getAssetsMD5()
                         .compose(new RetrofitUtil.CommonOptions<AssetsResult>())
                         .subscribe(new CodeHandledSubscriber<AssetsResult>() {
@@ -687,8 +689,9 @@ public class FileUtil {
         for (String string : assetsName) {
             assetZipPath = String.format("%s/%s.zip", sharedPath, string);
             assetZipFile = new File(assetZipPath);
-            if (assetZipFile.exists())
+            if (assetZipFile.exists()) {
                 assetZipFile.delete();
+            }
             FileUtil.copyAssetFile(ctx, String.format("%s.zip", string), assetZipPath);
         }
     }
@@ -773,8 +776,9 @@ public class FileUtil {
         if (!zipFilePath.exists()) {
             zipFilePath.mkdirs();
         }
-        if (assetZip.isFile() && assetZip.exists())
+        if (assetZip.isFile() && assetZip.exists()) {
             assetZip.delete();
+        }
         InputStream inputStream = null;
         OutputStream outputStream = null;
 
@@ -826,15 +830,16 @@ public class FileUtil {
     public static boolean unZipAssets(Context mContext, String assetName) {
         boolean isInAssets = true;
         String sharedPath = String.format("%s/%s", FileUtil.basePath(mContext), K.kSharedDirName);
-        if (URLs.kAssets == assetName || URLs.kLoading == assetName)
+        if (URLs.kAssets == assetName || URLs.kLoading == assetName) {
             isInAssets = false;
+        }
         try {
             String zipFilePath = String.format("%s/%s", sharedPath, assetName + ".zip");
 
             String outputDirectory = sharedPath;
             if (isInAssets) {
                 outputDirectory = String.format("%s/assets/%s/", sharedPath, assetName);
-                if (assetName.equals("icons")) {
+                if ("icons".equals(assetName)) {
                     outputDirectory = String.format("%s/assets/%s/", sharedPath, "images");
                 }
             } else {
@@ -912,14 +917,20 @@ public class FileUtil {
             if (files[i].isFile()) {
                 //删除子文件
                 flag = deleteFile(files[i].getAbsolutePath());
-                if (!flag) break;
+                if (!flag) {
+                    break;
+                }
             } else {
                 //删除子目录
                 flag = deleteDirectory(files[i].getAbsolutePath());
-                if (!flag) break;
+                if (!flag) {
+                    break;
+                }
             }
         }
-        if (!flag) return false;
+        if (!flag) {
+            return false;
+        }
         //删除当前空目录
         return dirFile.delete();
     }

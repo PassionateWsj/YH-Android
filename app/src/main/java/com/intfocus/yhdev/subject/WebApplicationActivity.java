@@ -160,7 +160,7 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
                         SharedPreferences.Editor editor = sp.edit();
                         String cache = sp.getString("cache", "");
                         JSONObject json;
-                        if (cache.equals("")) {
+                        if ("".equals(cache)) {
                             json = new JSONObject();
                             json.put("0", bannerName);
                         } else {
@@ -185,6 +185,7 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
                 }
             }
 
+            @Override
             public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
                 LogUtil.d("onReceivedError",
                         String.format("errorCode: %d, description: %s, url: %s", errorCode, description,
@@ -245,6 +246,7 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
                 LogUtil.d("onPageFinished", String.format("%s - %s", URLs.timestamp(), url));
             }
 
+            @Override
             public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
                 LogUtil.d("onReceivedError",
                         String.format("errorCode: %d, description: %s, url: %s", errorCode, description,
@@ -309,8 +311,9 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
             mPDFView.setVisibility(View.INVISIBLE);
         }
         iv_BannerSetting.setVisibility(View.VISIBLE);
-        if (intent.getBooleanExtra("hideBannerSetting", false))
+        if (intent.getBooleanExtra("hideBannerSetting", false)) {
             iv_BannerSetting.setVisibility(View.INVISIBLE);
+        }
     }
 
     /*
@@ -378,6 +381,7 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
         popupWindow.showAsDropDown(clickView);
     }
 
+    @Override
     public void onResume() {
         mMyApp.setCurrentActivity(this);
         super.onResume();
@@ -389,14 +393,17 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
      * @param page      the new page displayed, starting from 1
      * @param pageCount the total page count, starting from 1
      */
+    @Override
     public void onPageChanged(int page, int pageCount) {
         Log.i("onPageChanged", format("%s %d / %d", bannerName, page, pageCount));
     }
 
+    @Override
     public void loadComplete(int nbPages) {
         Log.d("loadComplete", "load pdf done");
     }
 
+    @Override
     public void errorOccured(String errorType, String errorMessage) {
         String htmlPath = String.format("%s/loading/%s.html", sharedPath, "500"),
                 outputPath = String.format("%s/loading/%s.html", sharedPath, "500.output");
@@ -448,6 +455,7 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
     }
 
     private final Handler mHandlerForPDF = new Handler() {
+        @Override
         public void handleMessage(Message message) {
             //Log.i("PDF", pdfFile.getAbsolutePath());
             if (pdfFile.exists()) {
@@ -565,6 +573,7 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
     /*
      * 返回
      */
+    @Override
     public void dismissActivity(View v) {
         WebApplicationActivity.this.onBackPressed();
     }
@@ -692,7 +701,7 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    if (!bannerTitle.equals("")) {
+                    if (!"".equals(bannerTitle)) {
                         mTitle.setText(bannerTitle);
                     } else {
                         mTitle.setText("");
@@ -711,6 +720,7 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
             return item;
         }
 
+        @Override
         @JavascriptInterface
         public void refreshBrowser() {
             runOnUiThread(new Runnable() {
@@ -727,7 +737,7 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    bannerView.setVisibility(state.equals("show") ? View.VISIBLE : View.GONE);
+                    bannerView.setVisibility("show".equals(state) ? View.VISIBLE : View.GONE);
                 }
             });
         }
@@ -743,8 +753,8 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    iv_BannerBack.setVisibility(state.equals("show") ? View.VISIBLE : View.GONE);
-                    tv_BannerBack.setVisibility(state.equals("show") ? View.VISIBLE : View.GONE);
+                    iv_BannerBack.setVisibility("show".equals(state) ? View.VISIBLE : View.GONE);
+                    tv_BannerBack.setVisibility("show".equals(state) ? View.VISIBLE : View.GONE);
                 }
             });
         }
@@ -754,7 +764,7 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    iv_BannerSetting.setVisibility(state.equals("show") ? View.VISIBLE : View.GONE);
+                    iv_BannerSetting.setVisibility("show".equals(state) ? View.VISIBLE : View.GONE);
                 }
             });
         }

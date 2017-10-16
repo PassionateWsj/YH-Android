@@ -75,6 +75,7 @@ public class CurveLineFragment extends BaseModeFragment {
             rootView = inflater.inflate(R.layout.fragment_curveline, container, false);
             x.view().inject(this, rootView);
             new Handler().postDelayed(new Runnable() {
+                @Override
                 public void run() {
                     init();
                 }

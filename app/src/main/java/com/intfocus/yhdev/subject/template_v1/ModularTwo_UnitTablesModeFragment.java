@@ -135,8 +135,9 @@ public class ModularTwo_UnitTablesModeFragment extends BaseModeFragment<ModularT
             adapter.setData(datas);
 
             switchFragment(0);
-        } else
+        } else {
             ToastUtil.showToast(ctx, "数据实体为空");
+        }
     }
 
     /**
@@ -153,30 +154,34 @@ public class ModularTwo_UnitTablesModeFragment extends BaseModeFragment<ModularT
         currentFtName = fragmentTag + checkId;
         toFragment = (BaseModeFragment) fm.findFragmentByTag(currentFtName);
         Log.i(this.getClass().getSimpleName(), "currentFtName:" + currentFtName);
-        if (currFragment != null && currFragment == toFragment)
+        if (currFragment != null && currFragment == toFragment) {
             return;
+        }
 
-        if (toFragment == null)
+        if (toFragment == null) {
             toFragment = ModularTwo_UnitTablesContModeFragment.newInstance(suRootID, entity.datas.get(checkId).config);
+        }
 
         FragmentTransaction ft = fm.beginTransaction();
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
 
         if (!toFragment.isAdded()) {
             // 隐藏当前的fragment，add下一个到Activity中
-            if (currFragment == null)
+            if (currFragment == null) {
                 ft.add(R.id.fl_mdetal_table_cont_container,
                         toFragment, currentFtName).commitAllowingStateLoss();
-            else
+            } else {
                 ft.hide(currFragment).add(R.id.fl_mdetal_table_cont_container,
                         toFragment, currentFtName)
                         .commitAllowingStateLoss();
+            }
         } else {
             // 隐藏当前的fragment，显示下一个
-            if (currFragment == null)
+            if (currFragment == null) {
                 ft.show(toFragment).commitAllowingStateLoss();
-            else
+            } else {
                 ft.hide(currFragment).show(toFragment).commitAllowingStateLoss();
+            }
         }
         currFragment = toFragment;
     }

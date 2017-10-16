@@ -203,7 +203,7 @@ public class YHApplication extends Application {
             }
             Log.i("BroadcastReceiver", "Screen On");
             String currentActivityName = ((YHApplication) context.getApplicationContext()).getCurrentActivity();
-            if ((currentActivityName != null && !currentActivityName.trim().equals("ConfirmPassCodeActivity")) && // 当前活动的Activity非解锁界面
+            if ((currentActivityName != null && !"ConfirmPassCodeActivity".equals(currentActivityName.trim())) && // 当前活动的Activity非解锁界面
                     FileUtil.checkIsLocked(appContext)) { //应用处于登录状态，并且开启了密码锁
                 intent = new Intent(appContext, ConfirmPassCodeActivity.class);
                 intent.putExtra("is_from_login", true);

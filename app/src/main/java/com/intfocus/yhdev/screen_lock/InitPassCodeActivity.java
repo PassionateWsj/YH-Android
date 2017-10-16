@@ -75,6 +75,7 @@ public class InitPassCodeActivity extends Activity {
         initCircleCanvas();
     }
 
+    @Override
     protected void onResume() {
         mMyApp.setCurrentActivity(this);
         super.onResume();

@@ -27,6 +27,7 @@ public class SimpleListAdapter extends SimpleAdapter {
         this.listItem = data;
     }
 
+    @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View v = super.getView(position, convertView, parent);
         TextView mItemContent = (TextView) v.findViewById(R.id.item_setting_info);
@@ -34,7 +35,7 @@ public class SimpleListAdapter extends SimpleAdapter {
 
         mItemContent.setVisibility(View.GONE);
         mItemArrow.setVisibility(View.GONE);
-        if (listItem.get(position).get("ItemContent").equals("arrow")) {
+        if ("arrow".equals(listItem.get(position).get("ItemContent"))) {
             mItemArrow.setVisibility(View.VISIBLE);
         } else {
             mItemContent.setVisibility(View.VISIBLE);
