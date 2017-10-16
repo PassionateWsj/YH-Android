@@ -304,7 +304,7 @@ public class ModularTwo_UnitTablesContModeFragment extends BaseModeFragment<Modu
             ArrayList<String> rowDatas = lineData.get(i);
             for (int j = 0; j < rowDatas.size(); j++) {
                 TextView textView = new TextView(ctx);
-                textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+                textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 11);
                 textView.setText(rowDatas.get(j));
                 if (i != 0) {
                     try {
@@ -319,7 +319,7 @@ public class ModularTwo_UnitTablesContModeFragment extends BaseModeFragment<Modu
                 //设置布局
                 LinearLayout.LayoutParams textViewParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
                         LinearLayout.LayoutParams.WRAP_CONTENT);
-                textViewParams.setMargins(30, 30, 30, 30);
+                textViewParams.setMargins(DisplayUtil.dip2px(ctx, 10), 30, DisplayUtil.dip2px(ctx, 10), 30);
                 textView.setLayoutParams(textViewParams);
                 if (i == 0) {
                     mColumnMaxWidths.add(measureTextWidth(textView, rowDatas.get(j)));
@@ -339,6 +339,7 @@ public class ModularTwo_UnitTablesContModeFragment extends BaseModeFragment<Modu
             SortCheckBox box = (SortCheckBox) inflater.inflate(R.layout.item_table_sortcheckbox, null);
             box.setText(header[i + 1]);
             box.setBoxWidth(DisplayUtil.dip2px(ctx, mColumnMaxWidths.get(i)));
+            box.setTextSize(DisplayUtil.dip2px(getContext(), 11));
             box.setTag(i + 1);
             box.setOnClickListener(listener);
             box.setOnSortViewSizeListener(this);
@@ -390,7 +391,7 @@ public class ModularTwo_UnitTablesContModeFragment extends BaseModeFragment<Modu
         tableValue = new TableValueView(ctx);
         tableValue.setItemHeight(itemHeight);
         tableValue.setHeaderLenghts(al_HeaderLenght);
-        tableValue.setTextSize(DisplayUtil.dip2px(getContext(), 12));
+        tableValue.setTextSize(DisplayUtil.dip2px(getContext(), 10));
         tableValue.setTableValues(lables);
         tableValue.setDeviderColor(dividerColor);
         tableValue.setTextColor(textColor);

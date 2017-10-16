@@ -125,14 +125,14 @@ public class CustomCurveChartV2 extends View implements ValueAnimator.AnimatorUp
      */
     public void init() {
         paintAxes = new Paint();
-        paintAxes.setStyle(Paint.Style.STROKE);
+        paintAxes.setStyle(Paint.Style.FILL);
         paintAxes.setAntiAlias(true);
         paintAxes.setDither(true);
         paintAxes.setColor(defauteolor);
         paintAxes.setTextSize(dipToPx(12));
 
         paintCoordinate = new Paint();
-        paintCoordinate.setStyle(Paint.Style.STROKE);
+        paintCoordinate.setStyle(Paint.Style.FILL);
         paintCoordinate.setDither(true);
         paintCoordinate.setAntiAlias(true);
         paintCoordinate.setColor(defauteolor);
@@ -224,7 +224,10 @@ public class CustomCurveChartV2 extends View implements ValueAnimator.AnimatorUp
             }
 
             paint.setColor(color);
-            canvas.drawText(xLabel[i], startX, this.getHeight() - padding / 2 - textSize / 2, paint);
+//            canvas.drawText(xLabel[i], startX, this.getHeight() - padding / 2 - textSize / 2, paint);
+            if (i == 0 || i == xlength - 1) {
+                canvas.drawText(xLabel[i], startX, yPoint - paint.getFontMetrics().top, paint);
+            }
             xpoints.add(startX);
         }
 
@@ -291,7 +294,7 @@ public class CustomCurveChartV2 extends View implements ValueAnimator.AnimatorUp
                 else
                     yPoint = toY(data[i]);
 
-                if (i == selectItem) {
+                if (i == selectItem&& data[i] != 0) {
                     paint_circle.setColor(drawColor);
                     paint_circle.setAlpha(26);
                     canvas.drawCircle(xPoint + i * xScale, yPoint, dipToPx(6f), paint_circle);

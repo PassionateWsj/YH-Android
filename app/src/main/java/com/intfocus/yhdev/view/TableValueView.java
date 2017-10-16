@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Typeface;
 import android.support.v4.util.ArrayMap;
 import android.support.v4.util.SimpleArrayMap;
 import android.view.View;
@@ -64,6 +63,7 @@ public class TableValueView extends View {
     public void setTextSize(int textSize) {
         this.textSize = textSize;
         textPaint.setTextSize(textSize);
+        invalidate();
     }
 
     public TableValueView(Context context) {
@@ -80,9 +80,9 @@ public class TableValueView extends View {
         deviderPaint.setStrokeWidth(1f);
 
         textPaint = new Paint(deviderPaint);
-        textPaint.setTextSize(DisplayUtil.dip2px(getContext(), textSize));
-        textPaint.setTextAlign(Paint.Align.CENTER);
-        textPaint.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+        textPaint.setTextSize(DisplayUtil.sp2px(getContext(), textSize));
+        textPaint.setTextAlign(Paint.Align.RIGHT);
+//        textPaint.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
         textPaint.setColor(textColor);
         textPaint.setStrokeWidth(8);
     }
@@ -122,7 +122,7 @@ public class TableValueView extends View {
                 String[] tabrowValues = tableValues.get(i);
                 int headerSize = headerLenghts.size();
                 Paint.FontMetrics fontMetrics = textPaint.getFontMetrics();
-                float y = (int) (YAxesCenterPopint.get(i) - fontMetrics.top/2 - fontMetrics.bottom/2);
+                float y = (int) (YAxesCenterPopint.get(i) - fontMetrics.top / 2 - fontMetrics.bottom / 2);
                 for (int n = 0; n < headerSize; n++) {
                     float x = XAxesCenterPopint.get(n);
                     JSONObject rowData = new JSONObject(tabrowValues[n + 1]);
@@ -172,11 +172,12 @@ public class TableValueView extends View {
             float width = upxPointLs + headerLenghts.get(i);
 
             float centerPwidth;
-            float currValue = (float) (headerLenghts.get(i) / 2);
-            if (i == 0)
-                centerPwidth = currValue;
-            else
-                centerPwidth = width - currValue;
+//            float currValue = (float) (headerLenghts.get(i) / 2);
+//            if (i == 0)
+//                centerPwidth = currValue;
+//            else
+//                centerPwidth = width - currValue;
+            centerPwidth = width - DisplayUtil.dip2px(getContext(), 10);
             XAxesCenterPopint.put(i, centerPwidth);
 
             upxPointLs = width;
