@@ -1,10 +1,12 @@
 package com.intfocus.yhdev.dashboard.mine
 
+//import org.xutils.image.ImageOptions
 import android.app.Activity.RESULT_CANCELED
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.Intent
 import android.content.SharedPreferences
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Typeface
 import android.graphics.drawable.BitmapDrawable
@@ -13,11 +15,14 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.support.v4.content.FileProvider
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupWindow
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.BitmapImageViewTarget
 import com.google.gson.Gson
 import com.intfocus.yhdev.R
 import com.intfocus.yhdev.base.BaseModeFragment
@@ -45,8 +50,6 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import org.json.JSONObject
-import org.xutils.image.ImageOptions
-import org.xutils.x
 import java.io.File
 
 /**
@@ -58,7 +61,7 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
     lateinit var mUserSP: SharedPreferences
     var rootView: View? = null
     var gson = Gson()
-    var imageOptions: ImageOptions? = null
+//        var imageOptions: ImageOptions? = null
     var userNum: String? = null
 
     /* 请求识别码 */
@@ -89,14 +92,14 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        imageOptions = ImageOptions.Builder()
-                .setSize(DisplayUtil.dip2px(ctx, 60f), DisplayUtil.dip2px(ctx, 60f))
-                .setCircular(true)
-                .setLoadingDrawableId(R.drawable.face_default)
-                .setFailureDrawableId(R.drawable.face_default)
-                .build()
+//        imageOptions = ImageOptions.Builder()
+//                .setSize(DisplayUtil.dip2px(ctx, 60f), DisplayUtil.dip2px(ctx, 60f))
+//                .setCircular(true)
+//                .setLoadingDrawableId(R.drawable.face_default)
+//                .setFailureDrawableId(R.drawable.face_default)
+//                .build()
 
-        var mTypeFace = Typeface.createFromAsset(act.assets, "ALTGOT2N.TTF")
+        val mTypeFace = Typeface.createFromAsset(act.assets, "ALTGOT2N.TTF")
         tv_login_number.typeface = mTypeFace
         tv_report_number.typeface = mTypeFace
         tv_beyond_number.typeface = mTypeFace
@@ -122,7 +125,20 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
                         tv_user_role.text = mUserInfo.data!!.role_name
                         tv_mine_user_num_value.text = mUserInfo.data!!.user_num
                         tv_mine_user_group_value.text = mUserInfo.data!!.group_name
-                        x.image().bind(iv_user_icon, mUserInfo.data!!.gravatar, imageOptions)
+//                        x.image().bind(iv_user_icon, mUserInfo.data!!.gravatar, imageOptions)
+                        Glide.with(ctx)
+                                .load(mUserInfo.data!!.gravatar)
+                                .asBitmap()
+                                .placeholder(R.drawable.face_default)
+                                .error(R.drawable.face_default)
+                                .override(DisplayUtil.dip2px(ctx, 60f),DisplayUtil.dip2px(ctx, 60f))
+                                .into(object : BitmapImageViewTarget(iv_user_icon) {
+                                    override fun setResource(resource: Bitmap?) {
+                                        val circularBitmapDrawable = RoundedBitmapDrawableFactory.create(context.resources, resource)
+                                        circularBitmapDrawable.isCircular = true
+                                        iv_user_icon.setImageDrawable(circularBitmapDrawable)
+                                    }
+                                })
                     }
 
                     override fun onCompleted() {
@@ -161,7 +177,7 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun setData(result: UserInfoRequest) {
         if (result.isSuccess && result.userInfoBean != null) {
-            var user = result.userInfoBean
+            val user = result.userInfoBean
             tv_user_name.text = user!!.user_name
             tv_login_number.text = user.login_duration
             tv_report_number.text = user.browse_report_count
@@ -169,46 +185,60 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
             tv_beyond_number.text = user.surpass_percentage.toString()
             tv_user_role.text = user.role_name
             tv_mine_user_group_value.text = user.group_name
-            x.image().bind(iv_user_icon, user.gravatar, imageOptions)
+//            x.image().bind(iv_user_icon, user.gravatar, imageOptions)
+            Glide.with(ctx)
+                    .load(user.gravatar)
+                    .asBitmap()
+                    .placeholder(R.drawable.face_default)
+                    .error(R.drawable.face_default)
+                    .override(DisplayUtil.dip2px(ctx, 60f),DisplayUtil.dip2px(ctx, 60f))
+                    .into(object : BitmapImageViewTarget(iv_user_icon) {
+                        override fun setResource(resource: Bitmap?) {
+                            val circularBitmapDrawable = RoundedBitmapDrawableFactory.create(context.resources, resource)
+                            circularBitmapDrawable.isCircular = true
+                            iv_user_icon.setImageDrawable(circularBitmapDrawable)
+                        }
+                    })
+
         }
     }
 
     private fun startPassWordAlterActivity() {
-        var intent = Intent(activity, PassWordAlterActivity::class.java)
+        val intent = Intent(activity, PassWordAlterActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
         startActivity(intent)
 
-        var logParams = JSONObject()
+        val logParams = JSONObject()
         logParams.put(URLs.kAction, "点击/个人信息/修改密码")
         ActionLogUtil.actionLog(ctx, logParams)
     }
 
     private fun startFavoriteActivity() {
-        var intent = Intent(activity, FavoriteActivity::class.java)
+        val intent = Intent(activity, FavoriteActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
         startActivity(intent)
     }
 
     private fun startMessageActivity() {
-        var intent = Intent(activity, ShowPushMessageActivity::class.java)
+        val intent = Intent(activity, ShowPushMessageActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
         startActivity(intent)
     }
 
     private fun startIssueActivity() {
-        var intent = Intent(activity, FeedbackActivity::class.java)
+        val intent = Intent(activity, FeedbackActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
         startActivity(intent)
     }
 
     private fun startSettingActivity() {
-        var intent = Intent(activity, SettingActivity::class.java)
+        val intent = Intent(activity, SettingActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
         startActivity(intent)
     }
 
     private fun startUserLocationPage() {
-        var intent = Intent(activity, WebApplicationActivity::class.java)
+        val intent = Intent(activity, WebApplicationActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
         intent.putExtra(URLs.kBannerName, "归属部门")
         intent.putExtra(URLs.kLink, String.format("%s/websites/yonghuxinxiziweihu/home/apply.html", K.kBaseUrl))
@@ -224,7 +254,7 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
     private fun showLogoutPopupWindow(ctx: Context) {
         val contentView = LayoutInflater.from(ctx).inflate(R.layout.popup_logout, null)
         //设置弹出框的宽度和高度
-        var popupWindow = PopupWindow(contentView,
+        val popupWindow = PopupWindow(contentView,
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT)
         popupWindow.isFocusable = true// 取得焦点
@@ -304,11 +334,11 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
 
         when (requestCode) {
             CODE_GALLERY_REQUEST -> {
-                var cropIntent = launchSystemImageCrop(ctx, data!!.data)
+                val cropIntent = launchSystemImageCrop(ctx, data!!.data)
                 startActivityForResult(cropIntent, CODE_RESULT_REQUEST)
             }
             CODE_CAMERA_REQUEST -> {
-                var cropIntent: Intent
+                val cropIntent: Intent
                 val tempFile = File(Environment.getExternalStorageDirectory(), "icon.jpg")
                 if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                     val photoURI = FileProvider.getUriForFile(ctx,
@@ -333,7 +363,7 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
     private fun showIconSelectPopWindow(ctx: Context) {
         val contentView = LayoutInflater.from(ctx).inflate(R.layout.popup_mine_icon_select, null)
         //设置弹出框的宽度和高度
-        var popupWindow = PopupWindow(contentView,
+        val popupWindow = PopupWindow(contentView,
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT)
         popupWindow.isFocusable = true// 取得焦点
@@ -364,7 +394,7 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
             popupWindow.dismiss()
         }
 
-        var logParams = JSONObject()
+        val logParams = JSONObject()
         logParams.put(URLs.kAction, "点击/个人信息/设置头像")
         ActionLogUtil.actionLog(ctx, logParams)
     }
@@ -373,7 +403,7 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
      * 提取保存裁剪之后的图片数据，并设置头像部分的View
      */
     private fun setImageToHeadView() {
-        var imgPath = Environment.getExternalStorageDirectory().toString() + "/icon.jpg"
+        val imgPath = Environment.getExternalStorageDirectory().toString() + "/icon.jpg"
         val bitmap = BitmapFactory.decodeFile(imgPath)
         if (bitmap != null) {
             iv_user_icon.setImageBitmap(DisplayUtil.makeRoundCorner(bitmap))
