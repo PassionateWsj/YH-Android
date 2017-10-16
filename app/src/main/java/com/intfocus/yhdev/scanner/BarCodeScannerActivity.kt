@@ -148,7 +148,7 @@ class BarCodeScannerActivity : AppCompatActivity(), QRCodeView.Delegate, View.On
             }
         }
         view!!.btn_input_barcode_confirm.setOnClickListener {
-            var trim = view!!.et_input_barcode.text.toString()
+            val trim = view!!.et_input_barcode.text.toString()
             if (trim == "") {
                 ToastUtils.show(this, "请输入条码")
                 return@setOnClickListener
@@ -172,9 +172,9 @@ class BarCodeScannerActivity : AppCompatActivity(), QRCodeView.Delegate, View.On
             isStartActivity = false
         }
         popupWindow!!.setOnDismissListener {
-            if (isStartActivity) {
-                finish()
-            } else {
+            if (!isStartActivity) {
+//                finish()
+//            } else {
                 checkLightStatus(isLightOn, tvBarcodeLight!!, cbBarcodeLight!!)
                 zbarview_barcode_scanner.showScanRect()
                 zbarview_barcode_scanner.startSpot()
@@ -211,7 +211,7 @@ class BarCodeScannerActivity : AppCompatActivity(), QRCodeView.Delegate, View.On
     override fun onScanQRCodeSuccess(result: String?) {
         Log.i(TAG, "result:" + result)
 //        Toast.makeText(this, result, Toast.LENGTH_SHORT).show()
-        var toIntOrNull = result!!.toLongOrNull()
+        val toIntOrNull = result!!.toLongOrNull()
         if (toIntOrNull == null) {
             ToastUtils.show(this@BarCodeScannerActivity, "暂时只支持条形码")
             zbarview_barcode_scanner.postDelayed({ zbarview_barcode_scanner.startSpot() }, 2000)
@@ -221,7 +221,7 @@ class BarCodeScannerActivity : AppCompatActivity(), QRCodeView.Delegate, View.On
         intent.putExtra(URLs.kCodeInfo, result)
         intent.putExtra(URLs.kCodeType, "barcode")
         startActivity(intent)
-        finish()
+//        finish()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -229,7 +229,7 @@ class BarCodeScannerActivity : AppCompatActivity(), QRCodeView.Delegate, View.On
 
         zbarview_barcode_scanner.showScanRect()
         if (requestCode == REQUEST_CODE_CHOOSE && resultCode == RESULT_OK) {
-            var mProgressDialog = ProgressDialog.show(this, "稍等", "正在扫描")
+            val mProgressDialog = ProgressDialog.show(this, "稍等", "正在扫描")
             zbarview_barcode_scanner.stopSpot()
 //            tv_barcode_scanning.visibility = View.VISIBLE
             val picturePath = ImageUtil.handleImageOnKitKat(Matisse.obtainResult(data)[0], this)
@@ -241,7 +241,7 @@ class BarCodeScannerActivity : AppCompatActivity(), QRCodeView.Delegate, View.On
 
                 override fun onPostExecute(result: String) {
                     mProgressDialog.dismiss()
-                    if (TextUtils.isEmpty(result) || "".equals(result)) {
+                    if (TextUtils.isEmpty(result) || "" == result) {
                         ToastUtils.show(this@BarCodeScannerActivity, "未发现条形码")
 //                        tv_barcode_scanning.visibility = View.GONE
                         zbarview_barcode_scanner.postDelayed({ zbarview_barcode_scanner.startSpot() }, 2000)
