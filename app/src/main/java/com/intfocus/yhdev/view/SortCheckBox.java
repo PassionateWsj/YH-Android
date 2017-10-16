@@ -89,6 +89,12 @@ public class SortCheckBox extends View {
         init(context, attrs);
     }
 
+    public void setTextSize(int textSize) {
+        this.textSize = textSize;
+        mTextPaint.setTextSize(textSize);
+        invalidate();
+    }
+
     private void init(Context context, AttributeSet attrs) {
         initAttrs(attrs);
         initPaint();
@@ -131,7 +137,7 @@ public class SortCheckBox extends View {
         TypedArray array = ctx.getTheme().obtainStyledAttributes(attrs,
                 attrsArray, 0, 0);
         textColor = array.getColor(0, Color.BLACK);
-        textSize = array.getDimensionPixelSize(1, 14);
+        textSize = array.getDimensionPixelSize(1, 11);
         textSize = DisplayUtil.sp2px(getContext(), textSize);
         text = array.getString(2);
         drawablePadding = array.getDimensionPixelSize(3, 0);
