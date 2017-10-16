@@ -75,7 +75,7 @@ public class YHApplication extends Application {
                     .setPatchRollbackOnScreenOff(true)
                     .setPatchRestartOnSrceenOff(true);
 
-            // 每隔3个小时去访问后台时候有更新,通过handler实现轮训的效果
+            // 每隔1个小时去访问后台时候有更新,通过handler实现轮训的效果
             new FetchPatchHandler().fetchPatchWithInterval(1);
             Log.i("TAG", "tinker init");
         }

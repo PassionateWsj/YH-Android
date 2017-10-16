@@ -6,9 +6,6 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.util.ArrayMap;
-import android.text.Layout;
-import android.text.StaticLayout;
-import android.text.TextPaint;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -20,11 +17,9 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.alibaba.fastjson.JSON;
 import com.intfocus.yhdev.R;
 import com.intfocus.yhdev.base.BaseModeFragment;
 import com.intfocus.yhdev.subject.template_v1.adapter.ModularTwo_TableNameAdapter;
-import com.intfocus.yhdev.subject.template_v1.adapter.ModularTwo_TableValueAdapter;
 import com.intfocus.yhdev.subject.template_v1.entity.DataHolder;
 import com.intfocus.yhdev.subject.template_v1.entity.ModularTwo_UnitTableEntity;
 import com.intfocus.yhdev.subject.template_v1.entity.msg.EventRefreshTableRect;
@@ -389,12 +384,13 @@ public class ModularTwo_UnitTablesContModeFragment extends BaseModeFragment<Modu
             lables.put(i, datas.get(i).main_data);
         }
 
-        int itemHeight = getResources().getDimensionPixelSize(R.dimen.size_table_small);
+        int itemHeight = getResources().getDimensionPixelSize(R.dimen.size_default);
         int dividerColor = getResources().getColor(R.color.co9);
-        int textColor = getResources().getColor(R.color.co3);
+        int textColor = getResources().getColor(R.color.co6_syr);
         tableValue = new TableValueView(ctx);
         tableValue.setItemHeight(itemHeight);
         tableValue.setHeaderLenghts(al_HeaderLenght);
+        tableValue.setTextSize(DisplayUtil.dip2px(getContext(), 12));
         tableValue.setTableValues(lables);
         tableValue.setDeviderColor(dividerColor);
         tableValue.setTextColor(textColor);

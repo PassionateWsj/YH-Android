@@ -515,11 +515,11 @@ public class ApiHelper {
     public static void getAMapLocation(final Context ctx) {
         //初始化client
         AMapLocationClient locationClient = new AMapLocationClient(ctx);
-        locationClient.setApiKey(Constants.GAODE_MAP_APP_KEY);
+        AMapLocationClient.setApiKey(Constants.GAODE_MAP_APP_KEY);
         AMapLocationClientOption locationOption = getDefaultOption();
         //设置定位参数
         locationClient.setLocationOption(locationOption);
-        // 设置定位监听
+        //设置定位监听
         locationClient.setLocationListener(new AMapLocationListener() {
             @Override
             public void onLocationChanged(AMapLocation location) {

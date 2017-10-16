@@ -75,7 +75,7 @@ public class RetrofitUtil {
 //        clientBuilder.sslSocketFactory(createSSLSocketFactory());
         //Http状态码处理,针对已知状态码的处理
         clientBuilder.addInterceptor(new HttpStateInterceptor());
-        clientBuilder.addInterceptor(new BaseParamsIntercepter(ctx));
+        clientBuilder.addInterceptor(new BaseParamsInterceptor(ctx));
         clientBuilder.addInterceptor(new NetworkInterceptor());
         clientBuilder.connectTimeout(DEFAULT_TIME_OUT, TimeUnit.SECONDS);
         return clientBuilder;

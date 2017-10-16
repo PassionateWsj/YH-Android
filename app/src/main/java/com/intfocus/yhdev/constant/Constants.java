@@ -16,7 +16,7 @@ public class Constants {
 //    public final static String UMENG_APP_KEY = "c586f556015342bcf89f8300ccfbebc2";
 //    public final static String UMENG_MESSAGE_SECRET = "c586f556015342bcf89f8300ccfbebc2";
 
-    /*
+    /**
      * 测试环境
      */
     public final static String BUGLY_APP_ID = "1690ecea95";
