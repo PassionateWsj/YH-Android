@@ -40,6 +40,7 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import static com.intfocus.yhdev.constant.Constants.BUGLY_APP_ID;
 import static com.intfocus.yhdev.util.K.kPushDeviceToken;
 import static com.intfocus.yhdev.util.PrivateURLs.kWXAppId;
 import static com.intfocus.yhdev.util.PrivateURLs.kWXAppSecret;
@@ -92,7 +93,7 @@ public class YHApplication extends Application {
         /*
          * Bugly 异常上报
          */
-        CrashReport.initCrashReport(getApplicationContext(), Constants.BUGLY_APP_ID, BuildConfig.DEBUG);
+        CrashReport.initCrashReport(getApplicationContext(), BUGLY_APP_ID, BuildConfig.DEBUG);
 
         /*
          * 友盟分享初始化

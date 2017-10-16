@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.Map;
 
 import static android.content.Context.MODE_PRIVATE;
+import static com.intfocus.yhdev.constant.Constants.GAODE_MAP_APP_KEY;
 
 public class ApiHelper {
     /*
@@ -515,7 +516,7 @@ public class ApiHelper {
     public static void getAMapLocation(final Context ctx) {
         //初始化client
         AMapLocationClient locationClient = new AMapLocationClient(ctx);
-        AMapLocationClient.setApiKey(Constants.GAODE_MAP_APP_KEY);
+        AMapLocationClient.setApiKey(GAODE_MAP_APP_KEY);
         AMapLocationClientOption locationOption = getDefaultOption();
         //设置定位参数
         locationClient.setLocationOption(locationOption);
