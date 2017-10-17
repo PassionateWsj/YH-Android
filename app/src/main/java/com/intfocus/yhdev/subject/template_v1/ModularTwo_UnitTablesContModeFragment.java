@@ -152,8 +152,9 @@ public class ModularTwo_UnitTablesContModeFragment extends BaseModeFragment<Modu
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void measureLocation(EventRefreshTableRect event) {
         ModularTwo_UnitTablesModeFragment parentFt = (ModularTwo_UnitTablesModeFragment) getParentFragment();
-        if (parentFt == null)
+        if (parentFt == null) {
             return;
+        }
         final int surootID = suRootID;
         if (event.eventTag == surootID) {
             ((ModularTwo_Mode_Activity) getActivity()).rScrollView.setOnScrollListener(new RootScrollView.OnScrollListener() {
@@ -351,8 +352,9 @@ public class ModularTwo_UnitTablesContModeFragment extends BaseModeFragment<Modu
     @Override
     public void onSortViewSize(int width, Object tag) {
         int index = (int) tag;
-        if (index == 1)
+        if (index == 1) {
             al_HeaderLenght.clear();
+        }
         al_HeaderLenght.add(index - 1, width);
 
         // 表头加载完成后, 开始加载表格首列及表格内容
@@ -414,8 +416,9 @@ public class ModularTwo_UnitTablesContModeFragment extends BaseModeFragment<Modu
             int tag = (int) v.getTag();
             int index = tag - 1;
             for (int i = 0; i < headerSize; i++) {
-                if (i != index)
+                if (i != index) {
                     al_SortView.get(i).reset();
+                }
             }
 
             //TODO 执行排序功能
@@ -423,8 +426,9 @@ public class ModularTwo_UnitTablesContModeFragment extends BaseModeFragment<Modu
             if (box.getCheckedState() == SortCheckBox.CheckedState.sort_noneicon) {
                 dataComparator.setIndex(tag);
                 Collections.sort(dataEntity.data, dataComparator);
-            } else
+            } else {
                 Collections.reverse(dataEntity.data);
+            }
 
             nameAdapter.updateData(dataEntity.data);
             updateTableValue();
@@ -451,6 +455,7 @@ public class ModularTwo_UnitTablesContModeFragment extends BaseModeFragment<Modu
             this.index = index;
         }
 
+        @Override
         public int compare(ModularTwo_UnitTableEntity.TableRowEntity obj1, ModularTwo_UnitTableEntity.TableRowEntity obj2) {
             float v1 = 0;
             float v2 = 0;
@@ -458,15 +463,17 @@ public class ModularTwo_UnitTablesContModeFragment extends BaseModeFragment<Modu
                 String strv1 = new JSONObject(obj1.main_data[index]).getString("value");
                 String strv2 = new JSONObject(obj2.main_data[index]).getString("value");
 
-                if (strv1.contains("%"))
+                if (strv1.contains("%")) {
                     v1 = new Float(strv1.substring(0, strv1.indexOf("%"))) / 100;
-                else
+                } else {
                     v1 = Float.valueOf(df.format(Float.valueOf(strv1)));
+                }
 
-                if (strv2.contains("%"))
+                if (strv2.contains("%")) {
                     v2 = new Float(strv2.substring(0, strv2.indexOf("%"))) / 100;
-                else
+                } else {
                     v2 = Float.valueOf(df.format(Float.valueOf(strv2)));
+                }
             } catch (Exception e) {
                 e.printStackTrace();
                 return 0;

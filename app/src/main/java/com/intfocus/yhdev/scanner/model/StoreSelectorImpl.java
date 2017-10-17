@@ -35,10 +35,11 @@ public class StoreSelectorImpl implements StoreSelectorModel {
                 public void call(Subscriber<? super List<StoreItem>> subscriber) {
                     try {
                         List<StoreItem> storeItems;
-                        if ("".equals(keyWord))
+                        if ("".equals(keyWord)) {
                             storeItems = storeItemDao.queryForAll();
-                        else
+                        } else {
                             storeItems = storeItemDao.queryBuilder().where().like("name", "%" + keyWord + "%").query();
+                        }
                         subscriber.onNext(storeItems);
                     } catch (SQLException e) {
                         subscriber.onError(e);

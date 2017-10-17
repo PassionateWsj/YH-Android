@@ -37,8 +37,9 @@ public class OrmDBHelper extends OrmLiteSqliteOpenHelper {
     public static synchronized OrmDBHelper getInstance(Context context) {
         if (mInstance == null) {
             synchronized (OrmDBHelper.class) {
-                if (mInstance == null)
+                if (mInstance == null) {
                     mInstance = new OrmDBHelper(context);
+                }
             }
         }
         return mInstance;

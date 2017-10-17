@@ -165,8 +165,9 @@ public class ModularTwo_UnitCurveChartModeFragment extends BaseModeFragment<MDRP
 
         Collections.sort(seriesA);
         YMaxValue = seriesA.get(seriesA.size() - 1).intValue();
-        while (YMaxValue % 4 != 0)
+        while (YMaxValue % 4 != 0) {
             YMaxValue++;
+        }
 
         int part = YMaxValue / 4;
         for (int i = 0; i < 5; i++) {
@@ -281,15 +282,17 @@ public class ModularTwo_UnitCurveChartModeFragment extends BaseModeFragment<MDRP
                     }
 
                     boolean isPlus;
-                    if (rate > 0)
+                    if (rate > 0) {
                         isPlus = true;
-                    else
+                    } else {
                         isPlus = false;
+                    }
 
-                    if (cursorIndex == -1)
+                    if (cursorIndex == -1) {
                         baseColor = 0x73737373;
-                    else
+                    } else {
                         baseColor = coCursor[cursorIndex];
+                    }
 
                     tv_rate.setTextColor(baseColor);
                     rateCursor.setCursorState(cursorIndex, !isPlus);

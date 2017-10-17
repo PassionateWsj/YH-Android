@@ -65,6 +65,7 @@ public class ConfirmPassCodeActivity extends Activity {
         is_from_login = getIntent().getBooleanExtra("is_from_login", false);
     }
 
+    @Override
     protected void onResume() {
         super.onResume();
         mMyApp.setCurrentActivity(this);
@@ -162,8 +163,9 @@ public class ConfirmPassCodeActivity extends Activity {
     public void onDelete(View view) {
         int length = stringBuilder.length();
         deleteCircleColor(length);
-        if (length != 0)
+        if (length != 0) {
             stringBuilder.deleteCharAt(length - 1);
+        }
     }
 
     private void deleteCircleColor(int length) {

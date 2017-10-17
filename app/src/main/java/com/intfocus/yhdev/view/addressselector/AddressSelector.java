@@ -141,8 +141,9 @@ public class AddressSelector extends LinearLayout implements View.OnClickListene
         if (tabAmount >= 2) {
             this.tabAmount = tabAmount;
             init(mContext);
-        } else
+        } else {
             throw new RuntimeException("AddressSelector tabAmount can not less-than 2 !");
+        }
     }
 
     /**
@@ -156,8 +157,9 @@ public class AddressSelector extends LinearLayout implements View.OnClickListene
      * 设置列表的数据源，设置后立即生效
      */
     public void setCities(ArrayList cities) {
-        if (cities == null || cities.size() <= 0)
+        if (cities == null || cities.size() <= 0) {
             return;
+        }
         if (cities.get(0) instanceof CityInterface) {
             this.cities = cities;
             if (addressAdapter == null) {
@@ -181,14 +183,16 @@ public class AddressSelector extends LinearLayout implements View.OnClickListene
     public void onClick(View v) {
         Tab tab = (Tab) v;
         //如果点击的tab大于index则直接跳出
-        if (tab.index > tabIndex)
+        if (tab.index > tabIndex) {
             return;
+        }
         tabIndex = tab.index;
         if (onTabSelectedListener != null) {
-            if (tab.isSelected)
+            if (tab.isSelected) {
                 onTabSelectedListener.onTabReselected(AddressSelector.this, tab);
-            else
+            } else {
                 onTabSelectedListener.onTabSelected(AddressSelector.this, tab);
+            }
         }
         resetAllTabs(tabIndex);
         line.setIndex(tabIndex);
@@ -196,13 +200,14 @@ public class AddressSelector extends LinearLayout implements View.OnClickListene
     }
 
     private void resetAllTabs(int tabIndex) {
-        if (tabs != null)
+        if (tabs != null) {
             for (int i = 0; i < tabs.size(); i++) {
                 tabs.get(i).resetState();
                 if (i > tabIndex) {
                     tabs.get(i).setText("");
                 }
             }
+        }
     }
 
     /**
@@ -303,10 +308,11 @@ public class AddressSelector extends LinearLayout implements View.OnClickListene
 
         @Override
         public void setText(CharSequence text, BufferType type) {
-            if (isSelected)
+            if (isSelected) {
                 setTextColor(TextSelectedColor);
-            else
+            } else {
                 setTextColor(TextEmptyColor);
+            }
             super.setText(text, type);
         }
 
@@ -400,10 +406,12 @@ public class AddressSelector extends LinearLayout implements View.OnClickListene
         @Override
         public void onBindViewHolder(MyViewHolder holder, int position) {
             holder.itemView.setBackgroundResource(R.drawable.recycler_bg);
-            if (listItemIcon != -1)
+            if (listItemIcon != -1) {
                 holder.img.setImageResource(listItemIcon);
-            if (listTextSize != -1)
+            }
+            if (listTextSize != -1) {
                 holder.tv.setTextSize(listTextSize);
+            }
             if (TextUtils.equals(tabs.get(tabIndex).getText(), cities.get(position).getCityName())) {
                 holder.img.setVisibility(View.VISIBLE);
                 holder.tv.setTextColor(listTextSelectedColor);

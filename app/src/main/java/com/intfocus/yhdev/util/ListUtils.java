@@ -46,6 +46,7 @@ public class ListUtils {
     public static <E> void sort(List<E> list, final boolean isAsc, final String... sortnameArr) {
         Collections.sort(list, new Comparator<E>() {
 
+            @Override
             public int compare(E a, E b) {
                 int ret = 0;
                 try {
@@ -76,6 +77,7 @@ public class ListUtils {
             throw new RuntimeException("属性数组元素个数和升降序数组元素个数不相等");
         }
         Collections.sort(list, new Comparator<E>() {
+            @Override
             public int compare(E a, E b) {
                 int ret = 0;
                 try {

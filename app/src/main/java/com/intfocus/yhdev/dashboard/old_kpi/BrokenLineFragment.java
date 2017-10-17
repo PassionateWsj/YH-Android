@@ -81,6 +81,7 @@ public class BrokenLineFragment extends BaseModeFragment {
             rootView = inflater.inflate(R.layout.fragment_brokenline, container, false);
             x.view().inject(this, rootView);
             new Handler().postDelayed(new Runnable() {
+                @Override
                 public void run() {
                     init();
                 }
@@ -109,10 +110,11 @@ public class BrokenLineFragment extends BaseModeFragment {
 
         tv_title.setText(entity.getTitle());
         double number = entity.getData().getHigh_light().getNumber();
-        if (number == 0)
+        if (number == 0) {
             tv_number.setText("0");
-        else
+        } else {
             tv_number.setText(formatNumber(String.valueOf(df.format(number))));
+        }
         tv_unit.setText(entity.getUnit());
 
         MererEntity.LineEntity.HighLight high_light = entity.getData().getHigh_light();
@@ -130,8 +132,9 @@ public class BrokenLineFragment extends BaseModeFragment {
             tv_compare.setTextColor(colors[high_light.getArrow()]);
             tv_number.setTextColor(colors[high_light.getArrow()]);
             img_cursor.setCursorState(high_light.getArrow());
-        } else
+        } else {
             img_cursor.setVisibility(View.GONE);
+        }
 
 
         int[] chart_data = entity.getData().getChart_data();

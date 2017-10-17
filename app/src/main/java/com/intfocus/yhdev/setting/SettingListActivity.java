@@ -139,7 +139,7 @@ public class SettingListActivity extends BaseActivity {
                     try {
                         SharedPreferences sp = getSharedPreferences("allPushMessage", MODE_PRIVATE);
                         String allMessage = sp.getString("message", "false");
-                        if (allMessage.equals("false")) {
+                        if ("false".equals(allMessage)) {
                             toast("从未接收到推送消息");
                         } else {
                             Intent intent = new Intent(SettingListActivity.this, ShowListMsgActivity.class);

@@ -196,8 +196,9 @@ public class SortCheckBox extends View {
      */
     public void setChecked(Boolean isChecked) {
         this.ischecked = isChecked;
-        if (mClickListener != null)
+        if (mClickListener != null) {
             mClickListener.onClick(this);
+        }
 
         if (isChecked) {
 //            mBitmap.recycle();
@@ -228,10 +229,11 @@ public class SortCheckBox extends View {
         switch (event.getAction()) {
             case MotionEvent.ACTION_UP:
                 if (x + getLeft() < getRight() && y + getTop() < getBottom()) {
-                    if (ischecked)
+                    if (ischecked) {
                         ischecked = false;
-                    else
+                    } else {
                         ischecked = true;
+                    }
 
                     setChecked(ischecked);
                 }

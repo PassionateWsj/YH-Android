@@ -925,10 +925,10 @@ public class TableActivity extends BaseActivity implements ColumAdapter.ColumnLi
         for (int i = 0; i < showHead.size(); i++) {
             Head head = showHead.get(i);
             if (i == tvPosition) {
-                if (head.sort.equalsIgnoreCase("asc")) {
+                if ("asc".equalsIgnoreCase(head.sort)) {
                     head.sort = "desc";
                     isAsc = false;
-                } else if (head.sort.equalsIgnoreCase("desc")) {
+                } else if ("desc".equalsIgnoreCase(head.sort)) {
                     head.sort = "asc";
                     isAsc = true;
                 } else {
@@ -1041,11 +1041,11 @@ public class TableActivity extends BaseActivity implements ColumAdapter.ColumnLi
     //设置表头右侧排序图标
     void setDrawableRightImg(TextView textView, Head head) {
         int ImageId;
-        if (head.sort.equalsIgnoreCase("asc")) {
+        if ("asc".equalsIgnoreCase(head.sort)) {
             ImageId = R.drawable.icon_sort_asc;
-        } else if (head.sort.equalsIgnoreCase("desc")) {
+        } else if ("desc".equalsIgnoreCase(head.sort)) {
             ImageId = R.drawable.icon_sort_desc;
-        } else if (head.sort.equalsIgnoreCase("default")) {
+        } else if ("default".equalsIgnoreCase(head.sort)) {
             ImageId = R.drawable.icon_sort;
         } else {
             ImageId = R.drawable.icon_sort;
@@ -1090,6 +1090,7 @@ public class TableActivity extends BaseActivity implements ColumAdapter.ColumnLi
     /*
      * 返回
      */
+    @Override
     public void dismissActivity(View v) {
         TableActivity.this.onBackPressed();
     }

@@ -33,7 +33,7 @@ object AssetsUpDateUtil {
 
     fun checkAssetsUpdate(ctx: Context, progressBar: NumberProgressBar?, listener: OnCheckAssetsUpdateResultListener) {
 
-        var sharedPath = String.format("%s/%s", FileUtil.basePath(ctx), K.kSharedDirName)
+        val sharedPath = String.format("%s/%s", FileUtil.basePath(ctx), K.kSharedDirName)
         LogUtil.d("hjjzz", "MainThread:::" + Thread.currentThread().name)
         RetrofitUtil.getHttpService(ctx).assetsMD5
                 .compose(RetrofitUtil.CommonOptions<AssetsResult>())
@@ -70,16 +70,16 @@ object AssetsUpDateUtil {
                                 .map { assetName ->
                                     LogUtil.d("hjjzz", "unzip:::" + Thread.currentThread().name)
                                     if (!assetsMD5sMap[assetName + "_md5"].equals(mAssetsSP.getString(assetName + "_md5", ""))) {
-                                        var fileUrl = K.kDownloadAssetsZip + "?api_token=d93c1a0dc03fe4ffad55a82febd1c94f&filename=" + assetName + ".zip"
-                                        var response = Retrofit.Builder()
+                                        val fileUrl = K.kDownloadAssetsZip + "?api_token=d93c1a0dc03fe4ffad55a82febd1c94f&filename=" + assetName + ".zip"
+                                        val response = Retrofit.Builder()
                                                 .baseUrl(K.kBaseUrl)
                                                 .build()
                                                 .create(HttpService::class.java).downloadFileWithDynamicUrlSync(fileUrl).execute()
-                                        var isWriteZipSuccess = FileUtil.writeResponseBodyToDisk(response!!.body()!!, sharedPath, assetName + ".zip")
+                                        val isWriteZipSuccess = FileUtil.writeResponseBodyToDisk(response!!.body()!!, sharedPath, assetName + ".zip")
                                         if (isWriteZipSuccess) {
-                                            var isUnZipSuccess = FileUtil.unZipAssets(ctx, assetName)
+                                            val isUnZipSuccess = FileUtil.unZipAssets(ctx, assetName)
                                             if (isUnZipSuccess) {
-                                                mAssetsSPEdit.putString(assetName + "_md5", assetsMD5sMap[assetName + "_md5"]).commit()
+                                                mAssetsSPEdit.putString(assetName + "_md5", assetsMD5sMap[assetName + "_md5"]).apply()
                                                 true
                                             }
                                             false

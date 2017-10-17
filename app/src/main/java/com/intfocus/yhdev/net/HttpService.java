@@ -43,168 +43,173 @@ public interface HttpService {
 
     /**
      * 申请注册
-     * <p>
+     *
      * GET
      * /api/v1.1/config/info
-     * <p>
-     * keyname
+     *
+     * @param keyName keyname
+     * @return RegisterResult
      */
     @GET(K.KRegister)
     Observable<RegisterResult> getRegister(@Query("keyname") String keyName);
 
     /**
      * 推送 push_token
-     * <p>
+     *
      * POST
      * /api/v1.1/device/push_token
-     * <p>
-     * uuid
-     * push_token
+     *
+     * @param uuid
+     * @param pushToken
+     * @return
      */
     @POST(K.KPushToken)
     Observable<BaseResult> putPushToken(@Query("uuid") String uuid, @Query("push_token") String pushToken);
 
     /**
      * 获取AssetsMD5
-     * <p>
+     *
      * GET
      * /api/v1.1/assets/md5
+     *
+     * @return AssetsResult
      */
     @GET(K.KAssetsMD5)
     Observable<AssetsResult> getAssetsMD5();
 
     /**
      * 公告预警详情
-     * <p>
+     *
      * GET
      * /api/v1.1/my/view/notice
-     * <p>
-     * notice_id
-     * user_num
+     *
+     * @param noticeId notice_id
+     * @param userNum  user_num
+     * @return NoticeContentResult
      */
     @GET(K.KNoticeContent)
     Observable<NoticeContentResult> getNoticeContent(@Query("notice_id") String noticeId, @Query("user_num") String userNum);
 
     /**
      * 发表评论
-     * <p>
+     *
      * POST
      * /api/v1.1/comment
-     * <p>
-     * "user_num": "",
-     * "content": "",
-     * "object_type": ,
-     * "object_id": ,
-     * "object_title": ""
+     *
+     * @param commentBody
+     * @return BaseResult
      */
     @POST(K.KComment)
     Observable<BaseResult> submitComment(@Body CommentBody commentBody);
 
     /**
      * 工具箱页
-     * <p>
+     *
      * GET
      * /api/v1.1/app/component/toolbox
-     * <p>
-     * group_id
-     * role_id
+     *
+     * @param groupId
+     * @param roleId
+     * @return WorkBoxResult
      */
     @GET(K.KWorkBoxList)
     Observable<WorkBoxResult> getWorkBox(@Query("group_id") String groupId, @Query("role_id") String roleId);
 
     /**
      * 报表页面列表
-     * <p>
+     *
      * GET
      * /api/v1.1/app/component/reports
-     * <p>
-     * group_id
-     * role_id
+     *
+     * @param groupId
+     * @param roleId
+     * @return
      */
     @GET(K.KReportList)
     Observable<ReportListResult> getReportList(@Query("group_id") String groupId, @Query("role_id") String roleId);
 
     /**
      * 门店列表
-     * <p>
+     *
      * GET
      * /api/v1.1/user/stores
-     * <p>
-     * user_num
+     *
+     * @param userNum
+     * @return
      */
     @GET(K.KStoreList)
     Observable<StoreListResult> getStoreList(@Query("user_num") String userNum);
 
     /**
      * 用户信息
-     * <p>
+     *
      * GET
      * /api/v1.1/my/statistics
-     * <p>
-     * user_num
+     *
+     * @param userNum
+     * @return
      */
     @GET(K.KUserInfo)
     Observable<UserInfoResult> getUserInfo(@Query("user_num") String userNum);
 
     /**
      * 获取概况页公告列表
-     * <p>
+     *
      * GET
      * /api/v1.1/user/notifications
-     * <p>
-     * group_id
-     * role_id
+     *
+     * @param groupId
+     * @param roleId
+     * @return
      */
     @GET(K.KNotifications)
     Observable<HomeMsgResult> getNotifications(@Query("group_id") String groupId, @Query("role_id") String roleId);
 
     /**
      * 扫码结果
-     * <p>
+     *
      * GET
      * /api/v1.1/scan/barcode
-     * <p>
-     * store_id
-     * code_info
+     *
+     * @param storeId
+     * @param codeInfo
+     * @return
      */
     @GET(K.KScannerResult)
     Observable<BaseResult> getScannerResult(@Query("store_id") String storeId, @Query("code_info") String codeInfo);
 
     /**
      * 获取文章收藏列表
-     * <p>
+     *
      * GET
      * /api/v1.1/my/favourited/articles
-     * <p>
-     * user_num
-     * page
-     * limit
+     *
+     * @param queryMap
+     * @return
      */
     @GET(K.KMyFavouritedList)
     Observable<ArticleResult> getMyFavouritedList(@QueryMap Map<String, String> queryMap);
 
     /**
      * 收藏状态
-     * <p>
+     *
      * POST
      * /api/v1.1/my/article/favourite_status
-     * <p>
-     * "user_num": "123",
-     * "article_id": "1",
-     * "favourite_status": "1
+     *
+     * @param requestFavourite
+     * @return
      */
     @POST(K.KFavouriteStatus)
     Observable<BaseResult> articleOperating(@Body RequestFavourite requestFavourite);
 
     /**
      * 获取数据学院文章列表
-     * <p>
+     *
      * GET
      * /api/v1.1/my/articles
-     * <p>
-     * user_num
-     * page
-     * limit
+     *
+     * @param queryMap
+     * @return
      */
     @GET(K.KArticlesList)
     Observable<ArticleResult> getArticleList(@QueryMap Map<String, String> queryMap);
@@ -212,47 +217,47 @@ public interface HttpService {
 
     /**
      * 获取首页概况数据
-     * <p>
+     *
      * GET
      * /api/v1.1/app/component/overview
-     * <p>
-     * group_id
-     * role_id
+     *
+     * @param queryMap
+     * @return
      */
     @GET(K.KOverview)
     Observable<KpiResult> getHomeIndex(@QueryMap Map<String, String> queryMap);
 
     /**
      * 获取首页消息数据
-     * <p>
+     *
      * GET
      * /api/v1.1/user/notifications
-     * <p>
-     * group_id
-     * role_id
+     *
+     * @param queryMap
+     * @return
      */
     @GET(K.KNotifications)
     Observable<HomeMsgResult> getHomeMsg(@QueryMap Map<String, String> queryMap);
 
     /**
      * 公告预警列表
-     * <p>
+     *
      * GET
      * /api/v1.1/my/notices
-     * <p>
-     * user_num
-     * type
-     * page
-     * limit
+     *
+     * @param queryMap
+     * @return
      */
     @GET(K.KNoticeList)
     Observable<NoticesResult> getNoticeList(@QueryMap Map<String, String> queryMap);
 
     /**
      * 获取筛选菜单信息
-     * <p>
+     *
      * GET
      * /api/v1/report/menus
+     *
+     * @return
      */
     @GET(K.KFilterMenuPath)
     Observable<MenuResult> getFilterMenu();
@@ -260,13 +265,14 @@ public interface HttpService {
 
     /**
      * 头像上传
-     * <p>
+     *
      * POST
      * /api/v1.1/upload/gravatar
-     * <p>
-     * "user_num": "",
-     * "device_id": "",
-     * "gravatar": ""
+     *
+     * @param deviceId
+     * @param user_num
+     * @param file
+     * @return
      */
     @Multipart
     @POST(K.kNewUserIconUploadPath)
@@ -274,90 +280,88 @@ public interface HttpService {
 
     /**
      * 登录post请求
-     * <p>
+     *
      * POST
      * /api/v1.1/user/authentication
-     * <p>
-     * user_num  　用户名
-     * password 　密码
+     *
+     * @param userNum
+     * @param password
+     * @param coordinate
+     * @return
      */
     @POST(K.KNewLogin)
     Observable<NewUser> userLogin(@Query("user_num") String userNum, @Query("password") String password, @Query("coordinate") String coordinate);
 
     /**
      * 上传设备信息
-     * <p>
+     *
      * POST
      * /api/v1.1/app/device
-     * <p>
-     * "user_num": "",
-     * "device": {
-     * "uuid": "",
-     * "os": "",
-     * "name": "",
-     * "os_version": "",
-     * "platform": ""
-     * },
-     * "app_version": "",
-     * "ip": "",
-     * "browser": ""
+     *
+     * @param deviceRequest
+     * @return
      */
     @POST(K.KNewDevice)
     Observable<Device> deviceUpLoad(@Body DeviceRequest deviceRequest);
 
     /**
      * 退出登录
-     * <p>
+     *
      * POST
      * /api/v1.1/user/logout
-     * <p>
-     * user_device_id
+     *
+     * @param userDeviceId
+     * @return
      */
     @POST(K.KNewLogout)
     Observable<BaseResult> userLogout(@Query("user_device_id") String userDeviceId);
 
     /**
      * 更新密码
-     * <p>
+     *
      * POST
      * /api/v1.1/user/update_password
-     * <p>
-     * user_num 　用户名
-     * password  　新密码
+     *
+     * @param userNum
+     * @param newPwd
+     * @return
      */
     @POST(K.KNewUpdatePwd)
     Observable<BaseResult> updatePwd(@Query("user_num") String userNum, @Query("password") String newPwd);
 
     /**
      * 重置密码
-     * <p>
+     *
      * POST
      * /api/v1.1/user/reset_password
-     * <p>
-     * user_num 　用户名
-     * mobile 　手机号
+     *
+     * @param userNum
+     * @param mobile
+     * @return
      */
     @POST(K.KNewResetPwd)
     Observable<BaseResult> resetPwd(@Query("user_num") String userNum, @Query("mobile") String mobile);
 
     /**
      * 用户信息
-     * <p>
+     *
      * GET
      * /api/v1.1/my/statistics
-     * <p>
-     * user_num
+     *
+     * @param params
+     * @return
      */
     @GET(K.KNewChoiceMenu)
     Call<MenuResult> getChoiceMenus(@Query("params") String params);
 
     /**
      * 下载静态资源
-     * <p>
+     *
      * GET
      * /api/v1.1/download/assets
-     * <p>
-     * filename
+     *
+     * @param fileUrl
+     * @return
      */
     @GET
     Call<ResponseBody> downloadFileWithDynamicUrlSync(@Url String fileUrl);
