@@ -8,6 +8,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import com.intfocus.yhdev.R
+import com.intfocus.yhdev.constant.ToastColor
 
 /**
  * Created by CANC on 2017/7/31.

@@ -12,6 +12,7 @@ import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import com.intfocus.yhdev.R
 import com.intfocus.yhdev.base.RefreshFragment
+import com.intfocus.yhdev.constant.ToastColor
 import com.intfocus.yhdev.dashboard.mine.adapter.InstituteAdapter
 import com.intfocus.yhdev.dashboard.mine.bean.InstituteDataBean
 import com.intfocus.yhdev.data.request.RequestFavourite

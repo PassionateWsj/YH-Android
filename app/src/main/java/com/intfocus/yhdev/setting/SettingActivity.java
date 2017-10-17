@@ -18,7 +18,9 @@ import org.xutils.x;
 import java.util.ArrayList;
 
 /**
- * Created by liuruilin on 2017/3/28.
+ *
+ * @author liuruilin
+ * @date 2017/3/28
  */
 
 public class SettingActivity extends BaseActivity {
@@ -38,12 +40,12 @@ public class SettingActivity extends BaseActivity {
         initSettingListItem();
     }
 
-    /*
+    /**
      * 个人信息页菜单项初始化
      */
     private void initSettingListItem() {
         ArrayList<String> listItem = new ArrayList<>();
-        String[] itemName = {"应用信息", "选项配置", "消息推送", "更新日志"};
+        String[] itemName = {"基本信息", "选项配置", "消息推送", "更新日志"};
 
         for (int i = 0; i < itemName.length; i++) {
             listItem.add(itemName[i]);
@@ -56,7 +58,7 @@ public class SettingActivity extends BaseActivity {
         mListItem.setOnItemClickListener(mListItemListener);
     }
 
-    /*
+    /**
      * 个人信息菜单项点击事件
      */
     private ListView.OnItemClickListener mListItemListener = new ListView.OnItemClickListener() {
@@ -65,12 +67,6 @@ public class SettingActivity extends BaseActivity {
             TextView mItemText = (TextView) arg1.findViewById(R.id.item_setting);
             switch (mItemText.getText().toString()) {
                 case "基本信息":
-                    Intent userInfoIntent = new Intent(mContext, SettingListActivity.class);
-                    userInfoIntent.putExtra("type", "基本信息");
-                    startActivity(userInfoIntent);
-                    break;
-
-                case "应用信息":
                     Intent appInfoIntent = new Intent(mContext, SettingListActivity.class);
                     appInfoIntent.putExtra("type", "应用信息");
                     startActivity(appInfoIntent);

@@ -3,6 +3,7 @@ package com.intfocus.yhdev.mode
 import android.content.Context
 import android.graphics.Bitmap
 import com.google.gson.Gson
+import com.intfocus.yhdev.constant.ToastColor
 import com.intfocus.yhdev.dashboard.mine.bean.UserInfoRequest
 import com.intfocus.yhdev.data.response.BaseResult
 import com.intfocus.yhdev.data.response.mine_page.UserInfoResult

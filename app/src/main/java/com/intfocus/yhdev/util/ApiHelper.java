@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.Map;
 
 import static android.content.Context.MODE_PRIVATE;
+import static com.intfocus.yhdev.constant.Constants.GAODE_MAP_APP_KEY;
 
 public class ApiHelper {
     /*
@@ -515,11 +516,11 @@ public class ApiHelper {
     public static void getAMapLocation(final Context ctx) {
         //初始化client
         AMapLocationClient locationClient = new AMapLocationClient(ctx);
-        AMapLocationClient.setApiKey(Constants.GAODE_MAP_APP_KEY);
+        AMapLocationClient.setApiKey(GAODE_MAP_APP_KEY);
         AMapLocationClientOption locationOption = getDefaultOption();
         //设置定位参数
         locationClient.setLocationOption(locationOption);
-        // 设置定位监听
+        //设置定位监听
         locationClient.setLocationListener(new AMapLocationListener() {
             @Override
             public void onLocationChanged(AMapLocation location) {
@@ -527,7 +528,7 @@ public class ApiHelper {
                     StringBuffer sb = new StringBuffer();
                     //errCode等于0代表定位成功，其他的为定位失败，具体的可以参照官网定位错误码说明
                     if (location.getErrorCode() == 0) {
-                        SharedPreferences mUserSP = ctx.getSharedPreferences("UserBean", Context.MODE_PRIVATE);
+                                SharedPreferences mUserSP = ctx.getSharedPreferences("UserBean", Context.MODE_PRIVATE);
                         mUserSP.edit().putString("location",
                                 String.format("%.6f", location.getLongitude()) + ","
                                         + String.format("%.6f", location.getLatitude())).commit();

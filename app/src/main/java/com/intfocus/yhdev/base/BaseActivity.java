@@ -50,7 +50,7 @@ import com.intfocus.yhdev.util.FileUtil;
 import com.intfocus.yhdev.util.HttpUtil;
 import com.intfocus.yhdev.util.K;
 import com.intfocus.yhdev.util.LogUtil;
-import com.intfocus.yhdev.util.ToastColor;
+import com.intfocus.yhdev.constant.ToastColor;
 import com.intfocus.yhdev.util.ToastUtils;
 import com.intfocus.yhdev.util.URLs;
 import com.pgyersdk.javabean.AppBean;
@@ -553,24 +553,7 @@ public class BaseActivity extends FragmentActivity {
         }
     }
 
-    /*
-     * 检测版本更新
-        {
-          "code": 0,
-          "message": "",
-          "data": {
-            "lastBuild": "10",
-            "downloadURL": "",
-            "versionCode": "15",
-            "versionName": "0.1.5",
-            "appUrl": "http://www.pgyer.com/yh-a",
-            "build": "10",
-            "releaseNote": "更新到版本: 0.1.5(build10)"
-          }
-        }
-     */
-
-    /*
+    /**
      * 托管在蒲公英平台，对比版本号检测是否版本更新
      * 对比 build 值，只准正向安装提示
      * 奇数: 测试版本，仅提示

@@ -79,7 +79,7 @@ public class OpenUDID_manager implements ServiceConnection{
 		e.commit();
 	}
 	
-	/*
+	/**
 	 * Generate a new OpenUDID
 	 */
 	private void generateOpenUDID() {
@@ -94,7 +94,7 @@ public class OpenUDID_manager implements ServiceConnection{
     }
 	
 	
-	/*
+	/**
 	 * Start the oldest service
 	 */
 	private void startService() {
@@ -180,13 +180,12 @@ public class OpenUDID_manager implements ServiceConnection{
 			mInitialized = true;
 		}
 	}
-	
-	
-	
-	/*
+
+	/**
 	 * Used to sort the OpenUDIDs collected by occurrence
 	 */
 	private class ValueComparator implements Comparator {
+		@Override
 		public int compare(Object a, Object b) {
 
 			if(mReceivedOpenUDIDs.get(a) < mReceivedOpenUDIDs.get(b)) {

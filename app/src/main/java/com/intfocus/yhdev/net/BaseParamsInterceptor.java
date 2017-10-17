@@ -20,10 +20,10 @@ import okhttp3.Response;
  * 基本请求参数: user_num, user_device_id, app_version
  */
 
-public class BaseParamsIntercepter implements Interceptor {
+public class BaseParamsInterceptor implements Interceptor {
     private SharedPreferences mUserSP;
 
-    public BaseParamsIntercepter(Context ctx) {
+    public BaseParamsInterceptor(Context ctx) {
         mUserSP = ctx.getSharedPreferences("UserBean", Context.MODE_PRIVATE);
     }
 

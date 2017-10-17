@@ -16,6 +16,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -41,7 +42,7 @@ import com.intfocus.yhdev.util.ApiHelper;
 import com.intfocus.yhdev.util.FileUtil;
 import com.intfocus.yhdev.util.HttpUtil;
 import com.intfocus.yhdev.util.K;
-import com.intfocus.yhdev.util.ToastColor;
+import com.intfocus.yhdev.constant.ToastColor;
 import com.intfocus.yhdev.util.ToastUtils;
 import com.intfocus.yhdev.util.URLs;
 import com.pgyersdk.javabean.AppBean;
@@ -457,7 +458,6 @@ public class LoginActivity extends FragmentActivity {
                                 .subscribe(new CodeHandledSubscriber<BaseResult>() {
                                     @Override
                                     public void onError(ApiException apiException) {
-
                                     }
 
                                     @Override

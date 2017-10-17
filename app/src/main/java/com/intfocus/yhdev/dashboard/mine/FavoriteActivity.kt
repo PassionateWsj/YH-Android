@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import com.intfocus.yhdev.R
 import com.intfocus.yhdev.base.RefreshActivity
+import com.intfocus.yhdev.constant.ToastColor
 import com.intfocus.yhdev.dashboard.mine.adapter.InstituteAdapter
 import com.intfocus.yhdev.dashboard.mine.bean.InstituteDataBean
 import com.intfocus.yhdev.data.request.RequestFavourite

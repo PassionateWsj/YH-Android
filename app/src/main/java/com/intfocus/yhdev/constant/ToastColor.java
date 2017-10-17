@@ -1,4 +1,4 @@
-package com.intfocus.yhdev.util;
+package com.intfocus.yhdev.constant;
 
 /**
  * ****************************************************

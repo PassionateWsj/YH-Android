@@ -35,12 +35,6 @@ public class NetworkInterceptor implements Interceptor {
                 Log.d(TAG, "requestBody：length=" + con.length());
             }
         }
-        // 添加请求头
-        //Request newRequest = oriRequest.newBuilder()
-        //.addHeader("udid", AppUtil.getSysUdid(CommonApplication.getInstance()))
-        //.addHeader("type", CommonApplication.type.toString())
-        // build();
-        // Log.d("NetworkInterceptor", newRequest.headers().toString());
 
         //打印responseBody
         okhttp3.Response response = chain.proceed(oriRequest);

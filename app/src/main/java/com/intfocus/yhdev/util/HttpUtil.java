@@ -38,6 +38,9 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
+/**
+ * @author lijunjie
+ */
 public class HttpUtil {
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
     public static final String kUserAgent = "User-Agent";
@@ -54,7 +57,6 @@ public class HttpUtil {
      * @param urlString 请求的URL地址
      * @return 返回请求响应的HTML
      */
-    //@throws UnsupportedEncodingException
     public static Map<String, String> httpGet(Context ctx, String urlString, Map<String, String> headers) {
         LogUtil.d("GET", urlString);
         SharedPreferences mUserSP = ctx.getSharedPreferences("UserBean", Context.MODE_PRIVATE);
@@ -109,12 +111,10 @@ public class HttpUtil {
             boolean isJSON = false;
             for (int i = 0, len = responseHeaders.size(); i < len; i++) {
                 retMap.put(responseHeaders.name(i), responseHeaders.value(i));
-                // Log.i("HEADER", String.format("Key : %s, Value: %s", responseHeaders.name(i), responseHeaders.value(i)));
                 isJSON = responseHeaders.name(i).equalsIgnoreCase(kContentType) && responseHeaders.value(i).contains(kApplicationJson);
             }
             retMap.put(URLs.kCode, String.format("%d", response.code()));
             retMap.put(URLs.kBody, response.body().string());
-//            LogUtil.d("BODY", retMap.get("body"));
 
             if (isJSON) {
                 LogUtil.d("code", retMap.get("code"));
@@ -150,8 +150,6 @@ public class HttpUtil {
     /**
      * ִ执行一个HTTP POST请求，返回请求响应的HTML
      */
-    //@throws UnsupportedEncodingException
-    //@throws JSONException
     public static Map<String, String> httpPost(String urlString, Map params) {
         LogUtil.d("POST", urlString);
         Map<String, String> retMap = new HashMap<>();
@@ -421,8 +419,8 @@ public class HttpUtil {
                     }
                     total += count;
                     // publishing the progress....
-                    if (fileLength > 0) // only if total length is known
-                    {
+                    // only if total length is known
+                    if (fileLength > 0) {
                         publishProgress((int) (total * 100 / fileLength));
                     }
                     output.write(data, 0, count);
@@ -508,7 +506,7 @@ public class HttpUtil {
         downloadTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, String.format(K.kDownloadAssetsAPIPath, K.kBaseUrl, assetName), assetZipPath);
     }
 
-    /*
+    /**
      * Zip 档下载
      */
     public static Map<String, String> downloadZip(String urlString, String outputPath, Map<String, String> headers) {
@@ -581,7 +579,7 @@ public class HttpUtil {
         return response;
     }
 
-    /*
+    /**
      * 判断当前网络状态是否为 WiFi
      */
     public static boolean isWifi(Context mContext) {

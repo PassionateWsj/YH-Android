@@ -54,7 +54,7 @@ import com.intfocus.yhdev.util.FileUtil;
 import com.intfocus.yhdev.util.ImageUtil;
 import com.intfocus.yhdev.util.K;
 import com.intfocus.yhdev.util.MyHorizontalScrollView;
-import com.intfocus.yhdev.util.ToastColor;
+import com.intfocus.yhdev.constant.ToastColor;
 import com.intfocus.yhdev.util.URLs;
 import com.intfocus.yhdev.util.Utils;
 import com.umeng.socialize.ShareAction;
@@ -213,19 +213,17 @@ public class TableActivity extends BaseActivity implements ColumAdapter.ColumnLi
         checkInterfaceOrientation(newConfig);
     }
 
-    /*
+    /**
      * 横屏 or 竖屏
      */
     private void checkInterfaceOrientation(Configuration config) {
         Boolean isLandscape = (config.orientation == Configuration.ORIENTATION_LANDSCAPE);
 
         if (isLandscape) {
-//            mAnimLoading.setVisibility(View.VISIBLE);
             WindowManager.LayoutParams lp = getWindow().getAttributes();
             lp.flags |= WindowManager.LayoutParams.FLAG_FULLSCREEN;
             getWindow().setAttributes(lp);
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-//            new LoadReportData().execute();
         } else {
             WindowManager.LayoutParams attr = getWindow().getAttributes();
             attr.flags &= (~WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -234,7 +232,7 @@ public class TableActivity extends BaseActivity implements ColumAdapter.ColumnLi
         }
     }
 
-    /*
+    /**
      * 下载数据
      */
     class LoadReportData extends AsyncTask<String, Void, String> {

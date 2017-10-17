@@ -21,7 +21,7 @@ import com.intfocus.yhdev.YHApplication;
 import com.intfocus.yhdev.util.ActionLogUtil;
 import com.intfocus.yhdev.util.FileUtil;
 import com.intfocus.yhdev.util.K;
-import com.intfocus.yhdev.util.ToastColor;
+import com.intfocus.yhdev.constant.ToastColor;
 import com.intfocus.yhdev.util.ToastUtils;
 import com.intfocus.yhdev.util.URLs;
 

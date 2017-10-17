@@ -56,11 +56,14 @@
             <TextView
                 android:id="@+id/tv_mine_user_group_value"
                 style="@style/tv_mine_user_list_right"
-                android:layout_alignParentRight="false"
+                android:layout_toRightOf="@+id/tv_mine_user_group"
                 android:layout_toLeftOf="@+id/iv_mine_user_group_arrow"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="30dp"
                 android:maxLines="2"
-                android:maxWidth="220dp"
-                android:text="YONGUED"/>
+                android:maxWidth="180dp"
+                android:text="YONGUED"
+                android:textAlignment="textEnd"/>
         </RelativeLayout>
 
         <View style="@style/NarrowSmallDivider"/>
@@ -84,7 +87,9 @@
             <TextView
                 android:id="@+id/tv_mine_user_num_value"
                 style="@style/tv_mine_user_list_right"
-                android:text=""/>
+                android:layout_marginRight="30dp"
+                android:text=""
+                android:textAlignment="textEnd"/>
         </RelativeLayout>
 
         <View

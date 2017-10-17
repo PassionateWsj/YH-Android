@@ -17,12 +17,15 @@ import com.intfocus.yhdev.net.CodeHandledSubscriber;
 import com.intfocus.yhdev.net.RetrofitUtil;
 import com.intfocus.yhdev.util.ActionLogUtil;
 import com.intfocus.yhdev.util.K;
-import com.intfocus.yhdev.util.ToastColor;
+import com.intfocus.yhdev.constant.ToastColor;
 import com.intfocus.yhdev.util.ToastUtils;
 import com.intfocus.yhdev.util.URLs;
 
 import org.json.JSONObject;
 
+/**
+ * @author liuruilin
+ */
 public class CommentActivity extends BaseActivity {
 
     private String bannerName;
@@ -66,7 +69,7 @@ public class CommentActivity extends BaseActivity {
         super.onResume();
     }
 
-    /*
+    /**
      * 返回
      */
     @Override

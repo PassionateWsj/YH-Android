@@ -21,7 +21,7 @@ import com.intfocus.yhdev.net.ApiException;
 import com.intfocus.yhdev.net.CodeHandledSubscriber;
 import com.intfocus.yhdev.net.RetrofitUtil;
 import com.intfocus.yhdev.util.ActionLogUtil;
-import com.intfocus.yhdev.util.ToastColor;
+import com.intfocus.yhdev.constant.ToastColor;
 import com.intfocus.yhdev.util.ToastUtils;
 import com.intfocus.yhdev.util.URLs;
 

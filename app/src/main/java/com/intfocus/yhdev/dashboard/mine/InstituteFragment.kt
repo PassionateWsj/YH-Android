@@ -17,7 +17,7 @@ import com.intfocus.yhdev.dashboard.mine.bean.InstituteRquest
 import com.intfocus.yhdev.mode.InstituteMode
 import com.intfocus.yhdev.util.ErrorUtils
 import com.intfocus.yhdev.util.HttpUtil
-import com.intfocus.yhdev.util.ToastColor
+import com.intfocus.yhdev.constant.ToastColor
 import com.intfocus.yhdev.util.ToastUtils
 import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter
 import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout

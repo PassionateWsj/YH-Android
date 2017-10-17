@@ -50,7 +50,7 @@ import com.intfocus.yhdev.util.FileUtil;
 import com.intfocus.yhdev.util.ImageUtil;
 import com.intfocus.yhdev.util.K;
 import com.intfocus.yhdev.util.LogUtil;
-import com.intfocus.yhdev.util.ToastColor;
+import com.intfocus.yhdev.constant.ToastColor;
 import com.intfocus.yhdev.util.ToastUtils;
 import com.intfocus.yhdev.util.URLs;
 import com.intfocus.yhdev.view.addressselector.FilterPopupWindow;

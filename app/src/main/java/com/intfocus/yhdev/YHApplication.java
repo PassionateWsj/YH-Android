@@ -2,6 +2,7 @@ package com.intfocus.yhdev;
 
 import android.app.ActivityManager;
 import android.app.Application;
+import android.app.Notification;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -39,6 +40,7 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import static com.intfocus.yhdev.constant.Constants.BUGLY_APP_ID;
 import static com.intfocus.yhdev.util.K.kPushDeviceToken;
 import static com.intfocus.yhdev.util.PrivateURLs.kWXAppId;
 import static com.intfocus.yhdev.util.PrivateURLs.kWXAppSecret;
@@ -65,7 +67,6 @@ public class YHApplication extends Application {
         super.onCreate();
 
         if (BuildConfig.TINKER_ENABLE) {
-
             // 我们可以从这里获得Tinker加载过程的信息
             ApplicationLike tinkerApplicationLike = TinkerPatchApplicationLike.getTinkerPatchApplicationLike();
 
@@ -75,7 +76,7 @@ public class YHApplication extends Application {
                     .setPatchRollbackOnScreenOff(true)
                     .setPatchRestartOnSrceenOff(true);
 
-            // 每隔3个小时去访问后台时候有更新,通过handler实现轮训的效果
+            // 每隔1个小时去访问后台时候有更新,通过handler实现轮训的效果
             new FetchPatchHandler().fetchPatchWithInterval(1);
             Log.i("TAG", "tinker init");
         }
@@ -92,7 +93,7 @@ public class YHApplication extends Application {
         /*
          * Bugly 异常上报
          */
-        CrashReport.initCrashReport(getApplicationContext(), Constants.BUGLY_APP_ID, BuildConfig.DEBUG);
+        CrashReport.initCrashReport(getApplicationContext(), BUGLY_APP_ID, BuildConfig.DEBUG);
 
         /*
          * 友盟分享初始化
@@ -116,11 +117,6 @@ public class YHApplication extends Application {
          *  手机待机再激活时发送开屏广播
          */
         registerReceiver(broadcastScreenOnAndOff, new IntentFilter(Intent.ACTION_SCREEN_ON));
-
-        /*
-         *  监测内存泄漏
-         */
-//         refWatcher = LeakCanary.install(this);
 
         /*
          * 注册推送服务，每次调用register方法都会回调该接口

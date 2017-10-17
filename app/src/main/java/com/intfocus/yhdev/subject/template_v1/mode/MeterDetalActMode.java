@@ -20,6 +20,7 @@ import com.zbl.lib.baseframe.utils.TimeUtil;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -87,10 +88,11 @@ public class MeterDetalActMode extends AbstractMode {
                     return;
                 }
                 ApiHelper.storeResponseHeader(urlString, assetsPath, response);
-                //请求数据成功
+                // 请求数据成功
                 itemsString = response.get("body").toString();
                 if (TextUtils.isEmpty(itemsString)) {
-                    itemsString = FileUtil.readFile(assetsPath + K.kTemplateV1);//取数据
+                    //取数据
+                    itemsString = FileUtil.readFile(assetsPath + K.kTemplateV1);
                 } else {
                     try {
                         FileUtil.writeFile(assetsPath + K.kTemplateV1, itemsString);
@@ -104,7 +106,7 @@ public class MeterDetalActMode extends AbstractMode {
                     return;
                 }
                 Log.i(TAG, "analysisDataStartTime:" + TimeUtil.getNowTime());
-                StringReader stringReader = new StringReader(itemsString);
+                StringReader stringReader = new StringReader(response.get("body"));
                 Log.i(TAG, "analysisDataReaderTime1:" + TimeUtil.getNowTime());
                 JSONReader reader = new JSONReader(stringReader);
                 reader.startArray();

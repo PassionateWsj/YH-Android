@@ -16,7 +16,7 @@ import com.intfocus.yhdev.R;
 import com.intfocus.yhdev.base.BaseActivity;
 import com.intfocus.yhdev.subject.SimpleListAdapter;
 import com.intfocus.yhdev.util.K;
-import com.intfocus.yhdev.util.ToastColor;
+import com.intfocus.yhdev.constant.ToastColor;
 import com.umeng.message.PushAgent;
 
 import java.util.ArrayList;
@@ -89,7 +89,7 @@ public class SettingListActivity extends BaseActivity {
         return "关闭";
     }
 
-    /*
+    /**
      * ListView 内容填充
      */
     private void initListView(String[] mItemNameList, String[] mItemContentList) {
@@ -108,7 +108,7 @@ public class SettingListActivity extends BaseActivity {
         listView.setOnItemClickListener(mListItemListener);
     }
 
-    /*
+    /**
      * 个人信息菜单项点击事件
      */
     private ListView.OnItemClickListener mListItemListener = new ListView.OnItemClickListener() {
@@ -133,31 +133,6 @@ public class SettingListActivity extends BaseActivity {
                     break;
 
                 case "关联的设备列表":
-//                    new Thread(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                                String deviceTokenUrl = String.format(K.kDeviceTokenAPIPath, K.kBaseUrl, mUserSP.getString("user_num", "0"));
-//                                final Map<String, String> response = HttpUtil.httpGet(deviceTokenUrl, new HashMap<String, String>());
-//                                runOnUiThread(new Runnable() {
-//                                    @Override
-//                                    public void run() {
-//                                        if (response.containsKey("code") && response.get("code").equals("200")){
-//                                            Intent intent = new Intent(SettingListActivity.this, ShowListMsgActivity.class);
-//                                            try {
-//                                                JSONObject jsonObject = new JSONObject(response.get("body"));
-//                                                intent.putExtra("response", jsonObject.getString("devices"));
-//                                                intent.putExtra("title", "关联的设备列表");
-//                                                startActivity(intent);
-//                                            } catch (JSONException e) {
-//                                                e.printStackTrace();
-//                                            }
-//                                        }else {
-//                                            toast("获取关联的设备列表失败");
-//                                        }
-//                                    }
-//                                });
-//                        }
-//                    }).start();
                     break;
 
                 case "推送的消息列表":

@@ -9,6 +9,7 @@ import android.view.View
 import android.widget.CompoundButton
 import com.intfocus.yhdev.R
 import com.intfocus.yhdev.base.BaseActivity
+import com.intfocus.yhdev.constant.ToastColor
 import com.intfocus.yhdev.screen_lock.InitPassCodeActivity
 import com.intfocus.yhdev.util.*
 import kotlinx.android.synthetic.main.activity_setting_preference.*

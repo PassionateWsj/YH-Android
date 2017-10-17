@@ -80,6 +80,7 @@ dependencies {
     compile project(':PushSDK')
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile(name: 'blib-1.0', ext: 'aar')
+    compile(name: 'toast', ext: 'aar')
     compile files('libs/android-viewbadger.jar')
     compile files('libs/umeng_shareboard_widget.jar')
     compile files('libs/umeng_social_api.jar')
