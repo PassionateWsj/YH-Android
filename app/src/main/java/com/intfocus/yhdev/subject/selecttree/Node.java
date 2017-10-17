@@ -116,8 +116,9 @@ public class Node {
      * @return
      */
     public boolean isParentExpand() {
-        if (parent == null)
+        if (parent == null) {
             return false;
+        }
         return !parent.isExpand();
     }
 

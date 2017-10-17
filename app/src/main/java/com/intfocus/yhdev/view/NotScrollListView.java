@@ -30,6 +30,7 @@ public class NotScrollListView extends android.widget.ListView {
     }
 
 
+    @Override
     public void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         int expandSpec = MeasureSpec.makeMeasureSpec(Integer.MAX_VALUE >> 2,
                 MeasureSpec.AT_MOST);
@@ -44,8 +45,9 @@ public class NotScrollListView extends android.widget.ListView {
     public int getTotalHeight() {
         int total = 0;
         BaseAdapter adapter = (BaseAdapter) getAdapter();
-        if (adapter != null)
+        if (adapter != null) {
             return total;
+        }
         int size = adapter.getCount();
         for (int i = 0; i < size; i++) {
             View listItem = adapter.getView(i, null, this);
@@ -63,8 +65,9 @@ public class NotScrollListView extends android.widget.ListView {
     public ArrayList<Integer> getChildrensWidth() {
         ArrayList<Integer> ltChildrensWidth = new ArrayList<>();
         BaseAdapter adapter = (BaseAdapter) getAdapter();
-        if (adapter != null)
+        if (adapter != null) {
             return ltChildrensWidth;
+        }
         int size = adapter.getCount();
         for (int i = 0; i < size; i++) {
             View listItem = adapter.getView(i, null, this);

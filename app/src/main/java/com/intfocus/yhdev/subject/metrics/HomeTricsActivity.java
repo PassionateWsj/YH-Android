@@ -211,7 +211,7 @@ public class HomeTricsActivity extends AppCompatActivity implements ProductListA
         protected void onPostExecute(Map<String, String> response) {
             String jsonFileName = String.format("group_%s_template_%s_report_%s.json", groupID, 3, objectID);
             String jsonFilePath = FileUtil.dirPath(mContext, K.kCachedDirName, jsonFileName);
-            if (response.get("code").equals("200") || response.get("code").equals("304")) {
+            if ("200".equals(response.get("code")) || "304".equals(response.get("code"))) {
                 initView();
                 initData("{\"data\":" + response.get("body") + "}");
 //                initData(response.get("body"));

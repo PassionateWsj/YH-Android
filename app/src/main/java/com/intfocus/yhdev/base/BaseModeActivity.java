@@ -85,7 +85,7 @@ public abstract class BaseModeActivity<T extends Subject> extends AbstractActivi
     /**
      * 定位所需权限数组
      */
-    public static final String permissions_location[] = {Manifest.permission.ACCESS_COARSE_LOCATION,
+    public static final String[] permissions_location = {Manifest.permission.ACCESS_COARSE_LOCATION,
             Manifest.permission.ACCESS_FINE_LOCATION,
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -93,7 +93,7 @@ public abstract class BaseModeActivity<T extends Subject> extends AbstractActivi
     /**
      * 二维码扫描权限
      */
-    public static final String permissions_camera[] = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE,
+    public static final String[] permissions_camera = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.READ_EXTERNAL_STORAGE,};
     private boolean isShowHint;
 
@@ -348,8 +348,9 @@ public abstract class BaseModeActivity<T extends Subject> extends AbstractActivi
                 new PermissionCallback() {
                     @Override
                     public void hasPermission() {
-                        if (isShowHint)
+                        if (isShowHint) {
                             ToastUtils.INSTANCE.show(ctx, "定位中……");
+                        }
 //                        startLocation();
                     }
 

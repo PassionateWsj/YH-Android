@@ -126,7 +126,7 @@ public class TableValueView extends View {
                 for (int n = 0; n < headerSize; n++) {
                     float x = XAxesCenterPopint.get(n);
                     JSONObject rowData = new JSONObject(tabrowValues[n + 1]);
-                    if (!rowData.getString("color").equals("-1")) {
+                    if (!"-1".equals(rowData.getString("color"))) {
                         textPaint.setColor(colors[Integer.parseInt(rowData.getString("color"))]);
                     }
                     String value = rowData.getString("value");

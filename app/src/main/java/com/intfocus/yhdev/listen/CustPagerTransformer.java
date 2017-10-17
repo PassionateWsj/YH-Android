@@ -16,6 +16,7 @@ public class CustPagerTransformer implements ViewPager.PageTransformer {
         this.maxTranslateOffsetX = dp2px(context, 20);
     }
 
+    @Override
     public void transformPage(View view, float position) {
         if (viewPager == null) {
             viewPager = (ViewPager) view.getParent();

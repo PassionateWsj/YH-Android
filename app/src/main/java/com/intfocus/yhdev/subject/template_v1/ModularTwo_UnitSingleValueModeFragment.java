@@ -109,10 +109,11 @@ public class ModularTwo_UnitSingleValueModeFragment extends BaseModeFragment {
 //        int cursorIndex;
         if (absmv <= 0.1f) {
 //            cursorIndex = 1;
-            if (rate > 0)
+            if (rate > 0) {
                 isPlus = false;
-            else
+            } else {
                 isPlus = true;
+            }
         } else if (rate < -0.1f) {
 //            cursorIndex = 0;
             isPlus = false;

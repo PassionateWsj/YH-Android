@@ -102,18 +102,20 @@ public class ModularTwo_UnitPlusMinusChartModeFragment extends BaseModeFragment 
         switch (view.getId()) {
             case R.id.cbox_name:
                 cbox_percentage.reset();
-                if (cbox_name.getCheckedState() == SortCheckBox.CheckedState.sort_noneicon)
+                if (cbox_name.getCheckedState() == SortCheckBox.CheckedState.sort_noneicon) {
                     Collections.sort(lt_data, nameComparator);
-                else
+                } else {
                     Collections.reverse(lt_data);
+                }
                 break;
 
             case R.id.cbox_percentage:
                 cbox_name.reset();
-                if (cbox_percentage.getCheckedState() == SortCheckBox.CheckedState.sort_noneicon)
+                if (cbox_percentage.getCheckedState() == SortCheckBox.CheckedState.sort_noneicon) {
                     Collections.sort(lt_data, dataComparator);
-                else
+                } else {
                     Collections.reverse(lt_data);
+                }
                 break;
         }
         adapter.updateData(lt_data);
@@ -159,6 +161,7 @@ public class ModularTwo_UnitPlusMinusChartModeFragment extends BaseModeFragment 
 
     class BargraphNameComparator implements Comparator<BargraphComparator> {
 
+        @Override
         public int compare(BargraphComparator o1, BargraphComparator o2) {
             String str1 = PinyinUtil.getPingYin(o1.name);
             String str2 = PinyinUtil.getPingYin(o2.name);

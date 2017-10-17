@@ -30,8 +30,9 @@ public class MyHorizontalScrollView extends HorizontalScrollView {
     @Override
     protected void onScrollChanged(int l, int t, int oldl, int oldt) {
         super.onScrollChanged(l, t, oldl, oldt);
-        if (null != listener)
+        if (null != listener) {
             listener.onscroll(this, l, t, oldl, oldt);
+        }
     }
 
     /**
