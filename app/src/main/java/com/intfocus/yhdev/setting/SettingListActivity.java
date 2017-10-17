@@ -46,7 +46,7 @@ public class SettingListActivity extends BaseActivity {
 
     private void initListInfo(String type) {
         switch (type) {
-            case "应用信息":
+            case "基本信息":
                 PackageInfo packageInfo = null;
                 try {
                     packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);

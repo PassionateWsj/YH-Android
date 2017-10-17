@@ -68,7 +68,7 @@ public class SettingActivity extends BaseActivity {
             switch (mItemText.getText().toString()) {
                 case "基本信息":
                     Intent appInfoIntent = new Intent(mContext, SettingListActivity.class);
-                    appInfoIntent.putExtra("type", "应用信息");
+                    appInfoIntent.putExtra("type", "基本信息");
                     startActivity(appInfoIntent);
                     break;
 
@@ -87,6 +87,9 @@ public class SettingActivity extends BaseActivity {
                 case "选项配置":
                     Intent settingPreferenceIntent = new Intent(mContext, SettingPreferenceActivity.class);
                     startActivity(settingPreferenceIntent);
+                    break;
+
+                default:
                     break;
             }
         }
