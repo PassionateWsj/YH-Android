@@ -72,10 +72,12 @@ public class DefaultRefreshView extends FrameLayout implements IHeaderView {
         this.refreshingStr = refreshingStr1;
     }
 
+    @Override
     public View getView() {
         return this;
     }
 
+    @Override
     public void onPullingDown(float fraction, float maxHeadHeight, float headHeight) {
         if (fraction < 1.0F) {
             this.refreshTextView.setText(this.pullDownStr);
@@ -88,6 +90,7 @@ public class DefaultRefreshView extends FrameLayout implements IHeaderView {
         this.refreshArrow.setRotation(fraction * headHeight / maxHeadHeight * 180.0F);
     }
 
+    @Override
     public void onPullReleasing(float fraction, float maxHeadHeight, float headHeight) {
         if (fraction < 1.0F) {
             this.refreshTextView.setText(this.pullDownStr);
@@ -100,6 +103,7 @@ public class DefaultRefreshView extends FrameLayout implements IHeaderView {
 
     }
 
+    @Override
     public void startAnim(float maxHeadHeight, float headHeight) {
         this.refreshTextView.setText(this.refreshingStr);
         this.refreshArrow.setVisibility(View.GONE);
@@ -107,10 +111,12 @@ public class DefaultRefreshView extends FrameLayout implements IHeaderView {
         ((AnimationDrawable) this.loadingView.getDrawable()).start();
     }
 
+    @Override
     public void onFinish(OnAnimEndListener listener) {
         listener.onAnimEnd();
     }
 
+    @Override
     public void reset() {
         this.refreshArrow.setVisibility(View.VISIBLE);
         this.loadingView.setVisibility(View.GONE);

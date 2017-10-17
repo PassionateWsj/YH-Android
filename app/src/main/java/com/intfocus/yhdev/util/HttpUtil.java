@@ -430,14 +430,17 @@ public class HttpUtil {
                 return e.toString();
             } finally {
                 try {
-                    if (output != null)
+                    if (output != null) {
                         output.close();
-                    if (input != null)
+                    }
+                    if (input != null) {
                         input.close();
+                    }
                 } catch (IOException ignored) {
                 }
-                if (connection != null)
+                if (connection != null) {
                     connection.disconnect();
+                }
             }
             FileUtil.checkAssets(context, assetFilename, isInAssets);
             return null;
@@ -547,7 +550,7 @@ public class HttpUtil {
             input = connection.getInputStream();
             output = new FileOutputStream(outputPath);
 
-            byte data[] = new byte[4096];
+            byte[] data = new byte[4096];
             long total = 0;
             int count;
             while ((count = input.read(data)) != -1) {

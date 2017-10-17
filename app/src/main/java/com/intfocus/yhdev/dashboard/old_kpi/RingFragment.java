@@ -61,6 +61,7 @@ public class RingFragment extends Fragment {
             rootView = inflater.inflate(R.layout.fragment_ring, container, false);
             x.view().inject(this, rootView);
             new Handler().postDelayed(new Runnable() {
+                @Override
                 public void run() {
                     init();
                 }
@@ -75,10 +76,11 @@ public class RingFragment extends Fragment {
         ringChart.setMaxProgress(highLight.getCompare());
         ringChart.setShowProgress(highLight.getNumber());
         String unit;
-        if (highLight.getPercentage())
+        if (highLight.getPercentage()) {
             unit = "%";
-        else
+        } else {
             unit = entity.getUnit();
+        }
         ringChart.setUnit(unit);
 
         rootView.setOnClickListener(new View.OnClickListener() {

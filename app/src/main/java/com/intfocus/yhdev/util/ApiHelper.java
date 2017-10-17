@@ -267,7 +267,7 @@ public class ApiHelper {
             String htmlPath = String.format("%s/%s", assetsPath, htmlName);
             retMap.put("path", htmlPath);
 
-            if (statusCode.equals("200")) {
+            if ("200".equals(statusCode)) {
                 ApiHelper.storeResponseHeader(urlKey, assetsPath, response);
 
                 String htmlContent = response.get(URLs.kBody);

@@ -60,11 +60,11 @@ class LauncherActivity : Activity(), Animation.AnimationListener {
         } catch (e: PackageManager.NameNotFoundException) {
             e.printStackTrace()
         }
-        mAssetsSPEdit = mAssetsSP.edit()
+//        mAssetsSPEdit = mAssetsSP.edit()
 
         if (mSettingSP.getInt("Version", 0) != packageInfo.versionCode) {
-            mUserSP.edit().clear().commit()
-            mSettingSP.edit().clear().commit()
+            mUserSP.edit().clear().apply()
+            mSettingSP.edit().clear().apply()
         }
 
         toast = Toast.makeText(ctx, "再按一次退出生意人", Toast.LENGTH_SHORT)

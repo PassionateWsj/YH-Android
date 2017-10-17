@@ -71,6 +71,7 @@ public class RingChart extends View {
 
     private Handler circleHandler = new Handler() {
 
+        @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             if (msg.what == 1) {

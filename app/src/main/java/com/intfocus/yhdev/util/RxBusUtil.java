@@ -27,8 +27,9 @@ public class RxBusUtil {
     public static synchronized RxBusUtil getInstance() {
         if (mInstance == null) {
             synchronized (RxBusUtil.class) {
-                if (mInstance == null)
+                if (mInstance == null) {
                     mInstance = new RxBusUtil();
+                }
             }
         }
         return mInstance;

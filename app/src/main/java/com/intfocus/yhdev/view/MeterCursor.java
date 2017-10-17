@@ -52,8 +52,9 @@ public class MeterCursor extends android.support.v7.widget.AppCompatImageView {
         pathLine.reset();
         int h = canvas.getHeight();
         int w = canvas.getWidth();
-        if (state == 0)
+        if (state == 0) {
             return;
+        }
         if (state < 3) {//上箭头
             pathLine.moveTo(0, h);
             pathLine.lineTo(w, h);

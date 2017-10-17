@@ -135,19 +135,21 @@ public class ModularTwo_Mode_Activity extends BaseModeActivity<MeterDetalActMode
         currentFtName = fragmentTag + checkId;
         toFragment = (BaseModeFragment) getSupportFragmentManager().findFragmentByTag(currentFtName);
 
-        if (currFragment != null && currFragment == toFragment)
+        if (currFragment != null && currFragment == toFragment) {
             return;
+        }
 
-        if (toFragment == null)
+        if (toFragment == null) {
             toFragment = ModularTwo_RootPageModeFragment.newInstance(checkId, entity.datas.data.get(checkId).parts);
+        }
 
         FragmentTransaction ft = fm.beginTransaction();
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
 
 //        if (!toFragment.isAdded()) {
-            // 隐藏当前的fragment，add下一个到Activity中
+        // 隐藏当前的fragment，add下一个到Activity中
 //            if (currFragment == null)
-                ft.replace(R.id.fl_mdetal_cont_container, toFragment, currentFtName).commitAllowingStateLoss();
+        ft.replace(R.id.fl_mdetal_cont_container, toFragment, currentFtName).commitAllowingStateLoss();
 //            else
 //                ft.hide(currFragment).add(R.id.fl_mdetal_cont_container, toFragment, currentFtName)
 //                        .commitAllowingStateLoss();
@@ -196,10 +198,13 @@ public class ModularTwo_Mode_Activity extends BaseModeActivity<MeterDetalActMode
                     rbtn.setText(entity.datas.data.get(i).title);
                     radioGroup.addView(rbtn, params_rb);
                     rbtn.setOnCheckedChangeListener(rootTableListener);
-                    if (i == 0)
+                    if (i == 0) {
                         rbtn.setChecked(true);
+                    }
                 }
-            } else if (dataSize == 1) {    // 只有一个根页签
+            }
+            // 只有一个根页签
+            else if (dataSize == 1) {
 //                View single_title = LayoutInflater.from(ctx)
 //                        .inflate(R.layout.item_mdetal_single_title, null);
 //                tv_single_title = (TextView) single_title.findViewById(R.id.tv_mdetal_single_title);
@@ -208,8 +213,9 @@ public class ModularTwo_Mode_Activity extends BaseModeActivity<MeterDetalActMode
                 fl_titleContainer.setVisibility(View.GONE);
                 switchFragment(0);
             }
-        } else
+        } else {
             ToastUtils.INSTANCE.show(ctx, "数据实体为空");
+        }
         hideLoading();
     }
 
@@ -317,6 +323,7 @@ public class ModularTwo_Mode_Activity extends BaseModeActivity<MeterDetalActMode
 
     /**
      * 刷新
+     *
      * @param v
      */
     public void refresh(View v) {

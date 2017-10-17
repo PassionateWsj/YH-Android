@@ -40,8 +40,9 @@ public class BargraptAdapter extends BaseAdapter {
     }
 
     private void setData(LinkedList<BargraphComparator> ltdata) {
-        if (ltdata == null)
+        if (ltdata == null) {
             return;
+        }
         this.ltdata = ltdata;
     }
 
@@ -58,8 +59,9 @@ public class BargraptAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        if (ltdata == null)
+        if (ltdata == null) {
             return 0;
+        }
         return ltdata.size();
     }
 

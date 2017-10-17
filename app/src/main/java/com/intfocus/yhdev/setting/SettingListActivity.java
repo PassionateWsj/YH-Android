@@ -46,7 +46,7 @@ public class SettingListActivity extends BaseActivity {
 
     private void initListInfo(String type) {
         switch (type) {
-            case "应用信息":
+            case "基本信息":
                 PackageInfo packageInfo = null;
                 try {
                     packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
@@ -139,7 +139,7 @@ public class SettingListActivity extends BaseActivity {
                     try {
                         SharedPreferences sp = getSharedPreferences("allPushMessage", MODE_PRIVATE);
                         String allMessage = sp.getString("message", "false");
-                        if (allMessage.equals("false")) {
+                        if ("false".equals(allMessage)) {
                             toast("从未接收到推送消息");
                         } else {
                             Intent intent = new Intent(SettingListActivity.this, ShowListMsgActivity.class);
@@ -150,6 +150,9 @@ public class SettingListActivity extends BaseActivity {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
+                    break;
+
+                default:
                     break;
             }
         }

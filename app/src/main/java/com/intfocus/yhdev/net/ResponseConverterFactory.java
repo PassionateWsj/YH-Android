@@ -24,7 +24,9 @@ public class ResponseConverterFactory extends Converter.Factory {
     }
 
     private ResponseConverterFactory(Gson gson) {
-        if (gson == null) throw new NullPointerException("gson == null");
+        if (gson == null) {
+            throw new NullPointerException("gson == null");
+        }
         this.gson = gson;
     }
 

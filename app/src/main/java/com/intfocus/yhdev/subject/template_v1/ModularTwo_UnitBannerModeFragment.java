@@ -79,8 +79,9 @@ public class ModularTwo_UnitBannerModeFragment extends BaseModeFragment {
         imgbtn_close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (popupWindow != null)
+                if (popupWindow != null) {
                     popupWindow.dismiss();
+                }
             }
         });
 
