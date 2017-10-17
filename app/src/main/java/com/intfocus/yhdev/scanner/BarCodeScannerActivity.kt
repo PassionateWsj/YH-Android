@@ -1,6 +1,7 @@
 package com.intfocus.yhdev.scanner
 
 import android.app.ProgressDialog
+import android.content.Context
 import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.graphics.Typeface
@@ -19,16 +20,30 @@ import android.widget.RelativeLayout
 import android.widget.TextView
 import cn.bingoogolapple.qrcode.core.QRCodeView
 import com.intfocus.yhdev.R
+import com.intfocus.yhdev.data.response.scanner.NearestStoresResult
+import com.intfocus.yhdev.data.response.scanner.StoreItem
+import com.intfocus.yhdev.db.OrmDBHelper
+import com.intfocus.yhdev.listen.NoDoubleClickListener
+import com.intfocus.yhdev.net.ApiException
+import com.intfocus.yhdev.net.CodeHandledSubscriber
+import com.intfocus.yhdev.net.RetrofitUtil
 import com.intfocus.yhdev.util.*
+import com.taobao.accs.ACCSManager.mContext
 import com.zhihu.matisse.Matisse
 import com.zhihu.matisse.MimeType
 import com.zhihu.matisse.engine.impl.GlideEngine
 import com.zhihu.matisse.filter.Filter
 import kotlinx.android.synthetic.main.activity_bar_code_scanner_v2.*
 import kotlinx.android.synthetic.main.popup_input_barcode.view.*
+import rx.Observable
+import rx.Subscriber
+import rx.android.schedulers.AndroidSchedulers
+import rx.schedulers.Schedulers
+import java.sql.SQLException
 
 
 class BarCodeScannerActivity : AppCompatActivity(), QRCodeView.Delegate, View.OnClickListener {
+
     companion object {
         val TAG = "hjjzz"
         val REQUEST_CODE_CHOOSE = 1
@@ -43,17 +58,25 @@ class BarCodeScannerActivity : AppCompatActivity(), QRCodeView.Delegate, View.On
     private var cbInputBarcodeLight: CheckBox? = null
     private var tvBarcodeLight: TextView? = null
     private var cbBarcodeLight: CheckBox? = null
+    private var nearestStoreName: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_bar_code_scanner_v2)
 
+        initData()
         initView()
         initListener()
 
         zbarview_barcode_scanner.setDelegate(this)
         zbarview_barcode_scanner.startSpot()
     }
+
+    private fun initData() {
+        tv_barcode_local_position.text = "正在定位"
+        getLocation()
+    }
+
 
     override fun onStart() {
         super.onStart()
@@ -103,6 +126,12 @@ class BarCodeScannerActivity : AppCompatActivity(), QRCodeView.Delegate, View.On
      * 初始化监听器
      */
     private fun initListener() {
+        // 定位按钮
+        tv_barcode_local_position.setOnClickListener(object : NoDoubleClickListener() {
+            override fun onNoDoubleClick(v: View?) {
+                initData()
+            }
+        })
         //手电筒开关
         ll_btn_light_switch.setOnClickListener {
             isLightOn = !isLightOn
@@ -266,6 +295,95 @@ class BarCodeScannerActivity : AppCompatActivity(), QRCodeView.Delegate, View.On
         checkBox.isChecked = status
     }
 
+    private fun getLocation() {
+        MapUtil.getInstance(this).getAMapLocation { location ->
+            if (null != location) {
+                val sb = StringBuffer()
+                //errCode等于0代表定位成功，其他的为定位失败，具体的可以参照官网定位错误码说明
+                if (location.errorCode == 0) {
+                    RetrofitUtil.getHttpService(this)
+                            .getNearestStores(1, 1.0, "" + location.longitude + "," + location.latitude)
+                            .compose(RetrofitUtil.CommonOptions<NearestStoresResult>())
+                            .subscribe(object : CodeHandledSubscriber<NearestStoresResult>() {
+                                override fun onCompleted() {
+                                }
+
+                                override fun onError(apiException: ApiException?) {
+                                    tv_barcode_local_position.text = "门店获取失败"
+                                }
+
+                                override fun onBusinessNext(data: NearestStoresResult?) {
+                                    if (data!!.data!!.isNotEmpty()) {
+                                        tv_barcode_local_position.text = data.data!![0].store_name!!
+                                        nearestStoreName = data.data!![0].store_name!!
+                                        contractStore(data.data!![0].store_name!!)
+                                    } else {
+                                        tv_barcode_local_position.text = "附近没有定位到门店"
+                                    }
+                                }
+
+                            })
+                    sb.append("经    度    : " + location.longitude + "\n")
+                    sb.append("纬    度    : " + location.latitude + "\n")
+                } else {
+                    //定位失败
+                    tv_barcode_local_position.text = "定位失败"
+                    sb.append("错误码:" + location.errorCode + "\n")
+                    sb.append("错误信息:" + location.errorInfo + "\n")
+                    sb.append("错误描述:" + location.locationDetail + "\n")
+                }
+
+                //解析定位结果
+                val result = sb.toString()
+                Log.i("testlog", result)
+            } else {
+                tv_barcode_local_position.text = "定位失败"
+                Log.i("testlog", "定位失败，loc is null")
+            }
+        }
+
+    }
+
+    private fun contractStore(keyWord: String) {
+        try {
+            val storeItemDao = OrmDBHelper.getInstance(mContext).storeItemDao
+            Observable.create(Observable.OnSubscribe<List<StoreItem>> { subscriber ->
+                try {
+                    val storeItems = storeItemDao.queryBuilder().where().like("name", "$keyWord").query()
+                    subscriber.onNext(storeItems)
+                } catch (e: SQLException) {
+                    subscriber.onError(e)
+                }
+            })
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(object : Subscriber<List<StoreItem>>() {
+                        override fun onCompleted() {
+
+                        }
+
+                        override fun onError(e: Throwable) {
+                            ToastUtils.show(this@BarCodeScannerActivity, e.message!!)
+                        }
+
+                        override fun onNext(storeListResult: List<StoreItem>) {
+                            if (storeListResult.isNotEmpty()) {
+//                                tv_barcode_local_position.text = storeListResult[0].name
+                                val mStoreInfoSP = getSharedPreferences("StoreInfo", Context.MODE_PRIVATE)
+                                val mStoreInfoSPEdit = mStoreInfoSP.edit()
+                                mStoreInfoSPEdit.putString(URLs.kStore, storeListResult[0].name)
+                                mStoreInfoSPEdit.putString(URLs.kStoreIds, storeListResult[0].id)
+                                mStoreInfoSPEdit.apply()
+                            } else {
+                                tv_barcode_local_position.text = nearestStoreName + "(不在权限范围内)"
+                            }
+                        }
+                    })
+        } catch (e: SQLException) {
+            e.printStackTrace()
+        }
+
+    }
 
 }
 

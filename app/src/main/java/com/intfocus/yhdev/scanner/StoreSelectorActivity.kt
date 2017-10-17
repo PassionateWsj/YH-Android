@@ -50,7 +50,7 @@ class StoreSelectorActivity : BaseActivity(), StoreSelectorView {
         }
         //　item 点击监听
         listStores.setOnItemClickListener { parent, view, position, id ->
-            var intent = Intent()
+            val intent = Intent()
             intent.putExtra(URLs.kStore, adapter.getSelectItem(position).name)
             intent.putExtra(URLs.kStoreIds, adapter.getSelectItem(position).id)
             setResult(RESULT_CODE_CHOOSE, intent)

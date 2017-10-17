@@ -13,8 +13,8 @@ android {
         minSdkVersion 19
         targetSdkVersion 25
         multiDexEnabled true
-        versionCode 682
-        versionName "3.1.34"
+        versionCode 684
+        versionName "3.1.36"
 
         ndk {
             // 设置支持的SO库架构

@@ -176,4 +176,5 @@ public class K extends PrivateURLs implements Serializable {
     public final static String kNewUserIconUploadPath = "/api/v1.1/upload/gravatar"; //上传头像
     public final static String KNewChoiceMenu = "/api/v1.1/report/choice_menus";
     public final static String kDownloadAssetsZip = "/api/v1.1/download/assets";
+    public final static String KNearestStores = "/api/v1.1/nearest_stores";
 }

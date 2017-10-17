@@ -74,7 +74,7 @@ class ScannerResultActivity : AbstractActivity<ScannerMode>() {
         mStoreId = mStoreInfoSP.getString(URLs.kStoreIds, "")
         mStoreInfoSPEdit = mStoreInfoSP.edit()
 
-        var intent = intent
+        val intent = intent
         barcode = intent.getStringExtra(URLs.kCodeInfo)
     }
 
@@ -150,7 +150,7 @@ class ScannerResultActivity : AbstractActivity<ScannerMode>() {
         mWebView = WebView(this.applicationContext)
         mWebFrameLayout.addView(mWebView, 0)
 
-        var webSettings = mWebView.settings
+        val webSettings = mWebView.settings
         webSettings.javaScriptEnabled = true
         webSettings.defaultTextEncodingName = "utf-8"
         webSettings.cacheMode = WebSettings.LOAD_NO_CACHE
