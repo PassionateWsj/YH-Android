@@ -16,7 +16,6 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -38,11 +37,11 @@ import com.intfocus.yhdev.net.ApiException;
 import com.intfocus.yhdev.net.CodeHandledSubscriber;
 import com.intfocus.yhdev.net.RetrofitUtil;
 import com.intfocus.yhdev.util.ActionLogUtil;
-import com.intfocus.yhdev.util.ApiHelper;
 import com.intfocus.yhdev.util.FileUtil;
 import com.intfocus.yhdev.util.HttpUtil;
 import com.intfocus.yhdev.util.K;
 import com.intfocus.yhdev.constant.ToastColor;
+import com.intfocus.yhdev.util.MapUtil;
 import com.intfocus.yhdev.util.ToastUtils;
 import com.intfocus.yhdev.util.URLs;
 import com.pgyersdk.javabean.AppBean;
@@ -92,7 +91,7 @@ public class LoginActivity extends FragmentActivity {
         mUserSPEdit = mUserSP.edit();
 
         ctx = this;
-        ApiHelper.getAMapLocation(this);
+        MapUtil.getAMapLocation(this);
         assetsPath = FileUtil.dirPath(ctx, K.kHTMLDirName);
         sharedPath = FileUtil.sharedPath(ctx);
 

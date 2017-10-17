@@ -43,7 +43,7 @@ class ScannerMode(var ctx: Context) : AbstractMode() {
             val params = RequestParams(jsUrl)
             var jsFileName = String.format("store_%s_barcode_%s.js", store_id, currentBarcode)
             val jsPath = String.format("%s/assets/javascripts/%s", FileUtil.sharedPath(ctx), jsFileName)
-            params.isAutoRename = false //设置是否根据头信息自动命名文件
+            params.isAutoRename = false
             params.saveFilePath = jsPath
             params.executor = PriorityExecutor(2, true)
             x.http().get(params, object : Callback.CommonCallback<File> {
@@ -88,5 +88,4 @@ class ScannerMode(var ctx: Context) : AbstractMode() {
             }
         }).start()
     }
-
 }

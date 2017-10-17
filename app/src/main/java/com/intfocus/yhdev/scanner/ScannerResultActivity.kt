@@ -69,7 +69,6 @@ class ScannerResultActivity : AbstractActivity<ScannerMode>() {
     }
 
     private fun initData() {
-
         mStoreInfoSP = getSharedPreferences("StoreInfo", Context.MODE_PRIVATE)
         mStoreName = mStoreInfoSP.getString(URLs.kStore, "扫一扫")
         mStoreId = mStoreInfoSP.getString(URLs.kStoreIds, "")
@@ -77,10 +76,6 @@ class ScannerResultActivity : AbstractActivity<ScannerMode>() {
 
         var intent = intent
         barcode = intent.getStringExtra(URLs.kCodeInfo)
-    }
-
-    override fun onResume() {
-        super.onResume()
     }
 
     override fun onDestroy() {
@@ -150,7 +145,7 @@ class ScannerResultActivity : AbstractActivity<ScannerMode>() {
         }
     }
 
-    fun initWebView() {
+    private fun initWebView() {
         mWebFrameLayout = findViewById(R.id.wv_scanner_view) as FrameLayout
         mWebView = WebView(this.applicationContext)
         mWebFrameLayout.addView(mWebView, 0)

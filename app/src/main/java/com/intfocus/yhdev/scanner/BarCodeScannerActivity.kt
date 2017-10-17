@@ -55,7 +55,6 @@ class BarCodeScannerActivity : AppCompatActivity(), QRCodeView.Delegate, View.On
         zbarview_barcode_scanner.startSpot()
     }
 
-
     override fun onStart() {
         super.onStart()
         zbarview_barcode_scanner.startCamera()
@@ -266,5 +265,7 @@ class BarCodeScannerActivity : AppCompatActivity(), QRCodeView.Delegate, View.On
         }
         checkBox.isChecked = status
     }
+
+
 }
 
