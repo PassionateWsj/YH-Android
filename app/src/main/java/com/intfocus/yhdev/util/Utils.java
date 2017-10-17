@@ -13,8 +13,6 @@ import android.widget.LinearLayout;
 import com.intfocus.yhdev.subject.table.bean.SortData;
 import com.intfocus.yhdev.subject.table.bean.TableBarChart;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
 import java.security.MessageDigest;
@@ -31,6 +29,8 @@ import java.util.regex.Pattern;
  */
 
 public class Utils {
+
+    private static Pattern IS_NUMBER_PATTERN = Pattern.compile("-?[0-9]+.*[0-9]*");
     /**
      * 获得屏幕宽度
      *
@@ -138,21 +138,21 @@ public class Utils {
     }
 
     public static boolean isNumber(String str) {
-        Pattern p = Pattern.compile("-?[0-9]+.*[0-9]*");
-        Matcher m = p.matcher(str);
+//        Pattern p = Pattern.compile("-?[0-9]+.*[0-9]*");
+        Matcher m = IS_NUMBER_PATTERN.matcher(str);
         if (m.matches()) {
             return true;
         }
-        p = Pattern.compile("[a-zA-Z]");
-        m = p.matcher(str);
-        if (m.matches()) {
-            return false;
-        }
-        p = Pattern.compile("[\u4e00-\u9fa5]");
-        m = p.matcher(str);
-        if (m.matches()) {
-            return false;
-        }
+//        p = Pattern.compile("[a-zA-Z]");
+//        m = p.matcher(str);
+//        if (m.matches()) {
+//            return false;
+//        }
+//        p = Pattern.compile("[\u4e00-\u9fa5]");
+//        m = p.matcher(str);
+//        if (m.matches()) {
+//            return false;
+//        }
 
         return false;
     }

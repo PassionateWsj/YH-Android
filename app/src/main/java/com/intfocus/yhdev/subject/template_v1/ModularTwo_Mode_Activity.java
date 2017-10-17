@@ -147,9 +147,9 @@ public class ModularTwo_Mode_Activity extends BaseModeActivity<MeterDetalActMode
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
 
 //        if (!toFragment.isAdded()) {
-            // 隐藏当前的fragment，add下一个到Activity中
+        // 隐藏当前的fragment，add下一个到Activity中
 //            if (currFragment == null)
-                ft.replace(R.id.fl_mdetal_cont_container, toFragment, currentFtName).commitAllowingStateLoss();
+        ft.replace(R.id.fl_mdetal_cont_container, toFragment, currentFtName).commitAllowingStateLoss();
 //            else
 //                ft.hide(currFragment).add(R.id.fl_mdetal_cont_container, toFragment, currentFtName)
 //                        .commitAllowingStateLoss();
@@ -202,7 +202,9 @@ public class ModularTwo_Mode_Activity extends BaseModeActivity<MeterDetalActMode
                         rbtn.setChecked(true);
                     }
                 }
-            } else if (dataSize == 1) {    // 只有一个根页签
+            }
+            // 只有一个根页签
+            else if (dataSize == 1) {
 //                View single_title = LayoutInflater.from(ctx)
 //                        .inflate(R.layout.item_mdetal_single_title, null);
 //                tv_single_title = (TextView) single_title.findViewById(R.id.tv_mdetal_single_title);
@@ -321,6 +323,7 @@ public class ModularTwo_Mode_Activity extends BaseModeActivity<MeterDetalActMode
 
     /**
      * 刷新
+     *
      * @param v
      */
     public void refresh(View v) {

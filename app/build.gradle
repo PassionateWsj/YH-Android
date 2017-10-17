@@ -92,7 +92,7 @@ dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
     //    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5'
 //    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
-    compile 'com.amap.api:location:latest.integration' //高德定位
+    compile 'com.amap.api:location:3.5.0' //高德定位
     compile files('libs/pinyin4j-2.5.0.jar') //拼音
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.pgyersdk:sdk:2.5.6' //蒲公英 SDK
@@ -102,7 +102,7 @@ dependencies {
     compile 'com.github.PhilJay:MPAndroidChart:v3.0.2' // Chart 图表库
     compile 'com.yanzhenjie:recyclerview-swipe:1.0.4'
     compile 'org.greenrobot:eventbus:3.0.0'
-    compile 'com.google.code.gson:gson:2.2.4'
+    compile 'com.google.code.gson:gson:2.8.0'
     compile 'org.apache.commons:commons-lang3:3.0'
     compile 'com.android.support:multidex:1.0.1'
     compile 'me.relex:circleindicator:1.2.2@aar'
@@ -112,7 +112,7 @@ dependencies {
     compile 'cn.bingoogolapple:bga-qrcodecore:1.1.7@aar'
     compile 'cn.bingoogolapple:bga-zbar:1.1.7@aar'
     compile 'com.zhihu.android:matisse:0.4.3'
-    compile 'com.github.bumptech.glide:glide:3.7.0'  //可使用 Xutils 替换
+    compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'top.zibin:Luban:1.1.2'
     compile 'com.google.zxing:core:3.2.1'
     compile 'com.squareup.retrofit2:retrofit:2.3.0'
