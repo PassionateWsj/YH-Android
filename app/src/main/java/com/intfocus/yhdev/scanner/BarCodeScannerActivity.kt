@@ -23,6 +23,7 @@ import com.intfocus.yhdev.R
 import com.intfocus.yhdev.data.response.scanner.NearestStoresResult
 import com.intfocus.yhdev.data.response.scanner.StoreItem
 import com.intfocus.yhdev.db.OrmDBHelper
+import com.intfocus.yhdev.listen.NoDoubleClickListener
 import com.intfocus.yhdev.net.ApiException
 import com.intfocus.yhdev.net.CodeHandledSubscriber
 import com.intfocus.yhdev.net.RetrofitUtil
@@ -125,6 +126,12 @@ class BarCodeScannerActivity : AppCompatActivity(), QRCodeView.Delegate, View.On
      * 初始化监听器
      */
     private fun initListener() {
+        // 定位按钮
+        tv_barcode_local_position.setOnClickListener(object : NoDoubleClickListener() {
+            override fun onNoDoubleClick(v: View?) {
+                initData()
+            }
+        })
         //手电筒开关
         ll_btn_light_switch.setOnClickListener {
             isLightOn = !isLightOn
@@ -216,9 +223,6 @@ class BarCodeScannerActivity : AppCompatActivity(), QRCodeView.Delegate, View.On
                         .thumbnailScale(0.85f)
                         .imageEngine(GlideEngine())
                         .forResult(BarCodeScannerActivity.REQUEST_CODE_CHOOSE)
-            }
-            R.id.tv_barcode_local_position -> {
-                initData()
             }
         }
     }
@@ -345,8 +349,7 @@ class BarCodeScannerActivity : AppCompatActivity(), QRCodeView.Delegate, View.On
             val storeItemDao = OrmDBHelper.getInstance(mContext).storeItemDao
             Observable.create(Observable.OnSubscribe<List<StoreItem>> { subscriber ->
                 try {
-//                    val storeItems = storeItemDao.queryBuilder().where().like("name", "$keyWord").query()
-                    val storeItems = storeItemDao.queryBuilder().where().like("name", "asdf").query()
+                    val storeItems = storeItemDao.queryBuilder().where().like("name", "$keyWord").query()
                     subscriber.onNext(storeItems)
                 } catch (e: SQLException) {
                     subscriber.onError(e)
