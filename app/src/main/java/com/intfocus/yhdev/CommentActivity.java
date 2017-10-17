@@ -23,6 +23,9 @@ import com.intfocus.yhdev.util.URLs;
 
 import org.json.JSONObject;
 
+/**
+ * @author liuruilin
+ */
 public class CommentActivity extends BaseActivity {
 
     private String bannerName;
@@ -60,14 +63,16 @@ public class CommentActivity extends BaseActivity {
         new Thread(mRunnableForDetecting).start();
     }
 
+    @Override
     protected void onResume() {
         mMyApp.setCurrentActivity(this);
         super.onResume();
     }
 
-    /*
+    /**
      * 返回
      */
+    @Override
     public void dismissActivity(View v) {
         CommentActivity.this.onBackPressed();
     }

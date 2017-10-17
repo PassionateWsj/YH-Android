@@ -5,7 +5,9 @@ import android.os.Message;
 import com.tinkerpatch.sdk.TinkerPatch;
 
 /**
- * Created by liuruilin on 2017/9/21.
+ *
+ * @author liuruilin
+ * @date 2017/9/21
  */
 
 public class FetchPatchHandler extends Handler {

@@ -528,7 +528,7 @@ public class ApiHelper {
                     StringBuffer sb = new StringBuffer();
                     //errCode等于0代表定位成功，其他的为定位失败，具体的可以参照官网定位错误码说明
                     if (location.getErrorCode() == 0) {
-                        SharedPreferences mUserSP = ctx.getSharedPreferences("UserBean", Context.MODE_PRIVATE);
+                                SharedPreferences mUserSP = ctx.getSharedPreferences("UserBean", Context.MODE_PRIVATE);
                         mUserSP.edit().putString("location",
                                 String.format("%.6f", location.getLongitude()) + ","
                                         + String.format("%.6f", location.getLatitude())).commit();
