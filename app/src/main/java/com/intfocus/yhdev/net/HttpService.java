@@ -14,6 +14,7 @@ import com.intfocus.yhdev.data.response.login.RegisterResult;
 import com.intfocus.yhdev.data.response.mine_page.NoticeContentResult;
 import com.intfocus.yhdev.data.response.mine_page.UserInfoResult;
 import com.intfocus.yhdev.data.response.notice.NoticesResult;
+import com.intfocus.yhdev.data.response.scanner.NearestStoresResult;
 import com.intfocus.yhdev.data.response.scanner.StoreListResult;
 import com.intfocus.yhdev.login.bean.Device;
 import com.intfocus.yhdev.login.bean.DeviceRequest;
@@ -43,7 +44,7 @@ public interface HttpService {
 
     /**
      * 申请注册
-     *
+     * <p>
      * GET
      * /api/v1.1/config/info
      *
@@ -55,7 +56,7 @@ public interface HttpService {
 
     /**
      * 推送 push_token
-     *
+     * <p>
      * POST
      * /api/v1.1/device/push_token
      *
@@ -68,7 +69,7 @@ public interface HttpService {
 
     /**
      * 获取AssetsMD5
-     *
+     * <p>
      * GET
      * /api/v1.1/assets/md5
      *
@@ -79,7 +80,7 @@ public interface HttpService {
 
     /**
      * 公告预警详情
-     *
+     * <p>
      * GET
      * /api/v1.1/my/view/notice
      *
@@ -92,7 +93,7 @@ public interface HttpService {
 
     /**
      * 发表评论
-     *
+     * <p>
      * POST
      * /api/v1.1/comment
      *
@@ -104,7 +105,7 @@ public interface HttpService {
 
     /**
      * 工具箱页
-     *
+     * <p>
      * GET
      * /api/v1.1/app/component/toolbox
      *
@@ -117,7 +118,7 @@ public interface HttpService {
 
     /**
      * 报表页面列表
-     *
+     * <p>
      * GET
      * /api/v1.1/app/component/reports
      *
@@ -130,7 +131,7 @@ public interface HttpService {
 
     /**
      * 门店列表
-     *
+     * <p>
      * GET
      * /api/v1.1/user/stores
      *
@@ -142,7 +143,7 @@ public interface HttpService {
 
     /**
      * 用户信息
-     *
+     * <p>
      * GET
      * /api/v1.1/my/statistics
      *
@@ -154,7 +155,7 @@ public interface HttpService {
 
     /**
      * 获取概况页公告列表
-     *
+     * <p>
      * GET
      * /api/v1.1/user/notifications
      *
@@ -167,7 +168,7 @@ public interface HttpService {
 
     /**
      * 扫码结果
-     *
+     * <p>
      * GET
      * /api/v1.1/scan/barcode
      *
@@ -180,7 +181,7 @@ public interface HttpService {
 
     /**
      * 获取文章收藏列表
-     *
+     * <p>
      * GET
      * /api/v1.1/my/favourited/articles
      *
@@ -192,7 +193,7 @@ public interface HttpService {
 
     /**
      * 收藏状态
-     *
+     * <p>
      * POST
      * /api/v1.1/my/article/favourite_status
      *
@@ -204,7 +205,7 @@ public interface HttpService {
 
     /**
      * 获取数据学院文章列表
-     *
+     * <p>
      * GET
      * /api/v1.1/my/articles
      *
@@ -217,7 +218,7 @@ public interface HttpService {
 
     /**
      * 获取首页概况数据
-     *
+     * <p>
      * GET
      * /api/v1.1/app/component/overview
      *
@@ -229,7 +230,7 @@ public interface HttpService {
 
     /**
      * 获取首页消息数据
-     *
+     * <p>
      * GET
      * /api/v1.1/user/notifications
      *
@@ -241,7 +242,7 @@ public interface HttpService {
 
     /**
      * 公告预警列表
-     *
+     * <p>
      * GET
      * /api/v1.1/my/notices
      *
@@ -253,7 +254,7 @@ public interface HttpService {
 
     /**
      * 获取筛选菜单信息
-     *
+     * <p>
      * GET
      * /api/v1/report/menus
      *
@@ -265,7 +266,7 @@ public interface HttpService {
 
     /**
      * 头像上传
-     *
+     * <p>
      * POST
      * /api/v1.1/upload/gravatar
      *
@@ -280,7 +281,7 @@ public interface HttpService {
 
     /**
      * 登录post请求
-     *
+     * <p>
      * POST
      * /api/v1.1/user/authentication
      *
@@ -294,7 +295,7 @@ public interface HttpService {
 
     /**
      * 上传设备信息
-     *
+     * <p>
      * POST
      * /api/v1.1/app/device
      *
@@ -306,7 +307,7 @@ public interface HttpService {
 
     /**
      * 退出登录
-     *
+     * <p>
      * POST
      * /api/v1.1/user/logout
      *
@@ -318,7 +319,7 @@ public interface HttpService {
 
     /**
      * 更新密码
-     *
+     * <p>
      * POST
      * /api/v1.1/user/update_password
      *
@@ -331,7 +332,7 @@ public interface HttpService {
 
     /**
      * 重置密码
-     *
+     * <p>
      * POST
      * /api/v1.1/user/reset_password
      *
@@ -344,7 +345,7 @@ public interface HttpService {
 
     /**
      * 用户信息
-     *
+     * <p>
      * GET
      * /api/v1.1/my/statistics
      *
@@ -356,7 +357,7 @@ public interface HttpService {
 
     /**
      * 下载静态资源
-     *
+     * <p>
      * GET
      * /api/v1.1/download/assets
      *
@@ -365,4 +366,19 @@ public interface HttpService {
      */
     @GET
     Call<ResponseBody> downloadFileWithDynamicUrlSync(@Url String fileUrl);
+
+    /**
+     * 根据经纬度获取最近的门店
+     * <p>
+     * GET
+     * /api/v1.1/nearest_stores
+     *
+     * @param limit
+     * @param distance
+     * @param location
+     * @return
+     */
+    @GET(K.KNearestStores)
+    Observable<NearestStoresResult> getNearestStores(@Query("limit") int limit, @Query("distance") double distance, @Query("location") String location);
+
 }

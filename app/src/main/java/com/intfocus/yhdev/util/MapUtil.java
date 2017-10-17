@@ -1,10 +1,7 @@
 package com.intfocus.yhdev.util;
 
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.util.Log;
 
-import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
@@ -12,49 +9,39 @@ import com.amap.api.location.AMapLocationListener;
 import static com.intfocus.yhdev.constant.Constants.GAODE_MAP_APP_KEY;
 
 /**
- *
  * @author liuruilin
  * @date 2017/10/17
  */
 
 public class MapUtil {
-    public static void getAMapLocation(final Context ctx) {
+    private static MapUtil mInstance = null;
+    private final AMapLocationClient locationClient;
+
+    /**
+     * 双重校验锁单例模式
+     */
+    public static synchronized MapUtil getInstance(Context ctx) {
+        if (mInstance == null) {
+            synchronized (MapUtil.class) {
+                if (mInstance == null) {
+                    mInstance = new MapUtil(ctx);
+                }
+            }
+        }
+        return mInstance;
+    }
+
+    private MapUtil(Context ctx) {
         //初始化client
-        AMapLocationClient locationClient = new AMapLocationClient(ctx);
+        locationClient = new AMapLocationClient(ctx);
         AMapLocationClient.setApiKey(GAODE_MAP_APP_KEY);
         AMapLocationClientOption locationOption = getDefaultOption();
         //设置定位参数
         locationClient.setLocationOption(locationOption);
-        //设置定位监听
-        locationClient.setLocationListener(new AMapLocationListener() {
-            @Override
-            public void onLocationChanged(AMapLocation location) {
-                if (null != location) {
-                    StringBuffer sb = new StringBuffer();
-                    //errCode等于0代表定位成功，其他的为定位失败，具体的可以参照官网定位错误码说明
-                    if (location.getErrorCode() == 0) {
-                                SharedPreferences mUserSP = ctx.getSharedPreferences("UserBean", Context.MODE_PRIVATE);
-                        mUserSP.edit().putString("location",
-                                String.format("%.6f", location.getLongitude()) + ","
-                                        + String.format("%.6f", location.getLatitude())).commit();
+    }
 
-                        sb.append("经    度    : " + location.getLongitude() + "\n");
-                        sb.append("纬    度    : " + location.getLatitude() + "\n");
-                    } else {
-                        //定位失败
-                        sb.append("错误码:" + location.getErrorCode() + "\n");
-                        sb.append("错误信息:" + location.getErrorInfo() + "\n");
-                        sb.append("错误描述:" + location.getLocationDetail() + "\n");
-                    }
-
-                    //解析定位结果
-                    String result = sb.toString();
-                    Log.i("testlog", result);
-                } else {
-                    Log.i("testlog", "定位失败，loc is null");
-                }
-            }
-        });
+    public void getAMapLocation(AMapLocationListener mAMapLocationListener) {
+        locationClient.setLocationListener(mAMapLocationListener);
         locationClient.startLocation();
     }
 
@@ -64,15 +51,15 @@ public class MapUtil {
      * @author hongming.wang
      * @since 2.8.0
      */
-    public static AMapLocationClientOption getDefaultOption() {
+    private AMapLocationClientOption getDefaultOption() {
         AMapLocationClientOption mOption = new AMapLocationClientOption();
         //可选，设置定位模式，可选的模式有高精度、仅设备、仅网络。默认为高精度模式
         mOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
         mOption.setGpsFirst(false);//可选，设置是否gps优先，只在高精度模式下有效。默认关闭
         mOption.setHttpTimeOut(30000);//可选，设置网络请求超时时间。默认为30秒。在仅设备模式下无效
-        mOption.setInterval(60000 * 10);//可选，设置定位间隔。默认为2秒
+//        mOption.setInterval(60000 * 10);//可选，设置定位间隔。默认为2秒
         mOption.setNeedAddress(true);//可选，设置是否返回逆地理地址信息。默认是true
-        mOption.setOnceLocation(false);//可选，设置是否单次定位。默认是false
+        mOption.setOnceLocation(true);//可选，设置是否单次定位。默认是false
         mOption.setOnceLocationLatest(false);//可选，设置是否等待wifi刷新，默认为false.如果设置为true,会自动变为单次定位，持续定位时不要使用
         AMapLocationClientOption.setLocationProtocol(AMapLocationClientOption.AMapLocationProtocol.HTTP);//可选， 设置网络请求的协议。可选HTTP或者HTTPS。默认为HTTP
         mOption.setSensorEnable(false);//可选，设置是否使用传感器。默认是false

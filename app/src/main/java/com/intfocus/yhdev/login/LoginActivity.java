@@ -16,6 +16,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -25,7 +26,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
+import com.amap.api.location.AMapLocation;
+import com.amap.api.location.AMapLocationListener;
 import com.intfocus.yhdev.R;
+import com.intfocus.yhdev.constant.ToastColor;
 import com.intfocus.yhdev.dashboard.DashboardActivity;
 import com.intfocus.yhdev.data.response.BaseResult;
 import com.intfocus.yhdev.data.response.login.RegisterResult;
@@ -40,7 +44,6 @@ import com.intfocus.yhdev.util.ActionLogUtil;
 import com.intfocus.yhdev.util.FileUtil;
 import com.intfocus.yhdev.util.HttpUtil;
 import com.intfocus.yhdev.util.K;
-import com.intfocus.yhdev.constant.ToastColor;
 import com.intfocus.yhdev.util.MapUtil;
 import com.intfocus.yhdev.util.ToastUtils;
 import com.intfocus.yhdev.util.URLs;
@@ -91,7 +94,9 @@ public class LoginActivity extends FragmentActivity {
         mUserSPEdit = mUserSP.edit();
 
         ctx = this;
-        MapUtil.getAMapLocation(this);
+
+        //设置定位监听
+        getLocation();
         assetsPath = FileUtil.dirPath(ctx, K.kHTMLDirName);
         sharedPath = FileUtil.sharedPath(ctx);
 
@@ -113,6 +118,38 @@ public class LoginActivity extends FragmentActivity {
          * 显示记住用户名称
          */
         usernameEditText.setText(mUserSP.getString("user_num", ""));
+    }
+
+    private void getLocation() {
+        MapUtil.getInstance(this).getAMapLocation(new AMapLocationListener() {
+            @Override
+            public void onLocationChanged(AMapLocation location) {
+                if (null != location) {
+                    StringBuffer sb = new StringBuffer();
+                    //errCode等于0代表定位成功，其他的为定位失败，具体的可以参照官网定位错误码说明
+                    if (location.getErrorCode() == 0) {
+                        SharedPreferences mUserSP = ctx.getSharedPreferences("UserBean", Context.MODE_PRIVATE);
+                        mUserSP.edit().putString("location",
+                                String.format("%.6f", location.getLongitude()) + ","
+                                        + String.format("%.6f", location.getLatitude())).apply();
+
+                        sb.append("经    度    : " + location.getLongitude() + "\n");
+                        sb.append("纬    度    : " + location.getLatitude() + "\n");
+                    } else {
+                        //定位失败
+                        sb.append("错误码:" + location.getErrorCode() + "\n");
+                        sb.append("错误信息:" + location.getErrorInfo() + "\n");
+                        sb.append("错误描述:" + location.getLocationDetail() + "\n");
+                    }
+
+                    //解析定位结果
+                    String result = sb.toString();
+                    Log.i("testlog", result);
+                } else {
+                    Log.i("testlog", "定位失败，loc is null");
+                }
+            }
+        });
     }
 
     /**
