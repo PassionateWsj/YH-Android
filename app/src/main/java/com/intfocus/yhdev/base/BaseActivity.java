@@ -78,8 +78,6 @@ public class BaseActivity extends FragmentActivity {
     public final static String kVersionCode = "versionCode";
     public String sharedPath;
     public String relativeAssetsPath;
-    //    public String urlStringForDetecting;
-    public ProgressDialog mProgressDialog;
     public YHApplication mMyApp;
     public PopupWindow popupWindow;
     public DisplayMetrics displayMetrics;
@@ -93,7 +91,7 @@ public class BaseActivity extends FragmentActivity {
     public JSONObject logParams = new JSONObject();
     public Context mAppContext;
     public Toast toast;
-    int displayDpi; //屏幕密度
+    int displayDpi;
     public boolean isOffline = false;
     public ValueCallback<Uri> mUploadMessage;
     public ValueCallback<Uri[]> mUploadMessage1;
@@ -116,7 +114,6 @@ public class BaseActivity extends FragmentActivity {
 
         sharedPath = FileUtil.sharedPath(mAppContext);
         assetsPath = sharedPath;
-//        urlStringForDetecting = K.kBaseUrl;
         relativeAssetsPath = "assets";
         urlStringForLoading = loadingPath(kLoading);
         mUserSP = getSharedPreferences("UserBean", Context.MODE_PRIVATE);
@@ -124,7 +121,6 @@ public class BaseActivity extends FragmentActivity {
         if (mUserSP.getBoolean(URLs.kIsLogin, false)) {
             userID = mUserSP.getString("user_id", "0");
             assetsPath = FileUtil.dirPath(mAppContext, K.kHTMLDirName);
-//            urlStringForDetecting = String.format(K.kDeviceStateAPIPath, K.kBaseUrl, mUserSP.getString("user_device_id", ""));
             relativeAssetsPath = "../../Shared/assets";
         }
     }
@@ -138,7 +134,7 @@ public class BaseActivity extends FragmentActivity {
         super.onDestroy();
     }
 
-    /*
+    /**
      * 返回
      */
     public void dismissActivity(View v) {
@@ -264,30 +260,12 @@ public class BaseActivity extends FragmentActivity {
         return mWebView;
     }
 
-    public static int dip2px(Context context, float dpValue) {
-        final float scale = context.getResources().getDisplayMetrics().density;
-        return (int) (dpValue * scale + 0.5f);
-    }
-
     protected final HandlerForDetecting mHandlerForDetecting = new HandlerForDetecting(BaseActivity.this);
     protected final HandlerWithAPI mHandlerWithAPI = new HandlerWithAPI(BaseActivity.this);
 
     public final Runnable mRunnableForDetecting = new Runnable() {
         @Override
         public void run() {
-
-//            Map<String, String> response = HttpUtil.httpGet(urlStringForDetecting,
-//                    new HashMap<String, String>());
-//            int statusCode = Integer.parseInt(response.get(URLs.kCode));
-//            if (statusCode == 200 && !urlStringForDetecting.equals(K.kBaseUrl)) {
-//                try {
-//                    JSONObject json = new JSONObject(response.get("body"));
-//                    statusCode = json.getBoolean("device_state") ? 200 : 401;
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-
             mHandlerForDetecting.setVariables(mWebView, urlString, sharedPath, assetsPath, relativeAssetsPath);
             Message message = mHandlerForDetecting.obtainMessage();
             message.what = 200;
@@ -490,7 +468,6 @@ public class BaseActivity extends FragmentActivity {
                 case 200:
                 case 304:
                     final String localHtmlPath = String.format("file:///%s", (String) message.obj);
-//                    FileUtil.copyFile(localHtmlPath, Environment.getExternalStorageDirectory().toString() + "/1.html");
 
                     weakActivity.get().runOnUiThread(new Runnable() {
                         @Override
@@ -589,7 +566,7 @@ public class BaseActivity extends FragmentActivity {
 
                     if (newVersionCode % 2 == 1) {
                         if (isShowToast) {
-                            toast(String.format("有发布测试版本%s(%s)", newVersionName, newVersionCode), ToastColor.SUCCESS);
+                            ToastUtils.INSTANCE.show(mAppContext, String.format("有发布测试版本%s(%s)", newVersionName, newVersionCode), ToastColor.SUCCESS);
                         }
 
                         return;
@@ -632,38 +609,10 @@ public class BaseActivity extends FragmentActivity {
             @Override
             public void onNoUpdateAvailable() {
                 if (isShowToast) {
-                    toast("已是最新版本", ToastColor.SUCCESS);
+                    ToastUtils.INSTANCE.show(mAppContext, "已是最新版本");
                 }
             }
         });
-    }
-
-    /*
-     * 标题栏设置按钮下拉菜单样式
-	 */
-    public void initDropMenu(SimpleAdapter adapter, AdapterView.OnItemClickListener itemClickListener) {
-        View contentView = LayoutInflater.from(this).inflate(R.layout.menu_dialog, null);
-
-        ListView listView = (ListView) contentView.findViewById(R.id.list_dropmenu);
-        listView.setAdapter(adapter);
-        listView.setOnItemClickListener(itemClickListener);
-
-        popupWindow = new PopupWindow(this);
-        popupWindow.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
-        popupWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
-        popupWindow.setContentView(contentView);
-        popupWindow.setBackgroundDrawable(new ColorDrawable(0x00000000));
-        popupWindow.setOutsideTouchable(false);
-        popupWindow.setFocusable(true);
-    }
-
-
-    protected void toast(String info, ToastColor toastColor) {
-        ToastUtils.INSTANCE.show(this, info, toastColor);
-    }
-
-    protected void toast(String info) {
-        ToastUtils.INSTANCE.show(this, info);
     }
 
     public class JavaScriptBase {
@@ -681,7 +630,7 @@ public class BaseActivity extends FragmentActivity {
                 @Override
                 public void run() {
                     if (url == null || (!url.startsWith("http://") && !url.startsWith("https://"))) {
-                        toast(String.format("无效链接: %s", url));
+                        ToastUtils.INSTANCE.show(mAppContext, String.format("无效链接: %s", url));
                         return;
                     }
                     Intent browserIntent = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse(url));
@@ -689,77 +638,5 @@ public class BaseActivity extends FragmentActivity {
                 }
             });
         }
-    }
-
-    public void isAllowBrowerCopy() {
-        try {
-            String betaConfigPath = FileUtil.dirPath(mAppContext, K.kConfigDirName, K.kBetaConfigFileName);
-            JSONObject betaJSON = FileUtil.readConfigFile(betaConfigPath);
-            if (betaJSON.has("allow_brower_copy") && betaJSON.getBoolean("allow_brower_copy")) {
-                setWebViewLongListener(false);
-            } else {
-                setWebViewLongListener(true);
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void showWebViewExceptionForWithoutNetwork() {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                String urlStringForLoading = loadingPath("400");
-                mWebView.loadUrl(urlStringForLoading);
-            }
-        });
-    }
-
-    public void setAlertDialog(Context context, String message) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle("温馨提示")
-                .setMessage(message)
-                .setPositiveButton("确认", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        goToAppSetting();
-                    }
-                })
-                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // 返回DashboardActivity
-                    }
-                });
-        builder.show();
-    }
-
-    private void goToAppSetting() {
-        Intent intent = new Intent();
-        intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-        Uri uri = Uri.fromParts("package", getPackageName(), null);
-        intent.setData(uri);
-        startActivity(intent);
-    }
-
-    /*
-     * 判断有无网络
-     */
-    public boolean isNetworkConnected(Context context) {
-        if (context != null) {
-            // 获取手机所有连接管理对象(包括对wi-fi,net等连接的管理)
-            ConnectivityManager manager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-            // 获取NetworkInfo对象
-            NetworkInfo networkInfo = manager.getActiveNetworkInfo();
-            //判断NetworkInfo对象是否为空
-            if (networkInfo != null) {
-                return networkInfo.isAvailable();
-            }
-        }
-        return false;
-    }
-
-    public void back(View view) {
-        onBackPressed();
     }
 }

@@ -136,7 +136,13 @@ public class CommentActivity extends BaseActivity {
 
                 //点击两次还是有异常 异常报出
                 if (loadCount < 2) {
-                    showWebViewExceptionForWithoutNetwork();
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            String urlStringForLoading = loadingPath("400");
+                            mWebView.loadUrl(urlStringForLoading);
+                        }
+                    });
                     loadCount++;
                 }
             } catch (Exception e) {

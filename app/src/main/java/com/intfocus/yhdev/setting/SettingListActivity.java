@@ -1,5 +1,6 @@
 package com.intfocus.yhdev.setting;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
@@ -17,6 +18,7 @@ import com.intfocus.yhdev.base.BaseActivity;
 import com.intfocus.yhdev.subject.SimpleListAdapter;
 import com.intfocus.yhdev.util.K;
 import com.intfocus.yhdev.constant.ToastColor;
+import com.intfocus.yhdev.util.ToastUtils;
 import com.umeng.message.PushAgent;
 
 import java.util.ArrayList;
@@ -33,6 +35,7 @@ public class SettingListActivity extends BaseActivity {
     private TextView mBannerTitle;
     private String mListType;
     private long mLastExitTime;
+    private Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,7 +127,7 @@ public class SettingListActivity extends BaseActivity {
                         break;
                     } else {
                         mLastExitTime = System.currentTimeMillis();
-                        toast("再点击一下将打开 开发者选项", ToastColor.SUCCESS);
+                        ToastUtils.INSTANCE.show(mContext, "再点击一下将打开 开发者选项");
                     }
                     break;
 
@@ -140,7 +143,7 @@ public class SettingListActivity extends BaseActivity {
                         SharedPreferences sp = getSharedPreferences("allPushMessage", MODE_PRIVATE);
                         String allMessage = sp.getString("message", "false");
                         if ("false".equals(allMessage)) {
-                            toast("从未接收到推送消息");
+                            ToastUtils.INSTANCE.show(mAppContext, "从未接收到推送消息");
                         } else {
                             Intent intent = new Intent(SettingListActivity.this, ShowListMsgActivity.class);
                             intent.putExtra("type", "pushMessage");

@@ -55,6 +55,7 @@ import com.intfocus.yhdev.util.ImageUtil;
 import com.intfocus.yhdev.util.K;
 import com.intfocus.yhdev.util.MyHorizontalScrollView;
 import com.intfocus.yhdev.constant.ToastColor;
+import com.intfocus.yhdev.util.ToastUtils;
 import com.intfocus.yhdev.util.URLs;
 import com.intfocus.yhdev.util.Utils;
 import com.umeng.socialize.ShareAction;
@@ -325,7 +326,7 @@ public class TableActivity extends BaseActivity implements ColumAdapter.ColumnLi
                         @Override
                         public void onClick(View view) {
                             sort(finalValuePosition, finalTextViewPosition);
-                            toast(head.getValue() + ":排序", ToastColor.SUCCESS);
+                            ToastUtils.INSTANCE.show(mAppContext,head.getValue() + ":排序", ToastColor.SUCCESS);
                         }
                     });
                     textViews.add(textView);
@@ -909,7 +910,7 @@ public class TableActivity extends BaseActivity implements ColumAdapter.ColumnLi
             if (Utils.isNumber(mainDataStr)) {
                 datas.add(Double.parseDouble(mainDataStr));
             } else {
-                toast("暂不支持该内容的排序");
+                ToastUtils.INSTANCE.show(mAppContext,"暂不支持该内容的排序");
                 return;
             }
         }
@@ -1024,7 +1025,7 @@ public class TableActivity extends BaseActivity implements ColumAdapter.ColumnLi
         }
         Double maxValue = Utils.getMaxValue(tableBarCharts);
         if (null == maxValue) {
-            toast("该数值无法显示条形图");
+            ToastUtils.INSTANCE.show(mAppContext,"该数值无法显示条形图");
             barChartListView.setVisibility(View.GONE);
             llBarHead.setVisibility(View.GONE);
             contentHorizontalScrollView.setVisibility(View.VISIBLE);
@@ -1106,7 +1107,7 @@ public class TableActivity extends BaseActivity implements ColumAdapter.ColumnLi
     public void actionShare2Weixin() {
         Bitmap bmpScrennShot = ImageUtil.takeScreenShot(TableActivity.this);
         if (bmpScrennShot == null) {
-            toast("截图失败");
+            ToastUtils.INSTANCE.show(mAppContext,"截图失败");
         }
         UMImage image = new UMImage(this, bmpScrennShot);
         new ShareAction(this)
@@ -1132,7 +1133,7 @@ public class TableActivity extends BaseActivity implements ColumAdapter.ColumnLi
             if (t != null) {
                 Log.d("throw", "throw:" + t.getMessage());
             }
-            toast("分享失败");
+            ToastUtils.INSTANCE.show(mAppContext,"分享失败");
         }
 
         @Override

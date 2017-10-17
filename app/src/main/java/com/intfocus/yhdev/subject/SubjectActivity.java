@@ -84,17 +84,9 @@ import rx.schedulers.Schedulers;
 import static android.webkit.WebView.enableSlowWholeDocumentDraw;
 import static java.lang.String.format;
 
-public class SubjectActivity extends BaseActivity implements OnPageChangeListener, OnLoadCompleteListener, OnErrorOccurredListener
-        , FilterMenuAdapter.FilterMenuListener, FilterPopupWindow.MenuLisenter, MyFilterDialogFragment.FilterLisenter {
-    @ViewInject(R.id.ll_shaixuan)
-    LinearLayout llShaixuan;
-    @ViewInject(R.id.ll_copylink)
-    LinearLayout llCopyLinkl;
+public class SubjectActivity extends BaseActivity implements FilterMenuAdapter.FilterMenuListener, FilterPopupWindow.MenuLisenter, MyFilterDialogFragment.FilterLisenter {
 
-    private Boolean isInnerLink = false;
     private String templateID;
-    private PDFView mPDFView;
-    private File pdfFile;
     private String bannerName, link;
     private String groupID;
     private String objectID;
@@ -112,7 +104,6 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
      *
      * @param savedInstanceState
      */
-    private LinearLayout llFilter;
     private RelativeLayout rlAddressFilter;
     private TextView tvLocationAddress;
     private TextView tvAddressFilter;
@@ -182,7 +173,6 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
         iv_BannerBack = (ImageView) findViewById(R.id.iv_banner_back);
         tv_BannerBack = (TextView) findViewById(R.id.tv_banner_back);
         iv_BannerSetting = (ImageView) findViewById(R.id.iv_banner_setting);
-        llFilter = (LinearLayout) findViewById(R.id.ll_filter);
         rlAddressFilter = (RelativeLayout) findViewById(R.id.rl_address_filter);
         tvLocationAddress = (TextView) findViewById(R.id.tv_location_address);
         tvAddressFilter = (TextView) findViewById(R.id.tv_address_filter);
@@ -226,13 +216,8 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
         bannerName = intent.getStringExtra(URLs.kBannerName);
         objectID = intent.getStringExtra(URLs.kObjectId);
         objectType = intent.getStringExtra(URLs.kObjectType);
-        isInnerLink = link.indexOf("template") > 0 && link.indexOf("group") > 0;
         mTitle.setText(bannerName);
 
-        if (link.toLowerCase().endsWith(".pdf")) {
-            mPDFView = (PDFView) findViewById(R.id.pdfview);
-            mPDFView.setVisibility(View.INVISIBLE);
-        }
         iv_BannerSetting.setVisibility(View.VISIBLE);
     }
 
@@ -322,7 +307,7 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
         return mWebView;
     }
 
-    /*
+    /**
      * 标题栏点击设置按钮显示下拉菜单
      */
     public void launchDropMenuActivity(View v) {
@@ -337,9 +322,7 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
     void showComplaintsPopWindow(View clickView) {
         View contentView = LayoutInflater.from(this).inflate(R.layout.pop_menu_v2, null);
         x.view().inject(this, contentView);
-        if (!isInnerLink) {
-            llCopyLinkl.setVisibility(View.VISIBLE);
-        }
+
         //设置弹出框的宽度和高度
         popupWindow = new PopupWindow(contentView,
                 ViewGroup.LayoutParams.WRAP_CONTENT,
@@ -352,7 +335,6 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
         //设置可以点击
         popupWindow.setTouchable(true);
         //进入退出的动画
-//        popupWindow.setAnimationStyle(R.style.AnimationPopupwindow);
         popupWindow.showAsDropDown(clickView);
     }
 
@@ -383,52 +365,6 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
         }
     }
 
-    /**
-     * PDFView OnPageChangeListener CallBack
-     *
-     * @param page      the new page displayed, starting from 1
-     * @param pageCount the total page count, starting from 1
-     */
-    @Override
-    public void onPageChanged(int page, int pageCount) {
-        Log.i("onPageChanged", format("%s %d / %d", bannerName, page, pageCount));
-    }
-
-    @Override
-    public void loadComplete(int nbPages) {
-        Log.d("loadComplete", "load pdf done");
-    }
-
-    @Override
-    public void errorOccured(String errorType, String errorMessage) {
-        String htmlPath = String.format("%s/loading/%s.html", sharedPath, "500"),
-                outputPath = String.format("%s/loading/%s.html", sharedPath, "500.output");
-
-        if (!(new File(htmlPath)).exists()) {
-            toast(String.format("链接打开失败: %s", link));
-            return;
-        }
-
-        mWebView.setVisibility(View.VISIBLE);
-        mPDFView.setVisibility(View.INVISIBLE);
-
-        String htmlContent = FileUtil.readFile(htmlPath);
-        htmlContent = htmlContent.replace("$exception_type$", errorType);
-        htmlContent = htmlContent.replace("$exception_message$", errorMessage);
-        htmlContent = htmlContent.replace("$visit_url$", link);
-        try {
-            FileUtil.writeFile(outputPath, htmlContent);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        Message message = mHandlerWithAPI.obtainMessage();
-        message.what = 200;
-        message.obj = outputPath;
-
-        mHandlerWithAPI.sendMessage(message);
-    }
-
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
@@ -437,7 +373,7 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
         checkInterfaceOrientation(newConfig);
     }
 
-    /*
+    /**
      * 横屏 or 竖屏
      */
     private void checkInterfaceOrientation(Configuration config) {
@@ -459,7 +395,6 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
 
     private void loadHtml() {
         WebSettings webSettings = mWebView.getSettings();
-        if (isInnerLink) {
             // format: /mobile/v1/group/:group_id/template/:template_id/report/:report_id
             // deprecated
             // format: /mobile/report/:report_id/group/:group_id
@@ -519,70 +454,9 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
                             }
                         }
                     });
-        } else {
-            urlString = link;
-
-            Observable.create(new Observable.OnSubscribe<Boolean>() {
-                @Override
-                public void call(Subscriber<? super Boolean> subscriber) {
-                    boolean isPDF = urlString.toLowerCase().endsWith(".pdf");
-                    if (isPDF) {
-                        String outputPath = String.format("%s/%s/%s.pdf", FileUtil.basePath(mAppContext), K.kCachedDirName, URLs.MD5(urlString));
-                        pdfFile = new File(outputPath);
-                        ApiHelper.downloadFile(mAppContext, urlString, pdfFile);
-                    }
-                    subscriber.onNext(isPDF);
-                    subscriber.onCompleted();
-                }
-            })
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Observer<Boolean>() {
-                        @Override
-                        public void onCompleted() {
-
-                        }
-
-                        @Override
-                        public void onError(Throwable throwable) {
-
-                        }
-
-                        @Override
-                        public void onNext(Boolean isPDF) {
-                            if (isPDF) {
-                                if (pdfFile.exists()) {
-                                    // Log.i("PDF", pdfFile.getAbsolutePath());
-                                    mPDFView.fromFile(pdfFile)
-                                            .defaultPage(1)
-                                            .showMinimap(true)
-                                            .enableSwipe(true)
-                                            .swipeVertical(true)
-                                            .onLoad(SubjectActivity.this)
-                                            .onPageChange(SubjectActivity.this)
-                                            .onErrorOccured(SubjectActivity.this)
-                                            .load();
-                                    mWebView.setVisibility(View.INVISIBLE);
-                                    mPDFView.setVisibility(View.VISIBLE);
-                                } else {
-                                    toast("加载PDF失败");
-                                }
-                            } else {
-                                /*
-                                * 外部链接传参: user_num, timestamp
-                                */
-                                String appendParams = String.format("user_num=%s&timestamp=%s", userNum, URLs.timestamp());
-                                String splitString = urlString.contains("?") ? "&" : "?";
-                                urlString = String.format("%s%s%s", urlString, splitString, appendParams);
-                                mWebView.loadUrl(urlString);
-                                Log.i("OutLink", urlString);
-                            }
-                        }
-                    });
-        }
     }
 
-    /*
+    /**
      * 拷贝链接
      */
     public void actionCopyLink(View v) {
@@ -591,17 +465,17 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
         ToastUtils.INSTANCE.show(mContext, "链接已拷贝", ToastColor.SUCCESS);
     }
 
-    /*
+    /**
      * 分享截图至微信
      */
     public void actionShare2Weixin(View v) {
         if (link.toLowerCase().endsWith(".pdf")) {
-            toast("暂不支持 PDF 分享");
+            ToastUtils.INSTANCE.show(mAppContext, "暂不支持 PDF 分享");
             return;
         }
 
         if (!isWeiXinShared) {
-            toast("网页加载完成,才能使用分享功能");
+            ToastUtils.INSTANCE.show(mAppContext, "网页加载完成,才能使用分享功能");
             return;
         }
 
@@ -654,7 +528,7 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
         }
     };
 
-    /*
+    /**
      * 评论
      */
     public void actionLaunchCommentActivity(View v) {
@@ -675,37 +549,14 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
 
     @Override
     public void onBackPressed() {
-        if (isInnerLink) {
             finish();
-        } else {
-            AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-            builder.setTitle("温馨提示")
-                    .setMessage("退出当前页面?")
-                    .setPositiveButton("确认", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            finish();
-                        }
-                    })
-                    .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            // 不进行任何操作
-                        }
-                    });
-            builder.show();
-        }
     }
 
     public void refresh(View v) {
-//        if (isOffline) {
-//            mTitle.setText(bannerName + "(离线)");
-//        }
         animLoading.setVisibility(View.VISIBLE);
         Observable.create(new Observable.OnSubscribe<Boolean>() {
             @Override
             public void call(Subscriber<? super Boolean> subscriber) {
-                if (isInnerLink) {
                     String urlKey;
                     if (urlString != null && !urlString.isEmpty()) {
                         urlKey = urlString.contains("?") ? TextUtils.split(urlString, "?")[0] : urlString;
@@ -714,7 +565,6 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
                     urlKey = String.format(K.kReportDataAPIPath, K.kBaseUrl, groupID, templateID, objectID);
                     ApiHelper.clearResponseHeader(urlKey, FileUtil.sharedPath(mAppContext));
                     subscriber.onNext(ApiHelper.reportData(mAppContext, groupID, templateID, objectID));
-                }
                 subscriber.onCompleted();
             }
         })
@@ -885,7 +735,6 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
                 }
                 tabIndex = config.getInt(pageName);
             } catch (JSONException e) {
-                //e.printStackTrace();
             }
 
             return tabIndex < 0 ? 0 : tabIndex;
@@ -911,7 +760,6 @@ public class SubjectActivity extends BaseActivity implements OnPageChangeListene
         @JavascriptInterface
         public void reportSearchItems(final String arrayString) {
             Log.i("SubjectSearch", "1");
-//            Log.i("SubjectSearch", arrayString + "1");
             String str = arrayString;
         }
 

@@ -403,7 +403,7 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
                 outputPath = String.format("%s/loading/%s.html", sharedPath, "500.output");
 
         if (!(new File(htmlPath)).exists()) {
-            toast(String.format("链接打开失败: %s", link));
+            ToastUtils.INSTANCE.show(mContext, String.format("链接打开失败: %s", link));
             return;
         }
 
@@ -465,7 +465,7 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
                 mWebView.setVisibility(View.INVISIBLE);
                 mPDFView.setVisibility(View.VISIBLE);
             } else {
-                toast("加载PDF失败");
+                ToastUtils.INSTANCE.show(mContext, "加载PDF失败");
             }
         }
     };
@@ -488,7 +488,7 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
     public void actionCopyLink(View v) {
         ClipboardManager clipboardManager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
         clipboardManager.setText(link);
-        toast("链接已拷贝", ToastColor.SUCCESS);
+        ToastUtils.INSTANCE.show(mContext, "链接已拷贝", ToastColor.SUCCESS);
     }
 
     /*
@@ -496,12 +496,12 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
      */
     public void actionShare2Weixin(View v) {
         if (link.toLowerCase().endsWith(".pdf")) {
-            toast("暂不支持 PDF 分享");
+            ToastUtils.INSTANCE.show(mContext, "暂不支持 PDF 分享");
             return;
         }
 
         if (!isWeiXinShared) {
-            toast("网页加载完成,才能使用分享功能");
+            ToastUtils.INSTANCE.show(mContext, "网页加载完成,才能使用分享功能");
             return;
         }
 

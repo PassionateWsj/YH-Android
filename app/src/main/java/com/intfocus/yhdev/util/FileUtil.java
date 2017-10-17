@@ -23,14 +23,12 @@ import com.intfocus.yhdev.data.response.assets.AssetsResult;
 import com.intfocus.yhdev.net.ApiException;
 import com.intfocus.yhdev.net.CodeHandledSubscriber;
 import com.intfocus.yhdev.net.RetrofitUtil;
-import com.intfocus.yhdev.subject.selecttree.SelectItems;
 
 import org.apache.commons.io.FileUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -438,21 +436,6 @@ public class FileUtil {
         String assetsPath = FileUtil.sharedPath(context);
         String fileName = String.format(K.kReportDataFileName, groupID, templateID, reportID);
         return String.format("%s/assets/javascripts/%s", assetsPath, fileName);
-    }
-
-    /**
-     * 内部报表具有筛选功能时，选项列表
-     *
-     * @param groupID    群组ID
-     * @param templateID 模板ID
-     * @param reportID   报表ID
-     * @return 选项列表
-     */
-    public static SelectItems reportSearchItems(Context context, String groupID, String templateID, String reportID) {
-        String searchItemsPath = String.format("%s.search_items", FileUtil.reportJavaScriptDataPath(context, groupID, templateID, reportID));
-        String itemsString = FileUtil.readFile(searchItemsPath);
-        Gson gson = new Gson();
-        return gson.fromJson(itemsString, SelectItems.class);
     }
 
     /**

@@ -4,10 +4,7 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.JSONReader;
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import com.intfocus.yhdev.subject.template_v1.entity.MererDetalEntity;
 import com.intfocus.yhdev.subject.template_v1.entity.Testbean;
 import com.intfocus.yhdev.subject.template_v1.entity.msg.MDetalActRequestResult;
@@ -19,6 +16,8 @@ import com.zbl.lib.baseframe.core.AbstractMode;
 import com.zbl.lib.baseframe.utils.TimeUtil;
 
 import org.greenrobot.eventbus.EventBus;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
@@ -62,101 +61,102 @@ public class MeterDetalActMode extends AbstractMode {
         threadPool.execute(new Runnable() {
             @Override
             public void run() {
-//                try {
 
-//                InputStream is = null;
-//                try {
-//                    is = ctx.getAssets().open("kpi_detaldata.json");
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//                InputStreamReader isr = new InputStreamReader(is);
-//                JSONReader reader = new JSONReader(isr);
-//                reader.startArray();
-//                reader.startObject();
-
-                Log.i(TAG, "requestStartTime:" + TimeUtil.getNowTime());
-                String urlString = String.format(K.kReportJsonAPIPath, K.kBaseUrl, group_id, "1", report_id);
-                String assetsPath = FileUtil.sharedPath(ctx);
-                String itemsString;
-                Map<String, String> headers = ApiHelper.checkResponseHeader(urlString, assetsPath);
-                Map<String, String> response = HttpUtil.httpGet(ctx, urlString, new HashMap<String, String>());
-                Log.i(TAG, "requestEndTime:" + TimeUtil.getNowTime());
-                if (!"200".equals(response.get("code")) && !"304".equals(response.get("code"))) {
-                    MDetalActRequestResult result1 = new MDetalActRequestResult(true, 400, null);
-                    EventBus.getDefault().post(result1);
-                    return;
-                }
-                ApiHelper.storeResponseHeader(urlString, assetsPath, response);
-                // 请求数据成功
-                itemsString = response.get("body").toString();
-                if (TextUtils.isEmpty(itemsString)) {
-                    //取数据
-                    itemsString = FileUtil.readFile(assetsPath + K.kTemplateV1);
-                } else {
-                    try {
-                        FileUtil.writeFile(assetsPath + K.kTemplateV1, itemsString);
-                    } catch (IOException e) {
-                        e.printStackTrace();
+                try {
+                    String response = null;
+                    String jsonFileName = String.format("group_%s_template_%s_report_%s.json", group_id, "1", report_id);
+                    String jsonFilePath = FileUtil.dirPath(ctx, K.kCachedDirName, jsonFileName);
+                    boolean dataState = ApiHelper.reportJsonData(ctx, group_id, "1", report_id);
+                    if (dataState || new File(jsonFilePath).exists()) {
+                        response = FileUtil.readFile(jsonFilePath);
                     }
-                }
-                if (TextUtils.isEmpty(itemsString)) {
-                    MDetalActRequestResult result1 = new MDetalActRequestResult(true, 400, null);
-                    EventBus.getDefault().post(result1);
-                    return;
-                }
-                Log.i(TAG, "analysisDataStartTime:" + TimeUtil.getNowTime());
-                StringReader stringReader = new StringReader(response.get("body"));
-                Log.i(TAG, "analysisDataReaderTime1:" + TimeUtil.getNowTime());
-                JSONReader reader = new JSONReader(stringReader);
-                reader.startArray();
-                reader.startObject();
 
-                entity = new MererDetalEntity();
-                entity.data = new ArrayList<>();
-                Log.i(TAG, "analysisDataReaderTime2:" + TimeUtil.getNowTime());
+//                    JSONObject jsonObject = new JSONObject(response);
+//                    Log.i(TAG, "requestStartTime:" + TimeUtil.getNowTime());
+//                    String urlString = String.format(K.kReportJsonAPIPath, K.kBaseUrl, group_id, "1", report_id);
+//                    String assetsPath = FileUtil.sharedPath(ctx);
+//                    String itemsString;
+//                    Map<String, String> headers = ApiHelper.checkResponseHeader(urlString, assetsPath);
+//                    Map<String, String> response = HttpUtil.httpGet(ctx, urlString, new HashMap<String, String>());
+//                    Log.i(TAG, "requestEndTime:" + TimeUtil.getNowTime());
+//                    if (!"200".equals(response.get("code")) && !"304".equals(response.get("code"))) {
+//                        MDetalActRequestResult result1 = new MDetalActRequestResult(true, 400, null);
+//                        EventBus.getDefault().post(result1);
+//                        return;
+//                    }
+//                    ApiHelper.storeResponseHeader(urlString, assetsPath, response);
+//                    // 请求数据成功
+//                    itemsString = response.get("body").toString();
+//                    if (TextUtils.isEmpty(itemsString)) {
+//                        //取数据
+//                        itemsString = FileUtil.readFile(assetsPath + K.kTemplateV1);
+//                    } else {
+//                        try {
+//                            FileUtil.writeFile(assetsPath + K.kTemplateV1, itemsString);
+//                        } catch (IOException e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//                    if (TextUtils.isEmpty(itemsString)) {
+//                        MDetalActRequestResult result1 = new MDetalActRequestResult(true, 400, null);
+//                        EventBus.getDefault().post(result1);
+//                        return;
+//                    }
+                    Log.i(TAG, "analysisDataStartTime:" + TimeUtil.getNowTime());
+                    StringReader stringReader = new StringReader(response);
+                    Log.i(TAG, "analysisDataReaderTime1:" + TimeUtil.getNowTime());
+                    JSONReader reader = new JSONReader(stringReader);
+                    reader.startArray();
+                    reader.startObject();
 
-                while (reader.hasNext()) {
-                    String key = reader.readString();
-                    switch (key) {
-                        case "name":
-                            String name = reader.readObject().toString();
-                            entity.name = name;
-                            Log.i(TAG, "name:" + TimeUtil.getNowTime());
-                            break;
+                    entity = new MererDetalEntity();
+                    entity.data = new ArrayList<>();
+                    Log.i(TAG, "analysisDataReaderTime2:" + TimeUtil.getNowTime());
 
-                        case "data":
-                            Log.i(TAG, "dataStart:" + TimeUtil.getNowTime());
-                            reader.startArray();
-                            while (reader.hasNext()) {
-                                reader.startObject();
-                                MererDetalEntity.PageData data = new MererDetalEntity.PageData();
+                    while (reader.hasNext()) {
+                        String key = reader.readString();
+                        switch (key) {
+                            case "name":
+                                String name = reader.readObject().toString();
+                                entity.name = name;
+                                Log.i(TAG, "name:" + TimeUtil.getNowTime());
+                                break;
+
+                            case "data":
+                                Log.i(TAG, "dataStart:" + TimeUtil.getNowTime());
+                                reader.startArray();
                                 while (reader.hasNext()) {
-                                    String dataKey = reader.readString();
-                                    switch (dataKey) {
-                                        case "parts":
-                                            String parts = reader.readObject().toString();
-                                            data.parts = parts;
-                                            break;
+                                    reader.startObject();
+                                    MererDetalEntity.PageData data = new MererDetalEntity.PageData();
+                                    while (reader.hasNext()) {
+                                        String dataKey = reader.readString();
+                                        switch (dataKey) {
+                                            case "parts":
+                                                String parts = reader.readObject().toString();
+                                                data.parts = parts;
+                                                break;
 
-                                        case "title":
-                                            String title = reader.readObject().toString();
-                                            data.title = title;
-                                            break;
+                                            case "title":
+                                                String title = reader.readObject().toString();
+                                                data.title = title;
+                                                break;
+                                        }
                                     }
+                                    reader.endObject();
+                                    entity.data.add(data);
                                 }
-                                reader.endObject();
-                                entity.data.add(data);
-                            }
-                            reader.endArray();
-                            Log.i(TAG, "dataEnd:" + TimeUtil.getNowTime());
-                            break;
+                                reader.endArray();
+                                Log.i(TAG, "dataEnd:" + TimeUtil.getNowTime());
+                                break;
+                        }
                     }
+                    reader.endObject();
+                    reader.endArray();
+                    EventBus.getDefault().post(new MDetalActRequestResult(true, 200, entity));
+                    Log.i(TAG, "analysisDataEndTime:" + TimeUtil.getNowTime());
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-                reader.endObject();
-                reader.endArray();
-                EventBus.getDefault().post(new MDetalActRequestResult(true, 200, entity));
-                Log.i(TAG, "analysisDataEndTime:" + TimeUtil.getNowTime());
             }
         });
     }

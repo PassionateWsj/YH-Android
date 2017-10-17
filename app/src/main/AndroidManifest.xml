@@ -91,12 +91,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
 
-        <!-- 筛选 -->
-        <activity
-            android:name=".subject.SelectorTreeActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme"/>
-
         <!-- 问题反馈 -->
         <activity
             android:name=".dashboard.mine.FeedbackActivity"
@@ -132,7 +126,6 @@
             android:name=".filter.FilterActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
-        <!-- 二维码录入 -->
         <!-- 扫码页 -->
         <activity
             android:name=".scanner.BarCodeScannerActivity"
