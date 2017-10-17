@@ -305,7 +305,7 @@ class BarCodeScannerActivity : AppCompatActivity(), QRCodeView.Delegate, View.On
                                 }
 
                                 override fun onError(apiException: ApiException?) {
-                                    tv_barcode_local_position.text = "定位失败"
+                                    tv_barcode_local_position.text = "门店获取失败"
                                 }
 
                                 override fun onBusinessNext(data: NearestStoresResult?) {
@@ -323,6 +323,7 @@ class BarCodeScannerActivity : AppCompatActivity(), QRCodeView.Delegate, View.On
                     sb.append("纬    度    : " + location.latitude + "\n")
                 } else {
                     //定位失败
+                    tv_barcode_local_position.text = "定位失败"
                     sb.append("错误码:" + location.errorCode + "\n")
                     sb.append("错误信息:" + location.errorInfo + "\n")
                     sb.append("错误描述:" + location.locationDetail + "\n")
@@ -332,6 +333,7 @@ class BarCodeScannerActivity : AppCompatActivity(), QRCodeView.Delegate, View.On
                 val result = sb.toString()
                 Log.i("testlog", result)
             } else {
+                tv_barcode_local_position.text = "定位失败"
                 Log.i("testlog", "定位失败，loc is null")
             }
         }
@@ -343,7 +345,8 @@ class BarCodeScannerActivity : AppCompatActivity(), QRCodeView.Delegate, View.On
             val storeItemDao = OrmDBHelper.getInstance(mContext).storeItemDao
             Observable.create(Observable.OnSubscribe<List<StoreItem>> { subscriber ->
                 try {
-                    val storeItems = storeItemDao.queryBuilder().where().like("name", "$keyWord").query()
+//                    val storeItems = storeItemDao.queryBuilder().where().like("name", "$keyWord").query()
+                    val storeItems = storeItemDao.queryBuilder().where().like("name", "asdf").query()
                     subscriber.onNext(storeItems)
                 } catch (e: SQLException) {
                     subscriber.onError(e)
@@ -357,7 +360,7 @@ class BarCodeScannerActivity : AppCompatActivity(), QRCodeView.Delegate, View.On
                         }
 
                         override fun onError(e: Throwable) {
-
+                            ToastUtils.show(this@BarCodeScannerActivity, e.message!!)
                         }
 
                         override fun onNext(storeListResult: List<StoreItem>) {
