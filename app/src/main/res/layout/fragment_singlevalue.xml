@@ -9,7 +9,7 @@
     <TableRow
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/space_default">
+        android:layout_marginTop="@dimen/space_default_large_s">
 
         <LinearLayout
             android:layout_width="0dp"
@@ -25,7 +25,7 @@
                 android:layout_marginTop="8dp"
                 android:gravity="center"
                 android:text="TextView"
-                android:textSize="@dimen/font_large_ls"
+                android:textSize="@dimen/font_large_s"
                 android:textStyle="bold"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -34,8 +34,9 @@
                 android:id="@+id/tv_singlevalue_d1name"
                 style="@style/tv_mererMinTitle_stytle"
                 android:layout_width="match_parent"
+                android:textSize="@dimen/font_small"
                 android:layout_marginLeft="8dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="6dp"
                 android:gravity="center"
                 android:text="TextView"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -53,6 +54,7 @@
                 style="@style/tv_mererMinTitle_stytle"
                 android:layout_width="match_parent"
                 android:gravity="center"
+                android:textStyle="bold"
                 android:text="- VS -"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toRightOf="@+id/textView3"
@@ -70,10 +72,10 @@
                 style="@style/tv_mererMinTitle_stytle"
                 android:layout_width="match_parent"
                 android:layout_marginRight="8dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="6dp"
                 android:gravity="center"
                 android:text="TextView"
-                android:textSize="@dimen/font_large_ls"
+                android:textSize="@dimen/font_large_s"
                 android:textStyle="bold"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -83,6 +85,7 @@
                 style="@style/tv_mererMinTitle_stytle"
                 android:layout_width="match_parent"
                 android:layout_marginRight="8dp"
+                android:textSize="@dimen/font_small"
                 android:layout_marginTop="8dp"
                 android:gravity="center"
                 android:text="TextView"
@@ -94,16 +97,16 @@
     <TableRow
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/space_default"
-        android:layout_marginTop="@dimen/space_default"
-        android:gravity="center">
+        android:paddingTop="@dimen/space_default_large_xs"
+        android:paddingBottom="@dimen/space_default_large_x"
+        android:gravity="center_horizontal">
 
         <TextView
             android:id="@+id/tv_singlevalue_ratio"
             style="@style/tv_mererMinTitle_stytle"
             android:gravity="center"
             android:text="TextView"
-            android:textSize="@dimen/font_large_xs"
+            android:textSize="@dimen/font_large_xxs"
             android:textStyle="bold"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -112,7 +115,8 @@
             android:id="@+id/img_singlevalue_ratiocursor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/space_default_small" />
+            android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/space_default_large" />
 
     </TableRow>
 

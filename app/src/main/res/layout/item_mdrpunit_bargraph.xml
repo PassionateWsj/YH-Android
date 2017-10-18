@@ -1,28 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="@dimen/size_default_small"
-    android:gravity="center_vertical"
-    android:orientation="horizontal">
+              android:layout_width="wrap_content"
+              android:layout_height="@dimen/size_default_small"
+              android:layout_marginBottom="@dimen/space_default_large"
+              android:gravity="center_vertical"
+              android:orientation="horizontal">
 
     <ImageView
         android:id="@+id/img_cursor"
         android:layout_width="@dimen/space_default"
         android:layout_height="match_parent"
         android:layout_gravity="center"
-        android:scaleType="centerInside" />
+        android:layout_marginLeft="@dimen/space_default_medium_s"
+        android:layout_marginRight="@dimen/space_default_small_s"
+        android:scaleType="centerInside"/>
 
     <TextView
         android:id="@+id/tv_name"
         style="@style/tv_unit_chart_m"
+        android:layout_width="120dp"
+        android:textSize="@dimen/font_small_x"
         android:layout_height="match_parent"
-        android:layout_weight="3"/>
+        android:layout_weight="0"
+        android:ellipsize="end"
+        android:maxLines="1"/>
 
     <TextView
         android:id="@+id/tv_percentage"
         style="@style/tv_unit_chart_m"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_weight="1.4"
-        android:gravity="center" />
+        android:textColor="@color/co4_syr"
+        android:layout_marginLeft="@dimen/space_default_large_xxs"
+        android:layout_weight="0"
+        android:gravity="center"/>
 
 </LinearLayout>
