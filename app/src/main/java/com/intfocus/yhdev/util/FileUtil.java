@@ -53,7 +53,7 @@ public class FileUtil {
         return basePath;
     }
 
-    /*
+    /**
      * 判断用户是否处于登录状态并且设置了锁屏
      */
     public static boolean checkIsLocked(Context context) {
@@ -120,7 +120,7 @@ public class FileUtil {
         return FileUtil.dirPath(context, TextUtils.join("/", dirNames));
     }
 
-    /*
+    /**
      * 读取本地文件内容
      */
     public static String readFile(String pathName) {
@@ -174,7 +174,7 @@ public class FileUtil {
         }
     }
 
-    /*
+    /**
      * 读取本地文件内容，并转化为json
      */
     public static JSONObject readConfigFile(String jsonPath) {
@@ -190,7 +190,7 @@ public class FileUtil {
         return jsonObject;
     }
 
-    /*
+    /**
      * 字符串写入本地文件
      */
     public static void writeFile(String pathName, String content) throws IOException {

@@ -9,7 +9,7 @@ import com.intfocus.yhdev.BuildConfig;
  */
 public class LogUtil {
 
-    /*
+    /**
      * Log.d(tag, str, limit)
      */
     public static void d(String tag, String str, int limit) {
@@ -22,11 +22,11 @@ public class LogUtil {
         }
     }
 
-    /*
+    /**
      * Log.d(tag, str)
      */
     public static void d(String tag, String str) {
-    /*
+    /**
      * 若应用不处于 DEBUG 模式，则不打印输出信息
      */
         if (!BuildConfig.DEBUG) {

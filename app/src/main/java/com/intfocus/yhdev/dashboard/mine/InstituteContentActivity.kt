@@ -55,7 +55,7 @@ class InstituteContentActivity : Activity() {
         finish()
     }
 
-    /*
+    /**
      * 返回
      */
     fun dismissActivity(v: View) {

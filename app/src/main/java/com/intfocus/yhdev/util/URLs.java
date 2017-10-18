@@ -89,7 +89,7 @@ public class URLs implements Serializable {
         return (new SimpleDateFormat("yyyyMMddKKmmss")).format(new Date());
     }
 
-    /*
+    /**
      * UI 版本
      */
     public static String currentUIVersion(Context mContext) {

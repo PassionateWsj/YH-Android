@@ -287,7 +287,6 @@ public class ModularTwo_UnitTablesContModeFragment extends BaseModeFragment<Modu
             headerData.add(header[i + 1]);
         }
 
-        Log.i("testlog", "tableWidthStart: " + TimeUtil.getNowTime());
         lineData.add(headerData);
         for (int i = 0; i < headerSize; i++) {
             for (int j = 0; j < result.data.size(); j++) {
@@ -334,7 +333,6 @@ public class ModularTwo_UnitTablesContModeFragment extends BaseModeFragment<Modu
             }
         }
 
-        Log.i("testlog", "tableWidthEnd: " + TimeUtil.getNowTime());
         // 遍历表头数据, 添加到 al_SortView
         for (int i = 0; i < headerSize; i++) {
             SortCheckBox box = (SortCheckBox) inflater.inflate(R.layout.item_table_sortcheckbox, null);
@@ -364,7 +362,7 @@ public class ModularTwo_UnitTablesContModeFragment extends BaseModeFragment<Modu
         }
     }
 
-    /*
+    /**
      * 加载首列数据
      */
     private void loadTableLeftData() {
@@ -376,7 +374,7 @@ public class ModularTwo_UnitTablesContModeFragment extends BaseModeFragment<Modu
         nslistView_LineName.setOnItemClickListener(this);
     }
 
-    /*
+    /**
      * 加载表格内容
      */
     private void loadTableContentData() {
@@ -421,7 +419,6 @@ public class ModularTwo_UnitTablesContModeFragment extends BaseModeFragment<Modu
                 }
             }
 
-            //TODO 执行排序功能
             SortCheckBox box = al_SortView.get(index);
             if (box.getCheckedState() == SortCheckBox.CheckedState.sort_noneicon) {
                 dataComparator.setIndex(tag);

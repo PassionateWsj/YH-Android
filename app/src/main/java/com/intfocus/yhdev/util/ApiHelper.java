@@ -196,7 +196,7 @@ public class ApiHelper {
         return true;
     }
 
-    /*
+    /**
      *  获取报表 JSON 数据
      */
     public static boolean reportJsonData(Context context, String groupID, String templateID, String reportID) {

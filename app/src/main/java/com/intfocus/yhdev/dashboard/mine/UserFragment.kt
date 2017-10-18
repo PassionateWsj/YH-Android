@@ -399,7 +399,7 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
         ActionLogUtil.actionLog(ctx, logParams)
     }
 
-    /*
+    /**
      * 提取保存裁剪之后的图片数据，并设置头像部分的View
      */
     private fun setImageToHeadView() {

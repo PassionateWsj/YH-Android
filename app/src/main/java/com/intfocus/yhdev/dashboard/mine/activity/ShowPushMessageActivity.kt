@@ -133,7 +133,7 @@ class ShowPushMessageActivity : AppCompatActivity(), PushMessageView, ShowPushMe
         }
     }
 
-    /*
+    /**
      * 页面跳转事件
      */
     fun pageLink(mBannerName: String, link: String, objectId: Int, objectType: Int) {
