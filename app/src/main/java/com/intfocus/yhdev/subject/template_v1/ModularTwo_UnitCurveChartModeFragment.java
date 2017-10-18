@@ -63,7 +63,7 @@ public class ModularTwo_UnitCurveChartModeFragment extends BaseModeFragment<MDRP
     @ViewInject(R.id.img_RateCursor)
     RateCursor rateCursor;
 
-    DecimalFormat df = new DecimalFormat(",###");
+    DecimalFormat df = new DecimalFormat(",###.##");
     DecimalFormat df_rate = new DecimalFormat("#.##%");
 
     int[] coGroup;
@@ -106,7 +106,6 @@ public class ModularTwo_UnitCurveChartModeFragment extends BaseModeFragment<MDRP
         }
         return rootView;
     }
-
 
     /**
      * 图表点击事件统一处理方法
@@ -228,9 +227,17 @@ public class ModularTwo_UnitCurveChartModeFragment extends BaseModeFragment<MDRP
             }
             tv_xlabel.setText(xlabel);
 
-            tv_target1.setTextColor(coGroup[0]);
-            tv_target1.setText(df.format(target1));
-            tv_target1name.setText(name1);
+            if (0.0f == target1) {
+                tv_target1.setTextColor(0x73737373);
+                tv_target1.setText("暂无数据");
+                tv_target1name.setText(name1);
+            }
+            else {
+                tv_target1.setTextColor(coGroup[0]);
+                tv_target1.setText(df.format(target1));
+                tv_target1name.setText(name1);
+            }
+
 
             if (seriesLables.size() > 1) {
                 String name2 = curveChartEntity.legend[1];

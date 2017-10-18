@@ -85,11 +85,10 @@ public class CustomCurveChartV2 extends View implements ValueAnimator.AnimatorUp
 
     private int[] orderColors;
 
-    //---------动画--------
     private float ratio = 1;
     private long animateTime = 1200;
     private ValueAnimator mVa;
-    private Interpolator mInterpolator = new DecelerateInterpolator();//先加速 后减速
+    private Interpolator mInterpolator = new DecelerateInterpolator();
 
     private ArrayList<Float> xpoints = new ArrayList<>();
     private int selectItem;
@@ -143,18 +142,18 @@ public class CustomCurveChartV2 extends View implements ValueAnimator.AnimatorUp
         paintCurve.setStyle(Paint.Style.STROKE);
         paintCurve.setDither(true);
         paintCurve.setAntiAlias(true);
-        paintCurve.setStrokeWidth(4);
+        paintCurve.setStrokeWidth(6);
 
         paint_broken = new Paint();
         paint_broken.setAntiAlias(true);
         paint_broken.setStyle(Paint.Style.FILL);
-        paint_broken.setStrokeWidth(2);
+        paint_broken.setStrokeWidth(4);
         paint_broken.setColor(0xffffffff);
 
         paint_circle = new Paint();
         paint_circle.setAntiAlias(true);
         paint_circle.setStyle(Paint.Style.FILL);
-        paint_circle.setStrokeWidth(4);
+        paint_circle.setStrokeWidth(6);
         paint_circle.setStrokeCap(Paint.Cap.ROUND);
 
         orderColors = getResources().getIntArray(R.array.co_order);
@@ -163,7 +162,7 @@ public class CustomCurveChartV2 extends View implements ValueAnimator.AnimatorUp
 
     @Override
     protected void onDraw(Canvas canvas) {
-        drawTopLine(canvas, paintAxes);
+//        drawTopLine(canvas, paintAxes);
         drawAxesLine(canvas, paintAxes);
         drawCoordinate(canvas, paintCoordinate);
 
@@ -192,7 +191,7 @@ public class CustomCurveChartV2 extends View implements ValueAnimator.AnimatorUp
      */
     private void drawAxesLine(Canvas canvas, Paint paint) {
         // X
-        canvas.drawLine(xPoint - barWidth, yPoint, this.getWidth(), yPoint, paint);
+        canvas.drawLine(0, yPoint, this.getWidth(), yPoint, paint);
     }
 
     /**
@@ -228,9 +227,8 @@ public class CustomCurveChartV2 extends View implements ValueAnimator.AnimatorUp
             }
 
             paint.setColor(color);
-//            canvas.drawText(xLabel[i], startX, this.getHeight() - padding / 2 - textSize / 2, paint);
             if (i == 0 || i == xlength - 1) {
-                canvas.drawText(xLabel[i], startX, yPoint - paint.getFontMetrics().top, paint);
+                canvas.drawText(xLabel[i], startX, yPoint - paint.getFontMetrics().top + 15, paint);
             }
             xpoints.add(startX);
         }
@@ -346,6 +344,8 @@ public class CustomCurveChartV2 extends View implements ValueAnimator.AnimatorUp
                     case 1:
                         paintCurve.setColor(orderColors[dataIndex]);
                         break;
+                    default:
+                        break;
                 }
 
             } else {
@@ -384,6 +384,8 @@ public class CustomCurveChartV2 extends View implements ValueAnimator.AnimatorUp
                 onActionUpEvent(event);
                 break;
             case MotionEvent.ACTION_CANCEL:
+                break;
+            default:
                 break;
         }
         return true;
@@ -430,6 +432,9 @@ public class CustomCurveChartV2 extends View implements ValueAnimator.AnimatorUp
                         }
                         return true;
                     }
+                    break;
+
+                default:
                     break;
             }
         }
