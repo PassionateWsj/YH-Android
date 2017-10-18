@@ -15,7 +15,6 @@ import com.intfocus.yhdev.subject.template_v1.entity.BargraphComparator;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
-import java.text.DecimalFormat;
 import java.util.LinkedList;
 
 /**
@@ -26,7 +25,8 @@ public class BargraptAdapter extends BaseAdapter {
     private LinkedList<BargraphComparator> ltdata;
     private Drawable herearrow;
     private int selectItemIndex = 0;
-    private int defauteColor;
+    private int percentDefaultColor;
+    private int defaultColor;
     private int selectColor;
 
     public BargraptAdapter(Context ctx, LinkedList<BargraphComparator> ltdata) {
@@ -35,8 +35,9 @@ public class BargraptAdapter extends BaseAdapter {
         herearrow = ctx.getResources().getDrawable(R.drawable.icon_herearrow);
         herearrow.setBounds(0, 0, herearrow.getMinimumWidth(),
                 herearrow.getMinimumHeight());
-        defauteColor = ctx.getResources().getColor(R.color.co3);
-        selectColor = ctx.getResources().getColor(R.color.co14);
+        percentDefaultColor = ctx.getResources().getColor(R.color.co4_syr);
+        defaultColor = ctx.getResources().getColor(R.color.co3_syr);
+        selectColor = ctx.getResources().getColor(R.color.co14_syr);
     }
 
     private void setData(LinkedList<BargraphComparator> ltdata) {
@@ -92,8 +93,8 @@ public class BargraptAdapter extends BaseAdapter {
             viewHolder.tv_percentage.setTextColor(selectColor);
             viewHolder.img_cursor.setImageResource(R.drawable.icon_herearrow);
         } else {
-            viewHolder.tv_name.setTextColor(defauteColor);
-            viewHolder.tv_percentage.setTextColor(defauteColor);
+            viewHolder.tv_name.setTextColor(defaultColor);
+            viewHolder.tv_percentage.setTextColor(percentDefaultColor);
             viewHolder.img_cursor.setImageResource(0);
         }
 

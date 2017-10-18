@@ -88,7 +88,7 @@
 
                 <com.intfocus.yhdev.view.MeterCursor
                     android:id="@+id/img_vpitem"
-                    android:layout_width="@dimen/space_default_large_s"
+                    android:layout_width="@dimen/space_default_large_xs"
                     android:layout_height="@dimen/space_default_large_s" />
 
                 <TextView
