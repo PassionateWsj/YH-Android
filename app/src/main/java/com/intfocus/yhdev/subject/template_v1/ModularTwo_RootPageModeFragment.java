@@ -52,7 +52,6 @@ public class ModularTwo_RootPageModeFragment extends BaseModeFragment<MDetalRoot
      */
     private int suRootID;
 
-
     @Override
     public Subject setSubject() {
         return new MDetalRootPageMode(ctx);

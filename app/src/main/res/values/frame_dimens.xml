@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!--模板一-->
+    <dimen name="size_padding">25dp</dimen>
+    <dimen name="size_banner_height">40dp</dimen>
+    <dimen name="size_curve_target_padding">20dp</dimen>
+    <dimen name="size_curve_padding_top">30dp</dimen>
+    <dimen name="size_curve_padding_bottom">30dp</dimen>
+    <dimen name="size_curve_target_margin">8dp</dimen>
+    <dimen name="size_curve_margin">30dp</dimen>
+
+
     <!-- ====================================================================================== -->
     <!-- =======================================以下为控件尺寸、字体大小============================== -->
     <!-- ====================================================================================== -->
@@ -47,7 +57,7 @@
     <!-- ====================================================================================== -->
     <dimen name="space_default">10dp</dimen>
     <dimen name="space_default_large_s">20dp</dimen>
-    <dimen name="space_default_large">16dp</dimen>
+    <dimen name="space_default_large">15dp</dimen>
     <dimen name="space_default_medium">12dp</dimen>
     <dimen name="space_default_small">6dp</dimen>
     <dimen name="space_default_small_s">4dp</dimen>

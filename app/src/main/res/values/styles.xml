@@ -468,6 +468,17 @@
         <item name="android:gravity">center_vertical</item>
     </style>
 
+    <style name="tv_unit_chart_title">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:textSize">@dimen/font_cont</item>
+        <item name="android:textColor">@color/co3_syr</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
     <style name="tv_unit_chart_m_two">
         <item name="android:layout_width">0dp</item>
         <item name="android:maxLines">1</item>
@@ -504,7 +515,6 @@
     </style>
 
     <style name="tv_unit_chart_x" parent="tv_unit_chart_m">
-        <item name="textSize">20sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">@dimen/font_large_s</item>
     </style>
