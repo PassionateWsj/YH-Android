@@ -41,7 +41,15 @@ import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
 import java.sql.SQLException
 
-
+/**
+ * ****************************************************
+ * @author jameswong
+ * created on: 17/10/19 下午5:43
+ * e-mail: PassionateWsj@outlook.com
+ * name:
+ * desc:
+ * ****************************************************
+ */
 class BarCodeScannerActivity : AppCompatActivity(), QRCodeView.Delegate, View.OnClickListener {
 
     companion object {

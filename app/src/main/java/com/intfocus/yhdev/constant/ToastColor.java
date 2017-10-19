@@ -2,7 +2,7 @@ package com.intfocus.yhdev.constant;
 
 /**
  * ****************************************************
- * author: JamesWong
+ * @author JamesWong
  * created on: 17/08/01 上午11:19
  * e-mail: PassionateWsj@outlook.com
  * name:

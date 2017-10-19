@@ -16,14 +16,13 @@ import java.util.List;
 
 /**
  * ****************************************************
- * author: JamesWong
+ * @author JamesWong
  * created on: 17/08/22 上午10:53
  * e-mail: PassionateWsj@outlook.com
  * name:
  * desc:
  * ****************************************************
  */
-
 
 public class SelectorListAdapter extends BaseAdapter {
     private Context mContext;

@@ -14,7 +14,7 @@ import java.sql.SQLException;
 
 /**
  * ****************************************************
- * author: JamesWong
+ * @author JamesWong
  * created on: 17/08/01 下午5:29
  * e-mail: PassionateWsj@outlook.com
  * name: 数据库的帮助类
