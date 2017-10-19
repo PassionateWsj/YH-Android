@@ -14,7 +14,11 @@ import com.zbl.lib.baseframe.utils.TimeUtil;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.util.ArrayList;
 
@@ -26,9 +30,9 @@ import static com.intfocus.yhdev.YHApplication.threadPool;
  * @author zbaoliang
  * @date 17-4-28
  */
-public class MeterDetalActMode extends AbstractMode {
+public class MeterDetailActMode extends AbstractMode {
 
-    String TAG = MeterDetalActMode.class.getSimpleName();
+    String TAG = MeterDetailActMode.class.getSimpleName();
     String group_id;
     String report_id;
 
@@ -36,7 +40,7 @@ public class MeterDetalActMode extends AbstractMode {
 
     MererDetalEntity entity;
 
-    public MeterDetalActMode(Context ctx) {
+    public MeterDetailActMode(Context ctx) {
         this.ctx = ctx;
     }
 
@@ -65,7 +69,7 @@ public class MeterDetalActMode extends AbstractMode {
                         EventBus.getDefault().post(result1);
                         return;
                     }
-
+//                    response = getJsonData(ctx);
                     Log.i(TAG, "analysisDataStartTime:" + TimeUtil.getNowTime());
                     StringReader stringReader = new StringReader(response);
                     Log.i(TAG, "analysisDataReaderTime1:" + TimeUtil.getNowTime());
@@ -129,5 +133,40 @@ public class MeterDetalActMode extends AbstractMode {
                 }
             }
         });
+    }
+
+    /**
+     * 加载 模板一 本地 json 测试数据的方法
+     * @param context
+     * @return
+     */
+    private String getJsonData(Context context) {
+        InputStream is = null;
+        BufferedReader reader = null;
+        StringBuilder sb = null;
+        try {
+            is = ctx.getResources().getAssets().open("kpi_detaldata.json");
+//            is = context.getResources().getAssets().open("temple-v1.json");
+            reader = new BufferedReader(new InputStreamReader(is));
+            sb = new StringBuilder();
+            String line = null;
+            while ((line = reader.readLine()) != null) {
+                sb.append(line + "\n");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (reader != null) {
+                    reader.close();
+                }
+                if (is != null) {
+                    is.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return sb.toString();
     }
 }

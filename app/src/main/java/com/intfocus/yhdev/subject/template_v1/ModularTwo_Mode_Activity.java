@@ -25,7 +25,7 @@ import com.intfocus.yhdev.base.BaseModeActivity;
 import com.intfocus.yhdev.base.BaseModeFragment;
 import com.intfocus.yhdev.subject.template_v1.entity.msg.EventRefreshTableRect;
 import com.intfocus.yhdev.subject.template_v1.entity.msg.MDetalActRequestResult;
-import com.intfocus.yhdev.subject.template_v1.mode.MeterDetalActMode;
+import com.intfocus.yhdev.subject.template_v1.mode.MeterDetailActMode;
 import com.intfocus.yhdev.util.ActionLogUtil;
 import com.intfocus.yhdev.util.DisplayUtil;
 import com.intfocus.yhdev.util.ImageUtil;
@@ -49,7 +49,7 @@ import org.xutils.x;
 /**
  * 模块二页面
  */
-public class ModularTwo_Mode_Activity extends BaseModeActivity<MeterDetalActMode> {
+public class ModularTwo_Mode_Activity extends BaseModeActivity<MeterDetailActMode> {
     private String TAG = ModularTwo_Mode_Activity.class.getSimpleName();
     private static final String fragmentTag = "android:switcher:" + R.layout.actvity_meter_detal + ":";
 
@@ -95,7 +95,7 @@ public class ModularTwo_Mode_Activity extends BaseModeActivity<MeterDetalActMode
     @Override
     public Subject setSubject() {
         EventBus.getDefault().register(this);
-        return new MeterDetalActMode(ctx);
+        return new MeterDetailActMode(ctx);
     }
 
     @Override
