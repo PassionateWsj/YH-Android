@@ -11,7 +11,6 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -30,7 +29,6 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -39,6 +37,7 @@ import com.google.gson.Gson;
 import com.intfocus.yhdev.CommentActivity;
 import com.intfocus.yhdev.R;
 import com.intfocus.yhdev.base.BaseActivity;
+import com.intfocus.yhdev.constant.ToastColor;
 import com.intfocus.yhdev.dashboard.mine.adapter.FilterMenuAdapter;
 import com.intfocus.yhdev.data.response.filter.Menu;
 import com.intfocus.yhdev.data.response.filter.MenuItem;
@@ -50,14 +49,9 @@ import com.intfocus.yhdev.util.FileUtil;
 import com.intfocus.yhdev.util.ImageUtil;
 import com.intfocus.yhdev.util.K;
 import com.intfocus.yhdev.util.LogUtil;
-import com.intfocus.yhdev.constant.ToastColor;
 import com.intfocus.yhdev.util.ToastUtils;
 import com.intfocus.yhdev.util.URLs;
 import com.intfocus.yhdev.view.addressselector.FilterPopupWindow;
-import com.joanzapata.pdfview.PDFView;
-import com.joanzapata.pdfview.listener.OnErrorOccurredListener;
-import com.joanzapata.pdfview.listener.OnLoadCompleteListener;
-import com.joanzapata.pdfview.listener.OnPageChangeListener;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.UMShareListener;
@@ -67,7 +61,6 @@ import com.umeng.socialize.media.UMImage;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
 import java.io.File;
@@ -152,7 +145,6 @@ public class SubjectActivity extends BaseActivity implements FilterMenuAdapter.F
         mMyApp.setCurrentActivity(this);
     }
 
-
     /**
      * 初始化数据
      */
@@ -207,9 +199,6 @@ public class SubjectActivity extends BaseActivity implements FilterMenuAdapter.F
     }
 
     private void initActiongBar() {
-        /*
-         * Intent Data || JSON Data
-         */
         Intent intent = getIntent();
         link = intent.getStringExtra(URLs.kLink);
         templateID = intent.getStringExtra(URLs.kTemplatedId);
@@ -311,15 +300,6 @@ public class SubjectActivity extends BaseActivity implements FilterMenuAdapter.F
      * 标题栏点击设置按钮显示下拉菜单
      */
     public void launchDropMenuActivity(View v) {
-        showComplaintsPopWindow(v);
-    }
-
-    /**
-     * 显示菜单
-     *
-     * @param clickView
-     */
-    void showComplaintsPopWindow(View clickView) {
         View contentView = LayoutInflater.from(this).inflate(R.layout.pop_menu_v2, null);
         x.view().inject(this, contentView);
 
@@ -335,7 +315,7 @@ public class SubjectActivity extends BaseActivity implements FilterMenuAdapter.F
         //设置可以点击
         popupWindow.setTouchable(true);
         //进入退出的动画
-        popupWindow.showAsDropDown(clickView);
+        popupWindow.showAsDropDown(v);
     }
 
     public void menuItemClick(View view) {
@@ -368,16 +348,8 @@ public class SubjectActivity extends BaseActivity implements FilterMenuAdapter.F
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-
         // 横屏时隐藏标题栏、导航栏
-        checkInterfaceOrientation(newConfig);
-    }
-
-    /**
-     * 横屏 or 竖屏
-     */
-    private void checkInterfaceOrientation(Configuration config) {
-        Boolean isLandscape = (config.orientation == Configuration.ORIENTATION_LANDSCAPE);
+        Boolean isLandscape = (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE);
 
         bannerView.setVisibility(isLandscape ? View.GONE : View.VISIBLE);
         if (isLandscape) {
@@ -690,20 +662,6 @@ public class SubjectActivity extends BaseActivity implements FilterMenuAdapter.F
      * @JavascriptInterface装饰方法 暴露给JS调用
      */
     private class JavaScriptInterface extends JavaScriptBase {
-
-        @JavascriptInterface
-        public void showSource(String html) {
-            String htmlFilePath = Environment.getExternalStorageDirectory() + "/" + "content.html";
-            try {
-                FileUtil.writeFile(htmlFilePath, html);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        /*
-         * JS 接口，暴露给JS的方法使用@JavascriptInterface装饰
-         */
         @JavascriptInterface
         public void storeTabIndex(final String pageName, final int tabIndex) {
             try {
@@ -759,13 +717,11 @@ public class SubjectActivity extends BaseActivity implements FilterMenuAdapter.F
 
         @JavascriptInterface
         public void reportSearchItems(final String arrayString) {
-            Log.i("SubjectSearch", "1");
             String str = arrayString;
         }
 
         @JavascriptInterface
         public void reportSearchItemsV2(final String arrayString) {
-
             if (!TextUtils.isEmpty(arrayString)) {
                 MenuResult msg = new Gson().fromJson(arrayString, MenuResult.class);
                 if (msg != null && msg.getData() != null && msg.getData().size() > 0) {
@@ -866,10 +822,6 @@ public class SubjectActivity extends BaseActivity implements FilterMenuAdapter.F
                     iv_BannerSetting.setVisibility("show".equals(state) ? View.VISIBLE : View.GONE);
                 }
             });
-        }
-
-        @JavascriptInterface
-        public void saveParam(String isSave, int local) {
         }
 
         @JavascriptInterface
