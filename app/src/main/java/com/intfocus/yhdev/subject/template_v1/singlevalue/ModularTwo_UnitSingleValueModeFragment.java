@@ -1,18 +1,18 @@
-package com.intfocus.yhdev.subject.template_v1;
+package com.intfocus.yhdev.subject.template_v1.singlevalue;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.alibaba.fastjson.JSON;
 import com.intfocus.yhdev.R;
 import com.intfocus.yhdev.base.BaseModeFragment;
-import com.intfocus.yhdev.subject.template_v1.contract.SingleValueContract;
 import com.intfocus.yhdev.subject.template_v1.entity.MDRPUnitSingleValue;
 import com.intfocus.yhdev.view.RateCursor;
 
+import org.jetbrains.annotations.NotNull;
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
@@ -23,6 +23,7 @@ import java.text.DecimalFormat;
  * 单值组件
  */
 public class ModularTwo_UnitSingleValueModeFragment extends BaseModeFragment implements SingleValueContract.View {
+    @NonNull
     private static final String ARG_PARAM = "SingleValueParam";
     private String mParam;
     private int showCount = 0;
@@ -60,6 +61,10 @@ public class ModularTwo_UnitSingleValueModeFragment extends BaseModeFragment imp
     }
 
     @Override
+    public void setPresenter(@NonNull SingleValueContract.Presenter presenter) {
+        mPresenter = presenter;
+    }
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
@@ -73,24 +78,47 @@ public class ModularTwo_UnitSingleValueModeFragment extends BaseModeFragment imp
         if (rootView == null) {
             rootView = inflater.inflate(R.layout.fragment_singlevalue, container, false);
             x.view().inject(this, rootView);
-            bindData();
-//            mPresenter.loadData(mParam);
+            mPresenter.loadData(mParam);
         }
         return rootView;
     }
 
-    private void bindData() {
+    @Event(R.id.tv_singlevalue_ratio)
+    private void onViewClick(View view) {
+        switch (showCount) {
+            case 0:
+                tv_rate.setText(diffValue);
+                break;
+
+            case 1:
+                tv_rate.setText(diffRate);
+                break;
+
+            case 2:
+                tv_rate.setText(mainValue + "");
+                showCount = -1;
+                break;
+
+            default:
+                tv_rate.setText(mainValue + "");
+                break;
+        }
+
+        showCount++;
+    }
+
+    @Override
+    public void showData(@NotNull MDRPUnitSingleValue data) {
         coCursor = getResources().getIntArray(R.array.co_cursor);
         DecimalFormat df = new DecimalFormat("###,###.##");
-        MDRPUnitSingleValue valueData = JSON.parseObject(mParam, MDRPUnitSingleValue.class);
-        int state = valueData.state.color;
+        int state = data.state.color;
         int color = coCursor[state];
 
-        tv_d1name.setText(valueData.main_data.name);
-        tv_d2name.setText(valueData.sub_data.name);
-        mainValue = Float.parseFloat(valueData.main_data.data.replace("%", ""));
+        tv_d1name.setText(data.main_data.name);
+        tv_d2name.setText(data.sub_data.name);
+        mainValue = Float.parseFloat(data.main_data.data.replace("%", ""));
         tv_d1.setText(df.format(mainValue));
-        float subData = Float.parseFloat(valueData.sub_data.data.replace("%", ""));
+        float subData = Float.parseFloat(data.sub_data.data.replace("%", ""));
         tv_d2.setText(df.format(subData));
 
         tv_d1.setTextColor(color);
@@ -122,32 +150,8 @@ public class ModularTwo_UnitSingleValueModeFragment extends BaseModeFragment imp
         rateCursor.setCursorState(state, isPlus);
     }
 
-    @Event(R.id.tv_singlevalue_ratio)
-    private void onViewClick(View view) {
-        switch (showCount) {
-            case 0:
-                tv_rate.setText(diffValue);
-                break;
-
-            case 1:
-                tv_rate.setText(diffRate);
-                break;
-
-            case 2:
-                tv_rate.setText(mainValue + "");
-                showCount = -1;
-                break;
-
-            default:
-                tv_rate.setText(mainValue + "");
-                break;
-        }
-
-        showCount++;
-    }
-
     @Override
-    public void setPresenter(SingleValueContract.Presenter presenter) {
-        mPresenter = presenter;
+    public SingleValueContract.Presenter getPresenter() {
+        return null;
     }
 }

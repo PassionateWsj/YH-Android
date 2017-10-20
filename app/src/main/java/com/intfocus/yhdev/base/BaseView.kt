@@ -10,5 +10,5 @@ package com.intfocus.yhdev.base
  * ****************************************************
  */
 interface BaseView<T> {
-     fun setPresenter(presenter: T)
+     var presenter: T
 }

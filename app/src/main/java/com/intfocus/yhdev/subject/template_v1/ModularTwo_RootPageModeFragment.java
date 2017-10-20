@@ -18,6 +18,9 @@ import com.intfocus.yhdev.base.BaseModeFragment;
 import com.intfocus.yhdev.subject.template_v1.entity.MDetailUnitEntity;
 import com.intfocus.yhdev.subject.template_v1.entity.msg.MDetalRootPageRequestResult;
 import com.intfocus.yhdev.subject.template_v1.mode.MDetalRootPageMode;
+import com.intfocus.yhdev.subject.template_v1.singlevalue.ModularTwo_UnitSingleValueModeFragment;
+import com.intfocus.yhdev.subject.template_v1.singlevalue.SingleValueImpl;
+import com.intfocus.yhdev.subject.template_v1.singlevalue.SingleValuePresenter;
 import com.zbl.lib.baseframe.core.Subject;
 import com.zzhoujay.richtext.RichText;
 
@@ -146,6 +149,7 @@ public class ModularTwo_RootPageModeFragment extends BaseModeFragment<MDetalRoot
                 //单值组件
                 case "single_value":
                     fragment = ModularTwo_UnitSingleValueModeFragment.newInstance(entity.config);
+                    new SingleValuePresenter(SingleValueImpl.getInstance(),(ModularTwo_UnitSingleValueModeFragment)fragment);
                     break;
 
                 //条状图(横)

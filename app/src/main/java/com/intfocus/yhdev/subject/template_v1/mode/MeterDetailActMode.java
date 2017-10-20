@@ -6,12 +6,16 @@ import android.util.Log;
 import com.alibaba.fastjson.JSONReader;
 import com.intfocus.yhdev.subject.template_v1.entity.MererDetailEntity;
 import com.intfocus.yhdev.subject.template_v1.entity.msg.MDetailActRequestResult;
+import com.intfocus.yhdev.util.ApiHelper;
+import com.intfocus.yhdev.util.FileUtil;
+import com.intfocus.yhdev.util.K;
 import com.zbl.lib.baseframe.core.AbstractMode;
 import com.zbl.lib.baseframe.utils.TimeUtil;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -54,18 +58,18 @@ public class MeterDetailActMode extends AbstractMode {
             public void run() {
                 try {
                     String response;
-//                    String jsonFileName = String.format("group_%s_template_%s_report_%s.json", mGroupId, "1", mReportId);
-//                    String jsonFilePath = FileUtil.dirPath(ctx, K.kCachedDirName, jsonFileName);
-//                    boolean dataState = ApiHelper.reportJsonData(ctx, mGroupId, "1", mReportId);
-//                    if (dataState || new File(jsonFilePath).exists()) {
-//                        response = FileUtil.readFile(jsonFilePath);
-//                    }
-//                    else {
-//                        MDetailActRequestResult result1 = new MDetailActRequestResult(true, 400, null);
-//                        EventBus.getDefault().post(result1);
-//                        return;
-//                    }
-                    response = getJsonData(ctx);
+                    String jsonFileName = String.format("group_%s_template_%s_report_%s.json", mGroupId, "1", mReportId);
+                    String jsonFilePath = FileUtil.dirPath(ctx, K.kCachedDirName, jsonFileName);
+                    boolean dataState = ApiHelper.reportJsonData(ctx, mGroupId, "1", mReportId);
+                    if (dataState || new File(jsonFilePath).exists()) {
+                        response = FileUtil.readFile(jsonFilePath);
+                    }
+                    else {
+                        MDetailActRequestResult result1 = new MDetailActRequestResult(true, 400, null);
+                        EventBus.getDefault().post(result1);
+                        return;
+                    }
+//                    response = getJsonData(ctx);
                     Log.i(TAG, "analysisDataStartTime:" + TimeUtil.getNowTime());
                     StringReader stringReader = new StringReader(response);
                     Log.i(TAG, "analysisDataReaderTime1:" + TimeUtil.getNowTime());
