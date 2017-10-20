@@ -31,14 +31,12 @@ import java.util.Random;
 
 
 /**
- * 模块二根标签页面
+ * 模块一根标签页面
  */
 public class ModularTwo_RootPageModeFragment extends BaseModeFragment<MDetalRootPageMode> {
     public static final String SU_ROOTID = "suRootID";
     private static final String ARG_PARAM = "param";
     private String mParam;
-    public static int mCurrentSuRootID;
-    public static String mCurrentParam;
 
     private View rootView;
 
@@ -59,24 +57,20 @@ public class ModularTwo_RootPageModeFragment extends BaseModeFragment<MDetalRoot
 
     public static ModularTwo_RootPageModeFragment newInstance(int suRootID, String param) {
         ModularTwo_RootPageModeFragment fragment = new ModularTwo_RootPageModeFragment();
-//        Bundle args = new Bundle();
-//        args.putInt(SU_ROOTID, suRootID);
-//        args.putString(ARG_PARAM, param);
-//        fragment.setArguments(args);
-        mCurrentSuRootID = suRootID;
-        mCurrentParam = param;
+        Bundle args = new Bundle();
+        args.putInt(SU_ROOTID, suRootID);
+        args.putString(ARG_PARAM, param);
+        fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        if (getArguments() != null) {
-//            suRootID = getArguments().getInt(SU_ROOTID);
-//            mParam = getArguments().getString(ARG_PARAM);
-//        }
-        suRootID = mCurrentSuRootID;
-        mParam = mCurrentParam;
+        if (getArguments() != null) {
+            suRootID = getArguments().getInt(SU_ROOTID);
+            mParam = getArguments().getString(ARG_PARAM);
+        }
     }
 
     @Override

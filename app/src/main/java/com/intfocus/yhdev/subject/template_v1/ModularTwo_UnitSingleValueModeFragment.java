@@ -22,9 +22,9 @@ import java.text.DecimalFormat;
  * 单值组件
  */
 public class ModularTwo_UnitSingleValueModeFragment extends BaseModeFragment {
-    private static final String ARG_PARAM1 = "SingleValueParam";
+    private static final String ARG_PARAM = "SingleValueParam";
     public static String mCurrentParam;
-    private String mParam1;
+    private String mParam;
     private int showCount = 0;
 
     private View rootView;
@@ -55,20 +55,18 @@ public class ModularTwo_UnitSingleValueModeFragment extends BaseModeFragment {
 
     public static ModularTwo_UnitSingleValueModeFragment newInstance(String param1) {
         ModularTwo_UnitSingleValueModeFragment fragment = new ModularTwo_UnitSingleValueModeFragment();
-//        Bundle args = new Bundle();
-//        args.putString(ARG_PARAM1, param1);
-//        fragment.setArguments(args);
-        mCurrentParam = param1;
+        Bundle args = new Bundle();
+        args.putString(ARG_PARAM, param1);
+        fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        if (getArguments() != null) {
-//            mParam1 = getArguments().getString(ARG_PARAM1);
-//        }
-        mParam1 = mCurrentParam;
+        if (getArguments() != null) {
+            mParam = getArguments().getString(ARG_PARAM);
+        }
     }
 
     @Override
@@ -85,7 +83,7 @@ public class ModularTwo_UnitSingleValueModeFragment extends BaseModeFragment {
     private void bindData() {
         coCursor = getResources().getIntArray(R.array.co_cursor);
         DecimalFormat df = new DecimalFormat("###,###.##");
-        MDRPUnitSingleValue valueData = JSON.parseObject(mParam1, MDRPUnitSingleValue.class);
+        MDRPUnitSingleValue valueData = JSON.parseObject(mParam, MDRPUnitSingleValue.class);
         int state = valueData.state.color;
         int color = coCursor[state];
 
@@ -93,13 +91,13 @@ public class ModularTwo_UnitSingleValueModeFragment extends BaseModeFragment {
         tv_d2name.setText(valueData.sub_data.name);
         mainValue = Float.parseFloat(valueData.main_data.data.replace("%", ""));
         tv_d1.setText(df.format(mainValue));
-        float subdata = Float.parseFloat(valueData.sub_data.data.replace("%", ""));
-        tv_d2.setText(df.format(subdata));
+        float subData = Float.parseFloat(valueData.sub_data.data.replace("%", ""));
+        tv_d2.setText(df.format(subData));
 
         tv_d1.setTextColor(color);
         tv_rate.setTextColor(color);
-        float rate = (mainValue - subdata) / subdata;
-        float diff = mainValue - subdata;
+        float rate = (mainValue - subData) / subData;
+        float diff = mainValue - subData;
         diffValue = df.format(diff);
         diffRate = new DecimalFormat(".##%").format(rate);
         tv_rate.setText(mainValue + "");

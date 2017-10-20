@@ -32,7 +32,6 @@ import com.intfocus.yhdev.view.SortCheckBox;
 import com.intfocus.yhdev.view.TableHorizontalScrollView;
 import com.intfocus.yhdev.view.TableValueView;
 import com.zbl.lib.baseframe.core.Subject;
-import com.zbl.lib.baseframe.utils.TimeUtil;
 import com.zbl.lib.baseframe.utils.ToastUtil;
 
 import org.greenrobot.eventbus.EventBus;
@@ -56,12 +55,9 @@ import java.util.Comparator;
 public class ModularTwo_UnitTablesContModeFragment extends BaseModeFragment<ModularTwo_UnitTableContMode> implements SortCheckBox.SortViewSizeListener, AdapterView.OnItemClickListener {
     private static final String ARG_PARAM = "param";
     private static final String SU_ROOTID = "suRootID";
-    public static int mCurrentSuRootID;
     private String mParam;
 
     private View rootView;
-
-    public static String mCurrentData;
 
     private FragmentManager fm;
 
@@ -130,8 +126,10 @@ public class ModularTwo_UnitTablesContModeFragment extends BaseModeFragment<Modu
 
     public static ModularTwo_UnitTablesContModeFragment newInstance(int suRootID, String param) {
         ModularTwo_UnitTablesContModeFragment fragment = new ModularTwo_UnitTablesContModeFragment();
-        mCurrentData = param;
-        mCurrentSuRootID = suRootID;
+        Bundle args = new Bundle();
+        args.putInt(SU_ROOTID, suRootID);
+        args.putString(ARG_PARAM, param);
+        fragment.setArguments(args);
         return fragment;
     }
 
@@ -139,8 +137,10 @@ public class ModularTwo_UnitTablesContModeFragment extends BaseModeFragment<Modu
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EventBus.getDefault().register(this);
-        mParam = mCurrentData;
-        suRootID = mCurrentSuRootID;
+        if (getArguments() != null) {
+            suRootID = getArguments().getInt(SU_ROOTID);
+            mParam = getArguments().getString(ARG_PARAM);
+        }
     }
 
     @Override

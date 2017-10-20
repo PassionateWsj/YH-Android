@@ -31,10 +31,9 @@ import java.util.Collections;
  * 仪表盘-详情页面-根页签-曲线图单元
  */
 public class ModularTwo_UnitCurveChartModeFragment extends BaseModeFragment<MDRPUnitCurveChartMode> implements CustomCurveChartV2.PointClickListener {
-    private static final String ARG_PARAM1 = "param1";
-    public static String mCurrentParam;
+    private static final String ARG_PARAM = "param";
     private String targetID;
-    private String mParam1;
+    private String mParam;
     private View rootView;
 
     @ViewInject(R.id.ll_mdrpUnit_curvechart)
@@ -78,16 +77,20 @@ public class ModularTwo_UnitCurveChartModeFragment extends BaseModeFragment<MDRP
         return new MDRPUnitCurveChartMode(ctx, targetID);
     }
 
-    public static ModularTwo_UnitCurveChartModeFragment newInstance(String param1) {
+    public static ModularTwo_UnitCurveChartModeFragment newInstance(String param) {
         ModularTwo_UnitCurveChartModeFragment fragment = new ModularTwo_UnitCurveChartModeFragment();
-        mCurrentParam = param1;
+        Bundle args = new Bundle();
+        args.putString(ARG_PARAM, param);
+        fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mParam1 = mCurrentParam;
+        if (getArguments() != null) {
+            mParam = getArguments().getString(ARG_PARAM);
+        }
     }
 
     @Override
@@ -103,7 +106,7 @@ public class ModularTwo_UnitCurveChartModeFragment extends BaseModeFragment<MDRP
             x.view().inject(this, rootView);
             coGroup = getResources().getIntArray(R.array.co_order);
             coCursor = getResources().getIntArray(R.array.co_cursor);
-            getModel().analysisData(mParam1);
+            getModel().analysisData(mParam);
         }
         return rootView;
     }

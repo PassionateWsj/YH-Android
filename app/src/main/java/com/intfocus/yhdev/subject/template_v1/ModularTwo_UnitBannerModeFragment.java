@@ -21,12 +21,11 @@ import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
 /**
- * 标题栏 负责显示标题、日期、帮助说明
+ * 模板一标题栏 负责显示标题、日期、帮助说明
  */
 public class ModularTwo_UnitBannerModeFragment extends BaseModeFragment {
-    private static final String ARG_PARAM1 = "param1";
-    public static String mCurrentParam;
-    private String mParam1;
+    private static final String ARG_PARAM = "param";
+    private String mParam;
 
     private View rootView;
 
@@ -47,16 +46,20 @@ public class ModularTwo_UnitBannerModeFragment extends BaseModeFragment {
     public ModularTwo_UnitBannerModeFragment() {
     }
 
-    public static ModularTwo_UnitBannerModeFragment newInstance(String param1) {
+    public static ModularTwo_UnitBannerModeFragment newInstance(String param) {
         ModularTwo_UnitBannerModeFragment fragment = new ModularTwo_UnitBannerModeFragment();
-        mCurrentParam = param1;
+        Bundle args = new Bundle();
+        args.putString(ARG_PARAM, param);
+        fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mParam1 = mCurrentParam;
+        if (getArguments() != null) {
+            mParam = getArguments().getString(ARG_PARAM);
+        }
     }
 
     @Override
@@ -101,7 +104,7 @@ public class ModularTwo_UnitBannerModeFragment extends BaseModeFragment {
 
     private void bindData() {
         try {
-            JSONObject jsonObject = new JSONObject(mParam1);
+            JSONObject jsonObject = new JSONObject(mParam);
             if (jsonObject.has("title")) {
                 String name = jsonObject.getString("title");
                 if (!name.isEmpty()) {

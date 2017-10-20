@@ -47,7 +47,7 @@ import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
 /**
- * 模块二页面
+ * 模块一页面
  */
 public class ModularTwo_Mode_Activity extends BaseModeActivity<MeterDetailActMode> {
     private String TAG = ModularTwo_Mode_Activity.class.getSimpleName();
