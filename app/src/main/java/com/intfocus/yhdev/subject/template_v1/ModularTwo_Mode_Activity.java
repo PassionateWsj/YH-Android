@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -24,7 +23,7 @@ import com.intfocus.yhdev.R;
 import com.intfocus.yhdev.base.BaseModeActivity;
 import com.intfocus.yhdev.base.BaseModeFragment;
 import com.intfocus.yhdev.subject.template_v1.entity.msg.EventRefreshTableRect;
-import com.intfocus.yhdev.subject.template_v1.entity.msg.MDetalActRequestResult;
+import com.intfocus.yhdev.subject.template_v1.entity.msg.MDetailActRequestResult;
 import com.intfocus.yhdev.subject.template_v1.mode.MeterDetailActMode;
 import com.intfocus.yhdev.util.ActionLogUtil;
 import com.intfocus.yhdev.util.DisplayUtil;
@@ -85,7 +84,7 @@ public class ModularTwo_Mode_Activity extends BaseModeActivity<MeterDetailActMod
     /**
      * 数据实体
      */
-    private MDetalActRequestResult entity;
+    private MDetailActRequestResult entity;
 
     @Override
     public int setLayoutRes() {
@@ -107,7 +106,7 @@ public class ModularTwo_Mode_Activity extends BaseModeActivity<MeterDetailActMod
     @Override
     public void onCreateFinish(Bundle bundle) {
         initHeader();
-        actionbar = stub_header;
+        actionbar = stubHeader;
         getSupportActionBar().hide();
         fm = getSupportFragmentManager();
         x.view().inject(this);
@@ -169,34 +168,34 @@ public class ModularTwo_Mode_Activity extends BaseModeActivity<MeterDetailActMod
      * 图表点击事件统一处理方法
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMessageEvent(MDetalActRequestResult entity) {
+    public void onMessageEvent(MDetailActRequestResult entity) {
         this.entity = entity;
         setACTitle(bannerName);
         if (entity != null) {
             int dataSize = entity.datas.data.size();
-            if (dataSize > 1) {    // 多个根页签
-                View scroll_title = LayoutInflater.from(ctx)
+                // 多个根页签
+            if (dataSize > 1) {
+                View scrollTitle = LayoutInflater.from(ctx)
                         .inflate(R.layout.item_mdetal_scroll_title, null);
-                fl_titleContainer.addView(scroll_title);
-                radioGroup = (RadioGroup) scroll_title.findViewById(R.id.radioGroup);
+                fl_titleContainer.addView(scrollTitle);
+                radioGroup = (RadioGroup) scrollTitle.findViewById(R.id.radioGroup);
 
                 for (int i = 0; i < dataSize; i++) {
                     RadioButton rbtn = new RadioButton(this);
-                    RadioGroup.LayoutParams params_rb = new RadioGroup.LayoutParams(
+                    RadioGroup.LayoutParams paramsRb = new RadioGroup.LayoutParams(
                             RadioGroup.LayoutParams.WRAP_CONTENT,
                             DisplayUtil.dip2px(ctx, 25f));
-                    params_rb.setMargins(50, 0, 0, 0);
+                    paramsRb.setMargins(50, 0, 0, 0);
 
                     rbtn.setTag(i);
                     rbtn.setPadding(DisplayUtil.dip2px(ctx, 15f), 0, DisplayUtil.dip2px(ctx, 15f), 0);
-                    Bitmap a = null;
-                    rbtn.setButtonDrawable(new BitmapDrawable(a));
+                    rbtn.setButtonDrawable(null);
                     rbtn.setBackgroundResource(R.drawable.selector_mdetal_act_rbtn);
                     rbtn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.font_medium));
                     ColorStateList colorStateList = getResources().getColorStateList(R.color.color_mdetal_act_rbtn);
                     rbtn.setTextColor(colorStateList);
                     rbtn.setText(entity.datas.data.get(i).title);
-                    radioGroup.addView(rbtn, params_rb);
+                    radioGroup.addView(rbtn, paramsRb);
                     rbtn.setOnCheckedChangeListener(rootTableListener);
                     if (i == 0) {
                         rbtn.setChecked(true);

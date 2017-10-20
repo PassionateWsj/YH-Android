@@ -9,19 +9,19 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.intfocus.yhdev.R
-import com.intfocus.yhdev.subject.template_v1.entity.MDetalUnitEntity
+import com.intfocus.yhdev.subject.template_v1.entity.MDetailUnitEntity
 
 /**
  * Created by CANC on 2017/7/24.
  */
 class TableTitleAdapter(val context: Context,
-                        private var datas: List<MDetalUnitEntity>?,
+                        private var data: List<MDetailUnitEntity>?,
                         var listener: NoticeItemListener) : RecyclerView.Adapter<TableTitleAdapter.NoticeMenuHolder>() {
 
     var inflater = LayoutInflater.from(context)
 
-    fun setData(data: List<MDetalUnitEntity>?) {
-        this.datas = data
+    fun setData(data: List<MDetailUnitEntity>?) {
+        this.data = data
         notifyDataSetChanged()
     }
 
@@ -31,8 +31,8 @@ class TableTitleAdapter(val context: Context,
     }
 
     override fun onBindViewHolder(holder: NoticeMenuHolder, position: Int) {
-        if (datas != null) {
-            var noticeMenuData = datas!![position]
+        if (data != null) {
+            var noticeMenuData = data!![position]
             holder.tvText.text = noticeMenuData.type
             if (noticeMenuData.isCheck) {
                 holder.tvText.setTextColor(ContextCompat.getColor(context, R.color.co1_syr))
@@ -46,7 +46,7 @@ class TableTitleAdapter(val context: Context,
     }
 
     override fun getItemCount(): Int {
-        return if (datas == null) 0 else datas!!.size
+        return if (data == null) 0 else data!!.size
     }
 
     class NoticeMenuHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

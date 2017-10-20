@@ -7,7 +7,7 @@ import java.util.ArrayList;
  * 仪表盘实体对象
  * Created by zbaoliang on 17-4-28.
  */
-public class MererDetalEntity implements Serializable {
+public class MererDetailEntity implements Serializable {
     public String name;
     public ArrayList<PageData> data;
 

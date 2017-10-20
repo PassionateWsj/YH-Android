@@ -284,7 +284,7 @@ public class CustomCurveChartV2 extends View implements ValueAnimator.AnimatorUp
     }
 
     /**
-     * 绘制曲线
+     * 绘制折线
      */
     private void drawLine(Canvas canvas, Paint paint, int dataIndex, int drawColor) {
         Float[] data = dataList.get(dataIndex);
@@ -429,7 +429,12 @@ public class CustomCurveChartV2 extends View implements ValueAnimator.AnimatorUp
         return y;
     }
 
-
+    /**
+     * 图表触摸事件回调方法
+     *
+     * @param event
+     * @return
+     */
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
@@ -627,6 +632,7 @@ public class CustomCurveChartV2 extends View implements ValueAnimator.AnimatorUp
         this.dataList = dataList;
         if (dataList.size() > 0) {
             selectItem = dataList.get(0).length - 1;
+//            barWidth = ((this.getWidth() - xPoint) / dataList.get(0).length) / dataList.size();
         }
         return selectItem;
     }

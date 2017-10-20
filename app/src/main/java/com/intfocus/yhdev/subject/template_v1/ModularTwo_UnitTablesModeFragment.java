@@ -15,7 +15,7 @@ import android.widget.RadioGroup;
 import com.intfocus.yhdev.R;
 import com.intfocus.yhdev.base.BaseModeFragment;
 import com.intfocus.yhdev.dashboard.mine.adapter.TableTitleAdapter;
-import com.intfocus.yhdev.subject.template_v1.entity.MDetalUnitEntity;
+import com.intfocus.yhdev.subject.template_v1.entity.MDetailUnitEntity;
 import com.intfocus.yhdev.subject.template_v1.entity.msg.MDetalRootPageRequestResult;
 import com.intfocus.yhdev.subject.template_v1.mode.ModularTwo_UnitTablesParentMode;
 import com.zbl.lib.baseframe.core.Subject;
@@ -34,7 +34,7 @@ import java.util.Random;
 public class ModularTwo_UnitTablesModeFragment extends BaseModeFragment<ModularTwo_UnitTablesParentMode> implements TableTitleAdapter.NoticeItemListener {
     private String fragmentTag;
     private static final String ARG_PARAM = "TablesParam";
-    private static final String SU_ROOTID = "SuRootId";
+    private static final String SU_ROOT_ID = "SuRootId";
 
     private String mParam;
 
@@ -64,13 +64,13 @@ public class ModularTwo_UnitTablesModeFragment extends BaseModeFragment<ModularT
     @ViewInject(R.id.recycler_view)
     private RecyclerView recyclerView;
     private TableTitleAdapter adapter;
-    private List<MDetalUnitEntity> datas;
+    private List<MDetailUnitEntity> datas;
 
 
     public static ModularTwo_UnitTablesModeFragment newInstance(int suRootID, String param) {
         ModularTwo_UnitTablesModeFragment fragment = new ModularTwo_UnitTablesModeFragment();
         Bundle args = new Bundle();
-        args.putInt(SU_ROOTID, suRootID);
+        args.putInt(SU_ROOT_ID, suRootID);
         args.putString(ARG_PARAM, param);
         fragment.setArguments(args);
         return fragment;
@@ -85,7 +85,7 @@ public class ModularTwo_UnitTablesModeFragment extends BaseModeFragment<ModularT
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            suRootID = getArguments().getInt(SU_ROOTID);
+            suRootID = getArguments().getInt(SU_ROOT_ID);
             mParam = getArguments().getString(ARG_PARAM);
         }
 

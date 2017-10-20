@@ -3,14 +3,11 @@ package com.intfocus.yhdev.base;
 import android.Manifest;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.util.ArrayMap;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,24 +18,14 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
-import com.intfocus.yhdev.CommentActivity;
 import com.intfocus.yhdev.R;
 import com.intfocus.yhdev.constant.Permissions;
-import com.intfocus.yhdev.subject.SubjectActivity;
-import com.intfocus.yhdev.util.ActionLogUtil;
-import com.intfocus.yhdev.util.ImageUtil;
 import com.intfocus.yhdev.util.LoadingUtils;
 import com.intfocus.yhdev.util.ToastUtils;
-import com.intfocus.yhdev.util.URLs;
-import com.umeng.socialize.ShareAction;
-import com.umeng.socialize.UMShareListener;
-import com.umeng.socialize.bean.SHARE_MEDIA;
-import com.umeng.socialize.media.UMImage;
 import com.zbl.lib.baseframe.core.AbstractActivity;
 import com.zbl.lib.baseframe.core.ActManager;
 import com.zbl.lib.baseframe.core.Subject;
 
-import org.json.JSONObject;
 import org.xutils.x;
 
 import java.util.List;
@@ -60,13 +47,13 @@ public abstract class BaseModeActivity<T extends Subject> extends AbstractActivi
     /**
      * Header的根布局
      */
-    protected ViewStub stub_header;
+    protected ViewStub stubHeader;
 
     /**
      * 左边的TextView
      */
-    protected TextView tv_left;
-    protected TextView tv_title;
+    protected TextView tvLeft;
+    protected TextView tvTitle;
     protected LinearLayout topRightLayout;
 
     protected PopupWindow popupWindow;
@@ -74,7 +61,7 @@ public abstract class BaseModeActivity<T extends Subject> extends AbstractActivi
     /**
      * 容器
      */
-    protected FrameLayout fl_container;
+    protected FrameLayout flContainer;
     //    protected ProgressBar progressBar;
     private Dialog loadingDialog;
 
@@ -85,7 +72,7 @@ public abstract class BaseModeActivity<T extends Subject> extends AbstractActivi
     /**
      * 定位所需权限数组
      */
-    public static final String[] permissions_location = {Manifest.permission.ACCESS_COARSE_LOCATION,
+    public static final String[] PERMISSIONS_LOCATION = {Manifest.permission.ACCESS_COARSE_LOCATION,
             Manifest.permission.ACCESS_FINE_LOCATION,
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -93,7 +80,7 @@ public abstract class BaseModeActivity<T extends Subject> extends AbstractActivi
     /**
      * 二维码扫描权限
      */
-    public static final String[] permissions_camera = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE,
+    public static final String[] PERMISSIONS_CAMERA = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.READ_EXTERNAL_STORAGE,};
     private boolean isShowHint;
 
@@ -101,7 +88,7 @@ public abstract class BaseModeActivity<T extends Subject> extends AbstractActivi
     //TODO ======================================权限处理====================================================
 
 
-    private ArrayMap<Integer, PermissionCallback> mPermissonCallbacks = new ArrayMap<>();
+    private ArrayMap<Integer, PermissionCallback> mPermissionCallbacks = new ArrayMap<>();
 
     /**
      * 权限回调接口
@@ -133,7 +120,7 @@ public abstract class BaseModeActivity<T extends Subject> extends AbstractActivi
         if (EasyPermissions.hasPermissions(this, perms)) {
             callback.hasPermission();
         } else {
-            mPermissonCallbacks.put(permissionRequestCode, callback);
+            mPermissionCallbacks.put(permissionRequestCode, callback);
             EasyPermissions.requestPermissions(this, rationale, permissionRequestCode, perms);
         }
     }
@@ -176,7 +163,7 @@ public abstract class BaseModeActivity<T extends Subject> extends AbstractActivi
 
     @Override
     public void onPermissionsGranted(int requestCode, List<String> perms) {
-        PermissionCallback callback = mPermissonCallbacks.get(requestCode);
+        PermissionCallback callback = mPermissionCallbacks.get(requestCode);
         if (callback != null) {
             callback.hasPermission();
         }
@@ -184,7 +171,7 @@ public abstract class BaseModeActivity<T extends Subject> extends AbstractActivi
 
     @Override
     public void onPermissionsDenied(int requestCode, List<String> perms) {
-        PermissionCallback callback = mPermissonCallbacks.get(requestCode);
+        PermissionCallback callback = mPermissionCallbacks.get(requestCode);
         if (callback != null) {
             if (EasyPermissions.somePermissionPermanentlyDenied(this, perms)) {
                 callback.noPermission(true);
@@ -212,7 +199,7 @@ public abstract class BaseModeActivity<T extends Subject> extends AbstractActivi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.frame_baseui);
 
-        stub_header = (ViewStub) findViewById(R.id.ll_baseUI_title);
+        stubHeader = (ViewStub) findViewById(R.id.ll_baseUI_title);
 
         rootView = (FrameLayout) findViewById(R.id.rootView);
 //        progressBar = (ProgressBar) findViewById(R.id.progressBar_baseUI);
@@ -222,9 +209,9 @@ public abstract class BaseModeActivity<T extends Subject> extends AbstractActivi
         if (contentID != 0 && contentID != -1) {
             content = LayoutInflater.from(this).inflate(contentID, null);
         }
-        fl_container = (FrameLayout) findViewById(R.id.fl_baseUI_container);
+        flContainer = (FrameLayout) findViewById(R.id.fl_baseUI_container);
         if (content != null) {
-            fl_container.addView(content);
+            flContainer.addView(content);
         }
 
         onCreateFinish(savedInstanceState);
@@ -239,10 +226,10 @@ public abstract class BaseModeActivity<T extends Subject> extends AbstractActivi
      * 实例化标题栏
      */
     public void initHeader() {
-        stub_header.inflate();
-        tv_left = (TextView) findViewById(R.id.tv_baseUI_back);
-        tv_left.setOnClickListener(viewListener);
-        tv_title = (TextView) findViewById(R.id.tv_baseUI_title);
+        stubHeader.inflate();
+        tvLeft = (TextView) findViewById(R.id.tv_baseUI_back);
+        tvLeft.setOnClickListener(viewListener);
+        tvTitle = (TextView) findViewById(R.id.tv_baseUI_title);
         topRightLayout = (LinearLayout) findViewById(R.id.ll_baseUI_title_RightView);
         topRightLayout.setOnClickListener(viewListener);
     }
@@ -258,6 +245,8 @@ public abstract class BaseModeActivity<T extends Subject> extends AbstractActivi
 
                 case R.id.ll_baseUI_title_RightView:
                     showComplaintsPopWindow(v);
+                    break;
+                default:
                     break;
             }
         }
@@ -282,7 +271,8 @@ public abstract class BaseModeActivity<T extends Subject> extends AbstractActivi
         popupWindow = new PopupWindow(contentView,
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
-        popupWindow.setFocusable(true);// 取得焦点
+        // 取得焦点
+        popupWindow.setFocusable(true);
         //注意  要是点击外部空白处弹框消息  那么必须给弹框设置一个背景色  不然是不起作用的
         popupWindow.setBackgroundDrawable(new BitmapDrawable());
         //点击外部消失
@@ -298,7 +288,7 @@ public abstract class BaseModeActivity<T extends Subject> extends AbstractActivi
      * @param src
      */
     public void setACTitle(String src) {
-        tv_title.setText(src);
+        tvTitle.setText(src);
     }
 
     //TODO -------------------设置返回键状态------------------------------
@@ -312,7 +302,7 @@ public abstract class BaseModeActivity<T extends Subject> extends AbstractActivi
         Drawable nav_up = getResources().getDrawable(drawable);
         nav_up.setBounds(0, 0, nav_up.getMinimumWidth(),
                 nav_up.getMinimumHeight());
-        tv_left.setCompoundDrawables(nav_up, null, null, null);
+        tvLeft.setCompoundDrawables(nav_up, null, null, null);
     }
 
     /**
@@ -321,14 +311,14 @@ public abstract class BaseModeActivity<T extends Subject> extends AbstractActivi
      * @param src
      */
     public void setLeftTVSrc(String src) {
-        tv_left.setText(src);
+        tvLeft.setText(src);
     }
 
     /**
      * @return 取得标题栏右边的TextView
      */
     public TextView getLeftTV() {
-        return tv_left;
+        return tvLeft;
     }
     //TODO -------------------设置返回键状态------------------------------
 
@@ -344,7 +334,7 @@ public abstract class BaseModeActivity<T extends Subject> extends AbstractActivi
      */
     public void requestLocation(boolean isHint) {
         this.isShowHint = isHint;
-        performCodeWithPermission("请允许定位权限", Permissions.ACCESS_COARSE_LOCATION_CODE, permissions_location,
+        performCodeWithPermission("请允许定位权限", Permissions.ACCESS_COARSE_LOCATION_CODE, PERMISSIONS_LOCATION,
                 new PermissionCallback() {
                     @Override
                     public void hasPermission() {

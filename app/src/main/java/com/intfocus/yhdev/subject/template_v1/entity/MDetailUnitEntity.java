@@ -4,7 +4,7 @@ package com.intfocus.yhdev.subject.template_v1.entity;
  * 仪表盘详情页面每个单元模块数据
  * Created by zbaoliang on 17-5-7.
  */
-public class MDetalUnitEntity {
+public class MDetailUnitEntity {
     /**
      * 图表类型：
      * banner 标题栏;

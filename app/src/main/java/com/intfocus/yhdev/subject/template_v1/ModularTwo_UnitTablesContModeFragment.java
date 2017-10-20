@@ -54,7 +54,7 @@ import java.util.Comparator;
  */
 public class ModularTwo_UnitTablesContModeFragment extends BaseModeFragment<ModularTwo_UnitTableContMode> implements SortCheckBox.SortViewSizeListener, AdapterView.OnItemClickListener {
     private static final String ARG_PARAM = "param";
-    private static final String SU_ROOTID = "suRootID";
+    private static final String SU_ROOT_ID = "suRootID";
     private String mParam;
 
     private View rootView;
@@ -127,7 +127,7 @@ public class ModularTwo_UnitTablesContModeFragment extends BaseModeFragment<Modu
     public static ModularTwo_UnitTablesContModeFragment newInstance(int suRootID, String param) {
         ModularTwo_UnitTablesContModeFragment fragment = new ModularTwo_UnitTablesContModeFragment();
         Bundle args = new Bundle();
-        args.putInt(SU_ROOTID, suRootID);
+        args.putInt(SU_ROOT_ID, suRootID);
         args.putString(ARG_PARAM, param);
         fragment.setArguments(args);
         return fragment;
@@ -138,7 +138,7 @@ public class ModularTwo_UnitTablesContModeFragment extends BaseModeFragment<Modu
         super.onCreate(savedInstanceState);
         EventBus.getDefault().register(this);
         if (getArguments() != null) {
-            suRootID = getArguments().getInt(SU_ROOTID);
+            suRootID = getArguments().getInt(SU_ROOT_ID);
             mParam = getArguments().getString(ARG_PARAM);
         }
     }
@@ -390,10 +390,10 @@ public class ModularTwo_UnitTablesContModeFragment extends BaseModeFragment<Modu
         int textColor = getResources().getColor(R.color.co6_syr);
         tableValue = new TableValueView(ctx);
         tableValue.setItemHeight(itemHeight);
-        tableValue.setHeaderLenghts(al_HeaderLenght);
+        tableValue.setHeaderLengths(al_HeaderLenght);
         tableValue.setTextSize(DisplayUtil.dip2px(getContext(), 10));
         tableValue.setTableValues(lables);
-        tableValue.setDeviderColor(dividerColor);
+        tableValue.setDividerColor(dividerColor);
         tableValue.setTextColor(textColor);
         fl_tableValue_container.addView(tableValue);
     }

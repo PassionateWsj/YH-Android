@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.alibaba.fastjson.JSON;
 import com.intfocus.yhdev.R;
 import com.intfocus.yhdev.base.BaseModeFragment;
+import com.intfocus.yhdev.subject.template_v1.contract.SingleValueContract;
 import com.intfocus.yhdev.subject.template_v1.entity.MDRPUnitSingleValue;
 import com.intfocus.yhdev.view.RateCursor;
 
@@ -21,9 +22,8 @@ import java.text.DecimalFormat;
 /**
  * 单值组件
  */
-public class ModularTwo_UnitSingleValueModeFragment extends BaseModeFragment {
+public class ModularTwo_UnitSingleValueModeFragment extends BaseModeFragment implements SingleValueContract.View {
     private static final String ARG_PARAM = "SingleValueParam";
-    public static String mCurrentParam;
     private String mParam;
     private int showCount = 0;
 
@@ -49,14 +49,12 @@ public class ModularTwo_UnitSingleValueModeFragment extends BaseModeFragment {
     private String diffRate;
     private float mainValue;
     private boolean isSwitch;
+    private SingleValueContract.Presenter mPresenter;
 
-    public ModularTwo_UnitSingleValueModeFragment() {
-    }
-
-    public static ModularTwo_UnitSingleValueModeFragment newInstance(String param1) {
+    public static ModularTwo_UnitSingleValueModeFragment newInstance(String param) {
         ModularTwo_UnitSingleValueModeFragment fragment = new ModularTwo_UnitSingleValueModeFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM, param1);
+        args.putString(ARG_PARAM, param);
         fragment.setArguments(args);
         return fragment;
     }
@@ -76,6 +74,7 @@ public class ModularTwo_UnitSingleValueModeFragment extends BaseModeFragment {
             rootView = inflater.inflate(R.layout.fragment_singlevalue, container, false);
             x.view().inject(this, rootView);
             bindData();
+//            mPresenter.loadData(mParam);
         }
         return rootView;
     }
@@ -107,11 +106,12 @@ public class ModularTwo_UnitSingleValueModeFragment extends BaseModeFragment {
 //        int cursorIndex;
         if (absmv <= 0.1f) {
 //            cursorIndex = 1;
-            if (rate > 0) {
-                isPlus = false;
-            } else {
-                isPlus = true;
-            }
+//            if (rate > 0) {
+//                isPlus = false;
+//            } else {
+//                isPlus = true;
+//            }
+            isPlus = rate <= 0;
         } else if (rate < -0.1f) {
 //            cursorIndex = 0;
             isPlus = false;
@@ -144,5 +144,10 @@ public class ModularTwo_UnitSingleValueModeFragment extends BaseModeFragment {
         }
 
         showCount++;
+    }
+
+    @Override
+    public void setPresenter(SingleValueContract.Presenter presenter) {
+        mPresenter = presenter;
     }
 }

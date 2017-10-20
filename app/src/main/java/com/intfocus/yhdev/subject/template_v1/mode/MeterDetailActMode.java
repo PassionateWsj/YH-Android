@@ -4,18 +4,14 @@ import android.content.Context;
 import android.util.Log;
 
 import com.alibaba.fastjson.JSONReader;
-import com.intfocus.yhdev.subject.template_v1.entity.MererDetalEntity;
-import com.intfocus.yhdev.subject.template_v1.entity.msg.MDetalActRequestResult;
-import com.intfocus.yhdev.util.ApiHelper;
-import com.intfocus.yhdev.util.FileUtil;
-import com.intfocus.yhdev.util.K;
+import com.intfocus.yhdev.subject.template_v1.entity.MererDetailEntity;
+import com.intfocus.yhdev.subject.template_v1.entity.msg.MDetailActRequestResult;
 import com.zbl.lib.baseframe.core.AbstractMode;
 import com.zbl.lib.baseframe.utils.TimeUtil;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -32,21 +28,21 @@ import static com.intfocus.yhdev.YHApplication.threadPool;
  */
 public class MeterDetailActMode extends AbstractMode {
 
-    String TAG = MeterDetailActMode.class.getSimpleName();
-    String group_id;
-    String report_id;
+    private static String TAG = MeterDetailActMode.class.getSimpleName();
+    private String mGroupId;
+    private String mReportId;
 
-    Context ctx;
+    private Context ctx;
 
-    MererDetalEntity entity;
+    private MererDetailEntity entity;
 
     public MeterDetailActMode(Context ctx) {
         this.ctx = ctx;
     }
 
-    public void requestData(String group_id, String report_id) {
-        this.group_id = group_id;
-        this.report_id = report_id;
+    public void requestData(String groupId, String reportId) {
+        this.mGroupId = groupId;
+        this.mReportId = reportId;
         requestData();
     }
 
@@ -58,18 +54,18 @@ public class MeterDetailActMode extends AbstractMode {
             public void run() {
                 try {
                     String response;
-                    String jsonFileName = String.format("group_%s_template_%s_report_%s.json", group_id, "1", report_id);
-                    String jsonFilePath = FileUtil.dirPath(ctx, K.kCachedDirName, jsonFileName);
-                    boolean dataState = ApiHelper.reportJsonData(ctx, group_id, "1", report_id);
-                    if (dataState || new File(jsonFilePath).exists()) {
-                        response = FileUtil.readFile(jsonFilePath);
-                    }
-                    else {
-                        MDetalActRequestResult result1 = new MDetalActRequestResult(true, 400, null);
-                        EventBus.getDefault().post(result1);
-                        return;
-                    }
-//                    response = getJsonData(ctx);
+//                    String jsonFileName = String.format("group_%s_template_%s_report_%s.json", mGroupId, "1", mReportId);
+//                    String jsonFilePath = FileUtil.dirPath(ctx, K.kCachedDirName, jsonFileName);
+//                    boolean dataState = ApiHelper.reportJsonData(ctx, mGroupId, "1", mReportId);
+//                    if (dataState || new File(jsonFilePath).exists()) {
+//                        response = FileUtil.readFile(jsonFilePath);
+//                    }
+//                    else {
+//                        MDetailActRequestResult result1 = new MDetailActRequestResult(true, 400, null);
+//                        EventBus.getDefault().post(result1);
+//                        return;
+//                    }
+                    response = getJsonData(ctx);
                     Log.i(TAG, "analysisDataStartTime:" + TimeUtil.getNowTime());
                     StringReader stringReader = new StringReader(response);
                     Log.i(TAG, "analysisDataReaderTime1:" + TimeUtil.getNowTime());
@@ -77,7 +73,7 @@ public class MeterDetailActMode extends AbstractMode {
                     reader.startArray();
                     reader.startObject();
 
-                    entity = new MererDetalEntity();
+                    entity = new MererDetailEntity();
                     entity.data = new ArrayList<>();
                     Log.i(TAG, "analysisDataReaderTime2:" + TimeUtil.getNowTime());
 
@@ -95,7 +91,7 @@ public class MeterDetailActMode extends AbstractMode {
                                 reader.startArray();
                                 while (reader.hasNext()) {
                                     reader.startObject();
-                                    MererDetalEntity.PageData data = new MererDetalEntity.PageData();
+                                    MererDetailEntity.PageData data = new MererDetailEntity.PageData();
                                     while (reader.hasNext()) {
                                         String dataKey = reader.readString();
                                         switch (dataKey) {
@@ -126,7 +122,7 @@ public class MeterDetailActMode extends AbstractMode {
                     }
                     reader.endObject();
                     reader.endArray();
-                    EventBus.getDefault().post(new MDetalActRequestResult(true, 200, entity));
+                    EventBus.getDefault().post(new MDetailActRequestResult(true, 200, entity));
                     Log.i(TAG, "analysisDataEndTime:" + TimeUtil.getNowTime());
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -145,7 +141,7 @@ public class MeterDetailActMode extends AbstractMode {
         BufferedReader reader = null;
         StringBuilder sb = null;
         try {
-            is = ctx.getResources().getAssets().open("kpi_detaldata.json");
+            is = context.getResources().getAssets().open("kpi_detaldata.json");
 //            is = context.getResources().getAssets().open("temple-v1.json");
             reader = new BufferedReader(new InputStreamReader(is));
             sb = new StringBuilder();
