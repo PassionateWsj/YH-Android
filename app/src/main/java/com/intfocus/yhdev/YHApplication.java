@@ -2,7 +2,6 @@ package com.intfocus.yhdev;
 
 import android.app.ActivityManager;
 import android.app.Application;
-import android.app.Notification;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -16,7 +15,6 @@ import android.os.Bundle;
 import android.support.multidex.MultiDex;
 import android.util.Log;
 
-import com.intfocus.yhdev.constant.Constants;
 import com.intfocus.yhdev.dashboard.DashboardActivity;
 import com.intfocus.yhdev.login.LoginActivity;
 import com.intfocus.yhdev.screen_lock.ConfirmPassCodeActivity;
@@ -174,7 +172,7 @@ public class YHApplication extends Application {
         MultiDex.install(this);
     }
 
-    /*
+    /**
      * 程序终止时会执行以下代码
      */
     @Override
@@ -187,7 +185,7 @@ public class YHApplication extends Application {
         return appContext;
     }
 
-    /*
+    /**
      *  手机待机再激活时接收解屏广播,进入解锁密码页
      */
     private final BroadcastReceiver broadcastScreenOnAndOff = new BroadcastReceiver() {
@@ -226,7 +224,7 @@ public class YHApplication extends Application {
         Log.i("activityName", mCurrentActivity);
     }
 
-    /*
+    /**
      * 判断应用当前是否处于后台
      * Android 4.4 以上版本 不适用 getRunningTasks() 方法
      */

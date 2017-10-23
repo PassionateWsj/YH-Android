@@ -5,6 +5,7 @@ import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,9 +15,12 @@ import android.widget.TextView;
 
 import com.intfocus.yhdev.R;
 import com.intfocus.yhdev.base.BaseModeFragment;
-import com.intfocus.yhdev.subject.template_v1.entity.MDetalUnitEntity;
+import com.intfocus.yhdev.subject.template_v1.entity.MDetailUnitEntity;
 import com.intfocus.yhdev.subject.template_v1.entity.msg.MDetalRootPageRequestResult;
 import com.intfocus.yhdev.subject.template_v1.mode.MDetalRootPageMode;
+import com.intfocus.yhdev.subject.template_v1.singlevalue.ModularTwo_UnitSingleValueModeFragment;
+import com.intfocus.yhdev.subject.template_v1.singlevalue.SingleValueImpl;
+import com.intfocus.yhdev.subject.template_v1.singlevalue.SingleValuePresenter;
 import com.zbl.lib.baseframe.core.Subject;
 import com.zzhoujay.richtext.RichText;
 
@@ -31,26 +35,27 @@ import java.util.Random;
 
 
 /**
- * 模块二根标签页面
+ * 模块一根标签页面
  */
 public class ModularTwo_RootPageModeFragment extends BaseModeFragment<MDetalRootPageMode> {
-    public static final String SU_ROOTID = "suRootID";
+    private static final String TAG = "模块一根标签页面";
+
+    public static final String SU_ROOT_ID = "suRootID";
     private static final String ARG_PARAM = "param";
     private String mParam;
-    public static int mCurrentSuRootID;
-    public static String mCurrentParam;
 
     private View rootView;
 
     private FragmentManager fm;
 
     @ViewInject(R.id.ll_mdrp_container)
-    private LinearLayout ll_mdrp_container;
+    private LinearLayout llMdrpContainer;
 
     /**
      * 最上层跟跟标签ID
      */
     private int suRootID;
+    private static int STATE_CODE_SUCCESS= 200;
 
     @Override
     public Subject setSubject() {
@@ -59,24 +64,20 @@ public class ModularTwo_RootPageModeFragment extends BaseModeFragment<MDetalRoot
 
     public static ModularTwo_RootPageModeFragment newInstance(int suRootID, String param) {
         ModularTwo_RootPageModeFragment fragment = new ModularTwo_RootPageModeFragment();
-//        Bundle args = new Bundle();
-//        args.putInt(SU_ROOTID, suRootID);
-//        args.putString(ARG_PARAM, param);
-//        fragment.setArguments(args);
-        mCurrentSuRootID = suRootID;
-        mCurrentParam = param;
+        Bundle args = new Bundle();
+        args.putInt(SU_ROOT_ID, suRootID);
+        args.putString(ARG_PARAM, param);
+        fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        if (getArguments() != null) {
-//            suRootID = getArguments().getInt(SU_ROOTID);
-//            mParam = getArguments().getString(ARG_PARAM);
-//        }
-        suRootID = mCurrentSuRootID;
-        mParam = mCurrentParam;
+        if (getArguments() != null) {
+            suRootID = getArguments().getInt(SU_ROOT_ID);
+            mParam = getArguments().getString(ARG_PARAM);
+        }
     }
 
     @Override
@@ -101,7 +102,7 @@ public class ModularTwo_RootPageModeFragment extends BaseModeFragment<MDetalRoot
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(final MDetalRootPageRequestResult entity) {
-        if (entity != null && entity.stateCode == 200) {
+        if (entity != null && entity.stateCode == STATE_CODE_SUCCESS) {
             act.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -115,42 +116,52 @@ public class ModularTwo_RootPageModeFragment extends BaseModeFragment<MDetalRoot
      * 绑定数据
      */
     private void bindData(MDetalRootPageRequestResult result) {
-        ArrayList<MDetalUnitEntity> datas = result.datas;
+        ArrayList<MDetailUnitEntity> datas = result.datas;
         int size = datas.size();
         Random random = new Random();
         for (int i = 0; i < size; i++) {
             Fragment fragment = null;
-            MDetalUnitEntity entity = datas.get(i);
+            MDetailUnitEntity entity = datas.get(i);
             switch (entity.type) {
-                case "banner"://标题栏
+                //标题栏
+                case "banner":
                     fragment = ModularTwo_UnitBannerModeFragment.newInstance(entity.config);
                     break;
 
-                case "chart"://曲线图表/柱状图(竖)
+                //曲线图表/柱状图(竖)
+                case "chart":
                     fragment = ModularTwo_UnitCurveChartModeFragment.newInstance(entity.config);
                     break;
 
-                case "info"://一般标签(附标题)
+                //一般标签(附标题)
+                case "info":
                     try {
                         View view = LayoutInflater.from(ctx).inflate(R.layout.item_info_layout, null);
                         TextView tv = (TextView) view.findViewById(R.id.tv_info);
                         String info = new JSONObject(entity.config).getString("title");
                         RichText.from(info).into(tv);
-                        ll_mdrp_container.addView(view);
+                        llMdrpContainer.addView(view);
                     } catch (Exception e) {
+                        Log.e(TAG,"json 创建失败");
                     }
                     break;
 
-                case "single_value"://单值组件
+                //单值组件
+                case "single_value":
                     fragment = ModularTwo_UnitSingleValueModeFragment.newInstance(entity.config);
+                    new SingleValuePresenter(SingleValueImpl.getInstance(),(ModularTwo_UnitSingleValueModeFragment)fragment);
                     break;
 
-                case "bargraph"://条状图(横)
+                //条状图(横)
+                case "bargraph":
                     fragment = ModularTwo_UnitPlusMinusChartModeFragment.newInstance(entity.config);
                     break;
 
-                case "tables"://类Excel冻结横竖首列表格
+                //类Excel冻结横竖首列表格
+                case "tables":
                     fragment = ModularTwo_UnitTablesModeFragment.newInstance(suRootID, entity.config);
+                    break;
+                default:
                     break;
             }
 
@@ -163,7 +174,7 @@ public class ModularTwo_RootPageModeFragment extends BaseModeFragment<MDetalRoot
                 layout.setLayoutParams(params);
                 int id = random.nextInt(Integer.MAX_VALUE);
                 layout.setId(id);
-                ll_mdrp_container.addView(layout);
+                llMdrpContainer.addView(layout);
                 FragmentTransaction ft = fm.beginTransaction();
                 ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
                 ft.replace(layout.getId(), fragment);

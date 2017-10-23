@@ -4,8 +4,8 @@ import android.content.Context;
 import android.util.Log;
 
 import com.alibaba.fastjson.JSONReader;
-import com.intfocus.yhdev.subject.template_v1.entity.MDetalUnitEntity;
-import com.intfocus.yhdev.subject.template_v1.entity.MererDetalEntity;
+import com.intfocus.yhdev.subject.template_v1.entity.MDetailUnitEntity;
+import com.intfocus.yhdev.subject.template_v1.entity.MererDetailEntity;
 import com.intfocus.yhdev.subject.template_v1.entity.msg.MDetalRootPageRequestResult;
 import com.zbl.lib.baseframe.core.AbstractMode;
 import com.zbl.lib.baseframe.utils.TimeUtil;
@@ -25,7 +25,7 @@ public class ModularTwo_UnitTablesParentMode extends AbstractMode {
 
     Context ctx;
 
-    MererDetalEntity entity;
+    MererDetailEntity entity;
 
     public ModularTwo_UnitTablesParentMode(Context ctx) {
         this.ctx = ctx;
@@ -35,7 +35,7 @@ public class ModularTwo_UnitTablesParentMode extends AbstractMode {
     public void requestData() {
     }
 
-    public ArrayList<MDetalUnitEntity> datas;
+    public ArrayList<MDetailUnitEntity> datas;
 
     /**
      * 解析数据
@@ -53,7 +53,7 @@ public class ModularTwo_UnitTablesParentMode extends AbstractMode {
                     JSONReader reader = new JSONReader(isr);
                     reader.startArray();
                     while (reader.hasNext()) {
-                        MDetalUnitEntity entity = new MDetalUnitEntity();
+                        MDetailUnitEntity entity = new MDetailUnitEntity();
                         reader.startObject();
                         while (reader.hasNext()) {
                             String key = reader.readString();

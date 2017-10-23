@@ -12,14 +12,12 @@ import android.provider.Settings
 import android.support.v4.app.FragmentActivity
 import android.support.v4.content.ContextCompat
 import android.support.v4.view.ViewPager
-import android.util.Log
 import android.view.View
 import com.google.gson.Gson
 import com.intfocus.yhdev.R
 import com.intfocus.yhdev.YHApplication
 import com.intfocus.yhdev.bean.DashboardItemBean
 import com.intfocus.yhdev.dashboard.kpi.bean.NoticeBoardRequest
-import com.intfocus.yhdev.dashboard.mine.PassWordAlterActivity
 import com.intfocus.yhdev.dashboard.mine.bean.PushMessageBean
 import com.intfocus.yhdev.data.response.scanner.StoreItem
 import com.intfocus.yhdev.data.response.scanner.StoreListResult
@@ -28,7 +26,10 @@ import com.intfocus.yhdev.net.ApiException
 import com.intfocus.yhdev.net.CodeHandledSubscriber
 import com.intfocus.yhdev.net.RetrofitUtil
 import com.intfocus.yhdev.scanner.BarCodeScannerActivity
-import com.intfocus.yhdev.subject.*
+import com.intfocus.yhdev.subject.SubjectActivity
+import com.intfocus.yhdev.subject.TableActivity
+import com.intfocus.yhdev.subject.WebApplicationActivity
+import com.intfocus.yhdev.subject.WebApplicationActivityV6
 import com.intfocus.yhdev.subject.metrics.HomeTricsActivity
 import com.intfocus.yhdev.subject.template_v1.ModularTwo_Mode_Activity
 import com.intfocus.yhdev.util.*
@@ -258,7 +259,7 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
             }
         }
         refreshTabView()
-        mSharedPreferences!!.edit().putInt("LastTab", mViewPager!!.currentItem).commit()
+        mSharedPreferences!!.edit().putInt("LastTab", mViewPager!!.currentItem).apply()
     }
 
     /*
@@ -292,9 +293,9 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
 
                     override fun onBusinessNext(data: StoreListResult) {
                         if (data.data != null && data.data!!.isNotEmpty()) {
-                            var mStoreInfoSP = getSharedPreferences("StoreInfo", Context.MODE_PRIVATE)
+                            val mStoreInfoSP = getSharedPreferences("StoreInfo", Context.MODE_PRIVATE)
                             if ("" == mStoreInfoSP.getString(URLs.kStore, "")) {
-                                var mStoreInfoSPEdit = mStoreInfoSP.edit()
+                                val mStoreInfoSPEdit = mStoreInfoSP.edit()
                                 mStoreInfoSPEdit.putString(URLs.kStore, data.data!![0].name)
                                 mStoreInfoSPEdit.putString(URLs.kStoreIds, data.data!![0].id)
                                 mStoreInfoSPEdit.commit()
@@ -344,12 +345,12 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
     private fun pageLink(objTitle: String, link: String, objectId: String, templateId: String, objectType: String) {
         try {
             val groupID = getSharedPreferences("UserBean", Context.MODE_PRIVATE).getString(URLs.kGroupId, "0")
-            var urlString: String
+            val urlString: String
             val intent: Intent
 
             when (templateId) {
                 "1" -> {
-                    val intent = Intent(this, ModularTwo_Mode_Activity::class.java)
+                    intent = Intent(this, ModularTwo_Mode_Activity::class.java)
                     intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
                     intent.putExtra(URLs.kBannerName, objTitle)
                     intent.putExtra(URLs.kObjectId, objectId)
@@ -408,7 +409,7 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
                     startActivity(intent)
                 }
                 "6" -> {
-                    val intent = Intent(this, WebApplicationActivityV6::class.java)
+                    intent = Intent(this, WebApplicationActivityV6::class.java)
                     intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
                     intent.putExtra(URLs.kBannerName, objTitle)
                     intent.putExtra(URLs.kLink, link)
@@ -418,7 +419,7 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
                     startActivity(intent)
                 }
                 "-1" -> {
-                    val intent = Intent(this, WebApplicationActivity::class.java)
+                    intent = Intent(this, WebApplicationActivity::class.java)
                     intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
                     intent.putExtra(URLs.kBannerName, objTitle)
                     intent.putExtra(URLs.kLink, link)
@@ -433,8 +434,8 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
             e.printStackTrace()
         }
 
-        var logParams = JSONObject()
-        if ("-1".equals(templateId)) {
+        val logParams = JSONObject()
+        if ("-1" == templateId) {
             logParams.put(URLs.kAction, "点击/" + objectTypeName[objectType.toInt() - 1] + "/链接")
         } else {
             logParams.put(URLs.kAction, "点击/" + objectTypeName[objectType.toInt() - 1] + "/报表")

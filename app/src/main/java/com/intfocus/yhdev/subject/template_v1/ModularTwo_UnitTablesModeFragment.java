@@ -15,11 +15,10 @@ import android.widget.RadioGroup;
 import com.intfocus.yhdev.R;
 import com.intfocus.yhdev.base.BaseModeFragment;
 import com.intfocus.yhdev.dashboard.mine.adapter.TableTitleAdapter;
-import com.intfocus.yhdev.subject.template_v1.entity.MDetalUnitEntity;
+import com.intfocus.yhdev.subject.template_v1.entity.MDetailUnitEntity;
 import com.intfocus.yhdev.subject.template_v1.entity.msg.MDetalRootPageRequestResult;
 import com.intfocus.yhdev.subject.template_v1.mode.ModularTwo_UnitTablesParentMode;
 import com.zbl.lib.baseframe.core.Subject;
-import com.zbl.lib.baseframe.utils.TimeUtil;
 import com.zbl.lib.baseframe.utils.ToastUtil;
 
 import org.xutils.view.annotation.ViewInject;
@@ -34,10 +33,9 @@ import java.util.Random;
  */
 public class ModularTwo_UnitTablesModeFragment extends BaseModeFragment<ModularTwo_UnitTablesParentMode> implements TableTitleAdapter.NoticeItemListener {
     private String fragmentTag;
-    private static final String ARG_PARAM1 = "TablesParam";
+    private static final String ARG_PARAM = "TablesParam";
+    private static final String SU_ROOT_ID = "SuRootId";
 
-    public static String mCurrentData;
-    public static int mCurrentSuRootID;
     private String mParam;
 
     private View rootView;
@@ -66,17 +64,15 @@ public class ModularTwo_UnitTablesModeFragment extends BaseModeFragment<ModularT
     @ViewInject(R.id.recycler_view)
     private RecyclerView recyclerView;
     private TableTitleAdapter adapter;
-    private List<MDetalUnitEntity> datas;
+    private List<MDetailUnitEntity> datas;
 
 
     public static ModularTwo_UnitTablesModeFragment newInstance(int suRootID, String param) {
         ModularTwo_UnitTablesModeFragment fragment = new ModularTwo_UnitTablesModeFragment();
-//        Bundle args = new Bundle();
-//        args.putInt(SU_ROOTID, suRootID);
-        //args.putString(ARG_PARAM1, param);
-//        fragment.setArguments(args);
-        mCurrentData = param;
-        mCurrentSuRootID = suRootID;
+        Bundle args = new Bundle();
+        args.putInt(SU_ROOT_ID, suRootID);
+        args.putString(ARG_PARAM, param);
+        fragment.setArguments(args);
         return fragment;
     }
 
@@ -88,12 +84,15 @@ public class ModularTwo_UnitTablesModeFragment extends BaseModeFragment<ModularT
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            suRootID = getArguments().getInt(SU_ROOT_ID);
+            mParam = getArguments().getString(ARG_PARAM);
+        }
+
         Random random = new Random();
-        int cuttentFTID = random.nextInt(Integer.MAX_VALUE);
-        fragmentTag = "android:switcher:" + cuttentFTID + ":";
+        int currentFTID = random.nextInt(Integer.MAX_VALUE);
+        fragmentTag = "android:switcher:" + currentFTID + ":";
         fm = getChildFragmentManager();
-        mParam = mCurrentData;
-        suRootID = mCurrentSuRootID;
     }
 
     @Override
@@ -142,6 +141,8 @@ public class ModularTwo_UnitTablesModeFragment extends BaseModeFragment<ModularT
 
     /**
      * 切换页面的重载，优化了fragment的切换
+     *
+     * @param checkId 选中的下标
      */
     public void switchFragment(int checkId) {
 
@@ -165,6 +166,7 @@ public class ModularTwo_UnitTablesModeFragment extends BaseModeFragment<ModularT
         FragmentTransaction ft = fm.beginTransaction();
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
 
+        // 选中的页面 添加加载过
         if (!toFragment.isAdded()) {
             // 隐藏当前的fragment，add下一个到Activity中
             if (currFragment == null) {
@@ -186,6 +188,11 @@ public class ModularTwo_UnitTablesModeFragment extends BaseModeFragment<ModularT
         currFragment = toFragment;
     }
 
+    /**
+     * 表格根页签点击事件回调
+     *
+     * @param position 选中的下标
+     */
     @Override
     public void itemClick(int position) {
         switchFragment(position);

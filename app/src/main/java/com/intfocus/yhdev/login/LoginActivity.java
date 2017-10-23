@@ -64,7 +64,15 @@ import static com.intfocus.yhdev.util.K.kUserName;
 import static com.intfocus.yhdev.util.URLs.kGroupId;
 import static com.intfocus.yhdev.util.URLs.kRoleId;
 import static com.intfocus.yhdev.util.URLs.kUserNum;
-
+/**
+ * ****************************************************
+ * @author: jameswong
+ * created on: 17/10/19 下午5:43
+ * e-mail: PassionateWsj@outlook.com
+ * name:
+ * desc:
+ * ****************************************************
+ */
 public class LoginActivity extends FragmentActivity {
     public String kFromActivity = "from_activity";         // APP 启动标识
     public String kSuccess = "success";                    // 用户登录验证结果
@@ -120,6 +128,9 @@ public class LoginActivity extends FragmentActivity {
         usernameEditText.setText(mUserSP.getString("user_num", ""));
     }
 
+    /**
+     * 设置定位回调监听
+     */
     private void getLocation() {
         MapUtil.getInstance(this).getAMapLocation(new AMapLocationListener() {
             @Override

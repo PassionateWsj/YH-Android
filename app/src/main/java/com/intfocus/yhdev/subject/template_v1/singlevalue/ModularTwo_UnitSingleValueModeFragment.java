@@ -1,17 +1,18 @@
-package com.intfocus.yhdev.subject.template_v1;
+package com.intfocus.yhdev.subject.template_v1.singlevalue;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.alibaba.fastjson.JSON;
 import com.intfocus.yhdev.R;
 import com.intfocus.yhdev.base.BaseModeFragment;
 import com.intfocus.yhdev.subject.template_v1.entity.MDRPUnitSingleValue;
 import com.intfocus.yhdev.view.RateCursor;
 
+import org.jetbrains.annotations.NotNull;
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
@@ -21,10 +22,10 @@ import java.text.DecimalFormat;
 /**
  * 单值组件
  */
-public class ModularTwo_UnitSingleValueModeFragment extends BaseModeFragment {
-    private static final String ARG_PARAM1 = "SingleValueParam";
-    public static String mCurrentParam;
-    private String mParam1;
+public class ModularTwo_UnitSingleValueModeFragment extends BaseModeFragment implements SingleValueContract.View {
+    @NonNull
+    private static final String ARG_PARAM = "SingleValueParam";
+    private String mParam;
     private int showCount = 0;
 
     private View rootView;
@@ -49,26 +50,26 @@ public class ModularTwo_UnitSingleValueModeFragment extends BaseModeFragment {
     private String diffRate;
     private float mainValue;
     private boolean isSwitch;
+    private SingleValueContract.Presenter mPresenter;
 
-    public ModularTwo_UnitSingleValueModeFragment() {
-    }
-
-    public static ModularTwo_UnitSingleValueModeFragment newInstance(String param1) {
+    public static ModularTwo_UnitSingleValueModeFragment newInstance(String param) {
         ModularTwo_UnitSingleValueModeFragment fragment = new ModularTwo_UnitSingleValueModeFragment();
-//        Bundle args = new Bundle();
-//        args.putString(ARG_PARAM1, param1);
-//        fragment.setArguments(args);
-        mCurrentParam = param1;
+        Bundle args = new Bundle();
+        args.putString(ARG_PARAM, param);
+        fragment.setArguments(args);
         return fragment;
     }
 
     @Override
+    public void setPresenter(@NonNull SingleValueContract.Presenter presenter) {
+        mPresenter = presenter;
+    }
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        if (getArguments() != null) {
-//            mParam1 = getArguments().getString(ARG_PARAM1);
-//        }
-        mParam1 = mCurrentParam;
+        if (getArguments() != null) {
+            mParam = getArguments().getString(ARG_PARAM);
+        }
     }
 
     @Override
@@ -77,51 +78,9 @@ public class ModularTwo_UnitSingleValueModeFragment extends BaseModeFragment {
         if (rootView == null) {
             rootView = inflater.inflate(R.layout.fragment_singlevalue, container, false);
             x.view().inject(this, rootView);
-            bindData();
+            mPresenter.loadData(mParam);
         }
         return rootView;
-    }
-
-    private void bindData() {
-        coCursor = getResources().getIntArray(R.array.co_cursor);
-        DecimalFormat df = new DecimalFormat("###,###.##");
-        MDRPUnitSingleValue valueData = JSON.parseObject(mParam1, MDRPUnitSingleValue.class);
-        int state = valueData.state.color;
-        int color = coCursor[state];
-
-        tv_d1name.setText(valueData.main_data.name);
-        tv_d2name.setText(valueData.sub_data.name);
-        mainValue = Float.parseFloat(valueData.main_data.data.replace("%", ""));
-        tv_d1.setText(df.format(mainValue));
-        float subdata = Float.parseFloat(valueData.sub_data.data.replace("%", ""));
-        tv_d2.setText(df.format(subdata));
-
-        tv_d1.setTextColor(color);
-        tv_rate.setTextColor(color);
-        float rate = (mainValue - subdata) / subdata;
-        float diff = mainValue - subdata;
-        diffValue = df.format(diff);
-        diffRate = new DecimalFormat(".##%").format(rate);
-        tv_rate.setText(mainValue + "");
-
-        float absmv = Math.abs(rate);
-        boolean isPlus;
-//        int cursorIndex;
-        if (absmv <= 0.1f) {
-//            cursorIndex = 1;
-            if (rate > 0) {
-                isPlus = false;
-            } else {
-                isPlus = true;
-            }
-        } else if (rate < -0.1f) {
-//            cursorIndex = 0;
-            isPlus = false;
-        } else {
-//            cursorIndex = 2;
-            isPlus = true;
-        }
-        rateCursor.setCursorState(state, isPlus);
     }
 
     @Event(R.id.tv_singlevalue_ratio)
@@ -146,5 +105,53 @@ public class ModularTwo_UnitSingleValueModeFragment extends BaseModeFragment {
         }
 
         showCount++;
+    }
+
+    @Override
+    public void showData(@NotNull MDRPUnitSingleValue data) {
+        coCursor = getResources().getIntArray(R.array.co_cursor);
+        DecimalFormat df = new DecimalFormat("###,###.##");
+        int state = data.state.color;
+        int color = coCursor[state];
+
+        tv_d1name.setText(data.main_data.name);
+        tv_d2name.setText(data.sub_data.name);
+        mainValue = Float.parseFloat(data.main_data.data.replace("%", ""));
+        tv_d1.setText(df.format(mainValue));
+        float subData = Float.parseFloat(data.sub_data.data.replace("%", ""));
+        tv_d2.setText(df.format(subData));
+
+        tv_d1.setTextColor(color);
+        tv_rate.setTextColor(color);
+        float rate = (mainValue - subData) / subData;
+        float diff = mainValue - subData;
+        diffValue = df.format(diff);
+        diffRate = new DecimalFormat(".##%").format(rate);
+        tv_rate.setText(mainValue + "");
+
+        float absmv = Math.abs(rate);
+        boolean isPlus;
+//        int cursorIndex;
+        if (absmv <= 0.1f) {
+//            cursorIndex = 1;
+//            if (rate > 0) {
+//                isPlus = false;
+//            } else {
+//                isPlus = true;
+//            }
+            isPlus = rate <= 0;
+        } else if (rate < -0.1f) {
+//            cursorIndex = 0;
+            isPlus = false;
+        } else {
+//            cursorIndex = 2;
+            isPlus = true;
+        }
+        rateCursor.setCursorState(state, isPlus);
+    }
+
+    @Override
+    public SingleValueContract.Presenter getPresenter() {
+        return null;
     }
 }

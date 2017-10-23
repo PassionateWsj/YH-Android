@@ -42,12 +42,12 @@ class FeedbackActivity : AbstractActivity<IssueMode>(), View.OnClickListener, Fe
     }
 
     var mSelected: List<Uri>? = null
-    val screenshotAdapter: FeedbackPageScreenshotAdapter = FeedbackPageScreenshotAdapter(this, this)
+    private val screenshotAdapter: FeedbackPageScreenshotAdapter = FeedbackPageScreenshotAdapter(this, this)
 
     lateinit var mUserSP: SharedPreferences
     lateinit var mProgressDialog: ProgressDialog
 
-    val issueInfo = IssueCommitInfo()
+    private val issueInfo = IssueCommitInfo()
 
     override fun setSubject(): Subject {
         return IssueMode(this)
@@ -98,7 +98,7 @@ class FeedbackActivity : AbstractActivity<IssueMode>(), View.OnClickListener, Fe
         }
     }
 
-    fun commitIssue() {
+    private fun commitIssue() {
         mProgressDialog = ProgressDialog.show(this, "稍等", "正在提交...")
         issueInfo.issue_content = et_feedback_suggestion.text.toString()
         issueInfo.app_version = mUserSP.getString(K.kAppVersion, "2.0+")

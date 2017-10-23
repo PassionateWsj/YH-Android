@@ -9,8 +9,13 @@ import com.amap.api.location.AMapLocationListener;
 import static com.intfocus.yhdev.constant.Constants.GAODE_MAP_APP_KEY;
 
 /**
- * @author liuruilin
- * @date 2017/10/17
+ * ****************************************************
+ * @author jameswong
+ * created on: 17/10/19 下午5:43
+ * e-mail: PassionateWsj@outlook.com
+ * name:
+ * desc:
+ * ****************************************************
  */
 
 public class MapUtil {

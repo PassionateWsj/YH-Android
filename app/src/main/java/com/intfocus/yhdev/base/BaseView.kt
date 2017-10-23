@@ -1,16 +1,14 @@
-package com.intfocus.yhdev.constant;
+package com.intfocus.yhdev.base
 
 /**
  * ****************************************************
- * @author JamesWong
- * created on: 17/08/01 上午11:19
+ * @author jameswong
+ * created on: 17/10/20 下午3:13
  * e-mail: PassionateWsj@outlook.com
  * name:
  * desc:
  * ****************************************************
  */
-
-public enum ToastColor {
-    SUCCESS,
-    FAILURE
+interface BaseView<T> {
+     var presenter: T
 }
