@@ -31,15 +31,15 @@ public class ModularTwo_UnitSingleValueModeFragment extends BaseModeFragment imp
     private View rootView;
 
     @ViewInject(R.id.tv_singlevalue_d1)
-    private TextView tv_d1;
+    private TextView tvD1;
     @ViewInject(R.id.tv_singlevalue_d1name)
-    private TextView tv_d1name;
+    private TextView tvD1name;
     @ViewInject(R.id.tv_singlevalue_d2)
-    private TextView tv_d2;
+    private TextView tvD2;
     @ViewInject(R.id.tv_singlevalue_d2name)
-    private TextView tv_d2name;
+    private TextView tvD2name;
     @ViewInject(R.id.tv_singlevalue_ratio)
-    private TextView tv_rate;
+    private TextView tvRate;
 
     @ViewInject(R.id.img_singlevalue_ratiocursor)
     RateCursor rateCursor;
@@ -87,20 +87,20 @@ public class ModularTwo_UnitSingleValueModeFragment extends BaseModeFragment imp
     private void onViewClick(View view) {
         switch (showCount) {
             case 0:
-                tv_rate.setText(diffValue);
+                tvRate.setText(diffValue);
                 break;
 
             case 1:
-                tv_rate.setText(diffRate);
+                tvRate.setText(diffRate);
                 break;
 
             case 2:
-                tv_rate.setText(mainValue + "");
+                tvRate.setText(mainValue + "");
                 showCount = -1;
                 break;
 
             default:
-                tv_rate.setText(mainValue + "");
+                tvRate.setText(mainValue + "");
                 break;
         }
 
@@ -114,20 +114,20 @@ public class ModularTwo_UnitSingleValueModeFragment extends BaseModeFragment imp
         int state = data.state.color;
         int color = coCursor[state];
 
-        tv_d1name.setText(data.main_data.name);
-        tv_d2name.setText(data.sub_data.name);
+        tvD1name.setText(data.main_data.name);
+        tvD2name.setText(data.sub_data.name);
         mainValue = Float.parseFloat(data.main_data.data.replace("%", ""));
-        tv_d1.setText(df.format(mainValue));
+        tvD1.setText(df.format(mainValue));
         float subData = Float.parseFloat(data.sub_data.data.replace("%", ""));
-        tv_d2.setText(df.format(subData));
+        tvD2.setText(df.format(subData));
 
-        tv_d1.setTextColor(color);
-        tv_rate.setTextColor(color);
+        tvD1.setTextColor(color);
+        tvRate.setTextColor(color);
         float rate = (mainValue - subData) / subData;
         float diff = mainValue - subData;
         diffValue = df.format(diff);
         diffRate = new DecimalFormat(".##%").format(rate);
-        tv_rate.setText(mainValue + "");
+        tvRate.setText(mainValue + "");
 
         float absmv = Math.abs(rate);
         boolean isPlus;
