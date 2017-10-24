@@ -33,8 +33,7 @@ import java.util.LinkedList;
  * 正负图表模块
  */
 public class ModularTwo_UnitPlusMinusChartModeFragment extends BaseModeFragment implements AdapterView.OnItemClickListener {
-    private static final String ARG_PARAM1 = "param1";
-    public static String mCurrentParam;
+    private static final String ARG_PARAM = "param1";
     private View rootView;
 
     @ViewInject(R.id.lv_MDRPUnit_PlusMinusChart)
@@ -51,7 +50,7 @@ public class ModularTwo_UnitPlusMinusChartModeFragment extends BaseModeFragment 
 
     private PlusMinusChart pmChart;
 
-    private String mParam1;
+    private String mParam;
     private MDRPUnitBargraph entityData;
     private LinkedList<BargraphComparator> lt_data;
     private BargraphNameComparator nameComparator;
@@ -59,20 +58,18 @@ public class ModularTwo_UnitPlusMinusChartModeFragment extends BaseModeFragment 
 
     public static ModularTwo_UnitPlusMinusChartModeFragment newInstance(String param) {
         ModularTwo_UnitPlusMinusChartModeFragment fragment = new ModularTwo_UnitPlusMinusChartModeFragment();
-//        Bundle args = new Bundle();
-//        args.putString(ARG_PARAM1, param);
-//        fragment.setArguments(args);
-        mCurrentParam = param;
+        Bundle args = new Bundle();
+        args.putString(ARG_PARAM, param);
+        fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        if (getArguments() != null) {
-//            mParam1 = getArguments().getString(ARG_PARAM1);
-//        }
-        mParam1 = mCurrentParam;
+        if (getArguments() != null) {
+            mParam = getArguments().getString(ARG_PARAM);
+        }
     }
 
     @Override
@@ -128,7 +125,7 @@ public class ModularTwo_UnitPlusMinusChartModeFragment extends BaseModeFragment 
 
     private void bindData() {
         lt_data.clear();
-        entityData = JSON.parseObject(mParam1, MDRPUnitBargraph.class);
+        entityData = JSON.parseObject(mParam, MDRPUnitBargraph.class);
         String[] data_name = entityData.xAxis.data;
         ArrayList<MDRPUnitBargraph.Series.Data> data_value = entityData.series.data;
         for (int i = 0; i < data_name.length; i++) {

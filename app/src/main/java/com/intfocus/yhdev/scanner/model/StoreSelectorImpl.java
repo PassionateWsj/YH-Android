@@ -16,7 +16,7 @@ import rx.schedulers.Schedulers;
 
 /**
  * ****************************************************
- * author: JamesWong
+ * @author JamesWong
  * created on: 17/08/22 上午10:00
  * e-mail: PassionateWsj@outlook.com
  * name:
@@ -37,6 +37,8 @@ public class StoreSelectorImpl implements StoreSelectorModel {
                         List<StoreItem> storeItems;
                         if ("".equals(keyWord)) {
                             storeItems = storeItemDao.queryForAll();
+                        } else if (keyWord.matches("^\\d+$")) {
+                            storeItems = storeItemDao.queryBuilder().where().like("obj_id", "%" + keyWord + "%").query();
                         } else {
                             storeItems = storeItemDao.queryBuilder().where().like("name", "%" + keyWord + "%").query();
                         }

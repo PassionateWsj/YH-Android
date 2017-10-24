@@ -20,7 +20,7 @@ import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
 /**
- * 子Table页面
+ * 模板一弹出显示的子Table页面
  */
 public class ModularTwo_SubTableActivity extends AppCompatActivity {
 

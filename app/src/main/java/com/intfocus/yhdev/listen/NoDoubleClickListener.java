@@ -6,7 +6,7 @@ import java.util.Calendar;
 
 /**
  * ****************************************************
- * author: JamesWong
+ * @author JamesWong
  * created on: 17/08/17 上午11:13
  * e-mail: PassionateWsj@outlook.com
  * name:

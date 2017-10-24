@@ -1,7 +1,6 @@
 package com.intfocus.yhdev.scanner.adapter;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,14 +15,13 @@ import java.util.List;
 
 /**
  * ****************************************************
- * author: JamesWong
+ * @author JamesWong
  * created on: 17/08/22 上午10:53
  * e-mail: PassionateWsj@outlook.com
  * name:
  * desc:
  * ****************************************************
  */
-
 
 public class SelectorListAdapter extends BaseAdapter {
     private Context mContext;
@@ -59,8 +57,7 @@ public class SelectorListAdapter extends BaseAdapter {
             holder = (SelectorListHolder) convertView.getTag();
         }
         holder.reportSelectorItem.setText(items.get(position).getName());
-        holder.reportSelectorItem.setTextColor(mContext.getResources().getColor(R.color.black));
-        holder.reportSelectorItem.setBackgroundColor(Color.WHITE);
+        holder.reportSelectorItemId.setText(items.get(position).getId());
         return convertView;
     }
 
@@ -79,9 +76,11 @@ public class SelectorListAdapter extends BaseAdapter {
 
     class SelectorListHolder {
         private TextView reportSelectorItem;
+        private TextView reportSelectorItemId;
 
         public SelectorListHolder(View convertView) {
-            reportSelectorItem = (TextView) convertView.findViewById(R.id.reportSelectorItem);
+            reportSelectorItem = (TextView) convertView.findViewById(R.id.report_selector_item);
+            reportSelectorItemId = (TextView) convertView.findViewById(R.id.report_selector_item_id);
         }
     }
 }

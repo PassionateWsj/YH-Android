@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.support.annotation.NonNull;
 import android.support.v4.util.ArrayMap;
 import android.support.v4.util.SimpleArrayMap;
 import android.view.View;
@@ -21,22 +22,22 @@ import java.util.ArrayList;
  */
 public class TableValueView extends View {
 
-    private Paint deviderPaint;
+    private Paint dividerPaint;
     private Paint textPaint;
     private int[] colors = Colors.INSTANCE.getColorsRGY();
 
-    public int deviderHeight = 1;
+    public int dividerHeight = 1;
     public int textSize = 14;
     public int textColor = 0x73737373;
-    public int deviderColor = 0x73737373;
+    public int dividerColor = 0x73737373;
 
     public void setItemHeight(int itemHeight) {
         this.itemHeight = itemHeight;
     }
 
-    public void setHeaderLenghts(ArrayList<Integer> headerLenghts) {
+    public void setHeaderLengths(ArrayList<Integer> headerLengths) {
         this.headerLenghts.clear();
-        this.headerLenghts.addAll(headerLenghts);
+        this.headerLenghts.addAll(headerLengths);
     }
 
     public void setTableValues(ArrayMap<Integer, String[]> lables) {
@@ -44,9 +45,9 @@ public class TableValueView extends View {
         tableValues.putAll((SimpleArrayMap<? extends Integer, ? extends String[]>) lables);
     }
 
-    public void setDeviderHeight(int deviderHeight) {
-        this.deviderHeight = deviderHeight;
-        deviderPaint.setStrokeWidth(deviderHeight);
+    public void setDividerHeight(int dividerHeight) {
+        this.dividerHeight = dividerHeight;
+        dividerPaint.setStrokeWidth(dividerHeight);
     }
 
     public void setTextColor(int textColor) {
@@ -55,9 +56,9 @@ public class TableValueView extends View {
         invalidate();
     }
 
-    public void setDeviderColor(int deviderColor) {
-        this.deviderColor = deviderColor;
-        deviderPaint.setColor(deviderColor);
+    public void setDividerColor(int dividerColor) {
+        this.dividerColor = dividerColor;
+        dividerPaint.setColor(dividerColor);
     }
 
     public void setTextSize(int textSize) {
@@ -72,14 +73,14 @@ public class TableValueView extends View {
     }
 
     private void init() {
-        deviderPaint = new Paint();
-        deviderPaint.setStyle(Paint.Style.FILL);
-        deviderPaint.setAntiAlias(true);
-        deviderPaint.setDither(true);
-        deviderPaint.setColor(deviderColor);
-        deviderPaint.setStrokeWidth(1f);
+        dividerPaint = new Paint();
+        dividerPaint.setStyle(Paint.Style.FILL);
+        dividerPaint.setAntiAlias(true);
+        dividerPaint.setDither(true);
+        dividerPaint.setColor(dividerColor);
+        dividerPaint.setStrokeWidth(1f);
 
-        textPaint = new Paint(deviderPaint);
+        textPaint = new Paint(dividerPaint);
         textPaint.setTextSize(DisplayUtil.sp2px(getContext(), textSize));
         textPaint.setTextAlign(Paint.Align.RIGHT);
 //        textPaint.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
@@ -91,8 +92,8 @@ public class TableValueView extends View {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         int totalWidth = 0;
-        for (Integer headerLenght : headerLenghts) {
-            totalWidth += headerLenght;
+        for (Integer headerLength : headerLenghts) {
+            totalWidth += headerLength;
         }
         setMeasuredDimension(totalWidth, tableValues.size() * itemHeight);
     }
@@ -114,34 +115,38 @@ public class TableValueView extends View {
             int nlSize = tableValues.size();
             float endX = getWidth();
             for (int i = 0; i < nlSize; i++) {
-                float starty = itemHeight * (i + deviderHeight / 2) + (i + deviderHeight / 2);
-                canvas.drawLine(0, starty, endX, starty, deviderPaint);
+                float startY = itemHeight * (i + dividerHeight / 2) + (i + dividerHeight / 2);
+                canvas.drawLine(0, startY, endX, startY, dividerPaint);
             }
 
             for (int i = 0; i < nlSize; i++) {
-                String[] tabrowValues = tableValues.get(i);
+                String[] tabRowValues = tableValues.get(i);
                 int headerSize = headerLenghts.size();
                 Paint.FontMetrics fontMetrics = textPaint.getFontMetrics();
-                float y = (int) (YAxesCenterPopint.get(i) - fontMetrics.top / 2 - fontMetrics.bottom / 2);
+                float y = (int) (YAxesCenterPoint.get(i) - fontMetrics.top / 2 - fontMetrics.bottom / 2);
                 for (int n = 0; n < headerSize; n++) {
-                    float x = XAxesCenterPopint.get(n);
-                    JSONObject rowData = new JSONObject(tabrowValues[n + 1]);
+                    float x = XAxesCenterPoint.get(n);
+                    JSONObject rowData = new JSONObject(tabRowValues[n + 1]);
                     if (!"-1".equals(rowData.getString("color"))) {
                         textPaint.setColor(colors[Integer.parseInt(rowData.getString("color"))]);
                     }
-                    String value = rowData.getString("value");
-                    if (value.contains(".") && !value.contains("%")) {
-                        value = (value + "00").substring(0, value.indexOf(".") + 3);
-                    } else if (value.contains("%")) {
-                        value.replace("%", "");
-                        value = (value + "00").substring(0, value.indexOf(".") + 3) + "%";
-                    }
+                    String value = formatValue(rowData.getString("value"));
                     canvas.drawText(value, x, y, textPaint);
                 }
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    @NonNull
+    private String formatValue(String value) {
+        if (value.contains(".") && !value.contains("%")) {
+            value = (value + "00").substring(0, value.indexOf(".") + 3);
+        } else if (value.contains("%")) {
+            value = (value.replace("%", "") + "00").substring(0, value.indexOf(".") + 3) + "%";
+        }
+        return value;
     }
 
     public int itemHeight;
@@ -151,19 +156,19 @@ public class TableValueView extends View {
     /**
      * X轴文本中心点
      */
-    private ArrayMap<Integer, Float> XAxesCenterPopint = new ArrayMap<>();
+    private ArrayMap<Integer, Float> XAxesCenterPoint = new ArrayMap<>();
 
     /**
      * Y轴文本中心点
      */
-    private ArrayMap<Integer, Float> YAxesCenterPopint = new ArrayMap<>();
+    private ArrayMap<Integer, Float> YAxesCenterPoint = new ArrayMap<>();
 
     /**
      * 计算XY轴中心点坐标
      */
     private void initXYAxesTVCenter() {
-        XAxesCenterPopint.clear();
-        YAxesCenterPopint.clear();
+        XAxesCenterPoint.clear();
+        YAxesCenterPoint.clear();
 
         //TODO 计算文本对应的X轴中心点
         int hlSize = headerLenghts.size();
@@ -178,7 +183,7 @@ public class TableValueView extends View {
 //            else
 //                centerPwidth = width - currValue;
             centerPwidth = width - DisplayUtil.dip2px(getContext(), 10);
-            XAxesCenterPopint.put(i, centerPwidth);
+            XAxesCenterPoint.put(i, centerPwidth);
 
             upxPointLs = width;
         }
@@ -190,7 +195,7 @@ public class TableValueView extends View {
             float height;
             height = itemHeight * (i + 1);
             float centerPHeight = height - itemHeight2;
-            YAxesCenterPopint.put(i, centerPHeight);
+            YAxesCenterPoint.put(i, centerPHeight);
         }
     }
 }

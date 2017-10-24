@@ -1,7 +1,7 @@
 package com.intfocus.yhdev.subject.template_v1.entity.msg;
 
 
-import com.intfocus.yhdev.subject.template_v1.entity.MDetalUnitEntity;
+import com.intfocus.yhdev.subject.template_v1.entity.MDetailUnitEntity;
 
 import java.util.ArrayList;
 
@@ -12,9 +12,9 @@ import java.util.ArrayList;
 public class MDetalRootPageRequestResult {
     public boolean isSuccress;
     public int stateCode;
-    public ArrayList<MDetalUnitEntity> datas;
+    public ArrayList<MDetailUnitEntity> datas;
 
-    public MDetalRootPageRequestResult(boolean isSuccress, int stateCode, ArrayList<MDetalUnitEntity> datas) {
+    public MDetalRootPageRequestResult(boolean isSuccress, int stateCode, ArrayList<MDetailUnitEntity> datas) {
         this.isSuccress = isSuccress;
         this.stateCode = stateCode;
         this.datas = datas;

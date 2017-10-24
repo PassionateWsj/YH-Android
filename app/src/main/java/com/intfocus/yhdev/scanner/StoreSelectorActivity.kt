@@ -12,7 +12,15 @@ import com.intfocus.yhdev.scanner.presenter.StoreSelectorPresenter
 import com.intfocus.yhdev.scanner.view.StoreSelectorView
 import com.intfocus.yhdev.util.URLs
 import kotlinx.android.synthetic.main.activity_store_selector.*
-
+/**
+ * ****************************************************
+ * @author jameswong
+ * created on: 17/10/19 下午5:43
+ * e-mail: PassionateWsj@outlook.com
+ * name:
+ * desc:
+ * ****************************************************
+ */
 class StoreSelectorActivity : BaseActivity(), StoreSelectorView {
     companion object {
         val RESULT_CODE_CHOOSE = 2

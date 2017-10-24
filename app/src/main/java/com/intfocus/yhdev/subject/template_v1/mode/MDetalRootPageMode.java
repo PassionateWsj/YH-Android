@@ -4,7 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.alibaba.fastjson.JSONReader;
-import com.intfocus.yhdev.subject.template_v1.entity.MDetalUnitEntity;
+import com.intfocus.yhdev.subject.template_v1.entity.MDetailUnitEntity;
 import com.intfocus.yhdev.subject.template_v1.entity.msg.MDetalRootPageRequestResult;
 import com.zbl.lib.baseframe.core.AbstractMode;
 import com.zbl.lib.baseframe.utils.TimeUtil;
@@ -25,7 +25,7 @@ public class MDetalRootPageMode extends AbstractMode {
 
     Context ctx;
 
-    public ArrayList<MDetalUnitEntity> datas;
+    public ArrayList<MDetailUnitEntity> datas;
 
     public MDetalRootPageMode(Context ctx) {
         this.ctx = ctx;
@@ -51,7 +51,7 @@ public class MDetalRootPageMode extends AbstractMode {
                     JSONReader reader = new JSONReader(isr);
                     reader.startArray();
                     while (reader.hasNext()) {
-                        MDetalUnitEntity entity = new MDetalUnitEntity();
+                        MDetailUnitEntity entity = new MDetailUnitEntity();
                         reader.startObject();
                         while (reader.hasNext()) {
                             String key = reader.readString();
