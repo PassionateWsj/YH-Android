@@ -37,7 +37,7 @@ import java.util.Random;
 /**
  * 模块一根标签页面
  */
-public class ModularTwo_RootPageModeFragment extends BaseModeFragment<MDetalRootPageMode> {
+public class ModularOneRootPageModeFragment extends BaseModeFragment<MDetalRootPageMode> {
     private static final String TAG = "模块一根标签页面";
 
     public static final String SU_ROOT_ID = "suRootID";
@@ -62,8 +62,8 @@ public class ModularTwo_RootPageModeFragment extends BaseModeFragment<MDetalRoot
         return new MDetalRootPageMode(ctx);
     }
 
-    public static ModularTwo_RootPageModeFragment newInstance(int suRootID, String param) {
-        ModularTwo_RootPageModeFragment fragment = new ModularTwo_RootPageModeFragment();
+    public static ModularOneRootPageModeFragment newInstance(int suRootID, String param) {
+        ModularOneRootPageModeFragment fragment = new ModularOneRootPageModeFragment();
         Bundle args = new Bundle();
         args.putInt(SU_ROOT_ID, suRootID);
         args.putString(ARG_PARAM, param);
@@ -125,12 +125,12 @@ public class ModularTwo_RootPageModeFragment extends BaseModeFragment<MDetalRoot
             switch (entity.type) {
                 //标题栏
                 case "banner":
-                    fragment = ModularTwo_UnitBannerModeFragment.newInstance(entity.config);
+                    fragment = ModularOneUnitBannerModeFragment.newInstance(entity.config);
                     break;
 
                 //曲线图表/柱状图(竖)
                 case "chart":
-                    fragment = ModularTwo_UnitCurveChartModeFragment.newInstance(entity.config);
+                    fragment = ModularOneUnitCurveChartModeFragment.newInstance(entity.config);
                     break;
 
                 //一般标签(附标题)
@@ -154,12 +154,12 @@ public class ModularTwo_RootPageModeFragment extends BaseModeFragment<MDetalRoot
 
                 //条状图(横)
                 case "bargraph":
-                    fragment = ModularTwo_UnitPlusMinusChartModeFragment.newInstance(entity.config);
+                    fragment = ModularOneUnitPlusMinusChartModeFragment.newInstance(entity.config);
                     break;
 
                 //类Excel冻结横竖首列表格
                 case "tables":
-                    fragment = ModularTwo_UnitTablesModeFragment.newInstance(suRootID, entity.config);
+                    fragment = ModularOneUnitTablesModeFragment.newInstance(suRootID, entity.config);
                     break;
                 default:
                     break;

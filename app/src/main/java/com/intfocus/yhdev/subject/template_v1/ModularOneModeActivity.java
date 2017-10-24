@@ -48,8 +48,8 @@ import org.xutils.x;
 /**
  * 模块一页面
  */
-public class ModularTwo_Mode_Activity extends BaseModeActivity<MeterDetailActMode> {
-    private String TAG = ModularTwo_Mode_Activity.class.getSimpleName();
+public class ModularOneModeActivity extends BaseModeActivity<MeterDetailActMode> {
+    private String TAG = ModularOneModeActivity.class.getSimpleName();
     private static final String fragmentTag = "android:switcher:" + R.layout.actvity_meter_detal + ":";
 
     @ViewInject(R.id.rootScrollView)
@@ -139,7 +139,7 @@ public class ModularTwo_Mode_Activity extends BaseModeActivity<MeterDetailActMod
         }
 
         if (toFragment == null) {
-            toFragment = ModularTwo_RootPageModeFragment.newInstance(checkId, entity.datas.data.get(checkId).parts);
+            toFragment = ModularOneRootPageModeFragment.newInstance(checkId, entity.datas.data.get(checkId).parts);
         }
 
         FragmentTransaction ft = fm.beginTransaction();

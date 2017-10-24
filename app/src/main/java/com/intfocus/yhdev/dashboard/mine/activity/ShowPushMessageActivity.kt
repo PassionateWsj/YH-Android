@@ -20,7 +20,7 @@ import com.intfocus.yhdev.subject.metrics.HomeTricsActivity
 import com.intfocus.yhdev.subject.SubjectActivity
 import com.intfocus.yhdev.subject.TableActivity
 import com.intfocus.yhdev.subject.WebApplicationActivity
-import com.intfocus.yhdev.subject.template_v1.ModularTwo_Mode_Activity
+import com.intfocus.yhdev.subject.template_v1.ModularOneModeActivity
 import com.intfocus.yhdev.util.*
 import kotlinx.android.synthetic.main.activity_show_push_message.*
 import org.json.JSONException
@@ -194,7 +194,7 @@ class ShowPushMessageActivity : AppCompatActivity(), PushMessageView, ShowPushMe
                         startActivity(intent)
                     }
                     link.indexOf("template/1") > 0 -> {
-                        val intent = Intent(this, ModularTwo_Mode_Activity::class.java)
+                        val intent = Intent(this, ModularOneModeActivity::class.java)
                         intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
                         intent.putExtra(URLs.kBannerName, mBannerName)
                         intent.putExtra(URLs.kObjectId, objectId)
