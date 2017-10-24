@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -112,6 +113,7 @@ public class LoginActivity extends FragmentActivity {
         checkPgyerVersionUpgrade(LoginActivity.this, true);
 
         usernameEditText = (EditText) findViewById(R.id.etUsername);
+        usernameEditText.setInputType(InputType.TYPE_CLASS_NUMBER);
         passwordEditText = (EditText) findViewById(R.id.etPassword);
         mLinearUsernameBelowLine = findViewById(R.id.linearUsernameBelowLine);
         mLinearPasswordBelowLine = findViewById(R.id.linearPasswordBelowLine);
@@ -180,7 +182,7 @@ public class LoginActivity extends FragmentActivity {
         findViewById(R.id.applyRegistTv).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                RetrofitUtil.getHttpService(ctx).getRegister("prompt-info-when-register")
+                RetrofitUtil.getHttpService(ctx).getRegister("sypc_000005")
                         .compose(new RetrofitUtil.CommonOptions<RegisterResult>())
                         .subscribe(new CodeHandledSubscriber<RegisterResult>() {
                             @Override

@@ -67,6 +67,8 @@ import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
 import java.util.Map;
 
+import static com.intfocus.yhdev.YHApplication.globalContext;
+
 /**
  * Created by lijunjie on 16/1/14.
  */
@@ -467,12 +469,14 @@ public class BaseActivity extends FragmentActivity {
             switch (message.what) {
                 case 200:
                 case 304:
-                    final String localHtmlPath = String.format("file:///%s", (String) message.obj);
+                    SharedPreferences mUserSP = getSharedPreferences("UserBean", Context.MODE_PRIVATE);
 
+                    final String localHtmlPath = String.format("file:///%s", (String) message.obj);
+                    final String appendParams = String.format("user_num=%s&timestamp=%s&location=%s", mUserSP.getString(URLs.kUserNum, "no-set"), URLs.timestamp(), mUserSP.getString("location", "0,0"));
                     weakActivity.get().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            mWebView.loadUrl(localHtmlPath);
+                            mWebView.loadUrl(localHtmlPath + "?" + appendParams);
                         }
                     });
                     isOffline = false;

@@ -85,5 +85,5 @@
     <string name="title_activity_main2">Main2Activity</string>
     <string name="clickToGetNearestLocalPosition">点击获取最近门店</string>
     <string name="input_barcode">手动输入条码</string>
-    <string name="report_selector_hint">门店编号</string>
+    <string name="report_selector_hint">搜索门店名称或门店编号</string>
 </resources>

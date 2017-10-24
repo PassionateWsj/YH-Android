@@ -13,12 +13,12 @@ android {
         minSdkVersion 19
         targetSdkVersion 25
         multiDexEnabled true
-        versionCode 686
-        versionName "3.1.36"
+        versionCode 531
+        versionName "2.2.11"
 
         ndk {
             // 设置支持的SO库架构
-            abiFilters 'armeabi', 'x86', 'armeabi-v7a', 'x86_64'
+            abiFilters 'armeabi', 'x86', 'armeabi-v7a', 'x86_64', 'arm64-v8a'
         }
     }
 
@@ -26,9 +26,9 @@ android {
     signingConfigs {
         release {
             try {
-                keyAlias 'yh-test'
+                keyAlias 'yh'
                 keyPassword '123456'
-                storeFile file('/Users/jameswong/Documents/AndroidProjects/YH-Android/key-store/yh-test.jks')
+                storeFile file('/Users/jameswong/Documents/AndroidProjects/YH-Android/key-store/yh.jks')
                 storePassword '123456'
             }
             catch (ex) {

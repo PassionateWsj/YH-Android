@@ -3,8 +3,8 @@
           xmlns:tools="http://schemas.android.com/tools"
           package="com.intfocus.yhdev"
           android:hardwareAccelerated="false"
-          android:versionCode="686"
-          android:versionName="3.1.36">
+          android:versionCode="531"
+          android:versionName="2.2.11">
 
     <!-- 扫描条形码或二维码 -->
     <uses-permission android:name="android.permission.CAMERA"/>
@@ -51,7 +51,7 @@
             <!-- 高德地图API - Key -->
             <meta-data
                 android:name="com.amap.api.v2.apikey"
-                android:value="a9de6a6686b42561f41ef209079fb708"/>
+                android:value="8ca31ea2137dd24eb49a261bdd9ab844"/>
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths"/>

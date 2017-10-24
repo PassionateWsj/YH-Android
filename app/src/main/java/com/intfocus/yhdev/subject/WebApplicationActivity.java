@@ -69,6 +69,7 @@ import java.io.IOException;
 import java.util.Iterator;
 
 import static android.webkit.WebView.enableSlowWholeDocumentDraw;
+import static com.intfocus.yhdev.YHApplication.globalContext;
 import static java.lang.String.format;
 
 public class WebApplicationActivity extends BaseActivity implements OnPageChangeListener, OnLoadCompleteListener, OnErrorOccurredListener {
@@ -435,10 +436,12 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
                 if (urlString.toLowerCase().endsWith(".pdf")) {
                     new Thread(mRunnableForPDF).start();
                 } else {
-                        /*
-                         * 外部链接传参: user_num, timestamp
-                         */
-                    String appendParams = String.format("user_num=%s&timestamp=%s", userNum, URLs.timestamp());
+
+                    /*
+                     * 外部链接传参: user_num, timestamp, location
+                     */
+                    SharedPreferences mUserSP = getSharedPreferences("UserBean", Context.MODE_PRIVATE);
+                    String appendParams = String.format("user_num=%s&timestamp=%s&location=%s", userNum, URLs.timestamp(), mUserSP.getString("location", "0,0"));
                     String splitString = urlString.contains("?") ? "&" : "?";
                     urlString = String.format("%s%s%s", urlString, splitString, appendParams);
                     mWebView.loadUrl(urlString);
@@ -451,7 +454,6 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
     private final Handler mHandlerForPDF = new Handler() {
         @Override
         public void handleMessage(Message message) {
-            //Log.i("PDF", pdfFile.getAbsolutePath());
             if (pdfFile.exists()) {
                 mPDFView.fromFile(pdfFile)
                         .defaultPage(1)
@@ -487,7 +489,7 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
      */
     public void actionCopyLink(View v) {
         ClipboardManager clipboardManager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
-        clipboardManager.setText(link);
+        clipboardManager.setText(urlString);
         ToastUtils.INSTANCE.show(mContext, "链接已拷贝", ToastColor.SUCCESS);
     }
 
@@ -970,6 +972,9 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
                 }
                 break;
             }
+
+            default:
+                break;
         }
     }
 

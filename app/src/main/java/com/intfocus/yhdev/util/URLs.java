@@ -76,12 +76,6 @@ public class URLs implements Serializable {
     public final static boolean kIsQRCode = false;
 
     public static String storage_base(Context context) {
-        //    String path = "";
-        //    if(Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-        //        path = String.format("%s/com.intfocus.yhdev", Environment.getExternalStorageDirectory().getAbsolutePath());
-        //    } else {
-        //        path =String.format("%s/com.intfocus.yhdev", context.getApplicationContext().getFilesDir());
-        //    }
         return context.getFilesDir().getPath();
     }
 

@@ -29,6 +29,7 @@ import com.intfocus.yhdev.base.BaseModeFragment
 import com.intfocus.yhdev.dashboard.mine.activity.ShowPushMessageActivity
 import com.intfocus.yhdev.dashboard.mine.bean.UserInfoRequest
 import com.intfocus.yhdev.data.response.BaseResult
+import com.intfocus.yhdev.data.response.login.RegisterResult
 import com.intfocus.yhdev.data.response.mine_page.UserInfoResult
 import com.intfocus.yhdev.login.LoginActivity
 import com.intfocus.yhdev.mode.UserInfoMode
@@ -92,13 +93,6 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-//        imageOptions = ImageOptions.Builder()
-//                .setSize(DisplayUtil.dip2px(ctx, 60f), DisplayUtil.dip2px(ctx, 60f))
-//                .setCircular(true)
-//                .setLoadingDrawableId(R.drawable.face_default)
-//                .setFailureDrawableId(R.drawable.face_default)
-//                .build()
-
         val mTypeFace = Typeface.createFromAsset(act.assets, "ALTGOT2N.TTF")
         tv_login_number.typeface = mTypeFace
         tv_report_number.typeface = mTypeFace
@@ -125,7 +119,6 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
                         tv_user_role.text = mUserInfo.data!!.role_name
                         tv_mine_user_num_value.text = mUserInfo.data!!.user_num
                         tv_mine_user_group_value.text = mUserInfo.data!!.group_name
-//                        x.image().bind(iv_user_icon, mUserInfo.data!!.gravatar, imageOptions)
                         Glide.with(ctx)
                                 .load(mUserInfo.data!!.gravatar)
                                 .asBitmap()
@@ -238,14 +231,28 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
     }
 
     private fun startUserLocationPage() {
-        val intent = Intent(activity, WebApplicationActivity::class.java)
-        intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-        intent.putExtra(URLs.kBannerName, "归属部门")
-        intent.putExtra(URLs.kLink, String.format("%s/websites/yonghuxinxiziweihu/home/apply.html", K.kBaseUrl))
-        intent.putExtra(URLs.kObjectId, "-1")
-        intent.putExtra(URLs.kObjectType, "-1")
-        intent.putExtra(URLs.kTemplatedId, "-1")
-        startActivity(intent)
+        RetrofitUtil.getHttpService(ctx).getRegister("sypc_000103")
+                .compose(RetrofitUtil.CommonOptions())
+                .subscribe(object : CodeHandledSubscriber<RegisterResult>() {
+                    override fun onError(apiException: ApiException) {
+                        ToastUtils.show(ctx, "功能开发中")
+                    }
+
+                    override fun onBusinessNext(data: RegisterResult) {
+                        if (data.data!!.contains("http")) {
+                            val intent = Intent(activity, WebApplicationActivity::class.java)
+                            intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+                            intent.putExtra(URLs.kBannerName, "归属部门")
+                            intent.putExtra(URLs.kLink, data.data)
+                            intent.putExtra(URLs.kObjectId, "-1")
+                            intent.putExtra(URLs.kObjectType, "-1")
+                            intent.putExtra(URLs.kTemplatedId, "-1")
+                            startActivity(intent)
+                        }
+                    }
+
+                    override fun onCompleted() {}
+                })
     }
 
     /**
