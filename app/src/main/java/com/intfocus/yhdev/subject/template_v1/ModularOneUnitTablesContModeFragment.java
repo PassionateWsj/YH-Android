@@ -52,7 +52,7 @@ import java.util.Comparator;
 /**
  * 模板一表格内容页面
  */
-public class ModularTwo_UnitTablesContModeFragment extends BaseModeFragment<ModularTwo_UnitTableContMode> implements SortCheckBox.SortViewSizeListener, AdapterView.OnItemClickListener {
+public class ModularOneUnitTablesContModeFragment extends BaseModeFragment<ModularTwo_UnitTableContMode> implements SortCheckBox.SortViewSizeListener, AdapterView.OnItemClickListener {
     private static final String ARG_PARAM = "param";
     private static final String SU_ROOT_ID = "suRootID";
     private String mParam;
@@ -110,7 +110,7 @@ public class ModularTwo_UnitTablesContModeFragment extends BaseModeFragment<Modu
      * 悬浮View
      */
     private View suspensionView;
-    private String TAG = ModularTwo_UnitTablesContModeFragment.class.getSimpleName();
+    private String TAG = ModularOneUnitTablesContModeFragment.class.getSimpleName();
 
     private int offsetTop;
 
@@ -124,8 +124,8 @@ public class ModularTwo_UnitTablesContModeFragment extends BaseModeFragment<Modu
         return new ModularTwo_UnitTableContMode(ctx);
     }
 
-    public static ModularTwo_UnitTablesContModeFragment newInstance(int suRootID, String param) {
-        ModularTwo_UnitTablesContModeFragment fragment = new ModularTwo_UnitTablesContModeFragment();
+    public static ModularOneUnitTablesContModeFragment newInstance(int suRootID, String param) {
+        ModularOneUnitTablesContModeFragment fragment = new ModularOneUnitTablesContModeFragment();
         Bundle args = new Bundle();
         args.putInt(SU_ROOT_ID, suRootID);
         args.putString(ARG_PARAM, param);
@@ -151,13 +151,13 @@ public class ModularTwo_UnitTablesContModeFragment extends BaseModeFragment<Modu
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void measureLocation(EventRefreshTableRect event) {
-        ModularTwo_UnitTablesModeFragment parentFt = (ModularTwo_UnitTablesModeFragment) getParentFragment();
+        ModularOneUnitTablesModeFragment parentFt = (ModularOneUnitTablesModeFragment) getParentFragment();
         if (parentFt == null) {
             return;
         }
         final int surootID = suRootID;
         if (event.eventTag == surootID) {
-            ((ModularTwo_Mode_Activity) getActivity()).rScrollView.setOnScrollListener(new RootScrollView.OnScrollListener() {
+            ((ModularOneModeActivity) getActivity()).rScrollView.setOnScrollListener(new RootScrollView.OnScrollListener() {
                 @Override
                 public void onScroll(int scrollY) {
 
@@ -168,13 +168,13 @@ public class ModularTwo_UnitTablesContModeFragment extends BaseModeFragment<Modu
                             if (rect.top <= offsetTop && rect.bottom - 165 > offsetTop) {
                                 fl_tableTitle_container.removeView(suspensionView);
                                 Log.i("testlog", "1");
-                                ((ModularTwo_Mode_Activity) getActivity()).suspendContainer.addView(suspensionView);
+                                ((ModularOneModeActivity) getActivity()).suspendContainer.addView(suspensionView);
                             }
                         } else {
-                            int viewCont = ((ModularTwo_Mode_Activity) getActivity()).suspendContainer.getChildCount();
+                            int viewCont = ((ModularOneModeActivity) getActivity()).suspendContainer.getChildCount();
                             if (rect.top > offsetTop || rect.bottom - 150 < offsetTop && viewCont != 0) {
                                 Log.i("testlog", "2");
-                                ((ModularTwo_Mode_Activity) getActivity()).suspendContainer.removeView(suspensionView);
+                                ((ModularOneModeActivity) getActivity()).suspendContainer.removeView(suspensionView);
                                 fl_tableTitle_container.addView(suspensionView);
                             }
                         }
@@ -223,7 +223,7 @@ public class ModularTwo_UnitTablesContModeFragment extends BaseModeFragment<Modu
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
         if (!hidden) {
-            ((ModularTwo_Mode_Activity) getActivity()).rScrollView.setOnScrollListener(new RootScrollView.OnScrollListener() {
+            ((ModularOneModeActivity) getActivity()).rScrollView.setOnScrollListener(new RootScrollView.OnScrollListener() {
                 @Override
                 public void onScroll(int scrollY) {
                     Rect rect = new Rect();
@@ -232,12 +232,12 @@ public class ModularTwo_UnitTablesContModeFragment extends BaseModeFragment<Modu
                         if (fl_tableTitle_container.getChildCount() != 0) {
                             if (rect.top <= offsetTop && rect.bottom - 165 > offsetTop) {
                                 fl_tableTitle_container.removeView(suspensionView);
-                                ((ModularTwo_Mode_Activity) getActivity()).suspendContainer.addView(suspensionView);
+                                ((ModularOneModeActivity) getActivity()).suspendContainer.addView(suspensionView);
                             }
                         } else {
-                            int viewCont = ((ModularTwo_Mode_Activity) getActivity()).suspendContainer.getChildCount();
+                            int viewCont = ((ModularOneModeActivity) getActivity()).suspendContainer.getChildCount();
                             if (rect.top > offsetTop || rect.bottom - 150 < offsetTop && viewCont != 0) {
-                                ((ModularTwo_Mode_Activity) getActivity()).suspendContainer.removeView(suspensionView);
+                                ((ModularOneModeActivity) getActivity()).suspendContainer.removeView(suspensionView);
                                 fl_tableTitle_container.addView(suspensionView);
                             }
                         }
@@ -258,8 +258,8 @@ public class ModularTwo_UnitTablesContModeFragment extends BaseModeFragment<Modu
 
                 int checkId;
                 FragmentActivity fa = getActivity();
-                if (fa instanceof ModularTwo_SubTableActivity) {
-                    checkId = ((ModularTwo_SubTableActivity) fa).suRootID;
+                if (fa instanceof ModularOneSubTableActivity) {
+                    checkId = ((ModularOneSubTableActivity) fa).suRootID;
                 } else {
                     checkId = suRootID;
                 }
@@ -508,7 +508,7 @@ public class ModularTwo_UnitTablesContModeFragment extends BaseModeFragment<Modu
             jsonObject.put("data", array);
             String subdata = jsonObject.toString();
 
-            Intent intent = new Intent(ctx, ModularTwo_SubTableActivity.class);
+            Intent intent = new Intent(ctx, ModularOneSubTableActivity.class);
             String itemData = dataEntity.data.get(index).main_data[0];
             intent.putExtra("Title", new JSONObject(itemData).getString("value"));
             DataHolder.getInstance().setData(subdata);

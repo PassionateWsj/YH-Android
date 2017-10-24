@@ -22,7 +22,7 @@ import org.xutils.x;
 /**
  * 模板一弹出显示的子Table页面
  */
-public class ModularTwo_SubTableActivity extends AppCompatActivity {
+public class ModularOneSubTableActivity extends AppCompatActivity {
 
     @ViewInject(R.id.tv_subtable_name)
     private TextView title;
@@ -60,7 +60,7 @@ public class ModularTwo_SubTableActivity extends AppCompatActivity {
                 finish();
             }
 
-            ModularTwo_UnitTablesContModeFragment toFragment = ModularTwo_UnitTablesContModeFragment.newInstance(suRootID, subData);
+            ModularOneUnitTablesContModeFragment toFragment = ModularOneUnitTablesContModeFragment.newInstance(suRootID, subData);
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
             ft.replace(R.id.fl_subtable_container, toFragment);

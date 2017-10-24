@@ -163,13 +163,13 @@
 
         <!-- 原生模板二/主题页面 -->
         <activity
-            android:name=".subject.template_v1.ModularTwo_Mode_Activity"
+            android:name=".subject.template_v1.ModularOneModeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
 
         <!-- 原生模板二/表格页面 -->
         <activity
-            android:name=".subject.template_v1.ModularTwo_SubTableActivity"
+            android:name=".subject.template_v1.ModularOneSubTableActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
         <!-- 外部链接 -->

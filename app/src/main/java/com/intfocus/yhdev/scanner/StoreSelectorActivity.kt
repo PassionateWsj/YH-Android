@@ -3,6 +3,8 @@ package com.intfocus.yhdev.scanner
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.inputmethod.InputMethodManager
 import com.intfocus.yhdev.R
 import com.intfocus.yhdev.base.BaseActivity
@@ -12,6 +14,7 @@ import com.intfocus.yhdev.scanner.presenter.StoreSelectorPresenter
 import com.intfocus.yhdev.scanner.view.StoreSelectorView
 import com.intfocus.yhdev.util.URLs
 import kotlinx.android.synthetic.main.activity_store_selector.*
+
 /**
  * ****************************************************
  * @author jameswong
@@ -64,11 +67,24 @@ class StoreSelectorActivity : BaseActivity(), StoreSelectorView {
             setResult(RESULT_CODE_CHOOSE, intent)
             finish()
         }
+        // 文本输入框内容监听
+        storeSearchView.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(p0: Editable?) {
+                presenter.loadData(p0.toString())
+            }
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+        })
         // 根据搜索内容 请求数据
         tv_store_selector_search.setOnClickListener {
             hideKeyboard()
             presenter.loadData(storeSearchView.text.toString())
         }
+        // 上次选择内容 点击监听
         store_item_select.setOnClickListener { finish() }
     }
 

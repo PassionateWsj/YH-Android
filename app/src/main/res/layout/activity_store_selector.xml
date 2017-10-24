@@ -49,7 +49,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_weight="10"
                 android:background="@color/white"
-                android:hint="搜索"
+                android:hint="@string/report_selector_hint"
                 android:imeOptions="actionSearch"
                 android:singleLine="true"/>
 
