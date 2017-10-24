@@ -2,6 +2,10 @@ package com.intfocus.yhdev.subject.template_v1.singlevalue
 
 import com.alibaba.fastjson.JSON
 import com.intfocus.yhdev.subject.template_v1.entity.MDRPUnitSingleValue
+import rx.Observable
+import rx.Observer
+import rx.android.schedulers.AndroidSchedulers
+import rx.schedulers.Schedulers
 
 /**
  * ****************************************************
@@ -38,8 +42,24 @@ class SingleValueImpl : SingleValueModel {
     }
 
     override fun getData(mParam: String, callback: SingleValueModel.LoadDataCallback) {
-        val valueData = JSON.parseObject(mParam, MDRPUnitSingleValue::class.java)
-        callback.onDataLoaded(valueData)
+        Observable.just(mParam)
+                .subscribeOn(Schedulers.io())
+                .map { JSON.parseObject<MDRPUnitSingleValue>(it, MDRPUnitSingleValue::class.java) }
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(object : Observer<MDRPUnitSingleValue> {
+                    override fun onNext(t: MDRPUnitSingleValue?) {
+                        t?.let { callback.onDataLoaded(t) }
+                    }
+
+                    override fun onError(e: Throwable?) {
+                        callback.onDataNotAvailable(e)
+                    }
+
+                    override fun onCompleted() {
+                    }
+                })
+//        val valueData = JSON.parseObject(mParam, MDRPUnitSingleValue::class.java)
+//        callback.onDataLoaded(valueData)
     }
 
 }

@@ -15,10 +15,13 @@ import android.widget.TextView;
 
 import com.intfocus.yhdev.R;
 import com.intfocus.yhdev.base.BaseModeFragment;
+import com.intfocus.yhdev.subject.template_v1.curvechart.CurveChartImpl;
+import com.intfocus.yhdev.subject.template_v1.curvechart.CurveChartPresenter;
+import com.intfocus.yhdev.subject.template_v1.curvechart.ModularOneUnitCurveChartModeFragment;
 import com.intfocus.yhdev.subject.template_v1.entity.MDetailUnitEntity;
 import com.intfocus.yhdev.subject.template_v1.entity.msg.MDetalRootPageRequestResult;
 import com.intfocus.yhdev.subject.template_v1.mode.MDetalRootPageMode;
-import com.intfocus.yhdev.subject.template_v1.singlevalue.ModularTwo_UnitSingleValueModeFragment;
+import com.intfocus.yhdev.subject.template_v1.singlevalue.ModularOneUnitSingleValueModeFragment;
 import com.intfocus.yhdev.subject.template_v1.singlevalue.SingleValueImpl;
 import com.intfocus.yhdev.subject.template_v1.singlevalue.SingleValuePresenter;
 import com.zbl.lib.baseframe.core.Subject;
@@ -131,6 +134,7 @@ public class ModularOneRootPageModeFragment extends BaseModeFragment<MDetalRootP
                 //曲线图表/柱状图(竖)
                 case "chart":
                     fragment = ModularOneUnitCurveChartModeFragment.newInstance(entity.config);
+                    new CurveChartPresenter(CurveChartImpl.getInstance(),(ModularOneUnitCurveChartModeFragment)fragment);
                     break;
 
                 //一般标签(附标题)
@@ -148,8 +152,8 @@ public class ModularOneRootPageModeFragment extends BaseModeFragment<MDetalRootP
 
                 //单值组件
                 case "single_value":
-                    fragment = ModularTwo_UnitSingleValueModeFragment.newInstance(entity.config);
-                    new SingleValuePresenter(SingleValueImpl.getInstance(),(ModularTwo_UnitSingleValueModeFragment)fragment);
+                    fragment = ModularOneUnitSingleValueModeFragment.newInstance(entity.config);
+                    new SingleValuePresenter(SingleValueImpl.getInstance(),(ModularOneUnitSingleValueModeFragment)fragment);
                     break;
 
                 //条状图(横)

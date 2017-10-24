@@ -29,7 +29,7 @@ class SingleValuePresenter(
                 mView.showData(data)
             }
 
-            override fun onDataNotAvailable() {
+            override fun onDataNotAvailable(e: Throwable?) {
 
             }
 

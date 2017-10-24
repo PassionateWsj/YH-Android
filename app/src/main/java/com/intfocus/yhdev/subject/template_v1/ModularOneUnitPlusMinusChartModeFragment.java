@@ -41,18 +41,18 @@ public class ModularOneUnitPlusMinusChartModeFragment extends BaseModeFragment i
     private BargraptAdapter adapter;
 
     @ViewInject(R.id.fl_MDRPUnit_PlusMinusChart_container)
-    private FrameLayout fl_container;
+    private FrameLayout mFlContainer;
 
     @ViewInject(R.id.cbox_name)
-    private SortCheckBox cbox_name;
+    private SortCheckBox mCboxName;
     @ViewInject(R.id.cbox_percentage)
-    private SortCheckBox cbox_percentage;
+    private SortCheckBox mCboxPercentage;
 
     private PlusMinusChart pmChart;
 
     private String mParam;
     private MDRPUnitBargraph entityData;
-    private LinkedList<BargraphComparator> lt_data;
+    private LinkedList<BargraphComparator> mLtData;
     private BargraphNameComparator nameComparator;
     private BargraphDataComparator dataComparator;
 
@@ -85,7 +85,7 @@ public class ModularOneUnitPlusMinusChartModeFragment extends BaseModeFragment i
     }
 
     private void initView() {
-        lt_data = new LinkedList<>();
+        mLtData = new LinkedList<>();
         nameComparator = new BargraphNameComparator();
         dataComparator = new BargraphDataComparator();
 
@@ -98,55 +98,57 @@ public class ModularOneUnitPlusMinusChartModeFragment extends BaseModeFragment i
     private void onViewClick(View view) {
         switch (view.getId()) {
             case R.id.cbox_name:
-                cbox_percentage.reset();
-                if (cbox_name.getCheckedState() == SortCheckBox.CheckedState.sort_noneicon) {
-                    Collections.sort(lt_data, nameComparator);
+                mCboxPercentage.reset();
+                if (mCboxName.getCheckedState() == SortCheckBox.CheckedState.sort_noneicon) {
+                    Collections.sort(mLtData, nameComparator);
                 } else {
-                    Collections.reverse(lt_data);
+                    Collections.reverse(mLtData);
                 }
                 break;
 
             case R.id.cbox_percentage:
-                cbox_name.reset();
-                if (cbox_percentage.getCheckedState() == SortCheckBox.CheckedState.sort_noneicon) {
-                    Collections.sort(lt_data, dataComparator);
+                mCboxName.reset();
+                if (mCboxPercentage.getCheckedState() == SortCheckBox.CheckedState.sort_noneicon) {
+                    Collections.sort(mLtData, dataComparator);
                 } else {
-                    Collections.reverse(lt_data);
+                    Collections.reverse(mLtData);
                 }
                 break;
+            default:
+                break;
         }
-        adapter.updateData(lt_data);
-        ArrayList<String> chartData = new ArrayList<>();
-        for (BargraphComparator bargraphComparator : lt_data) {
-            chartData.add(bargraphComparator.data);
-        }
-        pmChart.updateData(lt_data);
+        adapter.updateData(mLtData);
+//        ArrayList<String> chartData = new ArrayList<>();
+//        for (BargraphComparator bargraphComparator : mLtData) {
+//            chartData.add(bargraphComparator.data);
+//        }
+        pmChart.updateData(mLtData);
     }
 
     private void bindData() {
-        lt_data.clear();
+//        mLtData.clear();
         entityData = JSON.parseObject(mParam, MDRPUnitBargraph.class);
-        String[] data_name = entityData.xAxis.data;
-        ArrayList<MDRPUnitBargraph.Series.Data> data_value = entityData.series.data;
-        for (int i = 0; i < data_name.length; i++) {
-            String name = data_name[i];
-            String value = data_value.get(i).value;
-            int color = data_value.get(i).color;
-            lt_data.add(new BargraphComparator(name, value, color));
+        String[] dataName = entityData.xAxis.data;
+        ArrayList<MDRPUnitBargraph.Series.Data> dataValue = entityData.series.data;
+        for (int i = 0; i < dataName.length; i++) {
+            String name = dataName[i];
+            String value = dataValue.get(i).value;
+            int color = dataValue.get(i).color;
+            mLtData.add(new BargraphComparator(name, value, color));
         }
 
 
-        cbox_percentage.setText(entityData.series.name);
-        cbox_name.setText(entityData.xAxis.name);
+        mCboxPercentage.setText(entityData.series.name);
+        mCboxName.setText(entityData.xAxis.name);
 //        LinkedList<BargraphComparator> lvdata = new LinkedList<>();
-//        lvdata.addAll(lt_data);
-        adapter.updateData(lt_data);
+//        lvdata.addAll(mLtData);
+        adapter.updateData(mLtData);
 
         //设置图表数据
         pmChart = new PlusMinusChart(ctx);
         pmChart.setDefauteolor(getResources().getColor(R.color.co9));
-        pmChart.setDataValues(lt_data);
-        fl_container.addView(pmChart);
+        pmChart.setDataValues(mLtData);
+        mFlContainer.addView(pmChart);
     }
 
     @Override
@@ -162,8 +164,7 @@ public class ModularOneUnitPlusMinusChartModeFragment extends BaseModeFragment i
         public int compare(BargraphComparator o1, BargraphComparator o2) {
             String str1 = PinyinUtil.getPingYin(o1.name);
             String str2 = PinyinUtil.getPingYin(o2.name);
-            int flag = str1.compareTo(str2);
-            return flag;
+            return str1.compareTo(str2);
         }
     }
 
