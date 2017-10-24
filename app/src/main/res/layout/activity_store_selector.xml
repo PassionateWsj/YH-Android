@@ -4,7 +4,7 @@
                 android:id="@+id/ll_store_selector_container"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                tools:context=".CommentActivity">
+                tools:context=".scanner.StoreSelectorActivity">
 
     <RelativeLayout
         android:id="@+id/actionBar"
