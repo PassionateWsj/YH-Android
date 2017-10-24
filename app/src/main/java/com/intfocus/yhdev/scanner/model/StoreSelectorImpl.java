@@ -37,6 +37,8 @@ public class StoreSelectorImpl implements StoreSelectorModel {
                         List<StoreItem> storeItems;
                         if ("".equals(keyWord)) {
                             storeItems = storeItemDao.queryForAll();
+                        } else if (keyWord.matches("^\\d+$")) {
+                            storeItems = storeItemDao.queryBuilder().where().like("obj_id", "%" + keyWord + "%").query();
                         } else {
                             storeItems = storeItemDao.queryBuilder().where().like("name", "%" + keyWord + "%").query();
                         }

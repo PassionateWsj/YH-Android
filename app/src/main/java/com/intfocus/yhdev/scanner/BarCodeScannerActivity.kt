@@ -57,16 +57,46 @@ class BarCodeScannerActivity : AppCompatActivity(), QRCodeView.Delegate, View.On
         val REQUEST_CODE_CHOOSE = 1
     }
 
+    /**
+     * 是否开启闪光灯
+     */
     private var isLightOn = false
+    /**
+     * 是否是启动 Activity 的操作
+     */
     private var isStartActivity = false
-
+    /**
+     * PopupWindow 布局文件
+     */
     private var view: View? = null
+    /**
+     * PopupWindow 实体类
+     */
     private var popupWindow: PopupWindow? = null
+    /**
+     * PopupWindow 闪光灯按钮文本
+     */
     private var tvInputBarcodeLight: TextView? = null
+    /**
+     * PopupWindow 闪光灯按钮
+     */
     private var cbInputBarcodeLight: CheckBox? = null
+    /**
+     * 扫描二维码页面 闪光灯按钮文本
+     */
     private var tvBarcodeLight: TextView? = null
+    /**
+     * 扫描二维码页面 闪光灯按钮按钮
+     */
     private var cbBarcodeLight: CheckBox? = null
+    /**
+     * 最新门店名
+     */
     private var nearestStoreName: String? = null
+    /**
+     * 是否开启定位权限
+     */
+    private var openPositioningPermissionsFilter = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -383,7 +413,9 @@ class BarCodeScannerActivity : AppCompatActivity(), QRCodeView.Delegate, View.On
                                 mStoreInfoSPEdit.putString(URLs.kStoreIds, storeListResult[0].id)
                                 mStoreInfoSPEdit.apply()
                             } else {
-                                tv_barcode_local_position.text = nearestStoreName + "(不在权限范围内)"
+                                if (openPositioningPermissionsFilter) {
+                                    tv_barcode_local_position.text = nearestStoreName + "(不在权限范围内)"
+                                }
                             }
                         }
                     })
