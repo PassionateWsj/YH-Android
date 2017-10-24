@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.View
 import android.view.inputmethod.InputMethodManager
 import com.intfocus.yhdev.R
 import com.intfocus.yhdev.base.BaseActivity
@@ -105,7 +106,7 @@ class StoreSelectorActivity : BaseActivity(), StoreSelectorView {
     /**
      * 返回监听
      */
-    fun backPress() {
+    fun backPress(v: View) {
         hideKeyboard()
         finish()
     }

@@ -85,8 +85,7 @@ public class MeterDetailActMode extends AbstractMode {
                         String key = reader.readString();
                         switch (key) {
                             case "name":
-                                String name = reader.readObject().toString();
-                                entity.name = name;
+                                entity.name = reader.readObject().toString();
                                 Log.i(TAG, "name:" + TimeUtil.getNowTime());
                                 break;
 
@@ -100,13 +99,11 @@ public class MeterDetailActMode extends AbstractMode {
                                         String dataKey = reader.readString();
                                         switch (dataKey) {
                                             case "parts":
-                                                String parts = reader.readObject().toString();
-                                                data.parts = parts;
+                                                data.parts = reader.readObject().toString();
                                                 break;
 
                                             case "title":
-                                                String title = reader.readObject().toString();
-                                                data.title = title;
+                                                data.title = reader.readObject().toString();
                                                 break;
 
                                             default:
