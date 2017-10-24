@@ -165,7 +165,8 @@ public class ModularOneModeActivity extends BaseModeActivity<MeterDetailActMode>
     }
 
     /**
-     * 图表点击事件统一处理方法
+     * 获取到数据，生成根页签
+     * @param entity
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(MDetailActRequestResult entity) {

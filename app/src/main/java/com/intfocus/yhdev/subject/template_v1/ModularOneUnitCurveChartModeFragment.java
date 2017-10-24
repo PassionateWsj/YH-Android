@@ -262,7 +262,6 @@ public class ModularOneUnitCurveChartModeFragment extends BaseModeFragment<MDRPU
             tv_target1name.setText(name1);
         }
 
-
         if (seriesLables.size() > 1) {
             String name2 = curveChartEntity.legend[1];
             Float[] values2 = seriesLables.get(1);

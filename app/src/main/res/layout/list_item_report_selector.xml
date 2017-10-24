@@ -9,7 +9,6 @@
         android:id="@+id/report_selector_item"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="@string/report_selector_hint"
         android:layout_weight="1"
         android:padding="12dp"
         android:textColor="@color/black"
