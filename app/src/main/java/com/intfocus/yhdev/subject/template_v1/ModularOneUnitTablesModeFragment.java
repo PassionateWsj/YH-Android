@@ -31,7 +31,7 @@ import java.util.Random;
 /**
  * 表格根
  */
-public class ModularTwo_UnitTablesModeFragment extends BaseModeFragment<ModularTwo_UnitTablesParentMode> implements TableTitleAdapter.NoticeItemListener {
+public class ModularOneUnitTablesModeFragment extends BaseModeFragment<ModularTwo_UnitTablesParentMode> implements TableTitleAdapter.NoticeItemListener {
     private String fragmentTag;
     private static final String ARG_PARAM = "TablesParam";
     private static final String SU_ROOT_ID = "SuRootId";
@@ -53,7 +53,7 @@ public class ModularTwo_UnitTablesModeFragment extends BaseModeFragment<ModularT
     private String currentFtName;
 
     private RadioGroup radioGroup;
-    private ModularTwo_Mode_Activity.RootTableCheckedChangeListener rootTableListener;
+    private ModularOneModeActivity.RootTableCheckedChangeListener rootTableListener;
     private MDetalRootPageRequestResult entity;
 
     /**
@@ -67,8 +67,8 @@ public class ModularTwo_UnitTablesModeFragment extends BaseModeFragment<ModularT
     private List<MDetailUnitEntity> datas;
 
 
-    public static ModularTwo_UnitTablesModeFragment newInstance(int suRootID, String param) {
-        ModularTwo_UnitTablesModeFragment fragment = new ModularTwo_UnitTablesModeFragment();
+    public static ModularOneUnitTablesModeFragment newInstance(int suRootID, String param) {
+        ModularOneUnitTablesModeFragment fragment = new ModularOneUnitTablesModeFragment();
         Bundle args = new Bundle();
         args.putInt(SU_ROOT_ID, suRootID);
         args.putString(ARG_PARAM, param);
@@ -160,7 +160,7 @@ public class ModularTwo_UnitTablesModeFragment extends BaseModeFragment<ModularT
         }
 
         if (toFragment == null) {
-            toFragment = ModularTwo_UnitTablesContModeFragment.newInstance(suRootID, entity.datas.get(checkId).config);
+            toFragment = ModularOneUnitTablesContModeFragment.newInstance(suRootID, entity.datas.get(checkId).config);
         }
 
         FragmentTransaction ft = fm.beginTransaction();

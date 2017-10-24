@@ -23,7 +23,7 @@ import org.xutils.x;
 /**
  * 模板一标题栏 负责显示标题、日期、帮助说明
  */
-public class ModularTwo_UnitBannerModeFragment extends BaseModeFragment {
+public class ModularOneUnitBannerModeFragment extends BaseModeFragment {
     private static final String ARG_PARAM = "param";
     private String mParam;
 
@@ -43,11 +43,11 @@ public class ModularTwo_UnitBannerModeFragment extends BaseModeFragment {
     private TextView tv_count;
     private ImageButton imgbtn_close;
 
-    public ModularTwo_UnitBannerModeFragment() {
+    public ModularOneUnitBannerModeFragment() {
     }
 
-    public static ModularTwo_UnitBannerModeFragment newInstance(String param) {
-        ModularTwo_UnitBannerModeFragment fragment = new ModularTwo_UnitBannerModeFragment();
+    public static ModularOneUnitBannerModeFragment newInstance(String param) {
+        ModularOneUnitBannerModeFragment fragment = new ModularOneUnitBannerModeFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM, param);
         fragment.setArguments(args);
@@ -133,7 +133,7 @@ public class ModularTwo_UnitBannerModeFragment extends BaseModeFragment {
     @Event(R.id.imgb_mdrp_unit_banner_info)
     private void onViewClick(View view) {
         //设置PopupWindow显示的位置
-        ModularTwo_Mode_Activity activity = (ModularTwo_Mode_Activity) getActivity();
+        ModularOneModeActivity activity = (ModularOneModeActivity) getActivity();
         popupWindow.showAsDropDown(activity.actionbar);
     }
 }

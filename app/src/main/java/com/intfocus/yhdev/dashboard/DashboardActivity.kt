@@ -31,7 +31,7 @@ import com.intfocus.yhdev.subject.TableActivity
 import com.intfocus.yhdev.subject.WebApplicationActivity
 import com.intfocus.yhdev.subject.WebApplicationActivityV6
 import com.intfocus.yhdev.subject.metrics.HomeTricsActivity
-import com.intfocus.yhdev.subject.template_v1.ModularTwo_Mode_Activity
+import com.intfocus.yhdev.subject.template_v1.ModularOneModeActivity
 import com.intfocus.yhdev.util.*
 import com.intfocus.yhdev.view.NoScrollViewPager
 import com.intfocus.yhdev.view.TabView
@@ -350,7 +350,7 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
 
             when (templateId) {
                 "1" -> {
-                    intent = Intent(this, ModularTwo_Mode_Activity::class.java)
+                    intent = Intent(this, ModularOneModeActivity::class.java)
                     intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
                     intent.putExtra(URLs.kBannerName, objTitle)
                     intent.putExtra(URLs.kObjectId, objectId)

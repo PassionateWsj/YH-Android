@@ -30,7 +30,7 @@ import java.util.Collections;
 /**
  * 仪表盘-详情页面-根页签-曲线图单元
  */
-public class ModularTwo_UnitCurveChartModeFragment extends BaseModeFragment<MDRPUnitCurveChartMode> implements CustomCurveChartV2.PointClickListener {
+public class ModularOneUnitCurveChartModeFragment extends BaseModeFragment<MDRPUnitCurveChartMode> implements CustomCurveChartV2.PointClickListener {
     private static final String ARG_PARAM = "param";
     private String targetID;
     private String mParam;
@@ -77,8 +77,8 @@ public class ModularTwo_UnitCurveChartModeFragment extends BaseModeFragment<MDRP
         return new MDRPUnitCurveChartMode(ctx, targetID);
     }
 
-    public static ModularTwo_UnitCurveChartModeFragment newInstance(String param) {
-        ModularTwo_UnitCurveChartModeFragment fragment = new ModularTwo_UnitCurveChartModeFragment();
+    public static ModularOneUnitCurveChartModeFragment newInstance(String param) {
+        ModularOneUnitCurveChartModeFragment fragment = new ModularOneUnitCurveChartModeFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM, param);
         fragment.setArguments(args);
@@ -217,7 +217,7 @@ public class ModularTwo_UnitCurveChartModeFragment extends BaseModeFragment<MDRP
                 int selectItem = chart.setDataList(seriesLables);
                 chart.setDefaultColor(getResources().getColor(R.color.co9));
                 chart.setDefauteMargin((int) margin);
-                chart.setPointClickListener(ModularTwo_UnitCurveChartModeFragment.this);
+                chart.setPointClickListener(ModularOneUnitCurveChartModeFragment.this);
                 int chartStyle;
                 switch (chartType) {
                     case "line":
@@ -261,7 +261,6 @@ public class ModularTwo_UnitCurveChartModeFragment extends BaseModeFragment<MDRP
             tv_target1.setText(df.format(target1));
             tv_target1name.setText(name1);
         }
-
 
         if (seriesLables.size() > 1) {
             String name2 = curveChartEntity.legend[1];

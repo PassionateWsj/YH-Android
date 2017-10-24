@@ -32,7 +32,7 @@ import java.util.LinkedList;
 /**
  * 正负图表模块
  */
-public class ModularTwo_UnitPlusMinusChartModeFragment extends BaseModeFragment implements AdapterView.OnItemClickListener {
+public class ModularOneUnitPlusMinusChartModeFragment extends BaseModeFragment implements AdapterView.OnItemClickListener {
     private static final String ARG_PARAM = "param1";
     private View rootView;
 
@@ -56,8 +56,8 @@ public class ModularTwo_UnitPlusMinusChartModeFragment extends BaseModeFragment 
     private BargraphNameComparator nameComparator;
     private BargraphDataComparator dataComparator;
 
-    public static ModularTwo_UnitPlusMinusChartModeFragment newInstance(String param) {
-        ModularTwo_UnitPlusMinusChartModeFragment fragment = new ModularTwo_UnitPlusMinusChartModeFragment();
+    public static ModularOneUnitPlusMinusChartModeFragment newInstance(String param) {
+        ModularOneUnitPlusMinusChartModeFragment fragment = new ModularOneUnitPlusMinusChartModeFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM, param);
         fragment.setArguments(args);
