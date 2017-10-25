@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
+import android.view.View
 import com.intfocus.yhdev.R
 import com.intfocus.yhdev.base.RefreshActivity
 import com.intfocus.yhdev.constant.ToastColor
@@ -45,9 +46,9 @@ class FavoriteActivity : RefreshActivity(), InstituteAdapter.NoticeItemListener 
         recyclerView.layoutManager = mLayoutManager
         adapter = InstituteAdapter(mActivity, null, this)
         recyclerView.adapter = adapter
-        var headerView = SinaRefreshView(mActivity)
+        val headerView = SinaRefreshView(mActivity)
         headerView.setArrowResource(R.drawable.loading_up)
-        var bottomView = LoadingView(mActivity)
+        val bottomView = LoadingView(mActivity)
         refreshLayout.setHeaderView(headerView)
         refreshLayout.setBottomView(bottomView)
         getData(true)
@@ -120,7 +121,7 @@ class FavoriteActivity : RefreshActivity(), InstituteAdapter.NoticeItemListener 
             return
         }
         showLoading()
-        var body = RequestFavourite()
+        val body = RequestFavourite()
         body.user_num = userNum
         body.article_id = articleId
         body.favourite_status = status
@@ -143,9 +144,9 @@ class FavoriteActivity : RefreshActivity(), InstituteAdapter.NoticeItemListener 
     }
 
     override fun itemClick(instituteDataBean: InstituteDataBean) {
-        var intent = Intent(mActivity, WebApplicationActivity::class.java)
+        val intent = Intent(mActivity, WebApplicationActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-        var link = String.format("%s/mobile/v2/user/%s/article/%s", K.kBaseUrl, mUserSP.getString(K.kUserId, "0").toString(), instituteDataBean!!.acticleId.toString())
+        val link = String.format("%s/mobile/v2/user/%s/article/%s", K.kBaseUrl, mUserSP.getString(K.kUserId, "0").toString(), instituteDataBean!!.acticleId.toString())
         intent.putExtra(URLs.kBannerName, instituteDataBean!!.title.toString())
         intent.putExtra(URLs.kLink, link)
         startActivity(intent)
@@ -173,4 +174,7 @@ class FavoriteActivity : RefreshActivity(), InstituteAdapter.NoticeItemListener 
                 })
     }
 
+    fun back(view: View) {
+        finish()
+    }
 }
