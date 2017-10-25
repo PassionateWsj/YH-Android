@@ -22,7 +22,7 @@ import java.text.DecimalFormat;
 /**
  * 单值组件
  */
-public class ModularTwo_UnitSingleValueModeFragment extends BaseModeFragment implements SingleValueContract.View {
+public class ModularOneUnitSingleValueModeFragment extends BaseModeFragment implements SingleValueContract.View {
     @NonNull
     private static final String ARG_PARAM = "SingleValueParam";
     private String mParam;
@@ -52,8 +52,8 @@ public class ModularTwo_UnitSingleValueModeFragment extends BaseModeFragment imp
     private boolean isSwitch;
     private SingleValueContract.Presenter mPresenter;
 
-    public static ModularTwo_UnitSingleValueModeFragment newInstance(String param) {
-        ModularTwo_UnitSingleValueModeFragment fragment = new ModularTwo_UnitSingleValueModeFragment();
+    public static ModularOneUnitSingleValueModeFragment newInstance(String param) {
+        ModularOneUnitSingleValueModeFragment fragment = new ModularOneUnitSingleValueModeFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM, param);
         fragment.setArguments(args);
@@ -64,6 +64,7 @@ public class ModularTwo_UnitSingleValueModeFragment extends BaseModeFragment imp
     public void setPresenter(@NonNull SingleValueContract.Presenter presenter) {
         mPresenter = presenter;
     }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -131,23 +132,24 @@ public class ModularTwo_UnitSingleValueModeFragment extends BaseModeFragment imp
 
         float absmv = Math.abs(rate);
         boolean isPlus;
-//        int cursorIndex;
         if (absmv <= 0.1f) {
-//            cursorIndex = 1;
-//            if (rate > 0) {
-//                isPlus = false;
-//            } else {
-//                isPlus = true;
-//            }
             isPlus = rate <= 0;
         } else if (rate < -0.1f) {
-//            cursorIndex = 0;
             isPlus = false;
         } else {
-//            cursorIndex = 2;
             isPlus = true;
         }
         rateCursor.setCursorState(state, isPlus);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        SingleValueImpl.destroyInstance();
+    }
+
+    public void getData() {
+
     }
 
     @Override

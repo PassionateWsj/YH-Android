@@ -113,7 +113,6 @@ public class LoginActivity extends FragmentActivity {
         checkPgyerVersionUpgrade(LoginActivity.this, true);
 
         usernameEditText = (EditText) findViewById(R.id.etUsername);
-        usernameEditText.setInputType(InputType.TYPE_CLASS_NUMBER);
         passwordEditText = (EditText) findViewById(R.id.etPassword);
         mLinearUsernameBelowLine = findViewById(R.id.linearUsernameBelowLine);
         mLinearPasswordBelowLine = findViewById(R.id.linearPasswordBelowLine);

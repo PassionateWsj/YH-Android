@@ -17,7 +17,7 @@ interface SingleValueModel {
     interface LoadDataCallback {
         fun onDataLoaded(data: MDRPUnitSingleValue)
 
-        fun onDataNotAvailable()
+        fun onDataNotAvailable(e: Throwable?)
     }
     fun getData(@NotNull mParam:String,@NotNull callback: LoadDataCallback)
 

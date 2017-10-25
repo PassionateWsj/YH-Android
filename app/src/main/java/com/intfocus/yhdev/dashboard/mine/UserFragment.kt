@@ -249,6 +249,9 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
                             intent.putExtra(URLs.kTemplatedId, "-1")
                             startActivity(intent)
                         }
+                        else {
+                            ToastUtils.show(ctx, data.data!!)
+                        }
                     }
 
                     override fun onCompleted() {}

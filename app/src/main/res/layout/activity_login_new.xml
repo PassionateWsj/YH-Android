@@ -41,7 +41,7 @@
             android:background="@null"
             android:gravity="center_vertical"
             android:hint="员工号"
-            android:inputType="text"
+            android:inputType="number"
             android:maxLines="1"
             android:textColor="@color/co3_syr"
             android:textColorHint="@color/co4_syr"
