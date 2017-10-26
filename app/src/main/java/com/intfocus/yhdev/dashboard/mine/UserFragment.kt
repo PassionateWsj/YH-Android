@@ -21,6 +21,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupWindow
+import android.widget.RelativeLayout
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.BitmapImageViewTarget
 import com.google.gson.Gson
@@ -267,15 +268,15 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
         popupWindow.showAtLocation(activity.toolBar, Gravity.BOTTOM, 0, 0)
         popupWindow.animationStyle = R.anim.popup_bottombar_in
 
-        contentView.findViewById(R.id.rl_logout_confirm).setOnClickListener {
+        contentView.findViewById<RelativeLayout>(R.id.rl_logout_confirm).setOnClickListener {
             // 确认退出
             logout()
         }
-        contentView.findViewById(R.id.rl_cancel).setOnClickListener {
+        contentView.findViewById<RelativeLayout>(R.id.rl_cancel).setOnClickListener {
             // 取消
             popupWindow.dismiss()
         }
-        contentView.findViewById(R.id.rl_popup_logout_background).setOnClickListener {
+        contentView.findViewById<RelativeLayout>(R.id.rl_popup_logout_background).setOnClickListener {
             // 点击背景半透明区域
             popupWindow.dismiss()
         }
@@ -291,16 +292,16 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
             return
         }
         val mEditor = act.getSharedPreferences("SettingPreference", MODE_PRIVATE).edit()
-        mEditor.putBoolean("ScreenLock", false).commit()
+        mEditor.putBoolean("ScreenLock", false).apply()
         // 退出登录 POST 请求
         RetrofitUtil.getHttpService(ctx).userLogout(mUserSP.getString(kUserDeviceId, "0"))
                 .compose(RetrofitUtil.CommonOptions<BaseResult>())
                 .subscribe(object : CodeHandledSubscriber<BaseResult>() {
                     override fun onBusinessNext(data: BaseResult?) {
                         if (data!!.code == "200") {
-                            mUserSP.edit().putBoolean("isLogin", false).commit()
+                            mUserSP.edit().putBoolean("isLogin", false).apply()
 
-                            var logParams = JSONObject()
+                            val logParams = JSONObject()
                             logParams.put(URLs.kAction, "退出登录")
                             ActionLogUtil.actionLog(ctx, logParams)
 
@@ -368,6 +369,7 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
                 ViewGroup.LayoutParams.MATCH_PARENT)
         popupWindow.isFocusable = true// 取得焦点
         //注意  要是点击外部空白处弹框消息  那么必须给弹框设置一个背景色  不然是不起作用的
+        // todo  bug 验证最新bitmap 创建
         popupWindow.setBackgroundDrawable(BitmapDrawable())
         //点击外部消失
         popupWindow.isOutsideTouchable = true
@@ -375,21 +377,21 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
         popupWindow.isTouchable = true
         popupWindow.showAtLocation(activity.toolBar, Gravity.BOTTOM, 0, 0)
 
-        contentView.findViewById(R.id.rl_camera).setOnClickListener {
+        contentView.findViewById<RelativeLayout>(R.id.rl_camera).setOnClickListener {
             // 打开相机
             startActivityForResult(launchCamera(context), CODE_CAMERA_REQUEST)
             popupWindow.dismiss()
         }
-        contentView.findViewById(R.id.rl_gallery).setOnClickListener {
+        contentView.findViewById<RelativeLayout>(R.id.rl_gallery).setOnClickListener {
             // 打开相册
             startActivityForResult(getGallery(), CODE_GALLERY_REQUEST)
             popupWindow.dismiss()
         }
-        contentView.findViewById(R.id.rl_cancel).setOnClickListener {
+        contentView.findViewById<RelativeLayout>(R.id.rl_cancel).setOnClickListener {
             // 取消
             popupWindow.dismiss()
         }
-        contentView.findViewById(R.id.rl_popup_icon_background).setOnClickListener {
+        contentView.findViewById<RelativeLayout>(R.id.rl_popup_icon_background).setOnClickListener {
             // 点击背景半透明区域
             popupWindow.dismiss()
         }

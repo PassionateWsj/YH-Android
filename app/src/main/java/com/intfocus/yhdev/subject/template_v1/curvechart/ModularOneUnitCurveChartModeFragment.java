@@ -96,6 +96,7 @@ public class ModularOneUnitCurveChartModeFragment extends BaseModeFragment<MDRPU
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        CurveChartImpl.destroyInstance();
     }
 
     @Override
@@ -310,12 +311,12 @@ public class ModularOneUnitCurveChartModeFragment extends BaseModeFragment<MDRPU
                     strRate = mDfRate.format(rate);
                 }
 
-                boolean isPlus;
-                if (rate > 0) {
-                    isPlus = true;
-                } else {
-                    isPlus = false;
-                }
+                boolean isPlus = rate > 0;
+//                if (rate > 0) {
+//                    isPlus = true;
+//                } else {
+//                    isPlus = false;
+//                }
 
                 if (cursorIndex == -1) {
                     baseColor = 0x73737373;
@@ -352,7 +353,7 @@ public class ModularOneUnitCurveChartModeFragment extends BaseModeFragment<MDRPU
 
     @Override
     public CurveChartContract.Presenter getPresenter() {
-        return null;
+        return mPresenter;
     }
 
     @Override
@@ -365,9 +366,9 @@ public class ModularOneUnitCurveChartModeFragment extends BaseModeFragment<MDRPU
         this.curveChartEntity = result;
         xLabel = result.xAxis;
         yLabel = new String[5];
-        int YMaxValue;
-        int YMinValue;
-        int YIntervalValue;
+        int yMaxValue;
+        int yMinValue;
+        int yIntervalValue;
         seriesLables = new ArrayList<>();
         ArrayList<Float> seriesA = new ArrayList<>();
 
@@ -407,20 +408,20 @@ public class ModularOneUnitCurveChartModeFragment extends BaseModeFragment<MDRPU
         }
 
         Collections.sort(seriesA);
-        YMaxValue = seriesA.get(seriesA.size() - 1).intValue();
-        YMinValue = seriesA.get(0).intValue();
-        if (YMinValue > 0) {
-            YMinValue = 0;
+        yMaxValue = seriesA.get(seriesA.size() - 1).intValue();
+        yMinValue = seriesA.get(0).intValue();
+        if (yMinValue > 0) {
+            yMinValue = 0;
         }
-        YIntervalValue = Math.abs(YMaxValue - YMinValue);
+        yIntervalValue = Math.abs(yMaxValue - yMinValue);
         YCOORDINATEVALENUM = 4;
-        while (YIntervalValue % YCOORDINATEVALENUM != 0) {
-            YIntervalValue++;
+        while (yIntervalValue % YCOORDINATEVALENUM != 0) {
+            yIntervalValue++;
         }
 
-        int part = YIntervalValue / 4;
+        int part = yIntervalValue / 4;
         for (int i = 0; i < 5; i++) {
-            yLabel[i] = String.valueOf(YMinValue + part * i);
+            yLabel[i] = String.valueOf(yMinValue + part * i);
         }
         act.runOnUiThread(new UIRunnable());
         Log.d("TAG", seriesA.get(0) + ":" + seriesA.get(seriesA.size() - 1));

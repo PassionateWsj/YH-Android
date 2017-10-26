@@ -2,17 +2,15 @@ package com.intfocus.yhdev.subject.table
 
 import android.content.Context
 import android.support.v7.widget.RecyclerView
+import android.text.TextUtils.TruncateAt.MIDDLE
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-
 import com.intfocus.yhdev.R
 import com.intfocus.yhdev.subject.table.bean.Head
 import com.intfocus.yhdev.subject.table.bean.MainData
 import com.intfocus.yhdev.util.Utils
-
-import android.text.TextUtils.TruncateAt.MIDDLE
 
 /**
  * Created by CANC on 2017/4/6.
@@ -47,12 +45,10 @@ class TableContentItemAdapter(private val context: Context, private var heads: L
         }
     }
 
-    override fun getItemCount(): Int {
-        return if (mainData == null) 0 else mainData!!.size
-    }
+    override fun getItemCount(): Int = if (mainData == null) 0 else mainData!!.size
 
     class TableHeadHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var tvMain = itemView.findViewById(R.id.tv_main) as TextView
+        var tvMain:TextView = itemView.findViewById(R.id.tv_main)
     }
 
     interface ContentItemListener {

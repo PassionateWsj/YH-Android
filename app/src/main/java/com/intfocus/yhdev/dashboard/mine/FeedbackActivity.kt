@@ -49,9 +49,7 @@ class FeedbackActivity : AbstractActivity<IssueMode>(), View.OnClickListener, Fe
 
     private val issueInfo = IssueCommitInfo()
 
-    override fun setSubject(): Subject {
-        return IssueMode(this)
-    }
+    override fun setSubject(): Subject = IssueMode(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -86,7 +84,7 @@ class FeedbackActivity : AbstractActivity<IssueMode>(), View.OnClickListener, Fe
                 finish()
             }
             R.id.btn_feedback_submit -> {
-                if (TextUtils.isEmpty(et_feedback_suggestion.text.toString()) && screenshotAdapter.getData().size == 0) {
+                if (TextUtils.isEmpty(et_feedback_suggestion.text.toString()) && screenshotAdapter.getData().isEmpty()) {
                     ToastUtils.show(this, "请完善信息再提交")
                 } else {
                     for (uri in screenshotAdapter.getData()) {

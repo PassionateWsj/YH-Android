@@ -26,26 +26,26 @@ import org.greenrobot.eventbus.ThreadMode
 /**
  * Created by CANC on 2017/8/3.
  */
-class FilterActivity : FragmentActivity(), FilterMenuAdapter.FilterMenuListener, FilterPopupWindow.MenuLisenter, MyFilterDialogFragment.FilterLisenter {
+class FilterActivity : FragmentActivity(), FilterMenuAdapter.FilterMenuListener, FilterPopupWindow.MenuLisenter, MyFilterDialogFragment.FilterListener {
 
-    lateinit var mActivity: FragmentActivity
+    private lateinit var mActivity: FragmentActivity
     /**
      * 地址选择
      */
-    lateinit var locationDatas: ArrayList<MenuItem>
+    private lateinit var locationDatas: ArrayList<MenuItem>
     /**
      * 菜单
      */
-    var currentPosition: Int? = 0//当前展开的menu
-    lateinit var menuDatas: ArrayList<MenuItem>
-    lateinit var menuAdpter: FilterMenuAdapter
-    var filterPopupWindow: FilterPopupWindow? = null
-    lateinit var viewLine: View
-    lateinit var viewBg: View
+    private var currentPosition: Int? = 0//当前展开的menu
+    private lateinit var menuDatas: ArrayList<MenuItem>
+    private lateinit var menuAdpter: FilterMenuAdapter
+    private var filterPopupWindow: FilterPopupWindow? = null
+    private lateinit var viewLine: View
+    private lateinit var viewBg: View
 
-    lateinit var filterRecyclerView: RecyclerView
-    lateinit var tvAddressFilter: TextView
-    lateinit var tvLocationAddress: TextView
+    private lateinit var filterRecyclerView: RecyclerView
+    private lateinit var tvAddressFilter: TextView
+    private lateinit var tvLocationAddress: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,9 +62,9 @@ class FilterActivity : FragmentActivity(), FilterMenuAdapter.FilterMenuListener,
         menuDatas = ArrayList()
         viewLine = findViewById(R.id.view_line)
         viewBg = findViewById(R.id.view_bg)
-        tvAddressFilter = findViewById(R.id.tv_address_filter) as TextView
-        tvLocationAddress = findViewById(R.id.tv_location_address) as TextView
-        filterRecyclerView = findViewById(R.id.filter_recycler_view) as RecyclerView
+        tvAddressFilter = findViewById(R.id.tv_address_filter)
+        tvLocationAddress = findViewById(R.id.tv_location_address)
+        filterRecyclerView = findViewById(R.id.filter_recycler_view)
 
 
         val mLayoutManager = LinearLayoutManager(mActivity)
@@ -79,7 +79,7 @@ class FilterActivity : FragmentActivity(), FilterMenuAdapter.FilterMenuListener,
     }
 
 
-    fun showDialogFragment() {
+    private fun showDialogFragment() {
         val mFragTransaction = supportFragmentManager.beginTransaction()
         val fragment = supportFragmentManager.findFragmentByTag("dialogFragment")
         if (fragment != null) {
@@ -87,12 +87,12 @@ class FilterActivity : FragmentActivity(), FilterMenuAdapter.FilterMenuListener,
             mFragTransaction.remove(fragment)
         }
         val dialogFragment = MyFilterDialogFragment(locationDatas, this)
-        dialogFragment!!.show(mFragTransaction!!, "dialogFragment")//显示一个Fragment并且给该Fragment添加一个Tag，可通过findFragmentByTag找到该Fragment
+        dialogFragment.show(mFragTransaction!!, "dialogFragment")//显示一个Fragment并且给该Fragment添加一个Tag，可通过findFragmentByTag找到该Fragment
 
     }
 
-    fun initMenuPopup(position: Int) {
-        filterPopupWindow = FilterPopupWindow(this, menuDatas!![position].data!!, this)
+    private fun initMenuPopup(position: Int) {
+        filterPopupWindow = FilterPopupWindow(this, menuDatas[position].data!!, this)
         filterPopupWindow!!.init()
     }
 
@@ -100,7 +100,7 @@ class FilterActivity : FragmentActivity(), FilterMenuAdapter.FilterMenuListener,
         if (filterPopupWindow == null) {
             initMenuPopup(position)
         } else {
-            filterPopupWindow!!.upDateDatas(menuDatas!![position].data!!)
+            filterPopupWindow!!.upDateDatas(menuDatas[position].data!!)
         }
         viewBg.visibility = View.VISIBLE
         filterPopupWindow!!.showAsDropDown(viewLine)
@@ -117,7 +117,7 @@ class FilterActivity : FragmentActivity(), FilterMenuAdapter.FilterMenuListener,
     /**
      * 获取筛选菜单数据
      */
-    fun getMenuData() {
+    private fun getMenuData() {
         RetrofitUtil.getHttpService(applicationContext).filterMenu
                 .compose(RetrofitUtil.CommonOptions<MenuResult>())
                 .subscribe(object : CodeHandledSubscriber<MenuResult>() {
@@ -130,10 +130,10 @@ class FilterActivity : FragmentActivity(), FilterMenuAdapter.FilterMenuListener,
 
                     override fun onBusinessNext(data: MenuResult?) {
                         for (menu in data!!.data) {
-                            if ("location".equals(menu.type)) {
+                            if ("location" == menu.type) {
                                 locationDatas = menu.data!!
                             }
-                            if ("faster_select".equals(menu.type)) {
+                            if ("faster_select" == menu.type) {
                                 menuDatas = menu.data!!
                                 menuAdpter.setData(menuDatas)
                             }
@@ -147,7 +147,7 @@ class FilterActivity : FragmentActivity(), FilterMenuAdapter.FilterMenuListener,
      */
     override fun itemClick(position: Int) {
         //标记点击位置
-        menuDatas!![position].arrorDirection = true
+        menuDatas[position].arrorDirection = true
         menuAdpter.setData(menuDatas)
         currentPosition = position
         showMenuPop(position)
@@ -155,17 +155,17 @@ class FilterActivity : FragmentActivity(), FilterMenuAdapter.FilterMenuListener,
 
 
     override fun menuItemClick(position: Int) {
-        for (menuItem in menuDatas!![currentPosition!!].data!!) {
+        for (menuItem in menuDatas[currentPosition!!].data!!) {
             menuItem.arrorDirection = false
         }
         //标记点击位置
-        menuDatas!![currentPosition!!].data!![position].arrorDirection = true
+        menuDatas[currentPosition!!].data!![position].arrorDirection = true
         filterPopupWindow!!.dismiss()
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun Location(location: AMapLocation) {
-        if (location != null && location.errorCode == 0) {
+        if (location.errorCode == 0) {
             tvLocationAddress.text = location.address
         } else {
             tvLocationAddress.text = "定位失败"

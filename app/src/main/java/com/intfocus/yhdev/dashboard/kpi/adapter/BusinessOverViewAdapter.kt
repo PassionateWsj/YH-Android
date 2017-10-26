@@ -16,12 +16,12 @@ import org.greenrobot.eventbus.EventBus
 
 
 /**
- * Created by CANC on 2017/7/27.
+ * @author CANC on 2017/7/27.
  */
 class BusinessOverViewAdapter(val context: Context,
                               private var datas: List<KpiGroupItem>?) : RecyclerView.Adapter<BusinessOverViewAdapter.OperationalWarningHolder>() {
 
-    var inflater = LayoutInflater.from(context)
+    private var inflater = LayoutInflater.from(context)
     private val colors = Colors.colorsRGY
 
     fun setData(data: List<KpiGroupItem>?) {
@@ -34,22 +34,20 @@ class BusinessOverViewAdapter(val context: Context,
         return OperationalWarningHolder(contentView)
     }
 
-    override fun getItemCount(): Int {
-        return if (datas == null) 0 else datas!!.size
-    }
+    override fun getItemCount(): Int = if (datas == null) 0 else datas!!.size
 
     override fun onBindViewHolder(holder: OperationalWarningHolder, position: Int) {
-        var itemData = datas!![position]
+        val itemData = datas!![position]
         holder.tvNumberTitle.text = itemData.title
         val mTypeface = Typeface.createFromAsset(context.assets, "ALTGOT2N.TTF")
-        var number = itemData.data!!.high_light!!.number + ""
+        val number = itemData.data!!.high_light!!.number + ""
         holder.tvNumberMain.text = formatNumber(number)
         holder.tvNumberUnit.text = itemData.unit
         holder.tvNumberCompare.typeface = mTypeface
         holder.tvNumberCompareT.typeface = mTypeface
         holder.tvNumberCompare.setTextColor(colors[itemData.data!!.high_light!!.arrow])
         holder.tvNumberCompareT.setTextColor(colors[itemData.data!!.high_light!!.arrow])
-        if (itemData.data!!.high_light!!.compare != null && itemData.data!!.high_light!!.compare.contains("%")) {
+        if (itemData.data!!.high_light!!.compare.contains("%")) {
             holder.tvNumberCompare.text = itemData.data!!.high_light!!.compare.replace("%", "")
             holder.tvNumberCompareT.visibility = View.VISIBLE
         } else {
@@ -66,22 +64,22 @@ class BusinessOverViewAdapter(val context: Context,
     }
 
     fun formatNumber(number: String): String {
-        var number = number
-        if (number.contains("")) {
-            number = number.replace("0+?$".toRegex(), "")//去掉多余的0
-            number = number.replace("[.]$".toRegex(), "")//如最后一位是.则去掉
+        var mNumber = number
+        if (mNumber.contains("")) {
+            mNumber = mNumber.replace("0+?$".toRegex(), "")//去掉多余的0
+            mNumber = mNumber.replace("[.]$".toRegex(), "")//如最后一位是.则去掉
         }
-        return number
+        return mNumber
     }
 
     class OperationalWarningHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var tvNumberTitle = itemView.findViewById(R.id.tv_number_title) as TextView
-        var tvNumberMain = itemView.findViewById(R.id.tv_number_main) as TextView
-        var tvNumberUnit = itemView.findViewById(R.id.tv_number_unit) as TextView
-        var tvNumberCompare = itemView.findViewById(R.id.tv_number_compare) as TextView
-        var tvNumberCompareT = itemView.findViewById(R.id.tv_number_compare_t) as TextView
-        var tvNumberSub = itemView.findViewById(R.id.tv_number_sub) as TextView
-        var tvNumberCompareText = itemView.findViewById(R.id.tv_number_compare_name) as TextView
-        var rlBusinessOverview = itemView.findViewById(R.id.rl_business_overview) as RelativeLayout
+        var tvNumberTitle: TextView = itemView.findViewById(R.id.tv_number_title)
+        var tvNumberMain: TextView = itemView.findViewById(R.id.tv_number_main)
+        var tvNumberUnit: TextView = itemView.findViewById(R.id.tv_number_unit)
+        var tvNumberCompare: TextView = itemView.findViewById(R.id.tv_number_compare)
+        var tvNumberCompareT: TextView = itemView.findViewById(R.id.tv_number_compare_t)
+        var tvNumberSub: TextView = itemView.findViewById(R.id.tv_number_sub)
+        var tvNumberCompareText: TextView = itemView.findViewById(R.id.tv_number_compare_name)
+        var rlBusinessOverview: RelativeLayout = itemView.findViewById(R.id.rl_business_overview)
     }
 }

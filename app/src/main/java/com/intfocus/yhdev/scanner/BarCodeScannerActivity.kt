@@ -8,6 +8,7 @@ import android.graphics.Typeface
 import android.graphics.drawable.BitmapDrawable
 import android.os.AsyncTask
 import android.os.Bundle
+import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.text.TextUtils
 import android.util.Log
@@ -148,16 +149,16 @@ class BarCodeScannerActivity : AppCompatActivity(), QRCodeView.Delegate, View.On
      * 初始化视图
      */
     private fun initView() {
-        tvBarcodeLight = findViewById(R.id.tv_barcode_light) as TextView
-        cbBarcodeLight = findViewById(R.id.cb_barcode_light) as CheckBox
+        tvBarcodeLight = findViewById(R.id.tv_barcode_light)
+        cbBarcodeLight = findViewById(R.id.cb_barcode_light)
 
         view = LayoutInflater.from(this).inflate(R.layout.popup_input_barcode, null)
         popupWindow = PopupWindow(view, RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT, true)
         popupWindow!!.setBackgroundDrawable(BitmapDrawable())
         val mTypeFace = Typeface.createFromAsset(this.assets, "ALTGOT2N.TTF")
         view!!.et_input_barcode.typeface = mTypeFace
-        tvInputBarcodeLight = view!!.findViewById(R.id.tv_input_barcode_light) as TextView
-        cbInputBarcodeLight = view!!.findViewById(R.id.cb_input_barcode_light) as CheckBox
+        tvInputBarcodeLight = view!!.findViewById(R.id.tv_input_barcode_light)
+        cbInputBarcodeLight = view!!.findViewById(R.id.cb_input_barcode_light)
     }
 
     /**
@@ -184,12 +185,12 @@ class BarCodeScannerActivity : AppCompatActivity(), QRCodeView.Delegate, View.On
         ll_btn_input_bar_code.setOnTouchListener { _, event ->
             when {
                 event.action == MotionEvent.ACTION_DOWN -> {
-                    tv_input_bar_code.background = resources.getDrawable(R.drawable.btn_manual1)
-                    tv_barcode_input.setTextColor(resources.getColor(R.color.co7_syr))
+                    tv_input_bar_code.background = ContextCompat.getDrawable(this,R.drawable.btn_manual1)
+                    tv_barcode_input.setTextColor(ContextCompat.getColor(this,R.color.co7_syr))
                 }
                 event.action == MotionEvent.ACTION_UP -> {
-                    tv_input_bar_code.background = resources.getDrawable(R.drawable.btn_manual2)
-                    tv_barcode_input.setTextColor(resources.getColor(R.color.co10_syr))
+                    tv_input_bar_code.background = ContextCompat.getDrawable(this,R.drawable.btn_manual2)
+                    tv_barcode_input.setTextColor(ContextCompat.getColor(this,R.color.co10_syr))
                 }
             }
             false
@@ -324,10 +325,10 @@ class BarCodeScannerActivity : AppCompatActivity(), QRCodeView.Delegate, View.On
      */
     private fun checkLightStatus(status: Boolean, tv: TextView, checkBox: CheckBox) {
         if (status) {
-            tv.setTextColor(resources.getColor(R.color.co7_syr))
+            tv.setTextColor(ContextCompat.getColor(this, R.color.co7_syr))
             tv.text = "关闭手电筒"
         } else {
-            tv.setTextColor(resources.getColor(R.color.co10_syr))
+            tv.setTextColor(ContextCompat.getColor(this, R.color.co10_syr))
             tv.text = "打开手电筒"
         }
         checkBox.isChecked = status
@@ -387,7 +388,7 @@ class BarCodeScannerActivity : AppCompatActivity(), QRCodeView.Delegate, View.On
             val storeItemDao = OrmDBHelper.getInstance(mContext).storeItemDao
             Observable.create(Observable.OnSubscribe<List<StoreItem>> { subscriber ->
                 try {
-                    val storeItems = storeItemDao.queryBuilder().where().like("name", "$keyWord").query()
+                    val storeItems = storeItemDao.queryBuilder().where().like("name", keyWord).query()
                     subscriber.onNext(storeItems)
                 } catch (e: SQLException) {
                     subscriber.onError(e)

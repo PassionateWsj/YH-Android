@@ -1,7 +1,7 @@
 package com.intfocus.yhdev.subject.template_v1.entity
 
 import java.io.Serializable
-import java.util.ArrayList
+import java.util.*
 
 /**
  * 仪表盘实体对象

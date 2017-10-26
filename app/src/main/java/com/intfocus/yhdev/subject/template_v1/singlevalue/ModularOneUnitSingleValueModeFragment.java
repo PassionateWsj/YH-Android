@@ -159,6 +159,6 @@ public class ModularOneUnitSingleValueModeFragment extends BaseModeFragment impl
 
     @Override
     public SingleValueContract.Presenter getPresenter() {
-        return null;
+        return mPresenter;
     }
 }

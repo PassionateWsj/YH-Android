@@ -11,7 +11,6 @@ import android.support.v7.widget.StaggeredGridLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.google.gson.Gson
 import com.intfocus.yhdev.R
 import com.intfocus.yhdev.base.BaseModeFragment
 import com.intfocus.yhdev.dashboard.DashboardActivity
@@ -38,14 +37,14 @@ import java.util.*
  * Created by liuruilin on 2017/6/20.
  */
 class KpiFragment : BaseModeFragment<KpiMode>(), ViewPager.OnPageChangeListener, NestedScrollView.OnScrollChangeListener {
-    lateinit var mViewPagerAdapter: KpiStickAdapter
-    var rootView: View? = null
-    var gson = Gson()
-    lateinit var mUserSP: SharedPreferences
-    val FIRST_PAGE_INDEX: Int = 0
-    var stickSzize: Int = 0
-    var timer = Timer()
-    lateinit var stickCycle: StickCycleTask
+    private lateinit var mViewPagerAdapter: KpiStickAdapter
+    private var rootView: View? = null
+    //  private var gson = Gson()
+    private lateinit var mUserSP: SharedPreferences
+    private val FIRST_PAGE_INDEX: Int = 0
+    private var stickSzize: Int = 0
+    private var timer = Timer()
+    private lateinit var stickCycle: StickCycleTask
 
     override fun setSubject(): Subject {
         mUserSP = ctx.getSharedPreferences("UserBean", Context.MODE_PRIVATE)
@@ -57,6 +56,10 @@ class KpiFragment : BaseModeFragment<KpiMode>(), ViewPager.OnPageChangeListener,
         EventBus.getDefault().unregister(this)
     }
 
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+//        initAffiche()
+        super.onActivityCreated(savedInstanceState)
+    }
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         EventBus.getDefault().register(this)
@@ -67,76 +70,63 @@ class KpiFragment : BaseModeFragment<KpiMode>(), ViewPager.OnPageChangeListener,
         return rootView
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-//        initAffiche()
-        super.onActivityCreated(savedInstanceState)
-    }
-
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun initView(result: KpiRequest) {
         trl_refresh_layout.finishLoadmore()
         trl_refresh_layout.finishRefreshing()
         stickCycle = StickCycleTask()
 
-        var top_fragment: MutableList<Fragment> = mutableListOf()
-        var kpi_datas: MutableList<KpiGroup> = mutableListOf()
-        var datas = result.kpi_data
+        val topFragment: MutableList<Fragment> = mutableListOf()
+        val kpiDatas: MutableList<KpiGroup> = mutableListOf()
+        val datas = result.kpi_data
 
         for (kpiGroupDatas in datas!!.data!!.iterator()) {
             if (kpiGroupDatas.group_name.equals("top_data")) {
-                for (kpiGroupItem in kpiGroupDatas!!.data!!.iterator()) {
-                    top_fragment.add(NumberOneFragment.newInstance(kpiGroupItem))
+                for (kpiGroupItem in kpiGroupDatas.data!!.iterator()) {
+                    topFragment.add(NumberOneFragment.newInstance(kpiGroupItem))
                 }
             } else {
-                kpi_datas.add(kpiGroupDatas)
+                kpiDatas.add(kpiGroupDatas)
             }
         }
 
-        if (top_fragment != null) {
-            stickSzize = top_fragment.size
-            mViewPagerAdapter = KpiStickAdapter(childFragmentManager, top_fragment)
-            mViewPagerAdapter.switchTo(FIRST_PAGE_INDEX)
+        stickSzize = topFragment.size
+        mViewPagerAdapter = KpiStickAdapter(childFragmentManager, topFragment)
+        mViewPagerAdapter.switchTo(FIRST_PAGE_INDEX)
 
-            vp_kpi_stick.setPageTransformer(false, CustPagerTransformer(act.applicationContext))
-            vp_kpi_stick.adapter = mViewPagerAdapter
-            vp_kpi_stick.addOnPageChangeListener(this)
-            vp_kpi_stick.currentItem = 0
+        vp_kpi_stick.setPageTransformer(false, CustPagerTransformer(act.applicationContext))
+        vp_kpi_stick.adapter = mViewPagerAdapter
+        vp_kpi_stick.addOnPageChangeListener(this)
+        vp_kpi_stick.currentItem = 0
 
-            indicator.setViewPager(vp_kpi_stick)
-            timer.schedule(stickCycle, 0, 5000)
+        indicator.setViewPager(vp_kpi_stick)
+        timer.schedule(stickCycle, 0, 5000)
+
+
+        val layoutManager: StaggeredGridLayoutManager
+        layoutManager = object : StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL) {
+            override fun canScrollVertically(): Boolean = false
         }
 
-        if (kpi_datas != null) {
-            var layoutManager: StaggeredGridLayoutManager
-            layoutManager = object : StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL) {
-                override fun canScrollVertically(): Boolean {
-                    return false
-                }
+        rc_kpi_groups.layoutManager = layoutManager
+        val recycleAdapter = KpiItemAdapter(ctx, kpiDatas)
+        rc_kpi_groups.adapter = recycleAdapter
+
+        val headerView = DefaultRefreshView(ctx)
+        headerView.setArrowResource(R.drawable.loading_up)
+        trl_refresh_layout.setHeaderView(headerView)
+        trl_refresh_layout.setOnRefreshListener(object : RefreshListenerAdapter(), ErrorUtils.ErrorLisenter {
+            override fun retry() {
+                model.requestData()
             }
 
-            rc_kpi_groups.layoutManager = layoutManager
-            var recycleAdapter = KpiItemAdapter(ctx, kpi_datas)
-            rc_kpi_groups.adapter = recycleAdapter
+            override fun onRefresh(refreshLayout: TwinklingRefreshLayout?) {
+                model.requestData()
+                super.onRefresh(refreshLayout)
+            }
 
-            var headerView = DefaultRefreshView(ctx)
-            headerView.setArrowResource(R.drawable.loading_up)
-            trl_refresh_layout.setHeaderView(headerView)
-            trl_refresh_layout.setOnRefreshListener(object : RefreshListenerAdapter(), ErrorUtils.ErrorLisenter {
-                override fun retry() {
-                    model.requestData()
-                }
+        })
 
-                override fun onRefresh(refreshLayout: TwinklingRefreshLayout?) {
-                    model.requestData()
-                    super.onRefresh(refreshLayout)
-                }
-
-                override fun onLoadMore(refreshLayout: TwinklingRefreshLayout?) {
-                    super.onLoadMore(refreshLayout)
-                }
-
-            })
-        }
         rootView!!.invalidate()
     }
 
@@ -160,11 +150,11 @@ class KpiFragment : BaseModeFragment<KpiMode>(), ViewPager.OnPageChangeListener,
 
     override fun onScrollChange(v: NestedScrollView?, scrollX: Int, scrollY: Int, oldScrollX: Int, oldScrollY: Int) {
         var alpha = 0
-        var scale: Float
-        var height = DisplayUtil.dip2px(ctx, 129f)
+        val scale: Float
+        val height = DisplayUtil.dip2px(ctx, 129f)
         if (scrollY <= height) {
-            scale = scrollY / height as Float
-            alpha = 255 * scale as Int
+            scale = (scrollY / height).toFloat()
+            alpha = (255 * scale).toInt()
             rl_action_bar.setBackgroundColor(Color.argb(alpha, 255, 0, 0))
         } else {
             if (alpha < 255) {

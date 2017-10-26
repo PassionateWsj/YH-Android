@@ -5,7 +5,7 @@ import android.util.Log;
 
 import com.alibaba.fastjson.JSON;
 import com.intfocus.yhdev.subject.template_v1.entity.ModularTwo_UnitTableEntity;
-import com.intfocus.yhdev.subject.template_v1.entity.msg.MDetalRootPageRequestResult;
+import com.intfocus.yhdev.subject.template_v1.entity.msg.MDetailRootPageRequestResult;
 import com.zbl.lib.baseframe.core.AbstractMode;
 import com.zbl.lib.baseframe.utils.TimeUtil;
 
@@ -44,7 +44,7 @@ public class ModularTwo_UnitTableContMode extends AbstractMode {
                     dataCallback(entity, "onMessageEvent");
                     Log.i(TAG, "EndAnalysisTime:" + TimeUtil.getNowTime());
                 } catch (Exception e) {
-                    dataCallback(new MDetalRootPageRequestResult(true, 400, null), "onMessageEvent");
+                    dataCallback(new MDetailRootPageRequestResult(true, 400, null), "onMessageEvent");
                     e.printStackTrace();
                 }
             }

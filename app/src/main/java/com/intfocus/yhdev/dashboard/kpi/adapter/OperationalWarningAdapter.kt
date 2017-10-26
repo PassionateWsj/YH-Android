@@ -36,9 +36,7 @@ class OperationalWarningAdapter(val context: Context,
         return OperationalWarningHolder(contentView)
     }
 
-    override fun getItemCount(): Int {
-        return if (datas == null) 0 else datas!!.size
-    }
+    override fun getItemCount(): Int = if (datas == null) 0 else datas!!.size
 
     override fun onBindViewHolder(holder: OperationalWarningHolder, position: Int) {
         var itemData = datas!![position]
@@ -79,12 +77,12 @@ class OperationalWarningAdapter(val context: Context,
     }
 
     class OperationalWarningHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var rlNumberItem = itemView.findViewById(R.id.rl_number_item) as RelativeLayout
-        var viewEmpty = itemView.findViewById(R.id.view_empty)
-        var tvNumberMain = itemView.findViewById(R.id.tv_number_main) as TextView
-        var tvNumberUnit = itemView.findViewById(R.id.tv_number_unit) as TextView
-        var tvNnumberCompare = itemView.findViewById(R.id.tv_number_compare) as TextView
-        var tvNumberTitle = itemView.findViewById(R.id.tv_number_title) as TextView
-        var tvNumberSub = itemView.findViewById(R.id.tv_number_sub) as TextView
+        var rlNumberItem = itemView.findViewById<RelativeLayout>(R.id.rl_number_item)
+        var viewEmpty = itemView.findViewById<View>(R.id.view_empty)
+        var tvNumberMain = itemView.findViewById<TextView>(R.id.tv_number_main)
+        var tvNumberUnit = itemView.findViewById<TextView>(R.id.tv_number_unit)
+        var tvNnumberCompare = itemView.findViewById<TextView>(R.id.tv_number_compare)
+        var tvNumberTitle = itemView.findViewById<TextView>(R.id.tv_number_title)
+        var tvNumberSub = itemView.findViewById<TextView>(R.id.tv_number_sub)
     }
 }

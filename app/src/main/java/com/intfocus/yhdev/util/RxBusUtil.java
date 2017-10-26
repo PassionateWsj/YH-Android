@@ -7,7 +7,7 @@ import rx.subjects.SerializedSubject;
 
 /**
  * ****************************************************
- * author: JamesWong
+ * @author JamesWong
  * created on: 17/08/02 下午2:17
  * e-mail: PassionateWsj@outlook.com
  * name:
@@ -23,7 +23,10 @@ public class RxBusUtil {
         mSubject = new SerializedSubject<>(PublishSubject.create());
     }
 
-    // 双重校验锁单例模式
+    /**
+     * 双重校验锁单例模式
+     * @return 单例
+     */
     public static synchronized RxBusUtil getInstance() {
         if (mInstance == null) {
             synchronized (RxBusUtil.class) {

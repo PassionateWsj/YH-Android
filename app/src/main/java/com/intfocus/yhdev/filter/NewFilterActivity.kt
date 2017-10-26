@@ -92,10 +92,10 @@ class NewFilterActivity : FragmentActivity(), NewFilterFragment.NewFilterFragmen
 
     }
 
-    override fun itemClick(position: Int, datas: ArrayList<MenuItem>) {
+    override fun itemClick(position: Int, menuDatas: ArrayList<MenuItem>) {
         LogUtil.d("itemClick", position.toString())
-        if (datas[position].data != null) {
-            titleList[currentPosition!!] = datas[position].name!!
+        if (menuDatas[position].data != null) {
+            titleList[currentPosition!!] = menuDatas[position].name!!
             //用于返回上级后的点击列表处理
             currentTitleList.clear()
             currentFragments.clear()
@@ -110,31 +110,31 @@ class NewFilterActivity : FragmentActivity(), NewFilterFragment.NewFilterFragmen
                 i--
             }
             titleList.add("请选择")
-            if (datas[position].data!! != null && datas[position].data!!.size > 0) {
+            if ( menuDatas[position].data!!.size > 0) {
                 currentPosition = currentPosition!! + 1
-                for (data in datas[position].data!!) {
+                for (data in menuDatas[position].data!!) {
                     data.arrorDirection = false
                 }
-                fragments.add(NewFilterFragment(datas[position].data!!, this))
-                if (adapter == null) {
-                    adapter = FragmentAdapter(supportFragmentManager, fragments, titleList)
-                    view_pager.adapter = adapter
-                } else {
+                fragments.add(NewFilterFragment(menuDatas[position].data!!, this))
+//                if (adapter == null) {
+//                    adapter = FragmentAdapter(supportFragmentManager, fragments, titleList)
+//                    view_pager.adapter = adapter
+//                } else {
                     adapter.updateFragments(fragments)
                     adapter.updateTitles(titleList)
-                }
+//                }
                 tab_layout.setupWithViewPager(view_pager)
                 view_pager.currentItem = currentPosition!!
             }
         } else {
-            titleList[currentPosition!!] = datas[position].name!!
-            if (adapter == null) {
-                adapter = FragmentAdapter(supportFragmentManager, fragments, titleList)
-                view_pager.adapter = adapter
-            } else {
+            titleList[currentPosition!!] = menuDatas[position].name!!
+//            if (adapter == null) {
+//                adapter = FragmentAdapter(supportFragmentManager, fragments, titleList)
+//                view_pager.adapter = adapter
+//            } else {
                 adapter.updateFragments(fragments)
                 adapter.updateTitles(titleList)
-            }
+//            }
             tab_layout.setupWithViewPager(view_pager)
             view_pager.currentItem = currentPosition!!
             ToastUtils.show(mActivuty, "没有下一级别")

@@ -38,9 +38,9 @@ class WorkBoxAdapter(var ctx: Context, var datas: List<WorkBoxItem>?) : BaseAdap
             convertView = mInflater.inflate(R.layout.item_work_box, null)
 
             // construct an item tag
-            viewTag = ItemViewTag(convertView!!.findViewById(R.id.ll_work_box_item) as RelativeLayout,
-                    convertView.findViewById(R.id.iv_work_box_item_img) as ImageView,
-                    convertView.findViewById(R.id.tv_work_box_item_name) as TextView)
+            viewTag = ItemViewTag(convertView!!.findViewById(R.id.ll_work_box_item) ,
+                    convertView.findViewById(R.id.iv_work_box_item_img) ,
+                    convertView.findViewById(R.id.tv_work_box_item_name) )
             convertView.tag = viewTag
 
             if (convertView.layoutParams == null)

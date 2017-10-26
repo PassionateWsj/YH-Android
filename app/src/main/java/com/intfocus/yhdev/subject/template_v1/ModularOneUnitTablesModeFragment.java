@@ -16,7 +16,7 @@ import com.intfocus.yhdev.R;
 import com.intfocus.yhdev.base.BaseModeFragment;
 import com.intfocus.yhdev.dashboard.mine.adapter.TableTitleAdapter;
 import com.intfocus.yhdev.subject.template_v1.entity.MDetailUnitEntity;
-import com.intfocus.yhdev.subject.template_v1.entity.msg.MDetalRootPageRequestResult;
+import com.intfocus.yhdev.subject.template_v1.entity.msg.MDetailRootPageRequestResult;
 import com.intfocus.yhdev.subject.template_v1.mode.ModularTwo_UnitTablesParentMode;
 import com.zbl.lib.baseframe.core.Subject;
 import com.zbl.lib.baseframe.utils.ToastUtil;
@@ -54,7 +54,7 @@ public class ModularOneUnitTablesModeFragment extends BaseModeFragment<ModularTw
 
     private RadioGroup radioGroup;
     private ModularOneModeActivity.RootTableCheckedChangeListener rootTableListener;
-    private MDetalRootPageRequestResult entity;
+    private MDetailRootPageRequestResult entity;
 
     /**
      * 最上层跟跟标签ID
@@ -116,7 +116,7 @@ public class ModularOneUnitTablesModeFragment extends BaseModeFragment<ModularTw
         recyclerView.setAdapter(adapter);
     }
 
-    public void onMessageEvent(final MDetalRootPageRequestResult entity) {
+    public void onMessageEvent(final MDetailRootPageRequestResult entity) {
         if (entity != null && entity.stateCode == 200) {
             act.runOnUiThread(new Runnable() {
                 @Override
@@ -127,7 +127,7 @@ public class ModularOneUnitTablesModeFragment extends BaseModeFragment<ModularTw
         }
     }
 
-    private void bindData(MDetalRootPageRequestResult entity) {
+    private void bindData(MDetailRootPageRequestResult entity) {
         this.entity = entity;
         if (entity != null) {
             datas = entity.datas;

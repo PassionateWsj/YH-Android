@@ -37,22 +37,20 @@ class NewFilterAdapter(val context: Context,
         holder.contentView.setBackgroundResource(R.drawable.recycler_bg)
         if (menuDatas != null) {
             holder.itemAddressTv.text = menuDatas!![position].name
-            holder.llTtem.setOnClickListener {
+            holder.llItem.setOnClickListener {
                 lisenter.itemClick(position)
             }
-            holder.itemAddressImg.visibility = if (menuDatas!![position].arrorDirection!!) View.VISIBLE else View.GONE
+            holder.itemAddressImg.visibility = if (menuDatas!![position].arrorDirection) View.VISIBLE else View.GONE
         }
     }
 
-    override fun getItemCount(): Int {
-        return if (menuDatas == null) 0 else menuDatas!!.size
-    }
+    override fun getItemCount(): Int = if (menuDatas == null) 0 else menuDatas!!.size
 
     class FilterMenuHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var contentView = itemView
-        var llTtem = itemView.findViewById(R.id.ll_item) as LinearLayout
-        var itemAddressTv = itemView.findViewById(R.id.item_address_tv) as TextView
-        var itemAddressImg = itemView.findViewById(R.id.item_address_img) as ImageView
+        var llItem: LinearLayout = itemView.findViewById(R.id.ll_item)
+        var itemAddressTv: TextView = itemView.findViewById(R.id.item_address_tv)
+        var itemAddressImg: ImageView = itemView.findViewById(R.id.item_address_img)
     }
 
     interface FilterMenuListener {

@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.intfocus.yhdev.R
-import com.intfocus.yhdev.constant.Colors
 import com.intfocus.yhdev.dashboard.kpi.bean.KpiGroupItem
 import kotlinx.android.synthetic.main.fragment_number_three.*
 import java.text.DecimalFormat
@@ -19,7 +18,7 @@ class NumberThreeFragment : Fragment() {
     var datas: KpiGroupItem? = null
     private var rootView: View? = null
     internal var df = DecimalFormat("#.00")
-    private val colors = Colors.colorsRGY
+//    private val colors = Colors.colorsRGY
 
     companion object {
         fun newInstance(datas: KpiGroupItem): NumberThreeFragment {
@@ -53,7 +52,7 @@ class NumberThreeFragment : Fragment() {
     fun init() {
         if (rootView != null) {
             tv_number_three_title.text = datas!!.title
-            var number = datas!!.data!!.high_light!!.number
+            val number = datas!!.data!!.high_light!!.number
             tv_number_three_main.text = formatNumber(number)
             tv_number_three_unit.text = datas!!.unit
             tv_number_three_compare.text = datas!!.data!!.high_light!!.compare
@@ -66,11 +65,11 @@ class NumberThreeFragment : Fragment() {
     }
 
     fun formatNumber(number: String): String {
-        var number = number
-        if (number.contains("")) {
-            number = number.replace("0+?$".toRegex(), "")//去掉多余的0
-            number = number.replace("[.]$".toRegex(), "")//如最后一位是.则去掉
+        var mNumber = number
+        if (mNumber.contains("")) {
+            mNumber = mNumber.replace("0+?$".toRegex(), "")//去掉多余的0
+            mNumber = mNumber.replace("[.]$".toRegex(), "")//如最后一位是.则去掉
         }
-        return number
+        return mNumber
     }
 }

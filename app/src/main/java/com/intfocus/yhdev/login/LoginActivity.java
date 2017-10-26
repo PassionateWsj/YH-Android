@@ -109,7 +109,7 @@ public class LoginActivity extends FragmentActivity {
         sharedPath = FileUtil.sharedPath(ctx);
 
         setContentView(R.layout.activity_login_new);
-        checkPgyerVersionUpgrade(LoginActivity.this, true);
+        checkPgyerVersionUpgrade(LoginActivity.this, false);
 
         usernameEditText = (EditText) findViewById(R.id.etUsername);
         passwordEditText = (EditText) findViewById(R.id.etPassword);
@@ -534,7 +534,7 @@ public class LoginActivity extends FragmentActivity {
         imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(), 0);
     }
 
-    /*
+    /**
      * 托管在蒲公英平台，对比版本号检测是否版本更新
      * 对比 build 值，只准正向安装提示
      * 奇数: 测试版本，仅提示
@@ -568,7 +568,7 @@ public class LoginActivity extends FragmentActivity {
                     String pgyerVersionPath = String.format("%s/%s", FileUtil.basePath(getApplicationContext()), K.kPgyerVersionConfigFileName);
                     FileUtil.writeFile(pgyerVersionPath, result);
 
-                    if (newVersionCode % 2 == 1) {
+                    if (newVersionCode % 2 ==  1){
                         if (isShowToast) {
                             ToastUtils.INSTANCE.show(LoginActivity.this, String.format("有发布测试版本%s(%s)", newVersionName, newVersionCode), ToastColor.SUCCESS);
                         }
