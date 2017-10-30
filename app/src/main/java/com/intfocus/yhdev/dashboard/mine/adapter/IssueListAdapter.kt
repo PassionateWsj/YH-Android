@@ -41,10 +41,10 @@ class IssueListAdapter(val context: Context,
     }
 
     class IssueListHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var llIssueListItem = itemView.findViewById(R.id.ll_issue_list_item) as LinearLayout
-        var ivIssuePoint = itemView.findViewById(R.id.iv_issue_item_point) as ImageView
-        var tvIssueTitle = itemView.findViewById(R.id.tv_issue_item_title) as TextView
-        var tvIssueTime = itemView.findViewById(R.id.tv_issue_item_time) as TextView
+        var llIssueListItem = itemView.findViewById<LinearLayout>(R.id.ll_issue_list_item)
+        var ivIssuePoint = itemView.findViewById<ImageView>(R.id.iv_issue_item_point)
+        var tvIssueTitle = itemView.findViewById<TextView>(R.id.tv_issue_item_title)
+        var tvIssueTime = itemView.findViewById<TextView>(R.id.tv_issue_item_time)
     }
 
     interface IssueItemListener {

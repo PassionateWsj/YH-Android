@@ -24,8 +24,4 @@ class KpiStickAdapter(fragmentManager: FragmentManager, val mFragmentList: Mutab
     fun switchTo(position: Int) {
         mCurrentFragment = mFragmentList[position]
     }
-
-    override fun instantiateItem(container: ViewGroup?, position: Int): Any {
-        return super.instantiateItem(container, position)
-    }
 }

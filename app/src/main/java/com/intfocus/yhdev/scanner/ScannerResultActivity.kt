@@ -14,6 +14,7 @@ import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.FrameLayout
+import android.widget.LinearLayout
 import android.widget.PopupWindow
 import com.intfocus.yhdev.R
 import com.intfocus.yhdev.util.FileUtil
@@ -98,8 +99,8 @@ class ScannerResultActivity : AbstractActivity<ScannerMode>() {
      */
     fun launchDropMenuActivity(clickView: View) {
         val contentView = LayoutInflater.from(this).inflate(R.layout.pop_menu_v2, null)
-        contentView.findViewById(R.id.ll_shaixuan).visibility = View.VISIBLE
-        contentView.findViewById(R.id.ll_comment).visibility = View.GONE
+        contentView.findViewById<LinearLayout>(R.id.ll_shaixuan).visibility = View.VISIBLE
+        contentView.findViewById<LinearLayout>(R.id.ll_comment).visibility = View.GONE
         x.view().inject(this, contentView)
         //设置弹出框的宽度和高度
         popupWindow = PopupWindow(contentView,
@@ -115,18 +116,18 @@ class ScannerResultActivity : AbstractActivity<ScannerMode>() {
         //进入退出的动画
         //        popupWindow.setAnimationStyle(R.style.AnimationPopupwindow);
         popupWindow.showAsDropDown(clickView)
-        contentView.findViewById(R.id.ll_share).setOnClickListener { _ ->
+        contentView.findViewById<LinearLayout>(R.id.ll_share).setOnClickListener { _ ->
             // 分享
             actionShare2Weixin()
             popupWindow.dismiss()
         }
-        contentView.findViewById(R.id.ll_shaixuan).setOnClickListener { _ ->
+        contentView.findViewById<LinearLayout>(R.id.ll_shaixuan).setOnClickListener { _ ->
             // 筛选
             actionLaunchStoreSelectorActivity()
             //                WidgetUtil.showToastShort(mAppContext, "暂无筛选功能");
             popupWindow.dismiss()
         }
-        contentView.findViewById(R.id.ll_refresh).setOnClickListener { _ ->
+        contentView.findViewById<LinearLayout>(R.id.ll_refresh).setOnClickListener { _ ->
             anim_loading.visibility = View.VISIBLE
             popupWindow.dismiss()
             // 刷新
@@ -146,7 +147,7 @@ class ScannerResultActivity : AbstractActivity<ScannerMode>() {
     }
 
     private fun initWebView() {
-        mWebFrameLayout = findViewById(R.id.wv_scanner_view) as FrameLayout
+        mWebFrameLayout = findViewById(R.id.wv_scanner_view)
         mWebView = WebView(this.applicationContext)
         mWebFrameLayout.addView(mWebView, 0)
 

@@ -22,7 +22,7 @@ class MinePageFragment : BaseFragment(), ViewPager.OnPageChangeListener {
     val titleList = ArrayList<String>()
     val FIRST_PAGE_INDEX: Int = 0
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater!!.inflate(R.layout.fragment_mine, container, false)
         return view
     }
@@ -48,9 +48,9 @@ class MinePageFragment : BaseFragment(), ViewPager.OnPageChangeListener {
         vp_message.addOnPageChangeListener(this)
         vp_message.currentItem = 0
         vp_message.offscreenPageLimit = 2
-        tab_layout.setSelectedTabIndicatorColor(ContextCompat.getColor(activity, R.color.color11))
-        tab_layout.setTabTextColors(ContextCompat.getColor(activity, R.color.color4), ContextCompat.getColor(activity, R.color.color6))
-        tab_layout.setBackgroundColor(ContextCompat.getColor(activity, R.color.color10))
+        tab_layout.setSelectedTabIndicatorColor(ContextCompat.getColor(activity!!, R.color.color11))
+        tab_layout.setTabTextColors(ContextCompat.getColor(activity!!, R.color.color4), ContextCompat.getColor(activity!!, R.color.color6))
+        tab_layout.setBackgroundColor(ContextCompat.getColor(activity!!, R.color.color10))
         tab_layout.setupWithViewPager(vp_message)
         tab_layout.post({ Utils.setIndicator(tab_layout, 25, 25) })
         vp_message.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {

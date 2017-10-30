@@ -26,15 +26,6 @@ class DashboardFragmentAdapter(fragmentManager: FragmentManager) : FragmentPager
     override fun getCount(): Int {
         return PAGER_COUNT
     }
-
-    override fun instantiateItem(vg: ViewGroup, position: Int): Any {
-        return super.instantiateItem(vg, position)
-    }
-
-    override fun destroyItem(container: ViewGroup?, position: Int, `object`: Any) {
-        super.destroyItem(container, position, `object`)
-    }
-
     override fun getItem(position: Int): Fragment {
         when (position) {
             DashboardActivity.PAGE_KPI -> return mMeterFragment

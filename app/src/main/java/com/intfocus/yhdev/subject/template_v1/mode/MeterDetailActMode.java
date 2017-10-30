@@ -78,20 +78,21 @@ public class MeterDetailActMode extends AbstractMode {
                     reader.startObject();
 
                     entity = new MererDetailEntity();
-                    entity.data = new ArrayList<>();
+                    entity.setData(new ArrayList<MererDetailEntity.PageData>());
                     Log.i(TAG, "analysisDataReaderTime2:" + TimeUtil.getNowTime());
 
                     while (reader.hasNext()) {
                         String key = reader.readString();
                         switch (key) {
                             case "name":
-                                entity.name = reader.readObject().toString();
+                                entity.setName(reader.readObject().toString());
                                 Log.i(TAG, "name:" + TimeUtil.getNowTime());
                                 break;
 
                             case "data":
                                 Log.i(TAG, "dataStart:" + TimeUtil.getNowTime());
                                 reader.startArray();
+
                                 while (reader.hasNext()) {
                                     reader.startObject();
                                     MererDetailEntity.PageData data = new MererDetailEntity.PageData();
@@ -99,11 +100,11 @@ public class MeterDetailActMode extends AbstractMode {
                                         String dataKey = reader.readString();
                                         switch (dataKey) {
                                             case "parts":
-                                                data.parts = reader.readObject().toString();
+                                                data.setParts(reader.readObject().toString());
                                                 break;
 
                                             case "title":
-                                                data.title = reader.readObject().toString();
+                                                data.setTitle(reader.readObject().toString());
                                                 break;
 
                                             default:
@@ -111,7 +112,7 @@ public class MeterDetailActMode extends AbstractMode {
                                         }
                                     }
                                     reader.endObject();
-                                    entity.data.add(data);
+                                    entity.getData().add(data);
                                 }
                                 reader.endArray();
                                 Log.i(TAG, "dataEnd:" + TimeUtil.getNowTime());

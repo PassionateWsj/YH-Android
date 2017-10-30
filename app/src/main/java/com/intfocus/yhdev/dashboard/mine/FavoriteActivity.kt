@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
+import android.view.View
 import com.intfocus.yhdev.R
 import com.intfocus.yhdev.base.RefreshActivity
 import com.intfocus.yhdev.constant.ToastColor
@@ -26,8 +27,8 @@ class FavoriteActivity : RefreshActivity(), InstituteAdapter.NoticeItemListener 
     lateinit var adapter: InstituteAdapter
     var datas: MutableList<InstituteDataBean>? = null
     lateinit var userNum: String
-    lateinit var statusMap: MutableMap<String, String>
-    lateinit var queryMap: MutableMap<String, String>
+    private lateinit var statusMap: MutableMap<String, String>
+    private lateinit var queryMap: MutableMap<String, String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,9 +46,9 @@ class FavoriteActivity : RefreshActivity(), InstituteAdapter.NoticeItemListener 
         recyclerView.layoutManager = mLayoutManager
         adapter = InstituteAdapter(mActivity, null, this)
         recyclerView.adapter = adapter
-        var headerView = SinaRefreshView(mActivity)
+        val headerView = SinaRefreshView(mActivity)
         headerView.setArrowResource(R.drawable.loading_up)
-        var bottomView = LoadingView(mActivity)
+        val bottomView = LoadingView(mActivity)
         refreshLayout.setHeaderView(headerView)
         refreshLayout.setBottomView(bottomView)
         getData(true)
@@ -58,7 +59,7 @@ class FavoriteActivity : RefreshActivity(), InstituteAdapter.NoticeItemListener 
      */
     override fun getData(isShowDialog: Boolean) {
         if (!HttpUtil.isConnected(mActivity)) {
-            finshRequest()
+            finishRequest()
             isEmpty = datas == null || datas!!.size == 0
             ErrorUtils.viewProcessing(refreshLayout, llError, llRetry, "无更多文章了", tvErrorMsg, ivError,
                     isEmpty!!, false, R.drawable.pic_3, {
@@ -77,16 +78,16 @@ class FavoriteActivity : RefreshActivity(), InstituteAdapter.NoticeItemListener 
                 .compose(RetrofitUtil.CommonOptions<ArticleResult>())
                 .subscribe(object : CodeHandledSubscriber<ArticleResult>() {
                     override fun onCompleted() {
-                        finshRequest()
+                        finishRequest()
                     }
 
                     override fun onError(apiException: ApiException) {
-                        finshRequest()
+                        finishRequest()
                         ToastUtils.show(mActivity, apiException.displayMessage)
                     }
 
                     override fun onBusinessNext(data: ArticleResult) {
-                        finshRequest()
+                        finishRequest()
                         totalPage = data.total_page
                         isLasePage = page == totalPage
                         if (datas == null) {
@@ -104,7 +105,7 @@ class FavoriteActivity : RefreshActivity(), InstituteAdapter.NoticeItemListener 
                 })
     }
 
-    fun finshRequest() {
+    fun finishRequest() {
         refreshLayout.finishRefreshing()
         refreshLayout.finishLoadmore()
         dismissLoading()
@@ -114,13 +115,13 @@ class FavoriteActivity : RefreshActivity(), InstituteAdapter.NoticeItemListener 
     /**
      * 操作收藏/取消收藏
      */
-    fun ArticleOperating(articleId: String, status: String) {
+    fun articleOperating(articleId: String, status: String) {
         if (!HttpUtil.isConnected(mActivity)) {
             ToastUtils.show(mActivity, "请检查网络链接")
             return
         }
         showLoading()
-        var body = RequestFavourite()
+        val body = RequestFavourite()
         body.user_num = userNum
         body.article_id = articleId
         body.favourite_status = status
@@ -143,10 +144,10 @@ class FavoriteActivity : RefreshActivity(), InstituteAdapter.NoticeItemListener 
     }
 
     override fun itemClick(instituteDataBean: InstituteDataBean) {
-        var intent = Intent(mActivity, WebApplicationActivity::class.java)
+        val intent = Intent(mActivity, WebApplicationActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-        var link = String.format("%s/mobile/v2/user/%s/article/%s", K.kBaseUrl, mUserSP.getString(K.kUserId, "0").toString(), instituteDataBean!!.acticleId.toString())
-        intent.putExtra(URLs.kBannerName, instituteDataBean!!.title.toString())
+        val link = String.format("%s/mobile/v2/user/%s/article/%s", K.kBaseUrl, mUserSP.getString(K.kUserId, "0").toString(), instituteDataBean.acticleId.toString())
+        intent.putExtra(URLs.kBannerName, instituteDataBean.title.toString())
         intent.putExtra(URLs.kLink, link)
         startActivity(intent)
     }
@@ -155,7 +156,7 @@ class FavoriteActivity : RefreshActivity(), InstituteAdapter.NoticeItemListener 
      * 加入收藏
      */
     override fun addCollection(instituteDataBean: InstituteDataBean) {
-        ArticleOperating(instituteDataBean.acticleId.toString(), "1")
+        articleOperating(instituteDataBean.acticleId.toString(), "1")
     }
 
     /**
@@ -165,7 +166,7 @@ class FavoriteActivity : RefreshActivity(), InstituteAdapter.NoticeItemListener 
         CommonPopupWindow().showPopupWindow(mActivity, "取消收藏", R.color.co11_syr, "继续收藏", R.color.co3_syr,
                 object : CommonPopupWindow.ButtonLisenter {
                     override fun btn1Click() {
-                        ArticleOperating(instituteDataBean.acticleId.toString(), "2")
+                        articleOperating(instituteDataBean.acticleId.toString(), "2")
                     }
 
                     override fun btn2Click() {
@@ -173,4 +174,7 @@ class FavoriteActivity : RefreshActivity(), InstituteAdapter.NoticeItemListener 
                 })
     }
 
+    fun back(view: View) {
+        finish()
+    }
 }

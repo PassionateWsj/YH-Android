@@ -47,7 +47,7 @@ class MeterVPAdapter(internal var ctx: Context, fm: FragmentManager, internal va
         return fragment
     }
 
-    override fun getItemPosition(`object`: Any?): Int {
+    override fun getItemPosition(`object`: Any): Int {
         // 返回发生改变，让系统重新加载（强制刷新）
         // 系统默认返回的是     POSITION_UNCHANGED，未改变
         return PagerAdapter.POSITION_NONE

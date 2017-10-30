@@ -77,7 +77,7 @@ import rx.schedulers.Schedulers;
 import static android.webkit.WebView.enableSlowWholeDocumentDraw;
 import static java.lang.String.format;
 
-public class SubjectActivity extends BaseActivity implements FilterMenuAdapter.FilterMenuListener, FilterPopupWindow.MenuLisenter, MyFilterDialogFragment.FilterLisenter {
+public class SubjectActivity extends BaseActivity implements FilterMenuAdapter.FilterMenuListener, FilterPopupWindow.MenuLisenter, MyFilterDialogFragment.FilterListener {
 
     private String templateID;
     private String bannerName, link;

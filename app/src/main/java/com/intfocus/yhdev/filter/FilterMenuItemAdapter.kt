@@ -34,7 +34,7 @@ class FilterMenuItemAdapter(val context: Context,
         holder.contentView.setBackgroundResource(R.drawable.recycler_bg)
         if (menuDatas != null) {
             holder.tvFilterName.text = menuDatas!![position].name
-            if (menuDatas!![position].arrorDirection!!) {
+            if (menuDatas!![position].arrorDirection) {
                 holder.ivFilter.visibility = View.VISIBLE
                 holder.tvFilterName.setTextColor(ContextCompat.getColor(context, R.color.co1_syr))
             } else {
@@ -47,15 +47,13 @@ class FilterMenuItemAdapter(val context: Context,
         }
     }
 
-    override fun getItemCount(): Int {
-        return if (menuDatas == null) 0 else menuDatas!!.size
-    }
+    override fun getItemCount(): Int = if (menuDatas == null) 0 else menuDatas!!.size
 
     class FilterMenuItemHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var contentView = itemView
-        var rlFilter = itemView.findViewById(R.id.rl_filter) as RelativeLayout
-        var tvFilterName = itemView.findViewById(R.id.tv_filter_name) as TextView
-        var ivFilter = itemView.findViewById(R.id.iv_filter) as ImageView
+        var rlFilter: RelativeLayout = itemView.findViewById(R.id.rl_filter)
+        var tvFilterName: TextView = itemView.findViewById(R.id.tv_filter_name)
+        var ivFilter: ImageView = itemView.findViewById(R.id.iv_filter)
     }
 
     interface FilterMenuItemListener {

@@ -7,9 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
-import com.google.gson.Gson
 import com.intfocus.yhdev.R
 import com.intfocus.yhdev.base.BaseModeFragment
+import com.intfocus.yhdev.constant.ToastColor
 import com.intfocus.yhdev.dashboard.mine.adapter.InstituteAdapter
 import com.intfocus.yhdev.dashboard.mine.bean.CollectionRquest
 import com.intfocus.yhdev.dashboard.mine.bean.InstituteDataBean
@@ -17,7 +17,6 @@ import com.intfocus.yhdev.dashboard.mine.bean.InstituteRquest
 import com.intfocus.yhdev.mode.InstituteMode
 import com.intfocus.yhdev.util.ErrorUtils
 import com.intfocus.yhdev.util.HttpUtil
-import com.intfocus.yhdev.constant.ToastColor
 import com.intfocus.yhdev.util.ToastUtils
 import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter
 import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout
@@ -36,25 +35,21 @@ import org.xutils.x
  */
 class InstituteFragment : BaseModeFragment<InstituteMode>(), InstituteAdapter.NoticeItemListener, ErrorUtils.ErrorLisenter {
 
-    var rootView: View? = null
-    var datas: MutableList<InstituteDataBean>? = null
-    var gson = Gson()
-    var id = ""
-    var page = 1
-    var totalPage = 100
+    private var rootView: View? = null
+    private var datas: MutableList<InstituteDataBean>? = null
+//     var gson = Gson()
+//    private var id = ""
+    private var page = 1
+    private var totalPage = 100
 
-    lateinit var adapter: InstituteAdapter
-    var isRefresh: Boolean = false//是否是刷新
-    var isEmpty: Boolean = true//数据是否为空
-    var keyWord: String? = ""//搜索关键字
+    private lateinit var adapter: InstituteAdapter
+    private var isRefresh: Boolean = false//是否是刷新
+    private var isEmpty: Boolean = true//数据是否为空
+    private var keyWord: String? = ""//搜索关键字
 
+    override fun setSubject(): Subject = InstituteMode(ctx)
 
-    override fun setSubject(): Subject {
-        return InstituteMode(ctx)
-    }
-
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         EventBus.getDefault().register(this)
         if (rootView == null) {
             rootView = inflater!!.inflate(R.layout.fragment_instiute, container, false)
@@ -79,9 +74,9 @@ class InstituteFragment : BaseModeFragment<InstituteMode>(), InstituteAdapter.No
         recycler_view.layoutManager = mLayoutManager
         adapter = InstituteAdapter(ctx, null, this)
         recycler_view.adapter = adapter
-        var headerView = SinaRefreshView(ctx)
+        val headerView = SinaRefreshView(ctx)
         headerView.setArrowResource(R.drawable.loading_up)
-        var bottomView = LoadingView(ctx)
+        val bottomView = LoadingView(ctx)
         refresh_layout.setHeaderView(headerView)
         refresh_layout.setBottomView(bottomView)
         refresh_layout.setOnRefreshListener(object : RefreshListenerAdapter(), ErrorUtils.ErrorLisenter {
@@ -100,7 +95,7 @@ class InstituteFragment : BaseModeFragment<InstituteMode>(), InstituteAdapter.No
                     refresh_layout.finishLoadmore()
                     isEmpty = datas == null || datas!!.size == 0
                     ErrorUtils.viewProcessing(refresh_layout, ll_empty, ll_retry, "无更多文章了", tv_errorMsg, iv_error, isEmpty, false, R.drawable.pic_3, this)
-                    ToastUtils.show(context, "请检查网络")
+                    ToastUtils.show(ctx, "请检查网络")
                 }
             }
 
@@ -117,7 +112,7 @@ class InstituteFragment : BaseModeFragment<InstituteMode>(), InstituteAdapter.No
 
         })
         getData(true)
-        edit_search!!.setOnEditorActionListener({ textView, actionId, keyEvent ->
+        edit_search!!.setOnEditorActionListener({ textView, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 keyWord = textView.text.toString().trim()
                 getData(true)
@@ -143,49 +138,28 @@ class InstituteFragment : BaseModeFragment<InstituteMode>(), InstituteAdapter.No
             refresh_layout.finishLoadmore()
             isEmpty = datas == null || datas!!.size == 0
             ErrorUtils.viewProcessing(refresh_layout, ll_empty, ll_retry, "无更多文章了", tv_errorMsg, iv_error, isEmpty, false, R.drawable.pic_3, this)
-            ToastUtils.show(context, "请检查网络")
+            ToastUtils.show(ctx, "请检查网络")
         }
     }
 
     /**
      *  操作收藏
-     * favouritStatus 1:收藏，2:取消收藏
+     * favoriteStatus 1:收藏，2:取消收藏
      */
-    fun operatingCollection(articleId: String, favouritStatus: String) {
-        if (HttpUtil.isConnected(context)) {
-            showLoading(activity)
-            model.operatingCollection(articleId, favouritStatus)
-        } else {
-            hideLoading()
-            ToastUtils.show(context, "请检查网络")
-        }
-    }
+    private fun operatingCollection(articleId: String, favoriteStatus: String) =
+            if (HttpUtil.isConnected(context)) {
+                showLoading(activity)
+                model.operatingCollection(articleId, favoriteStatus)
+            } else {
+                hideLoading()
+                ToastUtils.show(ctx, "请检查网络")
+            }
 
     /**
      * 获取列表数据
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun setData(result: InstituteRquest) {
-//        refresh_layout.finishRefreshing()
-//        refresh_layout.finishLoadmore()
-//        hideLoading()
-//        if (result.isSuccess) {
-//            totalPage = result.instittuteListBean!!.page!!.totalPage
-//            if (page == 1 && datas != null) {
-//                datas!!.clear()
-//            }
-//
-//            if (datas == null) {
-//                datas = result.instittuteListBean
-//            } else {
-//                datas!!.addAll(result.instittuteListBean!!.page!!.list)
-//            }
-//            adapter.setData(datas)
-//            isEmpty = datas == null || datas!!.size == 0
-//            ErrorUtils.viewProcessing(refresh_layout, ll_empty, ll_retry, "无更多文章了", tv_errorMsg, iv_error, isEmpty, true, R.drawable.pic_3, this)
-//        } else {
-//            ToastUtils.show(context, result.errorMsg)
-//        }
     }
 
     /**
@@ -194,10 +168,10 @@ class InstituteFragment : BaseModeFragment<InstituteMode>(), InstituteAdapter.No
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun setData(result: CollectionRquest) {
         if (result.isSuccess) {
-            ToastUtils.show(context, result!!.collectionBean!!.message.toString(), ToastColor.SUCCESS)
+            ToastUtils.show(ctx, result.collectionBean!!.message.toString(), ToastColor.SUCCESS)
             getData(true)
         } else {
-            ToastUtils.show(context, result!!.errorMsg)
+            ToastUtils.show(ctx, result.errorMsg)
             hideLoading()
         }
     }
@@ -206,10 +180,10 @@ class InstituteFragment : BaseModeFragment<InstituteMode>(), InstituteAdapter.No
      * 进去文章详情
      */
     override fun itemClick(instituteDataBean: InstituteDataBean) {
-        var intent = Intent(act, InstituteContentActivity::class.java)
-        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
-        intent.putExtra("id", instituteDataBean!!.id.toString())
-        intent.putExtra("title", instituteDataBean!!.title.toString())
+        val intent = Intent(act, InstituteContentActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+        intent.putExtra("id", instituteDataBean.id.toString())
+        intent.putExtra("title", instituteDataBean.title.toString())
         startActivity(intent)
     }
 
@@ -217,14 +191,14 @@ class InstituteFragment : BaseModeFragment<InstituteMode>(), InstituteAdapter.No
      * 添加收藏
      */
     override fun addCollection(instituteDataBean: InstituteDataBean) {
-        operatingCollection(instituteDataBean!!.id.toString(), "1")
+        operatingCollection(instituteDataBean.id.toString(), "1")
     }
 
     /**
      * 取消收藏
      */
     override fun cancelCollection(instituteDataBean: InstituteDataBean) {
-        operatingCollection(instituteDataBean!!.id.toString(), "2")
+        operatingCollection(instituteDataBean.id.toString(), "2")
     }
 
     /**

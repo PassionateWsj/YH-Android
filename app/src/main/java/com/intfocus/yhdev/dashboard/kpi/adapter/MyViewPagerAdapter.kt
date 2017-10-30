@@ -10,29 +10,25 @@ import android.view.ViewGroup
  */
 
 class MyViewPagerAdapter(private var views: List<View>, private val context: Context) : PagerAdapter() {
-    var isInfiniteLoop = false
+    private var isInfiniteLoop = false
     fun setData(datas: List<View>) {
         this.views = views
         this.notifyDataSetChanged()
     }
 
     //获取真实的position
-    fun getRealPosition(position: Int): Int {
-        return if (isInfiniteLoop) position % views.size else position
-    }
+    fun getRealPosition(position: Int): Int =
+            if (isInfiniteLoop) position % views.size else position
 
     override fun getCount(): Int {
-        if (views == null || views.size == 0) {
-            return 0
+        return if (views.isEmpty()) {
+            0
         } else {
-            return if (isInfiniteLoop) Integer.MAX_VALUE else views.size
+            if (isInfiniteLoop) Integer.MAX_VALUE else views.size
         }
     }
 
-    override fun isViewFromObject(arg0: View, arg1: Any): Boolean {
-
-        return arg0 === arg1
-    }
+    override fun isViewFromObject(arg0: View, arg1: Any): Boolean = arg0 === arg1
 
     //展示的view
     override fun instantiateItem(container: ViewGroup, position: Int): Any {

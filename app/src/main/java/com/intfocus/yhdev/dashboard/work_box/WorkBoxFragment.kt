@@ -26,7 +26,7 @@ class WorkBoxFragment : BaseModeFragment<WorkBoxMode>(), SwipeRefreshLayout.OnRe
         return WorkBoxMode(ctx)
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         EventBus.getDefault().register(this)
         if (rootView == null) {
             rootView = inflater!!.inflate(R.layout.fragment_work_box, container, false)
@@ -58,7 +58,7 @@ class WorkBoxFragment : BaseModeFragment<WorkBoxMode>(), SwipeRefreshLayout.OnRe
             model.requestData()
         } else {
             swipe_container.isRefreshing = false
-            ToastUtils.show(context, "请检查网络")
+            ToastUtils.show(context!!, "请检查网络")
         }
     }
 

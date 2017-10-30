@@ -17,11 +17,11 @@ import org.greenrobot.eventbus.EventBus
 /**
  * Created by liuruilin on 2017/7/10.
  */
-class NumberThreeItemAdapter(var ctx: Context, internal var itemDatas: List<KpiGroupItem>?) : RecyclerView.Adapter<NumberThreeItemAdapter.NumberThreeItemHolder>() {
-    internal var viewWidth: Int = 0
-    internal var viewHeight: Int = 0
-    internal var view2width: Int = 0
-    var inflater = LayoutInflater.from(ctx)
+class NumberThreeItemAdapter(var ctx: Context, private var itemDatas: List<KpiGroupItem>?) : RecyclerView.Adapter<NumberThreeItemAdapter.NumberThreeItemHolder>() {
+    private var viewWidth: Int = 0
+    private var viewHeight: Int = 0
+    private var view2width: Int = 0
+    private var inflater = LayoutInflater.from(ctx)
     private val colors = Colors.colorsRGY
 
     init {
@@ -33,29 +33,26 @@ class NumberThreeItemAdapter(var ctx: Context, internal var itemDatas: List<KpiG
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NumberThreeItemHolder {
         val contentView = inflater.inflate(R.layout.fragment_number_three, parent, false)
-        val holder = NumberThreeItemHolder(contentView)
-        return holder
+        return NumberThreeItemHolder(contentView)
     }
 
     override fun onBindViewHolder(holder: NumberThreeItemHolder, position: Int) {
-        holder.tv_number_three_title.text = itemDatas!![position].title
+        holder.tvNumberThreeTitle.text = itemDatas!![position].title
         val mTypeface = Typeface.createFromAsset(ctx.assets, "ALTGOT2N.TTF")
-        var number = itemDatas!![position].data!!.high_light!!.number
-        holder.tv_number_three_number.text = formatNumber(number)
-        holder.tv_number_three_unit.text = itemDatas!![position].unit
-        holder.tv_number_three_compare.text = itemDatas!![position].data!!.high_light!!.compare
-        holder.tv_number_three_compare.typeface = mTypeface
-        holder.tv_number_three_compare.setTextColor(colors[itemDatas!![position].data!!.high_light!!.arrow])
-        holder.tv_number_three_sub.text = itemDatas!![position].memo1
-        holder.tv_number_three_compare_text.text = itemDatas!![position].memo2
-        holder.ll_number_three_item.setOnClickListener {
+        val number = itemDatas!![position].data!!.high_light!!.number
+        holder.tvNumberThreeNumber.text = formatNumber(number)
+        holder.tvNumberThreeUnit.text = itemDatas!![position].unit
+        holder.tvNumberThreeCompare.text = itemDatas!![position].data!!.high_light!!.compare
+        holder.tvNumberThreeCompare.typeface = mTypeface
+        holder.tvNumberThreeCompare.setTextColor(colors[itemDatas!![position].data!!.high_light!!.arrow])
+        holder.tvNumberThreeSub.text = itemDatas!![position].memo1
+        holder.tvNumberThreeCompareText.text = itemDatas!![position].memo2
+        holder.llNumberThreeItem.setOnClickListener {
             EventBus.getDefault().post(itemDatas!![position])
         }
     }
 
-    override fun getItemViewType(position: Int): Int {
-        return position
-    }
+    override fun getItemViewType(position: Int): Int = position
 
     override fun getItemCount(): Int {
         if (itemDatas == null)
@@ -64,21 +61,21 @@ class NumberThreeItemAdapter(var ctx: Context, internal var itemDatas: List<KpiG
     }
 
     inner class NumberThreeItemHolder(view: View) : RecyclerView.ViewHolder(view) {
-        var tv_number_three_title = view.findViewById(R.id.tv_number_three_title) as TextView
-        var tv_number_three_number = view.findViewById(R.id.tv_number_three_main) as TextView
-        var tv_number_three_unit = view.findViewById(R.id.tv_number_three_unit) as TextView
-        var tv_number_three_compare = view.findViewById(R.id.tv_number_three_compare) as TextView
-        var tv_number_three_sub = view.findViewById(R.id.tv_number_three_sub) as TextView
-        var tv_number_three_compare_text = view.findViewById(R.id.tv_number_three_compare_name) as TextView
-        var ll_number_three_item = view.findViewById(R.id.ll_kpi_number_three) as LinearLayout
+        var tvNumberThreeTitle: TextView = view.findViewById(R.id.tv_number_three_title)
+        var tvNumberThreeNumber: TextView = view.findViewById(R.id.tv_number_three_main)
+        var tvNumberThreeUnit: TextView = view.findViewById(R.id.tv_number_three_unit)
+        var tvNumberThreeCompare: TextView = view.findViewById(R.id.tv_number_three_compare)
+        var tvNumberThreeSub: TextView = view.findViewById(R.id.tv_number_three_sub)
+        var tvNumberThreeCompareText: TextView = view.findViewById(R.id.tv_number_three_compare_name)
+        var llNumberThreeItem: LinearLayout = view.findViewById(R.id.ll_kpi_number_three)
     }
 
     fun formatNumber(number: String): String {
-        var number = number
-        if (number.contains("")) {
-            number = number.replace("0+?$".toRegex(), "")//去掉多余的0
-            number = number.replace("[.]$".toRegex(), "")//如最后一位是.则去掉
+        var mNumber = number
+        if (mNumber.contains("")) {
+            mNumber = mNumber.replace("0+?$".toRegex(), "")//去掉多余的0
+            mNumber = mNumber.replace("[.]$".toRegex(), "")//如最后一位是.则去掉
         }
-        return number
+        return mNumber
     }
 }

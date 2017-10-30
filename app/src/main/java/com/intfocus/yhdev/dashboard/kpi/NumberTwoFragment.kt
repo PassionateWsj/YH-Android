@@ -1,7 +1,6 @@
 package com.intfocus.yhdev.dashboard.kpi
 
 import android.app.Fragment
-import android.graphics.Typeface
 import android.os.Bundle
 import android.os.Handler
 import android.view.LayoutInflater
@@ -47,10 +46,6 @@ class NumberTwoFragment : Fragment() {
         return rootView
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-    }
-
     override fun onResume() {
         Handler().postDelayed({ init() }, 100)
         super.onResume()
@@ -58,9 +53,9 @@ class NumberTwoFragment : Fragment() {
 
     fun init() {
         if (rootView != null) {
-            val mTypeface = Typeface.createFromAsset(activity.assets, "ALTGOT2N.TTF")
+//            val mTypeface = Typeface.createFromAsset(activity.assets, "ALTGOT2N.TTF")
             tv_number_two_title.text = datas!!.title
-            var number = datas!!.data!!.high_light!!.number
+            val number = datas!!.data!!.high_light!!.number
             tv_number_two_main.text = formatNumber(number)
             tv_number_two_main.setTextColor(colors[datas!!.data!!.high_light!!.arrow])
             tv_number_two_unit.text = datas!!.unit
@@ -75,11 +70,11 @@ class NumberTwoFragment : Fragment() {
     }
 
     fun formatNumber(number: String): String {
-        var number = number
-        if (number.contains("")) {
-            number = number.replace("0+?$".toRegex(), "")//去掉多余的0
-            number = number.replace("[.]$".toRegex(), "")//如最后一位是.则去掉
+        var mNumber = number
+        if (mNumber.contains("")) {
+            mNumber = mNumber.replace("0+?$".toRegex(), "")//去掉多余的0
+            mNumber = mNumber.replace("[.]$".toRegex(), "")//如最后一位是.则去掉
         }
-        return number
+        return mNumber
     }
 }

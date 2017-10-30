@@ -69,12 +69,12 @@ class InstituteAdapter(val context: Context,
     }
 
     class InstituteHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var llInstituteItem = itemView.findViewById(R.id.ll_institute_item) as LinearLayout
-        var ivInstitute = itemView.findViewById(R.id.iv_institute) as ImageView
-        var tvTitle = itemView.findViewById(R.id.tv_title) as TextView
-        var tvTag = itemView.findViewById(R.id.tv_tag) as TextView
-        var ivCollection = itemView.findViewById(R.id.iv_collection) as ImageView
-        var ivCancel = itemView.findViewById(R.id.iv_cancel) as ImageView
+        var llInstituteItem = itemView.findViewById<LinearLayout>(R.id.ll_institute_item)
+        var ivInstitute = itemView.findViewById<ImageView>(R.id.iv_institute)
+        var tvTitle = itemView.findViewById<TextView>(R.id.tv_title)
+        var tvTag = itemView.findViewById<TextView>(R.id.tv_tag)
+        var ivCollection = itemView.findViewById<ImageView>(R.id.iv_collection)
+        var ivCancel = itemView.findViewById<ImageView>(R.id.iv_cancel)
     }
 
     interface NoticeItemListener {

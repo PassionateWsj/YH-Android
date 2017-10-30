@@ -83,19 +83,15 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
         mSharedPreferences = getSharedPreferences("DashboardPreferences", Context.MODE_PRIVATE)
         mUserSP = getSharedPreferences("UserBean", Context.MODE_PRIVATE)
         mDashboardFragmentAdapter = DashboardFragmentAdapter(supportFragmentManager)
-        mViewPager = findViewById(R.id.content_view) as NoScrollViewPager
+        mViewPager = findViewById(R.id.content_view)
         initTabView()
         initViewPaper(mDashboardFragmentAdapter!!)
         getStoreList()
 
-        var intent = intent
+        val intent = intent
         if (intent.hasExtra("msgData")) {
             handlePushMessage(intent.getBundleExtra("msgData").getString("message"))
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
     }
 
     override fun onDestroy() {
@@ -107,12 +103,12 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
      * 推送消息处理
      */
     private fun handlePushMessage(message: String) {
-        var pushMessage = mGson!!.fromJson(message, PushMessageBean::class.java)
+        val pushMessage = mGson!!.fromJson(message, PushMessageBean::class.java)
         pushMessage.body_title = intent.getBundleExtra("msgData").getString("message_body_title")
         pushMessage.body_text = intent.getBundleExtra("msgData").getString("message_body_text")
         pushMessage.new_msg = true
         pushMessage.user_id = userID
-        var personDao = OrmDBHelper.getInstance(this).pushMessageDao
+        val personDao = OrmDBHelper.getInstance(this).pushMessageDao
         //  RxJava异步存储推送过来的数据
         Observable.create(Observable.OnSubscribe<PushMessageBean> {
             try {
@@ -144,10 +140,6 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
         }
     }
 
-    override fun onWindowFocusChanged(hasFocus: Boolean) {
-        super.onWindowFocusChanged(hasFocus)
-    }
-
     override fun onBackPressed() {
         val builder = AlertDialog.Builder(this)
         builder.setTitle("温馨提示")
@@ -164,30 +156,34 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
     }
 
     fun startBarCodeActivity(v: View) {
-        if (ContextCompat.checkSelfPermission(this@DashboardActivity, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            val builder = AlertDialog.Builder(this@DashboardActivity)
-            builder.setTitle("温馨提示")
-                    .setMessage("相机权限获取失败，是否到本应用的设置界面设置权限")
-                    .setPositiveButton("确认") { _, _ -> goToAppSetting() }
-                    .setNegativeButton("取消") { _, _ ->
-                        // 返回DashboardActivity
-                    }
-            builder.show()
-            return
-        } else if (storeList == null) {
-            val builder = AlertDialog.Builder(this@DashboardActivity)
-            builder.setTitle("温馨提示")
-                    .setMessage("抱歉, 您没有扫码权限")
-                    .setPositiveButton("确认") { _, _ -> }
-            builder.show()
-            return
-        } else {
-            val barCodeScannerIntent = Intent(mContext, BarCodeScannerActivity::class.java)
-            mContext!!.startActivity(barCodeScannerIntent)
+        when {
+            ContextCompat.checkSelfPermission(this@DashboardActivity, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED -> {
+                val builder = AlertDialog.Builder(this@DashboardActivity)
+                builder.setTitle("温馨提示")
+                        .setMessage("相机权限获取失败，是否到本应用的设置界面设置权限")
+                        .setPositiveButton("确认") { _, _ -> goToAppSetting() }
+                        .setNegativeButton("取消") { _, _ ->
+                            // 返回DashboardActivity
+                        }
+                builder.show()
+                return
+            }
+            storeList == null -> {
+                val builder = AlertDialog.Builder(this@DashboardActivity)
+                builder.setTitle("温馨提示")
+                        .setMessage("抱歉, 您没有扫码权限")
+                        .setPositiveButton("确认") { _, _ -> }
+                builder.show()
+                return
+            }
+            else -> {
+                val barCodeScannerIntent = Intent(mContext, BarCodeScannerActivity::class.java)
+                mContext!!.startActivity(barCodeScannerIntent)
 
-            var logParams = JSONObject()
-            logParams.put(URLs.kAction, "点击/扫一扫")
-            ActionLogUtil.actionLog(mAppContext, logParams)
+                val logParams = JSONObject()
+                logParams.put(URLs.kAction, "点击/扫一扫")
+                ActionLogUtil.actionLog(mAppContext, logParams)
+            }
         }
     }
 
@@ -203,10 +199,10 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
     }
 
     private fun initTabView() {
-        mTabKPI = findViewById(R.id.tab_kpi) as TabView
-        mTabAnalysis = findViewById(R.id.tab_analysis) as TabView
-        mTabAPP = findViewById(R.id.tab_app) as TabView
-        mTabMessage = findViewById(R.id.tab_message) as TabView
+        mTabKPI = findViewById(R.id.tab_kpi)
+        mTabAnalysis = findViewById(R.id.tab_analysis)
+        mTabAPP = findViewById(R.id.tab_app)
+        mTabMessage = findViewById(R.id.tab_message)
         mTabView = arrayOf(mTabKPI!!, mTabAnalysis!!, mTabAPP!!, mTabMessage!!)
 
         mTabKPI!!.setOnClickListener(mTabChangeListener)
@@ -281,7 +277,7 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
     }
 
     private fun getStoreList() {
-        var storeItemDao = OrmDBHelper.getInstance(this).storeItemDao
+        val storeItemDao = OrmDBHelper.getInstance(this).storeItemDao
         RetrofitUtil.getHttpService(applicationContext).getStoreList(mUserSP.getString("user_num", "0"))
                 .compose(RetrofitUtil.CommonOptions<StoreListResult>())
                 .subscribe(object : CodeHandledSubscriber<StoreListResult>() {
@@ -298,7 +294,7 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
                                 val mStoreInfoSPEdit = mStoreInfoSP.edit()
                                 mStoreInfoSPEdit.putString(URLs.kStore, data.data!![0].name)
                                 mStoreInfoSPEdit.putString(URLs.kStoreIds, data.data!![0].id)
-                                mStoreInfoSPEdit.commit()
+                                mStoreInfoSPEdit.apply()
                             }
                             storeList = data.data
                             Thread(Runnable {

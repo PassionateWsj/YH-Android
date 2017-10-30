@@ -6,15 +6,15 @@ apply from: 'tinkerpatch.gradle'
 android {
     signingConfigs {
     }
-    compileSdkVersion 25
+    compileSdkVersion 26
     buildToolsVersion '26.0.2'
     defaultConfig {
         applicationId 'com.intfocus.yhdev'
         minSdkVersion 19
-        targetSdkVersion 25
+        targetSdkVersion 26
         multiDexEnabled true
-        versionCode 531
-        versionName "2.2.11"
+        versionCode 999
+        versionName "9.9.9"
 
         ndk {
             // 设置支持的SO库架构
@@ -73,7 +73,7 @@ repositories {
     google()
 }
 
-def SUPPORT_VERSION = "25.3.1"
+def SUPPORT_VERSION = "27.0.0"
 
 dependencies {
     compile 'com.android.support:appcompat-v7:' + SUPPORT_VERSION
@@ -101,8 +101,6 @@ dependencies {
     compile files('libs/SocialSDK_WeiXin_Full.jar')
     compile 'org.xutils:xutils:3.5.0'
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
-    //    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5'
-    //    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
     //高德定位
     compile 'com.amap.api:location:3.5.0'
     //拼音

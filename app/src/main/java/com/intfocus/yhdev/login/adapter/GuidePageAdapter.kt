@@ -49,7 +49,7 @@ class GuidePageAdapter(var ctx: Context, var imageViews: List<ImageView>, var im
      * *
      * @return
      */
-    override fun getItemPosition(`object`: Any?): Int {
+    override fun getItemPosition(`object`: Any): Int {
         return super.getItemPosition(`object`)
     }
 

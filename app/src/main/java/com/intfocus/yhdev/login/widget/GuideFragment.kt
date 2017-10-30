@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v4.content.ContextCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,10 +27,10 @@ import com.intfocus.yhdev.login.LoginActivity
  */
 class GuideFragment : Fragment() {
     private var mSharedPreferences: SharedPreferences? = null
-    val imgPage = intArrayOf(R.drawable.text_gaikuan,
+    private val imgPage = intArrayOf(R.drawable.text_gaikuan,
             R.drawable.text_baobiao,
             R.drawable.text_gongju)
-    val imgScreenshot = intArrayOf(R.drawable.pic_phone1,
+    private val imgScreenshot = intArrayOf(R.drawable.pic_phone1,
             R.drawable.pic_phone2,
             R.drawable.pic_phone3)
 
@@ -54,30 +55,30 @@ class GuideFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        index = arguments.getInt("index")
-        totalCount = arguments.getInt("totalCount")
-        mSharedPreferences = activity.getSharedPreferences("SettingPreference", Context.MODE_PRIVATE)
+        index = arguments!!.getInt("index")
+        totalCount = arguments!!.getInt("totalCount")
+        mSharedPreferences = activity!!.getSharedPreferences("SettingPreference", Context.MODE_PRIVATE)
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val view = inflater!!.inflate(R.layout.fragment_guide, container, false)
-        rlGuideDescribe = view.findViewById(R.id.rl_guide_describe) as RelativeLayout
-        ivGuideScreenshot = view.findViewById(R.id.iv_guide_screenshot) as ImageView
-        ivGuideText = view.findViewById(R.id.iv_guide_text) as ImageView
-        llGuidePage = view.findViewById(R.id.ll_guide_page) as LinearLayout
-        btnGuideEnter = view.findViewById(R.id.btn_guide_enter) as Button
+        rlGuideDescribe = view.findViewById(R.id.rl_guide_describe)
+        ivGuideScreenshot = view.findViewById(R.id.iv_guide_screenshot)
+        ivGuideText = view.findViewById(R.id.iv_guide_text)
+        llGuidePage = view.findViewById(R.id.ll_guide_page)
+        btnGuideEnter = view.findViewById(R.id.btn_guide_enter)
         return view
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        ivGuideText.setImageDrawable(activity.resources.getDrawable(imgPage[index]))
-        ivGuideScreenshot.setImageDrawable(activity.resources.getDrawable(imgScreenshot[index]))
-        for (i in 0..llGuidePage.childCount - 1) {
+        ivGuideText.setImageDrawable(ContextCompat.getDrawable(context!!,imgPage[index]))
+        ivGuideScreenshot.setImageDrawable(ContextCompat.getDrawable(context!!,imgScreenshot[index]))
+        for (i in 0 until llGuidePage.childCount) {
             if (i == index) {
-                llGuidePage.getChildAt(i).background = activity.resources.getDrawable(R.drawable.icon_paging1)
+                llGuidePage.getChildAt(i).background = ContextCompat.getDrawable(context!!,R.drawable.icon_paging1)
             } else {
-                llGuidePage.getChildAt(i).background = activity.resources.getDrawable(R.drawable.icon_paging2)
+                llGuidePage.getChildAt(i).background = ContextCompat.getDrawable(context!!,R.drawable.icon_paging2)
             }
         }
         if (index == totalCount - 1) {
@@ -91,12 +92,12 @@ class GuideFragment : Fragment() {
     }
 
     private fun startLoginActivity() {
-        val packageInfo = activity.packageManager.getPackageInfo(activity.packageName, 0)
-        mSharedPreferences!!.edit().putInt("Version", packageInfo.versionCode).commit()
-        var intent = Intent(activity, LoginActivity::class.java)
+        val packageInfo = activity!!.packageManager.getPackageInfo(activity!!.packageName, 0)
+        mSharedPreferences!!.edit().putInt("Version", packageInfo.versionCode).apply()
+        val intent = Intent(activity, LoginActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK and Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)
-        activity.finish()
+        activity!!.finish()
     }
 
 }

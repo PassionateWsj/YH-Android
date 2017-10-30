@@ -44,7 +44,7 @@ abstract class RefreshFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mActivity = activity
+        mActivity = activity!!
     }
 
     fun showLoading() {
@@ -59,12 +59,12 @@ abstract class RefreshFragment : Fragment() {
     }
 
     fun setRefreshLayout() {
-        refreshLayout = mView!!.findViewById(R.id.refresh_layout) as TwinklingRefreshLayout
-        recyclerView = mView!!.findViewById(R.id.recycler_view) as RecyclerView
-        llError = mView!!.findViewById(R.id.ll_empty) as LinearLayout
-        tvErrorMsg = mView!!.findViewById(R.id.tv_errorMsg) as TextView
-        ivError = mView!!.findViewById(R.id.iv_error) as ImageView
-        llRetry = mView!!.findViewById(R.id.ll_retry) as LinearLayout
+        refreshLayout = mView!!.findViewById(R.id.refresh_layout)
+        recyclerView = mView!!.findViewById(R.id.recycler_view)
+        llError = mView!!.findViewById(R.id.ll_empty)
+        tvErrorMsg = mView!!.findViewById(R.id.tv_errorMsg)
+        ivError = mView!!.findViewById(R.id.iv_error)
+        llRetry = mView!!.findViewById(R.id.ll_retry)
 
         refreshLayout.setOnRefreshListener(object : RefreshListenerAdapter() {
             override fun onRefresh(refreshLayout: TwinklingRefreshLayout?) {

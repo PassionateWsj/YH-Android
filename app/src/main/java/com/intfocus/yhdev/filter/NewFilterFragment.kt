@@ -23,27 +23,27 @@ class NewFilterFragment(menuDatas: ArrayList<MenuItem>, myLisenter: NewFilterFra
     lateinit var recyclerView: RecyclerView
     var lisenter = myLisenter
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         mView = inflater!!.inflate(R.layout.fragment_filter, container, false)
         initView()
         return mView
     }
 
     fun initView() {
-        recyclerView = mView.findViewById(R.id.recycler_view) as RecyclerView
-        adapter = NewFilterAdapter(context, datas, this)
-        var layoutManager = MyLinearLayoutManager(context)
+        recyclerView = mView.findViewById(R.id.recycler_view)
+        adapter = NewFilterAdapter(context!!, datas, this)
+        val layoutManager = MyLinearLayoutManager(context!!)
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = adapter
         adapter.update()
     }
 
     override fun itemClick(position: Int) {
-        for (i in 0..datas.size - 1) {
+        for (i in 0 until datas.size) {
             if (i == position) {
-                datas!![position].arrorDirection = true
+                datas[position].arrorDirection = true
             } else {
-                datas!![i].arrorDirection = false
+                datas[i].arrorDirection = false
             }
         }
         adapter.setData(datas)

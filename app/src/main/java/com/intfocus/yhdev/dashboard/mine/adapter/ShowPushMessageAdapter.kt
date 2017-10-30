@@ -57,10 +57,10 @@ class ShowPushMessageAdapter(val mContext: Context, val listener: OnPushMessageL
     }
 
     class MessageHolder(itemView: View?) : RecyclerView.ViewHolder(itemView) {
-        val llPushMsgItem = itemView!!.findViewById(R.id.ll_push_msg_item) as LinearLayout
-        val tvPushMsgTitle = itemView!!.findViewById(R.id.tv_push_msg_title) as TextView
-        val tvPushMsgContent = itemView!!.findViewById(R.id.tv_push_msg_content) as TextView
-        val tvPushMsgTime = itemView!!.findViewById(R.id.tv_push_msg_time) as TextView
+        val llPushMsgItem = itemView!!.findViewById<LinearLayout>(R.id.ll_push_msg_item)
+        val tvPushMsgTitle = itemView!!.findViewById<TextView>(R.id.tv_push_msg_title)
+        val tvPushMsgContent = itemView!!.findViewById<TextView>(R.id.tv_push_msg_content)
+        val tvPushMsgTime = itemView!!.findViewById<TextView>(R.id.tv_push_msg_time)
     }
 
     interface OnPushMessageListener {

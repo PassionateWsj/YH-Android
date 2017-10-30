@@ -28,12 +28,11 @@ class NumberFragment : BaseModeFragment<Subject>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (arguments != null) {
-            entity = arguments.getSerializable("Entity") as MererEntity
+            entity = arguments!!.getSerializable("Entity") as MererEntity
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         if (rootView == null) {
             rootView = inflater!!.inflate(R.layout.fragment_number, container, false)
             Handler().postDelayed({ init() }, 100)

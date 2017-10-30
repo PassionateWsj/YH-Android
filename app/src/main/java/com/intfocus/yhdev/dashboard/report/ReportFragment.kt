@@ -36,7 +36,7 @@ class ReportFragment : BaseModeFragment<ReportsListMode>(), ReportsLeftListAdapt
         return ReportsListMode(ctx)
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         EventBus.getDefault().register(this)
         if (rootView == null) {
             rootView = inflater!!.inflate(R.layout.fragment_reports, container, false)
@@ -69,7 +69,7 @@ class ReportFragment : BaseModeFragment<ReportsListMode>(), ReportsLeftListAdapt
             model.requestData()
         } else {
             swipe_container.isRefreshing = false
-            ToastUtils.show(context, "请检查网络")
+            ToastUtils.show(context!!, "请检查网络")
         }
     }
 

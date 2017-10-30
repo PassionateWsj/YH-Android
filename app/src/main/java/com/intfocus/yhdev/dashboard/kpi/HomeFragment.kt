@@ -30,17 +30,17 @@ class HomeFragment : RefreshFragment(), HomePageAdapter.HomePageListener {
     lateinit var adapter: HomePageAdapter
     var homeDatas: MutableList<HomeBean>? = null
     lateinit var mUserSP: SharedPreferences
-    lateinit var userId: String
-    lateinit var roleId: String
-    lateinit var groupId: String
-    lateinit var queryMap: MutableMap<String, String>
+    private lateinit var userId: String
+    private lateinit var roleId: String
+    private lateinit var groupId: String
+    private lateinit var queryMap: MutableMap<String, String>
+    lateinit var ctx: Context
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         mView = inflater!!.inflate(R.layout.fragment_home, container, false)
         x.view().inject(this, mView)
         setRefreshLayout()
-        mUserSP = mActivity!!.getSharedPreferences("UserBean", Context.MODE_PRIVATE)
+        mUserSP = mActivity.getSharedPreferences("UserBean", Context.MODE_PRIVATE)
         userId = mUserSP.getString(URLs.kUserNum, "")
         roleId = mUserSP.getString(URLs.kRoleId, "0")
         groupId = mUserSP.getString(URLs.kGroupId, "0")
@@ -53,24 +53,24 @@ class HomeFragment : RefreshFragment(), HomePageAdapter.HomePageListener {
         queryMap = mutableMapOf()
         queryMap.put("group_id", groupId)
         queryMap.put("role_id", roleId)
-        titleTop = mView!!.findViewById(R.id.title_top) as LinearLayout
-        recyclerView.layoutManager = MyLinearLayoutManager(context)
-        adapter = HomePageAdapter(context, homeDatas, this)
+        titleTop = mView!!.findViewById(R.id.title_top)
+        recyclerView.layoutManager = MyLinearLayoutManager(context!!)
+        adapter = HomePageAdapter(context!!, homeDatas, this)
 
         recyclerView.adapter = adapter
 
-        var headerView = DefaultRefreshView(mActivity)
+        val headerView = DefaultRefreshView(mActivity)
         headerView.setArrowResource(R.drawable.loading_up)
         refreshLayout.setHeaderView(headerView)
         refreshLayout.setEnableLoadmore(false)
         //监听
-        recyclerView.addOnScrollListener(HomePageScrollerListener(activity, recyclerView, titleTop))
+        recyclerView.addOnScrollListener(HomePageScrollerListener(context!!, recyclerView, titleTop))
     }
 
     override fun getData(isShowDialog: Boolean) {
         if (!HttpUtil.isConnected(mActivity)) {
             ToastUtils.show(mActivity, "请检查网络链接")
-            finshRequest()
+            finishRequest()
             isEmpty = homeDatas == null || homeDatas!!.size == 0
             ErrorUtils.viewProcessing(refreshLayout, llError, llRetry, "无更多文章了", tvErrorMsg, ivError,
                     isEmpty!!, false, R.drawable.pic_3, {
@@ -96,31 +96,31 @@ class HomeFragment : RefreshFragment(), HomePageAdapter.HomePageListener {
                     }
 
                     override fun onBusinessNext(data: KpiResult) {
-                        finshRequest()
+                        finishRequest()
 
                         if (homeDatas == null) {
                             homeDatas = ArrayList()
                         }
 
                         homeDatas!!.clear()
-                        var datas = data.data
+                        val datas = data.data
                         if (datas != null) {
                             for (KpiResultData in datas) {
-                                if ("top_data".equals(KpiResultData.group_name)) {
+                                if ("top_data" == KpiResultData.group_name) {
                                     val homeBean = HomeBean()
                                     homeBean.group_name = "轮播图"
                                     homeBean.index = 0
                                     homeBean.data = KpiResultData.data
                                     homeDatas!!.add(homeBean)
                                 }
-                                if ("经营预警".equals(KpiResultData.group_name)) {
+                                if ("经营预警" == KpiResultData.group_name) {
                                     val homeBean = HomeBean()
                                     homeBean.group_name = "经营预警"
                                     homeBean.index = 2
                                     homeBean.data = KpiResultData.data
                                     homeDatas!!.add(homeBean)
                                 }
-                                if ("生意概况".equals(KpiResultData.group_name)) {
+                                if ("生意概况" == KpiResultData.group_name) {
                                     val homeBean = HomeBean()
                                     homeBean.group_name = "生意概况"
                                     homeBean.index = 3
@@ -149,7 +149,7 @@ class HomeFragment : RefreshFragment(), HomePageAdapter.HomePageListener {
     fun getHomeMsg() {
         if (!HttpUtil.isConnected(mActivity)) {
             ToastUtils.show(mActivity, "请检查网络链接")
-            finshRequest()
+            finishRequest()
             isEmpty = homeDatas == null || homeDatas!!.size == 0
             ErrorUtils.viewProcessing(refreshLayout, llError, llRetry, "无更多文章了", tvErrorMsg, ivError,
                     isEmpty!!, false, R.drawable.pic_3, {
@@ -161,22 +161,20 @@ class HomeFragment : RefreshFragment(), HomePageAdapter.HomePageListener {
                 .compose(RetrofitUtil.CommonOptions<HomeMsgResult>())
                 .subscribe(object : CodeHandledSubscriber<HomeMsgResult>() {
                     override fun onCompleted() {
-                        finshRequest()
+                        finishRequest()
                     }
 
                     override fun onError(apiException: ApiException?) {
-                        finshRequest()
+                        finishRequest()
                         ToastUtils.show(mActivity, apiException!!.displayMessage)
                     }
 
                     override fun onBusinessNext(data: HomeMsgResult?) {
                         if (homeDatas == null) homeDatas = ArrayList()
 
-                        for (homeBean in homeDatas!!) {
-                            if (1 == homeBean.index) {
-                                homeBean.data = data!!.data
-                            }
-                        }
+                        homeDatas!!
+                                .filter { 1 == it.index }
+                                .forEach { it.data = data!!.data }
                         ListUtils.sort(homeDatas, true, "index")
                         adapter.setData(homeDatas)
 
@@ -189,7 +187,7 @@ class HomeFragment : RefreshFragment(), HomePageAdapter.HomePageListener {
                 })
     }
 
-    fun finshRequest() {
+    fun finishRequest() {
         refreshLayout.finishRefreshing()
         refreshLayout.finishLoadmore()
         dismissLoading()

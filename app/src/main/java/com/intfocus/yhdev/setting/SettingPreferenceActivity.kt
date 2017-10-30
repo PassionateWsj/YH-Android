@@ -70,13 +70,13 @@ class SettingPreferenceActivity : BaseActivity() {
     /*
      *  Switch Report Copy 开关
      */
-    private val mSwitchReportCopyListener = CompoundButton.OnCheckedChangeListener { buttonView, isChecked -> mSharedPreferences!!.edit().putBoolean("ReportCopy", isChecked).commit() }
+    private val mSwitchReportCopyListener = CompoundButton.OnCheckedChangeListener { _, isChecked -> mSharedPreferences!!.edit().putBoolean("ReportCopy", isChecked).commit() }
 
     /*
      * 清理缓存
      */
     fun clearUserCache(v: View) {
-        var mProgressDialog = ProgressDialog.show(this@SettingPreferenceActivity, "稍等", "正在清理缓存...")
+        val mProgressDialog = ProgressDialog.show(this@SettingPreferenceActivity, "稍等", "正在清理缓存...")
         if (!HttpUtil.isConnected(this))
             return
 
@@ -85,9 +85,9 @@ class SettingPreferenceActivity : BaseActivity() {
         Observable.just(sharedPath)
                 .subscribeOn(Schedulers.io())
                 .map { path ->
-                    var isClearSpSuccess = getSharedPreferences("AssetsMD5", Context.MODE_PRIVATE).edit().clear().commit()
-                    var isCleanSharedPathSuccess = FileUtil.deleteDirectory(path)
-                    var isCleanCacheSuccess = FileUtil.deleteDirectory(cachePath)
+                    val isClearSpSuccess = getSharedPreferences("AssetsMD5", Context.MODE_PRIVATE).edit().clear().commit()
+                    val isCleanSharedPathSuccess = FileUtil.deleteDirectory(path)
+                    val isCleanCacheSuccess = FileUtil.deleteDirectory(cachePath)
                     isClearSpSuccess && isCleanSharedPathSuccess && isCleanCacheSuccess
                 }
                 .observeOn(AndroidSchedulers.mainThread())

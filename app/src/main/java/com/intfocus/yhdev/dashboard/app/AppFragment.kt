@@ -34,7 +34,7 @@ class AppFragment : BaseModeFragment<AppListMode>(), SwipeRefreshLayout.OnRefres
         return AppListMode(ctx, "app")
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         EventBus.getDefault().register(this)
         if (rootView == null) {
             rootView = inflater!!.inflate(R.layout.fragment_app, container, false)
@@ -53,7 +53,7 @@ class AppFragment : BaseModeFragment<AppListMode>(), SwipeRefreshLayout.OnRefres
         EventBus.getDefault().unregister(this)
     }
 
-    fun initSwipeLayout() {
+    private fun initSwipeLayout() {
         swipe_container.setOnRefreshListener(this)
         swipe_container.setColorSchemeResources(android.R.color.holo_blue_bright, android.R.color.holo_green_light,
                 android.R.color.holo_orange_light, android.R.color.holo_red_light)
@@ -66,7 +66,7 @@ class AppFragment : BaseModeFragment<AppListMode>(), SwipeRefreshLayout.OnRefres
             model.requestData()
         } else {
             swipe_container.isRefreshing = false
-            ToastUtils.show(context, "请检查网络")
+            ToastUtils.show(context!!, "请检查网络")
         }
     }
 

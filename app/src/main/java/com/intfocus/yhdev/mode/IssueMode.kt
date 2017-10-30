@@ -22,7 +22,7 @@ import java.util.*
 
 
 /**
- * Created by liuruilin on 2017/6/11.
+ * @author liuruilin on 2017/6/11.
  */
 class IssueMode(var ctx: Context) : AbstractMode() {
     lateinit var urlString: String
@@ -32,7 +32,7 @@ class IssueMode(var ctx: Context) : AbstractMode() {
     var fileList: MutableList<File> = mutableListOf()
 
     fun getUrl(): String {
-        var url = "http://development.shengyiplus.com/api/v1/user/123456/page/1/limit/10/problems"
+        val url = "http://development.shengyiplus.com/api/v1/user/123456/page/1/limit/10/problems"
         return url
     }
 
@@ -72,9 +72,9 @@ class IssueMode(var ctx: Context) : AbstractMode() {
                 }
             }
 
-            var resultStr = jsonObject.toString()
-            mIssueSP.edit().putString("IssueList", resultStr).commit()
-            var issueListBean = gson.fromJson(resultStr, IssueListBean::class.java)
+            val resultStr = jsonObject.toString()
+            mIssueSP.edit().putString("IssueList", resultStr).apply()
+            val issueListBean = gson.fromJson(resultStr, IssueListBean::class.java)
             val result1 = IssueListRequest(true, 200)
             result1.issueList = issueListBean
             EventBus.getDefault().post(result1)
@@ -92,7 +92,7 @@ class IssueMode(var ctx: Context) : AbstractMode() {
 
     fun addUploadImg(bmp: Bitmap) {
         if (fileList.size <= 3) {
-            var str = Environment.getExternalStorageDirectory().toString() + "/" + "image1.png"
+            val str = Environment.getExternalStorageDirectory().toString() + "/" + "image1.png"
             if (File(str).exists()) {
                 File(str).delete()
             }
@@ -121,7 +121,7 @@ class IssueMode(var ctx: Context) : AbstractMode() {
     }
      */
     fun commitIssue2(issueInfo: IssueCommitInfo) {
-        var mOkHttpClient = OkHttpClient()
+        val mOkHttpClient = OkHttpClient()
 
         val requestBody = MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
@@ -146,27 +146,29 @@ class IssueMode(var ctx: Context) : AbstractMode() {
 
         mOkHttpClient.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call?, e: IOException?) {
-                var request = IssueCommitRequest(false, "提交失败")
-                EventBus.getDefault().post(request)
+                val issueCommitRequest = IssueCommitRequest(false, "提交失败")
+                EventBus.getDefault().post(issueCommitRequest)
 
-                var logParams = JSONObject()
+                val logParams = JSONObject()
                 logParams.put(URLs.kAction, "点击/问题反馈/失败")
                 ActionLogUtil.actionLog(ctx, logParams)
             }
 
             override fun onResponse(call: Call?, response: Response?) {
+                val issueCommitRequest: IssueCommitRequest
+                val logParams: JSONObject
                 if (response!!.isSuccessful) {
-                    var request = IssueCommitRequest(true, "提交成功")
-                    EventBus.getDefault().post(request)
+                    issueCommitRequest = IssueCommitRequest(true, "提交成功")
+                    EventBus.getDefault().post(issueCommitRequest)
 
-                    var logParams = JSONObject()
+                    logParams = JSONObject()
                     logParams.put(URLs.kAction, "点击/问题反馈/成功")
                     ActionLogUtil.actionLog(ctx, logParams)
                 } else {
-                    var request = IssueCommitRequest(false, "提交失败")
-                    EventBus.getDefault().post(request)
+                    issueCommitRequest = IssueCommitRequest(false, "提交失败")
+                    EventBus.getDefault().post(issueCommitRequest)
 
-                    var logParams = JSONObject()
+                    logParams = JSONObject()
                     logParams.put(URLs.kAction, "点击/问题反馈/失败")
                     ActionLogUtil.actionLog(ctx, logParams)
                 }

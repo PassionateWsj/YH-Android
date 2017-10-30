@@ -39,8 +39,8 @@ class AddressPopupWindow(activity: Activity, citydats: ArrayList<MenuItem>, lise
     fun init() {
         val inflater = LayoutInflater.from(mActicity)
         conentView = inflater.inflate(R.layout.popup_address, null)
-        addressSelector = conentView.findViewById(R.id.address_selector) as AddressSelector
-        ivClose = conentView.findViewById(R.id.iv_close) as ImageView
+        addressSelector = conentView.findViewById(R.id.address_selector)
+        ivClose = conentView.findViewById(R.id.iv_close)
         // 设置SelectPicPopupWindow的View
         this.contentView = conentView
         // 设置SelectPicPopupWindow弹出窗体的宽

@@ -48,7 +48,7 @@ class NoticeMenuAdapter(val context: Context,
     }
 
     class NoticeMenuHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var tvNoticeMenuName = itemView.findViewById(R.id.tv_notice_menu_name) as TextView
+        var tvNoticeMenuName = itemView.findViewById<TextView>(R.id.tv_notice_menu_name)
     }
 
     interface NoticeItemListener {

@@ -37,12 +37,11 @@ class NumberOneFragment : BaseModeFragment<Subject>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (arguments != null) {
-            datas = arguments.getSerializable("Datas") as KpiGroupItem
+            datas = arguments!!.getSerializable("Datas") as KpiGroupItem
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         rootView = inflater!!.inflate(R.layout.fragment_number_one, container, false)
         return rootView
     }

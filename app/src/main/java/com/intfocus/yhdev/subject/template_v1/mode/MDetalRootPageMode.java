@@ -5,7 +5,7 @@ import android.util.Log;
 
 import com.alibaba.fastjson.JSONReader;
 import com.intfocus.yhdev.subject.template_v1.entity.MDetailUnitEntity;
-import com.intfocus.yhdev.subject.template_v1.entity.msg.MDetalRootPageRequestResult;
+import com.intfocus.yhdev.subject.template_v1.entity.msg.MDetailRootPageRequestResult;
 import com.zbl.lib.baseframe.core.AbstractMode;
 import com.zbl.lib.baseframe.utils.TimeUtil;
 
@@ -69,11 +69,11 @@ public class MDetalRootPageMode extends AbstractMode {
                         reader.endObject();
                     }
                     reader.endArray();
-                    MDetalRootPageRequestResult RequestResult = new MDetalRootPageRequestResult(true, 200, datas);
-                    dataCallback(RequestResult, "onMessageEvent");
+                    MDetailRootPageRequestResult requestResult = new MDetailRootPageRequestResult(true, 200, datas);
+                    dataCallback(requestResult, "onMessageEvent");
                     Log.i(TAG, "EndAnalysisTime:" + TimeUtil.getNowTime());
                 } catch (Exception e) {
-                    dataCallback(new MDetalRootPageRequestResult(true, 400, null), "onMessageEvent");
+                    dataCallback(new MDetailRootPageRequestResult(true, 400, null), "onMessageEvent");
                     e.printStackTrace();
                 }
             }

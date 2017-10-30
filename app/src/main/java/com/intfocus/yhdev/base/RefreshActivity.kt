@@ -16,7 +16,7 @@ import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout
 /**
  * Created by CANC on 2017/7/31.
  */
-open abstract class RefreshActivity : BaseActivity() {
+ abstract class RefreshActivity : BaseActivity() {
 
     lateinit var mActivity: Activity
     var loadingDialog: Dialog? = null
@@ -44,12 +44,12 @@ open abstract class RefreshActivity : BaseActivity() {
     }
 
     fun setRefreshLayout() {
-        refreshLayout = findViewById(R.id.refresh_layout) as TwinklingRefreshLayout
-        recyclerView = findViewById(R.id.recycler_view) as RecyclerView
-        llError = findViewById(R.id.ll_empty) as LinearLayout
-        tvErrorMsg = findViewById(R.id.tv_errorMsg) as TextView
-        ivError = findViewById(R.id.iv_error) as ImageView
-        llRetry = findViewById(R.id.ll_retry) as LinearLayout
+        refreshLayout = findViewById(R.id.refresh_layout)
+        recyclerView = findViewById(R.id.recycler_view)
+        llError = findViewById(R.id.ll_empty)
+        tvErrorMsg = findViewById(R.id.tv_errorMsg)
+        ivError = findViewById(R.id.iv_error)
+        llRetry = findViewById(R.id.ll_retry)
 
         refreshLayout.setOnRefreshListener(object : RefreshListenerAdapter() {
             override fun onRefresh(refreshLayout: TwinklingRefreshLayout?) {

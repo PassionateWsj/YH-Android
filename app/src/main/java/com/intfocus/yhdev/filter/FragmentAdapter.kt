@@ -24,7 +24,7 @@ class FragmentAdapter(fm: FragmentManager, var mFragments: List<Fragment>?, var 
         return mFragments!![position]
     }
 
-    override fun setPrimaryItem(container: ViewGroup?, position: Int, `object`: Any) {
+    override fun setPrimaryItem(container: ViewGroup, position: Int, `object`: Any) {
         super.setPrimaryItem(container, position, `object`)
     }
 
@@ -36,7 +36,7 @@ class FragmentAdapter(fm: FragmentManager, var mFragments: List<Fragment>?, var 
         return mTitles!![position]
     }
 
-    override fun getItemPosition(`object`: Any?): Int {
+    override fun getItemPosition(`object`: Any): Int {
         return POSITION_NONE
     }
 }
