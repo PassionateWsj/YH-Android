@@ -9,6 +9,7 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
@@ -111,13 +112,13 @@ public class RingChart extends View {
         mUsePaint = new Paint();
         mUsePaint.setAntiAlias(true);
         mUsePaint.setStyle(Paint.Style.FILL);
-        mUsePaint.setColor(getResources().getColor(R.color.argb_font_94));
+        mUsePaint.setColor(ContextCompat.getColor(mContext,R.color.argb_font_94));
         mUsePaint.setTextSize(DisplayUtil.sp2px(mContext, 20));
 
         //圆环画笔设置
         mRingDefaultPaint = new Paint();
         mRingDefaultPaint.setAntiAlias(true);
-        mRingDefaultPaint.setColor(getResources().getColor(R.color.default_ring_color));
+        mRingDefaultPaint.setColor(ContextCompat.getColor(mContext,R.color.default_ring_color));
         mRingDefaultPaint.setStyle(Paint.Style.STROKE);
         mRingDefaultPaint.setStrokeWidth(mStrokeWidth);
 
@@ -131,7 +132,7 @@ public class RingChart extends View {
         mTextPaint = new Paint();
         mTextPaint.setAntiAlias(true);
         mTextPaint.setStyle(Paint.Style.FILL);
-        mTextPaint.setColor(getResources().getColor(R.color.argb_unitcolor));
+        mTextPaint.setColor(ContextCompat.getColor(mContext,R.color.argb_unitcolor));
         mTextPaint.setTextSize(DisplayUtil.sp2px(mContext, 36));
 
         mLinePaint = new Paint();

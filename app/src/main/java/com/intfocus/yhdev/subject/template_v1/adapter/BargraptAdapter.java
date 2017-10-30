@@ -2,6 +2,7 @@ package com.intfocus.yhdev.subject.template_v1.adapter;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,12 +32,12 @@ public class BargraptAdapter extends BaseAdapter {
 
     public BargraptAdapter(Context ctx) {
         this.ctx = ctx;
-        herearrow = ctx.getResources().getDrawable(R.drawable.icon_herearrow);
+        herearrow = ContextCompat.getDrawable(ctx,R.drawable.icon_herearrow);
         herearrow.setBounds(0, 0, herearrow.getMinimumWidth(),
                 herearrow.getMinimumHeight());
-        percentDefaultColor = ctx.getResources().getColor(R.color.co4_syr);
-        defaultColor = ctx.getResources().getColor(R.color.co3_syr);
-        selectColor = ctx.getResources().getColor(R.color.co14_syr);
+        percentDefaultColor = ContextCompat.getColor(ctx,R.color.co4_syr);
+        defaultColor = ContextCompat.getColor(ctx,R.color.co3_syr);
+        selectColor = ContextCompat.getColor(ctx,R.color.co14_syr);
     }
 
     public void updateData(LinkedList<BargraphComparator> ltdata) {

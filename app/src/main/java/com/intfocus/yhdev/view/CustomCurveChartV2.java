@@ -12,6 +12,7 @@ import android.graphics.RectF;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -167,7 +168,7 @@ public class CustomCurveChartV2 extends View implements ValueAnimator.AnimatorUp
         paint_circle.setStrokeCap(Paint.Cap.ROUND);
 
         orderColors = getResources().getIntArray(R.array.co_order);
-        blackColor = getResources().getColor(R.color.co3);
+        blackColor = ContextCompat.getColor(getContext(),R.color.co3);
     }
 
     @Override

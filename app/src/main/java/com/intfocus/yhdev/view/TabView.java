@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.ViewGroup;
@@ -67,7 +68,7 @@ public class TabView extends LinearLayout {
     private void update() {
         if (mActive) {
             mImageView.setImageDrawable(mActiveDrawable);
-            mTextView.setTextColor(getResources().getColor(R.color.co1_syr));
+            mTextView.setTextColor(ContextCompat.getColor(getContext(),R.color.co1_syr));
         } else {
             mImageView.setImageDrawable(mDrawable);
             mTextView.setTextColor(Color.BLACK);

@@ -1,6 +1,7 @@
 package com.intfocus.yhdev.subject.template_v1.curvechart;
 
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -215,7 +216,7 @@ public class ModularOneUnitCurveChartModeFragment extends BaseModeFragment<MDRPU
                 chart.setUnit(unit);
                 chart.setColorList(color);
                 int selectItem = chart.setDataList(seriesLables);
-                chart.setDefaultColor(getResources().getColor(R.color.co9));
+                chart.setDefaultColor(ContextCompat.getColor(ctx,R.color.co9));
                 chart.setDefauteMargin((int) margin);
                 chart.setPointClickListener(ModularOneUnitCurveChartModeFragment.this);
                 int chartStyle;
