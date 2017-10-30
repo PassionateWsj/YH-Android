@@ -56,12 +56,12 @@ class StoreSelectorActivity : BaseActivity(), StoreSelectorView {
 
     private fun initListener() {
         // 隐藏软键盘
-        ll_store_selector_container.setOnTouchListener { v, event ->
+        ll_store_selector_container.setOnTouchListener { _, _ ->
             hideKeyboard()
             false
         }
         //　item 点击监听
-        listStores.setOnItemClickListener { parent, view, position, id ->
+        listStores.setOnItemClickListener { _, _, position, _ ->
             val intent = Intent()
             intent.putExtra(URLs.kStore, adapter.getSelectItem(position).name)
             intent.putExtra(URLs.kStoreIds, adapter.getSelectItem(position).id)

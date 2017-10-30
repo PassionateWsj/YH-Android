@@ -32,9 +32,9 @@ class ReportsRightGVAdapter(var ctx: Context, var datas: List<GroupDataBean>?) :
         if (convertView == null) {
             convertView = mInflater.inflate(R.layout.item_reports_right_gv, null)
 
-            viewTag = ItemViewTag(convertView!!.findViewById(R.id.ll_reports_right_item) as LinearLayout,
-                    convertView.findViewById(R.id.iv_reports_item_img) as ImageView,
-                    convertView.findViewById(R.id.tv_reports_item_name) as TextView)
+            viewTag = ItemViewTag(convertView!!.findViewById(R.id.ll_reports_right_item),
+                    convertView.findViewById(R.id.iv_reports_item_img),
+                    convertView.findViewById(R.id.tv_reports_item_name))
             convertView.tag = viewTag
             if (convertView.layoutParams == null)
                 convertView.layoutParams = laryoutParams

@@ -89,7 +89,7 @@ import static android.webkit.WebView.enableSlowWholeDocumentDraw;
 import static java.lang.String.format;
 
 public class WebApplicationActivityV6 extends BaseActivity implements OnPageChangeListener, OnLoadCompleteListener, OnErrorOccurredListener
-        , FilterMenuAdapter.FilterMenuListener, FilterPopupWindow.MenuLisenter, MyFilterDialogFragment.FilterLisenter {
+        , FilterMenuAdapter.FilterMenuListener, FilterPopupWindow.MenuLisenter, MyFilterDialogFragment.FilterListener {
     @ViewInject(R.id.ll_shaixuan)
     LinearLayout llShaixuan;
     @ViewInject(R.id.ll_copylink)

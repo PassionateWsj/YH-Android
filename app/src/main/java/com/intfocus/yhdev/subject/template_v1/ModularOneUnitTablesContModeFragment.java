@@ -5,6 +5,7 @@ import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.util.ArrayMap;
 import android.util.Log;
 import android.util.TypedValue;
@@ -32,7 +33,6 @@ import com.intfocus.yhdev.view.SortCheckBox;
 import com.intfocus.yhdev.view.TableHorizontalScrollView;
 import com.intfocus.yhdev.view.TableValueView;
 import com.zbl.lib.baseframe.core.Subject;
-import com.zbl.lib.baseframe.utils.ToastUtil;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -46,6 +46,7 @@ import org.xutils.x;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 
@@ -134,6 +135,11 @@ public class ModularOneUnitTablesContModeFragment extends BaseModeFragment<Modul
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EventBus.getDefault().register(this);
@@ -195,9 +201,9 @@ public class ModularOneUnitTablesContModeFragment extends BaseModeFragment<Modul
 
             suspensionView = LayoutInflater.from(ctx).inflate(R.layout.item_suspension, null);
             fl_tableTitle_container.addView(suspensionView);
-            tv_header = (TextView) suspensionView.findViewById(R.id.tv_unit_table_header);
-            thscroll_header = (TableHorizontalScrollView) suspensionView.findViewById(R.id.thscroll_unit_table_header);
-            linear_header = (LinearLayout) suspensionView.findViewById(R.id.ll_unit_table_header);
+            tv_header = suspensionView.findViewById(R.id.tv_unit_table_header);
+            thscroll_header =  suspensionView.findViewById(R.id.thscroll_unit_table_header);
+            linear_header =  suspensionView.findViewById(R.id.ll_unit_table_header);
 
             thscroll_header.setScrollView(thscroll_data);
             thscroll_data.setScrollView(thscroll_header);
@@ -207,7 +213,8 @@ public class ModularOneUnitTablesContModeFragment extends BaseModeFragment<Modul
                 public void run() {
                     Rect frame = new Rect();
                     act.getWindow().getDecorView().getWindowVisibleDisplayFrame(frame);
-                    offsetTop = frame.top + 165 - 30;//状态栏+标题栏高度-间隙
+                    //状态栏+标题栏高度-间隙
+                    offsetTop = frame.top + 165 - 30;
 
                     Log.i(TAG, "offsetTop:" + offsetTop);
                 }
@@ -273,7 +280,8 @@ public class ModularOneUnitTablesContModeFragment extends BaseModeFragment<Modul
      */
     private void bindData(ModularTwo_UnitTableEntity result) {
         this.dataEntity = result;
-        String[] header = result.head; // 表头数据
+        // 表头数据
+        String[] header = result.head;
         tv_header.setText(header[0]);
 
         headerSize = header.length - 1;
@@ -283,9 +291,7 @@ public class ModularOneUnitTablesContModeFragment extends BaseModeFragment<Modul
         al_SortView.clear();
         linear_header.removeAllViews();
 
-        for (int i = 0; i < headerSize; i++) {
-            headerData.add(header[i + 1]);
-        }
+        headerData.addAll(Arrays.asList(header).subList(1, headerSize + 1));
 
         lineData.add(headerData);
         for (int i = 0; i < headerSize; i++) {
@@ -386,8 +392,8 @@ public class ModularOneUnitTablesContModeFragment extends BaseModeFragment<Modul
         }
 
         int itemHeight = getResources().getDimensionPixelSize(R.dimen.size_default);
-        int dividerColor = getResources().getColor(R.color.co9);
-        int textColor = getResources().getColor(R.color.co6_syr);
+        int dividerColor = ContextCompat.getColor(getContext(),R.color.co9);
+        int textColor = ContextCompat.getColor(getContext(),R.color.co6_syr);
         tableValue = new TableValueView(ctx);
         tableValue.setItemHeight(itemHeight);
         tableValue.setHeaderLengths(al_HeaderLenght);
@@ -461,13 +467,13 @@ public class ModularOneUnitTablesContModeFragment extends BaseModeFragment<Modul
                 String strv2 = new JSONObject(obj2.main_data[index]).getString("value");
 
                 if (strv1.contains("%")) {
-                    v1 = new Float(strv1.substring(0, strv1.indexOf("%"))) / 100;
+                    v1 = Float.valueOf(strv1.substring(0, strv1.indexOf("%"))) / 100;
                 } else {
                     v1 = Float.valueOf(df.format(Float.valueOf(strv1)));
                 }
 
                 if (strv2.contains("%")) {
-                    v2 = new Float(strv2.substring(0, strv2.indexOf("%"))) / 100;
+                    v2 = Float.valueOf(strv2.substring(0, strv2.indexOf("%"))) / 100;
                 } else {
                     v2 = Float.valueOf(df.format(Float.valueOf(strv2)));
                 }
@@ -495,11 +501,11 @@ public class ModularOneUnitTablesContModeFragment extends BaseModeFragment<Modul
     public void startSubTable(int index) {
         try {
             JSONObject sub_data = new JSONObject(dataEntity.data.get(index).sub_data);
-            if (sub_data == null) {
-                String tableName = (String) nameAdapter.getItem(index);
-                ToastUtil.showToast(ctx, tableName);
-                return;
-            }
+//            if (sub_data == null) {
+//                String tableName = (String) nameAdapter.getItem(index);
+//                ToastUtil.showToast(ctx, tableName);
+//                return;
+//            }
 
             JSONObject jsonObject = new JSONObject();
             String header = sub_data.getJSONArray("head").toString();

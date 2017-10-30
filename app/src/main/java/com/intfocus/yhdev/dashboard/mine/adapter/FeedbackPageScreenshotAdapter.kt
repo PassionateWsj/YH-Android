@@ -2,6 +2,7 @@ package com.intfocus.yhdev.dashboard.mine.adapter
 
 import android.content.Context
 import android.net.Uri
+import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -41,9 +42,7 @@ class FeedbackPageScreenshotAdapter(val mContext: Context, val listener: Screens
         return ScreenshotHolder(inflate)
     }
 
-    override fun getItemCount(): Int {
-        return mData.size + 1
-    }
+    override fun getItemCount(): Int = mData.size + 1
 
     override fun onBindViewHolder(holder: ScreenshotHolder?, position: Int) {
         when {
@@ -89,7 +88,7 @@ class FeedbackPageScreenshotAdapter(val mContext: Context, val listener: Screens
     private fun setAddScreenshotView(holder: ScreenshotHolder?) {
         holder!!.rlFeedbackPageScreenshotContainer.visibility = View.VISIBLE
 
-        holder.ivPageScreenshot.setImageDrawable(mContext.resources.getDrawable(R.drawable.btn_addpic))
+        holder.ivPageScreenshot.setImageDrawable(ContextCompat.getDrawable(mContext,R.drawable.btn_addpic))
         holder.ivScreenshotDel.visibility = View.GONE
         holder.ivPageScreenshot.setOnClickListener { listener.addScreenshot(4 - itemCount) }
     }
@@ -104,20 +103,18 @@ class FeedbackPageScreenshotAdapter(val mContext: Context, val listener: Screens
         notifyDataSetChanged()
     }
 
-    fun getData(): List<Uri> {
-        return mData
-    }
+    fun getData(): List<Uri> = mData
 
 
     class ScreenshotHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var rlFeedbackPageScreenshotContainer = itemView.findViewById(R.id.ll_feedback_page_screenshot_container) as LinearLayout
-        var ivPageScreenshot = itemView.findViewById(R.id.iv_feedback_page_screenshot) as ImageView
-        var ivScreenshotDel = itemView.findViewById(R.id.iv_feedback_screenshot_del) as ImageView
+        var rlFeedbackPageScreenshotContainer = itemView.findViewById<LinearLayout>(R.id.ll_feedback_page_screenshot_container)
+        var ivPageScreenshot = itemView.findViewById<ImageView>(R.id.iv_feedback_page_screenshot)
+        var ivScreenshotDel = itemView.findViewById<ImageView>(R.id.iv_feedback_screenshot_del)
     }
 
     interface ScreenshotItemClickListener {
         fun addScreenshot(maxNum: Int)
-        fun delScreenshot(mPos: Int)
+        fun delScreenshot(pos: Int)
     }
 
 }

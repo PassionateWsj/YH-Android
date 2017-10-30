@@ -49,13 +49,13 @@ class NoticeListAdapter(val context: Context,
     }
 
     class NoticeListHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var viewTop = itemView.findViewById(R.id.view_top)
-        var ivNoticePoint = itemView.findViewById(R.id.iv_notice_point) as ImageView
-        var llNoticeListItem = itemView.findViewById(R.id.ll_notice_item) as LinearLayout
-        var tvNoticeType = itemView.findViewById(R.id.tv_notice_type) as TextView
-        var tvNoticeTitle = itemView.findViewById(R.id.tv_notice_title) as TextView
-        var tvNoticeTime = itemView.findViewById(R.id.tv_notice_time) as TextView
-        var tvNoticeListContent = itemView.findViewById(R.id.tv_notice_list_content) as TextView
+        var viewTop = itemView.findViewById<View>(R.id.view_top)
+        var ivNoticePoint = itemView.findViewById<ImageView>(R.id.iv_notice_point)
+        var llNoticeListItem = itemView.findViewById<LinearLayout>(R.id.ll_notice_item)
+        var tvNoticeType = itemView.findViewById<TextView>(R.id.tv_notice_type)
+        var tvNoticeTitle = itemView.findViewById<TextView>(R.id.tv_notice_title)
+        var tvNoticeTime = itemView.findViewById<TextView>(R.id.tv_notice_time)
+        var tvNoticeListContent = itemView.findViewById<TextView>(R.id.tv_notice_list_content)
     }
 
     interface NoticeItemListener {

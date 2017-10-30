@@ -45,7 +45,7 @@ class GuideActivity : AppCompatActivity() {
      */
     private fun getAuthority() {
         val permissionsList = permissionsArray.filter { ContextCompat.checkSelfPermission(this, it) != PackageManager.PERMISSION_GRANTED }
-        if (!permissionsList.isEmpty() && permissionsList != null) {
+        if (!permissionsList.isEmpty() ) {
             ActivityCompat.requestPermissions(this, permissionsList.toTypedArray(), CODE_AUTHORITY_REQUEST)
         }
     }

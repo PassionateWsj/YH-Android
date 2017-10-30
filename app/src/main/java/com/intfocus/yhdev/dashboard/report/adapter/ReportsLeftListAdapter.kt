@@ -41,9 +41,9 @@ class ReportsLeftListAdapter(var ctx: android.content.Context,
         if (convertView == null) {
             convertView = mInflater.inflate(R.layout.item_reports_left_lv, null)
 
-            viewTag = ItemViewTag(convertView!!.findViewById(R.id.rl_reports_category_item) as LinearLayout,
-                    convertView.findViewById(R.id.tv_reports_category_name) as TextView,
-                    convertView.findViewById(R.id.iv_reports_left_sign) as ImageView
+            viewTag = ItemViewTag(convertView!!.findViewById(R.id.rl_reports_category_item),
+                    convertView.findViewById(R.id.tv_reports_category_name),
+                    convertView.findViewById(R.id.iv_reports_left_sign)
             )
             convertView.tag = viewTag
         } else {

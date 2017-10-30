@@ -19,7 +19,9 @@ import com.intfocus.yhdev.data.response.filter.MenuItem
  * Created by CANC on 2017/8/9.
  * 筛选专用dialogfragment,支持所有数据深度
  */
-class MyFilterDialogFragment(mDatas: ArrayList<MenuItem>, lisenter: FilterLisenter) : DialogFragment(), NewFilterFragment.NewFilterFragmentListener {
+class MyFilterDialogFragment(mDatas: ArrayList<MenuItem>, listener: FilterListener) : DialogFragment(), NewFilterFragment.NewFilterFragmentListener {
+
+
     lateinit var mView: View
     lateinit var ivClose: ImageView
     lateinit var tabLayout: TabLayout
@@ -29,8 +31,20 @@ class MyFilterDialogFragment(mDatas: ArrayList<MenuItem>, lisenter: FilterLisent
     var titleList = ArrayList<String>()
     var fragments = ArrayList<Fragment>()
     var datas: ArrayList<MenuItem>? = mDatas
-    var lisenter: FilterLisenter? = lisenter
+    var mListener: FilterListener? = listener
     var selectedDatas = ArrayList<MenuItem>()
+
+//    companion object {
+//        fun newInstance(mDatas: ArrayList<MenuItem>, listener: FilterListener): MyFilterDialogFragment {
+//
+//            val args = Bundle()
+//            args.putSerializable("mDatas", mDatas)
+//
+//            val fragment = MyFilterDialogFragment()
+//            fragment.arguments = args
+//            return fragment
+//        }
+//    }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -38,14 +52,14 @@ class MyFilterDialogFragment(mDatas: ArrayList<MenuItem>, lisenter: FilterLisent
         dialog.window.setGravity(Gravity.LEFT)
         dialog.window.setGravity(Gravity.BOTTOM)
         //设置布局
-        var mView = LayoutInflater.from(activity).inflate(R.layout.dialog_fragment_filter, null)
+        val mView = LayoutInflater.from(activity).inflate(R.layout.dialog_fragment_filter, null)
         dialog.window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog.window.setLayout(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
         dialog.window.setWindowAnimations(R.style.anim_popup_bottombar)
         this.mView = mView
-        ivClose = mView.findViewById(R.id.iv_close) as ImageView
-        tabLayout = mView.findViewById(R.id.tab_layout) as TabLayout
-        viewPager = mView.findViewById(R.id.view_pager) as ViewPager
+        ivClose = mView.findViewById(R.id.iv_close)
+        tabLayout = mView.findViewById(R.id.tab_layout)
+        viewPager = mView.findViewById(R.id.view_pager)
         tabLayout.setBackgroundColor(ContextCompat.getColor(activity, R.color.co10_syr))
         tabLayout.setSelectedTabIndicatorHeight(3)
         tabLayout.setTabTextColors(ContextCompat.getColor(activity, R.color.co4_syr), ContextCompat.getColor(activity, R.color.co1_syr))
@@ -63,8 +77,7 @@ class MyFilterDialogFragment(mDatas: ArrayList<MenuItem>, lisenter: FilterLisent
         })
         ivClose.setOnClickListener { this.dismiss() }
         var currentStr = "请选择"
-        datas!!
-                .filter { it.arrorDirection }
+        datas!!.filter { it.arrorDirection }
                 .forEach { currentStr = it.name!! }
         titleList.add(currentStr)
         fragments.add(NewFilterFragment(datas!!, this))
@@ -79,9 +92,9 @@ class MyFilterDialogFragment(mDatas: ArrayList<MenuItem>, lisenter: FilterLisent
         /**
          * 还有下一节点，继续添加新界面,没有下一节点，调用完成方法
          */
-        if (menuDatas!![position].data != null && menuDatas!![position].data!!.size > 0) {
+        if (menuDatas[position].data != null && menuDatas[position].data!!.size > 0) {
             titleList[currentPosition!!] = menuDatas[position].name!!
-            var menuItem = MenuItem(menuDatas[position].id, menuDatas[position].name)
+            val menuItem = MenuItem(menuDatas[position].id, menuDatas[position].name)
             if (selectedDatas.size >= currentPosition!!) {
                 selectedDatas.add(menuItem)
             } else {
@@ -97,37 +110,37 @@ class MyFilterDialogFragment(mDatas: ArrayList<MenuItem>, lisenter: FilterLisent
             }
             titleList.add("请选择")
             currentPosition = currentPosition!! + 1
-            for (data in menuDatas!![position].data!!) {
+            for (data in menuDatas[position].data!!) {
                 data.arrorDirection = false
             }
-            fragments.add(NewFilterFragment(menuDatas!![position].data!!, this))
-            if (adapter == null) {
-                adapter = FragmentAdapter(childFragmentManager, fragments, titleList)
-                viewPager.adapter = adapter
-            } else {
-                adapter.updateFragments(fragments)
-                adapter.updateTitles(titleList)
-            }
+            fragments.add(NewFilterFragment(menuDatas[position].data!!, this))
+//            if (adapter == null) {
+//                adapter = FragmentAdapter(childFragmentManager, fragments, titleList)
+//                viewPager.adapter = adapter
+//            } else {
+            adapter.updateFragments(fragments)
+            adapter.updateTitles(titleList)
+//            }
             tabLayout.setupWithViewPager(viewPager)
             viewPager.currentItem = currentPosition!!
         } else {
-            titleList[currentPosition!!] = menuDatas!![position].name!!
-            var menuItem = MenuItem(menuDatas[position].id, menuDatas[position].name)
+            titleList[currentPosition!!] = menuDatas[position].name!!
+            val menuItem = MenuItem(menuDatas[position].id, menuDatas[position].name)
             if (selectedDatas.size >= currentPosition!!) {
                 selectedDatas.add(menuItem)
             } else {
                 selectedDatas[currentPosition!!] = menuItem
             }
-            if (adapter == null) {
-                adapter = FragmentAdapter(childFragmentManager, fragments, titleList)
-                viewPager.adapter = adapter
-            } else {
-                adapter.updateFragments(fragments)
-                adapter.updateTitles(titleList)
-            }
+//            if (adapter == null) {
+//                adapter = FragmentAdapter(childFragmentManager, fragments, titleList)
+//                viewPager.adapter = adapter
+//            } else {
+            adapter.updateFragments(fragments)
+            adapter.updateTitles(titleList)
+//            }
             tabLayout.setupWithViewPager(viewPager)
             viewPager.currentItem = currentPosition!!
-            lisenter!!.complete(selectedDatas)
+            mListener!!.complete(selectedDatas)
             this.dismiss()
         }
     }
@@ -140,7 +153,7 @@ class MyFilterDialogFragment(mDatas: ArrayList<MenuItem>, lisenter: FilterLisent
         super.onResume()
     }
 
-    interface FilterLisenter {
-        fun complete(data: ArrayList<MenuItem>)
+    interface FilterListener {
+        fun complete(menuItems: ArrayList<MenuItem>)
     }
 }

@@ -38,7 +38,7 @@ object ToastUtils {
             mToast!!.duration = Toast.LENGTH_SHORT
             mToast!!.view = view
         }
-        val textView = mToast!!.view.findViewById(R.id.toast_text) as TextView
+        val textView = mToast!!.view.findViewById<TextView>(R.id.toast_text)
         if (colorId != 0) {
             textView.setBackgroundColor(ContextCompat.getColor(context, colorId))
         }

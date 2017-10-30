@@ -32,7 +32,7 @@ class TableTitleAdapter(val context: Context,
 
     override fun onBindViewHolder(holder: NoticeMenuHolder, position: Int) {
         if (data != null) {
-            var noticeMenuData = data!![position]
+            val noticeMenuData = data!![position]
             holder.tvText.text = noticeMenuData.type
             if (noticeMenuData.isCheck) {
                 holder.tvText.setTextColor(ContextCompat.getColor(context, R.color.co1_syr))
@@ -45,14 +45,12 @@ class TableTitleAdapter(val context: Context,
         }
     }
 
-    override fun getItemCount(): Int {
-        return if (data == null) 0 else data!!.size
-    }
+    override fun getItemCount(): Int = if (data == null) 0 else data!!.size
 
     class NoticeMenuHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var llTitle = itemView.findViewById(R.id.ll_title) as LinearLayout
-        var tvText = itemView.findViewById(R.id.tv_text) as TextView
-        var viewLine = itemView.findViewById(R.id.view_line)
+        var llTitle: LinearLayout = itemView.findViewById(R.id.ll_title)
+        var tvText: TextView = itemView.findViewById(R.id.tv_text)
+        var viewLine: View = itemView.findViewById(R.id.view_line)
     }
 
     interface NoticeItemListener {

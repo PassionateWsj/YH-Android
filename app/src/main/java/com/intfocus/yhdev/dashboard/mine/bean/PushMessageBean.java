@@ -8,7 +8,7 @@ import java.io.Serializable;
 
 /**
  * ****************************************************
- * author: JamesWong
+ * @author JamesWong
  * created on: 17/08/01 下午5:35
  * e-mail: PassionateWsj@outlook.com
  * name:

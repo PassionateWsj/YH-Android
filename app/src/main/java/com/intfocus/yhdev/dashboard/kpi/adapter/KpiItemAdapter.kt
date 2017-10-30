@@ -16,39 +16,38 @@ import com.intfocus.yhdev.util.DisplayUtil
 /**
  * Created by liuruilin on 2017/7/10.
  */
-class KpiItemAdapter(var ctx: Context, internal var itemDatas: MutableList<KpiGroup>) : RecyclerView.Adapter<KpiItemAdapter.KpiItemHolder>() {
+class KpiItemAdapter(var ctx: Context, private var itemDatas: MutableList<KpiGroup>) : RecyclerView.Adapter<KpiItemAdapter.KpiItemHolder>() {
     var inflater = LayoutInflater.from(ctx)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): KpiItemHolder {
         val contentView = inflater.inflate(R.layout.fragment_kpi_group, parent, false)
-        val holder = KpiItemHolder(contentView)
-        return holder
+        return KpiItemHolder(contentView)
     }
 
     override fun onBindViewHolder(holder: KpiItemHolder, position: Int) {
-        holder.tv_kpi_group_name.text = itemDatas[position].group_name
-        var recyclerView = holder.rc_kpi_item
+        holder.tvKpiGroupName.text = itemDatas[position].group_name
+        val recyclerView = holder.rcKpiItem
         val offset = DisplayUtil.dip2px(ctx, -3.5f)
         recyclerView.setPadding(offset, 0 - offset, offset, 0 - offset + 3)
 
-        if (itemDatas!![position].data!![0].dashboard_type.equals("number2")) {
-            var mLayoutManager = LinearLayoutManager(ctx, LinearLayoutManager.HORIZONTAL, false)
+        if (itemDatas[position].data!![0].dashboard_type.equals("number2")) {
+            val mLayoutManager = LinearLayoutManager(ctx, LinearLayoutManager.HORIZONTAL, false)
 
             //设置布局管理器
             recyclerView.layoutManager = mLayoutManager
             //设置Adapter
-            var recycleAdapter = NumberTwoItemAdapter(ctx, itemDatas!![position].data)
+            val recycleAdapter = NumberTwoItemAdapter(ctx, itemDatas[position].data)
             recyclerView.adapter = recycleAdapter
             //设置分隔线
             recyclerView.addItemDecoration(MarginDecoration(ctx))
             //设置增加或删除条目的动画
             recyclerView.itemAnimator = DefaultItemAnimator()
         } else {
-            var mLayoutManager = LinearLayoutManager(ctx, LinearLayoutManager.VERTICAL, false)
+            val mLayoutManager = LinearLayoutManager(ctx, LinearLayoutManager.VERTICAL, false)
             //设置布局管理器
             recyclerView.layoutManager = mLayoutManager
             //设置Adapter
-            var recycleAdapter = NumberThreeItemAdapter(ctx, itemDatas!![position].data)
+            val recycleAdapter = NumberThreeItemAdapter(ctx, itemDatas[position].data)
             recyclerView.adapter = recycleAdapter
             //设置分隔线
             recyclerView.addItemDecoration(MarginDecoration(ctx))
@@ -57,18 +56,12 @@ class KpiItemAdapter(var ctx: Context, internal var itemDatas: MutableList<KpiGr
         }
     }
 
-    override fun getItemViewType(position: Int): Int {
-        return position
-    }
+    override fun getItemViewType(position: Int): Int = position
 
-    override fun getItemCount(): Int {
-        if (itemDatas == null)
-            return 0
-        return itemDatas!!.size
-    }
+    override fun getItemCount(): Int =            itemDatas.size
 
     inner class KpiItemHolder(view: View) : RecyclerView.ViewHolder(view) {
-        var tv_kpi_group_name = view.findViewById(R.id.tv_kpi_group_name) as TextView
-        var rc_kpi_item = view.findViewById(R.id.rv_kpi_group) as RecyclerView
+        var tvKpiGroupName:TextView = view.findViewById (R.id.tv_kpi_group_name)
+        var rcKpiItem:RecyclerView = view.findViewById (R.id.rv_kpi_group)
     }
 }

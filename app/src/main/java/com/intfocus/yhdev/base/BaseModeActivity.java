@@ -89,6 +89,7 @@ public abstract class BaseModeActivity<T extends Subject> extends AbstractActivi
 
 
     private ArrayMap<Integer, PermissionCallback> mPermissionCallbacks = new ArrayMap<>();
+    public View mContentView;
 
     /**
      * 权限回调接口
@@ -205,13 +206,12 @@ public abstract class BaseModeActivity<T extends Subject> extends AbstractActivi
 //        progressBar = (ProgressBar) findViewById(R.id.progressBar_baseUI);
 
         int contentID = setLayoutRes();
-        View content = null;
         if (contentID != 0 && contentID != -1) {
-            content = LayoutInflater.from(this).inflate(contentID, null);
+            mContentView = LayoutInflater.from(this).inflate(contentID, null);
         }
         flContainer = (FrameLayout) findViewById(R.id.fl_baseUI_container);
-        if (content != null) {
-            flContainer.addView(content);
+        if (mContentView != null) {
+            flContainer.addView(mContentView);
         }
 
         onCreateFinish(savedInstanceState);

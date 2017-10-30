@@ -1,6 +1,7 @@
 package com.intfocus.yhdev.subject.template_v1.adapter
 
 import android.content.Context
+import android.support.v4.content.ContextCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,12 +21,10 @@ import org.xutils.x
 class ModularTwo_TableNameAdapter(private val ctx: Context, ltdata: List<ModularTwo_UnitTableEntity.TableRowEntity>) : BaseAdapter() {
     private var ltdata: List<ModularTwo_UnitTableEntity.TableRowEntity>? = null
 
-    private val defauteColor: Int
-    private val hasSubColor: Int
+    private val defaultColor: Int = ContextCompat.getColor(ctx,R.color.co6)
+    private val hasSubColor: Int = ContextCompat.getColor(ctx,R.color.co15)
 
     init {
-        defauteColor = ctx.resources.getColor(R.color.co6)
-        hasSubColor = ctx.resources.getColor(R.color.co15)
         setData(ltdata)
     }
 
@@ -40,49 +39,43 @@ class ModularTwo_TableNameAdapter(private val ctx: Context, ltdata: List<Modular
         notifyDataSetChanged()
     }
 
-    override fun getCount(): Int {
-        return if (ltdata == null) 0 else ltdata!!.size
-    }
+    override fun getCount(): Int = if (ltdata == null) 0 else ltdata!!.size
 
-    override fun getItem(position: Int): Any {
-        return ltdata!![position].main_data[0]
-    }
+    override fun getItem(position: Int): Any = ltdata!![position].main_data[0]
 
-    override fun getItemId(position: Int): Long {
-        return position.toLong()
-    }
+    override fun getItemId(position: Int): Long = position.toLong()
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        var convertView = convertView
+        var mConvertView = convertView
         val viewHolder: ViewHolder
-        if (convertView == null) {
-            convertView = LayoutInflater.from(ctx).inflate(R.layout.item_table_name, parent, false)
+        if (mConvertView == null) {
+            mConvertView = LayoutInflater.from(ctx).inflate(R.layout.item_table_name, parent, false)
             viewHolder = ViewHolder()
-            x.view().inject(viewHolder, convertView)
-            convertView!!.tag = viewHolder
+            x.view().inject(viewHolder, mConvertView)
+            mConvertView!!.tag = viewHolder
         } else {
-            viewHolder = convertView.tag as ViewHolder
+            viewHolder = mConvertView.tag as ViewHolder
         }
 
         val entity = ltdata!![position]
 
         if (entity.sub_data == "{}") {
-            viewHolder.tv_name!!.setTextColor(defauteColor)
-            viewHolder.img_dot!!.visibility = View.GONE
+            viewHolder.tvName!!.setTextColor(defaultColor)
+            viewHolder.imgDot!!.visibility = View.GONE
         } else {
-            viewHolder.tv_name!!.setTextColor(hasSubColor)
-            viewHolder.img_dot!!.visibility = View.VISIBLE
+            viewHolder.tvName!!.setTextColor(hasSubColor)
+            viewHolder.imgDot!!.visibility = View.VISIBLE
         }
 
-        viewHolder.tv_name!!.text = JSONObject(entity.main_data[0]).getString("value")
-//        viewHolder.tv_name!!.gravity = Gravity.LEFT
-        return convertView
+        viewHolder.tvName!!.text = JSONObject(entity.main_data[0]).getString("value")
+//        viewHolder.tvName!!.gravity = Gravity.LEFT
+        return mConvertView
     }
 
     internal class ViewHolder {
         @ViewInject(R.id.tv_tableName_value)
-        var tv_name: TextView? = null
+        var tvName: TextView? = null
         @ViewInject(R.id.img_tableName_dot)
-        var img_dot: ImageView? = null
+        var imgDot: ImageView? = null
     }
 }

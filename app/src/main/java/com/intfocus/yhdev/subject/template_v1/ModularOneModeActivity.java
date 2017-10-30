@@ -1,10 +1,10 @@
 package com.intfocus.yhdev.subject.template_v1;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
@@ -22,9 +22,12 @@ import com.intfocus.yhdev.CommentActivity;
 import com.intfocus.yhdev.R;
 import com.intfocus.yhdev.base.BaseModeActivity;
 import com.intfocus.yhdev.base.BaseModeFragment;
+import com.intfocus.yhdev.subject.template_v1.entity.MererDetailEntity;
 import com.intfocus.yhdev.subject.template_v1.entity.msg.EventRefreshTableRect;
-import com.intfocus.yhdev.subject.template_v1.entity.msg.MDetailActRequestResult;
 import com.intfocus.yhdev.subject.template_v1.mode.MeterDetailActMode;
+import com.intfocus.yhdev.subject.template_v1.rootpage.ModularOneRootPageModeFragment;
+import com.intfocus.yhdev.subject.template_v1.rootpage.RootPageImpl;
+import com.intfocus.yhdev.subject.template_v1.rootpage.RootPagePresenter;
 import com.intfocus.yhdev.util.ActionLogUtil;
 import com.intfocus.yhdev.util.DisplayUtil;
 import com.intfocus.yhdev.util.ImageUtil;
@@ -39,23 +42,22 @@ import com.zbl.lib.baseframe.core.ActManager;
 import com.zbl.lib.baseframe.core.Subject;
 
 import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
-import org.xutils.view.annotation.ViewInject;
-import org.xutils.x;
+
+import java.util.ArrayList;
 
 /**
  * 模块一页面
  */
-public class ModularOneModeActivity extends BaseModeActivity<MeterDetailActMode> {
+public class ModularOneModeActivity extends BaseModeActivity<MeterDetailActMode> implements ModeContract.View {
     private String TAG = ModularOneModeActivity.class.getSimpleName();
     private static final String fragmentTag = "android:switcher:" + R.layout.actvity_meter_detal + ":";
 
-    @ViewInject(R.id.rootScrollView)
+//    @ViewInject(R.id.rootScrollView)
     public RootScrollView rScrollView;
 
-    @ViewInject(R.id.fl_mdetal_top_suspend_container)
+//    @ViewInject(R.id.fl_mdetal_top_suspend_container)
     public FrameLayout suspendContainer;
     public int suspendRootId;
     public ViewStub actionbar;
@@ -67,12 +69,19 @@ public class ModularOneModeActivity extends BaseModeActivity<MeterDetailActMode>
     private BaseModeFragment toFragment;
     private String currentFtName;
 
+    private FragmentManager mFragmentManager;
+    private FragmentTransaction mFragmentTransaction;
+    /**
+     * 当前的Fragment
+     */
+    private Fragment mCurrentFragment;
+
     private String groupId;
     private String reportId;
     private String objectType;
     private String bannerName;
 
-    @ViewInject(R.id.fl_mdetal_title_container)
+//    @ViewInject(R.id.fl_mdetal_title_container)
     private FrameLayout fl_titleContainer;
 
     private RadioGroup radioGroup;
@@ -80,11 +89,13 @@ public class ModularOneModeActivity extends BaseModeActivity<MeterDetailActMode>
 
     private TextView tv_single_title;
 
-    private Context mContext;
+//    private Context mContext;
     /**
      * 数据实体
      */
-    private MDetailActRequestResult entity;
+//    private MDetailActRequestResult entity;
+    private MererDetailEntity entity;
+    private ModeContract.Presenter mPresenter;
 
     @Override
     public int setLayoutRes() {
@@ -93,24 +104,31 @@ public class ModularOneModeActivity extends BaseModeActivity<MeterDetailActMode>
 
     @Override
     public Subject setSubject() {
-        EventBus.getDefault().register(this);
+//        EventBus.getDefault().register(this);
         return new MeterDetailActMode(ctx);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        EventBus.getDefault().unregister(this);
+        ModeImpl.destroyInstance();
+//        EventBus.getDefault().unregister(this);
     }
 
     @Override
     public void onCreateFinish(Bundle bundle) {
+
         initHeader();
         actionbar = stubHeader;
-        getSupportActionBar().hide();
-        fm = getSupportFragmentManager();
-        x.view().inject(this);
-        mContext = this;
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().hide();
+        }
+        mFragmentManager = getSupportFragmentManager();
+//        x.view().inject(this);
+        fl_titleContainer = mContentView.findViewById(R.id.fl_mdetal_title_container);
+        suspendContainer = mContentView.findViewById(R.id.fl_mdetal_top_suspend_container);
+        rScrollView = mContentView.findViewById(R.id.rootScrollView);
+        new ModePresenter(ModeImpl.getInstance(), this);
         init();
     }
 
@@ -122,33 +140,53 @@ public class ModularOneModeActivity extends BaseModeActivity<MeterDetailActMode>
         bannerName = intent.getStringExtra("bannerName");
         rootTableListener = new RootTableCheckedChangeListener();
         setACTitle("标题");
-        showDialog(mContext);
-        getModel().requestData(groupId, reportId);
+        showDialog(this);
+        mPresenter.loadData(this, groupId, reportId);
+//        getModel().requestData(groupId, reportId);
     }
 
     /**
-     * 切换页面的重载，优化了fragment的切换
+     * 将当前选择的fragment显示(show)出来，没选择的隐藏(hide)
+     *
+     * @param checkId
      */
     public void switchFragment(int checkId) {
         lastCheckId = checkId;
         currentFtName = fragmentTag + checkId;
         toFragment = (BaseModeFragment) getSupportFragmentManager().findFragmentByTag(currentFtName);
 
-        if (currFragment != null && currFragment == toFragment) {
+        if (mCurrentFragment != null && mCurrentFragment == toFragment) {
             return;
         }
 
         if (toFragment == null) {
-            toFragment = ModularOneRootPageModeFragment.newInstance(checkId, entity.datas.data.get(checkId).parts);
+            ArrayList<MererDetailEntity.PageData> pageDataArrayList = entity.getData();
+            if (pageDataArrayList != null && pageDataArrayList.size() > 0) {
+                toFragment = ModularOneRootPageModeFragment.newInstance(checkId, pageDataArrayList.get(checkId).getParts());
+                new RootPagePresenter(RootPageImpl.getInstance(), (ModularOneRootPageModeFragment) toFragment);
+            }
         }
 
-        FragmentTransaction ft = fm.beginTransaction();
-        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        mFragmentTransaction = mFragmentManager.beginTransaction();
+        if (mCurrentFragment == null) {
+            mFragmentTransaction.add(R.id.fl_mdetal_cont_container, toFragment, currentFtName).commit();
+            mCurrentFragment = toFragment;
+        } else if (mCurrentFragment != toFragment) {
+            if (!toFragment.isAdded()) {
+                mFragmentTransaction.hide(mCurrentFragment).add(R.id.fl_mdetal_cont_container, toFragment, currentFtName).commit();
+            } else {
+                mFragmentTransaction.hide(mCurrentFragment).show(toFragment).commit();
+            }
+            mCurrentFragment = toFragment;
+        }
+
+//        FragmentTransaction ft = fm.beginTransaction();
+//        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
 
 //        if (!toFragment.isAdded()) {
         // 隐藏当前的fragment，add下一个到Activity中
 //            if (currFragment == null)
-        ft.replace(R.id.fl_mdetal_cont_container, toFragment, currentFtName).commitAllowingStateLoss();
+//        ft.replace(R.id.fl_mdetal_cont_container, toFragment, currentFtName).commitAllowingStateLoss();
 //            else
 //                ft.hide(currFragment).add(R.id.fl_mdetal_cont_container, toFragment, currentFtName)
 //                        .commitAllowingStateLoss();
@@ -160,64 +198,78 @@ public class ModularOneModeActivity extends BaseModeActivity<MeterDetailActMode>
 //                ft.hide(currFragment).show(toFragment).commitAllowingStateLoss();
 //        }
 
-        currFragment = toFragment;
+//        currFragment = toFragment;
         EventBus.getDefault().post(new EventRefreshTableRect(checkId));
     }
 
-    /**
-     * 获取到数据，生成根页签
-     * @param entity
-     */
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMessageEvent(MDetailActRequestResult entity) {
-        this.entity = entity;
-        setACTitle(bannerName);
-        if (entity != null) {
-            int dataSize = entity.datas.data.size();
-                // 多个根页签
-            if (dataSize > 1) {
-                View scrollTitle = LayoutInflater.from(ctx)
-                        .inflate(R.layout.item_mdetal_scroll_title, null);
-                fl_titleContainer.addView(scrollTitle);
-                radioGroup = (RadioGroup) scrollTitle.findViewById(R.id.radioGroup);
 
-                for (int i = 0; i < dataSize; i++) {
-                    RadioButton rbtn = new RadioButton(this);
-                    RadioGroup.LayoutParams paramsRb = new RadioGroup.LayoutParams(
-                            RadioGroup.LayoutParams.WRAP_CONTENT,
-                            DisplayUtil.dip2px(ctx, 25f));
-                    paramsRb.setMargins(50, 0, 0, 0);
+    // ----------------------------------------------------------------
+    // --------------------------- 老代码起始 ---------------------------
+    // ----------------------------------------------------------------
 
-                    rbtn.setTag(i);
-                    rbtn.setPadding(DisplayUtil.dip2px(ctx, 15f), 0, DisplayUtil.dip2px(ctx, 15f), 0);
-                    rbtn.setButtonDrawable(null);
-                    rbtn.setBackgroundResource(R.drawable.selector_mdetal_act_rbtn);
-                    rbtn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.font_medium));
-                    ColorStateList colorStateList = getResources().getColorStateList(R.color.color_mdetal_act_rbtn);
-                    rbtn.setTextColor(colorStateList);
-                    rbtn.setText(entity.datas.data.get(i).title);
-                    radioGroup.addView(rbtn, paramsRb);
-                    rbtn.setOnCheckedChangeListener(rootTableListener);
-                    if (i == 0) {
-                        rbtn.setChecked(true);
-                    }
-                }
-            }
-            // 只有一个根页签
-            else if (dataSize == 1) {
-//                View single_title = LayoutInflater.from(ctx)
-//                        .inflate(R.layout.item_mdetal_single_title, null);
-//                tv_single_title = (TextView) single_title.findViewById(R.id.tv_mdetal_single_title);
-//                fl_titleContainer.addView(single_title);
-//                tv_single_title.setText(entity.datas.data.get(0).title);
-                fl_titleContainer.setVisibility(View.GONE);
-                switchFragment(0);
-            }
-        } else {
-            ToastUtils.INSTANCE.show(ctx, "数据实体为空");
-        }
-        hideLoading();
-    }
+//    /**
+//     * 获取到数据，生成根页签
+//     *
+//     * @param entity
+//     */
+//    @Subscribe(threadMode = ThreadMode.MAIN)
+//    public void onMessageEvent(MDetailActRequestResult entity) {
+//        this.entity = entity;
+//        setACTitle(bannerName);
+//        if (entity != null) {
+//            ArrayList<MererDetailEntity.PageData> pageDataArrayList = entity.getDatas().getData();
+//            if (pageDataArrayList == null || pageDataArrayList.size() == 0) {
+//                return;
+//            }
+//            int dataSize = pageDataArrayList.size();
+//            // 多个根页签
+//            if (dataSize > 1) {
+//                View scrollTitle = LayoutInflater.from(ctx)
+//                        .inflate(R.layout.item_mdetal_scroll_title, null);
+//                fl_titleContainer.addView(scrollTitle);
+//                radioGroup = (RadioGroup) scrollTitle.findViewById(R.id.radioGroup);
+//
+//                for (int i = 0; i < dataSize; i++) {
+//                    RadioButton rbtn = new RadioButton(this);
+//                    RadioGroup.LayoutParams paramsRb = new RadioGroup.LayoutParams(
+//                            RadioGroup.LayoutParams.WRAP_CONTENT,
+//                            DisplayUtil.dip2px(ctx, 25f));
+//                    paramsRb.setMargins(50, 0, 0, 0);
+//
+//                    rbtn.setTag(i);
+//                    rbtn.setPadding(DisplayUtil.dip2px(ctx, 15f), 0, DisplayUtil.dip2px(ctx, 15f), 0);
+//                    rbtn.setButtonDrawable(null);
+//                    rbtn.setBackgroundResource(R.drawable.selector_mdetal_act_rbtn);
+//                    rbtn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.font_medium));
+//                    ColorStateList colorStateList = getResources().getColorStateList(R.color.color_mdetal_act_rbtn);
+//                    rbtn.setTextColor(colorStateList);
+//                    rbtn.setText(entity.getDatas().getData().get(i).getTitle());
+//                    radioGroup.addView(rbtn, paramsRb);
+//                    rbtn.setOnCheckedChangeListener(rootTableListener);
+//                    if (i == 0) {
+//                        rbtn.setChecked(true);
+//                    }
+//                }
+//            }
+//            // 只有一个根页签
+//            else if (dataSize == 1) {
+////                View single_title = LayoutInflater.from(ctx)
+////                        .inflate(R.layout.item_mdetal_single_title, null);
+////                tv_single_title = (TextView) single_title.findViewById(R.id.tv_mdetal_single_title);
+////                fl_titleContainer.addView(single_title);
+////                tv_single_title.setText(entity.datas.data.get(0).title);
+//                fl_titleContainer.setVisibility(View.GONE);
+//                switchFragment(0);
+//            }
+//        } else {
+//            ToastUtils.INSTANCE.show(ctx, "数据实体为空");
+//        }
+//        hideLoading();
+//    }
+
+    // ----------------------------------------------------------------
+    // ----------------------- 我是 到此为止分割线 ------------------------
+    // ----------------------------------------------------------------
 
     class RootTableCheckedChangeListener implements RadioButton.OnCheckedChangeListener {
 
@@ -242,7 +294,7 @@ public class ModularOneModeActivity extends BaseModeActivity<MeterDetailActMode>
                 actionLaunchCommentActivity(view);
                 break;
             case R.id.ll_refresh:
-                showDialog(mContext);
+                showDialog(this);
                 // 刷新
                 refresh(view);
                 break;
@@ -271,9 +323,7 @@ public class ModularOneModeActivity extends BaseModeActivity<MeterDetailActMode>
                 .setCallback(umShareListener)
                 .open();
 
-        /*
-         * 用户行为记录, 单独异常处理，不可影响用户体验
-         */
+        // 用户行为记录, 单独异常处理，不可影响用户体验
         try {
             JSONObject logParams = new JSONObject();
             logParams.put("action", "分享");
@@ -310,7 +360,7 @@ public class ModularOneModeActivity extends BaseModeActivity<MeterDetailActMode>
         }
     };
 
-    /*
+    /**
      * 评论
      */
     public void actionLaunchCommentActivity(View v) {
@@ -318,8 +368,13 @@ public class ModularOneModeActivity extends BaseModeActivity<MeterDetailActMode>
         intent.putExtra(URLs.kBannerName, bannerName);
         intent.putExtra(URLs.kObjectId, reportId);
         intent.putExtra(URLs.kObjectType, objectType);
-        mContext.startActivity(intent);
+        startActivity(intent);
     }
+
+
+    // ----------------------------------------------------------------
+    // -------------------------- 重构代码起始 --------------------------
+    // ----------------------------------------------------------------
 
     /**
      * 刷新
@@ -327,6 +382,69 @@ public class ModularOneModeActivity extends BaseModeActivity<MeterDetailActMode>
      * @param v
      */
     public void refresh(View v) {
-        getModel().requestData(groupId, reportId);
+//        getModel().requestData(groupId, reportId);
+        mPresenter.loadData(this, groupId, reportId);
     }
+
+    @Override
+    public void initRootView(@NotNull MererDetailEntity entity) {
+        this.entity = entity;
+        setACTitle(bannerName);
+        ArrayList<MererDetailEntity.PageData> pageDataArrayList = entity.getData();
+        if (pageDataArrayList == null || pageDataArrayList.size() == 0) {
+            return;
+        }
+        int dataSize = pageDataArrayList.size();
+        // 多个根页签
+        if (dataSize > 1) {
+            View scrollTitle = LayoutInflater.from(ctx)
+                    .inflate(R.layout.item_mdetal_scroll_title, null);
+            fl_titleContainer.addView(scrollTitle);
+            radioGroup = (RadioGroup) scrollTitle.findViewById(R.id.radioGroup);
+
+            for (int i = 0; i < dataSize; i++) {
+                RadioButton rbtn = new RadioButton(this);
+                RadioGroup.LayoutParams paramsRb = new RadioGroup.LayoutParams(
+                        RadioGroup.LayoutParams.WRAP_CONTENT,
+                        DisplayUtil.dip2px(ctx, 25f));
+                paramsRb.setMargins(50, 0, 0, 0);
+
+                rbtn.setTag(i);
+                rbtn.setPadding(DisplayUtil.dip2px(ctx, 15f), 0, DisplayUtil.dip2px(ctx, 15f), 0);
+                rbtn.setButtonDrawable(null);
+                rbtn.setBackgroundResource(R.drawable.selector_mdetal_act_rbtn);
+                rbtn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.font_medium));
+                ColorStateList colorStateList = getResources().getColorStateList(R.color.color_mdetal_act_rbtn);
+                rbtn.setTextColor(colorStateList);
+                rbtn.setText(entity.getData().get(i).getTitle());
+                radioGroup.addView(rbtn, paramsRb);
+                rbtn.setOnCheckedChangeListener(rootTableListener);
+                if (i == 0) {
+                    rbtn.setChecked(true);
+                }
+            }
+        }
+        // 只有一个根页签
+        else if (dataSize == 1) {
+//                View single_title = LayoutInflater.from(ctx)
+//                        .inflate(R.layout.item_mdetal_single_title, null);
+//                tv_single_title = (TextView) single_title.findViewById(R.id.tv_mdetal_single_title);
+//                fl_titleContainer.addView(single_title);
+//                tv_single_title.setText(entity.datas.data.get(0).title);
+            fl_titleContainer.setVisibility(View.GONE);
+            switchFragment(0);
+        }
+        hideLoading();
+    }
+
+    @Override
+    public ModeContract.Presenter getPresenter() {
+        return mPresenter;
+    }
+
+    @Override
+    public void setPresenter(ModeContract.Presenter presenter) {
+        mPresenter = presenter;
+    }
+
 }

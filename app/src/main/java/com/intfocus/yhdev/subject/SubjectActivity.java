@@ -30,7 +30,6 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -54,10 +53,6 @@ import com.intfocus.yhdev.constant.ToastColor;
 import com.intfocus.yhdev.util.ToastUtils;
 import com.intfocus.yhdev.util.URLs;
 import com.intfocus.yhdev.view.addressselector.FilterPopupWindow;
-import com.joanzapata.pdfview.PDFView;
-import com.joanzapata.pdfview.listener.OnErrorOccurredListener;
-import com.joanzapata.pdfview.listener.OnLoadCompleteListener;
-import com.joanzapata.pdfview.listener.OnPageChangeListener;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.UMShareListener;
@@ -67,7 +62,6 @@ import com.umeng.socialize.media.UMImage;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
 import java.io.File;
@@ -84,7 +78,7 @@ import rx.schedulers.Schedulers;
 import static android.webkit.WebView.enableSlowWholeDocumentDraw;
 import static java.lang.String.format;
 
-public class SubjectActivity extends BaseActivity implements FilterMenuAdapter.FilterMenuListener, FilterPopupWindow.MenuLisenter, MyFilterDialogFragment.FilterLisenter {
+public class SubjectActivity extends BaseActivity implements FilterMenuAdapter.FilterMenuListener, FilterPopupWindow.MenuLisenter, MyFilterDialogFragment.FilterListener {
 
     private String templateID;
     private String bannerName, link;

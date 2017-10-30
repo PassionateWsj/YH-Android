@@ -38,7 +38,7 @@ class ReportsRightRVAdapter(var ctx: Context, var datas: List<ListGroupBean>?)
     }
 
     class ReportsRightListHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var tvReportsListTitle = itemView.findViewById(R.id.tv_reports_right_list_title) as TextView
-        var gvReportsListItem = itemView.findViewById(R.id.gv_reports_right_list_item) as MyGridView
+        var tvReportsListTitle = itemView.findViewById<TextView>(R.id.tv_reports_right_list_title)
+        var gvReportsListItem = itemView.findViewById<MyGridView>(R.id.gv_reports_right_list_item)
     }
 }

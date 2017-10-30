@@ -37,7 +37,7 @@ class FilterMenuAdapter(val context: Context,
             holder.rlFilter.layoutParams.width = Utils.getScreenWidth(context) / 4
             holder.tvFilterName.text = menuDatas!![position].category
             holder.tvFilterName.text = menuDatas!![position].category
-            if (menuDatas!![position].arrorDirection!!) {
+            if (menuDatas!![position].arrorDirection) {
                 holder.ivArrow.setImageResource(R.drawable.ic_arrow_up)
                 holder.tvFilterName.setTextColor(ContextCompat.getColor(context, R.color.co1_syr))
             } else {
@@ -56,9 +56,9 @@ class FilterMenuAdapter(val context: Context,
 
     class FilterMenuHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var contentView = itemView
-        var rlFilter = itemView.findViewById(R.id.rl_filter) as RelativeLayout
-        var tvFilterName = itemView.findViewById(R.id.tv_filter_name) as TextView
-        var ivArrow = itemView.findViewById(R.id.iv_arrow) as ImageView
+        var rlFilter = itemView.findViewById<RelativeLayout>(R.id.rl_filter)
+        var tvFilterName = itemView.findViewById<TextView>(R.id.tv_filter_name)
+        var ivArrow = itemView.findViewById<ImageView>(R.id.iv_arrow)
     }
 
     interface FilterMenuListener {

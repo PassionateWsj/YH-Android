@@ -35,11 +35,11 @@ class DataCollegeFragment : RefreshFragment(), InstituteAdapter.NoticeItemListen
 
     lateinit var adapter: InstituteAdapter
     var datas: MutableList<InstituteDataBean>? = null
-    lateinit var queryMap: MutableMap<String, String>
-    lateinit var statusMap: MutableMap<String, String>
+    private lateinit var queryMap: MutableMap<String, String>
+    private lateinit var statusMap: MutableMap<String, String>
     lateinit var userNum: String
-    var keyWord: String? = ""
-    lateinit var editSearch: EditText
+    private var keyWord: String? = ""
+    private lateinit var editSearch: EditText
     lateinit var mUserSP: SharedPreferences
 
 
@@ -48,7 +48,7 @@ class DataCollegeFragment : RefreshFragment(), InstituteAdapter.NoticeItemListen
         x.view().inject(this, mView)
         setRefreshLayout()
         initView()
-        mUserSP = mActivity!!.getSharedPreferences("UserBean", Context.MODE_PRIVATE)
+        mUserSP = mActivity.getSharedPreferences("UserBean", Context.MODE_PRIVATE)
         userNum = mUserSP.getString(URLs.kUserNum, "")
         getData(true)
         return mView
@@ -57,19 +57,19 @@ class DataCollegeFragment : RefreshFragment(), InstituteAdapter.NoticeItemListen
     fun initView() {
         queryMap = mutableMapOf()
         statusMap = mutableMapOf()
-        editSearch = mView!!.findViewById(R.id.edit_search) as EditText
+        editSearch = mView!!.findViewById(R.id.edit_search)
         val mLayoutManager = LinearLayoutManager(mActivity)
         mLayoutManager.orientation = LinearLayoutManager.VERTICAL
         recyclerView.layoutManager = mLayoutManager
         adapter = InstituteAdapter(mActivity, null, this)
         recyclerView.adapter = adapter
-        var headerView = SinaRefreshView(mActivity)
+        val headerView = SinaRefreshView(mActivity)
         headerView.setArrowResource(R.drawable.loading_up)
-        var bottomView = LoadingView(mActivity)
+        val bottomView = LoadingView(mActivity)
         refreshLayout.setHeaderView(headerView)
         refreshLayout.setBottomView(bottomView)
 
-        editSearch!!.setOnEditorActionListener({ textView, actionId, keyEvent ->
+        editSearch.setOnEditorActionListener({ textView, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 keyWord = textView.text.toString().trim()
                 getData(true)
@@ -137,13 +137,13 @@ class DataCollegeFragment : RefreshFragment(), InstituteAdapter.NoticeItemListen
     /**
      * 操作收藏/取消收藏
      */
-    fun ArticleOperating(articleId: String, status: String) {
+    private fun articleOperating(articleId: String, status: String) {
         if (!HttpUtil.isConnected(mActivity)) {
             ToastUtils.show(mActivity, "请检查网络链接")
             return
         }
         showLoading()
-        var body = RequestFavourite()
+        val body = RequestFavourite()
         body.user_num = userNum
         body.article_id = articleId
         body.favourite_status = status
@@ -175,9 +175,9 @@ class DataCollegeFragment : RefreshFragment(), InstituteAdapter.NoticeItemListen
      * 详情
      */
     override fun itemClick(instituteDataBean: InstituteDataBean) {
-        var intent = Intent(mActivity, WebApplicationActivity::class.java)
+        val intent = Intent(mActivity, WebApplicationActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-        var link = String.format("%s/mobile/v2/user/%s/article/%s", K.kBaseUrl, mUserSP.getString(K.kUserId, "0").toString(), instituteDataBean!!.id.toString())
+        val link = String.format("%s/mobile/v2/user/%s/article/%s", K.kBaseUrl, mUserSP.getString(K.kUserId, "0").toString(), instituteDataBean.id.toString())
         intent.putExtra(URLs.kBannerName, "数据学院")
         intent.putExtra(URLs.kLink, link)
         intent.putExtra("hideBannerSetting", true)
@@ -188,13 +188,13 @@ class DataCollegeFragment : RefreshFragment(), InstituteAdapter.NoticeItemListen
      * 收藏
      */
     override fun addCollection(instituteDataBean: InstituteDataBean) {
-        ArticleOperating(instituteDataBean.id.toString(), "1")
+        articleOperating(instituteDataBean.id.toString(), "1")
     }
 
     /**
      * 取消收藏
      */
     override fun cancelCollection(instituteDataBean: InstituteDataBean) {
-        ArticleOperating(instituteDataBean.id.toString(), "2")
+        articleOperating(instituteDataBean.id.toString(), "2")
     }
 }

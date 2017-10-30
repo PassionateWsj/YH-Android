@@ -20,17 +20,11 @@ import org.greenrobot.eventbus.EventBus
 class AppListItemAdapter(var ctx: Context, var datas: List<GroupDataBean>?) : BaseAdapter() {
     var mInflater: LayoutInflater = LayoutInflater.from(ctx)
 
-    override fun getCount(): Int {
-        return datas!!.size
-    }
+    override fun getCount(): Int = datas!!.size
 
-    override fun getItem(position: Int): Any {
-        return datas!![position]
-    }
+    override fun getItem(position: Int): Any = datas!![position]
 
-    override fun getItemId(position: Int): Long {
-        return position.toLong()
-    }
+    override fun getItemId(position: Int): Long = position.toLong()
 
     override fun getView(position: Int, v: View?, parent: ViewGroup): View {
         var convertView = v
@@ -40,9 +34,9 @@ class AppListItemAdapter(var ctx: Context, var datas: List<GroupDataBean>?) : Ba
             convertView = mInflater.inflate(R.layout.item_app_list_gv, null)
 
             // construct an item tag
-            viewTag = ItemViewTag(convertView!!.findViewById(R.id.ll_app_item) as LinearLayout,
-                    convertView.findViewById(R.id.iv_app_item_img) as ImageView,
-                    convertView.findViewById(R.id.tv_app_item_name) as TextView)
+            viewTag = ItemViewTag(convertView!!.findViewById(R.id.ll_app_item) ,
+                    convertView.findViewById(R.id.iv_app_item_img) ,
+                    convertView.findViewById(R.id.tv_app_item_name))
             convertView.tag = viewTag
         } else {
             viewTag = convertView.tag as AppListItemAdapter.ItemViewTag

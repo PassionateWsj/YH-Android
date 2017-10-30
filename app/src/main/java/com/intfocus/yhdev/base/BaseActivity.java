@@ -3,7 +3,6 @@ package com.intfocus.yhdev.base;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -13,21 +12,15 @@ import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.drawable.ColorDrawable;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.provider.Settings;
 import android.support.v4.app.FragmentActivity;
 import android.util.DisplayMetrics;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.JavascriptInterface;
 import android.webkit.ValueCallback;
@@ -35,22 +28,19 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
-import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
 import com.intfocus.yhdev.R;
 import com.intfocus.yhdev.YHApplication;
+import com.intfocus.yhdev.constant.ToastColor;
 import com.intfocus.yhdev.login.LoginActivity;
 import com.intfocus.yhdev.util.ApiHelper;
 import com.intfocus.yhdev.util.FileUtil;
 import com.intfocus.yhdev.util.HttpUtil;
 import com.intfocus.yhdev.util.K;
 import com.intfocus.yhdev.util.LogUtil;
-import com.intfocus.yhdev.constant.ToastColor;
 import com.intfocus.yhdev.util.ToastUtils;
 import com.intfocus.yhdev.util.URLs;
 import com.pgyersdk.javabean.AppBean;
@@ -494,7 +484,7 @@ public class BaseActivity extends FragmentActivity {
                     deleteHeadersFile();
                     break;
                 default:
-                    if (new File((String) message.obj).exists()) {
+                    if (message.obj != null && new File((String) message.obj).exists()) {
                         weakActivity.get().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {

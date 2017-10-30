@@ -34,7 +34,7 @@ class FilterPopupWindow(activity: Activity, citydats: ArrayList<MenuItem>, lisen
     fun init() {
         val inflater = LayoutInflater.from(mActivity)
         conentView = inflater.inflate(R.layout.popup_filter, null)
-        recyclerView = conentView.findViewById(R.id.recycler_view) as RecyclerView
+        recyclerView = conentView.findViewById(R.id.recycler_view)
 
         val mLayoutManager = LinearLayoutManager(mActivity)
         mLayoutManager.orientation = LinearLayoutManager.VERTICAL

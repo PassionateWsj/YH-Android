@@ -30,20 +30,20 @@ class NewFilterFragment(menuDatas: ArrayList<MenuItem>, myLisenter: NewFilterFra
     }
 
     fun initView() {
-        recyclerView = mView.findViewById(R.id.recycler_view) as RecyclerView
+        recyclerView = mView.findViewById(R.id.recycler_view)
         adapter = NewFilterAdapter(context, datas, this)
-        var layoutManager = MyLinearLayoutManager(context)
+        val layoutManager = MyLinearLayoutManager(context)
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = adapter
         adapter.update()
     }
 
     override fun itemClick(position: Int) {
-        for (i in 0..datas.size - 1) {
+        for (i in 0 until datas.size) {
             if (i == position) {
-                datas!![position].arrorDirection = true
+                datas[position].arrorDirection = true
             } else {
-                datas!![i].arrorDirection = false
+                datas[i].arrorDirection = false
             }
         }
         adapter.setData(datas)

@@ -22,30 +22,27 @@ class NumberTwoItemAdapter(var ctx: Context, internal var itemDatas: List<KpiGro
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NumberTwoItemHolder {
         val contentView = inflater.inflate(R.layout.fragment_number_two, parent, false)
-        val holder = NumberTwoItemHolder(contentView, viewType)
-        return holder
+        return NumberTwoItemHolder(contentView, viewType)
     }
 
     override fun onBindViewHolder(holder: NumberTwoItemHolder, position: Int) {
-        holder.tv_number_two_title.text = itemDatas!![position].title
-        var number = itemDatas!![position].data!!.high_light!!.number
+        holder.tvNumberTwoTitle.text = itemDatas!![position].title
+        val number = itemDatas!![position].data!!.high_light!!.number
         val mTypeface = Typeface.createFromAsset(ctx.assets, "ALTGOT2N.TTF")
-        holder.tv_number_two_number.text = formatNumber(number)
-        holder.tv_number_two_number.setTextColor(colors[itemDatas!![position].data!!.high_light!!.arrow])
-        holder.tv_number_two_unit.text = itemDatas!![position].unit
-        holder.tv_number_two_compare.text = itemDatas!![position].data!!.high_light!!.compare
-        holder.tv_number_two_compare.setTextColor(colors[itemDatas!![position].data!!.high_light!!.arrow])
-        holder.tv_number_two_sub.text = itemDatas!![position].memo1
-        holder.tv_number_two_number.typeface = mTypeface
-        holder.tv_number_two_compare.typeface = mTypeface
-        holder.ll_number_two_item.setOnClickListener {
+        holder.tvNumberTwoNumber.text = formatNumber(number)
+        holder.tvNumberTwoNumber.setTextColor(colors[itemDatas!![position].data!!.high_light!!.arrow])
+        holder.tvNumberTwoUnit.text = itemDatas!![position].unit
+        holder.tvNumberTwoCompare.text = itemDatas!![position].data!!.high_light!!.compare
+        holder.tvNumberTwoCompare.setTextColor(colors[itemDatas!![position].data!!.high_light!!.arrow])
+        holder.tvNumberTwoSub.text = itemDatas!![position].memo1
+        holder.tvNumberTwoNumber.typeface = mTypeface
+        holder.tvNumberTwoCompare.typeface = mTypeface
+        holder.llNumberTwoItem.setOnClickListener {
             EventBus.getDefault().post(itemDatas!![position])
         }
     }
 
-    override fun getItemViewType(position: Int): Int {
-        return position
-    }
+    override fun getItemViewType(position: Int): Int = position
 
     override fun getItemCount(): Int {
         if (itemDatas == null)
@@ -54,20 +51,20 @@ class NumberTwoItemAdapter(var ctx: Context, internal var itemDatas: List<KpiGro
     }
 
     inner class NumberTwoItemHolder(view: View, viewType: Int) : RecyclerView.ViewHolder(view) {
-        var tv_number_two_title = view.findViewById(R.id.tv_number_two_title) as TextView
-        var tv_number_two_number = view.findViewById(R.id.tv_number_two_main) as TextView
-        var tv_number_two_unit = view.findViewById(R.id.tv_number_two_unit) as TextView
-        var tv_number_two_compare = view.findViewById(R.id.tv_number_two_compare) as TextView
-        var tv_number_two_sub = view.findViewById(R.id.tv_number_two_sub) as TextView
-        var ll_number_two_item = view.findViewById(R.id.ll_number_two_item) as LinearLayout
+        var tvNumberTwoTitle: TextView = view.findViewById(R.id.tv_number_two_title)
+        var tvNumberTwoNumber: TextView = view.findViewById(R.id.tv_number_two_main)
+        var tvNumberTwoUnit: TextView = view.findViewById(R.id.tv_number_two_unit)
+        var tvNumberTwoCompare: TextView = view.findViewById(R.id.tv_number_two_compare)
+        var tvNumberTwoSub: TextView = view.findViewById(R.id.tv_number_two_sub)
+        var llNumberTwoItem: LinearLayout = view.findViewById(R.id.ll_number_two_item)
     }
 
     fun formatNumber(number: String): String {
-        var number = number
-        if (number.contains("")) {
-            number = number.replace("0+?$".toRegex(), "")//去掉多余的0
-            number = number.replace("[.]$".toRegex(), "")//如最后一位是.则去掉
+        var mNumber = number
+        if (mNumber.contains("")) {
+            mNumber = mNumber.replace("0+?$".toRegex(), "")//去掉多余的0
+            mNumber = mNumber.replace("[.]$".toRegex(), "")//如最后一位是.则去掉
         }
-        return number
+        return mNumber
     }
 }

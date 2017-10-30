@@ -41,7 +41,7 @@ public class ModularOneSubTableActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_modular_two_subtable);
+        setContentView(R.layout.activity_modular_one_subtable);
         getSupportActionBar().hide();
         x.view().inject(this);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

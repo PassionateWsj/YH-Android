@@ -1,4 +1,4 @@
-package com.intfocus.yhdev.subject.template_v1;
+package com.intfocus.yhdev.subject.template_v1.rootpage;
 
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
@@ -15,11 +15,14 @@ import android.widget.TextView;
 
 import com.intfocus.yhdev.R;
 import com.intfocus.yhdev.base.BaseModeFragment;
+import com.intfocus.yhdev.subject.template_v1.ModularOneUnitBannerModeFragment;
+import com.intfocus.yhdev.subject.template_v1.ModularOneUnitPlusMinusChartModeFragment;
+import com.intfocus.yhdev.subject.template_v1.ModularOneUnitTablesModeFragment;
 import com.intfocus.yhdev.subject.template_v1.curvechart.CurveChartImpl;
 import com.intfocus.yhdev.subject.template_v1.curvechart.CurveChartPresenter;
 import com.intfocus.yhdev.subject.template_v1.curvechart.ModularOneUnitCurveChartModeFragment;
 import com.intfocus.yhdev.subject.template_v1.entity.MDetailUnitEntity;
-import com.intfocus.yhdev.subject.template_v1.entity.msg.MDetalRootPageRequestResult;
+import com.intfocus.yhdev.subject.template_v1.entity.msg.MDetailRootPageRequestResult;
 import com.intfocus.yhdev.subject.template_v1.mode.MDetalRootPageMode;
 import com.intfocus.yhdev.subject.template_v1.singlevalue.ModularOneUnitSingleValueModeFragment;
 import com.intfocus.yhdev.subject.template_v1.singlevalue.SingleValueImpl;
@@ -29,6 +32,7 @@ import com.zzhoujay.richtext.RichText;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
@@ -40,7 +44,7 @@ import java.util.Random;
 /**
  * 模块一根标签页面
  */
-public class ModularOneRootPageModeFragment extends BaseModeFragment<MDetalRootPageMode> {
+public class ModularOneRootPageModeFragment extends BaseModeFragment<MDetalRootPageMode> implements RootPageContract.View {
     private static final String TAG = "模块一根标签页面";
 
     public static final String SU_ROOT_ID = "suRootID";
@@ -58,7 +62,8 @@ public class ModularOneRootPageModeFragment extends BaseModeFragment<MDetalRootP
      * 最上层跟跟标签ID
      */
     private int suRootID;
-    private static int STATE_CODE_SUCCESS= 200;
+    private static int STATE_CODE_SUCCESS = 200;
+    private RootPageContract.Presenter mPresenter;
 
     @Override
     public Subject setSubject() {
@@ -86,6 +91,7 @@ public class ModularOneRootPageModeFragment extends BaseModeFragment<MDetalRootP
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        RootPageImpl.destroyInstance();
     }
 
     @Override
@@ -95,16 +101,22 @@ public class ModularOneRootPageModeFragment extends BaseModeFragment<MDetalRootP
         if (rootView == null) {
             rootView = inflater.inflate(R.layout.fragment_mdetal, container, false);
             x.view().inject(this, rootView);
-            getModel().analysisData(mParam);
+
+//            getModel().analysisData(mParam);
+            mPresenter.loadData(mParam);
         }
         return rootView;
     }
+
+    // ----------------------------------------------------------------
+    // --------------------------- 老代码起始 ---------------------------
+    // ----------------------------------------------------------------
 
     /**
      * 图表点击事件统一处理方法
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMessageEvent(final MDetalRootPageRequestResult entity) {
+    public void onMessageEvent(final MDetailRootPageRequestResult entity) {
         if (entity != null && entity.stateCode == STATE_CODE_SUCCESS) {
             act.runOnUiThread(new Runnable() {
                 @Override
@@ -118,7 +130,7 @@ public class ModularOneRootPageModeFragment extends BaseModeFragment<MDetalRootP
     /**
      * 绑定数据
      */
-    private void bindData(MDetalRootPageRequestResult result) {
+    private void bindData(MDetailRootPageRequestResult result) {
         ArrayList<MDetailUnitEntity> datas = result.datas;
         int size = datas.size();
         Random random = new Random();
@@ -134,7 +146,7 @@ public class ModularOneRootPageModeFragment extends BaseModeFragment<MDetalRootP
                 //曲线图表/柱状图(竖)
                 case "chart":
                     fragment = ModularOneUnitCurveChartModeFragment.newInstance(entity.config);
-                    new CurveChartPresenter(CurveChartImpl.getInstance(),(ModularOneUnitCurveChartModeFragment)fragment);
+                    new CurveChartPresenter(CurveChartImpl.getInstance(), (ModularOneUnitCurveChartModeFragment) fragment);
                     break;
 
                 //一般标签(附标题)
@@ -146,14 +158,14 @@ public class ModularOneRootPageModeFragment extends BaseModeFragment<MDetalRootP
                         RichText.from(info).into(tv);
                         llMdrpContainer.addView(view);
                     } catch (Exception e) {
-                        Log.e(TAG,"json 创建失败");
+                        Log.e(TAG, "json 创建失败");
                     }
                     break;
 
                 //单值组件
                 case "single_value":
                     fragment = ModularOneUnitSingleValueModeFragment.newInstance(entity.config);
-                    new SingleValuePresenter(SingleValueImpl.getInstance(),(ModularOneUnitSingleValueModeFragment)fragment);
+                    new SingleValuePresenter(SingleValueImpl.getInstance(), (ModularOneUnitSingleValueModeFragment) fragment);
                     break;
 
                 //条状图(横)
@@ -186,4 +198,93 @@ public class ModularOneRootPageModeFragment extends BaseModeFragment<MDetalRootP
             }
         }
     }
+
+    // ----------------------------------------------------------------
+    // ----------------------- 我是 到此为止分割线 ------------------------
+    // ----------------------------------------------------------------
+
+    // ----------------------------------------------------------------
+    // -------------------------- 重构代码起始 --------------------------
+    // ----------------------------------------------------------------
+
+    @Override
+    public void showData(@NotNull MDetailRootPageRequestResult result) {
+        Random random = new Random();
+        for (int i = 0; i < result.datas.size(); i++) {
+            Fragment fragment = null;
+            MDetailUnitEntity entity = result.datas.get(i);
+            switch (entity.type) {
+                //标题栏
+                case "banner":
+                    fragment = ModularOneUnitBannerModeFragment.newInstance(entity.config);
+                    break;
+
+                //曲线图表/柱状图(竖)
+                case "chart":
+                    fragment = ModularOneUnitCurveChartModeFragment.newInstance(entity.config);
+                    new CurveChartPresenter(CurveChartImpl.getInstance(), (ModularOneUnitCurveChartModeFragment) fragment);
+                    break;
+
+                //一般标签(附标题)
+                case "info":
+                    try {
+                        View view = LayoutInflater.from(ctx).inflate(R.layout.item_info_layout, null);
+                        TextView tv = (TextView) view.findViewById(R.id.tv_info);
+                        String info = new JSONObject(entity.config).getString("title");
+                        RichText.from(info).into(tv);
+                        llMdrpContainer.addView(view);
+                    } catch (Exception e) {
+                        Log.e(TAG, "json 创建失败");
+                    }
+                    break;
+
+                //单值组件
+                case "single_value":
+                    fragment = ModularOneUnitSingleValueModeFragment.newInstance(entity.config);
+                    new SingleValuePresenter(SingleValueImpl.getInstance(), (ModularOneUnitSingleValueModeFragment) fragment);
+                    break;
+
+                //条状图(横)
+                case "bargraph":
+                    fragment = ModularOneUnitPlusMinusChartModeFragment.newInstance(entity.config);
+                    break;
+
+                //类Excel冻结横竖首列表格
+                case "tables":
+                    fragment = ModularOneUnitTablesModeFragment.newInstance(suRootID, entity.config);
+                    break;
+                default:
+                    break;
+            }
+
+            if (fragment != null) {
+                FrameLayout layout = new FrameLayout(ctx);
+                AppBarLayout.LayoutParams params = new AppBarLayout.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                params.setScrollFlags(AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL
+                        | AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS);
+                layout.setLayoutParams(params);
+                int id = random.nextInt(Integer.MAX_VALUE);
+                layout.setId(id);
+                llMdrpContainer.addView(layout);
+                FragmentTransaction ft = fm.beginTransaction();
+                ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+                ft.replace(layout.getId(), fragment);
+                ft.commitNow();
+            }
+        }
+    }
+
+    @Override
+    public RootPageContract.Presenter getPresenter() {
+        return mPresenter;
+    }
+
+    @Override
+    public void setPresenter(RootPageContract.Presenter presenter) {
+        this.mPresenter = presenter;
+    }
+    // ----------------------------------------------------------------
+    // ----------------------- 我是 到此为止分割线 ------------------------
+    // ----------------------------------------------------------------
 }

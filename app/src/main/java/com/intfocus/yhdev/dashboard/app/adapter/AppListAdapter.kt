@@ -33,7 +33,7 @@ class AppListAdapter(val ctx: Context, var appListDatas: List<ListGroupBean>?)
     }
 
     class AppListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var tvAppListTitle = itemView.findViewById(R.id.tv_app_list_title) as TextView
-        var gvAppListItem = itemView.findViewById(R.id.gv_app_list_item) as MyGridView
+        var tvAppListTitle = itemView.findViewById<TextView>(R.id.tv_app_list_title)
+        var gvAppListItem = itemView.findViewById<MyGridView>(R.id.gv_app_list_item)
     }
 }
