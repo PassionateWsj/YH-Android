@@ -210,6 +210,7 @@ public class ModularOneUnitCurveChartModeFragment extends BaseModeFragment<MDRPU
                 JSONObject jsonObject = array.getJSONObject(0);
                 String unit = jsonObject.getString("name");
                 chart = new CustomCurveChartV2(act);
+                chart.setDrawingCacheEnabled(true);
                 chart.setBarWidth(25);
                 chart.setxLabel(xLabel);
                 chart.setyLabel(yLabel);

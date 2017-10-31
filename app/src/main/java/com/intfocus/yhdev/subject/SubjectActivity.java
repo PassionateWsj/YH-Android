@@ -663,7 +663,8 @@ public class SubjectActivity extends BaseActivity implements FilterMenuAdapter.F
     public void complete(@NotNull ArrayList<MenuItem> data) {
         try {
             String addStr = "";
-            for (int i = 0; i < data.size(); i++) {
+            int size = data.size();
+            for (int i = 0; i < size; i++) {
                 addStr += data.get(i).getName() + "||";
             }
 

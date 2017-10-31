@@ -68,17 +68,17 @@ public class ModularOneUnitBannerModeFragment extends BaseModeFragment {
         if (rootView == null) {
             rootView = inflater.inflate(R.layout.fragment_banner, container, false);
             x.view().inject(this, rootView);
-            initPopup();
+            initPopup(container);
             bindData();
         }
         return rootView;
     }
 
-    private void initPopup() {
-        View contentView = LayoutInflater.from(act).inflate(R.layout.item_bannerinfo, null);
-        tv_name = (TextView) contentView.findViewById(R.id.tv_name_bannerInfo);
-        tv_count = (TextView) contentView.findViewById(R.id.tv_count_bannerInfo);
-        imgbtn_close = (ImageButton) contentView.findViewById(R.id.imgBtn_ColsPopupWindow_bannerInfo);
+    private void initPopup(ViewGroup container) {
+        View contentView = LayoutInflater.from(act).inflate(R.layout.item_bannerinfo, container,false);
+        tv_name = contentView.findViewById(R.id.tv_name_bannerInfo);
+        tv_count = contentView.findViewById(R.id.tv_count_bannerInfo);
+        imgbtn_close = contentView.findViewById(R.id.imgBtn_ColsPopupWindow_bannerInfo);
         imgbtn_close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

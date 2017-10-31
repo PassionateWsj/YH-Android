@@ -148,6 +148,7 @@ public class ModularOneUnitPlusMinusChartModeFragment extends BaseModeFragment i
 
         //设置图表数据
         pmChart = new PlusMinusChart(ctx);
+        pmChart.setDrawingCacheEnabled(true);
         pmChart.setDefauteolor(ContextCompat.getColor(ctx,R.color.co9));
         pmChart.setDataValues(mLtData);
         mFlContainer.addView(pmChart);

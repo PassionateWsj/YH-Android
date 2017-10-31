@@ -107,7 +107,8 @@ public class PlusMinusChart extends View implements ValueAnimator.AnimatorUpdate
     protected void onDraw(Canvas canvas) {
         paint.setColor(defauteolor);
         canvas.drawLine(xCenter, 0, xCenter, getHeight(), paint);
-        for (int i = 0; i < lt_data.size(); i++) {
+        int size = lt_data.size();
+        for (int i = 0; i < size; i++) {
             drawBAR(canvas, paint);
         }
     }

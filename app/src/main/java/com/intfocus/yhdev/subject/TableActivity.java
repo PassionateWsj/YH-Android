@@ -277,7 +277,8 @@ public class TableActivity extends BaseActivity implements ColumAdapter.ColumnLi
             //初始化数据时，记录head的初始位置，供以后选列使用
             List<Head> heads = new ArrayList<>();
 
-            for (int i = 0; i < originTableData.table.head.size(); i++) {
+            int size = originTableData.table.head.size();
+            for (int i = 0; i < size; i++) {
                 Head head = originTableData.table.head.get(i);
                 head.originPosition = i;
                 heads.add(head);

@@ -180,7 +180,8 @@ public class CustomCurveChartV2 extends View implements ValueAnimator.AnimatorUp
         setLayerType(View.LAYER_TYPE_HARDWARE, null);
         paintCurve.clearShadowLayer();
 
-        for (int i = 0; i < dataList.size(); i++) {
+        int size = dataList.size();
+        for (int i = 0; i < size; i++) {
             int color;
             if (orderColors == null || orderColors.length == 0) {
                 color = defaultColor;
@@ -474,7 +475,8 @@ public class CustomCurveChartV2 extends View implements ValueAnimator.AnimatorUp
      */
     private boolean validateTouch(float x, float y) {
         //曲线触摸区域
-        for (int i = 0; i < xPoints.size(); i++) {
+        int size = xPoints.size();
+        for (int i = 0; i < size; i++) {
             // dipToPx(8)乘以2为了适当增大触摸面积
 //            switch (mChartStyle) {
 //                case ChartStyle.LINE:

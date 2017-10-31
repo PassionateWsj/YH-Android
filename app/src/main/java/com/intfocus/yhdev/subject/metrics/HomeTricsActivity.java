@@ -388,12 +388,9 @@ public class HomeTricsActivity extends AppCompatActivity implements ProductListA
         selectedProductName = productName;
         for (HomeMetrics homeMetrics : homeMetricses) {
             //设置下方选中
-            for (int i = 0; i < homeMetrics.products.size(); i++) {
-                if (homeMetrics.products.get(i).getName().equals(selectedProductName)) {
-                    homeMetrics.products.get(i).isSelected = true;
-                } else {
-                    homeMetrics.products.get(i).isSelected = false;
-                }
+            int size = homeMetrics.products.size();
+            for (int i = 0; i < size; i++) {
+                homeMetrics.products.get(i).isSelected = homeMetrics.products.get(i).getName().equals(selectedProductName);
             }
         }
 //        itemSelected = 0;
@@ -440,7 +437,8 @@ public class HomeTricsActivity extends AppCompatActivity implements ProductListA
         if (product == null || lastProductSelected != productSelected) {
             for (HomeMetrics homeMetrics : homeMetricses) {
                 //设置下方选中
-                for (int i = 0; i < homeMetrics.products.size(); i++) {
+                int size = homeMetrics.products.size();
+                for (int i = 0; i < size; i++) {
                     if (homeMetrics.products.get(i).getName().equals(selectedProductName)) {
                         homeMetrics.products.get(i).isSelected = true;
                         productSelected = i;
@@ -462,7 +460,8 @@ public class HomeTricsActivity extends AppCompatActivity implements ProductListA
         //给报表使用的数据,已经排序，则提取得报表数据也要排序后得字段
         for (HomeMetrics homeMetrics : homeMetricses) {
             int selectedNumber = productSelected;
-            for (int i = 0; i < homeMetrics.products.size(); i++) {
+            int size = homeMetrics.products.size();
+            for (int i = 0; i < size; i++) {
                 if (homeMetrics.products.get(i).getName().equals(selectedProductName)) {
                     selectedNumber = i;
                 }
@@ -589,7 +588,8 @@ public class HomeTricsActivity extends AppCompatActivity implements ProductListA
     private LineData generateLineData() {
         LineData lineData = new LineData();
         ArrayList<Entry> entries = new ArrayList<>();
-        for (int index = 0; index < items.size(); index++) {
+        int size = items.size();
+        for (int index = 0; index < size; index++) {
             entries.add(new Entry(index + 1f, (float) items.get(index).sub_data.getData()));
         }
         LineDataSet lineDataSet = new LineDataSet(entries, "对比数据");

@@ -149,6 +149,7 @@ public class ModularOneUnitSingleValueModeFragment extends BaseModeFragment impl
             isPlus = true;
         }
         rateCursor.setCursorState(state, isPlus);
+        rateCursor.setDrawingCacheEnabled(true);
     }
 
     @Override
