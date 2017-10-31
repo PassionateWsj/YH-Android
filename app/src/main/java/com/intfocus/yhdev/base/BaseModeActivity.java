@@ -7,6 +7,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.util.ArrayMap;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -299,7 +300,7 @@ public abstract class BaseModeActivity<T extends Subject> extends AbstractActivi
      * @param drawable
      */
     public void setLeftTVSrc(int drawable) {
-        Drawable nav_up = getResources().getDrawable(drawable);
+        Drawable nav_up = ContextCompat.getDrawable(ctx,drawable);
         nav_up.setBounds(0, 0, nav_up.getMinimumWidth(),
                 nav_up.getMinimumHeight());
         tvLeft.setCompoundDrawables(nav_up, null, null, null);

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.support.design.widget.TabLayout;
+import android.support.v4.content.ContextCompat;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.View;
@@ -68,7 +69,7 @@ public class Utils {
      * @return
      */
     public static Drawable returnDrawable(Context context, int id) {
-        Drawable drawable = context.getResources().getDrawable(id);
+        Drawable drawable = ContextCompat.getDrawable(context,id);
         drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
         return drawable;
     }

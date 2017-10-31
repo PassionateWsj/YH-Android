@@ -215,7 +215,8 @@ public class MeterFragment extends BaseSwipeHomeFragment {
         }
 
         Set<String> set = gropsName.keySet();
-        for (int i = 0; i < set.size(); i++) {
+        int size = set.size();
+        for (int i = 0; i < size; i++) {
             ArrayList<MererEntity> list = entityList.get(i);
             LayoutInflater inflater = LayoutInflater.from(ctx);
             View view = inflater.inflate(R.layout.item_meter_group, null);

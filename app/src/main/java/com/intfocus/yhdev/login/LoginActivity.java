@@ -14,6 +14,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
@@ -327,9 +328,9 @@ public class LoginActivity extends FragmentActivity {
      */
     private void changeEditTextFocusUnderLineColor(boolean hasFocus, View underLineView) {
         if (hasFocus) {
-            underLineView.setBackgroundColor(getResources().getColor(R.color.co1_syr));
+            underLineView.setBackgroundColor(ContextCompat.getColor(ctx,R.color.co1_syr));
         } else {
-            underLineView.setBackgroundColor(getResources().getColor(R.color.co9_syr));
+            underLineView.setBackgroundColor(ContextCompat.getColor(ctx,R.color.co9_syr));
         }
     }
 

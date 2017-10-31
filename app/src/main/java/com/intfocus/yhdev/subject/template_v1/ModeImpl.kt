@@ -4,6 +4,9 @@ import android.content.Context
 import android.util.Log
 import com.alibaba.fastjson.JSONReader
 import com.intfocus.yhdev.subject.template_v1.entity.MererDetailEntity
+import com.intfocus.yhdev.util.ApiHelper
+import com.intfocus.yhdev.util.FileUtil
+import com.intfocus.yhdev.util.K
 import com.zbl.lib.baseframe.utils.TimeUtil
 import rx.Observable
 import rx.Subscriber
@@ -14,7 +17,7 @@ import java.util.*
 
 /**
  * ****************************************************
- * author jameswong
+ * @author jameswong
  * created on: 17/10/25 下午5:11
  * e-mail: PassionateWsj@outlook.com
  * name:
@@ -53,14 +56,14 @@ class ModeImpl : ModeModel {
                 .subscribeOn(Schedulers.io())
                 .map {
                     val response: String?
-//                    val jsonFilePath = FileUtil.dirPath(ctx, K.kCachedDirName, it)
-//                    val dataState = ApiHelper.reportJsonData(ctx, groupId, "1", reportId)
-//                    if (dataState || File(jsonFilePath).exists()) {
-//                        response = FileUtil.readFile(jsonFilePath)
-//                    } else {
-//                        throw Throwable("获取数据失败")
-//                    }
-                    response = getJsonData(ctx)
+                    val jsonFilePath = FileUtil.dirPath(ctx, K.kCachedDirName, it)
+                    val dataState = ApiHelper.reportJsonData(ctx, groupId, "1", reportId)
+                    if (dataState || File(jsonFilePath).exists()) {
+                        response = FileUtil.readFile(jsonFilePath)
+                    } else {
+                        throw Throwable("获取数据失败")
+                    }
+//                    response = getJsonData(ctx)
                     Log.i(TAG, "analysisDataStartTime:" + TimeUtil.getNowTime())
                     val stringReader = StringReader(response)
                     Log.i(TAG, "analysisDataReaderTime1:" + TimeUtil.getNowTime())

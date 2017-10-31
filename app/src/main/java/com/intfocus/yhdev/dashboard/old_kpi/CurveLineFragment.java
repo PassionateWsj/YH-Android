@@ -120,12 +120,13 @@ public class CurveLineFragment extends BaseModeFragment {
         }
 
         int[] chart_data = entity.getData().getChart_data();
+
         int size = chart_data.length;
 
         if (size > 0) {
             List<NExcel> nExcelList = new ArrayList<>();
-            for (int i = 0; i < size; i++) {
-                nExcelList.add(new NExcel(chart_data[i], ""));
+            for (int aChart_data : chart_data) {
+                nExcelList.add(new NExcel(aChart_data, ""));
             }
             mChart.setScrollAble(false);
             mChart.setFixedWidth(7);

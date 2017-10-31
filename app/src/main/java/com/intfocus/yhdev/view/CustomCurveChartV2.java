@@ -12,6 +12,7 @@ import android.graphics.RectF;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -167,7 +168,7 @@ public class CustomCurveChartV2 extends View implements ValueAnimator.AnimatorUp
         paint_circle.setStrokeCap(Paint.Cap.ROUND);
 
         orderColors = getResources().getIntArray(R.array.co_order);
-        blackColor = getResources().getColor(R.color.co3);
+        blackColor = ContextCompat.getColor(getContext(),R.color.co3);
     }
 
     @Override
@@ -179,7 +180,8 @@ public class CustomCurveChartV2 extends View implements ValueAnimator.AnimatorUp
         setLayerType(View.LAYER_TYPE_HARDWARE, null);
         paintCurve.clearShadowLayer();
 
-        for (int i = 0; i < dataList.size(); i++) {
+        int size = dataList.size();
+        for (int i = 0; i < size; i++) {
             int color;
             if (orderColors == null || orderColors.length == 0) {
                 color = defaultColor;
@@ -473,7 +475,8 @@ public class CustomCurveChartV2 extends View implements ValueAnimator.AnimatorUp
      */
     private boolean validateTouch(float x, float y) {
         //曲线触摸区域
-        for (int i = 0; i < xPoints.size(); i++) {
+        int size = xPoints.size();
+        for (int i = 0; i < size; i++) {
             // dipToPx(8)乘以2为了适当增大触摸面积
 //            switch (mChartStyle) {
 //                case ChartStyle.LINE:

@@ -25,6 +25,11 @@ android {
                 includeCompileClasspath = true
             }
         }
+        javaCompileOptions {
+            annotationProcessorOptions {
+                includeCompileClasspath = true
+            }
+        }
     }
 
     // 签名配置
