@@ -12,7 +12,6 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.intfocus.yhdev.R;
-import com.intfocus.yhdev.subject.template_v1.entity.DataHolder;
 import com.zbl.lib.baseframe.utils.StringUtil;
 
 import org.xutils.view.annotation.Event;
@@ -42,7 +41,9 @@ public class ModularOneSubTableActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_modular_one_subtable);
-        getSupportActionBar().hide();
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().hide();
+        }
         x.view().inject(this);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setEnterTransition(new Slide().setDuration(500));
@@ -52,8 +53,7 @@ public class ModularOneSubTableActivity extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             String titel = bundle.getString("Title");
-//            subData = bundle.getString("Data");
-            subData = DataHolder.getInstance().getData();
+            subData = bundle.getString("subData");
             suRootID = bundle.getInt("suRootID");
             title.setText(titel);
             if (StringUtil.isEmpty(subData)) {

@@ -45,7 +45,7 @@ public class NotScrollListView extends android.widget.ListView {
     public int getTotalHeight() {
         int total = 0;
         BaseAdapter adapter = (BaseAdapter) getAdapter();
-        if (adapter != null) {
+        if (adapter == null) {
             return total;
         }
         int size = adapter.getCount();
@@ -65,7 +65,7 @@ public class NotScrollListView extends android.widget.ListView {
     public ArrayList<Integer> getChildrensWidth() {
         ArrayList<Integer> ltChildrensWidth = new ArrayList<>();
         BaseAdapter adapter = (BaseAdapter) getAdapter();
-        if (adapter != null) {
+        if (adapter == null) {
             return ltChildrensWidth;
         }
         int size = adapter.getCount();

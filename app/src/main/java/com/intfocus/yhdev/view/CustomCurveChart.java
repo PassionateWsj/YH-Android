@@ -133,7 +133,8 @@ public class CustomCurveChart extends View {
         canvas.drawColor(0xffffffff);
         drawAxesLine(canvas, paintAxes);
         drawCoordinate(canvas, paintCoordinate);
-        for (int i = 0; i < dataList.size(); i++) {
+        int size = dataList.size();
+        for (int i = 0; i < size; i++) {
             drawCurve(canvas, paintCurve, dataList.get(i), lineColors[i]);
         }
     }
@@ -314,7 +315,8 @@ public class CustomCurveChart extends View {
     //是否是有效的触摸范围
     private boolean validateTouch(float x, float y) {
         //曲线触摸区域
-        for (int i = 0; i < xpoints.size(); i++) {
+        int size = xpoints.size();
+        for (int i = 0; i < size; i++) {
             // dipToPx(8)乘以2为了适当增大触摸面积
             if (x > (xpoints.get(i) - dipToPx(8) * 2) && x < (xpoints.get(i) + dipToPx(8) * 2)) {
                 selectItem = i;

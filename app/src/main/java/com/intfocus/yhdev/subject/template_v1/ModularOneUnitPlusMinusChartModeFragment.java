@@ -1,6 +1,7 @@
 package com.intfocus.yhdev.subject.template_v1;
 
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -89,8 +90,9 @@ public class ModularOneUnitPlusMinusChartModeFragment extends BaseModeFragment i
         nameComparator = new BargraphNameComparator();
         dataComparator = new BargraphDataComparator();
 
-        adapter = new BargraptAdapter(ctx, null);
+        adapter = new BargraptAdapter(ctx);
         lv.setAdapter(adapter);
+        lv.setFocusable(false);
         lv.setOnItemClickListener(this);
     }
 
@@ -146,7 +148,8 @@ public class ModularOneUnitPlusMinusChartModeFragment extends BaseModeFragment i
 
         //设置图表数据
         pmChart = new PlusMinusChart(ctx);
-        pmChart.setDefauteolor(getResources().getColor(R.color.co9));
+        pmChart.setDrawingCacheEnabled(true);
+        pmChart.setDefauteolor(ContextCompat.getColor(ctx,R.color.co9));
         pmChart.setDataValues(mLtData);
         mFlContainer.addView(pmChart);
     }

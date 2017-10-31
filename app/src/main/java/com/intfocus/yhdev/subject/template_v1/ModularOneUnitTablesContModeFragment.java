@@ -21,7 +21,6 @@ import android.widget.TextView;
 import com.intfocus.yhdev.R;
 import com.intfocus.yhdev.base.BaseModeFragment;
 import com.intfocus.yhdev.subject.template_v1.adapter.ModularTwo_TableNameAdapter;
-import com.intfocus.yhdev.subject.template_v1.entity.DataHolder;
 import com.intfocus.yhdev.subject.template_v1.entity.ModularTwo_UnitTableEntity;
 import com.intfocus.yhdev.subject.template_v1.entity.msg.EventRefreshTableRect;
 import com.intfocus.yhdev.subject.template_v1.mode.ModularTwo_UnitTableContMode;
@@ -342,6 +341,7 @@ public class ModularOneUnitTablesContModeFragment extends BaseModeFragment<Modul
         // 遍历表头数据, 添加到 al_SortView
         for (int i = 0; i < headerSize; i++) {
             SortCheckBox box = (SortCheckBox) inflater.inflate(R.layout.item_table_sortcheckbox, null);
+            box.setDrawingCacheEnabled(true);
             box.setText(header[i + 1]);
             box.setBoxWidth(DisplayUtil.dip2px(ctx, mColumnMaxWidths.get(i)));
             box.setTextSize(DisplayUtil.dip2px(getContext(), 11));
@@ -512,12 +512,12 @@ public class ModularOneUnitTablesContModeFragment extends BaseModeFragment<Modul
             jsonObject.put("head", new JSONArray(header));
             JSONArray array = sub_data.getJSONArray("data");
             jsonObject.put("data", array);
-            String subdata = jsonObject.toString();
+            String subData = jsonObject.toString();
 
             Intent intent = new Intent(ctx, ModularOneSubTableActivity.class);
             String itemData = dataEntity.data.get(index).main_data[0];
             intent.putExtra("Title", new JSONObject(itemData).getString("value"));
-            DataHolder.getInstance().setData(subdata);
+            intent.putExtra("subData", subData);
             int checkId = suRootID;
             intent.putExtra("suRootID", checkId);
             startActivity(intent);

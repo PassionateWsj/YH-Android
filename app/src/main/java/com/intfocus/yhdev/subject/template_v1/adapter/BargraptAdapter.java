@@ -2,6 +2,7 @@ package com.intfocus.yhdev.subject.template_v1.adapter;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,26 +30,22 @@ public class BargraptAdapter extends BaseAdapter {
     private int defaultColor;
     private int selectColor;
 
-    public BargraptAdapter(Context ctx, LinkedList<BargraphComparator> ltdata) {
+    public BargraptAdapter(Context ctx) {
         this.ctx = ctx;
-        setData(ltdata);
-        herearrow = ctx.getResources().getDrawable(R.drawable.icon_herearrow);
+        herearrow = ContextCompat.getDrawable(ctx,R.drawable.icon_herearrow);
         herearrow.setBounds(0, 0, herearrow.getMinimumWidth(),
                 herearrow.getMinimumHeight());
-        percentDefaultColor = ctx.getResources().getColor(R.color.co4_syr);
-        defaultColor = ctx.getResources().getColor(R.color.co3_syr);
-        selectColor = ctx.getResources().getColor(R.color.co14_syr);
-    }
-
-    private void setData(LinkedList<BargraphComparator> ltdata) {
-        if (ltdata == null) {
-            return;
-        }
-        this.ltdata = ltdata;
+        percentDefaultColor = ContextCompat.getColor(ctx,R.color.co4_syr);
+        defaultColor = ContextCompat.getColor(ctx,R.color.co3_syr);
+        selectColor = ContextCompat.getColor(ctx,R.color.co14_syr);
     }
 
     public void updateData(LinkedList<BargraphComparator> ltdata) {
-        setData(ltdata);
+        if (this.ltdata == null) {
+            this.ltdata = new LinkedList<>();
+        }
+        this.ltdata.clear();
+        this.ltdata.addAll(ltdata);
         selectItemIndex = 0;
         notifyDataSetChanged();
     }
@@ -60,10 +57,7 @@ public class BargraptAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        if (ltdata == null) {
-            return 0;
-        }
-        return ltdata.size();
+        return ltdata == null ? 0 : ltdata.size();
     }
 
     @Override

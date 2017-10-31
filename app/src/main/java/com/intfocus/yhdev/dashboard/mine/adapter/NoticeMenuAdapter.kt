@@ -43,9 +43,7 @@ class NoticeMenuAdapter(val context: Context,
         }
     }
 
-    override fun getItemCount(): Int {
-        return if (noticeMenuDatas == null) 0 else noticeMenuDatas!!.size
-    }
+    override fun getItemCount(): Int = if (noticeMenuDatas == null) 0 else noticeMenuDatas!!.size
 
     class NoticeMenuHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var tvNoticeMenuName = itemView.findViewById<TextView>(R.id.tv_notice_menu_name)
@@ -55,7 +53,7 @@ class NoticeMenuAdapter(val context: Context,
         fun menuClick(noticeMenuBean: NoticeMenuBean)
     }
 
-    fun getTypeStr(type: Int): String {
+    private fun getTypeStr(type: Int): String {
         when (type) {
             0 -> return "系统公告"
             1 -> return "业务公告"

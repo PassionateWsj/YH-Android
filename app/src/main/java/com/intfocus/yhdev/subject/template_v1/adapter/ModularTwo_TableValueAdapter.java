@@ -1,6 +1,7 @@
 package com.intfocus.yhdev.subject.template_v1.adapter;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,8 +33,8 @@ public class ModularTwo_TableValueAdapter extends BaseAdapter {
         this.ctx = ctx;
         this.al_HeaderLenght = al_HeaderLenght;
         inflate = LayoutInflater.from(ctx);
-        defauteColor = ctx.getResources().getColor(R.color.co3);
-        hasSubColor = ctx.getResources().getColor(R.color.co14);
+        defauteColor = ContextCompat.getColor(ctx,R.color.co3);
+        hasSubColor = ContextCompat.getColor(ctx,R.color.co14);
         setData(ltdata);
     }
 
