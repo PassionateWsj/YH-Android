@@ -22,7 +22,7 @@
 
     <application
         tools:replace="android:icon,android:theme"
-        android:name="com.intfocus.yhdev.YHApplication"
+        android:name="com.intfocus.yhdev.general.YHApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -43,7 +43,7 @@
             android:enabled="false" />
         -->
         <activity
-            android:name="com.intfocus.yhdev.login.LoginActivity"
+            android:name="com.intfocus.yhdev.business.login.LoginActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/FullscreenTheme" >
@@ -58,16 +58,16 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name="com.intfocus.yhdev.setting.OldSettingActivity"
+            android:name="com.intfocus.yhdev.business.dashboard.mine.activity.setting.OldSettingActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name="com.intfocus.yhdev.subject.SubjectActivity"
+            android:name="com.intfocus.yhdev.business.subject.template.two.SubjectActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="fullSensor"
             android:theme="@style/AppTheme" />
         <activity
-            android:name="com.intfocus.yhdev.CommentActivity"
+            android:name="com.intfocus.yhdev.general.CommentActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
