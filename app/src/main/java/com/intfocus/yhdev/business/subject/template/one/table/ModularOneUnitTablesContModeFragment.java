@@ -163,11 +163,12 @@ public class ModularOneUnitTablesContModeFragment extends BaseModeFragment<Modul
             return;
         }
         final int surootID = suRootID;
+
         if (event.eventTag == surootID) {
             ((TemplateOneActivity) getActivity()).rScrollView.setOnScrollListener(new RootScrollView.OnScrollListener() {
                 @Override
                 public void onScroll(int scrollY) {
-
+                    Log.d("hjjzz", "isHidden:::" + ModularOneUnitTablesContModeFragment.this.isHidden());
                     Rect rect = new Rect();
                     rootView.getGlobalVisibleRect(rect);
                     synchronized (this) {
@@ -188,6 +189,8 @@ public class ModularOneUnitTablesContModeFragment extends BaseModeFragment<Modul
                     }
                 }
             });
+        } else {
+            ((TemplateOneActivity) getActivity()).rScrollView.setOnScrollListener(null);
         }
     }
 
@@ -203,8 +206,8 @@ public class ModularOneUnitTablesContModeFragment extends BaseModeFragment<Modul
             suspensionView = LayoutInflater.from(ctx).inflate(R.layout.item_suspension, null);
             fl_tableTitle_container.addView(suspensionView);
             tv_header = suspensionView.findViewById(R.id.tv_unit_table_header);
-            thscroll_header =  suspensionView.findViewById(R.id.thscroll_unit_table_header);
-            linear_header =  suspensionView.findViewById(R.id.ll_unit_table_header);
+            thscroll_header = suspensionView.findViewById(R.id.thscroll_unit_table_header);
+            linear_header = suspensionView.findViewById(R.id.ll_unit_table_header);
 
             thscroll_header.setScrollView(thscroll_data);
             thscroll_data.setScrollView(thscroll_header);
@@ -394,8 +397,8 @@ public class ModularOneUnitTablesContModeFragment extends BaseModeFragment<Modul
         }
 
         int itemHeight = getResources().getDimensionPixelSize(R.dimen.size_default);
-        int dividerColor = ContextCompat.getColor(getContext(),R.color.co9);
-        int textColor = ContextCompat.getColor(getContext(),R.color.co6_syr);
+        int dividerColor = ContextCompat.getColor(getContext(), R.color.co9);
+        int textColor = ContextCompat.getColor(getContext(), R.color.co6_syr);
         tableValue = new TableValueView(ctx);
         tableValue.setItemHeight(itemHeight);
         tableValue.setHeaderLengths(al_HeaderLenght);
