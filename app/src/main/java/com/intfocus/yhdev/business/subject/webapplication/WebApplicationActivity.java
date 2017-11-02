@@ -70,7 +70,6 @@ import java.io.IOException;
 import java.util.Iterator;
 
 import static android.webkit.WebView.enableSlowWholeDocumentDraw;
-import static com.intfocus.yhdev.YHApplication.globalContext;
 import static java.lang.String.format;
 
 public class WebApplicationActivity extends BaseActivity implements OnPageChangeListener, OnLoadCompleteListener, OnErrorOccurredListener {

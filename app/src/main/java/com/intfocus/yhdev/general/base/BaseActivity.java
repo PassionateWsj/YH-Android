@@ -57,8 +57,6 @@ import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
 import java.util.Map;
 
-import static com.intfocus.yhdev.YHApplication.globalContext;
-
 /**
  * Created by lijunjie on 16/1/14.
  */

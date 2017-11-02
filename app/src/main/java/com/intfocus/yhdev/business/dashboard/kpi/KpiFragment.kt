@@ -37,7 +37,7 @@ class KpiFragment : RefreshFragment(), KpiAdapter.HomePageListener {
     lateinit var ctx: Context
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        mView = inflater!!.inflate(R.layout.fragment_home, container, false)
+        mView = inflater!!.inflate(R.layout.fragment_kpi, container, false)
         x.view().inject(this, mView)
         setRefreshLayout()
         mUserSP = mActivity.getSharedPreferences("UserBean", Context.MODE_PRIVATE)
