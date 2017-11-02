@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginTop="@dimen/space_default"
-    android:background="@android:color/white"
+    android:background="@color/white"
     android:orientation="vertical">
 
     <LinearLayout
@@ -51,7 +51,7 @@
                     android:paddingRight="@dimen/space_default_small_s"
                     android:text="666666"/>
 
-                <com.intfocus.yhdev.view.RateCursor
+                <com.intfocus.yhdev.general.view.RateCursor
                     android:id="@+id/img_RateCursor"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
