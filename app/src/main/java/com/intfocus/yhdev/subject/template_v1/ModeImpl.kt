@@ -27,7 +27,6 @@ import java.util.*
 class ModeImpl : ModeModel {
 
     companion object {
-        private val TAG = ModeImpl::class.java.simpleName
 
         private var INSTANCE: ModeImpl? = null
         /**
