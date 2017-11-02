@@ -32,7 +32,7 @@
                     android:textColor="@color/text_black"
                     android:textSize="14sp" />
 
-                <com.intfocus.yhdev.util.MyHorizontalScrollView
+                <com.intfocus.yhdev.general.util.MyHorizontalScrollView
                     android:id="@+id/top_horizontal_scroll_view"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -45,7 +45,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="horizontal" />
-                </com.intfocus.yhdev.util.MyHorizontalScrollView>
+                </com.intfocus.yhdev.general.util.MyHorizontalScrollView>
 
                 <LinearLayout
                     android:id="@+id/ll_bar_head"
@@ -81,7 +81,7 @@
                     android:dividerHeight="0.5dp"
                     android:scrollbars="none" />
 
-                <com.intfocus.yhdev.util.MyHorizontalScrollView
+                <com.intfocus.yhdev.general.util.MyHorizontalScrollView
                     android:id="@+id/content_horizontal_scroll_view"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -93,7 +93,7 @@
                         android:layout_height="match_parent"
                         android:dividerHeight="0.5dp"
                         android:scrollbars="none"/>
-                </com.intfocus.yhdev.util.MyHorizontalScrollView>
+                </com.intfocus.yhdev.general.util.MyHorizontalScrollView>
 
                 <ListView
                     android:id="@+id/bar_chart_list_view"

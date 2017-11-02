@@ -26,7 +26,7 @@
             android:src="@drawable/btn_empty_filter" />
     </RelativeLayout>
 
-    <com.intfocus.yhdev.view.addressselector.AddressSelector
+    <com.intfocus.yhdev.general.view.addressselector.AddressSelector
         android:id="@+id/address_selector"
         android:layout_width="match_parent"
         android:layout_height="400dp"
