@@ -15,10 +15,17 @@ import android.support.v4.view.ViewPager
 import android.view.View
 import com.google.gson.Gson
 import com.intfocus.yhdev.R
-import com.intfocus.yhdev.general.YHApplication
 import com.intfocus.yhdev.business.dashboard.adapter.DashboardFragmentAdapter
 import com.intfocus.yhdev.business.dashboard.kpi.bean.NoticeBoardRequest
 import com.intfocus.yhdev.business.dashboard.mine.bean.PushMessageBean
+import com.intfocus.yhdev.business.scanner.BarCodeScannerActivity
+import com.intfocus.yhdev.business.subject.template.five.TemplateFiveActivity
+import com.intfocus.yhdev.business.subject.template.one.TemplateOneActivity
+import com.intfocus.yhdev.business.subject.template.three.TemplateThreeActivity
+import com.intfocus.yhdev.business.subject.template.two.SubjectActivity
+import com.intfocus.yhdev.business.subject.webapplication.WebApplicationActivity
+import com.intfocus.yhdev.business.subject.webapplication.WebApplicationActivityV6
+import com.intfocus.yhdev.general.YHApplication
 import com.intfocus.yhdev.general.bean.DashboardItemBean
 import com.intfocus.yhdev.general.data.response.scanner.StoreItem
 import com.intfocus.yhdev.general.data.response.scanner.StoreListResult
@@ -29,13 +36,6 @@ import com.intfocus.yhdev.general.net.RetrofitUtil
 import com.intfocus.yhdev.general.util.*
 import com.intfocus.yhdev.general.view.NoScrollViewPager
 import com.intfocus.yhdev.general.view.TabView
-import com.intfocus.yhdev.business.scanner.BarCodeScannerActivity
-import com.intfocus.yhdev.business.subject.template.five.TemplateFiveActivity
-import com.intfocus.yhdev.business.subject.template.one.TemplateOneActivity
-import com.intfocus.yhdev.business.subject.template.three.TemplateThreeActivity
-import com.intfocus.yhdev.business.subject.template.two.SubjectActivity
-import com.intfocus.yhdev.business.subject.webapplication.WebApplicationActivity
-import com.intfocus.yhdev.business.subject.webapplication.WebApplicationActivityV6
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -63,6 +63,7 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
     private var mGson: Gson? = null
     lateinit var mUserSP: SharedPreferences
     private var storeList: List<StoreItem>? = null
+    private val loadLastFragmentWhenLaunch = false
 
     private var objectTypeName = arrayOf("生意概况", "报表", "工具箱")
 
@@ -218,8 +219,12 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
     private fun initViewPaper(dashboardFragmentAdapter: DashboardFragmentAdapter) {
         mViewPager!!.adapter = dashboardFragmentAdapter
         mViewPager!!.offscreenPageLimit = 4
-        mViewPager!!.currentItem = mSharedPreferences!!.getInt("LastTab", 0)
-        mTabView!![mViewPager!!.currentItem].setActive(true)
+        if (loadLastFragmentWhenLaunch) {
+            mViewPager!!.currentItem = mSharedPreferences!!.getInt("LastTab", 0)
+            mTabView!![mViewPager!!.currentItem].setActive(true)
+        } else {
+            mTabView!![0].setActive(true)
+        }
         mViewPager!!.addOnPageChangeListener(this)
     }
 
