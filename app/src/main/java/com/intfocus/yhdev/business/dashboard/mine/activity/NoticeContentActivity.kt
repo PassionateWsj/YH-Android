@@ -37,7 +37,9 @@ class NoticeContentActivity : AbstractActivity<NoticeContentMode>() {
     }
 
     override fun onCreateFinish(p0: Bundle?) {
-        supportActionBar!!.hide()
+        if (supportActionBar != null) {
+            supportActionBar!!.hide()
+        }
         print("Activity CreateFinish")
     }
 
