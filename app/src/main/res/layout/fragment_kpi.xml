@@ -55,7 +55,7 @@
                 android:layout_centerInParent="true"
                 android:layout_marginBottom="8dp"
                 android:layout_marginTop="8dp"
-                android:text="生意概况"
+                android:text="@string/text_kpi"
                 android:textColor="@color/co10_syr"
                 android:textSize="17sp" />
 
@@ -64,6 +64,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_alignParentRight="true"
+                android:visibility="visible"
                 android:src="@drawable/nav_scan"
                 android:onClick="startBarCodeActivity"/>
         </RelativeLayout>

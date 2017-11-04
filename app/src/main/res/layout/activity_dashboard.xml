@@ -14,51 +14,56 @@
         android:background="@color/co10_syr"
         android:orientation="horizontal"
         android:paddingLeft="16dp"
-        android:paddingRight="16dp">
+        android:paddingRight="16dp"
+        android:visibility="visible">
 
-        <com.intfocus.yh_android.general.view.TabView
+        <com.intfocus.spy_template.general.view.TabView
             android:id="@+id/tab_kpi"
             style="@style/ToolBarTab"
+            android:visibility="visible"
             app:active_src="@drawable/tab_overview_s"
             app:src="@drawable/tab_overview"
-            app:text="生意概况"/>
+            app:text="@string/text_kpi"/>
 
-        <com.intfocus.yh_android.general.view.TabView
-            android:id="@+id/tab_analysis"
+        <com.intfocus.spy_template.general.view.TabView
+            android:id="@+id/tab_report"
             style="@style/ToolBarTab"
+            android:visibility="visible"
             app:active_src="@drawable/tab_form_s"
             app:src="@drawable/tab_form"
-            app:text="报表" />
+            app:text="@string/text_report"/>
 
-        <com.intfocus.yh_android.general.view.TabView
-            android:id="@+id/tab_app"
+        <com.intfocus.spy_template.general.view.TabView
+            android:id="@+id/tab_workbox"
             style="@style/ToolBarTab"
+            android:visibility="visible"
             app:active_src="@drawable/tab_special_s"
             app:src="@drawable/tab_special"
-            app:text="工具箱" />
+            app:text="@string/text_workbox"/>
 
-        <com.intfocus.yh_android.general.view.TabView
-            android:id="@+id/tab_message"
+        <com.intfocus.spy_template.general.view.TabView
+            android:id="@+id/tab_mine"
             style="@style/ToolBarTab"
+            android:visibility="visible"
             app:active="false"
             app:active_src="@drawable/tab_my_s"
             app:src="@drawable/tab_my"
-            app:text="我的" />
+            app:text="@string/text_mine"/>
 
     </LinearLayout>
 
-    <com.intfocus.yh_android.general.view.NoScrollViewPager
+    <com.intfocus.spy_template.general.view.NoScrollViewPager
         android:id="@+id/content_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/toolBar">
-    </com.intfocus.yh_android.general.view.NoScrollViewPager>
+        android:layout_above="@+id/toolBar"/>
 
     <View
         android:id="@+id/view_shadow"
         android:layout_width="match_parent"
         android:layout_height="8dp"
         android:layout_above="@+id/toolBar"
-        android:background="@drawable/pic_shadow"/>
+        android:background="@drawable/pic_shadow"
+        android:visibility="visible"/>
 
 </RelativeLayout>
