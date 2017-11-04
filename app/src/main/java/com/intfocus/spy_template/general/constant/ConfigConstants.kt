@@ -7,7 +7,7 @@ package com.intfocus.spy_template.general.constant
  * @email PassionateWsj@outlook.com
  * @name 应用配置类
  * @desc * 表示的是默认的配置
- *          仅列出了部分 功能&界面展示 的开关，资源替换等需要额外配置（参考文档 *****）
+ *          仅列出了部分 功能&界面展示 的开关，资源替换等需要额外配置（参考文档 ****）
  * ****************************************************
  */
 object ConfigConstants {
