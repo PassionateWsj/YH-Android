@@ -1,48 +1,27 @@
-## 工作日志
-
-- 每天 22:00 前更新当天工作日志
-- 更新后，在工作群聊中通知一下
-
-### 16/07/04
-
-- DONE
-    - 完成事项一
-    - 完成事项二
-
-- DOING
-    - 正做事项一
-    - 正做事项二
-
-- TODO
-    - 待做事项一
-
-        ```
-        question code block
-        ```
-    - 待做事项二
-
-## 说明
-
-- 格式示例:
-
-    ```
-    ### 16/07/06
-
-    - DONE
-        - 完成事项一
-        - 完成事项二
-
-    - DOING
-        - 正做事项一
-        - 正做事项二
-
-    - TODO
-        - 待做事项一
-
-            ```
-            question code block
-            ```
-        - 待做事项二
-    ```
-- 时间逆序
-- 也可以写疑惑或问题
+- 启动 - `...\business\launcher`
+	- 启动页 - LauncherActivity
+	- 引导页 - GuideActivity
+- 登录页 - `...\business\login`
+	- 登录 - LoginActivity
+	- 忘记密码 - ForgetPasswordActivity
+- 主页面 - `...\business\dashboard`
+	- 生意概况 : KpiFragment
+	- 报表 : ReportFragment
+	- 工具箱 : WorkBoxFragment
+		- 独立的第三方工具页面 : WebApplication
+	- 我的 : MineFragment
+		- 公告预警 : AnnouncementWarningFragment
+		- 数据学院 : DataCollegeFragment
+		- 个人信息 : UserFragment
+			- 文章收藏 : FavoriteArticleActivity
+			- 问题反馈 : FeedbackActivity
+			- 修改密码 : AlterPasswordActivity
+- 模版 ： `...\business\subject`
+	- 模板一 （原生信息图表模板） : TemplateOneActivity
+		- 模板九（添加信息采集功能的模板一） : TemplateNineActivity
+	- 模板二 (H5信息图表模板) : SubjectActivity
+		- 模板四 (无群组权限限制的模板二) : WebApplicationActivity/WebApplicationActivityV6
+	- 模板三 (多指标信息图表模板) : TemplateThreeActivity
+	- 模板五 (超级表格) : TemplateFiveActivity
+- 扫一扫 : `...\business\scanner` 
+	- 扫码页面 : BarCodeScannerActivity
