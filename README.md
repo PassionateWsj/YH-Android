@@ -1,10 +1,10 @@
-- 启动 - `...\business\launcher`
-	- 启动页 - LauncherActivity
-	- 引导页 - GuideActivity
-- 登录页 - `...\business\login`
-	- 登录 - LoginActivity
-	- 忘记密码 - ForgetPasswordActivity
-- 主页面 - `...\business\dashboard`
+- 启动 : `...\business\launcher`
+	- 启动页 : LauncherActivity
+	- 引导页 : GuideActivity
+- 登录页 : `...\business\login`
+	- 登录 : LoginActivity
+	- 忘记密码 : ForgetPasswordActivity
+- 主页面 : `...\business\dashboard`
 	- 生意概况 : KpiFragment
 	- 报表 : ReportFragment
 	- 工具箱 : WorkBoxFragment
@@ -23,5 +23,5 @@
 		- 模板四 (无群组权限限制的模板二) : WebApplicationActivity/WebApplicationActivityV6
 	- 模板三 (多指标信息图表模板) : TemplateThreeActivity
 	- 模板五 (超级表格) : TemplateFiveActivity
-- 扫一扫 : `...\business\scanner` 
+- 扫一扫 : `...\business\scanner`
 	- 扫码页面 : BarCodeScannerActivity
