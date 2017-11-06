@@ -18,17 +18,11 @@ class WorkBoxAdapter(var ctx: Context, var datas: List<WorkBoxItem>?) : BaseAdap
     var mInflater: LayoutInflater = LayoutInflater.from(ctx)
     var laryoutParams = AbsListView.LayoutParams(PhoneUtil.getScreenWidth(ctx) / 3, PhoneUtil.getScreenWidth(ctx) / 3)
 
-    override fun getCount(): Int {
-        return datas!!.size
-    }
+    override fun getCount(): Int = datas!!.size
 
-    override fun getItem(position: Int): Any {
-        return datas!![position]
-    }
+    override fun getItem(position: Int): Any = datas!![position]
 
-    override fun getItemId(position: Int): Long {
-        return position.toLong()
-    }
+    override fun getItemId(position: Int): Long = position.toLong()
 
     override fun getView(position: Int, v: View?, parent: ViewGroup): View {
         var convertView = v
@@ -38,9 +32,9 @@ class WorkBoxAdapter(var ctx: Context, var datas: List<WorkBoxItem>?) : BaseAdap
             convertView = mInflater.inflate(R.layout.item_work_box, null)
 
             // construct an item tag
-            viewTag = ItemViewTag(convertView!!.findViewById(R.id.ll_work_box_item) ,
-                    convertView.findViewById(R.id.iv_work_box_item_img) ,
-                    convertView.findViewById(R.id.tv_work_box_item_name) )
+            viewTag = ItemViewTag(convertView!!.findViewById(R.id.ll_work_box_item),
+                    convertView.findViewById(R.id.iv_work_box_item_img),
+                    convertView.findViewById(R.id.tv_work_box_item_name))
             convertView.tag = viewTag
 
             if (convertView.layoutParams == null)
@@ -59,8 +53,14 @@ class WorkBoxAdapter(var ctx: Context, var datas: List<WorkBoxItem>?) : BaseAdap
                 .load(datas!![position].icon_link)
                 .into(viewTag.mIcon)
         viewTag.rlItem.setOnClickListener {
-            EventBus.getDefault().post(DashboardItemBean(datas!![position].obj_link!!, datas!![position].obj_title!!,
-                    datas!![position].obj_id!!, datas!![position].template_id!!, "3"))
+            if (datas!![position].template_id != null) {
+                EventBus.getDefault().post(DashboardItemBean(datas!![position].obj_link!!, datas!![position].obj_title!!,
+                        datas!![position].obj_id!!, datas!![position].template_id!!, "3"))
+            }
+//            val testBean  = Gson().fromJson(ModeImpl.getInstance().getJsonData(ctx,"testworkbox.json"),WorkBoxItem::class.java)
+//            EventBus.getDefault().post(DashboardItemBean(testBean.obj_link!!, testBean.obj_title!!,
+//                    testBean.obj_id!!, testBean.template_id!!, "3"))
+
         }
 
         return convertView

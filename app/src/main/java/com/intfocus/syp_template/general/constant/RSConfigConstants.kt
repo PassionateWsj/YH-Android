@@ -10,7 +10,7 @@ package com.intfocus.syp_template.general.constant
  *          仅列出了部分 功能&界面展示 的开关，资源替换等需要额外配置（参考文档 ****）
  * ****************************************************
  */
-object RSConfigConstants {
+object ConfigConstants {
     /**
      * 蒲公英 AppId
      */
@@ -64,7 +64,7 @@ object RSConfigConstants {
      * true : 提供
      * false : 不提供 *
      */
-    const val SCAN_ENABLE_WORKBOX: Boolean = true
+    const val SCAN_ENABLE_WORKBOX: Boolean = false
     /**
      * 扫一扫 条码/二维码 开关
      *
@@ -92,7 +92,7 @@ object RSConfigConstants {
      * true : 数字输入键盘 *
      * false : 文本键盘
      */
-    const val ACCOUNT_INPUTTYPE_NUMBER: Boolean = true
+    const val ACCOUNT_INPUTTYPE_NUMBER: Boolean = false
     /**
      * 主页面显示 Kpi 概况页签
      *
@@ -121,6 +121,20 @@ object RSConfigConstants {
      * false : 3 个 *
      */
     const val ONLY_USER_SHOW: Boolean = true
+    /**
+     * 我的页面是否自定义
+     *
+     * true : 用户自定义添加界面 *
+     * false : 显示用户基本信息
+     */
+    const val USER_CUSTOM : Boolean= false
+    /**
+     * 归属部门是否有内容
+     *
+     * true : 可点击跳转
+     * false : 不可点击 *
+     */
+    const val USER_GROUP_CONTENT : Boolean= false
     /**
      * 头像是否支持点击上传
      *

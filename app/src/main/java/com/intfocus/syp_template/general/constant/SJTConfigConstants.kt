@@ -111,6 +111,20 @@ object SJTConfigConstants {
      */
     const val ONLY_USER_SHOW: Boolean = false
     /**
+     * 我的页面是否自定义
+     *
+     * true : 用户自定义添加界面 *
+     * false : 显示用户基本信息
+     */
+    const val USER_CUSTOM : Boolean= true
+    /**
+     * 归属部门是否有内容
+     *
+     * true : 可点击跳转
+     * false : 不可点击 *
+     */
+    const val USER_GROUP_CONTENT : Boolean= false
+    /**
      * 头像是否支持点击上传
      *
      * true : 支持 *

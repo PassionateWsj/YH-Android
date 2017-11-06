@@ -23,14 +23,12 @@ class WorkBoxFragment : BaseModeFragment<WorkBoxMode>(), SwipeRefreshLayout.OnRe
     var rootView: View? = null
     var datas: List<WorkBoxItem>? = null
 
-    override fun setSubject(): Subject {
-        return WorkBoxMode(ctx)
-    }
+    override fun setSubject(): Subject = WorkBoxMode(ctx)
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         EventBus.getDefault().register(this)
         if (rootView == null) {
-            rootView = inflater!!.inflate(R.layout.fragment_work_box, container, false)
+            rootView = inflater.inflate(R.layout.fragment_work_box, container, false)
             model.requestData()
         }
         return rootView

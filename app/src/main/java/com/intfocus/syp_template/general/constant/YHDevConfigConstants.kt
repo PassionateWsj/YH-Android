@@ -5,12 +5,12 @@ package com.intfocus.syp_template.general.constant
  * @author JamesWong
  * @createdOn 17/11/04 上午09:52
  * @email PassionateWsj@outlook.com
- * @name 默认配置类
+ * @name 永辉 配置类
  * @desc * 表示的是默认的配置
  *          仅列出了部分 功能&界面展示 的开关，资源替换等需要额外配置（参考文档 ****）
  * ****************************************************
  */
-object DefaultConfigConstants {
+object YHDevConfigConstants {
 
     /**
      * 启动页更新资源开关
@@ -123,7 +123,7 @@ object DefaultConfigConstants {
      * true : 可点击跳转
      * false : 不可点击 *
      */
-    const val USER_GROUP_CONTENT : Boolean= false
+    const val USER_GROUP_CONTENT : Boolean= true
     /**
      * 头像是否支持点击上传
      *
@@ -138,6 +138,7 @@ object DefaultConfigConstants {
      * false : 不允许滑动 *
      */
     const val DASHBOARD_ENABLE_HORIZONTAL_SCROLL: Boolean = false
+
     /**
      * 登录过的用户，下次开启应用是否免密登录
      *

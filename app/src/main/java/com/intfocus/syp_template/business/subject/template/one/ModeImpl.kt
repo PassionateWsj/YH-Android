@@ -63,7 +63,7 @@ class ModeImpl : ModeModel {
                     } else {
                         throw Throwable("获取数据失败")
                     }
-//                    response = getJsonData(ctx)
+//                    response = getJsonData(ctx,"kpi_detaldata.json")
                     Log.i(TAG, "analysisDataStartTime:" + TimeUtil.getNowTime())
                     val stringReader = StringReader(response)
                     Log.i(TAG, "analysisDataReaderTime1:" + TimeUtil.getNowTime())
@@ -136,12 +136,12 @@ class ModeImpl : ModeModel {
      * @param context
      * @return
      */
-    private fun getJsonData(context: Context): String {
+     fun getJsonData(context: Context,assetsName:String): String {
         var inputStream: InputStream? = null
         var reader: BufferedReader? = null
         var sb: StringBuilder? = null
         try {
-            inputStream = context.resources.assets.open("kpi_detaldata.json")
+            inputStream = context.resources.assets.open(assetsName)
             //            is = context.getResources().getAssets().open("temple-v1.json");
             reader = BufferedReader(InputStreamReader(inputStream!!))
             sb = StringBuilder()

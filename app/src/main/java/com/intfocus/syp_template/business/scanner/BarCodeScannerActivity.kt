@@ -21,6 +21,7 @@ import android.widget.RelativeLayout
 import android.widget.TextView
 import cn.bingoogolapple.qrcode.core.QRCodeView
 import com.intfocus.syp_template.R
+import com.intfocus.syp_template.business.subject.webapplication.WebApplicationActivity
 import com.intfocus.syp_template.general.constant.ConfigConstants
 import com.intfocus.syp_template.general.data.response.scanner.NearestStoresResult
 import com.intfocus.syp_template.general.data.response.scanner.StoreItem
@@ -247,11 +248,7 @@ class BarCodeScannerActivity : AppCompatActivity(), QRCodeView.Delegate, View.On
 //            isLightOn = false
             isStartActivity = true
 //            checkLightStatus(isLightOn, view!!.tv_input_barcode_light, view!!.cb_input_barcode_light)
-            val intent = Intent(this, ScannerResultActivity::class.java)
-            intent.putExtra(URLs.kCodeInfo, trim)
-            intent.putExtra(URLs.kCodeType, "input")
-            startActivity(intent)
-            popupWindow!!.dismiss()
+            goToUrl(trim, "input",K.kAppCode)
 
         }
 
@@ -269,6 +266,27 @@ class BarCodeScannerActivity : AppCompatActivity(), QRCodeView.Delegate, View.On
                 zbarview_barcode_scanner.startSpot()
             }
         }
+    }
+
+    private fun goToUrl(result: String,codeType:String, type: String) {
+        val mUserSP = getSharedPreferences("UserBean", Context.MODE_PRIVATE)
+        when (type) {
+            "ruishang" -> {
+                val link = K.kBaseUrl + "/websites/cav/quan.html?" + "uid=" + mUserSP.getString("user_num", "") + "&code=" + result + "&groupName=" + mUserSP.getString(URLs.kGroupName, "") + "&groupId=" + mUserSP.getString(URLs.kGroupId, "")
+                val intent = Intent(this, WebApplicationActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+                intent.putExtra(URLs.kBannerName, "核销奖券")
+                intent.putExtra(URLs.kLink, link)
+                startActivity(intent)
+            }
+            else -> {
+                val intent = Intent(this, ScannerResultActivity::class.java)
+                intent.putExtra(URLs.kCodeInfo, result)
+                intent.putExtra(URLs.kCodeType, codeType)
+                startActivity(intent)
+            }
+        }
+        popupWindow!!.dismiss()
     }
 
     override fun onClick(v: View?) {
@@ -312,8 +330,6 @@ class BarCodeScannerActivity : AppCompatActivity(), QRCodeView.Delegate, View.On
                 return
             }
         }
-        val intent = Intent(this, ScannerResultActivity::class.java)
-        intent.putExtra(URLs.kCodeInfo, result)
         val codeType: String = when {
             ConfigConstants.SCAN_BARCODE -> {
                 "barcode"
@@ -322,8 +338,11 @@ class BarCodeScannerActivity : AppCompatActivity(), QRCodeView.Delegate, View.On
                 "qrcode"
             }
         }
-        intent.putExtra(URLs.kCodeType, codeType)
-        startActivity(intent)
+        goToUrl(result, codeType,K.kAppCode)
+//        val intent = Intent(this, ScannerResultActivity::class.java)
+//        intent.putExtra(URLs.kCodeInfo, result)
+//        intent.putExtra(URLs.kCodeType, codeType)
+//        startActivity(intent)
 //        finish()
     }
 

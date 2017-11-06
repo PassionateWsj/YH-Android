@@ -20,6 +20,7 @@ import com.intfocus.syp_template.business.dashboard.DashboardActivity;
 import com.intfocus.syp_template.business.launcher.ConfirmPassCodeActivity;
 import com.intfocus.syp_template.business.login.LoginActivity;
 import com.intfocus.syp_template.general.util.FileUtil;
+import com.intfocus.syp_template.general.util.K;
 import com.intfocus.syp_template.general.util.URLs;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.tencent.tinker.loader.app.ApplicationLike;
@@ -41,8 +42,6 @@ import java.util.concurrent.Executors;
 
 import static com.intfocus.syp_template.general.constant.Constants.BUGLY_APP_ID;
 import static com.intfocus.syp_template.general.util.K.kPushDeviceToken;
-import static com.intfocus.syp_template.general.util.PrivateURLs.kWXAppId;
-import static com.intfocus.syp_template.general.util.PrivateURLs.kWXAppSecret;
 
 /**
  * Created by lijunjie on 16/1/15.
@@ -101,7 +100,7 @@ public class YHApplication extends Application {
         /*
          * 配置微信 appKey
          */
-        PlatformConfig.setWeixin(kWXAppId, kWXAppSecret);
+        PlatformConfig.setWeixin(K.kWXAppId, K.kWXAppSecret);
 
         initXutils();
 
@@ -112,7 +111,7 @@ public class YHApplication extends Application {
 //
 
         /*
-         *  手机待机再激活时发送开屏广播
+         *  手机待机再激活时发送ØØØØ开屏广播
          */
         registerReceiver(broadcastScreenOnAndOff, new IntentFilter(Intent.ACTION_SCREEN_ON));
 

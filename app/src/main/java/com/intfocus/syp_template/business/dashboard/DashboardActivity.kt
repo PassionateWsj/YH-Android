@@ -471,6 +471,11 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
                     intent.putExtra(URLs.kTemplatedId, templateId)
                     startActivity(intent)
                 }
+                "-2"->{
+                    intent = Intent(this, BarCodeScannerActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+                    startActivity(intent)
+                }
                 else -> showTemplateErrorDialog()
             }
         } catch (e: JSONException) {

@@ -51,6 +51,7 @@ import kotlinx.android.synthetic.main.activity_dashboard.*
 import kotlinx.android.synthetic.main.fragment_user.*
 import kotlinx.android.synthetic.main.item_mine_user_top.*
 import kotlinx.android.synthetic.main.items_single_value.*
+import kotlinx.android.synthetic.main.yh_custom_user.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -94,13 +95,14 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
         return rootView
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         val mTypeFace = Typeface.createFromAsset(act.assets, "ALTGOT2N.TTF")
         tv_login_number.typeface = mTypeFace
         tv_report_number.typeface = mTypeFace
         tv_beyond_number.typeface = mTypeFace
         initView()
+        initShow()
     }
 
     override fun onResume() {
@@ -152,7 +154,25 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
         rl_favorite.setOnClickListener { startFavoriteActivity() }
         rl_message.setOnClickListener { startMessageActivity() }
         rl_logout.setOnClickListener { showLogoutPopupWindow(this.context!!) }
-        rl_user_location.setOnClickListener { startUserLocationPage() }
+        rl_user_location.setOnClickListener {
+            if (ConfigConstants.USER_GROUP_CONTENT) {
+                startUserLocationPage()
+            }
+        }
+    }
+
+    private fun initShow() {
+        setViewVisible(ll_single_value, ConfigConstants.USER_CUSTOM)
+        setViewVisible(ll_yh_custom_user, ConfigConstants.USER_CUSTOM)
+        setViewVisible(iv_mine_user_group_arrow, ConfigConstants.USER_GROUP_CONTENT)
+    }
+
+    private fun setViewVisible(view: View, show: Boolean) {
+        if (show) {
+            view.visibility = View.VISIBLE
+        } else {
+            view.visibility = View.GONE
+        }
     }
 
     private fun refreshData() {

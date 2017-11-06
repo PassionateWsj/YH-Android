@@ -35,4 +35,5 @@ object Constants {
     const val PGY_APPID = "d4eaa112b6713a256b1442dd9c078c2d"
     const val UMENG_APP_KEY = "5993ec76310c931d82000bb6"
     const val UMENG_MESSAGE_SECRET = "5db40171b505cc5f14373a9607b4aeb1"
+
 }
