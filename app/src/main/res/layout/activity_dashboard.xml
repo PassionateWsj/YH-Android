@@ -17,7 +17,7 @@
         android:paddingRight="16dp"
         android:visibility="visible">
 
-        <com.intfocus.syp_template.general.view.TabView
+        <com.intfocus.hx.general.view.TabView
             android:id="@+id/tab_kpi"
             style="@style/ToolBarTab"
             android:visibility="visible"
@@ -25,7 +25,7 @@
             app:src="@drawable/tab_overview"
             app:text="@string/text_kpi"/>
 
-        <com.intfocus.syp_template.general.view.TabView
+        <com.intfocus.hx.general.view.TabView
             android:id="@+id/tab_report"
             style="@style/ToolBarTab"
             android:visibility="visible"
@@ -33,7 +33,7 @@
             app:src="@drawable/tab_form"
             app:text="@string/text_report"/>
 
-        <com.intfocus.syp_template.general.view.TabView
+        <com.intfocus.hx.general.view.TabView
             android:id="@+id/tab_workbox"
             style="@style/ToolBarTab"
             android:visibility="visible"
@@ -41,7 +41,7 @@
             app:src="@drawable/tab_special"
             app:text="@string/text_workbox"/>
 
-        <com.intfocus.syp_template.general.view.TabView
+        <com.intfocus.hx.general.view.TabView
             android:id="@+id/tab_mine"
             style="@style/ToolBarTab"
             android:visibility="visible"
@@ -52,7 +52,7 @@
 
     </LinearLayout>
 
-    <com.intfocus.syp_template.general.view.NoScrollViewPager
+    <com.intfocus.hx.general.view.NoScrollViewPager
         android:id="@+id/content_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
