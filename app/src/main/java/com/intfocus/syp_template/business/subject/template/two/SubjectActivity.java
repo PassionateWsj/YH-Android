@@ -534,7 +534,7 @@ public class SubjectActivity extends BaseActivity implements FilterMenuAdapter.F
                         urlKey = urlString.contains("?") ? TextUtils.split(urlString, "?")[0] : urlString;
                         ApiHelper.clearResponseHeader(urlKey, assetsPath);
                     }
-                    urlKey = String.format(K.kReportDataAPIPath, K.kBaseUrl, groupID, templateID, objectID);
+                    urlKey = String.format(K.K_REPORT_DATA_API_PATH, K.kBaseUrl, groupID, templateID, objectID);
                     ApiHelper.clearResponseHeader(urlKey, FileUtil.sharedPath(mAppContext));
                     subscriber.onNext(ApiHelper.reportData(mAppContext, groupID, templateID, objectID));
                 subscriber.onCompleted();
@@ -666,7 +666,7 @@ public class SubjectActivity extends BaseActivity implements FilterMenuAdapter.F
         @JavascriptInterface
         public void storeTabIndex(final String pageName, final int tabIndex) {
             try {
-                String filePath = FileUtil.dirPath(mAppContext, K.kConfigDirName, K.kTabIndexConfigFileName);
+                String filePath = FileUtil.dirPath(mAppContext, K.K_CONFIG_DIR_NAME, K.K_TAB_INDEX_CONFIG_FILE_NAME);
 
                 JSONObject config = new JSONObject();
                 if ((new File(filePath).exists())) {
@@ -685,7 +685,7 @@ public class SubjectActivity extends BaseActivity implements FilterMenuAdapter.F
         public int restoreTabIndex(final String pageName) {
             int tabIndex = 0;
             try {
-                String filePath = FileUtil.dirPath(mAppContext, K.kConfigDirName, K.kTabIndexConfigFileName);
+                String filePath = FileUtil.dirPath(mAppContext, K.K_CONFIG_DIR_NAME, K.K_TAB_INDEX_CONFIG_FILE_NAME);
 
                 JSONObject config = new JSONObject();
                 if ((new File(filePath).exists())) {

@@ -88,7 +88,7 @@ public class URLs implements Serializable {
      */
     public static String currentUIVersion(Context mContext) {
         //try {
-        //    String betaConfigPath = FileUtil.dirPath(mContext, K.kConfigDirName, K.kBetaConfigFileName);
+        //    String betaConfigPath = FileUtil.dirPath(mContext, K.K_CONFIG_DIR_NAME, K.K_BETA_CONFIG_FILE_NAME);
         //    JSONObject betaJSON = new JSONObject();
         //    if (new File(betaConfigPath).exists()) {
         //        betaJSON = FileUtil.readConfigFile(betaConfigPath);

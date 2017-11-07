@@ -10,7 +10,7 @@ package com.intfocus.syp_template.general.constant
  *          仅列出了部分 功能&界面展示 的开关，资源替换等需要额外配置（参考文档 ****）
  * ****************************************************
  */
-object ConfigConstants {
+object RSConfigConstants {
     /**
      * 蒲公英 AppId
      */
@@ -44,6 +44,13 @@ object ConfigConstants {
      * false : 不展示
      */
     const val GUIDE_SHOW: Boolean = false
+    /**
+     * 是否显示登陆页底部 忘记密码 | 申请注册
+     *
+     * true : 显示 *
+     * false : 不显示
+     */
+    const val UNABLE_LOGIN_SHOW: Boolean = false
     /**
      * 是否提供扫码功能 (Kpi 概况页签)
      *

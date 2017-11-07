@@ -80,7 +80,7 @@ class SettingPreferenceActivity : BaseActivity() {
             return
 
         val sharedPath = FileUtil.sharedPath(this)
-        val cachePath = String.format("%s/%s", FileUtil.basePath(this), K.kCachedDirName)
+        val cachePath = String.format("%s/%s", FileUtil.basePath(this), K.K_CACHED_DIR_NAME)
         Observable.just(sharedPath)
                 .subscribeOn(Schedulers.io())
                 .map { path ->

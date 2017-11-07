@@ -26,12 +26,12 @@ class KpiMode(var ctx: Context) : AbstractMode() {
     var gson = Gson()
 
     private fun getUrl(): String {
-        return String.format(K.kKPIApiDataPath, K.kBaseUrl,
+        return String.format(K.K_KPI_API_DATA_PATH, K.kBaseUrl,
                 mUserSP.getString(URLs.kGroupId, "0"), mUserSP.getString(URLs.kRoleId, "0"))
     }
 
     private fun getMessageUrl(): String {
-        return String.format(K.kMessageDataMobilePath, K.kBaseUrl, mUserSP.getString(URLs.kRoleId, "0"),
+        return String.format(K.K_MESSAGE_DATA_MOBILE_PATH, K.kBaseUrl, mUserSP.getString(URLs.kRoleId, "0"),
                 mUserSP.getString(URLs.kGroupId, "0"),
                 mUserSP.getString("user_id", "0"))
     }

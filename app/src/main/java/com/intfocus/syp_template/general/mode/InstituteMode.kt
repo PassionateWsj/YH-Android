@@ -34,7 +34,7 @@ class InstituteMode(var ctx: Context) : AbstractMode() {
      * 获取列表URL
      */
     fun getUrl(): String {
-        var url = String.format(K.KInstituteListPath, K.kBaseUrl,
+        var url = String.format(K.K_INSTITUTE_LIST_PATH, K.kBaseUrl,
                 mUserSP.getString(URLs.kUserNum, ""), page, 10.toString(), keyWorld)
         return url
     }
@@ -114,7 +114,7 @@ class InstituteMode(var ctx: Context) : AbstractMode() {
      */
     fun operatingCollection(articleId: String, favouriteStatus: String) {
         Thread(Runnable {
-            var collectionUrl = String.format(K.KInstituteCollectionPath, K.kBaseUrl,
+            var collectionUrl = String.format(K.K_INSTITUTE_COLLECTION_PATH, K.kBaseUrl,
                     mUserSP.getString(URLs.kUserNum, ""), articleId, favouriteStatus)
             if (!collectionUrl.isEmpty()) {
                 val response = HttpUtil.httpPost(collectionUrl, HashMap<String, String>())

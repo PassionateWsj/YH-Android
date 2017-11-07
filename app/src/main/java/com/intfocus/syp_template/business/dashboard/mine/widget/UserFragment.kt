@@ -42,7 +42,7 @@ import com.intfocus.syp_template.general.net.RetrofitUtil
 import com.intfocus.syp_template.general.util.ActionLogUtil
 import com.intfocus.syp_template.general.util.DisplayUtil
 import com.intfocus.syp_template.general.util.ImageUtil.*
-import com.intfocus.syp_template.general.util.K.kUserDeviceId
+import com.intfocus.syp_template.general.util.K.K_USER_DEVICE_ID
 import com.intfocus.syp_template.general.util.ToastUtils
 import com.intfocus.syp_template.general.util.URLs
 import com.taobao.accs.utl.UtilityImpl.isNetworkConnected
@@ -329,7 +329,7 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
         val mEditor = act.getSharedPreferences("SettingPreference", MODE_PRIVATE).edit()
         mEditor.putBoolean("ScreenLock", false).apply()
         // 退出登录 POST 请求
-        RetrofitUtil.getHttpService(ctx).userLogout(mUserSP.getString(kUserDeviceId, "0"))
+        RetrofitUtil.getHttpService(ctx).userLogout(mUserSP.getString(K_USER_DEVICE_ID, "0"))
                 .compose(RetrofitUtil.CommonOptions<BaseResult>())
                 .subscribe(object : CodeHandledSubscriber<BaseResult>() {
                     override fun onBusinessNext(data: BaseResult?) {

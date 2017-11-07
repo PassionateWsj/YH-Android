@@ -27,7 +27,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 import static android.content.Context.MODE_PRIVATE;
-import static com.intfocus.syp_template.general.util.K.kCurrentUIVersion;
+import static com.intfocus.syp_template.general.util.K.K_CURRENT_UI_VERSION;
 import static com.intfocus.syp_template.general.util.URLs.kGroupId;
 import static com.intfocus.syp_template.general.util.URLs.kRoleId;
 
@@ -49,13 +49,13 @@ public class MeterMode extends AbstractMode {
 
     public String getKpiUrl() {
         mUserSP = ctx.getSharedPreferences("UserBean", MODE_PRIVATE);
-        String url = String.format(K.kKPIMobileDataPath, K.kBaseUrl, mUserSP.getString(kCurrentUIVersion, "v2"),
+        String url = String.format(K.K_KPI_MOBILE_DATA_PATH, K.kBaseUrl, mUserSP.getString(K_CURRENT_UI_VERSION, "v2"),
                 String.valueOf(mUserSP.getString(kGroupId, "0")), String.valueOf(mUserSP.getString(kRoleId, "0")));
         return url;
     }
 
     public String getMessageUrl() {
-        String url = String.format(K.kMessageDataMobilePath, K.kBaseUrl, UserBean.INSTANCE.getUser_role_id(),
+        String url = String.format(K.K_MESSAGE_DATA_MOBILE_PATH, K.kBaseUrl, UserBean.INSTANCE.getUser_role_id(),
                 UserBean.INSTANCE.getUser_group_id(),
                 UserBean.INSTANCE.getUser_id());
         return url;

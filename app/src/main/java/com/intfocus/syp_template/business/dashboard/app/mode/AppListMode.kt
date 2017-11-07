@@ -27,7 +27,7 @@ class AppListMode(var ctx: Context, var type: String?) : AbstractMode() {
     var gson = Gson()
 
     fun getUrl(): String {
-        var url = String.format(K.KAppListPath, K.kBaseUrl,
+        var url = String.format(K.K_APP_LIST_PATH, K.kBaseUrl,
                 mUserSP.getString(kGroupId, "0"), mUserSP.getString(kRoleId, "0"))
         return url
     }

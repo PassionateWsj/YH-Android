@@ -10,7 +10,7 @@ package com.intfocus.syp_template.general.constant
  *          仅列出了部分 功能&界面展示 的开关，资源替换等需要额外配置（参考文档 ****）
  * ****************************************************
  */
-object DefaultConfigConstants {
+object ConfigConstants {
 
     /**
      * 启动页更新资源开关
@@ -33,6 +33,13 @@ object DefaultConfigConstants {
      * false : 不展示
      */
     const val GUIDE_SHOW: Boolean = true
+    /**
+     * 是否显示登陆页底部 忘记密码 | 申请注册
+     *
+     * true : 显示 *
+     * false : 不显示
+     */
+    const val UNABLE_LOGIN_SHOW: Boolean = true
     /**
      * 是否提供扫码功能 (Kpi 概况页签)
      *
@@ -88,14 +95,14 @@ object DefaultConfigConstants {
      * true : 显示 *
      * false : 不显示
      */
-    const val KPI_SHOW : Boolean= true
+    const val KPI_SHOW: Boolean = true
     /**
      * 显示 Report 报表页签
      *
      * true : 显示 *
      * false : 不显示
      */
-    const val REPORT_SHOW : Boolean= true
+    const val REPORT_SHOW: Boolean = true
     /**
      * 显示 WorkBox 工具箱页签
      *
@@ -109,21 +116,21 @@ object DefaultConfigConstants {
      * true : 1 个
      * false : 3 个 *
      */
-    const val ONLY_USER_SHOW : Boolean= false
+    const val ONLY_USER_SHOW: Boolean = false
     /**
      * 我的页面是否自定义
      *
      * true : 用户自定义添加界面 *
      * false : 显示用户基本信息
      */
-    const val USER_CUSTOM : Boolean= true
+    const val USER_CUSTOM: Boolean = true
     /**
      * 归属部门是否有内容
      *
      * true : 可点击跳转
      * false : 不可点击 *
      */
-    const val USER_GROUP_CONTENT : Boolean= false
+    const val USER_GROUP_CONTENT: Boolean = false
     /**
      * 头像是否支持点击上传
      *

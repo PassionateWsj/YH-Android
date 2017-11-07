@@ -28,7 +28,7 @@ class NoticeMode(var ctx: Context) : AbstractMode() {
     var errorMsg: String? = "未知异常"
 
     fun getUrl(): String {
-        var url = String.format(K.kNoticeListPath, K.kBaseUrl,
+        var url = String.format(K.K_NOTICE_LIST_PATH, K.kBaseUrl,
                 mUserSP.getString(URLs.kUserNum, ""), typeStr, page, 10.toString())
         return url
     }

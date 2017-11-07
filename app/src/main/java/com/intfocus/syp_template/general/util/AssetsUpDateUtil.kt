@@ -34,7 +34,7 @@ object AssetsUpDateUtil {
 
     fun checkAssetsUpdate(ctx: Context, progressBar: NumberProgressBar?, listener: OnCheckAssetsUpdateResultListener) {
 
-        val sharedPath = String.format("%s/%s", FileUtil.basePath(ctx), K.kSharedDirName)
+        val sharedPath = String.format("%s/%s", FileUtil.basePath(ctx), K.K_SHARED_DIR_NAME)
         LogUtil.d(TAG, "MainThread:::" + Thread.currentThread().name)
         // 获取静态资源 MD5
         RetrofitUtil.getHttpService(ctx).assetsMD5
@@ -77,7 +77,7 @@ object AssetsUpDateUtil {
                                     // 判断更新的 MD5 值是否与本地存储的 MD5 值相等
                                     // 不相等：下载最新 zip
                                     if (!assetsMD5sMap[assetName + "_md5"].equals(mAssetsSP.getString(assetName + "_md5", ""))) {
-                                        val fileUrl = K.kDownloadAssetsZip + "?api_token=d93c1a0dc03fe4ffad55a82febd1c94f&filename=" + assetName + ".zip"
+                                        val fileUrl = K.K_DOWNLOAD_ASSETS_ZIP + "?api_token=d93c1a0dc03fe4ffad55a82febd1c94f&filename=" + assetName + ".zip"
                                         val response = Retrofit.Builder()
                                                 .baseUrl(K.kBaseUrl)
                                                 .build()
@@ -134,17 +134,17 @@ object AssetsUpDateUtil {
 
     fun checkFirstSetup(ctx: Context, listener: OnCheckAssetsUpdateResultListener) {
         // 判断目标目录是否存在
-        makeSureFolderExist(ctx, K.kSharedDirName)
-        makeSureFolderExist(ctx, K.kCachedDirName)
+        makeSureFolderExist(ctx, K.K_SHARED_DIR_NAME)
+        makeSureFolderExist(ctx, K.K_CACHED_DIR_NAME)
         val mAssetsSP = ctx.getSharedPreferences("AssetsMD5", Context.MODE_PRIVATE)
         val mAssetsSPEdit = mAssetsSP.edit()
         Observable.just("assets", "loading")
                 .subscribeOn(Schedulers.io())
                 .map { assetsName ->
-                    FileUtil.copyAssetFile(ctx, assetsName + ".zip", String.format("%s/%s/%s", FileUtil.basePath(ctx), K.kSharedDirName, assetsName + ".zip"))
+                    FileUtil.copyAssetFile(ctx, assetsName + ".zip", String.format("%s/%s/%s", FileUtil.basePath(ctx), K.K_SHARED_DIR_NAME, assetsName + ".zip"))
                     val isUnZipSuccess = FileUtil.unZipAssets(ctx, assetsName)
                     if (isUnZipSuccess) {
-                        val mD5 = FileUtil.MD5(File(String.format("%s/%s/%s", FileUtil.basePath(ctx), K.kSharedDirName, assetsName + ".zip")))
+                        val mD5 = FileUtil.MD5(File(String.format("%s/%s/%s", FileUtil.basePath(ctx), K.K_SHARED_DIR_NAME, assetsName + ".zip")))
                         return@map mAssetsSPEdit.putString(assetsName + "_md5", mD5).commit()
                     }
                     return@map false

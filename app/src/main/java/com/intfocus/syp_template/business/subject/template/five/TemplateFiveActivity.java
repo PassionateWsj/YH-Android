@@ -241,7 +241,7 @@ public class TemplateFiveActivity extends BaseActivity implements ColumAdapter.C
         protected String doInBackground(String... params) {
             String response = null;
             String jsonFileName = String.format("group_%s_template_%s_report_%s.json", groupID, 5, objectID);
-            String jsonFilePath = FileUtil.dirPath(mContext, K.kCachedDirName, jsonFileName);
+            String jsonFilePath = FileUtil.dirPath(mContext, K.K_CACHED_DIR_NAME, jsonFileName);
             boolean dataState = ApiHelper.reportJsonData(mContext, groupID, "5", objectID);
             if (dataState || new File(jsonFilePath).exists()) {
                 response = FileUtil.readFile(jsonFilePath);

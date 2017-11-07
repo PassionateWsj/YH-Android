@@ -44,16 +44,16 @@ public class ApiHelper {
 //            params.put("device", device);
 //            params.put("coordinate", mUserSP.getString("location", "0,0"));
 //            PackageInfo packageInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
-//            params.put(K.kAppVersion, String.format("a%s", packageInfo.versionName));
+//            params.put(K.K_APP_VERSION, String.format("a%s", packageInfo.versionName));
 //
-//            mUserSP.edit().putString(K.kAppVersion, String.format("a%s", packageInfo.versionName)).commit();
+//            mUserSP.edit().putString(K.K_APP_VERSION, String.format("a%s", packageInfo.versionName)).commit();
 //            mUserSP.edit().putString("os_version", "android" + Build.VERSION.RELEASE).commit();
 //            mUserSP.edit().putString("device_info", android.os.Build.MODEL).commit();
 //
 //            Log.i("DeviceParams", params.toString());
 //
 //            Map<String, String> response = HttpUtil.httpPost(urlString, params);
-//            String userConfigPath = String.format("%s/%s", FileUtil.basePath(context), K.kUserConfigFileName);
+//            String userConfigPath = String.format("%s/%s", FileUtil.basePath(context), K.K_USER_CONFIG_FILE_NAME);
 //            JSONObject userJSON = FileUtil.readConfigFile(userConfigPath);
 //            userJSON.put(URLs.kPassword, password);
 //            userJSON.put(URLs.kIsLogin, response.get(URLs.kCode).equals("200"));
@@ -61,7 +61,7 @@ public class ApiHelper {
 //            if (response.get(URLs.kCode).equals("400")) {
 //                return "请检查网络环境";
 //            } else if (response.get(URLs.kCode).equals("401")) {
-//                return new JSONObject(response.get(URLs.kBody)).getString(kInfo);
+//                return new JSONObject(response.get(URLs.kBody)).getString(K_INFO);
 //            } else if (response.get(URLs.kCode).equals("408")) {
 //                return "连接超时";
 //            } else if (!response.get(URLs.kCode).equals("200")) {
@@ -72,7 +72,7 @@ public class ApiHelper {
 //            userJSON = ApiHelper.mergeJson(userJSON, responseJSON);
 //            FileUtil.writeFile(userConfigPath, userJSON.toString());
 //
-//            String settingsConfigPath = FileUtil.dirPath(context, K.kConfigDirName, K.kSettingConfigFileName);
+//            String settingsConfigPath = FileUtil.dirPath(context, K.K_CONFIG_DIR_NAME, K.K_SETTING_CONFIG_FILE_NAME);
 //            if ((new File(settingsConfigPath)).exists()) {
 //                JSONObject settingJSON = FileUtil.readConfigFile(settingsConfigPath);
 //                userJSON.put(URLs.kUseGesturePassword, settingJSON.has(URLs.kUseGesturePassword) ? settingJSON.getBoolean(URLs.kUseGesturePassword) : false);
@@ -83,22 +83,22 @@ public class ApiHelper {
 //            }
 //
 //            JSONObject assetsJSON = userJSON.getJSONObject(URLs.kAssets);
-//            userJSON.put(kFontsMd5, assetsJSON.getString(kFontsMd5));
-//            userJSON.put(kImagesMd5, assetsJSON.getString(kImagesMd5));
-//            userJSON.put(kIconsMd5, assetsJSON.getString(kIconsMd5));
-//            userJSON.put(K.kStylesheetsMd5, assetsJSON.getString(K.kStylesheetsMd5));
-//            userJSON.put(K.kJavaScriptsMd5, assetsJSON.getString(K.kJavaScriptsMd5));
+//            userJSON.put(K_FONTS_MD5, assetsJSON.getString(K_FONTS_MD5));
+//            userJSON.put(K_IMAGES_MD5, assetsJSON.getString(K_IMAGES_MD5));
+//            userJSON.put(K_ICONS_MD5, assetsJSON.getString(K_ICONS_MD5));
+//            userJSON.put(K.K_STYLESHEETS_MD5, assetsJSON.getString(K.K_STYLESHEETS_MD5));
+//            userJSON.put(K.K_JAVA_SCRIPTS_MD5, assetsJSON.getString(K.K_JAVA_SCRIPTS_MD5));
 //
 //            FileUtil.writeFile(userConfigPath, userJSON.toString());
-//            mUserSP.edit().putString(kUserName, userJSON.getString(URLs.kUserName)).commit();
+//            mUserSP.edit().putString(K_USER_NAME, userJSON.getString(URLs.K_USER_NAME)).commit();
 //            mUserSP.edit().putInt(kGroupId, userJSON.getInt(kGroupId)).commit();
 //            mUserSP.edit().putInt(kRoleId, userJSON.getInt(kRoleId)).commit();
-//            mUserSP.edit().putInt(kUserId, userJSON.getInt(kUserId)).commit();
+//            mUserSP.edit().putInt(K_USER_ID, userJSON.getInt(K_USER_ID)).commit();
 //            mUserSP.edit().putString(URLs.kRoleName, userJSON.getString(URLs.kRoleName)).commit();
 //            mUserSP.edit().putString(URLs.kGroupName, userJSON.getString(URLs.kGroupName)).commit();
 //            mUserSP.edit().putString(kUserNum, userJSON.getString(kUserNum)).commit();
-//            mUserSP.edit().putInt(kUserDeviceId, userJSON.getInt(K.kUserDeviceId)).commit();
-//            mUserSP.edit().putString(kCurrentUIVersion, "v2").commit();
+//            mUserSP.edit().putInt(K_USER_DEVICE_ID, userJSON.getInt(K.K_USER_DEVICE_ID)).commit();
+//            mUserSP.edit().putString(K_CURRENT_UI_VERSION, "v2").commit();
 //
 //            if (response.get(URLs.kCode).equals("200")) {
 //                // 第三方消息推送，设备标识
@@ -106,7 +106,7 @@ public class ApiHelper {
 //
 //                FileUtil.writeFile(settingsConfigPath, userJSON.toString());
 //            } else {
-//                responseState = responseJSON.getString(kInfo);
+//                responseState = responseJSON.getString(K_INFO);
 //            }
 //        } catch (Exception e) {
 //            e.printStackTrace();
@@ -119,18 +119,18 @@ public class ApiHelper {
      *  获取报表网页数据
      */
     public static boolean reportData(Context context, String groupID, String templateID, String reportID) {
-//        String urlString = String.format(K.kReportDataAPIPath, K.kBaseUrl, groupID, templateID, reportID);
+//        String urlString = String.format(K.K_REPORT_DATA_API_PATH, K.kBaseUrl, groupID, templateID, reportID);
         // %s/api/v1.1/report/data?api_token=%s&group_id=%s&template_id=%s&report_id=%s&disposition=zip
-        String urlString = String.format(K.KReportZipData, K.kBaseUrl, URLs.MD5(K.ANDROID_API_KEY + K.KReportBaseApi + K.ANDROID_API_KEY), groupID, templateID, reportID);
+        String urlString = String.format(K.K_REPORT_ZIP_DATA, K.kBaseUrl, URLs.MD5(K.ANDROID_API_KEY + K.K_REPORT_BASE_API + K.ANDROID_API_KEY), groupID, templateID, reportID);
         String assetsPath = FileUtil.sharedPath(context);
-        String headerPath = String.format("%s/%s", assetsPath, K.kCachedHeaderConfigFileName);
+        String headerPath = String.format("%s/%s", assetsPath, K.K_CACHED_HEADER_CONFIG_FILE_NAME);
         File headerFile = new File(headerPath);
         if (headerFile.exists()) {
             headerFile.delete();
         }
         Map<String, String> headers = ApiHelper.checkResponseHeader(urlString, assetsPath);
         String jsFileName = String.format("group_%s_template_%s_report_%s.js", groupID, templateID, reportID);
-        String cachedZipPath = FileUtil.dirPath(context, K.kCachedDirName, String.format("%s.zip", jsFileName));
+        String cachedZipPath = FileUtil.dirPath(context, K.K_CACHED_DIR_NAME, String.format("%s.zip", jsFileName));
 
 
         Map<String, String> response = HttpUtil.downloadZip(urlString, cachedZipPath, headers);
@@ -166,9 +166,9 @@ public class ApiHelper {
             ApiHelper.storeResponseHeader(urlString, assetsPath, response);
 
             InputStream zipStream = new FileInputStream(cachedZipPath);
-            FileUtil.unZip(zipStream, FileUtil.dirPath(context, K.kCachedDirName), true);
+            FileUtil.unZip(zipStream, FileUtil.dirPath(context, K.K_CACHED_DIR_NAME), true);
             zipStream.close();
-            String jsFilePath = FileUtil.dirPath(context, K.kCachedDirName, jsFileName);
+            String jsFilePath = FileUtil.dirPath(context, K.K_CACHED_DIR_NAME, jsFileName);
             File jsFile = new File(jsFilePath);
             if (jsFile.exists()) {
                 FileUtil.copyFile(jsFilePath, javascriptPath);
@@ -193,13 +193,13 @@ public class ApiHelper {
      *  获取报表 JSON 数据
      */
     public static boolean reportJsonData(Context context, String groupID, String templateID, String reportID) {
-        String urlString = String.format(K.kReportJsonDataAPIPath, K.kBaseUrl, groupID, templateID, reportID);
+        String urlString = String.format(K.K_REPORT_JSON_DATA_API_PATH, K.kBaseUrl, groupID, templateID, reportID);
         String assetsPath = FileUtil.sharedPath(context);
         Map<String, String> headers = ApiHelper.checkResponseHeader(urlString, assetsPath);
         String jsonFileName = String.format("group_%s_template_%s_report_%s.json", groupID, templateID, reportID);
-        String cachedZipPath = FileUtil.dirPath(context, K.kCachedDirName, String.format("%s.zip", jsonFileName));
+        String cachedZipPath = FileUtil.dirPath(context, K.K_CACHED_DIR_NAME, String.format("%s.zip", jsonFileName));
         Map<String, String> response = HttpUtil.downloadZip(urlString, cachedZipPath, headers);
-        String jsonFilePath = FileUtil.dirPath(context, K.kCachedDirName, jsonFileName);
+        String jsonFilePath = FileUtil.dirPath(context, K.K_CACHED_DIR_NAME, jsonFileName);
 
         //添加code字段是否存在。原因:网络不好的情况下response为{}
         if (!response.containsKey(URLs.kCode)) {
@@ -225,7 +225,7 @@ public class ApiHelper {
             ApiHelper.storeResponseHeader(urlString, assetsPath, response);
 
             InputStream zipStream = new FileInputStream(cachedZipPath);
-            FileUtil.unZip(zipStream, FileUtil.dirPath(context, K.kCachedDirName), true);
+            FileUtil.unZip(zipStream, FileUtil.dirPath(context, K.K_CACHED_DIR_NAME), true);
             zipStream.close();
         } catch (IOException e) {
             e.printStackTrace();
@@ -237,7 +237,7 @@ public class ApiHelper {
 
 
     public static void deleteHeadersFile(String assetsPath) {
-        String headersFilePath = String.format("%s/%s", assetsPath, K.kCachedHeaderConfigFileName);
+        String headersFilePath = String.format("%s/%s", assetsPath, K.K_CACHED_HEADER_CONFIG_FILE_NAME);
         if ((new File(headersFilePath)).exists()) {
             new File(headersFilePath).delete();
         }
@@ -286,7 +286,7 @@ public class ApiHelper {
      * @param 缓存头文件相对文件夹
      */
     public static void clearResponseHeader(String urlKey, String assetsPath) {
-        String headersFilePath = String.format("%s/%s", assetsPath, K.kCachedHeaderConfigFileName);
+        String headersFilePath = String.format("%s/%s", assetsPath, K.K_CACHED_HEADER_CONFIG_FILE_NAME);
         if (!(new File(headersFilePath)).exists()) {
             return;
         }
@@ -316,7 +316,7 @@ public class ApiHelper {
         try {
             JSONObject headersJSON = new JSONObject();
 
-            String headersFilePath = String.format("%s/%s", assetsPath, K.kCachedHeaderConfigFileName);
+            String headersFilePath = String.format("%s/%s", assetsPath, K.K_CACHED_HEADER_CONFIG_FILE_NAME);
             if ((new File(headersFilePath)).exists()) {
                 headersJSON = FileUtil.readConfigFile(headersFilePath);
             }
@@ -350,7 +350,7 @@ public class ApiHelper {
         try {
             JSONObject headersJSON = new JSONObject();
 
-            String headersFilePath = String.format("%s/%s", assetsPath, K.kCachedHeaderConfigFileName);
+            String headersFilePath = String.format("%s/%s", assetsPath, K.K_CACHED_HEADER_CONFIG_FILE_NAME);
             if ((new File(headersFilePath)).exists()) {
                 headersJSON = FileUtil.readConfigFile(headersFilePath);
             }
@@ -402,9 +402,9 @@ public class ApiHelper {
     public static void downloadFile(Context context, String urlString, File outputFile) {
         try {
             URL url = new URL(urlString);
-            String headerPath = String.format("%s/%s/%s", FileUtil.basePath(context), K.kCachedDirName, K.kCachedHeaderConfigFileName);
+            String headerPath = String.format("%s/%s/%s", FileUtil.basePath(context), K.K_CACHED_DIR_NAME, K.K_CACHED_HEADER_CONFIG_FILE_NAME);
 
-            File cachePath = new File(String.format("%s/%s", FileUtil.basePath(context), K.kCachedDirName));
+            File cachePath = new File(String.format("%s/%s", FileUtil.basePath(context), K.K_CACHED_DIR_NAME));
             if (!cachePath.exists()) {
                 cachePath.mkdirs();
             }

@@ -11,8 +11,8 @@ import com.intfocus.syp_template.general.net.ApiException
 import com.intfocus.syp_template.general.net.CodeHandledSubscriber
 import com.intfocus.syp_template.general.net.RetrofitUtil
 import com.intfocus.syp_template.general.util.*
-import com.intfocus.syp_template.general.util.K.kUserDeviceId
-import com.intfocus.syp_template.general.util.K.kUserId
+import com.intfocus.syp_template.general.util.K.K_USER_DEVICE_ID
+import com.intfocus.syp_template.general.util.K.K_USER_ID
 import com.zbl.lib.baseframe.core.AbstractMode
 import okhttp3.MediaType
 import okhttp3.MultipartBody
@@ -57,11 +57,11 @@ class UserInfoMode(var ctx: Context) : AbstractMode() {
             var format = SimpleDateFormat("yyyyMMddHHmmss")
             var date = Date(System.currentTimeMillis())
             File(imgPath).delete()
-            var gravatarImgPath = FileUtil.dirPath(ctx, K.kConfigDirName, K.kAppCode + "_" + mUserSP.getString(URLs.kUserNum, "") + "_" + format.format(date) + ".jpg")
+            var gravatarImgPath = FileUtil.dirPath(ctx, K.K_CONFIG_DIR_NAME, K.kAppCode + "_" + mUserSP.getString(URLs.kUserNum, "") + "_" + format.format(date) + ".jpg")
             FileUtil.saveImage(gravatarImgPath, bitmap)
             var requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), File(gravatarImgPath))
-            var multiPartBody = MultipartBody.Part.createFormData("gravatar", mUserSP.getString(kUserId, "0") + "icon", requestBody)
-            RetrofitUtil.getHttpService(ctx).userIconUpload(mUserSP.getString(kUserDeviceId, "0"), mUserSP.getString(URLs.kUserNum, "0"), multiPartBody)
+            var multiPartBody = MultipartBody.Part.createFormData("gravatar", mUserSP.getString(K_USER_ID, "0") + "icon", requestBody)
+            RetrofitUtil.getHttpService(ctx).userIconUpload(mUserSP.getString(K_USER_DEVICE_ID, "0"), mUserSP.getString(URLs.kUserNum, "0"), multiPartBody)
                     .compose(RetrofitUtil.CommonOptions<BaseResult>())
                     .subscribe(object : CodeHandledSubscriber<BaseResult>() {
                         override fun onBusinessNext(data: BaseResult?) {
@@ -83,13 +83,13 @@ class UserInfoMode(var ctx: Context) : AbstractMode() {
         try {
             val configJSON = JSONObject()
             configJSON.put("is_login", isLogin)
-            val userConfigPath = String.format("%s/%s", FileUtil.basePath(ctx), K.kUserConfigFileName)
+            val userConfigPath = String.format("%s/%s", FileUtil.basePath(ctx), K.K_USER_CONFIG_FILE_NAME)
             var userJSON = FileUtil.readConfigFile(userConfigPath)
 
             userJSON = ApiHelper.mergeJson(userJSON, configJSON)
             FileUtil.writeFile(userConfigPath, userJSON.toString())
 
-            val settingsConfigPath = FileUtil.dirPath(ctx, K.kConfigDirName, K.kSettingConfigFileName)
+            val settingsConfigPath = FileUtil.dirPath(ctx, K.K_CONFIG_DIR_NAME, K.K_SETTING_CONFIG_FILE_NAME)
             FileUtil.writeFile(settingsConfigPath, userJSON.toString())
         } catch (e: IOException) {
             e.printStackTrace()

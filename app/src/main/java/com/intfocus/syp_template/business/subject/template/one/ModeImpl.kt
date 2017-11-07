@@ -56,7 +56,7 @@ class ModeImpl : ModeModel {
                 .subscribeOn(Schedulers.io())
                 .map {
                     val response: String?
-                    val jsonFilePath = FileUtil.dirPath(ctx, K.kCachedDirName, it)
+                    val jsonFilePath = FileUtil.dirPath(ctx, K.K_CACHED_DIR_NAME, it)
                     val dataState = ApiHelper.reportJsonData(ctx, groupId, "1", reportId)
                     if (dataState || File(jsonFilePath).exists()) {
                         response = FileUtil.readFile(jsonFilePath)
