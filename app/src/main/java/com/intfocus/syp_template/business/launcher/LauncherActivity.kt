@@ -173,6 +173,7 @@ class LauncherActivity : Activity(), Animation.AnimationListener {
                 finish()
             }
             else -> {
+
                 intent = Intent(this, LoginActivity::class.java)
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK and Intent.FLAG_ACTIVITY_SINGLE_TOP)
                 this.startActivity(intent)

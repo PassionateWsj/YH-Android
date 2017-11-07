@@ -8,13 +8,13 @@ object Constants {
     /**
      * 正式环境
      */
-//        const val BUGLY_APP_ID = "dc170466f6"
-//        const val GAODE_MAP_APP_KEY = "8ca31ea2137dd24eb49a261bdd9ab844"
-//        const val WEIXIN_APP_ID = "wx50edd59f119da198"
-//        const val WEIXIN_APP_SECET = "e8fa301d58ff838b93268eb0e6b14ccb"
-//        const val PGY_APPID = "c586f556015342bcf89f8300ccfbebc2"
-//        const val UMENG_APP_KEY = "c586f556015342bcf89f8300ccfbebc2"
-//        const val UMENG_MESSAGE_SECRET = "c586f556015342bcf89f8300ccfbebc2"
+//    const val BUGLY_APP_ID = "dc170466f6"
+//    const val GAODE_MAP_APP_KEY = "8ca31ea2137dd24eb49a261bdd9ab844"
+//    const val WEIXIN_APP_ID = "wx50edd59f119da198"
+//    const val WEIXIN_APP_SECET = "e8fa301d58ff838b93268eb0e6b14ccb"
+//    const val PGY_APPID = "c586f556015342bcf89f8300ccfbebc2"
+//    const val UMENG_APP_KEY = "c586f556015342bcf89f8300ccfbebc2"
+//    const val UMENG_MESSAGE_SECRET = "c586f556015342bcf89f8300ccfbebc2"
 
     /**
      * 测试环境

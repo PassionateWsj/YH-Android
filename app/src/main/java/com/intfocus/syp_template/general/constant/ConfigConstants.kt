@@ -149,7 +149,7 @@ object ConfigConstants {
      * 登录过的用户，下次开启应用是否免密登录
      *
      * true : 下次启动免密登录
-     * false : ^ *
+     * false : 每次重新启动客户端都需输入密码 *
      */
     const val LOGIN_WITH_LAST_USER: Boolean = false
 

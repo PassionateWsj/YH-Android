@@ -6,8 +6,6 @@ import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 
-import static com.intfocus.syp_template.general.constant.Constants.GAODE_MAP_APP_KEY;
-
 /**
  * ****************************************************
  * @author jameswong
@@ -39,7 +37,7 @@ public class MapUtil {
     private MapUtil(Context ctx) {
         //初始化client
         locationClient = new AMapLocationClient(ctx);
-        AMapLocationClient.setApiKey(GAODE_MAP_APP_KEY);
+        AMapLocationClient.setApiKey(K.GAODE_MAP_APP_KEY);
         AMapLocationClientOption locationOption = getDefaultOption();
         //设置定位参数
         locationClient.setLocationOption(locationOption);
