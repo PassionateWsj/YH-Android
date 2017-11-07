@@ -21,11 +21,11 @@
             <ImageView
                 android:id="@+id/logo"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="60dp"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
                 android:alpha="1"
-                android:background="@drawable/startup_logo"/>
+                android:src="@drawable/startup_logo"/>
 
         </RelativeLayout>
 

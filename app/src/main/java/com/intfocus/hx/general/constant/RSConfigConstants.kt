@@ -45,6 +45,13 @@ object ConfigConstants {
      */
     const val GUIDE_SHOW: Boolean = false
     /**
+     * 是否显示登陆页底部 忘记密码 | 申请注册
+     *
+     * true : 显示 *
+     * false : 不显示
+     */
+    const val UNABLE_LOGIN_SHOW: Boolean = false
+    /**
      * 是否提供扫码功能 (Kpi 概况页签)
      *
      * true : 提供 *
