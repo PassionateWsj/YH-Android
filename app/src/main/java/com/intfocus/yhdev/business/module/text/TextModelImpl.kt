@@ -45,7 +45,7 @@ class TextModelImpl : ModuleModel<TextEntity> {
         var collectionQb = sourceDao.queryBuilder()
         var collection = collectionQb.where(collectionQb.and(SourceDao.Properties.Key.eq(key), SourceDao.Properties.Uuid.eq(CollectionModelImpl.uuid))).unique()
         if (null != collection) {
-            collection.config = value
+            collection.value = value
             sourceDao.update(collection)
         }
     }

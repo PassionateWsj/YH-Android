@@ -1,6 +1,7 @@
 package com.intfucos.yhdev.module.image
 
 import com.alibaba.fastjson.JSONObject
+import com.intfocus.yhdev.business.subject.template.five.bean.Config
 import com.intfocus.yhdev.general.bean.Source
 import com.intfocus.yhdev.general.gen.SourceDao
 import com.intfocus.yhdev.general.util.DaoUtil
@@ -48,7 +49,7 @@ class ImageModelImpl : ModuleModel<ImageEntity> {
         var collectionQb = sourceDao.queryBuilder()
         var collection = collectionQb.where(collectionQb.and(SourceDao.Properties.Key.eq(key), SourceDao.Properties.Uuid.eq(uuid))).unique()
         if (null != collection) {
-            collection.config = value
+            collection.value = value
             sourceDao.update(collection)
         }
     }

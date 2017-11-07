@@ -1,5 +1,6 @@
 package com.intfucos.yhdev.module.image
 
+import android.net.Uri
 import com.intfocus.yhdev.general.base.BasePresenter
 import com.intfocus.yhdev.general.base.BaseView
 
@@ -15,6 +16,6 @@ interface ImageModuleContract {
 
     interface Presenter: BasePresenter{
         fun loadData(mParam: String)
-        fun update(entity: ImageEntity, key: String)
+        fun update(imageEntity: ImageEntity, key: String)
     }
 }

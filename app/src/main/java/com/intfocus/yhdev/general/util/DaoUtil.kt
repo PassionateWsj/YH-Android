@@ -2,6 +2,7 @@ package com.intfocus.yhdev.general.util
 
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
+import com.intfocus.yhdev.general.gen.CollectionDao
 import com.intfocus.yhdev.general.gen.DaoMaster
 import com.intfocus.yhdev.general.gen.DaoSession
 import com.intfocus.yhdev.general.gen.SourceDao
@@ -37,6 +38,10 @@ object DaoUtil {
 
     fun getSourceDao(): SourceDao {
         return daoSession!!.sourceDao
+    }
+
+    fun getCollectionDao(): CollectionDao {
+        return daoSession!!.collectionDao
     }
 
 //    fun getCompanyDao(): CompanyDao {

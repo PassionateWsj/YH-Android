@@ -18,8 +18,8 @@ class ImagePresenter(
     override fun start() {
     }
 
-    override fun update(entity: ImageEntity, key: String) {
-        mModel.insertDb(entity.toString(), key)
+    override fun update(imageEntity: ImageEntity, key: String) {
+        mModel.insertDb(imageEntity.value.toString(), key)
     }
 
     override fun loadData(mParam: String) {

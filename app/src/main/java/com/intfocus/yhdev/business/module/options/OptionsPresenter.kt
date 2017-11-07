@@ -21,7 +21,7 @@ class OptionsPresenter(
     }
 
     override fun update(entity: OptionsEntity, key: String) {
-        mModel.insertDb(entity.toString(), key)
+        mModel.insertDb(entity.value, key)
     }
 
     override fun loadData(mParam: String) {

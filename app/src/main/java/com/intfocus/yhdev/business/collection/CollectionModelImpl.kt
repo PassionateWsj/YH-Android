@@ -6,6 +6,7 @@ import com.alibaba.fastjson.JSONReader
 import com.intfocus.yhdev.YHApplication.globalContext
 import com.intfocus.yhdev.business.collection.entity.CollectionRequestBody
 import com.intfocus.yhdev.business.login.bean.Device
+import com.intfocus.yhdev.general.bean.Collection
 import com.intfocus.yhdev.general.bean.Source
 import com.intfocus.yhdev.general.data.response.BaseResult
 import com.intfocus.yhdev.general.gen.SourceDao
@@ -60,20 +61,29 @@ class CollectionModelImpl: CollectionModel<CollectionEntity> {
         @JvmStatic
         fun insertData(entityList: ArrayList<Content>) {
             for (entity in entityList) {
-                var sourceDao = DaoUtil.getDaoSession()!!.sourceDao
-                var dataDb = Source()
-                dataDb.id = null
-                dataDb.uuid = uuid
-                dataDb.type = entity.type
-                dataDb.isList = entity.is_list
-                dataDb.isShow = entity.is_show
-                dataDb.isFilter = entity.is_filter
-                dataDb.config = entity.config
-                dataDb.key = entity.key
-                dataDb.value = entity.value
+                var sourceDao = DaoUtil.getSourceDao()
+                var sourceDb = Source()
+                sourceDb.id = null
+                sourceDb.uuid = uuid
+                sourceDb.type = entity.type
+                sourceDb.isList = entity.is_list
+                sourceDb.isShow = entity.is_show
+                sourceDb.isFilter = entity.is_filter
+                sourceDb.config = entity.config
+                sourceDb.key = entity.key
+                sourceDb.value = entity.value
 
-                sourceDao.insert(dataDb)
+                sourceDao.insert(sourceDb)
             }
+
+            var collectionDb = Collection()
+            collectionDb.dJson = ""
+            collectionDb.localId = null
+            collectionDb.uuid = uuid
+            collectionDb.status = 0
+            collectionDb.image_status = 0
+
+            DaoUtil.getCollectionDao().insert(collectionDb)
         }
     }
 
@@ -217,10 +227,10 @@ class CollectionModelImpl: CollectionModel<CollectionEntity> {
 
     private fun generateRequestBody(): CollectionRequestBody{
         var requestBody = CollectionRequestBody()
-        var requestData = requestBody.data
-        requestData!!.acquisition_id = acquisitionId
-        requestData!!.user_num = globalContext.getSharedPreferences("UserBean",Context.MODE_PRIVATE).getString("user_num", "")
-        requestData!!.content = generateDJson()
+        requestBody.data = CollectionRequestBody.Data()
+        requestBody.data!!.acquisition_id = acquisitionId
+        requestBody.data!!.user_num = globalContext.getSharedPreferences("UserBean",Context.MODE_PRIVATE).getString("user_num", "")
+        requestBody.data!!.content = generateDJson()
 
         return requestBody
     }

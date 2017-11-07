@@ -6,12 +6,15 @@ import android.content.pm.ActivityInfo
 import android.net.Uri
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.intfocus.yhdev.R
+import com.intfocus.yhdev.YHApplication
 import com.intfocus.yhdev.business.dashboard.mine.activity.FeedbackActivity
 import com.intfocus.yhdev.general.util.GifSizeFilter
+import com.intfocus.yhdev.general.util.ImageUtil
 import com.intfucos.yhdev.base.BaseWidgetFragment
 import com.intfucos.yhdev.constant.Params
 import com.intfucos.yhdev.constant.Params.REQUEST_CODE_CHOOSE
@@ -67,6 +70,11 @@ class ImageFragment: BaseWidgetFragment(), ImageModuleContract.View, ImageDispla
         presenter.loadData(param)
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        ImageModelImpl.destroyInstance()
+    }
+
     private fun initView() {
         val linearLayoutManager = LinearLayoutManager(activity)
         linearLayoutManager.orientation = LinearLayoutManager.HORIZONTAL
@@ -103,6 +111,10 @@ class ImageFragment: BaseWidgetFragment(), ImageModuleContract.View, ImageDispla
         if (requestCode == REQUEST_CODE_CHOOSE && resultCode == RESULT_OK) {
             mSelected = Matisse.obtainResult(data)
             adapter.setData(mSelected)
+            var imagePathList: MutableList<String> = arrayListOf()
+            mSelected?.mapTo(imagePathList) { ImageUtil.handleImageOnKitKat(it, YHApplication.globalContext) }
+            datas.value = imagePathList
+            presenter.update(datas, key)
         }
     }
 }

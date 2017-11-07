@@ -31,6 +31,6 @@ class TextPresenter(
     }
 
     override fun update(entity: TextEntity, key: String) {
-        mModel.insertDb(entity.toString(), key)
+        mModel.insertDb(entity.value, key)
     }
 }
