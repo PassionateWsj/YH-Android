@@ -175,13 +175,11 @@ public class ModularOneUnitTablesContModeFragment extends BaseModeFragment<Modul
                         if (fl_tableTitle_container.getChildCount() != 0) {
                             if (rect.top <= offsetTop && rect.bottom - 165 > offsetTop) {
                                 fl_tableTitle_container.removeView(suspensionView);
-                                Log.i("testlog", "1");
                                 ((TemplateOneActivity) getActivity()).suspendContainer.addView(suspensionView);
                             }
                         } else {
                             int viewCont = ((TemplateOneActivity) getActivity()).suspendContainer.getChildCount();
                             if (rect.top > offsetTop || rect.bottom - 150 < offsetTop && viewCont != 0) {
-                                Log.i("testlog", "2");
                                 ((TemplateOneActivity) getActivity()).suspendContainer.removeView(suspensionView);
                                 fl_tableTitle_container.addView(suspensionView);
                             }

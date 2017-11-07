@@ -25,7 +25,7 @@ import com.intfocus.yhdev.business.subject.template.three.TemplateThreeActivity
 import com.intfocus.yhdev.business.subject.template.two.SubjectActivity
 import com.intfocus.yhdev.business.subject.webapplication.WebApplicationActivity
 import com.intfocus.yhdev.business.subject.webapplication.WebApplicationActivityV6
-import com.intfocus.yhdev.general.YHApplication
+import com.intfocus.yhdev.YHApplication
 import com.intfocus.yhdev.general.bean.DashboardItemBean
 import com.intfocus.yhdev.general.data.response.scanner.StoreItem
 import com.intfocus.yhdev.general.data.response.scanner.StoreListResult
@@ -36,6 +36,7 @@ import com.intfocus.yhdev.general.net.RetrofitUtil
 import com.intfocus.yhdev.general.util.*
 import com.intfocus.yhdev.general.view.NoScrollViewPager
 import com.intfocus.yhdev.general.view.TabView
+import com.intfucos.yhdev.collection.CollectionActivity
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -412,6 +413,16 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
                 }
                 "6" -> {
                     intent = Intent(this, WebApplicationActivityV6::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+                    intent.putExtra(URLs.kBannerName, objTitle)
+                    intent.putExtra(URLs.kLink, link)
+                    intent.putExtra(URLs.kObjectId, objectId)
+                    intent.putExtra(URLs.kObjectType, objectType)
+                    intent.putExtra(URLs.kTemplatedId, templateId)
+                    startActivity(intent)
+                }
+                "9" -> {
+                    intent = Intent(this, CollectionActivity::class.java)
                     intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
                     intent.putExtra(URLs.kBannerName, objTitle)
                     intent.putExtra(URLs.kLink, link)

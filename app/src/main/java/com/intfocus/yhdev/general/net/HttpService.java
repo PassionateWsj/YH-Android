@@ -1,5 +1,6 @@
 package com.intfocus.yhdev.general.net;
 
+import com.intfocus.yhdev.business.collection.entity.CollectionRequestBody;
 import com.intfocus.yhdev.general.data.request.CommentBody;
 import com.intfocus.yhdev.general.data.request.RequestFavourite;
 import com.intfocus.yhdev.general.data.response.BaseResult;
@@ -26,6 +27,7 @@ import java.util.Map;
 import okhttp3.MultipartBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
+import retrofit2.Response;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Multipart;
@@ -331,6 +333,16 @@ public interface HttpService {
     Observable<BaseResult> updatePwd(@Query("user_num") String userNum, @Query("password") String newPwd);
 
     /**
+     * 上传采集信息
+     * <p>
+     * POST
+     * /api/v1.1/acquisition/data
+     * @return
+     */
+    @POST(K.KCollectionUpload)
+    Observable<BaseResult> submitCollection(@Body CollectionRequestBody collectionRequestBody);
+
+    /**
      * 重置密码
      * <p>
      * POST
@@ -354,6 +366,14 @@ public interface HttpService {
      */
     @GET(K.KNewChoiceMenu)
     Call<MenuResult> getChoiceMenus(@Query("params") String params);
+
+    /**
+     * 下载数据采集信息
+     * @param id
+     * @return
+     */
+    @GET(K.KCollectionConfig)
+    Call<ResponseBody> getCollectionConfig(@Query("id") String id);
 
     /**
      * 下载静态资源

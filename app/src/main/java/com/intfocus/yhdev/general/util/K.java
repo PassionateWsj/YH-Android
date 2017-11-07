@@ -145,6 +145,8 @@ public class K extends PrivateURLs implements Serializable {
     public final static String KNewResetPwd = "/api/v1.1/user/reset_password"; //重置密码
     public final static String KComment = "/api/v1.1/comment"; //发表评论
     public final static String KRegister = "/api/v1.1/config/info"; //申请注册
+    public final static String KCollectionUpload = "/api/v1.1/acquisition/data"; //提交采集数据
+
 
     /**
      * "api_token": "",
@@ -175,6 +177,7 @@ public class K extends PrivateURLs implements Serializable {
     public final static String kDeviceTokenAPIPath = "/api/v1.1/user/devices";  //设备列表
     public final static String kNewUserIconUploadPath = "/api/v1.1/upload/gravatar"; //上传头像
     public final static String KNewChoiceMenu = "/api/v1.1/report/choice_menus";
+    public final static String KCollectionConfig = "/api/v1.1/acquisition/config";
     public final static String kDownloadAssetsZip = "/api/v1.1/download/assets";
     public final static String KNearestStores = "/api/v1.1/nearest_stores";
 }

@@ -1,4 +1,4 @@
-package com.intfocus.yhdev.general;
+package com.intfocus.yhdev;
 
 import android.app.ActivityManager;
 import android.app.Application;
@@ -15,10 +15,11 @@ import android.os.Bundle;
 import android.support.multidex.MultiDex;
 import android.util.Log;
 
-import com.intfocus.yhdev.BuildConfig;
 import com.intfocus.yhdev.business.dashboard.DashboardActivity;
 import com.intfocus.yhdev.business.launcher.ConfirmPassCodeActivity;
 import com.intfocus.yhdev.business.login.LoginActivity;
+import com.intfocus.yhdev.general.FetchPatchHandler;
+import com.intfocus.yhdev.general.util.DaoUtil;
 import com.intfocus.yhdev.general.util.FileUtil;
 import com.intfocus.yhdev.general.util.URLs;
 import com.tencent.bugly.crashreport.CrashReport;
@@ -78,6 +79,7 @@ public class YHApplication extends Application {
             new FetchPatchHandler().fetchPatchWithInterval(1);
             Log.i("TAG", "tinker init");
         }
+
         appContext = getApplicationContext();
         globalContext = getApplicationContext();
         mSettingSP = getSharedPreferences("SettingPreference", Context.MODE_PRIVATE);
@@ -102,6 +104,11 @@ public class YHApplication extends Application {
          * 配置微信 appKey
          */
         PlatformConfig.setWeixin(kWXAppId, kWXAppSecret);
+
+        /*
+         * 初始化数据库
+         */
+        DaoUtil.INSTANCE.initDataBase(globalContext);
 
         initXutils();
 

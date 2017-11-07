@@ -33,7 +33,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.intfocus.yhdev.R;
-import com.intfocus.yhdev.general.YHApplication;
+import com.intfocus.yhdev.YHApplication;
 import com.intfocus.yhdev.general.constant.ToastColor;
 import com.intfocus.yhdev.general.util.ApiHelper;
 import com.intfocus.yhdev.general.util.FileUtil;

@@ -325,7 +325,6 @@ public class LoginActivity extends FragmentActivity {
                 actionSubmit(v);
             }
         });
-
     }
 
     /**

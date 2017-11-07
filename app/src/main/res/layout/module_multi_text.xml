@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="8dp">
+
+    <TextView
+        android:id="@+id/tv_single_text_title"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:text="标题"
+        android:textColor="@android:color/black"
+        android:textSize="14sp"
+        android:textStyle="bold"/>
+
+    <EditText
+        android:id="@+id/et_single_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_single_text_title"
+        android:layout_marginTop="8dp"
+        android:layout_toRightOf="@id/iv_single_text_element"
+        android:background="@drawable/background_item_fillet"
+        android:paddingTop="8dp"
+        android:gravity="start"
+        android:hint="这是一段测试文字, 看到这个文字, 说明应用出现了问题"
+        android:maxHeight="200dp"
+        android:minHeight="100dp"
+        android:paddingLeft="5dp"
+        android:textSize="12sp"/>
+</RelativeLayout>

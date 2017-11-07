@@ -52,14 +52,15 @@ class FeedbackPageScreenshotAdapter(val mContext: Context, val listener: Screens
                 for (file in mData) {
                     LogUtil.d("hjjzz", "1:::" + file.path)
                 }
-
             }
+
             position == itemCount - 1 -> {
                 setAddScreenshotView(holder)
                 for (file in mData) {
                     LogUtil.d("hjjzz", "2:::" + file.path)
                 }
             }
+
             else -> {
                 Luban.with(mContext)
                         .load(File(ImageUtil.handleImageOnKitKat(mData[position], mContext))) //传人要压缩的图片
@@ -104,7 +105,6 @@ class FeedbackPageScreenshotAdapter(val mContext: Context, val listener: Screens
     }
 
     fun getData(): List<Uri> = mData
-
 
     class ScreenshotHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var rlFeedbackPageScreenshotContainer = itemView.findViewById<LinearLayout>(R.id.ll_feedback_page_screenshot_container)

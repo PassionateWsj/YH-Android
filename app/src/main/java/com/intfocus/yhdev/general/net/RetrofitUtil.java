@@ -3,7 +3,7 @@ package com.intfocus.yhdev.general.net;
 import android.annotation.SuppressLint;
 import android.content.Context;
 
-import com.intfocus.yhdev.general.YHApplication;
+import com.intfocus.yhdev.YHApplication;
 import com.intfocus.yhdev.general.util.HttpUtil;
 import com.intfocus.yhdev.general.util.PrivateURLs;
 
@@ -23,6 +23,7 @@ import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.converter.scalars.ScalarsConverterFactory;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action0;
@@ -46,7 +47,7 @@ public class RetrofitUtil {
                 .addConverterFactory(ResponseConverterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                  /*设置 ScalarsConverterFactory返回纯String*/
-//                .addConverterFactory(ScalarsConverterFactory.create())
+                .addConverterFactory(ScalarsConverterFactory.create())
                 .client(getClientBuilder().build())
                 .build();
         httpService = retrofit.create(HttpService.class);
