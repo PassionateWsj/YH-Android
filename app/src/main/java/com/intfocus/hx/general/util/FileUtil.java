@@ -42,7 +42,7 @@ import java.util.zip.ZipInputStream;
 
 import okhttp3.ResponseBody;
 
-import static com.intfocus.hx.general.util.K.kUserId;
+import static com.intfocus.hx.general.util.K.K_USER_ID;
 
 public class FileUtil {
     public static String basePath(Context context) {
@@ -57,7 +57,7 @@ public class FileUtil {
      */
     public static boolean checkIsLocked(Context context) {
         try {
-            String userConfigPath = String.format("%s/%s", FileUtil.basePath(context), K.kUserConfigFileName);
+            String userConfigPath = String.format("%s/%s", FileUtil.basePath(context), K.K_USER_CONFIG_FILE_NAME);
             if ((new File(userConfigPath)).exists()) {
                 JSONObject userJSON = FileUtil.readConfigFile(userConfigPath);
                 if (!userJSON.has(URLs.kUseGesturePassword)) {
@@ -91,7 +91,7 @@ public class FileUtil {
         SharedPreferences mUserSP = context.getSharedPreferences("UserBean", Context.MODE_PRIVATE);
         String spacePath = "";
 
-        spacePath = String.format("%s/User-%s", FileUtil.basePath(context), mUserSP.getString(kUserId, "0"));
+        spacePath = String.format("%s/User-%s", FileUtil.basePath(context), mUserSP.getString(K_USER_ID, "0"));
         return spacePath;
     }
 
@@ -211,7 +211,7 @@ public class FileUtil {
      *  3. 登录缓存页面
      */
     public static String sharedPath(Context context) {
-        String pathName = FileUtil.basePath(context) + "/" + K.kSharedDirName;
+        String pathName = FileUtil.basePath(context) + "/" + K.K_SHARED_DIR_NAME;
         FileUtil.makeSureFolderExist(pathName);
 
         return pathName;
@@ -433,7 +433,7 @@ public class FileUtil {
      */
     public static String reportJavaScriptDataPath(Context context, String groupID, String templateID, String reportID) {
         String assetsPath = FileUtil.sharedPath(context);
-        String fileName = String.format(K.kReportDataFileName, groupID, templateID, reportID);
+        String fileName = String.format(K.K_REPORT_DATA_FILE_NAME, groupID, templateID, reportID);
         return String.format("%s/assets/javascripts/%s", assetsPath, fileName);
     }
 
@@ -598,8 +598,8 @@ public class FileUtil {
             /*
              *  基本目录结构mSettingSP.getInt("Version", 0)
              */
-            makeSureFolder(ctx, K.kSharedDirName);
-            makeSureFolder(ctx, K.kCachedDirName);
+            makeSureFolder(ctx, K.K_SHARED_DIR_NAME);
+            makeSureFolder(ctx, K.K_CACHED_DIR_NAME);
 
             /*
              *  新安装、或升级后，把代码包中的静态资源重新拷贝覆盖一下
@@ -712,7 +712,7 @@ public class FileUtil {
     public static void checkVersionUpgrade(Context ctx, String assetsPath, String sharedPath) {
         try {
             SharedPreferences mUserSP = ctx.getSharedPreferences("UserBean", Context.MODE_PRIVATE);
-            String versionConfigPath = String.format("%s/%s", assetsPath, K.kCurrentVersionFileName);
+            String versionConfigPath = String.format("%s/%s", assetsPath, K.K_CURRENT_VERSION_FILE_NAME);
             PackageInfo packageInfo = ctx.getPackageManager().getPackageInfo(ctx.getPackageName(), 0);
 
             String localVersion = "new-installer";
@@ -725,12 +725,12 @@ public class FileUtil {
             if (isUpgrade) {
                 LogUtil.d("VersionUpgrade",
                         String.format("%s => %s remove %s/%s", localVersion, packageInfo.versionName,
-                                assetsPath, K.kCachedHeaderConfigFileName));
+                                assetsPath, K.K_CACHED_HEADER_CONFIG_FILE_NAME));
 
                 /*
                  * 用户报表数据js文件存放在公共区域
                  */
-                String headerPath = String.format("%s/%s", sharedPath, K.kCachedHeaderConfigFileName);
+                String headerPath = String.format("%s/%s", sharedPath, K.K_CACHED_HEADER_CONFIG_FILE_NAME);
                 File headerFile = new File(headerPath);
                 if (headerFile.exists()) {
                     headerFile.delete();
@@ -739,9 +739,9 @@ public class FileUtil {
                 FileUtil.writeFile(versionConfigPath, packageInfo.versionName);
 
                 // 强制消息配置，重新上传服务器
-                String pushConfigPath = String.format("%s/%s", FileUtil.basePath(ctx), K.kPushConfigFileName);
+                String pushConfigPath = String.format("%s/%s", FileUtil.basePath(ctx), K.K_PUSH_CONFIG_FILE_NAME);
                 JSONObject pushJSON = FileUtil.readConfigFile(pushConfigPath);
-                pushJSON.put(K.kPushIsValid, false);
+                pushJSON.put(K.K_PUSH_IS_VALID, false);
                 FileUtil.writeFile(pushConfigPath, pushJSON.toString());
             }
         } catch (IOException | PackageManager.NameNotFoundException e) {
@@ -811,7 +811,7 @@ public class FileUtil {
      */
     public static boolean unZipAssets(Context mContext, String assetName) {
         boolean isInAssets = true;
-        String sharedPath = String.format("%s/%s", FileUtil.basePath(mContext), K.kSharedDirName);
+        String sharedPath = String.format("%s/%s", FileUtil.basePath(mContext), K.K_SHARED_DIR_NAME);
         if (URLs.kAssets == assetName || URLs.kLoading == assetName) {
             isInAssets = false;
         }

@@ -242,7 +242,7 @@ public class InitPassCodeActivity extends Activity {
                     ToastUtils.INSTANCE.show(mContext, "设置锁屏成功", ToastColor.SUCCESS);
 
                     try {
-                        String userConfigPath = String.format("%s/%s", FileUtil.basePath(mContext), K.kUserConfigFileName);
+                        String userConfigPath = String.format("%s/%s", FileUtil.basePath(mContext), K.K_USER_CONFIG_FILE_NAME);
                         JSONObject userJSON = new JSONObject();
                         if ((new File(userConfigPath)).exists()) {
                             userJSON = FileUtil.readConfigFile(userConfigPath);
@@ -251,7 +251,7 @@ public class InitPassCodeActivity extends Activity {
                         userJSON.put(URLs.kGesturePassword, stringBuilder.toString());
 
                         FileUtil.writeFile(userConfigPath, userJSON.toString());
-                        String settingsConfigPath = FileUtil.dirPath(mContext, K.kConfigDirName, K.kSettingConfigFileName);
+                        String settingsConfigPath = FileUtil.dirPath(mContext, K.K_CONFIG_DIR_NAME, K.K_SETTING_CONFIG_FILE_NAME);
                         FileUtil.writeFile(settingsConfigPath, userJSON.toString());
 
                         final JSONObject userInfo = userJSON;

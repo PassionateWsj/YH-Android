@@ -500,7 +500,7 @@ public class HttpUtil {
         final HttpUtil.DownloadAssetsTask downloadTask = new DownloadAssetsTask(context, assetName, isInAssets);
 
         // AsyncTask并行下载
-        downloadTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, String.format(K.kDownloadAssetsAPIPath, K.kBaseUrl, assetName), assetZipPath);
+        downloadTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, String.format(K.K_DOWNLOAD_ASSETS_API_PATH, K.kBaseUrl, assetName), assetZipPath);
     }
 
     /**

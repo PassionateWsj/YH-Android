@@ -649,7 +649,7 @@ public class WebApplicationActivityV6 extends BaseActivity implements OnPageChan
     private final Runnable mRunnableForPDF = new Runnable() {
         @Override
         public void run() {
-            String outputPath = String.format("%s/%s/%s.pdf", FileUtil.basePath(mAppContext), K.kCachedDirName, URLs.MD5(urlString));
+            String outputPath = String.format("%s/%s/%s.pdf", FileUtil.basePath(mAppContext), K.K_CACHED_DIR_NAME, URLs.MD5(urlString));
             pdfFile = new File(outputPath);
             ApiHelper.downloadFile(mAppContext, urlString, pdfFile);
 
@@ -794,7 +794,7 @@ public class WebApplicationActivityV6 extends BaseActivity implements OnPageChan
         @JavascriptInterface
         public void storeTabIndex(final String pageName, final int tabIndex) {
             try {
-                String filePath = FileUtil.dirPath(mAppContext, K.kConfigDirName, K.kTabIndexConfigFileName);
+                String filePath = FileUtil.dirPath(mAppContext, K.K_CONFIG_DIR_NAME, K.K_TAB_INDEX_CONFIG_FILE_NAME);
 
                 JSONObject config = new JSONObject();
                 if ((new File(filePath).exists())) {
@@ -813,7 +813,7 @@ public class WebApplicationActivityV6 extends BaseActivity implements OnPageChan
         public int restoreTabIndex(final String pageName) {
             int tabIndex = 0;
             try {
-                String filePath = FileUtil.dirPath(mAppContext, K.kConfigDirName, K.kTabIndexConfigFileName);
+                String filePath = FileUtil.dirPath(mAppContext, K.K_CONFIG_DIR_NAME, K.K_TAB_INDEX_CONFIG_FILE_NAME);
 
                 JSONObject config = new JSONObject();
                 if ((new File(filePath).exists())) {

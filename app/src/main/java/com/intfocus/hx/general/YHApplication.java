@@ -41,7 +41,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import static com.intfocus.hx.general.constant.Constants.BUGLY_APP_ID;
-import static com.intfocus.hx.general.util.K.kPushDeviceToken;
+import static com.intfocus.hx.general.util.K.K_PUSH_DEVICE_TOKEN;
 
 /**
  * Created by lijunjie on 16/1/15.
@@ -126,7 +126,7 @@ public class YHApplication extends Application {
                 SharedPreferences mPushSP = getSharedPreferences("PushMessage", MODE_PRIVATE);
                 SharedPreferences.Editor mPushSPEdit = mPushSP.edit();
 
-                mPushSPEdit.putString(kPushDeviceToken, deviceToken).commit();
+                mPushSPEdit.putString(K_PUSH_DEVICE_TOKEN, deviceToken).commit();
             }
 
             @Override

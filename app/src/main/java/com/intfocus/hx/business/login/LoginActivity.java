@@ -64,9 +64,9 @@ import java.io.IOException;
 import java.util.Calendar;
 
 import static com.intfocus.hx.general.base.BaseActivity.kVersionCode;
-import static com.intfocus.hx.general.util.K.kCurrentUIVersion;
-import static com.intfocus.hx.general.util.K.kUserId;
-import static com.intfocus.hx.general.util.K.kUserName;
+import static com.intfocus.hx.general.util.K.K_CURRENT_UI_VERSION;
+import static com.intfocus.hx.general.util.K.K_USER_ID;
+import static com.intfocus.hx.general.util.K.K_USER_NAME;
 import static com.intfocus.hx.general.util.URLs.kGroupId;
 import static com.intfocus.hx.general.util.URLs.kRoleId;
 import static com.intfocus.hx.general.util.URLs.kUserNum;
@@ -118,7 +118,7 @@ public class LoginActivity extends FragmentActivity {
 
         //设置定位监听
         getLocation();
-        assetsPath = FileUtil.dirPath(ctx, K.kHTMLDirName);
+        assetsPath = FileUtil.dirPath(ctx, K.K_HTML_DIR_NAME);
         sharedPath = FileUtil.sharedPath(ctx);
 
         setContentView(R.layout.activity_login);
@@ -403,7 +403,7 @@ public class LoginActivity extends FragmentActivity {
             // 上传设备信息
             uploadDeviceInformation(packageInfo);
 
-            mUserSPEdit.putString(K.kAppVersion, String.format("a%s", packageInfo.versionName));
+            mUserSPEdit.putString(K.K_APP_VERSION, String.format("a%s", packageInfo.versionName));
             mUserSPEdit.putString("os_version", "android" + Build.VERSION.RELEASE);
             mUserSPEdit.putString("device_info", android.os.Build.MODEL).apply();
 
@@ -446,14 +446,14 @@ public class LoginActivity extends FragmentActivity {
                             upLoadDevice(); //上传设备信息
 
                             mUserSPEdit.putBoolean(URLs.kIsLogin, true);
-                            mUserSPEdit.putString(kUserName, data.getData().getUser_name());
+                            mUserSPEdit.putString(K_USER_NAME, data.getData().getUser_name());
                             mUserSPEdit.putString(kGroupId, data.getData().getGroup_id());
                             mUserSPEdit.putString(kRoleId, data.getData().getRole_id());
-                            mUserSPEdit.putString(kUserId, data.getData().getUser_id());
+                            mUserSPEdit.putString(K_USER_ID, data.getData().getUser_id());
                             mUserSPEdit.putString(URLs.kRoleName, data.getData().getRole_name());
                             mUserSPEdit.putString(URLs.kGroupName, data.getData().getGroup_name());
                             mUserSPEdit.putString(kUserNum, data.getData().getUser_num());
-                            mUserSPEdit.putString(kCurrentUIVersion, "v2").apply();
+                            mUserSPEdit.putString(K_CURRENT_UI_VERSION, "v2").apply();
 
                             // 判断是否包含推送信息，如果包含 登录成功直接跳转推送信息指定页面
                             if (getIntent().hasExtra("msgData")) {
@@ -598,7 +598,7 @@ public class LoginActivity extends FragmentActivity {
                         return;
                     }
 
-                    String pgyerVersionPath = String.format("%s/%s", FileUtil.basePath(getApplicationContext()), K.kPgyerVersionConfigFileName);
+                    String pgyerVersionPath = String.format("%s/%s", FileUtil.basePath(getApplicationContext()), K.K_PGYER_VERSION_CONFIG_FILE_NAME);
                     FileUtil.writeFile(pgyerVersionPath, result);
 
                     if (newVersionCode % 2 == 1) {

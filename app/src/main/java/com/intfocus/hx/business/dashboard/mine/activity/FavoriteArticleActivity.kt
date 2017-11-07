@@ -146,7 +146,7 @@ class FavoriteArticleActivity : RefreshActivity(), InstituteAdapter.NoticeItemLi
     override fun itemClick(instituteDataBean: InstituteDataBean) {
         val intent = Intent(mActivity, WebApplicationActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-        val link = String.format("%s/mobile/v2/user/%s/article/%s", K.kBaseUrl, mUserSP.getString(K.kUserId, "0").toString(), instituteDataBean.acticleId.toString())
+        val link = String.format("%s/mobile/v2/user/%s/article/%s", K.kBaseUrl, mUserSP.getString(K.K_USER_ID, "0").toString(), instituteDataBean.acticleId.toString())
         intent.putExtra(URLs.kBannerName, instituteDataBean.title.toString())
         intent.putExtra(URLs.kLink, link)
         startActivity(intent)

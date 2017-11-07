@@ -59,7 +59,7 @@ public class CommentActivity extends BaseActivity {
         objectType = intent.getStringExtra(URLs.kObjectType);
 
         mTitle.setText(bannerName);
-        urlString = String.format(K.kCommentMobilePath, K.kBaseUrl, URLs.currentUIVersion(mAppContext), objectID, objectType);
+        urlString = String.format(K.K_COMMENT_MOBILE_PATH, K.kBaseUrl, URLs.currentUIVersion(mAppContext), objectID, objectType);
 
         new Thread(mRunnableForDetecting).start();
     }

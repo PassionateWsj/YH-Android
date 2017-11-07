@@ -239,7 +239,7 @@ public class TemplateThreeActivity extends AppCompatActivity implements ProductL
         @Override
         protected void onPostExecute(Map<String, String> response) {
             String jsonFileName = String.format("group_%s_template_%s_report_%s.json", groupID, 3, objectID);
-            String jsonFilePath = FileUtil.dirPath(mContext, K.kCachedDirName, jsonFileName);
+            String jsonFilePath = FileUtil.dirPath(mContext, K.K_CACHED_DIR_NAME, jsonFileName);
             if ("200".equals(response.get("code")) || "304".equals(response.get("code"))) {
                 initView();
                 initData("{\"data\":" + response.get("body") + "}");

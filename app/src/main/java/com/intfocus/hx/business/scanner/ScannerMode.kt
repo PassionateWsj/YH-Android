@@ -32,8 +32,8 @@ class ScannerMode(var ctx: Context) : AbstractMode() {
 
     fun requestData(barcode: String, storeId: String) {
         currentBarcode = barcode
-        jsUrl = String.format(K.kBarCodeScanAPIDataPath, K.kBaseUrl, storeId, barcode)
-        htmlUrl = String.format(K.kBarCodeScanAPIViewPath, K.kBaseUrl, storeId, barcode)
+        jsUrl = String.format(K.K_BAR_CODE_SCAN_API_DATA_PATH, K.kBaseUrl, storeId, barcode)
+        htmlUrl = String.format(K.K_BAR_CODE_SCAN_API_VIEW_PATH, K.kBaseUrl, storeId, barcode)
         store_id = storeId
         requestData()
     }
@@ -68,7 +68,7 @@ class ScannerMode(var ctx: Context) : AbstractMode() {
     private fun getHtml() {
         Thread(Runnable {
             val htmlName = String.format("mobile_v2_store_%s_barcode_%s.html", store_id, currentBarcode)
-            val htmlPath = String.format("%s/%s", FileUtil.dirPath(ctx, K.kHTMLDirName), htmlName)
+            val htmlPath = String.format("%s/%s", FileUtil.dirPath(ctx, K.K_HTML_DIR_NAME), htmlName)
 
             val response = HttpUtil.httpGet(ctx, htmlUrl, HashMap<String, String>())
 
