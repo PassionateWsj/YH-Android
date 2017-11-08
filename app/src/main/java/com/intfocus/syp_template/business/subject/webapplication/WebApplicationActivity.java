@@ -38,8 +38,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.intfocus.syp_template.general.CommentActivity;
 import com.intfocus.syp_template.R;
+import com.intfocus.syp_template.general.CommentActivity;
 import com.intfocus.syp_template.general.base.BaseActivity;
 import com.intfocus.syp_template.general.constant.ToastColor;
 import com.intfocus.syp_template.general.util.ActionLogUtil;
@@ -48,6 +48,7 @@ import com.intfocus.syp_template.general.util.FileUtil;
 import com.intfocus.syp_template.general.util.ImageUtil;
 import com.intfocus.syp_template.general.util.K;
 import com.intfocus.syp_template.general.util.LogUtil;
+import com.intfocus.syp_template.general.util.PageLinkManage;
 import com.intfocus.syp_template.general.util.ToastUtils;
 import com.intfocus.syp_template.general.util.URLs;
 import com.joanzapata.pdfview.PDFView;
@@ -587,6 +588,7 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
                 .setPositiveButton("确认", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        PageLinkManage.INSTANCE.pageBackIntent(WebApplicationActivity.this);
                         finish();
                     }
                 })
@@ -790,6 +792,7 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
 
         @JavascriptInterface
         public void closeSubjectView() {
+            PageLinkManage.INSTANCE.pageBackIntent(WebApplicationActivity.this);
             finish();
         }
 

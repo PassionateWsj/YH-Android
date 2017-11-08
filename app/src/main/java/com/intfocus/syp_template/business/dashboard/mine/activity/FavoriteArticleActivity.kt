@@ -8,6 +8,7 @@ import android.view.View
 import com.intfocus.syp_template.R
 import com.intfocus.syp_template.business.dashboard.mine.adapter.InstituteAdapter
 import com.intfocus.syp_template.business.dashboard.mine.bean.InstituteDataBean
+import com.intfocus.syp_template.business.subject.webapplication.WebApplicationActivity
 import com.intfocus.syp_template.general.base.RefreshActivity
 import com.intfocus.syp_template.general.constant.ToastColor
 import com.intfocus.syp_template.general.data.request.RequestFavourite
@@ -18,7 +19,6 @@ import com.intfocus.syp_template.general.net.CodeHandledSubscriber
 import com.intfocus.syp_template.general.net.RetrofitUtil
 import com.intfocus.syp_template.general.util.*
 import com.intfocus.syp_template.general.view.CommonPopupWindow
-import com.intfocus.syp_template.business.subject.webapplication.WebApplicationActivity
 import com.lcodecore.tkrefreshlayout.footer.LoadingView
 import com.lcodecore.tkrefreshlayout.header.SinaRefreshView
 
@@ -149,6 +149,7 @@ class FavoriteArticleActivity : RefreshActivity(), InstituteAdapter.NoticeItemLi
         val link = String.format("%s/mobile/v2/user/%s/article/%s", K.kBaseUrl, mUserSP.getString(K.K_USER_ID, "0").toString(), instituteDataBean.acticleId.toString())
         intent.putExtra(URLs.kBannerName, instituteDataBean.title.toString())
         intent.putExtra(URLs.kLink, link)
+        intent.putExtra("hideBannerSetting", true)
         startActivity(intent)
     }
 

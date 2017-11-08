@@ -153,7 +153,7 @@ public class YHApplication extends Application {
             } else {
                 intent = new Intent(appContext, LoginActivity.class);
             }
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+//            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             Bundle bundle = new Bundle();
             bundle.putString("message", uMessage.custom);
             bundle.putString("message_body_title", uMessage.title);

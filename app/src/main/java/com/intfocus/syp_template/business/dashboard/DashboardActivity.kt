@@ -38,10 +38,7 @@ import com.intfocus.syp_template.general.db.OrmDBHelper
 import com.intfocus.syp_template.general.net.ApiException
 import com.intfocus.syp_template.general.net.CodeHandledSubscriber
 import com.intfocus.syp_template.general.net.RetrofitUtil
-import com.intfocus.syp_template.general.util.ActionLogUtil
-import com.intfocus.syp_template.general.util.K
-import com.intfocus.syp_template.general.util.ToastUtils
-import com.intfocus.syp_template.general.util.URLs
+import com.intfocus.syp_template.general.util.*
 import com.intfocus.syp_template.general.view.NoScrollViewPager
 import com.intfocus.syp_template.general.view.TabView
 import org.greenrobot.eventbus.EventBus
@@ -72,7 +69,7 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
     private var mGson: Gson? = null
     lateinit var mUserSP: SharedPreferences
     private var storeList: List<StoreItem>? = null
-    private val loadLastFragmentWhenLaunch = false
+    private val loadLastFragmentWhenLaunch = true
 
     private var objectTypeName = arrayOf("生意概况", "报表", "工具箱")
 
@@ -376,7 +373,8 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
             val objectId = items.obj_id
             val templateId = items.template_id
             val objectType = items.objectType
-            pageLink(objTitle, link, objectId, templateId, objectType)
+            PageLinkManage.pageLink(this,objTitle, link, objectId, templateId, objectType)
+//            pageLink(objTitle, link, objectId, templateId, objectType)
         } else {
             ToastUtils.show(this, "没有指定链接")
         }

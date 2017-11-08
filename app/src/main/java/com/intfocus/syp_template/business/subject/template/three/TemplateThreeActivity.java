@@ -40,17 +40,20 @@ import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.intfocus.syp_template.general.CommentActivity;
 import com.intfocus.syp_template.R;
+import com.intfocus.syp_template.business.subject.template.five.TemplateFiveActivity;
+import com.intfocus.syp_template.business.subject.template.three.adapter.MetricsAdapter;
+import com.intfocus.syp_template.business.subject.template.three.adapter.ProductListAdapter;
+import com.intfocus.syp_template.business.subject.webapplication.WebApplicationActivity;
+import com.intfocus.syp_template.general.CommentActivity;
 import com.intfocus.syp_template.general.util.FileUtil;
 import com.intfocus.syp_template.general.util.HttpUtil;
 import com.intfocus.syp_template.general.util.ImageUtil;
 import com.intfocus.syp_template.general.util.K;
+import com.intfocus.syp_template.general.util.PageLinkManage;
 import com.intfocus.syp_template.general.util.ToastUtils;
 import com.intfocus.syp_template.general.util.URLs;
 import com.intfocus.syp_template.general.util.ValueFormatter;
-import com.intfocus.syp_template.business.subject.template.three.adapter.MetricsAdapter;
-import com.intfocus.syp_template.business.subject.template.three.adapter.ProductListAdapter;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.UMShareListener;
@@ -795,6 +798,7 @@ public class TemplateThreeActivity extends AppCompatActivity implements ProductL
 
     @Override
     public void onBackPressed() {
+        PageLinkManage.INSTANCE.pageBackIntent(TemplateThreeActivity.this);
         finish();
     }
 

@@ -369,17 +369,28 @@ class LoginActivity : FragmentActivity() {
                             if (intent.hasExtra("msgData")) {
                                 val msgData = intent.getBundleExtra("msgData")
                                 val intent = Intent(this@LoginActivity, DashboardActivity::class.java)
-                                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+//                                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
                                 intent.putExtra("msgData", msgData)
                                 this@LoginActivity.startActivity(intent)
                             } else {
                                 // 检测用户空间，版本是否升级版本是否升级
                                 FileUtil.checkVersionUpgrade(ctx, assetsPath, sharedPath)
 
-                                // 跳转至主界面
-                                val intent = Intent(this@LoginActivity, DashboardActivity::class.java)
-                                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                                this@LoginActivity.startActivity(intent)
+                                val pageLinkManagerSP = this@LoginActivity.getSharedPreferences("PageLinkManager", Context.MODE_PRIVATE)
+                                val pageSaved = pageLinkManagerSP.getBoolean("pageSaved", false)
+                                if (pageSaved) {
+                                    val objTitle = pageLinkManagerSP.getString("objTitle", "")
+                                    val link = pageLinkManagerSP.getString("link", "")
+                                    val objectId = pageLinkManagerSP.getString("objectId", "")
+                                    val templateId = pageLinkManagerSP.getString("templateId", "")
+                                    val objectType = pageLinkManagerSP.getString("objectType", "")
+                                    PageLinkManage.pageLink(this@LoginActivity, objTitle, link, objectId, templateId, objectType)
+                                } else {
+                                    // 跳转至主界面
+                                    val intent = Intent(this@LoginActivity, DashboardActivity::class.java)
+//                                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                                    this@LoginActivity.startActivity(intent)
+                                }
                             }
 
                             /*

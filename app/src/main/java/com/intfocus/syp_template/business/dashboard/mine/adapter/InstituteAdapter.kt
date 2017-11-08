@@ -64,9 +64,7 @@ class InstituteAdapter(val context: Context,
         }
     }
 
-    override fun getItemCount(): Int {
-        return if (instituteDatas == null) 0 else instituteDatas!!.size
-    }
+    override fun getItemCount(): Int = if (instituteDatas == null) 0 else instituteDatas!!.size
 
     class InstituteHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var llInstituteItem = itemView.findViewById<LinearLayout>(R.id.ll_institute_item)
