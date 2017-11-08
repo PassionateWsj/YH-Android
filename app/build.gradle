@@ -9,12 +9,12 @@ android {
     compileSdkVersion 26
     buildToolsVersion '26.0.2'
     defaultConfig {
-        applicationId 'com.intfocus.hx'
+        applicationId 'com.intfocus.hxtest'
         minSdkVersion 19
         targetSdkVersion 26
         multiDexEnabled true
-        versionCode 10
-        versionName "1.5.10"
+        versionCode 12
+        versionName "1.6.02"
 
         ndk {
             // 设置支持的SO库架构

@@ -34,7 +34,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <com.intfocus.hx.general.view.TableHorizontalScrollView
+            <com.intfocus.hxtest.general.view.TableHorizontalScrollView
                 android:id="@+id/thscroll_unit_table_header"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -45,7 +45,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="horizontal"/>
-            </com.intfocus.hx.general.view.TableHorizontalScrollView>
+            </com.intfocus.hxtest.general.view.TableHorizontalScrollView>
         </LinearLayout>
     </LinearLayout>
 </FrameLayout>
