@@ -8,6 +8,21 @@ import com.zbl.lib.baseframe.core.AbstractMode
  * Created by liuruilin on 2017/6/15.
  */
 class AppListMode(var ctx: Context, var type: String?) : AbstractMode() {
+//<<<<<<< HEAD
+//=======
+//    lateinit var urlString: String
+//    var result: String? = null
+//    val mListPageSP: SharedPreferences = ctx.getSharedPreferences("ListPage", Context.MODE_PRIVATE)
+//    var mUserSP = ctx.getSharedPreferences("UserBean", Context.MODE_PRIVATE)
+//    var gson = Gson()
+//
+//    fun getUrl(): String {
+//        var url = String.format(K.K_APP_LIST_PATH, K.kBaseUrl,
+//                mUserSP.getString(kGroupId, "0"), mUserSP.getString(kRoleId, "0"))
+//        return url
+//    }
+//
+//>>>>>>> syp-template
     override fun requestData() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }

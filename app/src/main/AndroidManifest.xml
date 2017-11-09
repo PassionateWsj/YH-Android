@@ -26,6 +26,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/> <!-- 获取网络状态 -->
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/> <!-- 获取设备信息 -->
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE"/> <!-- 6.0 及以上系统需要在代码中动态注册 -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/> <!-- 读sdcard，storage等等 -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/> <!-- 读写sdcard，storage等等 -->
     <!-- 6.0 及以上系统需要在代码中动态注册 -->
     <uses-permission android:name="android.permission.RECORD_AUDIO"/> <!-- 允许程序录制音频 -->
@@ -151,6 +152,7 @@
         <!-- 主页面 -->
         <activity
             android:name="com.intfocus.syp_template.business.dashboard.DashboardActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/AppDashboardTheme"/>
 

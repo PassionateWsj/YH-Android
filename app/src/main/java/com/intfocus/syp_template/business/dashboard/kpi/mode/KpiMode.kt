@@ -7,6 +7,24 @@ import com.zbl.lib.baseframe.core.AbstractMode
  * Created by liuruilin on 2017/6/21.
  */
 class KpiMode(var ctx: Context) : AbstractMode() {
+//    lateinit var urlString: String
+//    var result: String? = null
+//    var messageUrlString = ""
+//    var mNoticeListSP = ctx.getSharedPreferences("KpiData", Context.MODE_PRIVATE)
+//    var mUserSP = ctx.getSharedPreferences("UserBean", Context.MODE_PRIVATE)
+//    var gson = Gson()
+//
+//    private fun getUrl(): String {
+//        return String.format(K.K_KPI_API_DATA_PATH, K.kBaseUrl,
+//                mUserSP.getString(URLs.kGroupId, "0"), mUserSP.getString(URLs.kRoleId, "0"))
+//    }
+//
+//    private fun getMessageUrl(): String {
+//        return String.format(K.K_MESSAGE_DATA_MOBILE_PATH, K.kBaseUrl, mUserSP.getString(URLs.kRoleId, "0"),
+//                mUserSP.getString(URLs.kGroupId, "0"),
+//                mUserSP.getString("user_id", "0"))
+//    }
+
     override fun requestData() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }

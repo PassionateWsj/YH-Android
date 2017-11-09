@@ -75,7 +75,7 @@ public interface HttpService {
      *
      * @return AssetsResult
      */
-    @GET(K.K_ASSETS_M_D5)
+    @GET(K.K_ASSETS_MD5_LIST)
     Observable<AssetsResult> getAssetsMD5();
 
     /**

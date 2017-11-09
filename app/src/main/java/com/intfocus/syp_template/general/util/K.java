@@ -85,7 +85,7 @@ public class K extends PrivateURLs implements Serializable {
     public final static String K_GRAVATAR_CONFIG_FILE_NAME = "gravatar.json";
     public final static String K_BETA_CONFIG_FILE_NAME = "beta_v0.json";
     public final static String K_BAR_CODE_RESULT_FILE_NAME = "barcode_result.json";
-    public final static String K_SCAN_BAR_CODE_H_T_M_L_NAME = "scan_bar_code.html";
+    public final static String K_SCAN_BAR_CODE_HTML_NAME = "scan_bar_code.html";
     public final static String K_CURRENT_VERSION_FILE_NAME = "current_version.txt";
     public final static String K_BEHAVIOR_CONFIG_FILE_NAME = "behavior.json";
     public final static String K_TEMPLATE_V1 = "templateV1";
@@ -118,8 +118,8 @@ public class K extends PrivateURLs implements Serializable {
     /**
      * Config#User Device Info
      */
-    public final static int kMinSdkVersion = 14;
-    public final static int kMaxSdkVersion = 25;
+    public final static int K_MIN_SDK_VERSION = 14;
+    public final static int K_MAX_SDK_VERSION = 25;
 
     /**
      * 新API及所需api key
@@ -206,7 +206,6 @@ public class K extends PrivateURLs implements Serializable {
      * 申请注册
      */
     public final static String K_REGISTER = "/api/v1.1/config/info";
-
     /**
      * "api_token": "",
      * "user_num": ,
@@ -223,7 +222,7 @@ public class K extends PrivateURLs implements Serializable {
     /**
      * 静态资源MD5
      */
-    public final static String K_ASSETS_M_D5 = "/api/v1.1/assets/md5";
+    public final static String K_ASSETS_MD5_LIST = "/api/v1.1/assets/md5";
     /**
      * 推送设备 push_token
      */
@@ -243,7 +242,7 @@ public class K extends PrivateURLs implements Serializable {
     /**
      * 上传锁屏信息
      */
-    public final static String K_SCREEN_LOCK_A_P_I_PATH = "%s/api/v1.1/device/screen_lock";
+    public final static String K_SCREEN_LOCK_API_PATH = "%s/api/v1.1/device/screen_lock";
 
     /**
      * /api/v1.1/download/assets

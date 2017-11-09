@@ -34,7 +34,7 @@ public class ActionLogUtil {
      *                 "screen_lock": ""
      */
     public static void screenLock(String deviceID, String password, boolean state) {
-        String urlString = String.format(K.K_SCREEN_LOCK_A_P_I_PATH, K.kBaseUrl);
+        String urlString = String.format(K.K_SCREEN_LOCK_API_PATH, K.kBaseUrl);
 
         Map<String, String> params = new HashMap<>();
         params.put("screen_lock_state", "1");

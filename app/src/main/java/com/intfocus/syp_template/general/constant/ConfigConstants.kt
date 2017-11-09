@@ -95,14 +95,14 @@ object ConfigConstants {
      * true : 显示 *
      * false : 不显示
      */
-    const val KPI_SHOW : Boolean= true
+    const val KPI_SHOW: Boolean = true
     /**
      * 显示 Report 报表页签
      *
      * true : 显示 *
      * false : 不显示
      */
-    const val REPORT_SHOW : Boolean= true
+    const val REPORT_SHOW: Boolean = true
     /**
      * 显示 WorkBox 工具箱页签
      *
@@ -116,21 +116,21 @@ object ConfigConstants {
      * true : 1 个
      * false : 3 个 *
      */
-    const val ONLY_USER_SHOW : Boolean= false
+    const val ONLY_USER_SHOW: Boolean = false
     /**
      * 我的页面是否自定义
      *
      * true : 用户自定义添加界面 *
      * false : 显示用户基本信息
      */
-    const val USER_CUSTOM : Boolean= true
+    const val USER_CUSTOM: Boolean = true
     /**
      * 归属部门是否有内容
      *
      * true : 可点击跳转
      * false : 不可点击 *
      */
-    const val USER_GROUP_CONTENT : Boolean= false
+    const val USER_GROUP_CONTENT: Boolean = false
     /**
      * 头像是否支持点击上传
      *
@@ -149,7 +149,7 @@ object ConfigConstants {
      * 登录过的用户，下次开启应用是否免密登录
      *
      * true : 下次启动免密登录
-     * false : ^ *
+     * false : 每次重新启动客户端都需输入密码 *
      */
     const val LOGIN_WITH_LAST_USER: Boolean = false
 

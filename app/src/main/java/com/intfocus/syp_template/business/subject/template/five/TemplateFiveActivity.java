@@ -32,18 +32,7 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.intfocus.syp_template.general.CommentActivity;
 import com.intfocus.syp_template.R;
-import com.intfocus.syp_template.general.base.BaseActivity;
-import com.intfocus.syp_template.general.constant.ToastColor;
-import com.intfocus.syp_template.general.util.ApiHelper;
-import com.intfocus.syp_template.general.util.FileUtil;
-import com.intfocus.syp_template.general.util.ImageUtil;
-import com.intfocus.syp_template.general.util.K;
-import com.intfocus.syp_template.general.util.MyHorizontalScrollView;
-import com.intfocus.syp_template.general.util.ToastUtils;
-import com.intfocus.syp_template.general.util.URLs;
-import com.intfocus.syp_template.general.util.Utils;
 import com.intfocus.syp_template.business.subject.template.five.adapter.ColumAdapter;
 import com.intfocus.syp_template.business.subject.template.five.adapter.TableBarChartAdapter;
 import com.intfocus.syp_template.business.subject.template.five.adapter.TableContentItemAdapter;
@@ -58,6 +47,18 @@ import com.intfocus.syp_template.business.subject.template.five.bean.MainData;
 import com.intfocus.syp_template.business.subject.template.five.bean.SortData;
 import com.intfocus.syp_template.business.subject.template.five.bean.TableBarChart;
 import com.intfocus.syp_template.business.subject.template.five.bean.TableChart;
+import com.intfocus.syp_template.general.CommentActivity;
+import com.intfocus.syp_template.general.base.BaseActivity;
+import com.intfocus.syp_template.general.constant.ToastColor;
+import com.intfocus.syp_template.general.util.ApiHelper;
+import com.intfocus.syp_template.general.util.FileUtil;
+import com.intfocus.syp_template.general.util.ImageUtil;
+import com.intfocus.syp_template.general.util.K;
+import com.intfocus.syp_template.general.util.MyHorizontalScrollView;
+import com.intfocus.syp_template.general.util.PageLinkManage;
+import com.intfocus.syp_template.general.util.ToastUtils;
+import com.intfocus.syp_template.general.util.URLs;
+import com.intfocus.syp_template.general.util.Utils;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.UMShareListener;
@@ -1099,6 +1100,7 @@ public class TemplateFiveActivity extends BaseActivity implements ColumAdapter.C
 
     @Override
     public void onBackPressed() {
+        PageLinkManage.INSTANCE.pageBackIntent(TemplateFiveActivity.this);
         finish();
     }
 

@@ -1,3 +1,4 @@
+### 项目模块说明
 - 启动 : `...\business\launcher`
 	- 启动页 : LauncherActivity
 	- 引导页 : GuideActivity
@@ -25,3 +26,100 @@
 	- 模板五 (超级表格) : TemplateFiveActivity
 - 扫一扫 : `...\business\scanner`
 	- 扫码页面 : BarCodeScannerActivity
+
+### syp 模版配置说明
+1. [GitHub syp-template 分支](https://github.com/PassionateWsj/YH-Android/)
+2. 项目包名修改
+ 	- 文件夹重命名 : `../app/src/main/java/com/intfocus/{syp-template}`
+ 	- 包名修改 : 
+ 		- 文件 : `../app/src/main/AndroidManifest.xml`
+ 		- 搜素关键字 : **package**
+ 		- 重命名 : `com.intfocus.{syp_template}`
+	- 应用在系统中的包名修改
+		- 文件 : `../app/build.gradle`
+		- 搜素关键字 : **applicationId**
+		- 重命名 : `com.intfocus.{syp_template}`
+3. App 名称配置
+	- 文件路径 : `..\app\src\main\res\values\strings.xml`
+	- 搜索 **app_name** 关键字
+	- 替换 `永辉生意人` 为所需 **app** 的名称
+4. 功能配置
+	- 文件 ： `..\app\src\main\java\com\intfocus\{spy_template}\general\constant\{ConfigConstants.kt}`
+	- 文件列表
+		- 生意+ (默认) : `ConfigConstants.kt`
+		- 睿商 : `RSConfigConstants.kt`
+		- 数据通 : `SJTConfigConstants.kt`
+		- 永辉生意人 : `YHConfigConstants.kt`
+		- 永辉测试 : `YHTestConfigConstants.kt`
+		- 永辉开发 : `YHDevConfigConstants.kt`
+	- 配置单（**末尾带 * 为默认设置**）
+		- 启动页更新资源开关
+		- 启动页底部广告条
+		- 第一次登录是否展示 使用 Guide 说明页面
+		- 是否提供扫码功能 (Kpi 概况页签)
+		- 是否提供扫码功能 (Report 报表页签)
+		- 是否提供扫码功能 (WorkBox 工具箱页签)
+		- 扫一扫 条码/二维码 开关
+		- 是否支持 相册扫码 功能
+		- 是否支持 扫码定位显示
+		- 帐号输入是否只支持数字键盘
+		- 主页面显示 Kpi 概况页签
+		- 显示 Report 报表页签
+		- 显示 WorkBox 工具箱页签
+		- 我的页面是否只显示 个人信息 一个页签
+		- 头像是否支持点击上传
+		- 是否允许主页面4个页签 滑动切换
+5. 资源替换
+	- **启动页面**
+		- logo 替换
+			- 推荐比例 : **1:1**
+			- 推荐分辨率 : **350 * 350** 、 **550 * 550**
+			- 将 logo 图片重命名为 `startup_logo.png`
+			- 分别在路径下替换当前的图片
+				- **350 * 350** : `..\app\src\main\res\drawable-xhdpi\startup_logo.png` 
+				- **550 * 550** : `..\app\src\main\res\drawable-xxhdpi\startup_logo.png`
+		- 背景图片替换
+			- 推荐比例 : **16 : 9**
+			- 命名 : bg_startup.png
+			- 替换 : `..\app\src\main\res\drawable\bg_startup.png`
+		- 底部广告替换
+			- 图片推荐 : **588 * 48**、 **392 * 32**
+			- 命名 : `slogan.png`
+			- 替换 :
+				- **588 * 48** :`..\app\src\main\res\drawable-xhdpi\slogan.png`
+				- **392 * 32** : `..\app\src\main\res\drawable-xhdpi\slogan.png`
+	- **登录页**
+		- logo 替换
+			- 推荐分辨率 : **86 * 86** 、 **200 * 200** 、**300 * 300**
+			- 命名 : `bg_startup.png`
+			- 替换
+				- **86 * 86** ： `..\app\src\main\res\drawable-hdpi\logo.png`
+				- **200 * 200** ： `..\app\src\main\res\drawable-xhdpi\logo.png`
+				- **300 * 300** ： `..\app\src\main\res\drawable-xxhdpi\logo.png`
+		- 登录帐号提示语
+			- 路径 ： `..\app\src\main\res\values\strings.xml`
+			- 搜索关键词替换
+				- 员工号 ： `hint_login_user`
+	- **主页**
+		- 页签名称 替换
+			- 文件路径 : `..\app\src\main\res\values\strings.xml`
+			- 搜索关键字并修改
+				- 生意概况 : `text_kpi`
+				- 报表 : `text_report`
+				- 工具箱 : `text_workbox`
+				- 我的 : `text_mine`
+6. 三方 sdk 配置
+	- **高德定位** 功能
+		- 文件 : `..\app\src\main\AndroidManifest.xml`
+		- 搜索关键字 : `com.amap.api.v2.apikey`
+			- 替换 **value** 的值为当前应用的 高德地图 **APIKey**
+	- **蒲公英** 平台发布
+		- 文件 : `..\app\src\main\AndroidManifest.xml`
+		- 搜索关键字 : `PGYER_APPID`
+			- 替换 **value** 的值为当前应用的 蒲公英平台提供的 **APPID**
+	- **友盟推送**
+		- 文件 : `..\app\src\main\AndroidManifest.xml`
+		- 搜索关键字 : `UMENG_APPKEY`
+			- 替换 **value** 的值为当前应用的 蒲公英平台提供的 **APPKEY**
+		- 搜索关键字 : `UMENG_MESSAGE_SECRET`
+			- 替换 **value** 的值为当前应用的 蒲公英平台提供的 **SECRET**

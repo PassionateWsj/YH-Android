@@ -1,12 +1,37 @@
 package com.intfocus.syp_template.general.mode
 
 import android.content.Context
+import com.google.gson.Gson
+import com.intfocus.syp_template.business.dashboard.mine.bean.NoticeListBean
+import com.intfocus.syp_template.general.util.K
+import com.intfocus.syp_template.general.util.URLs
 import com.zbl.lib.baseframe.core.AbstractMode
 
 /**
  * Created by liuruilin on 2017/6/12.
  */
 class NoticeMode(var ctx: Context) : AbstractMode() {
+//    lateinit var urlString: String
+//    var result: String? = null
+//    var mUserSP = ctx.getSharedPreferences("UserBean", Context.MODE_PRIVATE)
+//    var mNoticeListBean: NoticeListBean? = null
+//    var page = 1
+//    var gson = Gson()
+//    var typeStr: String? = null
+//    var errorMsg: String? = "未知异常"
+//
+//    fun getUrl(): String {
+//        val url = String.format(K.K_NOTICE_LIST_PATH, K.kBaseUrl,
+//                mUserSP.getString(URLs.kUserNum, ""), typeStr, page, 10.toString())
+//        return url
+//    }
+//
+//    fun requestData(page: Int, typeStr: String) {
+//        this.page = page
+//        this.typeStr = typeStr
+//        requestData()
+//    }
+
     override fun requestData() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
