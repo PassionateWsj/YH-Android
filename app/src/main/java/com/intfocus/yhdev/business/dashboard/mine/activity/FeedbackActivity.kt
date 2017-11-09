@@ -99,7 +99,7 @@ class FeedbackActivity : AbstractActivity<IssueMode>(), View.OnClickListener, Fe
     private fun commitIssue() {
         mProgressDialog = ProgressDialog.show(this, "稍等", "正在提交...")
         issueInfo.issue_content = et_feedback_suggestion.text.toString()
-        issueInfo.app_version = mUserSP.getString(K.kAppVersion, "2.0+")
+        issueInfo.app_version = mUserSP.getString(K.K_APP_VERSION, "2.0+")
         issueInfo.platform = mUserSP.getString("device_info", "android")
         issueInfo.platform_version = mUserSP.getString("os_version", "0")
         issueInfo.user_num = mUserSP.getString(URLs.kUserNum, "null")

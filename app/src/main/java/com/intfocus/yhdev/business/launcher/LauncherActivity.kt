@@ -1,12 +1,18 @@
 package com.intfocus.yhdev.business.launcher
 
+import android.Manifest
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
+import android.provider.Settings
+import android.support.v4.app.ActivityCompat
+import android.support.v4.content.ContextCompat
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
@@ -15,6 +21,7 @@ import android.view.animation.Animation
 import android.widget.Toast
 import com.intfocus.yhdev.R
 import com.intfocus.yhdev.business.login.LoginActivity
+import com.intfocus.yhdev.general.constant.ConfigConstants
 import com.intfocus.yhdev.general.listen.NoDoubleClickListener
 import com.intfocus.yhdev.general.util.AssetsUpDateUtil
 import com.intfocus.yhdev.general.util.HttpUtil
@@ -28,6 +35,8 @@ import java.util.*
 class LauncherActivity : Activity(), Animation.AnimationListener {
 
     val ctx = this
+    private val permissionsArray = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_PHONE_STATE, Manifest.permission.CAMERA, Manifest.permission.ACCESS_FINE_LOCATION)
+    private val CODE_AUTHORITY_REQUEST = 0
     /**
      * 最短点击间隔时长 ms
      */
@@ -50,9 +59,83 @@ class LauncherActivity : Activity(), Animation.AnimationListener {
         requestWindowFeature(Window.FEATURE_NO_TITLE)
         setContentView(R.layout.activity_splash)
 
-        initData()
-        initListener()
-        initAnim()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        getAuthority()
+    }
+
+    /**      
+     * 获取权限 : 文件读写 (WRITE_EXTERNAL_STORAGE),读取设备信息 (READ_PHONE_STATE)
+     */
+    private fun getAuthority() {
+        val permissionsList = permissionsArray.filter { ContextCompat.checkSelfPermission(this, it) != PackageManager.PERMISSION_GRANTED }
+        if (!permissionsList.isEmpty()) {
+            ActivityCompat.requestPermissions(this, permissionsList.toTypedArray(), CODE_AUTHORITY_REQUEST)
+        } else  {
+            initShow()
+            initData()
+            initListener()
+            initAnim()
+        }
+    }
+
+    /**
+     * 权限获取反馈
+     */
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        when (requestCode) {
+            CODE_AUTHORITY_REQUEST -> {
+                var flag = false
+                if (grantResults.isNotEmpty()) {
+                    for (i in permissions.indices) {
+                        if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
+
+                        } else {
+                            flag = true
+                        }
+                    }
+                }
+
+                if (flag) {
+                    setAlertDialog(this, "某些权限获取失败，是否到本应用的设置界面设置权限")
+                } else {
+                    initShow()
+                    initData()
+                    initListener()
+                    initAnim()
+                }
+            }
+            else -> super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        }
+    }
+
+    private fun setAlertDialog(context: Context, message: String) {
+        val builder = AlertDialog.Builder(context)
+        builder.setTitle("温馨提示")
+                .setMessage(message)
+                .setPositiveButton("确认") { _, _ -> goToAppSetting() }
+                .setNegativeButton("取消") { _, _ ->
+                    // 返回DashboardActivity
+                }
+        builder.show()
+    }
+
+    private fun goToAppSetting() {
+        val intent = Intent()
+        intent.action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
+        val uri = Uri.fromParts("package", packageName, null)
+        intent.data = uri
+        startActivity(intent)
+    }
+
+    private fun initShow() {
+        iv_splash_adv.visibility = if (ConfigConstants.SPLASH_ADV) {
+            View.VISIBLE
+        } else {
+            View.INVISIBLE
+        }
     }
 
     /**
@@ -80,7 +163,7 @@ class LauncherActivity : Activity(), Animation.AnimationListener {
      * 初始化监听
      */
     private fun initListener() {
-        rl_splash_container.setOnClickListener(object :NoDoubleClickListener(){
+        rl_splash_container.setOnClickListener(object : NoDoubleClickListener() {
             override fun onNoDoubleClick(v: View?) {
                 confirmNetWorkToUpdateAssets(false)
             }
@@ -125,13 +208,19 @@ class LauncherActivity : Activity(), Animation.AnimationListener {
     }
 
     override fun onAnimationEnd(p0: Animation?) {
-        number_progress_bar_splash.visibility = View.VISIBLE
-        tv_splash_status.visibility = View.VISIBLE
-        confirmNetWorkToUpdateAssets(true)
+        if (ConfigConstants.UP_DATE_ASSETS) {
+            number_progress_bar_splash.visibility = View.VISIBLE
+            tv_splash_status.visibility = View.VISIBLE
+            confirmNetWorkToUpdateAssets(true)
+        } else {
+            enter()
+        }
     }
 
     override fun onAnimationStart(p0: Animation?) {
-        tv_splash_status.text = "正在下载报表样式文件.."
+        if (ConfigConstants.UP_DATE_ASSETS) {
+            tv_splash_status.text = "正在下载报表样式文件.."
+        }
     }
 
     private fun enter() {
@@ -146,13 +235,18 @@ class LauncherActivity : Activity(), Animation.AnimationListener {
                 finish()
             }
             mSettingSP.getInt("Version", 0) != packageInfo.versionCode -> {
-                intent = Intent(this, GuideActivity::class.java)
+                intent = if (ConfigConstants.GUIDE_SHOW) {
+                    Intent(this, GuideActivity::class.java)
+                } else {
+                    Intent(this, LoginActivity::class.java)
+                }
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK and Intent.FLAG_ACTIVITY_SINGLE_TOP)
                 this.startActivity(intent)
 
                 finish()
             }
             else -> {
+
                 intent = Intent(this, LoginActivity::class.java)
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK and Intent.FLAG_ACTIVITY_SINGLE_TOP)
                 this.startActivity(intent)

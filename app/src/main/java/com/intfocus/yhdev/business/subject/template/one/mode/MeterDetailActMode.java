@@ -59,7 +59,7 @@ public class MeterDetailActMode extends AbstractMode {
                 try {
                     String response;
                     String jsonFileName = String.format("group_%s_template_%s_report_%s.json", mGroupId, "1", mReportId);
-                    String jsonFilePath = FileUtil.dirPath(ctx, K.kCachedDirName, jsonFileName);
+                    String jsonFilePath = FileUtil.dirPath(ctx, K.K_CACHED_DIR_NAME, jsonFileName);
                     boolean dataState = ApiHelper.reportJsonData(ctx, mGroupId, "1", mReportId);
                     if (dataState || new File(jsonFilePath).exists()) {
                         response = FileUtil.readFile(jsonFilePath);

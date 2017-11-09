@@ -31,6 +31,7 @@ import com.intfocus.yhdev.business.dashboard.mine.bean.UserInfoRequest
 import com.intfocus.yhdev.business.login.LoginActivity
 import com.intfocus.yhdev.business.subject.webapplication.WebApplicationActivity
 import com.intfocus.yhdev.general.base.BaseModeFragment
+import com.intfocus.yhdev.general.constant.ConfigConstants
 import com.intfocus.yhdev.general.data.response.BaseResult
 import com.intfocus.yhdev.general.data.response.login.RegisterResult
 import com.intfocus.yhdev.general.data.response.mine_page.UserInfoResult
@@ -38,15 +39,19 @@ import com.intfocus.yhdev.general.mode.UserInfoMode
 import com.intfocus.yhdev.general.net.ApiException
 import com.intfocus.yhdev.general.net.CodeHandledSubscriber
 import com.intfocus.yhdev.general.net.RetrofitUtil
-import com.intfocus.yhdev.general.util.*
+import com.intfocus.yhdev.general.util.ActionLogUtil
+import com.intfocus.yhdev.general.util.DisplayUtil
 import com.intfocus.yhdev.general.util.ImageUtil.*
-import com.intfocus.yhdev.general.util.K.kUserDeviceId
+import com.intfocus.yhdev.general.util.K.K_USER_DEVICE_ID
+import com.intfocus.yhdev.general.util.ToastUtils
+import com.intfocus.yhdev.general.util.URLs
 import com.taobao.accs.utl.UtilityImpl.isNetworkConnected
 import com.zbl.lib.baseframe.core.Subject
 import kotlinx.android.synthetic.main.activity_dashboard.*
 import kotlinx.android.synthetic.main.fragment_user.*
 import kotlinx.android.synthetic.main.item_mine_user_top.*
 import kotlinx.android.synthetic.main.items_single_value.*
+import kotlinx.android.synthetic.main.yh_custom_user.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -62,7 +67,7 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
     lateinit var mUserSP: SharedPreferences
     var rootView: View? = null
     var gson = Gson()
-//        var imageOptions: ImageOptions? = null
+    //        var imageOptions: ImageOptions? = null
     var userNum: String? = null
 
     /* 请求识别码 */
@@ -84,19 +89,20 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         EventBus.getDefault().register(this)
         if (rootView == null) {
-            rootView = inflater!!.inflate(R.layout.fragment_user, container, false)
+            rootView = inflater.inflate(R.layout.fragment_user, container, false)
             model.requestData()
         }
         return rootView
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         val mTypeFace = Typeface.createFromAsset(act.assets, "ALTGOT2N.TTF")
         tv_login_number.typeface = mTypeFace
         tv_report_number.typeface = mTypeFace
         tv_beyond_number.typeface = mTypeFace
         initView()
+        initShow()
     }
 
     override fun onResume() {
@@ -123,7 +129,7 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
                                 .asBitmap()
                                 .placeholder(R.drawable.face_default)
                                 .error(R.drawable.face_default)
-                                .override(DisplayUtil.dip2px(ctx, 60f),DisplayUtil.dip2px(ctx, 60f))
+                                .override(DisplayUtil.dip2px(ctx, 60f), DisplayUtil.dip2px(ctx, 60f))
                                 .into(object : BitmapImageViewTarget(iv_user_icon) {
                                     override fun setResource(resource: Bitmap?) {
                                         val circularBitmapDrawable = RoundedBitmapDrawableFactory.create(context!!.resources, resource)
@@ -137,14 +143,36 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
                     }
                 })
 
-        iv_user_icon.setOnClickListener { showIconSelectPopWindow(this.context!!) }
+        iv_user_icon.setOnClickListener {
+            if (ConfigConstants.HEAD_ICON_UPLOAD_SUPPORT) {
+                showIconSelectPopWindow(this.context!!)
+            }
+        }
         rl_password_alter.setOnClickListener { startPassWordAlterActivity() }
         rl_issue.setOnClickListener { startIssueActivity() }
         rl_setting.setOnClickListener { startSettingActivity() }
         rl_favorite.setOnClickListener { startFavoriteActivity() }
         rl_message.setOnClickListener { startMessageActivity() }
         rl_logout.setOnClickListener { showLogoutPopupWindow(this.context!!) }
-        rl_user_location.setOnClickListener { startUserLocationPage() }
+        rl_user_location.setOnClickListener {
+            if (ConfigConstants.USER_GROUP_CONTENT) {
+                startUserLocationPage()
+            }
+        }
+    }
+
+    private fun initShow() {
+        setViewVisible(ll_single_value, ConfigConstants.USER_CUSTOM)
+        setViewVisible(ll_yh_custom_user, ConfigConstants.USER_CUSTOM)
+        setViewVisible(iv_mine_user_group_arrow, ConfigConstants.USER_GROUP_CONTENT)
+    }
+
+    private fun setViewVisible(view: View, show: Boolean) {
+        if (show) {
+            view.visibility = View.VISIBLE
+        } else {
+            view.visibility = View.GONE
+        }
     }
 
     private fun refreshData() {
@@ -183,7 +211,7 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
                     .asBitmap()
                     .placeholder(R.drawable.face_default)
                     .error(R.drawable.face_default)
-                    .override(DisplayUtil.dip2px(ctx, 60f),DisplayUtil.dip2px(ctx, 60f))
+                    .override(DisplayUtil.dip2px(ctx, 60f), DisplayUtil.dip2px(ctx, 60f))
                     .into(object : BitmapImageViewTarget(iv_user_icon) {
                         override fun setResource(resource: Bitmap?) {
                             val circularBitmapDrawable = RoundedBitmapDrawableFactory.create(context!!.resources, resource)
@@ -196,7 +224,7 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
     }
 
     private fun startPassWordAlterActivity() {
-        val intent = Intent(activity, PassWordAlterActivity::class.java)
+        val intent = Intent(activity, AlterPasswordActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
         startActivity(intent)
 
@@ -247,8 +275,7 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
                             intent.putExtra(URLs.kObjectType, "-1")
                             intent.putExtra(URLs.kTemplatedId, "-1")
                             startActivity(intent)
-                        }
-                        else {
+                        } else {
                             ToastUtils.show(ctx, data.data!!)
                         }
                     }
@@ -302,7 +329,7 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
         val mEditor = act.getSharedPreferences("SettingPreference", MODE_PRIVATE).edit()
         mEditor.putBoolean("ScreenLock", false).apply()
         // 退出登录 POST 请求
-        RetrofitUtil.getHttpService(ctx).userLogout(mUserSP.getString(kUserDeviceId, "0"))
+        RetrofitUtil.getHttpService(ctx).userLogout(mUserSP.getString(K_USER_DEVICE_ID, "0"))
                 .compose(RetrofitUtil.CommonOptions<BaseResult>())
                 .subscribe(object : CodeHandledSubscriber<BaseResult>() {
                     override fun onBusinessNext(data: BaseResult?) {
@@ -351,7 +378,7 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
                 val tempFile = File(Environment.getExternalStorageDirectory(), "icon.jpg")
                 if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                     val photoURI = FileProvider.getUriForFile(ctx,
-                            "com.intfocus.yhdev.fileprovider",
+                            "com.intfocus.yh_android.fileprovider",
                             tempFile)
                     cropIntent = launchSystemImageCrop(ctx, photoURI)
                 } else {

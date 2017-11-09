@@ -12,8 +12,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static android.content.Context.MODE_PRIVATE;
-import static com.intfocus.yhdev.general.util.K.kAppVersion;
-import static com.intfocus.yhdev.general.util.K.kUserName;
+import static com.intfocus.yhdev.general.util.K.K_APP_VERSION;
+import static com.intfocus.yhdev.general.util.K.K_USER_NAME;
 
 /**
  * Created by liuruilin on 2017/8/1.
@@ -34,7 +34,7 @@ public class ActionLogUtil {
      *                 "screen_lock": ""
      */
     public static void screenLock(String deviceID, String password, boolean state) {
-        String urlString = String.format(K.kScreenLockAPIPath, K.kBaseUrl);
+        String urlString = String.format(K.K_SCREEN_LOCK_API_PATH, K.kBaseUrl);
 
         Map<String, String> params = new HashMap<>();
         params.put("screen_lock_state", "1");
@@ -58,26 +58,26 @@ public class ActionLogUtil {
                 try {
                     SharedPreferences mUserSP = context.getApplicationContext().getSharedPreferences("UserBean", MODE_PRIVATE);
 
-                    param.put(K.kUserId, mUserSP.getString(K.kUserId, ""));
+                    param.put(K.K_USER_ID, mUserSP.getString(K.K_USER_ID, ""));
                     param.put(URLs.kUserNum, mUserSP.getString(URLs.kUserNum, ""));
-                    param.put(kUserName, mUserSP.getString(K.kUserName, ""));
-                    param.put(K.kUserDeviceId, mUserSP.getString(K.kUserDeviceId, ""));
+                    param.put(K_USER_NAME, mUserSP.getString(K.K_USER_NAME, ""));
+                    param.put(K.K_USER_DEVICE_ID, mUserSP.getString(K.K_USER_DEVICE_ID, ""));
 
                     PackageInfo packageInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
-                    param.put(kAppVersion, String.format("a%s", packageInfo.versionName));
+                    param.put(K_APP_VERSION, String.format("a%s", packageInfo.versionName));
                     param.put("coordinate", mUserSP.getString("coordinate", ""));
 
                     JSONObject params = new JSONObject();
                     params.put("action_log", param);
 
                     JSONObject userParams = new JSONObject();
-                    userParams.put(kUserName, mUserSP.getString(kUserName, ""));
+                    userParams.put(K_USER_NAME, mUserSP.getString(K_USER_NAME, ""));
                     userParams.put("user_pass", mUserSP.getString(URLs.kPassword, ""));
                     params.put("user", userParams);
 
                     params.put("api_token", ApiHelper.checkApiToken("/api/v1.1/device/logger"));
 
-                    String urlString = String.format(K.kActionLog, K.kBaseUrl);
+                    String urlString = String.format(K.K_ACTION_LOG, K.kBaseUrl);
                     HttpUtil.httpPost(urlString, params);
                 } catch (JSONException | PackageManager.NameNotFoundException e) {
                     e.printStackTrace();
@@ -100,7 +100,7 @@ public class ActionLogUtil {
                     SharedPreferences mUserSP = context.getApplicationContext().getSharedPreferences("UserBean", MODE_PRIVATE);
 
                     PackageInfo packageInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
-                    param.put(kAppVersion, String.format("a%s", packageInfo.versionName));
+                    param.put(K_APP_VERSION, String.format("a%s", packageInfo.versionName));
                     param.put("coordinate", mUserSP.getString("coordinate", ""));
 
                     JSONObject params = new JSONObject();
@@ -108,7 +108,7 @@ public class ActionLogUtil {
 
                     params.put("api_token", ApiHelper.checkApiToken("/api/v1.1/device/logger"));
 
-                    String urlString = String.format(K.kActionLog, K.kBaseUrl);
+                    String urlString = String.format(K.K_ACTION_LOG, K.kBaseUrl);
                     HttpUtil.httpPost(urlString, params);
                 } catch (JSONException | PackageManager.NameNotFoundException e) {
                     e.printStackTrace();

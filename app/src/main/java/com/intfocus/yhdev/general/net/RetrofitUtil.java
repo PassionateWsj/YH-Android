@@ -5,7 +5,7 @@ import android.content.Context;
 
 import com.intfocus.yhdev.general.YHApplication;
 import com.intfocus.yhdev.general.util.HttpUtil;
-import com.intfocus.yhdev.general.util.PrivateURLs;
+import com.intfocus.yhdev.general.util.K;
 
 import java.security.SecureRandom;
 import java.security.cert.CertificateException;
@@ -33,7 +33,7 @@ import rx.schedulers.Schedulers;
  */
 public class RetrofitUtil {
     private static final int DEFAULT_TIME_OUT = 2 * 1000;
-    private static final String DEFAULT_BASE_URL = PrivateURLs.kBaseUrl;
+    private static final String DEFAULT_BASE_URL = K.kBaseUrl;
     private HttpService httpService;
     private Context ctx;
 

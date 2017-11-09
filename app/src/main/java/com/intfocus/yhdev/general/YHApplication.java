@@ -20,6 +20,7 @@ import com.intfocus.yhdev.business.dashboard.DashboardActivity;
 import com.intfocus.yhdev.business.launcher.ConfirmPassCodeActivity;
 import com.intfocus.yhdev.business.login.LoginActivity;
 import com.intfocus.yhdev.general.util.FileUtil;
+import com.intfocus.yhdev.general.util.K;
 import com.intfocus.yhdev.general.util.URLs;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.tencent.tinker.loader.app.ApplicationLike;
@@ -39,10 +40,6 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import static com.intfocus.yhdev.general.constant.Constants.BUGLY_APP_ID;
-import static com.intfocus.yhdev.general.util.K.kPushDeviceToken;
-import static com.intfocus.yhdev.general.util.PrivateURLs.kWXAppId;
-import static com.intfocus.yhdev.general.util.PrivateURLs.kWXAppSecret;
 
 /**
  * Created by lijunjie on 16/1/15.
@@ -91,7 +88,7 @@ public class YHApplication extends Application {
         /*
          * Bugly 异常上报
          */
-        CrashReport.initCrashReport(getApplicationContext(), BUGLY_APP_ID, BuildConfig.DEBUG);
+        CrashReport.initCrashReport(getApplicationContext(), K.BUGLY_APP_ID, BuildConfig.DEBUG);
 
         /*
          * 友盟分享初始化
@@ -101,7 +98,7 @@ public class YHApplication extends Application {
         /*
          * 配置微信 appKey
          */
-        PlatformConfig.setWeixin(kWXAppId, kWXAppSecret);
+        PlatformConfig.setWeixin(K.kWXAppId, K.kWXAppSecret);
 
         initXutils();
 
@@ -112,7 +109,7 @@ public class YHApplication extends Application {
 //
 
         /*
-         *  手机待机再激活时发送开屏广播
+         *  手机待机再激活时发送ØØØØ开屏广播
          */
         registerReceiver(broadcastScreenOnAndOff, new IntentFilter(Intent.ACTION_SCREEN_ON));
 
@@ -127,7 +124,7 @@ public class YHApplication extends Application {
                 SharedPreferences mPushSP = getSharedPreferences("PushMessage", MODE_PRIVATE);
                 SharedPreferences.Editor mPushSPEdit = mPushSP.edit();
 
-                mPushSPEdit.putString(kPushDeviceToken, deviceToken).commit();
+                mPushSPEdit.putString(K.K_PUSH_DEVICE_TOKEN, deviceToken).commit();
             }
 
             @Override
@@ -156,7 +153,7 @@ public class YHApplication extends Application {
             } else {
                 intent = new Intent(appContext, LoginActivity.class);
             }
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+//            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             Bundle bundle = new Bundle();
             bundle.putString("message", uMessage.custom);
             bundle.putString("message_body_title", uMessage.title);

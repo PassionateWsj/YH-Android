@@ -70,7 +70,7 @@ class ShowPushMessageActivity : AppCompatActivity(), PushMessageView, ShowPushMe
 
     private fun initData() {
         // 获取 User 信息
-        val userConfigPath = String.format("%s/%s", FileUtil.basePath(this), K.kUserConfigFileName)
+        val userConfigPath = String.format("%s/%s", FileUtil.basePath(this), K.K_USER_CONFIG_FILE_NAME)
         if (File(userConfigPath).exists()) {
             val user = Gson().fromJson(FileUtil.readConfigFile(userConfigPath).toString(), User::class.java)
             if (user!!.isIs_login) {

@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/ll_yh_custom_user"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <View
+        style="@style/NullDivider"
+        android:layout_height="10dp"
+        android:layout_alignParentTop="true"/>
+
+    <RelativeLayout
+        android:id="@+id/rl_favorite"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/color_btn_forget_pwd_submit_background">
+
+        <ImageView
+            android:id="@+id/iv_mine_user_favorite"
+            style="@style/iv_mine_user_list"
+            android:src="@drawable/icon_collection"/>
+
+        <TextView
+            android:id="@+id/tv_mine_user_favorite"
+            style="@style/tv_mine_user_list_left"
+            android:layout_toRightOf="@id/iv_mine_user_favorite"
+            android:text="文章收藏"/>
+
+        <ImageView
+            android:layout_width="5dp"
+            android:layout_height="12dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20dp"
+            android:src="@drawable/btn_more"/>
+    </RelativeLayout>
+
+    <View style="@style/NarrowSmallDivider"/>
+
+    <RelativeLayout
+        android:id="@+id/rl_message"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/color_btn_forget_pwd_submit_background">
+
+        <ImageView
+            android:id="@+id/iv_mine_user_message"
+            style="@style/iv_mine_user_list"
+            android:src="@drawable/icon_message"/>
+
+        <TextView
+            android:id="@+id/tv_mine_user_message"
+            style="@style/tv_mine_user_list_left"
+            android:layout_toRightOf="@id/iv_mine_user_message"
+            android:text="消息"/>
+
+        <ImageView
+            android:layout_width="5dp"
+            android:layout_height="12dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20dp"
+            android:src="@drawable/btn_more"/>
+    </RelativeLayout>
+
+    <View
+        style="@style/NullDivider"
+        android:layout_height="10dp"/>
+
+    <RelativeLayout
+        android:id="@+id/rl_setting"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/color_btn_forget_pwd_submit_background">
+
+        <ImageView
+            android:id="@+id/iv_mine_user_setting"
+            style="@style/iv_mine_user_list"
+            android:src="@drawable/icon_setting"/>
+
+        <TextView
+            android:id="@+id/tv_mine_user_setting"
+            style="@style/tv_mine_user_list_left"
+            android:layout_toRightOf="@+id/iv_mine_user_setting"
+            android:text="设置"/>
+
+        <ImageView
+            android:layout_width="5dp"
+            android:layout_height="12dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20dp"
+            android:src="@drawable/btn_more"/>
+    </RelativeLayout>
+
+    <View style="@style/NarrowSmallDivider"/>
+
+    <RelativeLayout
+        android:id="@+id/rl_password_alter"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/color_btn_forget_pwd_submit_background">
+
+        <ImageView
+            android:id="@+id/iv_mine_user_password"
+            style="@style/iv_mine_user_list"
+            android:src="@drawable/icon_password"/>
+
+        <TextView
+            android:id="@+id/tv_mine_user_password"
+            style="@style/tv_mine_user_list_left"
+            android:layout_toRightOf="@id/iv_mine_user_password"
+            android:text="修改密码"/>
+
+        <ImageView
+            android:layout_width="5dp"
+            android:layout_height="12dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20dp"
+            android:src="@drawable/btn_more"/>
+    </RelativeLayout>
+
+    <View style="@style/NarrowSmallDivider"/>
+
+    <RelativeLayout
+        android:id="@+id/rl_issue"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/color_btn_forget_pwd_submit_background">
+
+        <ImageView
+            android:id="@+id/iv_mine_user_issue"
+            style="@style/iv_mine_user_list"
+            android:src="@drawable/icon_feedback"/>
+
+        <TextView
+            android:id="@+id/tv_mine_user_issue"
+            style="@style/tv_mine_user_list_left"
+            android:layout_toRightOf="@id/iv_mine_user_issue"
+            android:text="问题反馈"/>
+
+        <ImageView
+            android:layout_width="5dp"
+            android:layout_height="12dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20dp"
+            android:src="@drawable/btn_more"/>
+    </RelativeLayout>
+
+</LinearLayout>

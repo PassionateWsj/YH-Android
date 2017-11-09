@@ -13,6 +13,7 @@ import com.intfocus.yhdev.business.dashboard.report.adapter.ReportsRightRVAdapte
 import com.intfocus.yhdev.business.dashboard.report.mode.CategoryBean
 import com.intfocus.yhdev.business.dashboard.report.mode.ReportListPageRequest
 import com.intfocus.yhdev.general.base.BaseModeFragment
+import com.intfocus.yhdev.general.constant.ConfigConstants
 import com.intfocus.yhdev.general.mode.ReportsListMode
 import com.intfocus.yhdev.general.util.HttpUtil
 import com.intfocus.yhdev.general.util.ToastUtils
@@ -38,7 +39,7 @@ class ReportFragment : BaseModeFragment<ReportsListMode>(), ReportsLeftListAdapt
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         EventBus.getDefault().register(this)
         if (rootView == null) {
-            rootView = inflater!!.inflate(R.layout.fragment_reports, container, false)
+            rootView = inflater.inflate(R.layout.fragment_reports, container, false)
             model.requestData()
         }
 
@@ -47,7 +48,16 @@ class ReportFragment : BaseModeFragment<ReportsListMode>(), ReportsLeftListAdapt
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         initSwipeLayout()
+        initShow()
         super.onActivityCreated(savedInstanceState)
+    }
+
+    private fun initShow() {
+        bannerSetting.visibility =if (ConfigConstants.SCAN_ENABLE_REPORT) {
+            View.VISIBLE
+        } else {
+            View.GONE
+        }
     }
 
     override fun onDestroyView() {

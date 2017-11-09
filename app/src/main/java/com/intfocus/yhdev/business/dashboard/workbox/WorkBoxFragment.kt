@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.intfocus.yhdev.R
 import com.intfocus.yhdev.general.base.BaseModeFragment
+import com.intfocus.yhdev.general.constant.ConfigConstants
 import com.intfocus.yhdev.general.util.HttpUtil
 import com.intfocus.yhdev.general.util.ToastUtils
 import com.zbl.lib.baseframe.core.Subject
@@ -22,14 +23,12 @@ class WorkBoxFragment : BaseModeFragment<WorkBoxMode>(), SwipeRefreshLayout.OnRe
     var rootView: View? = null
     var datas: List<WorkBoxItem>? = null
 
-    override fun setSubject(): Subject {
-        return WorkBoxMode(ctx)
-    }
+    override fun setSubject(): Subject = WorkBoxMode(ctx)
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         EventBus.getDefault().register(this)
         if (rootView == null) {
-            rootView = inflater!!.inflate(R.layout.fragment_work_box, container, false)
+            rootView = inflater.inflate(R.layout.fragment_work_box, container, false)
             model.requestData()
         }
         return rootView
@@ -37,7 +36,16 @@ class WorkBoxFragment : BaseModeFragment<WorkBoxMode>(), SwipeRefreshLayout.OnRe
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         initSwipeLayout()
+        initShow()
         super.onActivityCreated(savedInstanceState)
+    }
+
+    private fun initShow() {
+        bannerSetting.visibility =if (ConfigConstants.SCAN_ENABLE_WORKBOX) {
+            View.VISIBLE
+        } else {
+            View.GONE
+        }
     }
 
     override fun onDestroyView() {

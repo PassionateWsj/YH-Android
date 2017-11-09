@@ -92,7 +92,7 @@ public class ShowListMsgActivity extends BaseActivity {
 
             case "cacheHeaders":
                 try {
-                    String cacheHeaderPath = FileUtil.dirPath(mAppContext, "HTML", K.kCachedHeaderConfigFileName);
+                    String cacheHeaderPath = FileUtil.dirPath(mAppContext, "HTML", K.K_CACHED_HEADER_CONFIG_FILE_NAME);
                     if (new File(cacheHeaderPath).exists()) {
                         JSONObject json = FileUtil.readConfigFile(cacheHeaderPath);
                         Iterator<String> it = json.keys();
@@ -116,7 +116,7 @@ public class ShowListMsgActivity extends BaseActivity {
                 break;
 
             case "config":
-                String userConfigPath = String.format("%s/%s", FileUtil.basePath(mAppContext), K.kUserConfigFileName);
+                String userConfigPath = String.format("%s/%s", FileUtil.basePath(mAppContext), K.K_USER_CONFIG_FILE_NAME);
                 JSONObject user = FileUtil.readConfigFile(userConfigPath);
                 Iterator<String> it = user.keys();
                 while (it.hasNext()) {

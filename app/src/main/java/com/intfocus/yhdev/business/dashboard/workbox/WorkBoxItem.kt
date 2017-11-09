@@ -44,5 +44,32 @@ class WorkBoxItem {
     var group_order: Any? = null
     var item_order: Any? = null
     var created_at: String? = null
+    var params_mapping: HashMap<String,String>? = null
+//    var params_mapping: ParamsMappingBean? = null
+    class ParamsMappingBean {
+        /**
+         * user_num : 80584332
+         * user_name : 汪浩楠
+         * email :
+         * mobile : 18701065179
+         * user_id : 10016
+         * status : true
+         * group_id : 1389
+         * group_name : 大区(北京东二区)门店(清河店)商行(全部)
+         * role_id : 44
+         * role_name : 小店合伙人
+         */
+
+        var user_num: String? = null
+        var user_name: String? = null
+        var email: String? = null
+        var mobile: String? = null
+        var user_id: String? = null
+        var status: String? = null
+        var group_id: String? = null
+        var group_name: String? = null
+        var role_id: String? = null
+        var role_name: String? = null
+    }
 
 }

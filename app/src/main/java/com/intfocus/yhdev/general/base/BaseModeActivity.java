@@ -22,6 +22,7 @@ import android.widget.TextView;
 import com.intfocus.yhdev.R;
 import com.intfocus.yhdev.general.constant.Permissions;
 import com.intfocus.yhdev.general.util.LoadingUtils;
+import com.intfocus.yhdev.general.util.PageLinkManage;
 import com.intfocus.yhdev.general.util.ToastUtils;
 import com.zbl.lib.baseframe.core.AbstractActivity;
 import com.zbl.lib.baseframe.core.ActManager;
@@ -257,6 +258,7 @@ public abstract class BaseModeActivity<T extends Subject> extends AbstractActivi
      * 返回键回掉方法
      */
     protected void onBack() {
+        PageLinkManage.INSTANCE.pageBackIntent(BaseModeActivity.this);
         ActManager.getActManager().finishActivity();
     }
 

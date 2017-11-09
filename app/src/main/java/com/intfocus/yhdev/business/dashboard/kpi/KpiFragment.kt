@@ -12,6 +12,7 @@ import com.intfocus.yhdev.business.dashboard.kpi.bean.KpiBean
 import com.intfocus.yhdev.business.dashboard.mine.adapter.KpiAdapter
 import com.intfocus.yhdev.business.dashboard.mine.bean.InstituteDataBean
 import com.intfocus.yhdev.general.base.RefreshFragment
+import com.intfocus.yhdev.general.constant.ConfigConstants
 import com.intfocus.yhdev.general.data.response.home.HomeMsgResult
 import com.intfocus.yhdev.general.data.response.home.KpiResult
 import com.intfocus.yhdev.general.net.ApiException
@@ -20,6 +21,7 @@ import com.intfocus.yhdev.general.net.RetrofitUtil
 import com.intfocus.yhdev.general.util.*
 import com.intfocus.yhdev.general.view.DefaultRefreshView
 import com.intfocus.yhdev.general.view.MyLinearLayoutManager
+import kotlinx.android.synthetic.main.fragment_kpi.*
 import org.xutils.x
 
 /**
@@ -37,7 +39,7 @@ class KpiFragment : RefreshFragment(), KpiAdapter.HomePageListener {
     lateinit var ctx: Context
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        mView = inflater!!.inflate(R.layout.fragment_kpi, container, false)
+        mView = inflater.inflate(R.layout.fragment_kpi, container, false)
         x.view().inject(this, mView)
         setRefreshLayout()
         mUserSP = mActivity.getSharedPreferences("UserBean", Context.MODE_PRIVATE)
@@ -45,8 +47,21 @@ class KpiFragment : RefreshFragment(), KpiAdapter.HomePageListener {
         roleId = mUserSP.getString(URLs.kRoleId, "0")
         groupId = mUserSP.getString(URLs.kGroupId, "0")
         initView()
+
         getData(true)
         return mView
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initShow()
+    }
+    private fun initShow() {
+        bannerSetting.visibility =if (ConfigConstants.SCAN_ENABLE_KPI) {
+             View.VISIBLE
+        } else {
+             View.GONE
+        }
     }
 
     fun initView() {

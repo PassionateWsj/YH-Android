@@ -40,17 +40,18 @@ import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.intfocus.yhdev.general.CommentActivity;
 import com.intfocus.yhdev.R;
+import com.intfocus.yhdev.business.subject.template.three.adapter.MetricsAdapter;
+import com.intfocus.yhdev.business.subject.template.three.adapter.ProductListAdapter;
+import com.intfocus.yhdev.general.CommentActivity;
 import com.intfocus.yhdev.general.util.FileUtil;
 import com.intfocus.yhdev.general.util.HttpUtil;
 import com.intfocus.yhdev.general.util.ImageUtil;
 import com.intfocus.yhdev.general.util.K;
+import com.intfocus.yhdev.general.util.PageLinkManage;
 import com.intfocus.yhdev.general.util.ToastUtils;
 import com.intfocus.yhdev.general.util.URLs;
 import com.intfocus.yhdev.general.util.ValueFormatter;
-import com.intfocus.yhdev.business.subject.template.three.adapter.MetricsAdapter;
-import com.intfocus.yhdev.business.subject.template.three.adapter.ProductListAdapter;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.UMShareListener;
@@ -239,7 +240,7 @@ public class TemplateThreeActivity extends AppCompatActivity implements ProductL
         @Override
         protected void onPostExecute(Map<String, String> response) {
             String jsonFileName = String.format("group_%s_template_%s_report_%s.json", groupID, 3, objectID);
-            String jsonFilePath = FileUtil.dirPath(mContext, K.kCachedDirName, jsonFileName);
+            String jsonFilePath = FileUtil.dirPath(mContext, K.K_CACHED_DIR_NAME, jsonFileName);
             if ("200".equals(response.get("code")) || "304".equals(response.get("code"))) {
                 initView();
                 initData("{\"data\":" + response.get("body") + "}");
@@ -795,6 +796,7 @@ public class TemplateThreeActivity extends AppCompatActivity implements ProductL
 
     @Override
     public void onBackPressed() {
+        PageLinkManage.INSTANCE.pageBackIntent(TemplateThreeActivity.this);
         finish();
     }
 

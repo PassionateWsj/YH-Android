@@ -51,7 +51,7 @@ public interface HttpService {
      * @param keyName keyname
      * @return RegisterResult
      */
-    @GET(K.KRegister)
+    @GET(K.K_REGISTER)
     Observable<RegisterResult> getRegister(@Query("keyname") String keyName);
 
     /**
@@ -64,7 +64,7 @@ public interface HttpService {
      * @param pushToken
      * @return
      */
-    @POST(K.KPushToken)
+    @POST(K.K_PUSH_TOKEN)
     Observable<BaseResult> putPushToken(@Query("uuid") String uuid, @Query("push_token") String pushToken);
 
     /**
@@ -75,7 +75,7 @@ public interface HttpService {
      *
      * @return AssetsResult
      */
-    @GET(K.KAssetsMD5)
+    @GET(K.K_ASSETS_MD5_LIST)
     Observable<AssetsResult> getAssetsMD5();
 
     /**
@@ -88,7 +88,7 @@ public interface HttpService {
      * @param userNum  user_num
      * @return NoticeContentResult
      */
-    @GET(K.KNoticeContent)
+    @GET(K.K_NOTICE_CONTENT)
     Observable<NoticeContentResult> getNoticeContent(@Query("notice_id") String noticeId, @Query("user_num") String userNum);
 
     /**
@@ -100,7 +100,7 @@ public interface HttpService {
      * @param commentBody
      * @return BaseResult
      */
-    @POST(K.KComment)
+    @POST(K.K_COMMENT)
     Observable<BaseResult> submitComment(@Body CommentBody commentBody);
 
     /**
@@ -113,7 +113,7 @@ public interface HttpService {
      * @param roleId
      * @return WorkBoxResult
      */
-    @GET(K.KWorkBoxList)
+    @GET(K.K_WORK_BOX_LIST)
     Observable<WorkBoxResult> getWorkBox(@Query("group_id") String groupId, @Query("role_id") String roleId);
 
     /**
@@ -126,7 +126,7 @@ public interface HttpService {
      * @param roleId
      * @return
      */
-    @GET(K.KReportList)
+    @GET(K.K_REPORT_LIST)
     Observable<ReportListResult> getReportList(@Query("group_id") String groupId, @Query("role_id") String roleId);
 
     /**
@@ -138,7 +138,7 @@ public interface HttpService {
      * @param userNum
      * @return
      */
-    @GET(K.KStoreList)
+    @GET(K.K_STORE_LIST)
     Observable<StoreListResult> getStoreList(@Query("user_num") String userNum);
 
     /**
@@ -150,7 +150,7 @@ public interface HttpService {
      * @param userNum
      * @return
      */
-    @GET(K.KUserInfo)
+    @GET(K.K_USER_INFO)
     Observable<UserInfoResult> getUserInfo(@Query("user_num") String userNum);
 
     /**
@@ -163,7 +163,7 @@ public interface HttpService {
      * @param roleId
      * @return
      */
-    @GET(K.KNotifications)
+    @GET(K.K_NOTIFICATIONS)
     Observable<HomeMsgResult> getNotifications(@Query("group_id") String groupId, @Query("role_id") String roleId);
 
     /**
@@ -176,7 +176,7 @@ public interface HttpService {
      * @param codeInfo
      * @return
      */
-    @GET(K.KScannerResult)
+    @GET(K.K_SCANNER_RESULT)
     Observable<BaseResult> getScannerResult(@Query("store_id") String storeId, @Query("code_info") String codeInfo);
 
     /**
@@ -188,7 +188,7 @@ public interface HttpService {
      * @param queryMap
      * @return
      */
-    @GET(K.KMyFavouritedList)
+    @GET(K.K_MY_FAVOURITE_LIST)
     Observable<ArticleResult> getMyFavouritedList(@QueryMap Map<String, String> queryMap);
 
     /**
@@ -200,7 +200,7 @@ public interface HttpService {
      * @param requestFavourite
      * @return
      */
-    @POST(K.KFavouriteStatus)
+    @POST(K.K_FAVOURITE_STATUS)
     Observable<BaseResult> articleOperating(@Body RequestFavourite requestFavourite);
 
     /**
@@ -212,7 +212,7 @@ public interface HttpService {
      * @param queryMap
      * @return
      */
-    @GET(K.KArticlesList)
+    @GET(K.K_ARTICLES_LIST)
     Observable<ArticleResult> getArticleList(@QueryMap Map<String, String> queryMap);
 
 
@@ -225,7 +225,7 @@ public interface HttpService {
      * @param queryMap
      * @return
      */
-    @GET(K.KOverview)
+    @GET(K.K_OVERVIEW)
     Observable<KpiResult> getHomeIndex(@QueryMap Map<String, String> queryMap);
 
     /**
@@ -237,7 +237,7 @@ public interface HttpService {
      * @param queryMap
      * @return
      */
-    @GET(K.KNotifications)
+    @GET(K.K_NOTIFICATIONS)
     Observable<HomeMsgResult> getHomeMsg(@QueryMap Map<String, String> queryMap);
 
     /**
@@ -249,7 +249,7 @@ public interface HttpService {
      * @param queryMap
      * @return
      */
-    @GET(K.KNoticeList)
+    @GET(K.K_NOTICE_LIST)
     Observable<NoticesResult> getNoticeList(@QueryMap Map<String, String> queryMap);
 
     /**
@@ -260,7 +260,7 @@ public interface HttpService {
      *
      * @return
      */
-    @GET(K.KFilterMenuPath)
+    @GET(K.K_FILTER_MENU_PATH)
     Observable<MenuResult> getFilterMenu();
 
 
@@ -276,7 +276,7 @@ public interface HttpService {
      * @return
      */
     @Multipart
-    @POST(K.kNewUserIconUploadPath)
+    @POST(K.K_NEW_USER_ICON_UPLOAD_PATH)
     Observable<BaseResult> userIconUpload(@Query("device_id") String deviceId, @Query("user_num") String user_num, @Part MultipartBody.Part file);
 
     /**
@@ -290,7 +290,7 @@ public interface HttpService {
      * @param coordinate
      * @return
      */
-    @POST(K.KNewLogin)
+    @POST(K.K_NEW_LOGIN)
     Observable<NewUser> userLogin(@Query("user_num") String userNum, @Query("password") String password, @Query("coordinate") String coordinate);
 
     /**
@@ -302,7 +302,7 @@ public interface HttpService {
      * @param deviceRequest
      * @return
      */
-    @POST(K.KNewDevice)
+    @POST(K.K_NEW_DEVICE)
     Observable<Device> deviceUpLoad(@Body DeviceRequest deviceRequest);
 
     /**
@@ -314,7 +314,7 @@ public interface HttpService {
      * @param userDeviceId
      * @return
      */
-    @POST(K.KNewLogout)
+    @POST(K.K_NEW_LOGOUT)
     Observable<BaseResult> userLogout(@Query("user_device_id") String userDeviceId);
 
     /**
@@ -327,7 +327,7 @@ public interface HttpService {
      * @param newPwd
      * @return
      */
-    @POST(K.KNewUpdatePwd)
+    @POST(K.K_NEW_UPDATE_PWD)
     Observable<BaseResult> updatePwd(@Query("user_num") String userNum, @Query("password") String newPwd);
 
     /**
@@ -340,7 +340,7 @@ public interface HttpService {
      * @param mobile
      * @return
      */
-    @POST(K.KNewResetPwd)
+    @POST(K.K_NEW_RESET_PWD)
     Observable<BaseResult> resetPwd(@Query("user_num") String userNum, @Query("mobile") String mobile);
 
     /**
@@ -352,7 +352,7 @@ public interface HttpService {
      * @param params
      * @return
      */
-    @GET(K.KNewChoiceMenu)
+    @GET(K.K_NEW_CHOICE_MENU)
     Call<MenuResult> getChoiceMenus(@Query("params") String params);
 
     /**
@@ -378,7 +378,7 @@ public interface HttpService {
      * @param location
      * @return
      */
-    @GET(K.KNearestStores)
+    @GET(K.K_NEAREST_STORES)
     Observable<NearestStoresResult> getNearestStores(@Query("limit") int limit, @Query("distance") double distance, @Query("location") String location);
 
 }

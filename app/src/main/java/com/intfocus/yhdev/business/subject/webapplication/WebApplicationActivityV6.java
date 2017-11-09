@@ -42,9 +42,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.intfocus.yhdev.general.CommentActivity;
 import com.intfocus.yhdev.R;
 import com.intfocus.yhdev.business.dashboard.mine.adapter.FilterMenuAdapter;
+import com.intfocus.yhdev.general.CommentActivity;
 import com.intfocus.yhdev.general.base.BaseActivity;
 import com.intfocus.yhdev.general.constant.ToastColor;
 import com.intfocus.yhdev.general.data.response.filter.Menu;
@@ -58,6 +58,7 @@ import com.intfocus.yhdev.general.util.FileUtil;
 import com.intfocus.yhdev.general.util.ImageUtil;
 import com.intfocus.yhdev.general.util.K;
 import com.intfocus.yhdev.general.util.LogUtil;
+import com.intfocus.yhdev.general.util.PageLinkManage;
 import com.intfocus.yhdev.general.util.ToastUtils;
 import com.intfocus.yhdev.general.util.URLs;
 import com.intfocus.yhdev.general.view.addressselector.FilterPopupWindow;
@@ -649,7 +650,7 @@ public class WebApplicationActivityV6 extends BaseActivity implements OnPageChan
     private final Runnable mRunnableForPDF = new Runnable() {
         @Override
         public void run() {
-            String outputPath = String.format("%s/%s/%s.pdf", FileUtil.basePath(mAppContext), K.kCachedDirName, URLs.MD5(urlString));
+            String outputPath = String.format("%s/%s/%s.pdf", FileUtil.basePath(mAppContext), K.K_CACHED_DIR_NAME, URLs.MD5(urlString));
             pdfFile = new File(outputPath);
             ApiHelper.downloadFile(mAppContext, urlString, pdfFile);
 
@@ -756,6 +757,7 @@ public class WebApplicationActivityV6 extends BaseActivity implements OnPageChan
                 .setPositiveButton("确认", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        PageLinkManage.INSTANCE.pageBackIntent(WebApplicationActivityV6.this);
                         finish();
                     }
                 })
@@ -794,7 +796,7 @@ public class WebApplicationActivityV6 extends BaseActivity implements OnPageChan
         @JavascriptInterface
         public void storeTabIndex(final String pageName, final int tabIndex) {
             try {
-                String filePath = FileUtil.dirPath(mAppContext, K.kConfigDirName, K.kTabIndexConfigFileName);
+                String filePath = FileUtil.dirPath(mAppContext, K.K_CONFIG_DIR_NAME, K.K_TAB_INDEX_CONFIG_FILE_NAME);
 
                 JSONObject config = new JSONObject();
                 if ((new File(filePath).exists())) {
@@ -813,7 +815,7 @@ public class WebApplicationActivityV6 extends BaseActivity implements OnPageChan
         public int restoreTabIndex(final String pageName) {
             int tabIndex = 0;
             try {
-                String filePath = FileUtil.dirPath(mAppContext, K.kConfigDirName, K.kTabIndexConfigFileName);
+                String filePath = FileUtil.dirPath(mAppContext, K.K_CONFIG_DIR_NAME, K.K_TAB_INDEX_CONFIG_FILE_NAME);
 
                 JSONObject config = new JSONObject();
                 if ((new File(filePath).exists())) {
@@ -958,6 +960,7 @@ public class WebApplicationActivityV6 extends BaseActivity implements OnPageChan
 
         @JavascriptInterface
         public void closeSubjectView() {
+            PageLinkManage.INSTANCE.pageBackIntent(WebApplicationActivityV6.this);
             finish();
         }
 
@@ -1107,7 +1110,7 @@ public class WebApplicationActivityV6 extends BaseActivity implements OnPageChan
         if (FileUtil.hasSdcard()) {
             Uri imageUri;
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                imageUri = FileProvider.getUriForFile(this, "com.intfocus.yhdev.fileprovider", new File(Environment.getExternalStorageDirectory(), "upload.jpg"));
+                imageUri = FileProvider.getUriForFile(this, "com.intfocus.yh_android.fileprovider", new File(Environment.getExternalStorageDirectory(), "upload.jpg"));
                 intentFromCapture.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 intentFromCapture.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
             } else {

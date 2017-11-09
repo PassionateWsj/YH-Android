@@ -9,6 +9,7 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
+import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentActivity
 import android.support.v4.content.ContextCompat
 import android.support.v4.view.ViewPager
@@ -16,8 +17,11 @@ import android.view.View
 import com.google.gson.Gson
 import com.intfocus.yhdev.R
 import com.intfocus.yhdev.business.dashboard.adapter.DashboardFragmentAdapter
-import com.intfocus.yhdev.business.dashboard.kpi.bean.NoticeBoardRequest
+import com.intfocus.yhdev.business.dashboard.kpi.KpiFragment
+import com.intfocus.yhdev.business.dashboard.mine.MineFragment
 import com.intfocus.yhdev.business.dashboard.mine.bean.PushMessageBean
+import com.intfocus.yhdev.business.dashboard.report.ReportFragment
+import com.intfocus.yhdev.business.dashboard.workbox.WorkBoxFragment
 import com.intfocus.yhdev.business.scanner.BarCodeScannerActivity
 import com.intfocus.yhdev.business.subject.template.five.TemplateFiveActivity
 import com.intfocus.yhdev.business.subject.template.one.TemplateOneActivity
@@ -27,6 +31,7 @@ import com.intfocus.yhdev.business.subject.webapplication.WebApplicationActivity
 import com.intfocus.yhdev.business.subject.webapplication.WebApplicationActivityV6
 import com.intfocus.yhdev.general.YHApplication
 import com.intfocus.yhdev.general.bean.DashboardItemBean
+import com.intfocus.yhdev.general.constant.ConfigConstants
 import com.intfocus.yhdev.general.data.response.scanner.StoreItem
 import com.intfocus.yhdev.general.data.response.scanner.StoreListResult
 import com.intfocus.yhdev.general.db.OrmDBHelper
@@ -48,31 +53,41 @@ import sumimakito.android.advtextswitcher.AdvTextSwitcher
 import java.sql.SQLException
 
 class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, AdvTextSwitcher.Callback {
-    private var mDashboardFragmentAdapter: DashboardFragmentAdapter? = null
+    //    private var mDashboardFragmentAdapter: DashboardFragmentAdapter? = null
     private var mSharedPreferences: SharedPreferences? = null
-    private var mTabView: Array<TabView>? = null
+    private val mTabView: ArrayList<TabView> = ArrayList()
+    private val mPagerData = ArrayList<Fragment>()
     private var userID: Int = 0
     private var mApp: YHApplication? = null
     private var mViewPager: NoScrollViewPager? = null
     private var mTabKPI: TabView? = null
-    private var mTabAnalysis: TabView? = null
-    private var mTabAPP: TabView? = null
+    private var mTabReport: TabView? = null
+    private var mTabWorkBox: TabView? = null
     private var mTabMessage: TabView? = null
     private var mContext: Context? = null
     private var mAppContext: Context? = null
     private var mGson: Gson? = null
     lateinit var mUserSP: SharedPreferences
     private var storeList: List<StoreItem>? = null
-    private val loadLastFragmentWhenLaunch = false
+    private val loadLastFragmentWhenLaunch = true
 
     private var objectTypeName = arrayOf("生意概况", "报表", "工具箱")
 
-    companion object {
-        val PAGE_KPI = 0
-        val PAGE_REPORTS = 1
-        val PAGE_APP = 2
-        val PAGE_MINE = 3
-    }
+    private val EXTERNAL_LINK = "-1"
+    private val SCANNER = "-2"
+    private val TEMPLATE_ONE = "1"
+    private val TEMPLATE_TWO = "2"
+    private val TEMPLATE_THREE = "3"
+    private val TEMPLATE_FOUR = "4"
+    private val TEMPLATE_FIVE = "5"
+    private val TEMPLATE_SIX = "6"
+    private val TEMPLATE_NINE = "9"
+//    companion object {
+//        val PAGE_KPI = 0
+//        val PAGE_REPORTS = 1
+//        val PAGE_APP = 2
+//        val PAGE_MINE = 3
+//    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -84,15 +99,37 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
         mGson = Gson()
         mSharedPreferences = getSharedPreferences("DashboardPreferences", Context.MODE_PRIVATE)
         mUserSP = getSharedPreferences("UserBean", Context.MODE_PRIVATE)
-        mDashboardFragmentAdapter = DashboardFragmentAdapter(supportFragmentManager)
         mViewPager = findViewById(R.id.content_view)
         initTabView()
-        initViewPaper(mDashboardFragmentAdapter!!)
+
+        initShow()
+
+        initViewPaper()
         getStoreList()
 
         val intent = intent
         if (intent.hasExtra("msgData")) {
             handlePushMessage(intent.getBundleExtra("msgData").getString("message"))
+        }
+    }
+
+    /**
+     *
+     */
+    private fun initShow() {
+        initTabShowAndPagerData(mTabKPI!!, mTabView, KpiFragment(), mPagerData, ConfigConstants.KPI_SHOW)
+        initTabShowAndPagerData(mTabReport!!, mTabView, ReportFragment(), mPagerData, ConfigConstants.REPORT_SHOW)
+        initTabShowAndPagerData(mTabWorkBox!!, mTabView, WorkBoxFragment(), mPagerData, ConfigConstants.WORKBOX_SHOW)
+        initTabShowAndPagerData(mTabMessage!!, mTabView, MineFragment(), mPagerData, true)
+    }
+
+    private fun initTabShowAndPagerData(tab: TabView, tabs: ArrayList<TabView>, item: Fragment, pagerData: ArrayList<Fragment>, boolean: Boolean) {
+        tab.visibility = if (boolean) {
+            tabs.add(tab)
+            pagerData.add(item)
+            View.VISIBLE
+        } else {
+            View.GONE
         }
     }
 
@@ -124,22 +161,22 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
                 .subscribe { }
 
         // RxBus通知消息界面 ShowPushMessageActivity 更新数据
-        RxBusUtil.getInstance().post("UpDatePushMessage")
-        when (pushMessage.type) {
-            "report" -> pageLink(pushMessage.title + "", pushMessage.url, pushMessage.obj_id.toString(), "-1", pushMessage.obj_type.toString())
-            "analyse" -> {
-                mViewPager!!.currentItem = PAGE_REPORTS
-                mTabView!![mViewPager!!.currentItem].setActive(true)
-            }
-            "app" -> {
-                mViewPager!!.currentItem = PAGE_REPORTS
-                mTabView!![mViewPager!!.currentItem].setActive(true)
-            }
-            "message" -> {
-                mViewPager!!.currentItem = PAGE_MINE
-                mTabView!![mViewPager!!.currentItem].setActive(true)
-            }
-        }
+//        RxBusUtil.getInstance().post("UpDatePushMessage")
+//        when (pushMessage.type) {
+//            "report" -> pageLink(pushMessage.title + "", pushMessage.url, pushMessage.obj_id.toString(), "-1", pushMessage.obj_type.toString())
+//            "analyse" -> {
+//                mViewPager!!.currentItem = PAGE_REPORTS
+//                mTabView[mViewPager!!.currentItem].setActive(true)
+//            }
+//            "app" -> {
+//                mViewPager!!.currentItem = PAGE_REPORTS
+//                mTabView[mViewPager!!.currentItem].setActive(true)
+//            }
+//            "message" -> {
+//                mViewPager!!.currentItem = PAGE_MINE
+//                mTabView[mViewPager!!.currentItem].setActive(true)
+//            }
+//        }
     }
 
     override fun onBackPressed() {
@@ -158,6 +195,9 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
     }
 
     fun startBarCodeActivity(v: View) {
+        if (!ConfigConstants.SCAN_ENABLE_KPI && !ConfigConstants.SCAN_ENABLE_REPORT && !ConfigConstants.SCAN_ENABLE_WORKBOX) {
+            return
+        }
         when {
             ContextCompat.checkSelfPermission(this@DashboardActivity, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED -> {
                 val builder = AlertDialog.Builder(this@DashboardActivity)
@@ -202,28 +242,28 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
 
     private fun initTabView() {
         mTabKPI = findViewById(R.id.tab_kpi)
-        mTabAnalysis = findViewById(R.id.tab_analysis)
-        mTabAPP = findViewById(R.id.tab_app)
-        mTabMessage = findViewById(R.id.tab_message)
-        mTabView = arrayOf(mTabKPI!!, mTabAnalysis!!, mTabAPP!!, mTabMessage!!)
+        mTabReport = findViewById(R.id.tab_report)
+        mTabWorkBox = findViewById(R.id.tab_workbox)
+        mTabMessage = findViewById(R.id.tab_mine)
 
         mTabKPI!!.setOnClickListener(mTabChangeListener)
-        mTabAnalysis!!.setOnClickListener(mTabChangeListener)
-        mTabAPP!!.setOnClickListener(mTabChangeListener)
+        mTabReport!!.setOnClickListener(mTabChangeListener)
+        mTabWorkBox!!.setOnClickListener(mTabChangeListener)
         mTabMessage!!.setOnClickListener(mTabChangeListener)
     }
 
     /**
      * @param dashboardFragmentAdapter
      */
-    private fun initViewPaper(dashboardFragmentAdapter: DashboardFragmentAdapter) {
-        mViewPager!!.adapter = dashboardFragmentAdapter
-        mViewPager!!.offscreenPageLimit = 4
+    private fun initViewPaper() {
+
+        mViewPager!!.adapter = DashboardFragmentAdapter(supportFragmentManager, mPagerData)
+        mViewPager!!.offscreenPageLimit = mPagerData.size
         if (loadLastFragmentWhenLaunch) {
             mViewPager!!.currentItem = mSharedPreferences!!.getInt("LastTab", 0)
-            mTabView!![mViewPager!!.currentItem].setActive(true)
+            mTabView[mViewPager!!.currentItem].setActive(true)
         } else {
-            mTabView!![0].setActive(true)
+            mTabView[0].setActive(true)
         }
         mViewPager!!.addOnPageChangeListener(this)
     }
@@ -232,14 +272,17 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
      * Tab 栏按钮监听事件
      */
     private val mTabChangeListener = View.OnClickListener { v ->
-        when (v.id) {
-            R.id.tab_kpi -> mViewPager!!.currentItem = PAGE_KPI
-            R.id.tab_analysis -> mViewPager!!.currentItem = PAGE_REPORTS
-            R.id.tab_app -> mViewPager!!.currentItem = PAGE_APP
-            R.id.tab_message -> mViewPager!!.currentItem = PAGE_MINE
-            else -> {
-            }
-        }
+        mTabView
+                .filter { v.id == it.id }
+                .forEach { mViewPager!!.currentItem = mTabView.indexOf(it) }
+//        when (v.id) {
+//            R.id.tab_kpi -> mViewPager!!.currentItem = PAGE_KPI
+//            R.id.tab_report -> mViewPager!!.currentItem = PAGE_REPORTS
+//            R.id.tab_workbox -> mViewPager!!.currentItem = PAGE_APP
+//            R.id.tab_mine -> mViewPager!!.currentItem = PAGE_MINE
+//            else -> {
+//            }
+//        }
         refreshTabView()
     }
 
@@ -250,15 +293,16 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
 
     override fun onPageScrollStateChanged(state: Int) {
         if (state == 2) {
-            when (mViewPager!!.currentItem) {
-                PAGE_KPI -> mTabKPI!!.setActive(true)
-
-                PAGE_REPORTS -> mTabAnalysis!!.setActive(true)
-
-                PAGE_APP -> mTabAPP!!.setActive(true)
-
-                PAGE_MINE -> mTabMessage!!.setActive(true)
-            }
+            mTabView[mViewPager!!.currentItem].setActive(true)
+//            when (mViewPager!!.currentItem) {
+//                PAGE_KPI -> mTabKPI!!.setActive(true)
+//
+//                PAGE_REPORTS -> mTabReport!!.setActive(true)
+//
+//                PAGE_APP -> mTabWorkBox!!.setActive(true)
+//
+//                PAGE_MINE -> mTabMessage!!.setActive(true)
+//            }
         }
         refreshTabView()
         mSharedPreferences!!.edit().putInt("LastTab", mViewPager!!.currentItem).apply()
@@ -268,7 +312,10 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
      * 公告点击事件
      */
     override fun onItemClick(position: Int) {
-        mViewPager!!.currentItem = PAGE_MINE
+        mTabView
+                .filter { R.id.tab_mine == it.id }
+                .forEach { mViewPager!!.currentItem = mTabView.indexOf(it) }
+//        mViewPager!!.currentItem = PAGE_MINE
         refreshTabView()
     }
 
@@ -276,10 +323,10 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
      * 刷新 TabView 高亮状态
      */
     private fun refreshTabView() {
-        mTabView!![mViewPager!!.currentItem].setActive(true)
-        mTabView!!.indices
+        mTabView[mViewPager!!.currentItem].setActive(true)
+        mTabView.indices
                 .filter { it != mViewPager!!.currentItem }
-                .forEach { mTabView!![it].setActive(false) }
+                .forEach { mTabView[it].setActive(false) }
     }
 
     private fun getStoreList() {
@@ -318,11 +365,11 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
                 })
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onNoticeItemEvent(click: NoticeBoardRequest) {
-        mViewPager!!.currentItem = PAGE_MINE
-        refreshTabView()
-    }
+//    @Subscribe(threadMode = ThreadMode.MAIN)
+//    fun onNoticeItemEvent(click: NoticeBoardRequest) {
+//        mViewPager!!.currentItem = PAGE_MINE
+//        refreshTabView()
+//    }
 
     /*
      * 图表点击事件统一处理方法
@@ -335,7 +382,9 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
             val objectId = items.obj_id
             val templateId = items.template_id
             val objectType = items.objectType
-            pageLink(objTitle, link, objectId, templateId, objectType)
+            val paramsMappingBean = items.paramsMappingBean ?: HashMap()
+
+            PageLinkManage.pageLink(this, objTitle!!, link!!, objectId!!, templateId!!, objectType!!, paramsMappingBean)
         } else {
             ToastUtils.show(this, "没有指定链接")
         }
@@ -344,14 +393,14 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
     /*
      * 页面跳转事件
      */
-    private fun pageLink(objTitle: String, link: String, objectId: String, templateId: String, objectType: String) {
+    private fun pageLink(objTitle: String, link: String, objectId: String, templateId: String, objectType: String, paramsMappingBean: HashMap<String, String>) {
         try {
             val groupID = getSharedPreferences("UserBean", Context.MODE_PRIVATE).getString(URLs.kGroupId, "0")
             val urlString: String
             val intent: Intent
 
             when (templateId) {
-                "1" -> {
+                TEMPLATE_ONE -> {
                     intent = Intent(this, TemplateOneActivity::class.java)
                     intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
                     intent.putExtra(URLs.kBannerName, objTitle)
@@ -362,7 +411,7 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
                     intent.putExtra(URLs.kTemplatedId, templateId)
                     startActivity(intent)
                 }
-                "2" -> {
+                TEMPLATE_TWO, TEMPLATE_FOUR -> {
                     intent = Intent(this, SubjectActivity::class.java)
                     intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
                     intent.putExtra(URLs.kBannerName, objTitle)
@@ -373,7 +422,7 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
                     intent.putExtra("groupID", groupID)
                     startActivity(intent)
                 }
-                "3" -> {
+                TEMPLATE_THREE -> {
                     intent = Intent(this, TemplateThreeActivity::class.java)
                     urlString = String.format("%s/api/v1/group/%s/template/%s/report/%s/json",
                             K.kBaseUrl, groupID, "3", objectId)
@@ -386,18 +435,18 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
                     intent.putExtra("urlString", urlString)
                     startActivity(intent)
                 }
-                "4" -> {
-                    intent = Intent(this, SubjectActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-                    intent.putExtra(URLs.kBannerName, objTitle)
-                    intent.putExtra(URLs.kLink, link)
-                    intent.putExtra(URLs.kObjectId, objectId)
-                    intent.putExtra(URLs.kObjectType, objectType)
-                    intent.putExtra(URLs.kTemplatedId, templateId)
-                    intent.putExtra("groupID", groupID)
-                    startActivity(intent)
-                }
-                "5" -> {
+//                TEMPLATE_FOUR -> {
+//                    intent = Intent(this, SubjectActivity::class.java)
+//                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+//                    intent.putExtra(URLs.kBannerName, objTitle)
+//                    intent.putExtra(URLs.kLink, link)
+//                    intent.putExtra(URLs.kObjectId, objectId)
+//                    intent.putExtra(URLs.kObjectType, objectType)
+//                    intent.putExtra(URLs.kTemplatedId, templateId)
+//                    intent.putExtra("groupID", groupID)
+//                    startActivity(intent)
+//                }
+                TEMPLATE_FIVE -> {
                     intent = Intent(this, TemplateFiveActivity::class.java)
                     urlString = String.format("%s/api/v1/group/%s/template/%s/report/%s/json",
                             K.kBaseUrl, groupID, "5", objectId)
@@ -410,7 +459,7 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
                     intent.putExtra("urlString", urlString)
                     startActivity(intent)
                 }
-                "6" -> {
+                TEMPLATE_SIX -> {
                     intent = Intent(this, WebApplicationActivityV6::class.java)
                     intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
                     intent.putExtra(URLs.kBannerName, objTitle)
@@ -420,14 +469,29 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
                     intent.putExtra(URLs.kTemplatedId, templateId)
                     startActivity(intent)
                 }
-                "-1" -> {
+                EXTERNAL_LINK -> {
+                    var urlString = link
                     intent = Intent(this, WebApplicationActivity::class.java)
                     intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
                     intent.putExtra(URLs.kBannerName, objTitle)
-                    intent.putExtra(URLs.kLink, link)
+                    for ((key, value) in paramsMappingBean) {
+                        if (key == "user_num") {
+                            continue
+                        }
+                        urlString = splitUrl(urlString, key, value)
+                    }
+                    intent.putExtra(URLs.kLink, urlString)
                     intent.putExtra(URLs.kObjectId, objectId)
                     intent.putExtra(URLs.kObjectType, objectType)
                     intent.putExtra(URLs.kTemplatedId, templateId)
+                    startActivity(intent)
+                }
+                SCANNER -> {
+                    intent = Intent(this, BarCodeScannerActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+                    intent.putExtra("fromWorkBox", true)
+//                    intent.putExtra("userNum", paramsMappingBean.user_name ?: "")
+//                    intent.putExtra("groupName", paramsMappingBean.group_name ?: "")
                     startActivity(intent)
                 }
                 else -> showTemplateErrorDialog()
@@ -446,6 +510,12 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
         logParams.put("obj_id", objectId)
         logParams.put("obj_link", link)
         ActionLogUtil.actionLog(mAppContext, logParams)
+    }
+
+    private fun splitUrl(urlString: String, paramsKey: String, paramsValue: String): String {
+        val params = paramsValue + "=" + mUserSP.getString(paramsKey, "null")
+        val splitString = if (urlString.contains("?")) "&" else "?"
+        return String.format("%s%s%s", urlString, splitString, params)
     }
 
     private fun showTemplateErrorDialog() {

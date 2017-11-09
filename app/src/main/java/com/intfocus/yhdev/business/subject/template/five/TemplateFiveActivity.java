@@ -32,18 +32,7 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.intfocus.yhdev.general.CommentActivity;
 import com.intfocus.yhdev.R;
-import com.intfocus.yhdev.general.base.BaseActivity;
-import com.intfocus.yhdev.general.constant.ToastColor;
-import com.intfocus.yhdev.general.util.ApiHelper;
-import com.intfocus.yhdev.general.util.FileUtil;
-import com.intfocus.yhdev.general.util.ImageUtil;
-import com.intfocus.yhdev.general.util.K;
-import com.intfocus.yhdev.general.util.MyHorizontalScrollView;
-import com.intfocus.yhdev.general.util.ToastUtils;
-import com.intfocus.yhdev.general.util.URLs;
-import com.intfocus.yhdev.general.util.Utils;
 import com.intfocus.yhdev.business.subject.template.five.adapter.ColumAdapter;
 import com.intfocus.yhdev.business.subject.template.five.adapter.TableBarChartAdapter;
 import com.intfocus.yhdev.business.subject.template.five.adapter.TableContentItemAdapter;
@@ -58,6 +47,18 @@ import com.intfocus.yhdev.business.subject.template.five.bean.MainData;
 import com.intfocus.yhdev.business.subject.template.five.bean.SortData;
 import com.intfocus.yhdev.business.subject.template.five.bean.TableBarChart;
 import com.intfocus.yhdev.business.subject.template.five.bean.TableChart;
+import com.intfocus.yhdev.general.CommentActivity;
+import com.intfocus.yhdev.general.base.BaseActivity;
+import com.intfocus.yhdev.general.constant.ToastColor;
+import com.intfocus.yhdev.general.util.ApiHelper;
+import com.intfocus.yhdev.general.util.FileUtil;
+import com.intfocus.yhdev.general.util.ImageUtil;
+import com.intfocus.yhdev.general.util.K;
+import com.intfocus.yhdev.general.util.MyHorizontalScrollView;
+import com.intfocus.yhdev.general.util.PageLinkManage;
+import com.intfocus.yhdev.general.util.ToastUtils;
+import com.intfocus.yhdev.general.util.URLs;
+import com.intfocus.yhdev.general.util.Utils;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.UMShareListener;
@@ -241,7 +242,7 @@ public class TemplateFiveActivity extends BaseActivity implements ColumAdapter.C
         protected String doInBackground(String... params) {
             String response = null;
             String jsonFileName = String.format("group_%s_template_%s_report_%s.json", groupID, 5, objectID);
-            String jsonFilePath = FileUtil.dirPath(mContext, K.kCachedDirName, jsonFileName);
+            String jsonFilePath = FileUtil.dirPath(mContext, K.K_CACHED_DIR_NAME, jsonFileName);
             boolean dataState = ApiHelper.reportJsonData(mContext, groupID, "5", objectID);
             if (dataState || new File(jsonFilePath).exists()) {
                 response = FileUtil.readFile(jsonFilePath);
@@ -1099,6 +1100,7 @@ public class TemplateFiveActivity extends BaseActivity implements ColumAdapter.C
 
     @Override
     public void onBackPressed() {
+        PageLinkManage.INSTANCE.pageBackIntent(TemplateFiveActivity.this);
         finish();
     }
 

@@ -125,7 +125,7 @@ class IssueMode(var ctx: Context) : AbstractMode() {
 
         val requestBody = MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
-                .addFormDataPart("api_token", URLs.MD5(K.ANDROID_API_KEY + K.KFeedBack + K.ANDROID_API_KEY))
+                .addFormDataPart("api_token", URLs.MD5(K.ANDROID_API_KEY + K.K_FEED_BACK + K.ANDROID_API_KEY))
                 .addFormDataPart("content", issueInfo.issue_content)
                 .addFormDataPart("title", "生意人问题反馈")
                 .addFormDataPart("user_num", issueInfo.user_num)
@@ -140,7 +140,7 @@ class IssueMode(var ctx: Context) : AbstractMode() {
         }
 
         val request = Request.Builder()
-                .url(K.kBaseUrl + K.KFeedBack)
+                .url(K.kBaseUrl + K.K_FEED_BACK)
                 .post(requestBody.build())
                 .build()
 

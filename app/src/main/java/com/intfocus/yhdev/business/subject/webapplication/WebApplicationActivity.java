@@ -38,8 +38,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.intfocus.yhdev.general.CommentActivity;
 import com.intfocus.yhdev.R;
+import com.intfocus.yhdev.general.CommentActivity;
 import com.intfocus.yhdev.general.base.BaseActivity;
 import com.intfocus.yhdev.general.constant.ToastColor;
 import com.intfocus.yhdev.general.util.ActionLogUtil;
@@ -48,6 +48,7 @@ import com.intfocus.yhdev.general.util.FileUtil;
 import com.intfocus.yhdev.general.util.ImageUtil;
 import com.intfocus.yhdev.general.util.K;
 import com.intfocus.yhdev.general.util.LogUtil;
+import com.intfocus.yhdev.general.util.PageLinkManage;
 import com.intfocus.yhdev.general.util.ToastUtils;
 import com.intfocus.yhdev.general.util.URLs;
 import com.joanzapata.pdfview.PDFView;
@@ -441,7 +442,6 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
                 if (urlString.toLowerCase().endsWith(".pdf")) {
                     new Thread(mRunnableForPDF).start();
                 } else {
-
                     /*
                      * 外部链接传参: user_num, timestamp, location
                      */
@@ -480,7 +480,7 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
     private final Runnable mRunnableForPDF = new Runnable() {
         @Override
         public void run() {
-            String outputPath = String.format("%s/%s/%s.pdf", FileUtil.basePath(mAppContext), K.kCachedDirName, URLs.MD5(urlString));
+            String outputPath = String.format("%s/%s/%s.pdf", FileUtil.basePath(mAppContext), K.K_CACHED_DIR_NAME, URLs.MD5(urlString));
             pdfFile = new File(outputPath);
             ApiHelper.downloadFile(mAppContext, urlString, pdfFile);
 
@@ -587,6 +587,7 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
                 .setPositiveButton("确认", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        PageLinkManage.INSTANCE.pageBackIntent(WebApplicationActivity.this);
                         finish();
                     }
                 })
@@ -625,7 +626,7 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
         @JavascriptInterface
         public void storeTabIndex(final String pageName, final int tabIndex) {
             try {
-                String filePath = FileUtil.dirPath(mAppContext, K.kConfigDirName, K.kTabIndexConfigFileName);
+                String filePath = FileUtil.dirPath(mAppContext, K.K_CONFIG_DIR_NAME, K.K_TAB_INDEX_CONFIG_FILE_NAME);
 
                 JSONObject config = new JSONObject();
                 if ((new File(filePath).exists())) {
@@ -644,7 +645,7 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
         public int restoreTabIndex(final String pageName) {
             int tabIndex = 0;
             try {
-                String filePath = FileUtil.dirPath(mAppContext, K.kConfigDirName, K.kTabIndexConfigFileName);
+                String filePath = FileUtil.dirPath(mAppContext, K.K_CONFIG_DIR_NAME, K.K_TAB_INDEX_CONFIG_FILE_NAME);
 
                 JSONObject config = new JSONObject();
                 if ((new File(filePath).exists())) {
@@ -790,6 +791,7 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
 
         @JavascriptInterface
         public void closeSubjectView() {
+            PageLinkManage.INSTANCE.pageBackIntent(WebApplicationActivity.this);
             finish();
         }
 
@@ -884,7 +886,7 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
         if (FileUtil.hasSdcard()) {
             Uri imageUri;
             if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                imageUri = FileProvider.getUriForFile(this, "com.intfocus.yhdev.fileprovider", new File(Environment.getExternalStorageDirectory(), "upload.jpg"));
+                imageUri = FileProvider.getUriForFile(this, "com.intfocus.yh_android.fileprovider", new File(Environment.getExternalStorageDirectory(), "upload.jpg"));
                 intentFromCapture.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 intentFromCapture.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
             } else {

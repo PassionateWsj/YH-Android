@@ -221,7 +221,7 @@ public class ConfirmPassCodeActivity extends Activity {
         try {
             Log.i("confirmPassword", "confirmPassword");
 
-            String userConfigPath = String.format("%s/%s", FileUtil.basePath(mContext), K.kUserConfigFileName);
+            String userConfigPath = String.format("%s/%s", FileUtil.basePath(mContext), K.K_USER_CONFIG_FILE_NAME);
             JSONObject userJSON = FileUtil.readConfigFile(userConfigPath);
             if (stringBuilder.toString().equals(userJSON.getString(URLs.kGesturePassword))) {
                 /*
@@ -232,7 +232,7 @@ public class ConfirmPassCodeActivity extends Activity {
                 if (is_from_login) {
                     Intent intent = new Intent(mContext, DashboardActivity.class);
                     intent.putExtra("from_activity", this.getClass().getSimpleName());
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     mContext.startActivity(intent);
                 }
 
@@ -287,12 +287,12 @@ public class ConfirmPassCodeActivity extends Activity {
     public void onCancel(View view) {
         //moveTaskToBack(true);
         try {
-            String userConfigPath = String.format("%s/%s", FileUtil.basePath(mContext), K.kUserConfigFileName);
+            String userConfigPath = String.format("%s/%s", FileUtil.basePath(mContext), K.K_USER_CONFIG_FILE_NAME);
             JSONObject userJSON = FileUtil.readConfigFile(userConfigPath);
             userJSON.put("is_login", false);
             FileUtil.writeFile(userConfigPath, userJSON.toString());
 
-            String settingsConfigPath = FileUtil.dirPath(mContext, K.kConfigDirName, K.kSettingConfigFileName);
+            String settingsConfigPath = FileUtil.dirPath(mContext, K.K_CONFIG_DIR_NAME, K.K_SETTING_CONFIG_FILE_NAME);
             FileUtil.writeFile(settingsConfigPath, userJSON.toString());
         } catch (Exception e) {
             e.printStackTrace();

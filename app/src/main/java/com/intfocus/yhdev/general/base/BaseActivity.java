@@ -110,7 +110,7 @@ public class BaseActivity extends FragmentActivity {
 
         if (mUserSP.getBoolean(URLs.kIsLogin, false)) {
             userID = mUserSP.getString("user_id", "0");
-            assetsPath = FileUtil.dirPath(mAppContext, K.kHTMLDirName);
+            assetsPath = FileUtil.dirPath(mAppContext, K.K_HTML_DIR_NAME);
             relativeAssetsPath = "../../Shared/assets";
         }
     }
@@ -323,13 +323,13 @@ public class BaseActivity extends FragmentActivity {
                                 JSONObject configJSON = new JSONObject();
                                 configJSON.put(URLs.kIsLogin, false);
 
-                                String userConfigPath = String.format("%s/%s", FileUtil.basePath(mContext), K.kUserConfigFileName);
+                                String userConfigPath = String.format("%s/%s", FileUtil.basePath(mContext), K.K_USER_CONFIG_FILE_NAME);
                                 JSONObject userJSON = FileUtil.readConfigFile(userConfigPath);
 
                                 userJSON = ApiHelper.mergeJson(userJSON, configJSON);
                                 FileUtil.writeFile(userConfigPath, userJSON.toString());
 
-                                String settingsConfigPath = FileUtil.dirPath(mContext, K.kConfigDirName, K.kSettingConfigFileName);
+                                String settingsConfigPath = FileUtil.dirPath(mContext, K.K_CONFIG_DIR_NAME, K.K_SETTING_CONFIG_FILE_NAME);
                                 FileUtil.writeFile(settingsConfigPath, userJSON.toString());
                             } catch (JSONException | IOException e) {
                                 e.printStackTrace();
@@ -441,7 +441,7 @@ public class BaseActivity extends FragmentActivity {
         }
 
         private void deleteHeadersFile() {
-            String headersFilePath = String.format("%s/%s", mAssetsPath, K.kCachedHeaderConfigFileName);
+            String headersFilePath = String.format("%s/%s", mAssetsPath, K.K_CACHED_HEADER_CONFIG_FILE_NAME);
             if ((new File(headersFilePath)).exists()) {
                 new File(headersFilePath).delete();
             }
@@ -509,13 +509,13 @@ public class BaseActivity extends FragmentActivity {
         try {
             JSONObject configJSON = new JSONObject();
             configJSON.put("is_login", isLogin);
-            String userConfigPath = String.format("%s/%s", FileUtil.basePath(mAppContext), K.kUserConfigFileName);
+            String userConfigPath = String.format("%s/%s", FileUtil.basePath(mAppContext), K.K_USER_CONFIG_FILE_NAME);
             JSONObject userJSON = FileUtil.readConfigFile(userConfigPath);
 
             userJSON = ApiHelper.mergeJson(userJSON, configJSON);
             FileUtil.writeFile(userConfigPath, userJSON.toString());
 
-            String settingsConfigPath = FileUtil.dirPath(mAppContext, K.kConfigDirName, K.kSettingConfigFileName);
+            String settingsConfigPath = FileUtil.dirPath(mAppContext, K.K_CONFIG_DIR_NAME, K.K_SETTING_CONFIG_FILE_NAME);
             FileUtil.writeFile(settingsConfigPath, userJSON.toString());
         } catch (IOException | JSONException e) {
             e.printStackTrace();
@@ -529,7 +529,7 @@ public class BaseActivity extends FragmentActivity {
      * 偶数: 正式版本，点击安装更新
      */
     public void checkPgyerVersionUpgrade(final Activity activity, final boolean isShowToast) {
-        PgyUpdateManager.register(activity, "com.intfocus.yhdev.fileprovider", new UpdateManagerListener() {
+        PgyUpdateManager.register(activity, "com.intfocus.yh_android.fileprovider", new UpdateManagerListener() {
             @Override
             public void onUpdateAvailable(final String result) {
                 try {
@@ -553,7 +553,7 @@ public class BaseActivity extends FragmentActivity {
                         return;
                     }
 
-                    String pgyerVersionPath = String.format("%s/%s", FileUtil.basePath(mAppContext), K.kPgyerVersionConfigFileName);
+                    String pgyerVersionPath = String.format("%s/%s", FileUtil.basePath(mAppContext), K.K_PGYER_VERSION_CONFIG_FILE_NAME);
                     FileUtil.writeFile(pgyerVersionPath, result);
 
                     if (newVersionCode % 2 == 1) {

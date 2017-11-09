@@ -1,0 +1,22 @@
+{
+  "id": 150,
+  "category": "1",
+  "group_name": "日复盘",
+  "template_id": "-2",
+  "obj_id": "150",
+  "obj_title": "核销奖券",
+  "obj_link": "http://api-ruishang.idata.mobi/websites/cav/quan.html",
+  "publicly": true,
+  "icon": "icon-icon_jingyingfupan.png",
+  "icon_link": "http://yonghui-test.idata.mobi/images/icon-icon_jingyingfupan.png",
+  "group_id": 150,
+  "health_value": 0,
+  "group_order": null,
+  "item_order": null,
+  "params_mapping": {
+    "user_num": "userId",
+    "group_name": "groupName"
+  },
+  "created_at": "2017-08-13T15:03:14.000+08:00"
+}
+

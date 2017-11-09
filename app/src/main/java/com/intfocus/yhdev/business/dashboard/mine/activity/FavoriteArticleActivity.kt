@@ -8,6 +8,7 @@ import android.view.View
 import com.intfocus.yhdev.R
 import com.intfocus.yhdev.business.dashboard.mine.adapter.InstituteAdapter
 import com.intfocus.yhdev.business.dashboard.mine.bean.InstituteDataBean
+import com.intfocus.yhdev.business.subject.webapplication.WebApplicationActivity
 import com.intfocus.yhdev.general.base.RefreshActivity
 import com.intfocus.yhdev.general.constant.ToastColor
 import com.intfocus.yhdev.general.data.request.RequestFavourite
@@ -18,7 +19,6 @@ import com.intfocus.yhdev.general.net.CodeHandledSubscriber
 import com.intfocus.yhdev.general.net.RetrofitUtil
 import com.intfocus.yhdev.general.util.*
 import com.intfocus.yhdev.general.view.CommonPopupWindow
-import com.intfocus.yhdev.business.subject.webapplication.WebApplicationActivity
 import com.lcodecore.tkrefreshlayout.footer.LoadingView
 import com.lcodecore.tkrefreshlayout.header.SinaRefreshView
 
@@ -146,9 +146,10 @@ class FavoriteArticleActivity : RefreshActivity(), InstituteAdapter.NoticeItemLi
     override fun itemClick(instituteDataBean: InstituteDataBean) {
         val intent = Intent(mActivity, WebApplicationActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-        val link = String.format("%s/mobile/v2/user/%s/article/%s", K.kBaseUrl, mUserSP.getString(K.kUserId, "0").toString(), instituteDataBean.acticleId.toString())
+        val link = String.format("%s/mobile/v2/user/%s/article/%s", K.kBaseUrl, mUserSP.getString(K.K_USER_ID, "0").toString(), instituteDataBean.acticleId.toString())
         intent.putExtra(URLs.kBannerName, instituteDataBean.title.toString())
         intent.putExtra(URLs.kLink, link)
+        intent.putExtra("hideBannerSetting", true)
         startActivity(intent)
     }
 

@@ -33,7 +33,7 @@ class GuideActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_guide)
 
-        getAuthority()
+//        getAuthority()
 
         val fgmList = (0 until totalPageCount).map { GuideFragment().newInstance(it, totalPageCount) }
         vp_guide_pager.adapter = GuidePagerAdapter(supportFragmentManager, fgmList)

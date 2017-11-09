@@ -40,8 +40,7 @@
             android:layout_weight="1"
             android:background="@null"
             android:gravity="center_vertical"
-            android:hint="员工号"
-            android:inputType="number"
+            android:hint="@string/hint_login_user"
             android:maxLines="1"
             android:textColor="@color/co3_syr"
             android:textColorHint="@color/co4_syr"
@@ -66,12 +65,12 @@
 
     <ImageView
         android:id="@+id/loginLog"
-        android:layout_width="100dp"
+        android:layout_width="160dp"
         android:layout_height="100dp"
         android:layout_above="@id/linearUsername"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="76dp"
-        android:background="@drawable/logo"/>
+        android:src="@drawable/logo"/>
 
 
     <LinearLayout
@@ -144,6 +143,7 @@
         android:textSize="16sp"/>
 
     <LinearLayout
+        android:id="@+id/ll_unable_login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

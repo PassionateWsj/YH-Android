@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
               android:layout_width="match_parent"
-              android:layout_height="match_parent">
+              android:layout_height="match_parent"
+              android:orientation="vertical">
 
     <RelativeLayout
         android:id="@+id/actionBar"
@@ -17,32 +17,24 @@
             android:layout_centerInParent="true"
             android:layout_marginBottom="8dp"
             android:layout_marginTop="8dp"
-            android:text="工具箱"
+            android:text="@string/text_workbox"
             android:textColor="@color/color6"
-            android:textSize="17sp" />
+            android:textSize="17sp"/>
 
-        <RelativeLayout
-            style="@style/BannerRightButton"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginRight="0dp"
+        <ImageView
+            android:id="@+id/bannerSetting"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
             android:onClick="startBarCodeActivity"
-            android:visibility="gone">
+            android:src="@drawable/nav_scanback"/>
 
-            <ImageView
-                android:id="@+id/bannerSetting"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_centerInParent="true"
-                android:src="@drawable/nav_scanback" />
-
-        </RelativeLayout>
-
-        <View
-            style="@style/SmallDivider"
-            android:layout_height="0.5dp"
-            android:layout_alignParentBottom="true" />
     </RelativeLayout>
+
+    <View
+        style="@style/SmallDivider"
+        android:layout_height="0.5dp"
+        android:layout_alignParentBottom="true"/>
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipe_container"

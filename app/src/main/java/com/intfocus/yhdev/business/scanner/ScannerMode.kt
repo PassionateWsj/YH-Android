@@ -32,8 +32,8 @@ class ScannerMode(var ctx: Context) : AbstractMode() {
 
     fun requestData(barcode: String, storeId: String) {
         currentBarcode = barcode
-        jsUrl = String.format(K.kBarCodeScanAPIDataPath, K.kBaseUrl, storeId, barcode)
-        htmlUrl = String.format(K.kBarCodeScanAPIViewPath, K.kBaseUrl, storeId, barcode)
+        jsUrl = String.format(K.K_BAR_CODE_SCAN_API_DATA_PATH, K.kBaseUrl, storeId, barcode)
+        htmlUrl = String.format(K.K_BAR_CODE_SCAN_API_VIEW_PATH, K.kBaseUrl, storeId, barcode)
         store_id = storeId
         requestData()
     }
@@ -41,7 +41,7 @@ class ScannerMode(var ctx: Context) : AbstractMode() {
     override fun requestData() {
         if (!jsUrl.isEmpty()) {
             val params = RequestParams(jsUrl)
-            var jsFileName = String.format("store_%s_barcode_%s.js", store_id, currentBarcode)
+            val jsFileName = String.format("store_%s_barcode_%s.js", store_id, currentBarcode)
             val jsPath = String.format("%s/assets/javascripts/%s", FileUtil.sharedPath(ctx), jsFileName)
             params.isAutoRename = false
             params.saveFilePath = jsPath
@@ -67,10 +67,10 @@ class ScannerMode(var ctx: Context) : AbstractMode() {
 
     private fun getHtml() {
         Thread(Runnable {
-            var htmlName = String.format("mobile_v2_store_%s_barcode_%s.html", store_id, currentBarcode)
-            var htmlPath = String.format("%s/%s", FileUtil.dirPath(ctx, K.kHTMLDirName), htmlName)
+            val htmlName = String.format("mobile_v2_store_%s_barcode_%s.html", store_id, currentBarcode)
+            val htmlPath = String.format("%s/%s", FileUtil.dirPath(ctx, K.K_HTML_DIR_NAME), htmlName)
 
-            var response = HttpUtil.httpGet(ctx, htmlUrl, HashMap<String, String>())
+            val response = HttpUtil.httpGet(ctx, htmlUrl, HashMap<String, String>())
 
             if (response["code"].equals("200")) {
                 var htmlContent = response["body"]

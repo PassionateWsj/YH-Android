@@ -34,9 +34,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
-import com.intfocus.yhdev.general.CommentActivity;
 import com.intfocus.yhdev.R;
 import com.intfocus.yhdev.business.dashboard.mine.adapter.FilterMenuAdapter;
+import com.intfocus.yhdev.general.CommentActivity;
 import com.intfocus.yhdev.general.base.BaseActivity;
 import com.intfocus.yhdev.general.constant.ToastColor;
 import com.intfocus.yhdev.general.data.response.filter.Menu;
@@ -49,6 +49,7 @@ import com.intfocus.yhdev.general.util.FileUtil;
 import com.intfocus.yhdev.general.util.ImageUtil;
 import com.intfocus.yhdev.general.util.K;
 import com.intfocus.yhdev.general.util.LogUtil;
+import com.intfocus.yhdev.general.util.PageLinkManage;
 import com.intfocus.yhdev.general.util.ToastUtils;
 import com.intfocus.yhdev.general.util.URLs;
 import com.intfocus.yhdev.general.view.addressselector.FilterPopupWindow;
@@ -136,7 +137,7 @@ public class SubjectActivity extends BaseActivity implements FilterMenuAdapter.F
 
         initListener();
 
-        initActiongBar();
+        initActionBar();
 
         initSubWebView();
 
@@ -158,21 +159,21 @@ public class SubjectActivity extends BaseActivity implements FilterMenuAdapter.F
      * 初始化视图
      */
     private void initView() {
-        mWebFrameLayout = (FrameLayout) findViewById(R.id.browser);
+        mWebFrameLayout = findViewById(R.id.browser);
         mWebView = new WebView(getApplicationContext());
         mWebFrameLayout.addView(mWebView, 0);
 
-        iv_BannerBack = (ImageView) findViewById(R.id.iv_banner_back);
-        tv_BannerBack = (TextView) findViewById(R.id.tv_banner_back);
-        iv_BannerSetting = (ImageView) findViewById(R.id.iv_banner_setting);
-        rlAddressFilter = (RelativeLayout) findViewById(R.id.rl_address_filter);
-        tvLocationAddress = (TextView) findViewById(R.id.tv_location_address);
-        tvAddressFilter = (TextView) findViewById(R.id.tv_address_filter);
-        filterRecyclerView = (RecyclerView) findViewById(R.id.filter_recycler_view);
+        iv_BannerBack = findViewById(R.id.iv_banner_back);
+        tv_BannerBack = findViewById(R.id.tv_banner_back);
+        iv_BannerSetting = findViewById(R.id.iv_banner_setting);
+        rlAddressFilter = findViewById(R.id.rl_address_filter);
+        tvLocationAddress = findViewById(R.id.tv_location_address);
+        tvAddressFilter = findViewById(R.id.tv_address_filter);
+        filterRecyclerView = findViewById(R.id.filter_recycler_view);
         viewLine = findViewById(R.id.view_line);
-        animLoading = (RelativeLayout) findViewById(R.id.anim_loading);
-        bannerView = (RelativeLayout) findViewById(R.id.rl_action_bar);
-        mTitle = (TextView) findViewById(R.id.tv_banner_title);
+        animLoading = findViewById(R.id.anim_loading);
+        bannerView = findViewById(R.id.rl_action_bar);
+        mTitle = findViewById(R.id.tv_banner_title);
     }
 
     /**
@@ -198,7 +199,7 @@ public class SubjectActivity extends BaseActivity implements FilterMenuAdapter.F
         });
     }
 
-    private void initActiongBar() {
+    private void initActionBar() {
         Intent intent = getIntent();
         link = intent.getStringExtra(URLs.kLink);
         templateID = intent.getStringExtra(URLs.kTemplatedId);
@@ -374,58 +375,58 @@ public class SubjectActivity extends BaseActivity implements FilterMenuAdapter.F
             urlString = String.format("%s%s", K.kBaseUrl, urlPath);
             webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
 
-            Observable.create(new Observable.OnSubscribe<String>() {
-                @Override
-                public void call(Subscriber<? super String> subscriber) {
-                    ApiHelper.reportData(mAppContext, String.format("%s", groupID), templateID, objectID);
-                    String jsFileName = "";
+        Observable.create(new Observable.OnSubscribe<String>() {
+            @Override
+            public void call(Subscriber<? super String> subscriber) {
+                ApiHelper.reportData(mAppContext, String.format("%s", groupID), templateID, objectID);
+                String jsFileName = "";
 
-                    // 模板 4 的 groupID 为 0
-                    if (Integer.valueOf(templateID) == 4) {
-                        jsFileName = String.format("group_%s_template_%s_report_%s.js", "0", templateID, objectID);
-                    } else {
-                        jsFileName = String.format("group_%s_template_%s_report_%s.js", groupID, templateID, objectID);
-                    }
-                    String javascriptPath = String.format("%s/assets/javascripts/%s", sharedPath, jsFileName);
-                    subscriber.onNext(javascriptPath);
-                    subscriber.onCompleted();
+                // 模板 4 的 groupID 为 0
+                if (Integer.valueOf(templateID) == 4) {
+                    jsFileName = String.format("group_%s_template_%s_report_%s.js", "0", templateID, objectID);
+                } else {
+                    jsFileName = String.format("group_%s_template_%s_report_%s.js", groupID, templateID, objectID);
                 }
-            })
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Observer<String>() {
-                        @Override
-                        public void onCompleted() {
+                String javascriptPath = String.format("%s/assets/javascripts/%s", sharedPath, jsFileName);
+                subscriber.onNext(javascriptPath);
+                subscriber.onCompleted();
+            }
+        })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<String>() {
+                    @Override
+                    public void onCompleted() {
 
+                    }
+
+                    @Override
+                    public void onError(Throwable throwable) {
+
+                    }
+
+                    @Override
+                    public void onNext(String javascriptPath) {
+                        if (new File(javascriptPath).exists()) {
+                            mHandlerForDetecting.setVariables(mWebView, urlString, sharedPath, assetsPath, relativeAssetsPath);
+                            Message message = mHandlerForDetecting.obtainMessage();
+                            message.what = 200;
+                            mHandlerForDetecting.sendMessage(message);
+                        } else {
+                            AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                            builder.setTitle("温馨提示")
+                                    .setMessage("报表数据下载失败,不再加载网页")
+                                    .setPositiveButton("确认", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                            SubjectActivity.this.finish();
+                                        }
+                                    });
+                            builder.show();
                         }
-
-                        @Override
-                        public void onError(Throwable throwable) {
-
-                        }
-
-                        @Override
-                        public void onNext(String javascriptPath) {
-                            if (new File(javascriptPath).exists()) {
-                                mHandlerForDetecting.setVariables(mWebView, urlString, sharedPath, assetsPath, relativeAssetsPath);
-                                Message message = mHandlerForDetecting.obtainMessage();
-                                message.what = 200;
-                                mHandlerForDetecting.sendMessage(message);
-                            } else {
-                                AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-                                builder.setTitle("温馨提示")
-                                        .setMessage("报表数据下载失败,不再加载网页")
-                                        .setPositiveButton("确认", new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialog, int which) {
-                                                dialog.dismiss();
-                                                SubjectActivity.this.finish();
-                                            }
-                                        });
-                                builder.show();
-                            }
-                        }
-                    });
+                    }
+                });
     }
 
     /**
@@ -511,7 +512,7 @@ public class SubjectActivity extends BaseActivity implements FilterMenuAdapter.F
         mContext.startActivity(intent);
     }
 
-    /*
+    /**
      * 返回
      */
     @Override
@@ -521,7 +522,8 @@ public class SubjectActivity extends BaseActivity implements FilterMenuAdapter.F
 
     @Override
     public void onBackPressed() {
-            finish();
+        PageLinkManage.INSTANCE.pageBackIntent(this);
+        finish();
     }
 
     public void refresh(View v) {
@@ -529,14 +531,14 @@ public class SubjectActivity extends BaseActivity implements FilterMenuAdapter.F
         Observable.create(new Observable.OnSubscribe<Boolean>() {
             @Override
             public void call(Subscriber<? super Boolean> subscriber) {
-                    String urlKey;
-                    if (urlString != null && !urlString.isEmpty()) {
-                        urlKey = urlString.contains("?") ? TextUtils.split(urlString, "?")[0] : urlString;
-                        ApiHelper.clearResponseHeader(urlKey, assetsPath);
-                    }
-                    urlKey = String.format(K.kReportDataAPIPath, K.kBaseUrl, groupID, templateID, objectID);
-                    ApiHelper.clearResponseHeader(urlKey, FileUtil.sharedPath(mAppContext));
-                    subscriber.onNext(ApiHelper.reportData(mAppContext, groupID, templateID, objectID));
+                String urlKey;
+                if (urlString != null && !urlString.isEmpty()) {
+                    urlKey = urlString.contains("?") ? TextUtils.split(urlString, "?")[0] : urlString;
+                    ApiHelper.clearResponseHeader(urlKey, assetsPath);
+                }
+                urlKey = String.format(K.K_REPORT_DATA_API_PATH, K.kBaseUrl, groupID, templateID, objectID);
+                ApiHelper.clearResponseHeader(urlKey, FileUtil.sharedPath(mAppContext));
+                subscriber.onNext(ApiHelper.reportData(mAppContext, groupID, templateID, objectID));
                 subscriber.onCompleted();
             }
         })
@@ -666,7 +668,7 @@ public class SubjectActivity extends BaseActivity implements FilterMenuAdapter.F
         @JavascriptInterface
         public void storeTabIndex(final String pageName, final int tabIndex) {
             try {
-                String filePath = FileUtil.dirPath(mAppContext, K.kConfigDirName, K.kTabIndexConfigFileName);
+                String filePath = FileUtil.dirPath(mAppContext, K.K_CONFIG_DIR_NAME, K.K_TAB_INDEX_CONFIG_FILE_NAME);
 
                 JSONObject config = new JSONObject();
                 if ((new File(filePath).exists())) {
@@ -685,7 +687,7 @@ public class SubjectActivity extends BaseActivity implements FilterMenuAdapter.F
         public int restoreTabIndex(final String pageName) {
             int tabIndex = 0;
             try {
-                String filePath = FileUtil.dirPath(mAppContext, K.kConfigDirName, K.kTabIndexConfigFileName);
+                String filePath = FileUtil.dirPath(mAppContext, K.K_CONFIG_DIR_NAME, K.K_TAB_INDEX_CONFIG_FILE_NAME);
 
                 JSONObject config = new JSONObject();
                 if ((new File(filePath).exists())) {
@@ -832,6 +834,7 @@ public class SubjectActivity extends BaseActivity implements FilterMenuAdapter.F
 
         @JavascriptInterface
         public void closeSubjectView() {
+            PageLinkManage.INSTANCE.pageBackIntent(SubjectActivity.this);
             finish();
         }
 

@@ -7,7 +7,6 @@ import android.webkit.WebView;
 import com.intfocus.yhdev.R;
 import com.intfocus.yhdev.general.base.BaseActivity;
 import com.intfocus.yhdev.general.util.K;
-import com.intfocus.yhdev.general.util.PrivateURLs;
 import com.intfocus.yhdev.general.util.URLs;
 
 /**
@@ -24,7 +23,7 @@ public class ThursdaySayActivity extends BaseActivity {
 
         animLoading.setVisibility(View.VISIBLE);
         setWebViewLongListener(false);
-        urlString = String.format(K.kThursdaySayMobilePath, PrivateURLs.kBaseUrl, URLs.currentUIVersion(ThursdaySayActivity.this));
+        urlString = String.format(K.K_THURSDAY_SAY_MOBILE_PATH, K.kBaseUrl, URLs.currentUIVersion(ThursdaySayActivity.this));
         new Thread(mRunnableForDetecting).start();
     }
 
