@@ -106,7 +106,6 @@ public class YHApplication extends Application {
          *  初始化 OpenUDID, 设备唯一化
          */
         OpenUDID_manager.sync(getApplicationContext());
-//
 
         /*
          *  手机待机再激活时发送ØØØØ开屏广播
