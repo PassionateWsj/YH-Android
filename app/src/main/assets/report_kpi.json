@@ -1,43 +1,271 @@
-[
-  {
-    "name": "",
-    "data": [
-      {
-        "title": "实时数据",
-        "parts": [
-          {
-            "type": "tables",
-            "config": [
-              {
-                "title": "分时段",
-                "table": {
-                  "head": [
-                    "当日时段",
-                    "销售额(万)",
-                    "上周同天(万)",
-                    "客流",
-                    "上周同天",
-                    "客单"
-                  ],
-                  "data": [
-                    {
-                      "main_data": [
-                        "总计",
-                        1804.47,
-                        1533.2,
-                        290670.0,
-                        271845.0,
-                        62.1
-                      ],
-                      "sub_data": []
-                    }
-                  ]
-                }
-              }
-            ]
+{
+  "code": 200,
+  "message": "获取数据列表成功",
+  "data": [
+    {
+      "group_name": "经营预警",
+      "dashboard_type": "todo",
+      "index": 1,
+      "data": [
+        {
+          "id": "73",
+          "title": "生鲜负毛利实时预警(门店)",
+          "dashboard_type": "number2",
+          "report_title": "生鲜负毛利实时预警(门店)",
+          "target_url": "/mobile/v2/group/%@/template/2/report/73",
+          "template_id": "2",
+          "source_type": "local",
+          "obj_id": "73",
+          "obj_title": "生鲜负毛利实时预警(门店)",
+          "obj_link": "/mobile/v2/group/%@/template/2/report/73",
+          "unit": "毛利额/万元",
+          "memo1": "当前 42 支负毛利商品",
+          "memo2": "",
+          "data": {
+            "high_light": {
+              "percentage": false,
+              "number": "-0.5",
+              "compare": "",
+              "arrow": 3
+            },
+            "chart_data": []
+          },
+          "group_name": "经营预警",
+          "is_stick": false,
+          "option_user_num": "user_num",
+          "params_mapping": {
+            "user_num": "user_num"
+          },
+          "reailtime_options": {
+            "source_type": "local",
+            "options": {}
           }
-        ]
-      }
-    ]
-  }
-]
+        },
+        {
+          "id": "67",
+          "title": "个单量异常实时预警(门店)",
+          "dashboard_type": "number2",
+          "report_title": "个单量异常实时预警(门店)",
+          "target_url": "/mobile/v2/group/%@/template/2/report/67",
+          "template_id": "2",
+          "source_type": "local",
+          "obj_id": "67",
+          "obj_title": "个单量异常实时预警(门店)",
+          "obj_link": "/mobile/v2/group/%@/template/2/report/67",
+          "unit": "毛利额/元",
+          "memo1": "当前 11 支个单量异常商品",
+          "memo2": "",
+          "data": {
+            "high_light": {
+              "percentage": false,
+              "number": "-19.45",
+              "compare": "",
+              "arrow": 3
+            },
+            "chart_data": []
+          },
+          "group_name": "经营预警",
+          "is_stick": false,
+          "option_user_num": "user_num",
+          "params_mapping": {
+            "user_num": "user_num"
+          },
+          "reailtime_options": {
+            "source_type": "local",
+            "options": {}
+          }
+        }
+      ]
+    },{
+      "group_name": "经营预警",
+      "dashboard_type": "todo",
+      "index": 1,
+      "data": [
+        {
+          "id": "73",
+          "title": "生鲜负毛利实时预警(门店)",
+          "dashboard_type": "number2",
+          "report_title": "生鲜负毛利实时预警(门店)",
+          "target_url": "/mobile/v2/group/%@/template/2/report/73",
+          "template_id": "2",
+          "source_type": "local",
+          "obj_id": "73",
+          "obj_title": "生鲜负毛利实时预警(门店)",
+          "obj_link": "/mobile/v2/group/%@/template/2/report/73",
+          "unit": "毛利额/万元",
+          "memo1": "当前 42 支负毛利商品",
+          "memo2": "",
+          "data": {
+            "high_light": {
+              "percentage": false,
+              "number": "-0.5",
+              "compare": "",
+              "arrow": 3
+            },
+            "chart_data": []
+          },
+          "group_name": "经营预警",
+          "is_stick": false,
+          "option_user_num": "user_num",
+          "params_mapping": {
+            "user_num": "user_num"
+          },
+          "reailtime_options": {
+            "source_type": "local",
+            "options": {}
+          }
+        },
+        {
+          "id": "67",
+          "title": "个单量异常实时预警(门店)",
+          "dashboard_type": "number2",
+          "report_title": "个单量异常实时预警(门店)",
+          "target_url": "/mobile/v2/group/%@/template/2/report/67",
+          "template_id": "2",
+          "source_type": "local",
+          "obj_id": "67",
+          "obj_title": "个单量异常实时预警(门店)",
+          "obj_link": "/mobile/v2/group/%@/template/2/report/67",
+          "unit": "毛利额/元",
+          "memo1": "当前 11 支个单量异常商品",
+          "memo2": "",
+          "data": {
+            "high_light": {
+              "percentage": false,
+              "number": "-19.45",
+              "compare": "",
+              "arrow": 3
+            },
+            "chart_data": []
+          },
+          "group_name": "经营预警",
+          "is_stick": false,
+          "option_user_num": "user_num",
+          "params_mapping": {
+            "user_num": "user_num"
+          },
+          "reailtime_options": {
+            "source_type": "local",
+            "options": {}
+          }
+        }
+      ]
+    },
+    {
+      "group_name": "top_data",
+      "dashboard_type": "todo",
+      "index": 2,
+      "data": [
+        {
+          "id": "31",
+          "title": "门店实时销售概况",
+          "dashboard_type": "number1",
+          "report_title": "门店实时销售",
+          "target_url": "/mobile/v2/group/%@/template/2/report/31",
+          "template_id": "2",
+          "source_type": "local",
+          "obj_id": "31",
+          "obj_title": "门店实时销售",
+          "obj_link": "/mobile/v2/group/%@/template/2/report/31",
+          "unit": "万元",
+          "memo1": "上周同天销售额",
+          "memo2": "半壁店实时销售额",
+          "data": {
+            "high_light": {
+              "percentage": false,
+              "number": "20.5",
+              "compare": "13.2",
+              "arrow": 2
+            },
+            "chart_data": []
+          },
+          "group_name": "店长专用",
+          "is_stick": true,
+          "option_user_num": "user_num",
+          "params_mapping": {
+            "user_num": "user_num"
+          },
+          "reailtime_options": {
+            "source_type": "local",
+            "options": {}
+          }
+        }
+      ]
+    },
+    {
+      "group_name": "生意概况",
+      "dashboard_type": "todo",
+      "index": 3,
+      "data": [
+        {
+          "id": "108",
+          "title": "本店销售额",
+          "dashboard_type": "number3",
+          "report_title": "门店销售概况",
+          "target_url": "/mobile/v2/group/%@/template/2/report/49",
+          "template_id": "2",
+          "source_type": "local",
+          "obj_id": "49",
+          "obj_title": "门店销售概况",
+          "obj_link": "/mobile/v2/group/%@/template/2/report/49",
+          "unit": "万元",
+          "memo1": "昨天销售额",
+          "memo2": "月同比增长",
+          "data": {
+            "high_light": {
+              "percentage": false,
+              "number": "50.9",
+              "compare": "-6.9%",
+              "arrow": 0
+            },
+            "chart_data": []
+          },
+          "group_name": "生意概况",
+          "is_stick": false,
+          "option_user_num": "user_num",
+          "params_mapping": {
+            "user_num": "user_num"
+          },
+          "reailtime_options": {
+            "source_type": "local",
+            "options": {}
+          }
+        },
+        {
+          "id": "111",
+          "title": "本店客流",
+          "dashboard_type": "number3",
+          "report_title": "门店销售概况",
+          "target_url": "/mobile/v2/group/%@/template/2/report/49",
+          "template_id": "2",
+          "source_type": "local",
+          "obj_id": "49",
+          "obj_title": "门店销售概况",
+          "obj_link": "/mobile/v2/group/%@/template/2/report/49",
+          "unit": "万次",
+          "memo1": "昨日客流",
+          "memo2": "月同比增长",
+          "data": {
+            "high_light": {
+              "percentage": false,
+              "number": "0.7",
+              "compare": "-17.0%",
+              "arrow": 0
+            },
+            "chart_data": []
+          },
+          "group_name": "生意概况",
+          "is_stick": false,
+          "option_user_num": "user_num",
+          "params_mapping": {
+            "user_num": "user_num"
+          },
+          "reailtime_options": {
+            "source_type": "local",
+            "options": {}
+          }
+        }
+      ]
+    }
+  ]
+}

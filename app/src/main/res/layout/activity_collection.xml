@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/rl_action_bar"
+        style="@style/TitleStyle"
+        android:layout_width="match_parent">
+
+        <ImageView
+            style="@style/BackStyle"
+            android:onClick="back" />
+
+        <TextView
+            android:id="@+id/tv_collection_title"
+            style="@style/TitleText"
+            android:text="标题"/>
+    </RelativeLayout>
+
+    <com.intfocus.yhdev.general.view.RootScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/btn__submit"
+        android:layout_below="@+id/rl_action_bar"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <FrameLayout
+                android:id="@+id/fl_mdetal_cont_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+    </com.intfocus.yhdev.general.view.RootScrollView>
+
+    <View
+        android:id="@+id/view_shadow"
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        android:layout_above="@+id/btn__submit"
+        android:background="@drawable/pic_shadow"/>
+
+    <TextView
+        android:id="@+id/btn__submit"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@android:color/white"
+        android:layout_alignParentBottom="true"
+        android:gravity="center"
+        android:text="提交"
+        android:textColor="@android:color/black"
+        android:textSize="16sp"/>
+</RelativeLayout>

@@ -8,7 +8,7 @@ import com.intfocus.yhdev.business.subject.template.one.entity.MDRPUnitCurveChar
 import com.zbl.lib.baseframe.core.AbstractMode;
 import com.zbl.lib.baseframe.utils.TimeUtil;
 
-import static com.intfocus.yhdev.general.YHApplication.threadPool;
+import static com.intfocus.yhdev.YHApplication.threadPool;
 
 
 /**

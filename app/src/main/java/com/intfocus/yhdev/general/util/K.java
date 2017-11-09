@@ -125,10 +125,15 @@ public class K extends PrivateURLs implements Serializable {
      * 新API及所需api key
      */
     public final static String API_TOKEN = "api_token";
+
     /**
      * 加密所需api key
      */
     public final static String ANDROID_API_KEY = "578905f6e0c4189caa344ee4b1e460e5";
+
+    public final static String KCollectionUpload = "/api/v1.1/acquisition/data"; //提交采集数据
+    public final static String KUploadImage = "/api/v1.1/upload/images"; //上传图片
+
 
     /**
      * 扫码结果
@@ -262,6 +267,7 @@ public class K extends PrivateURLs implements Serializable {
      * 设备列表
      */
     public final static String K_DEVICE_TOKEN_API_PATH = "/api/v1.1/user/devices";
+
     /**
      * 上传头像
      */
@@ -269,4 +275,5 @@ public class K extends PrivateURLs implements Serializable {
     public final static String K_NEW_CHOICE_MENU = "/api/v1.1/report/choice_menus";
     public final static String K_DOWNLOAD_ASSETS_ZIP = "/api/v1.1/download/assets";
     public final static String K_NEAREST_STORES = "/api/v1.1/nearest_stores";
+    public final static String KCollectionConfig = "/api/v1.1/acquisition/config";
 }

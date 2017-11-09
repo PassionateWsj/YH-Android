@@ -29,7 +29,7 @@ import com.intfocus.yhdev.business.subject.template.three.TemplateThreeActivity
 import com.intfocus.yhdev.business.subject.template.two.SubjectActivity
 import com.intfocus.yhdev.business.subject.webapplication.WebApplicationActivity
 import com.intfocus.yhdev.business.subject.webapplication.WebApplicationActivityV6
-import com.intfocus.yhdev.general.YHApplication
+import com.intfocus.yhdev.YHApplication
 import com.intfocus.yhdev.general.bean.DashboardItemBean
 import com.intfocus.yhdev.general.constant.ConfigConstants
 import com.intfocus.yhdev.general.data.response.scanner.StoreItem
@@ -41,6 +41,7 @@ import com.intfocus.yhdev.general.net.RetrofitUtil
 import com.intfocus.yhdev.general.util.*
 import com.intfocus.yhdev.general.view.NoScrollViewPager
 import com.intfocus.yhdev.general.view.TabView
+import com.intfucos.yhdev.collection.CollectionActivity
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode

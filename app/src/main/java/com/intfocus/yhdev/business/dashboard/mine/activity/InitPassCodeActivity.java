@@ -17,7 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.intfocus.yhdev.R;
-import com.intfocus.yhdev.general.YHApplication;
+import com.intfocus.yhdev.YHApplication;
 import com.intfocus.yhdev.general.constant.ToastColor;
 import com.intfocus.yhdev.general.util.ActionLogUtil;
 import com.intfocus.yhdev.general.util.FileUtil;

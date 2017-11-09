@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply from: 'tinkerpatch.gradle'
+apply plugin: 'org.greenrobot.greendao'
 
 android {
     signingConfigs {
@@ -42,7 +43,7 @@ android {
                 storePassword '123456'
             }
             catch (ex) {
-//                throw new Exception("You should define KEYSTORE_PASSWORD and KEY_PASSWORD in gradle.properties")
+                throw new Exception("You should define KEYSTORE_PASSWORD and KEY_PASSWORD in gradle.properties")
             }
         }
     }
@@ -147,4 +148,15 @@ dependencies {
     compile 'com.daimajia.numberprogressbar:library:1.4@aar'
     provided 'com.tinkerpatch.tinker:tinker-android-anno:1.8.0'
     compile 'com.tinkerpatch.sdk:tinkerpatch-android-sdk:1.1.8'
+
+    // greenDAO
+    implementation "org.greenrobot:greendao:$rootProject.greenDAO_version"
+
+    implementation 'com.squareup.retrofit2:converter-scalars:2.0.0'
 }
+greendao {
+    schemaVersion 1
+    daoPackage 'com.intfocus.yhdev.general.gen'
+    targetGenDir 'src/main/java'
+}
+

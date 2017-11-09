@@ -12,7 +12,7 @@ import com.zbl.lib.baseframe.utils.TimeUtil;
 import java.io.StringReader;
 import java.util.ArrayList;
 
-import static com.intfocus.yhdev.general.YHApplication.threadPool;
+import static com.intfocus.yhdev.YHApplication.threadPool;
 
 
 /**

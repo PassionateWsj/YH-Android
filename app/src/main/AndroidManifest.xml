@@ -69,6 +69,8 @@
         <!-- 高德地图 -->
         <service android:name="com.amap.api.location.APSService"/>
 
+        <service android:name="com.intfocus.yhdev.general.service.CollectionUploadService"/>
+
         <activity
             android:name="com.intfocus.yhdev.business.launcher.LauncherActivity"
             android:screenOrientation="portrait"
@@ -81,10 +83,6 @@
         </activity>
 
         <!-- 登录 -->
-        <activity
-            android:name="com.intfocus.yhdev.business.login.LoginActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme"/>
 
         <!-- 模板三 -->
         <activity
@@ -97,6 +95,11 @@
             android:name="com.intfocus.yhdev.business.dashboard.mine.activity.FeedbackActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar"/>
+
+        <activity
+            android:name="com.intfucos.yhdev.collection.CollectionActivity"
+            android:screenOrientation="portrait"
+            ></activity>
         <!-- 公告详情 -->
         <activity
             android:name="com.intfocus.yhdev.business.dashboard.mine.activity.NoticeContentActivity"

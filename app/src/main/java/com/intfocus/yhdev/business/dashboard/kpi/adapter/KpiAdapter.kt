@@ -203,13 +203,13 @@ class KpiAdapter(val context: Context,
                 val operationalWarningAdapter = OperationalWarningAdapter(context, homeData.data)
                 holder.recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
                 holder.recyclerView.adapter = operationalWarningAdapter
-            }
-            is BusinessOverviewTitleHolder -> {
+                holder.title.text = homeData.group_name
             }
             is BusinessOverviewHolder -> {
                 val businessOverViewAdapter = BusinessOverViewAdapter(context, homeData.data)
                 holder.recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
                 holder.recyclerView.adapter = businessOverViewAdapter
+                holder.title.text = homeData.group_name
             }
             is UNKnowHolder -> {
             }
@@ -242,6 +242,7 @@ class KpiAdapter(val context: Context,
      */
     class OperationalWarningHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var recyclerView: RecyclerView = itemView.findViewById(R.id.recycler_view)
+        var title: TextView = itemView.findViewById(R.id.tv_title)
     }
 
     /**
@@ -254,6 +255,7 @@ class KpiAdapter(val context: Context,
      */
     class BusinessOverviewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var recyclerView: RecyclerView = itemView.findViewById(R.id.recycler_view)
+        var title: TextView = itemView.findViewById(R.id.tv_title)
     }
 
     class HomeBottomHolder(itemView: View) : RecyclerView.ViewHolder(itemView)

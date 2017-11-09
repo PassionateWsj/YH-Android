@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import com.google.gson.Gson
 import com.intfocus.yhdev.R
 import com.intfocus.yhdev.business.dashboard.kpi.bean.KpiBean
 import com.intfocus.yhdev.business.dashboard.mine.adapter.KpiAdapter
@@ -23,6 +24,10 @@ import com.intfocus.yhdev.general.view.DefaultRefreshView
 import com.intfocus.yhdev.general.view.MyLinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_kpi.*
 import org.xutils.x
+import java.io.BufferedReader
+import java.io.IOException
+import java.io.InputStream
+import java.io.InputStreamReader
 
 /**
  * Created by CANC on 2017/7/27.
@@ -128,16 +133,18 @@ class KpiFragment : RefreshFragment(), KpiAdapter.HomePageListener {
                                     homeBean.data = KpiResultData.data
                                     mKpiData!!.add(homeBean)
                                 }
-                                if ("经营预警" == KpiResultData.group_name) {
+
+                                if ("number2" == KpiResultData.data!![0].dashboard_type) {
                                     val homeBean = KpiBean()
-                                    homeBean.group_name = "经营预警"
+                                    homeBean.group_name = KpiResultData.group_name
                                     homeBean.index = 2
                                     homeBean.data = KpiResultData.data
                                     mKpiData!!.add(homeBean)
                                 }
-                                if ("生意概况" == KpiResultData.group_name) {
+
+                                if ("number3" == KpiResultData.data!![0].dashboard_type) {
                                     val homeBean = KpiBean()
-                                    homeBean.group_name = "生意概况"
+                                    homeBean.group_name = KpiResultData.group_name
                                     homeBean.index = 3
                                     homeBean.data = KpiResultData.data
                                     mKpiData!!.add(homeBean)

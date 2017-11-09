@@ -27,6 +27,7 @@ import com.intfocus.yhdev.general.util.AssetsUpDateUtil
 import com.intfocus.yhdev.general.util.HttpUtil
 import com.intfocus.yhdev.general.util.LogUtil
 import com.intfocus.yhdev.general.util.OnCheckAssetsUpdateResultListener
+import com.intfucos.yhdev.collection.CollectionActivity
 import kotlinx.android.synthetic.main.activity_splash.*
 import kotlinx.android.synthetic.main.toast.*
 import java.util.*

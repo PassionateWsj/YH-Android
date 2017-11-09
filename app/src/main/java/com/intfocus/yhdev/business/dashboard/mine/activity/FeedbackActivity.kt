@@ -77,7 +77,6 @@ class FeedbackActivity : AbstractActivity<IssueMode>(), View.OnClickListener, Fe
         rv_feedback_page_screenshot.adapter = screenshotAdapter
     }
 
-
     override fun onClick(v: View?) {
         when (v!!.id) {
             R.id.iv_feedback_banner_back -> {
