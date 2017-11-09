@@ -65,7 +65,7 @@
 
     <ImageView
         android:id="@+id/loginLog"
-        android:layout_width="160dp"
+        android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_above="@id/linearUsername"
         android:layout_centerHorizontal="true"
