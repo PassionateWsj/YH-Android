@@ -146,6 +146,7 @@ public class K extends PrivateURLs implements Serializable {
     public final static String KComment = "/api/v1.1/comment"; //发表评论
     public final static String KRegister = "/api/v1.1/config/info"; //申请注册
     public final static String KCollectionUpload = "/api/v1.1/acquisition/data"; //提交采集数据
+    public final static String KUploadImage = "/api/v1.1/upload/images"; //上传图片
 
 
     /**

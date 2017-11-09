@@ -43,7 +43,7 @@ android {
                 storePassword '123456'
             }
             catch (ex) {
-//                throw new Exception("You should define KEYSTORE_PASSWORD and KEY_PASSWORD in gradle.properties")
+                throw new Exception("You should define KEYSTORE_PASSWORD and KEY_PASSWORD in gradle.properties")
             }
         }
     }
@@ -154,7 +154,6 @@ dependencies {
 
     implementation 'com.squareup.retrofit2:converter-scalars:2.0.0'
 }
-
 greendao {
     schemaVersion 1
     daoPackage 'com.intfocus.yhdev.general.gen'

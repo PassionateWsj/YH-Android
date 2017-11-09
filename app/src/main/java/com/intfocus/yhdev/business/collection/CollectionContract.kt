@@ -1,5 +1,6 @@
 package com.intfucos.yhdev.collection
 
+import android.content.Context
 import com.intfocus.yhdev.general.base.BasePresenter
 import com.intfocus.yhdev.general.base.BaseView
 import com.intfucos.yhdev.collection.entity.CollectionEntity
@@ -16,6 +17,6 @@ interface CollectionContract {
 
     interface Presenter: BasePresenter {
         fun loadData(id: String)
-        fun submit()
+        fun submit(ctx: Context)
     }
 }

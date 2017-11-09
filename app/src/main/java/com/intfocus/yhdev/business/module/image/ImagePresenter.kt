@@ -1,5 +1,6 @@
 package com.intfucos.yhdev.module.image
 
+import com.intfocus.yhdev.general.util.Utils
 import com.intfucos.yhdev.collection.callback.LoadDataCallback
 
 /**
@@ -19,7 +20,7 @@ class ImagePresenter(
     }
 
     override fun update(imageEntity: ImageEntity, key: String) {
-        mModel.insertDb(imageEntity.value.toString(), key)
+        mModel.insertDb(Utils.listToString(imageEntity.value), key)
     }
 
     override fun loadData(mParam: String) {

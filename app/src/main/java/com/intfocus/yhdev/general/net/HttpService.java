@@ -343,6 +343,16 @@ public interface HttpService {
     Observable<BaseResult> submitCollection(@Body CollectionRequestBody collectionRequestBody);
 
     /**
+     * 上传采集信息
+     * <p>
+     * POST
+     * /api/v1.1/acquisition/data
+     * @return
+     */
+    @POST(K.KCollectionUpload)
+    Call<BaseResult> submitCollection2(@Body CollectionRequestBody collectionRequestBody);
+
+    /**
      * 重置密码
      * <p>
      * POST

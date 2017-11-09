@@ -12,15 +12,15 @@ class CollectionRequestBody {
     var data: Data? = null
 
     class Data {
-        var acquisition_id: String? = null
+        var acquisition_id: String = ""
         var content: JSONObject? = null
-        var user_num: String? = null
-        var h1: String? = null
-        var h2: String? = null
-        var h3: String? = null
-        var h4: String? = null
-        var h5: String? = null
-        var local_created_at: String? = null
-        var local_updated_at: String? = null
+        var user_num: String = ""
+        var h1: String = ""
+        var h2: String = ""
+        var h3: String = ""
+        var h4: String = ""
+        var h5: String = ""
+        var local_created_at: String = ""
+        var local_updated_at: String = ""
     }
 }

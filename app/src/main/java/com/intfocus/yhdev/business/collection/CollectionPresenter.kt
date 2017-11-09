@@ -1,5 +1,6 @@
 package com.intfucos.yhdev.collection
 
+import android.content.Context
 import android.util.Log
 import com.intfucos.yhdev.collection.callback.LoadDataCallback
 import com.intfucos.yhdev.collection.entity.CollectionEntity
@@ -36,7 +37,7 @@ class CollectionPresenter(
         })
     }
 
-    override fun submit() {
-        mModel.upload()
+    override fun submit(ctx: Context) {
+        mModel.upload(ctx)
     }
 }

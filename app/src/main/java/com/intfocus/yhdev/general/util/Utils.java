@@ -19,6 +19,7 @@ import java.lang.reflect.Field;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -233,5 +234,27 @@ public class Utils {
     public static String getApiToken(String apiPath) {
         String finalStr = K.ANDROID_API_KEY + apiPath + K.ANDROID_API_KEY;
         return stringToMD5(finalStr);
+    }
+
+    public static String listToString(List<String> list){
+        if(list==null){
+            return null;
+        }
+        StringBuilder result = new StringBuilder();
+        boolean first = true;
+        for(String string :list) {
+            if(first) {
+                first=false;
+            }else{
+                result.append(",");
+            }
+            result.append(string);
+        }
+        return result.toString();
+    }
+
+    public static List<String> stringToList(String strs){
+        String[] str = strs.split(",");
+        return Arrays.asList(str);
     }
 }

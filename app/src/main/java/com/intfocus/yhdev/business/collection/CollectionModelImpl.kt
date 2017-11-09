@@ -1,6 +1,7 @@
 package com.intfucos.yhdev.collection
 
 import android.content.Context
+import android.content.Intent
 import android.util.Log
 import com.alibaba.fastjson.JSONReader
 import com.intfocus.yhdev.YHApplication.globalContext
@@ -13,11 +14,12 @@ import com.intfocus.yhdev.general.gen.SourceDao
 import com.intfocus.yhdev.general.net.ApiException
 import com.intfocus.yhdev.general.net.CodeHandledSubscriber
 import com.intfocus.yhdev.general.net.RetrofitUtil
-import com.intfocus.yhdev.general.util.DaoUtil
-import com.intfocus.yhdev.general.util.ToastUtils
+import com.intfocus.yhdev.general.service.CollectionUploadService
+import com.intfocus.yhdev.general.util.*
 import com.intfucos.yhdev.collection.callback.LoadDataCallback
 import com.intfucos.yhdev.collection.entity.CollectionEntity
 import com.intfucos.yhdev.collection.entity.Content
+import okhttp3.*
 import org.json.JSONArray
 import org.json.JSONObject
 import rx.Observable
@@ -192,24 +194,9 @@ class CollectionModelImpl: CollectionModel<CollectionEntity> {
         return sb!!.toString()
     }
 
-    override fun upload() {
-        var requestBody = generateRequestBody()
-        RetrofitUtil.getHttpService(globalContext).submitCollection(requestBody)
-                .compose(RetrofitUtil.CommonOptions())
-                .subscribe(object : CodeHandledSubscriber<BaseResult>() {
-                    override fun onError(apiException: ApiException) {
-                    }
-
-                    /**
-                     * 上传采集信息成功
-                     * @param data 返回的数据
-                     */
-                    override fun onBusinessNext(data: BaseResult) {
-                        ToastUtils.show(globalContext, "提交成功")
-                    }
-
-                    override fun onCompleted() {}
-                })
+    override fun upload(ctx: Context) {
+        var intent = Intent(ctx, CollectionUploadService::class.java)
+        ctx.startService(intent)
     }
 
     private fun generateDJson(): JSONObject {

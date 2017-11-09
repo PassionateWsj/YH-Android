@@ -1,5 +1,6 @@
 package com.intfucos.yhdev.collection
 
+import android.content.Context
 import com.intfucos.yhdev.collection.callback.LoadDataCallback
 
 /**
@@ -9,5 +10,5 @@ import com.intfucos.yhdev.collection.callback.LoadDataCallback
  */
 interface CollectionModel<out T> {
     fun getData(id: String, callback: LoadDataCallback<T>)
-    fun upload()
+    fun upload(ctx: Context)
 }

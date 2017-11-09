@@ -68,6 +68,8 @@
         <!-- 高德地图 -->
         <service android:name="com.amap.api.location.APSService"/>
 
+        <service android:name="com.intfocus.yhdev.general.service.CollectionUploadService"/>
+
         <activity
             android:name="com.intfocus.yhdev.business.launcher.LauncherActivity"
             android:screenOrientation="portrait"

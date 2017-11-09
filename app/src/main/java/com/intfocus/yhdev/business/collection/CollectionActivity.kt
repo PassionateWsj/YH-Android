@@ -22,7 +22,7 @@ import kotlinx.android.synthetic.main.activity_collection.*
  * @data 2017/10/31
  * @describe 信息采集模板
  */
-class CollectionActivity: AppCompatActivity(), CollectionContract.View {
+class CollectionActivity : AppCompatActivity(), CollectionContract.View {
     var lastCheckId: Int = 0
     private var currentFtName: String? = null
     private val fragmentTag = "android:switcher:"
@@ -59,10 +59,13 @@ class CollectionActivity: AppCompatActivity(), CollectionContract.View {
     private fun init() {
         id = intent.getStringExtra(URLs.kObjectId)
         tv_collection_title.text = intent.getStringExtra(URLs.kBannerName)
-        btn__submit.setOnClickListener { presenter.submit() }
+        btn__submit.setOnClickListener {
+            presenter.submit(this)
+            finish()
+        }
         presenter.loadData(id)
     }
-    
+
     fun back(v: View) {
         finish()
     }
@@ -91,7 +94,7 @@ class CollectionActivity: AppCompatActivity(), CollectionContract.View {
         }
     }
 
-    internal inner class RootTableCheckedChangeListener: CompoundButton.OnCheckedChangeListener {
+    internal inner class RootTableCheckedChangeListener : CompoundButton.OnCheckedChangeListener {
         override fun onCheckedChanged(buttonView: CompoundButton, isChecked: Boolean) {
             if (isChecked) {
                 val tag = buttonView.tag as Int
@@ -109,8 +112,7 @@ class CollectionActivity: AppCompatActivity(), CollectionContract.View {
         currentFtName = fragmentTag + checkId
         if (supportFragmentManager.findFragmentByTag(currentFtName) != null) {
             toFragment = supportFragmentManager.findFragmentByTag(currentFtName) as BaseWidgetFragment
-        }
-        else {
+        } else {
             val pageDataArrayList = mEntity!!.data
             if (pageDataArrayList != null && pageDataArrayList!!.size > 0) {
                 toFragment = RootPageFragment.newInstance(checkId, pageDataArrayList!![checkId].content!!)
