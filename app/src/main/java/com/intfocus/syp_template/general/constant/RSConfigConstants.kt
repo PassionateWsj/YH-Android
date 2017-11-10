@@ -78,7 +78,7 @@ object RSConfigConstants {
      * true : 不支持二维码 *
      * false : 支持二维码
      */
-    const val SCAN_BARCODE: Boolean = true
+    const val SCAN_BARCODE: Boolean = false
     /**
      * 是否支持 相册扫码 功能
      *

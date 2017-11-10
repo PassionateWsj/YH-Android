@@ -15,6 +15,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import android.widget.CheckBox
 import android.widget.PopupWindow
 import android.widget.RelativeLayout
@@ -181,6 +182,11 @@ class BarCodeScannerActivity : AppCompatActivity(), QRCodeView.Delegate, View.On
             tv_barcode_gallery.visibility = View.VISIBLE
         } else {
             tv_barcode_gallery.visibility = View.GONE
+        }
+        if (ConfigConstants.SCAN_BARCODE) {
+            view!!.et_input_barcode.inputType = EditorInfo.TYPE_CLASS_NUMBER
+        } else {
+            view!!.et_input_barcode.inputType = EditorInfo.TYPE_CLASS_TEXT
         }
     }
 

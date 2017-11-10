@@ -19,7 +19,8 @@ public class RSPrivateURLs {
     public final static String kInitPassword = "123456";
 
 //    public final static String kBaseUrl = "http://api-ruishang.idata.mobi";
-    public final static String kBaseUrl = "http://ruishang-dev.idata.mobi";
+//    public final static String kBaseUrl = "http://ruishang-dev.idata.mobi";
+    public final static String kBaseUrl = "http://111.231.113.158:8080";
     public final static String kBaseUrl1 = "http://10.0.3.2:4567";
 
     public final static String kPgyerAppId = "e22d108e745505bc9968884b0d4cbcfd";
