@@ -1,0 +1,188 @@
+package com.intfocus.yhdev.business.subject.template.one.plusminuschart;
+
+import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.FrameLayout;
+
+import com.alibaba.fastjson.JSON;
+import com.intfocus.yhdev.R;
+import com.intfocus.yhdev.business.subject.template.one.ModeImpl;
+import com.intfocus.yhdev.general.base.BaseModeFragment;
+import com.intfocus.yhdev.general.bean.Report;
+import com.intfocus.yhdev.general.gen.ReportDao;
+import com.intfocus.yhdev.general.util.BargraphDataComparator;
+import com.intfocus.yhdev.general.util.DaoUtil;
+import com.intfocus.yhdev.general.util.PinyinUtil;
+import com.intfocus.yhdev.general.util.ToastUtils;
+import com.intfocus.yhdev.general.view.NotScrollListView;
+import com.intfocus.yhdev.general.view.PlusMinusChart;
+import com.intfocus.yhdev.general.view.SortCheckBox;
+import com.intfocus.yhdev.business.subject.template.one.adapter.BargraptAdapter;
+import com.intfocus.yhdev.business.subject.template.one.entity.BargraphComparator;
+import com.intfocus.yhdev.business.subject.template.one.entity.MDRPUnitBargraph;
+
+import org.xutils.view.annotation.Event;
+import org.xutils.view.annotation.ViewInject;
+import org.xutils.x;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.LinkedList;
+
+import static com.intfucos.yhdev.constant.Params.REPORT_TYPE_PLUS_MINUS;
+
+/**
+ * 正负图表模块
+ */
+public class ModularOneUnitPlusMinusChartModeFragment extends BaseModeFragment implements AdapterView.OnItemClickListener {
+    private static final String ARG_PARAM = "param1";
+    private View rootView;
+
+    @ViewInject(R.id.lv_MDRPUnit_PlusMinusChart)
+    private NotScrollListView lv;
+    private BargraptAdapter adapter;
+
+    @ViewInject(R.id.fl_MDRPUnit_PlusMinusChart_container)
+    private FrameLayout mFlContainer;
+
+    @ViewInject(R.id.cbox_name)
+    private SortCheckBox mCboxName;
+    @ViewInject(R.id.cbox_percentage)
+    private SortCheckBox mCboxPercentage;
+
+    private PlusMinusChart pmChart;
+
+    private String mParam;
+    private MDRPUnitBargraph entityData;
+    private LinkedList<BargraphComparator> mLtData;
+    private BargraphNameComparator nameComparator;
+    private BargraphDataComparator dataComparator;
+
+    public static ModularOneUnitPlusMinusChartModeFragment newInstance(String param) {
+        ModularOneUnitPlusMinusChartModeFragment fragment = new ModularOneUnitPlusMinusChartModeFragment();
+        Bundle args = new Bundle();
+        args.putString(ARG_PARAM, param);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            mParam = getArguments().getString(ARG_PARAM);
+        }
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        if (rootView == null) {
+            rootView = inflater.inflate(R.layout.fragment_mdrpunit_plus_minus_chart, container, false);
+            x.view().inject(this, rootView);
+            initView();
+            bindData();
+        }
+        return rootView;
+    }
+
+    private void initView() {
+        mLtData = new LinkedList<>();
+        nameComparator = new BargraphNameComparator();
+        dataComparator = new BargraphDataComparator();
+
+        adapter = new BargraptAdapter(ctx);
+        lv.setAdapter(adapter);
+        lv.setFocusable(false);
+        lv.setOnItemClickListener(this);
+    }
+
+    @Event({R.id.cbox_name, R.id.cbox_percentage})
+    private void onViewClick(View view) {
+        switch (view.getId()) {
+            case R.id.cbox_name:
+                mCboxPercentage.reset();
+                if (mCboxName.getCheckedState() == SortCheckBox.CheckedState.sort_noneicon) {
+                    Collections.sort(mLtData, nameComparator);
+                } else {
+                    Collections.reverse(mLtData);
+                }
+                break;
+
+            case R.id.cbox_percentage:
+                mCboxName.reset();
+                if (mCboxPercentage.getCheckedState() == SortCheckBox.CheckedState.sort_noneicon) {
+                    Collections.sort(mLtData, dataComparator);
+                } else {
+                    Collections.reverse(mLtData);
+                }
+                break;
+            default:
+                break;
+        }
+        adapter.updateData(mLtData);
+//        ArrayList<String> chartData = new ArrayList<>();
+//        for (BargraphComparator bargraphComparator : mLtData) {
+//            chartData.add(bargraphComparator.data);
+//        }
+        pmChart.updateData(mLtData);
+    }
+
+    private void bindData() {
+//        mLtData.clear();
+        entityData = JSON.parseObject(mParam, MDRPUnitBargraph.class);
+        String[] dataName = entityData.xAxis.data;
+        ArrayList<MDRPUnitBargraph.Series.Data> dataValue = entityData.series.data;
+        for (int i = 0; i < dataName.length; i++) {
+            String name = dataName[i];
+            String value = dataValue.get(i).value;
+            int color = dataValue.get(i).color;
+            mLtData.add(new BargraphComparator(name, value, color));
+        }
+
+
+        mCboxPercentage.setText(entityData.series.name);
+        mCboxName.setText(entityData.xAxis.name);
+//        LinkedList<BargraphComparator> lvdata = new LinkedList<>();
+//        lvdata.addAll(mLtData);
+        adapter.updateData(mLtData);
+
+        //设置图表数据
+        pmChart = new PlusMinusChart(ctx);
+        pmChart.setDrawingCacheEnabled(true);
+        pmChart.setDefauteolor(ContextCompat.getColor(ctx,R.color.co9));
+        pmChart.setDataValues(mLtData);
+        mFlContainer.addView(pmChart);
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        adapter.setSelectItem(position);
+        String xValue = entityData.xAxis.data[position];
+        ToastUtils.INSTANCE.show(ctx, xValue);
+    }
+
+    class BargraphNameComparator implements Comparator<BargraphComparator> {
+
+        @Override
+        public int compare(BargraphComparator o1, BargraphComparator o2) {
+            String str1 = PinyinUtil.getPingYin(o1.name);
+            String str2 = PinyinUtil.getPingYin(o2.name);
+            return str1.compareTo(str2);
+        }
+    }
+
+    private void init() {
+        ReportDao reportDao = DaoUtil.INSTANCE.getReportDao();
+        Report report = reportDao.queryBuilder()
+                .where(reportDao.queryBuilder().and(ReportDao.Properties.Uuid.eq(ModeImpl.getInstance().getUuid()), ReportDao.Properties.Type.eq(REPORT_TYPE_PLUS_MINUS)))
+                .unique();
+
+        mParam = report.getConfig();
+    }
+}
