@@ -83,15 +83,16 @@
 			- 命名 : bg_startup.png
 			- 替换 : `..\app\src\main\res\drawable\bg_startup.png`
 		- 底部广告替换
-			- 图片推荐 : **588 * 48**、 **392 * 32**
+			- 图片推荐 : **168 * 13.7**、**392 * 32**、**588 * 48**
 			- 命名 : `slogan.png`
 			- 替换 :
-				- **588 * 48** :`..\app\src\main\res\drawable-xhdpi\slogan.png`
+				- **168 * 13.7** : `..\app\src\main\res\drawable-hdpi\slogan.png`
 				- **392 * 32** : `..\app\src\main\res\drawable-xhdpi\slogan.png`
+				- **588 * 48** :`..\app\src\main\res\drawable-xxhdpi\slogan.png`
 	- **登录页**
 		- logo 替换
 			- 推荐分辨率 : **86 * 86** 、 **200 * 200** 、**300 * 300**
-			- 命名 : `bg_startup.png`
+			- 命名 : `logo.png`
 			- 替换
 				- **86 * 86** ： `..\app\src\main\res\drawable-hdpi\logo.png`
 				- **200 * 200** ： `..\app\src\main\res\drawable-xhdpi\logo.png`
