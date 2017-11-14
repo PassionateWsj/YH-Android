@@ -2,6 +2,7 @@ package com.intfocus.syp_template.general.util
 
 import android.content.Context
 import com.daimajia.numberprogressbar.NumberProgressBar
+import com.intfocus.syp_template.general.constant.ConfigConstants
 import com.intfocus.syp_template.general.data.response.assets.AssetsResult
 import com.intfocus.syp_template.general.net.ApiException
 import com.intfocus.syp_template.general.net.CodeHandledSubscriber
@@ -79,7 +80,7 @@ object AssetsUpDateUtil {
                                     if (!assetsMD5sMap[assetName + "_md5"].equals(mAssetsSP.getString(assetName + "_md5", ""))) {
                                         val fileUrl = K.K_DOWNLOAD_ASSETS_ZIP + "?api_token=d93c1a0dc03fe4ffad55a82febd1c94f&filename=" + assetName + ".zip"
                                         val response = Retrofit.Builder()
-                                                .baseUrl(K.kBaseUrl)
+                                                .baseUrl(ConfigConstants.kBaseUrl)
                                                 .build()
                                                 .create(HttpService::class.java).downloadFileWithDynamicUrlSync(fileUrl).execute()
                                         // 保存到指定目录

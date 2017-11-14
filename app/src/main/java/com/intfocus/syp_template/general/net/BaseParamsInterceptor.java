@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import com.intfocus.syp_template.general.constant.ConfigConstants;
 import com.intfocus.syp_template.general.util.K;
 import com.intfocus.syp_template.general.util.Utils;
 
@@ -36,7 +37,7 @@ public class BaseParamsInterceptor implements Interceptor {
     public Response intercept(Chain chain) throws IOException {
         Request oriRequest = chain.request();
         //提取api_path
-        String apiPath = oriRequest.url().toString().replace(K.kBaseUrl, "");
+        String apiPath = oriRequest.url().toString().replace(ConfigConstants.kBaseUrl, "");
         if (apiPath.contains("?")) {
             apiPath = apiPath.substring(0, apiPath.indexOf("?"));
         }

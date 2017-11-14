@@ -12,11 +12,11 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.intfocus.syp_template.R;
-import com.intfocus.syp_template.general.base.BaseModeFragment;
 import com.intfocus.syp_template.business.subject.template.one.TemplateOneActivity;
 import com.intfocus.syp_template.general.bean.Report;
 import com.intfocus.syp_template.general.gen.ReportDao;
 import com.intfocus.syp_template.general.util.DaoUtil;
+import com.intfocus.syp_template.general.base.BaseModeFragment;
 
 import org.json.JSONException;
 import org.json.JSONObject;

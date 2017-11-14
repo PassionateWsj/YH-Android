@@ -14,8 +14,8 @@ import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
 
 import com.intfocus.syp_template.R;
-import com.intfocus.syp_template.general.util.BargraphDataComparator;
 import com.intfocus.syp_template.business.subject.template.one.entity.BargraphComparator;
+import com.intfocus.syp_template.general.util.BargraphDataComparator;
 
 import java.util.Collections;
 import java.util.LinkedList;

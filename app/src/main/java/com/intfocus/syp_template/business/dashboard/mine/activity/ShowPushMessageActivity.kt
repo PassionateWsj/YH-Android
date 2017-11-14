@@ -21,6 +21,7 @@ import com.intfocus.syp_template.business.subject.template.three.TemplateThreeAc
 import com.intfocus.syp_template.business.subject.template.two.SubjectActivity
 import com.intfocus.syp_template.business.subject.webapplication.WebApplicationActivity
 import com.intfocus.syp_template.general.bean.User
+import com.intfocus.syp_template.general.constant.ConfigConstants
 import com.intfocus.syp_template.general.util.*
 import kotlinx.android.synthetic.main.activity_show_push_message.*
 import org.json.JSONException
@@ -170,7 +171,7 @@ class ShowPushMessageActivity : AppCompatActivity(), PushMessageView, ShowPushMe
                         link.indexOf("template/3") > 0 -> {
                             intent = Intent(this, TemplateThreeActivity::class.java)
                             urlString = String.format("%s/api/v1/group/%s/template/%s/report/%s/json",
-                                    K.kBaseUrl, groupID, "3", reportID)
+                                    ConfigConstants.kBaseUrl, groupID, "3", reportID)
                             intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
                             intent.putExtra(URLs.kBannerName, mBannerName)
                             intent.putExtra(URLs.kObjectId, objectId)
@@ -183,7 +184,7 @@ class ShowPushMessageActivity : AppCompatActivity(), PushMessageView, ShowPushMe
                         link.indexOf("template/5") > 0 -> {
                             intent = Intent(this, TemplateFiveActivity::class.java)
                             urlString = String.format("%s/api/v1/group/%s/template/%s/report/%s/json",
-                                    K.kBaseUrl, groupID, "5", reportID)
+                                    ConfigConstants.kBaseUrl, groupID, "5", reportID)
                             intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
                             intent.putExtra(URLs.kBannerName, mBannerName)
                             intent.putExtra(URLs.kObjectId, objectId)
@@ -234,7 +235,7 @@ class ShowPushMessageActivity : AppCompatActivity(), PushMessageView, ShowPushMe
         builder.setTitle("温馨提示")
                 .setMessage("当前版本暂不支持该模板, 请升级应用后查看")
                 .setPositiveButton("前去升级") { _, _ ->
-                    val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(K.kPgyerUrl))
+                    val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(ConfigConstants.kPgyerUrl))
                     startActivity(browserIntent)
                 }
                 .setNegativeButton("稍后升级") { _, _ ->

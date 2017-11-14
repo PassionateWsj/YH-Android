@@ -38,6 +38,7 @@ import com.intfocus.syp_template.R;
 import com.intfocus.syp_template.business.dashboard.mine.adapter.FilterMenuAdapter;
 import com.intfocus.syp_template.general.CommentActivity;
 import com.intfocus.syp_template.general.base.BaseActivity;
+import com.intfocus.syp_template.general.constant.ConfigConstants;
 import com.intfocus.syp_template.general.constant.ToastColor;
 import com.intfocus.syp_template.general.data.response.filter.Menu;
 import com.intfocus.syp_template.general.data.response.filter.MenuItem;
@@ -372,7 +373,7 @@ public class SubjectActivity extends BaseActivity implements FilterMenuAdapter.F
             // deprecated
             // format: /mobile/report/:report_id/group/:group_id
             String urlPath = format(link.replace("%@", "%s"), groupID);
-            urlString = String.format("%s%s", K.kBaseUrl, urlPath);
+            urlString = String.format("%s%s", ConfigConstants.kBaseUrl, urlPath);
             webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
 
         Observable.create(new Observable.OnSubscribe<String>() {
@@ -536,7 +537,7 @@ public class SubjectActivity extends BaseActivity implements FilterMenuAdapter.F
                     urlKey = urlString.contains("?") ? TextUtils.split(urlString, "?")[0] : urlString;
                     ApiHelper.clearResponseHeader(urlKey, assetsPath);
                 }
-                urlKey = String.format(K.K_REPORT_DATA_API_PATH, K.kBaseUrl, groupID, templateID, objectID);
+                urlKey = String.format(K.K_REPORT_DATA_API_PATH, ConfigConstants.kBaseUrl, groupID, templateID, objectID);
                 ApiHelper.clearResponseHeader(urlKey, FileUtil.sharedPath(mAppContext));
                 subscriber.onNext(ApiHelper.reportData(mAppContext, groupID, templateID, objectID));
                 subscriber.onCompleted();

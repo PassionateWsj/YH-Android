@@ -14,11 +14,11 @@ import android.widget.RadioGroup;
 
 import com.intfocus.syp_template.R;
 import com.intfocus.syp_template.business.dashboard.mine.adapter.TableTitleAdapter;
-import com.intfocus.syp_template.general.base.BaseModeFragment;
 import com.intfocus.syp_template.business.subject.template.one.TemplateOneActivity;
 import com.intfocus.syp_template.business.subject.template.one.entity.MDetailUnitEntity;
 import com.intfocus.syp_template.business.subject.template.one.entity.msg.MDetailRootPageRequestResult;
 import com.intfocus.syp_template.business.subject.template.one.mode.ModularTwo_UnitTablesParentMode;
+import com.intfocus.syp_template.general.base.BaseModeFragment;
 import com.zbl.lib.baseframe.core.Subject;
 import com.zbl.lib.baseframe.utils.ToastUtil;
 

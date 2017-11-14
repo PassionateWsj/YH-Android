@@ -4,9 +4,9 @@ import android.content.Context;
 import android.widget.TextView;
 
 import com.intfocus.syp_template.R;
-import com.intfocus.syp_template.general.util.Utils;
 import com.intfocus.syp_template.business.subject.template.five.adapter.base.CommonAdapter;
 import com.intfocus.syp_template.business.subject.template.five.adapter.base.ViewHolder;
+import com.intfocus.syp_template.general.util.Utils;
 
 import java.util.List;
 

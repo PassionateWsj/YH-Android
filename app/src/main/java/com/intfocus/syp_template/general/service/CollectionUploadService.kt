@@ -7,6 +7,7 @@ import com.google.gson.Gson
 import com.intfocus.syp_template.YHApplication.globalContext
 import com.intfocus.syp_template.business.collection.entity.CollectionRequestBody
 import com.intfocus.syp_template.general.bean.Collection
+import com.intfocus.syp_template.general.constant.ConfigConstants
 import com.intfocus.syp_template.general.constant.Module.UPLOAD_IMAGES
 import com.intfocus.syp_template.general.gen.CollectionDao
 import com.intfocus.syp_template.general.gen.SourceDao
@@ -89,7 +90,7 @@ class CollectionUploadService : IntentService("collection_upload") {
             }
 
             val request = Request.Builder()
-                    .url(K.kBaseUrl + K.KUploadImage)
+                    .url(ConfigConstants.kBaseUrl + K.KUploadImage)
                     .post(requestBody.build())
                     .build()
 

@@ -10,6 +10,9 @@ import android.widget.FrameLayout;
 
 import com.alibaba.fastjson.JSON;
 import com.intfocus.syp_template.R;
+import com.intfocus.syp_template.business.subject.template.one.adapter.BargraptAdapter;
+import com.intfocus.syp_template.business.subject.template.one.entity.BargraphComparator;
+import com.intfocus.syp_template.business.subject.template.one.entity.MDRPUnitBargraph;
 import com.intfocus.syp_template.general.base.BaseModeFragment;
 import com.intfocus.syp_template.general.bean.Report;
 import com.intfocus.syp_template.general.gen.ReportDao;
@@ -20,9 +23,6 @@ import com.intfocus.syp_template.general.util.ToastUtils;
 import com.intfocus.syp_template.general.view.NotScrollListView;
 import com.intfocus.syp_template.general.view.PlusMinusChart;
 import com.intfocus.syp_template.general.view.SortCheckBox;
-import com.intfocus.syp_template.business.subject.template.one.adapter.BargraptAdapter;
-import com.intfocus.syp_template.business.subject.template.one.entity.BargraphComparator;
-import com.intfocus.syp_template.business.subject.template.one.entity.MDRPUnitBargraph;
 
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;

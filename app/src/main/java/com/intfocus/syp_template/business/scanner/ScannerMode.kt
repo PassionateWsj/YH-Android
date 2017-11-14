@@ -2,6 +2,7 @@ package com.intfocus.syp_template.business.scanner
 
 import android.content.Context
 import com.google.gson.Gson
+import com.intfocus.syp_template.general.constant.ConfigConstants
 import com.intfocus.syp_template.general.util.FileUtil
 import com.intfocus.syp_template.general.util.HttpUtil
 import com.intfocus.syp_template.general.util.K
@@ -32,8 +33,8 @@ class ScannerMode(var ctx: Context) : AbstractMode() {
 
     fun requestData(barcode: String, storeId: String) {
         currentBarcode = barcode
-        jsUrl = String.format(K.K_BAR_CODE_SCAN_API_DATA_PATH, K.kBaseUrl, storeId, barcode)
-        htmlUrl = String.format(K.K_BAR_CODE_SCAN_API_VIEW_PATH, K.kBaseUrl, storeId, barcode)
+        jsUrl = String.format(K.K_BAR_CODE_SCAN_API_DATA_PATH, ConfigConstants.kBaseUrl, storeId, barcode)
+        htmlUrl = String.format(K.K_BAR_CODE_SCAN_API_VIEW_PATH, ConfigConstants.kBaseUrl, storeId, barcode)
         store_id = storeId
         requestData()
     }

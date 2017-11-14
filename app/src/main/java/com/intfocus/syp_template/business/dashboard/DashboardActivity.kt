@@ -425,7 +425,7 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
                 TEMPLATE_THREE -> {
                     intent = Intent(this, TemplateThreeActivity::class.java)
                     urlString = String.format("%s/api/v1/group/%s/template/%s/report/%s/json",
-                            K.kBaseUrl, groupID, "3", objectId)
+                            ConfigConstants.kBaseUrl, groupID, "3", objectId)
                     intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
                     intent.putExtra(URLs.kBannerName, objTitle)
                     intent.putExtra(URLs.kObjectId, objectId)
@@ -438,7 +438,7 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
                 TEMPLATE_FIVE -> {
                     intent = Intent(this, TemplateFiveActivity::class.java)
                     urlString = String.format("%s/api/v1/group/%s/template/%s/report/%s/json",
-                            K.kBaseUrl, groupID, "5", objectId)
+                            ConfigConstants.kBaseUrl, groupID, "5", objectId)
                     intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
                     intent.putExtra(URLs.kBannerName, objTitle)
                     intent.putExtra(URLs.kObjectId, objectId)
@@ -512,7 +512,7 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
         builder.setTitle("温馨提示")
                 .setMessage("当前版本暂不支持该模板, 请升级应用后查看")
                 .setPositiveButton("前去升级") { _, _ ->
-                    val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(K.kPgyerUrl))
+                    val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(ConfigConstants.kPgyerUrl))
                     startActivity(browserIntent)
                 }
                 .setNegativeButton("稍后升级") { _, _ ->

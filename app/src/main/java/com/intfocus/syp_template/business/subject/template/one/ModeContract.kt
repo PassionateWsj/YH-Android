@@ -1,9 +1,9 @@
 package com.intfocus.syp_template.business.subject.template.one
 
 import android.content.Context
+import com.intfocus.syp_template.business.subject.templateone.entity.MererDetailEntity
 import com.intfocus.syp_template.general.base.BasePresenter
 import com.intfocus.syp_template.general.base.BaseView
-import com.intfocus.syp_template.business.subject.templateone.entity.MererDetailEntity
 
 /**
  * ****************************************************

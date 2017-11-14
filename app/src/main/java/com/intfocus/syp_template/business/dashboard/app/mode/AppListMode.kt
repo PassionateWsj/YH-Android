@@ -17,7 +17,7 @@ class AppListMode(var ctx: Context, var type: String?) : AbstractMode() {
 //    var gson = Gson()
 //
 //    fun getUrl(): String {
-//        var url = String.format(K.K_APP_LIST_PATH, K.kBaseUrl,
+//        var url = String.format(K.K_APP_LIST_PATH, ConfigConstants.kBaseUrl,
 //                mUserSP.getString(kGroupId, "0"), mUserSP.getString(kRoleId, "0"))
 //        return url
 //    }
@@ -33,7 +33,7 @@ class AppListMode(var ctx: Context, var type: String?) : AbstractMode() {
 //    var gson = Gson()
 //
 //    fun getUrl(): String {
-//        val url = String.format(K.K_APP_LIST_PATH, K.kBaseUrl,
+//        val url = String.format(K.K_APP_LIST_PATH, ConfigConstants.kBaseUrl,
 //                mUserSP.getString(kGroupId, "0"), mUserSP.getString(kRoleId, "0"))
 //        return url
 //    }

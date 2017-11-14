@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import com.google.gson.Gson
 import com.intfocus.syp_template.business.dashboard.mine.bean.NoticeContentBean
 import com.intfocus.syp_template.business.dashboard.mine.bean.NoticeContentRequest
+import com.intfocus.syp_template.general.constant.ConfigConstants
 import com.intfocus.syp_template.general.data.response.mine_page.NoticeContentResult
 import com.intfocus.syp_template.general.net.ApiException
 import com.intfocus.syp_template.general.net.CodeHandledSubscriber
@@ -27,7 +28,7 @@ class NoticeContentMode(var ctx: Context) : AbstractMode() {
     var id = ""
 
     fun getUrl(): String {
-        var url = K.kBaseUrl + "/api/v1/user/" + mUserSP.getString(K.K_USER_ID, "0") + "/notice/" + id
+        val url = ConfigConstants.kBaseUrl + "/api/v1/user/" + mUserSP.getString(K.K_USER_ID, "0") + "/notice/" + id
         return url
     }
 
@@ -73,9 +74,9 @@ class NoticeContentMode(var ctx: Context) : AbstractMode() {
             }
 
             if (jsonObject.has("data")) {
-                var resultStr = jsonObject.get("data").toString()
-                mNoticeContentSP.edit().putString("NoticeContent", resultStr).commit()
-                var noticeContent = gson.fromJson(resultStr, NoticeContentBean::class.java)
+                val resultStr = jsonObject.get("data").toString()
+                mNoticeContentSP.edit().putString("NoticeContent", resultStr).apply()
+                val noticeContent = gson.fromJson(resultStr, NoticeContentBean::class.java)
                 val result1 = NoticeContentRequest(true, 200)
                 result1.noticeContent = noticeContent
                 EventBus.getDefault().post(result1)

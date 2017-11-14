@@ -1,5 +1,6 @@
 package com.intfocus.syp_template.business.subject.templateone.rootpage
 
+import com.intfocus.syp_template.business.subject.template.one.entity.msg.MDetailRootPageRequestResult
 import com.intfocus.syp_template.general.base.BasePresenter
 import com.intfocus.syp_template.general.base.BaseView
 import com.intfocus.syp_template.general.bean.Report

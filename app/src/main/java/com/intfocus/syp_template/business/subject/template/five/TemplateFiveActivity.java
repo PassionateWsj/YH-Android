@@ -49,6 +49,7 @@ import com.intfocus.syp_template.business.subject.template.five.bean.TableBarCha
 import com.intfocus.syp_template.business.subject.template.five.bean.TableChart;
 import com.intfocus.syp_template.general.CommentActivity;
 import com.intfocus.syp_template.general.base.BaseActivity;
+import com.intfocus.syp_template.general.constant.ConfigConstants;
 import com.intfocus.syp_template.general.constant.ToastColor;
 import com.intfocus.syp_template.general.util.ApiHelper;
 import com.intfocus.syp_template.general.util.FileUtil;
@@ -196,7 +197,7 @@ public class TemplateFiveActivity extends BaseActivity implements ColumAdapter.C
         objectType = intent.getStringExtra(URLs.kObjectType);
         mBannerName = intent.getStringExtra(kBannerName);
         tvBannerName.setText(mBannerName);
-        urlString = String.format("%s/api/v1/group/%s/template/%s/report/%s/json", K.kBaseUrl, groupID, 5, objectID);
+        urlString = String.format("%s/api/v1/group/%s/template/%s/report/%s/json", ConfigConstants.kBaseUrl, groupID, 5, objectID);
         new LoadReportData().execute();
     }
 

@@ -9,9 +9,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.intfocus.syp_template.R;
-import com.intfocus.syp_template.general.listen.OnItemClickListener;
 import com.intfocus.syp_template.business.subject.template.five.bean.Head;
 import com.intfocus.syp_template.business.subject.template.five.bean.TableChart;
+import com.intfocus.syp_template.general.listen.OnItemClickListener;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuAdapter;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
 

@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Bitmap
 import com.google.gson.Gson
 import com.intfocus.syp_template.business.dashboard.mine.bean.UserInfoRequest
+import com.intfocus.syp_template.general.constant.ConfigConstants
 import com.intfocus.syp_template.general.constant.ToastColor
 import com.intfocus.syp_template.general.data.response.BaseResult
 import com.intfocus.syp_template.general.data.response.mine_page.UserInfoResult
@@ -57,7 +58,7 @@ class UserInfoMode(var ctx: Context) : AbstractMode() {
             var format = SimpleDateFormat("yyyyMMddHHmmss")
             var date = Date(System.currentTimeMillis())
             File(imgPath).delete()
-            var gravatarImgPath = FileUtil.dirPath(ctx, K.K_CONFIG_DIR_NAME, K.kAppCode + "_" + mUserSP.getString(URLs.kUserNum, "") + "_" + format.format(date) + ".jpg")
+            var gravatarImgPath = FileUtil.dirPath(ctx, K.K_CONFIG_DIR_NAME, ConfigConstants.kAppCode + "_" + mUserSP.getString(URLs.kUserNum, "") + "_" + format.format(date) + ".jpg")
             FileUtil.saveImage(gravatarImgPath, bitmap)
             var requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), File(gravatarImgPath))
             var multiPartBody = MultipartBody.Part.createFormData("gravatar", mUserSP.getString(K_USER_ID, "0") + "icon", requestBody)

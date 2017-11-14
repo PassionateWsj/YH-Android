@@ -14,7 +14,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.intfocus.syp_template.R;
-import com.intfocus.syp_template.general.base.BaseModeFragment;
 import com.intfocus.syp_template.business.subject.template.one.banner.ModularOneUnitBannerModeFragment;
 import com.intfocus.syp_template.business.subject.template.one.curvechart.ModularOneUnitCurveChartModeFragment;
 import com.intfocus.syp_template.business.subject.template.one.mode.MDetalRootPageMode;
@@ -28,6 +27,7 @@ import com.intfocus.syp_template.business.subject.templateone.rootpage.RootPageI
 import com.intfocus.syp_template.business.subject.templateone.singlevalue.SingleValueImpl;
 import com.intfocus.syp_template.business.subject.templateone.singlevalue.SingleValuePresenter;
 import com.intfocus.syp_template.general.bean.Report;
+import com.intfocus.syp_template.general.base.BaseModeFragment;
 import com.zbl.lib.baseframe.core.Subject;
 import com.zzhoujay.richtext.RichText;
 

@@ -291,7 +291,7 @@ class LauncherActivity : Activity(), Animation.AnimationListener {
     }
 
     override fun onBackPressed() {
-        val toast = Toast.makeText(ctx, "再按一次退出生意人", Toast.LENGTH_SHORT)
+        val toast = Toast.makeText(ctx, "再按一次退出应用", Toast.LENGTH_SHORT)
         val currentTime = Calendar.getInstance().timeInMillis
         if (currentTime - lastClickTime > MIN_CLICK_DELAY_TIME) {
             lastClickTime = currentTime

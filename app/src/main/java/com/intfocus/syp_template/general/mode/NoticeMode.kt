@@ -17,7 +17,7 @@ class NoticeMode(var ctx: Context) : AbstractMode() {
 //    var errorMsg: String? = "未知异常"
 //
 //    fun getUrl(): String {
-//        val url = String.format(K.K_NOTICE_LIST_PATH, K.kBaseUrl,
+//        val url = String.format(K.K_NOTICE_LIST_PATH, ConfigConstants.kBaseUrl,
 //                mUserSP.getString(URLs.kUserNum, ""), typeStr, page, 10.toString())
 //        return url
 //    }
@@ -41,7 +41,7 @@ class NoticeMode(var ctx: Context) : AbstractMode() {
 //    var errorMsg: String? = "未知异常"
 //
 //    fun getUrl(): String {
-//        var url = String.format(K.K_NOTICE_LIST_PATH, K.kBaseUrl,
+//        var url = String.format(K.K_NOTICE_LIST_PATH, ConfigConstants.kBaseUrl,
 //                mUserSP.getString(URLs.kUserNum, ""), typeStr, page, 10.toString())
 //        return url
 //    }

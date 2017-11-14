@@ -35,6 +35,7 @@ import android.widget.Toast;
 import com.intfocus.syp_template.R;
 import com.intfocus.syp_template.YHApplication;
 import com.intfocus.syp_template.business.login.LoginActivity;
+import com.intfocus.syp_template.business.login.LoginActivity;
 import com.intfocus.syp_template.general.constant.ToastColor;
 import com.intfocus.syp_template.general.util.ApiHelper;
 import com.intfocus.syp_template.general.util.FileUtil;

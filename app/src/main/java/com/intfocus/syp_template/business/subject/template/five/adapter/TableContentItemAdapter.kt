@@ -8,9 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.intfocus.syp_template.R
-import com.intfocus.syp_template.general.util.Utils
 import com.intfocus.syp_template.business.subject.template.five.bean.Head
 import com.intfocus.syp_template.business.subject.template.five.bean.MainData
+import com.intfocus.syp_template.general.util.Utils
 
 /**
  * Created by CANC on 2017/4/6.
