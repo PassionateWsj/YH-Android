@@ -13,6 +13,7 @@ import com.intfocus.syp_template.business.subject.template.three.TemplateThreeAc
 import com.intfocus.syp_template.business.subject.template.two.SubjectActivity
 import com.intfocus.syp_template.business.subject.webapplication.WebApplicationActivity
 import com.intfocus.syp_template.business.subject.webapplication.WebApplicationActivityV6
+import com.intfocus.syp_template.general.constant.ConfigConstants
 import org.json.JSONException
 import org.json.JSONObject
 
@@ -82,7 +83,7 @@ object PageLinkManage {
                     savePageLink(context, objTitle, link, objectId, templateId, objectType)
                     intent = Intent(context, TemplateThreeActivity::class.java)
                     urlString = String.format("%s/api/v1/group/%s/template/%s/report/%s/json",
-                            K.kBaseUrl, groupID, "3", objectId)
+                            ConfigConstants.kBaseUrl, groupID, "3", objectId)
                     intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
                     intent.putExtra(URLs.kBannerName, objTitle)
                     intent.putExtra(URLs.kObjectId, objectId)
@@ -108,7 +109,7 @@ object PageLinkManage {
                     savePageLink(context, objTitle, link, objectId, templateId, objectType)
                     intent = Intent(context, TemplateFiveActivity::class.java)
                     urlString = String.format("%s/api/v1/group/%s/template/%s/report/%s/json",
-                            K.kBaseUrl, groupID, "5", objectId)
+                            ConfigConstants.kBaseUrl, groupID, "5", objectId)
                     intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
                     intent.putExtra(URLs.kBannerName, objTitle)
                     intent.putExtra(URLs.kObjectId, objectId)
@@ -176,7 +177,7 @@ object PageLinkManage {
         builder.setTitle("温馨提示")
                 .setMessage("当前版本暂不支持该模板, 请升级应用后查看")
                 .setPositiveButton("前去升级") { _, _ ->
-                    val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(K.kPgyerUrl))
+                    val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(ConfigConstants.kPgyerUrl))
                     context.startActivity(browserIntent)
                 }
                 .setNegativeButton("稍后升级") { _, _ ->

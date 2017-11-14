@@ -46,7 +46,7 @@ class AnnouncementWarningFragment : RefreshFragment(), NoticeListAdapter.NoticeI
     private var typeStr: String? = null //筛选条件
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        mView = inflater!!.inflate(R.layout.fragment_notice, container, false)
+        mView = inflater.inflate(R.layout.fragment_notice, container, false)
         x.view().inject(this, mView)
         setRefreshLayout()
         userId = mActivity.getSharedPreferences("UserBean", Context.MODE_PRIVATE).getString(URLs.kUserNum, "")

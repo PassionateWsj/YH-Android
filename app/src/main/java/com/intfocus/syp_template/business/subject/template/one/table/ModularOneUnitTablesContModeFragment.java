@@ -19,6 +19,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.intfocus.syp_template.R;
+import com.intfocus.syp_template.business.subject.template.one.ModularOneSubTableActivity;
+import com.intfocus.syp_template.business.subject.template.one.TemplateOneActivity;
+import com.intfocus.syp_template.business.subject.template.one.entity.ModularTwo_UnitTableEntity;
+import com.intfocus.syp_template.business.subject.template.one.entity.msg.EventRefreshTableRect;
+import com.intfocus.syp_template.business.subject.template.one.mode.ModularTwo_UnitTableContMode;
+import com.intfocus.syp_template.business.subject.templateone.adapter.ModularOneTableNameAdapter;
 import com.intfocus.syp_template.general.base.BaseModeFragment;
 import com.intfocus.syp_template.general.util.DisplayUtil;
 import com.intfocus.syp_template.general.util.ToastUtils;
@@ -27,12 +33,6 @@ import com.intfocus.syp_template.general.view.RootScrollView;
 import com.intfocus.syp_template.general.view.SortCheckBox;
 import com.intfocus.syp_template.general.view.TableHorizontalScrollView;
 import com.intfocus.syp_template.general.view.TableValueView;
-import com.intfocus.syp_template.business.subject.template.one.ModularOneSubTableActivity;
-import com.intfocus.syp_template.business.subject.template.one.TemplateOneActivity;
-import com.intfocus.syp_template.business.subject.template.one.entity.ModularTwo_UnitTableEntity;
-import com.intfocus.syp_template.business.subject.template.one.entity.msg.EventRefreshTableRect;
-import com.intfocus.syp_template.business.subject.template.one.mode.ModularTwo_UnitTableContMode;
-import com.intfocus.syp_template.business.subject.templateone.adapter.ModularOneTableNameAdapter;
 import com.zbl.lib.baseframe.core.Subject;
 
 import org.greenrobot.eventbus.EventBus;

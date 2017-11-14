@@ -5,6 +5,7 @@ import android.content.Context;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
+import com.intfocus.syp_template.general.constant.ConfigConstants;
 
 /**
  * ****************************************************
@@ -37,7 +38,7 @@ public class MapUtil {
     private MapUtil(Context ctx) {
         //初始化client
         locationClient = new AMapLocationClient(ctx);
-        AMapLocationClient.setApiKey(K.GAODE_MAP_APP_KEY);
+        AMapLocationClient.setApiKey(ConfigConstants.GAODE_MAP_APP_KEY);
         AMapLocationClientOption locationOption = getDefaultOption();
         //设置定位参数
         locationClient.setLocationOption(locationOption);

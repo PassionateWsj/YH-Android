@@ -16,13 +16,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.intfocus.syp_template.R;
-import com.intfocus.syp_template.general.YHApplication;
 import com.intfocus.syp_template.business.dashboard.DashboardActivity;
+import com.intfocus.syp_template.business.login.LoginActivity;
+import com.intfocus.syp_template.general.YHApplication;
 import com.intfocus.syp_template.general.util.ActionLogUtil;
 import com.intfocus.syp_template.general.util.FileUtil;
 import com.intfocus.syp_template.general.util.K;
 import com.intfocus.syp_template.general.util.URLs;
-import com.intfocus.syp_template.business.login.LoginActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;

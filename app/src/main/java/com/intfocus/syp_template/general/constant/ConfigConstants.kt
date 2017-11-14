@@ -5,12 +5,63 @@ package com.intfocus.syp_template.general.constant
  * @author JamesWong
  * @createdOn 17/11/04 上午09:52
  * @email PassionateWsj@outlook.com
- * @name 默认配置类 DefaultConfigConstants
+ * @name 生意＋开发 配置类
  * @desc * 表示的是默认的配置
  *          仅列出了部分 功能&界面展示 的开关，资源替换等需要额外配置（参考文档 ****）
  * ****************************************************
  */
 object ConfigConstants {
+    /**
+     * 生意＋ 开发环境
+     */
+    const val kAppCode = "syplus"
+    const val kThemeColor = "#53a93f"
+    const val kBannerBgColor = "#53a93f"
+    const val kBannerTextColor = "#ffffff"
+    const val kInitPassword = "123456"
+
+    const val kBaseUrl: String = "http://yonghui-dev.idata.mobi"
+    const val kBaseUrl1 = "http://10.0.3.2:4567"
+
+    /**
+     * 蒲公英
+     */
+    const val kPgyerUrl = "http://www.pgyer.com/yh-dev-a"
+    const val kPgyerAppId = "d4eaa112b6713a256b1442dd9c078c2d"
+    /**
+     * 高德
+     */
+    const val GAODE_MAP_APP_KEY = "1564d9ba8b7f2bf89cf4d6a63fa55238"
+    /**
+     * Bugly
+     */
+    const val BUGLY_APP_ID = "aa36ae140c"
+    /**
+     * 友盟
+     */
+    const val kUMAppKey = "5993ec76310c931d82000bb6"
+    const val kUMMessageSecret = "5db40171b505cc5f14373a9607b4aeb1"
+    /**
+     * 微信分享
+     */
+    const val kWXAppId = "wxcff211a335b17088"
+    const val kWXAppSecret = "af964fd476b59bf54682bb15f23a0569"
+
+    const val kDashboardAd = false
+    const val kDropMenuScan = false
+    const val kDropMenuSearch = true
+    const val kDropMenuVoice = false
+    const val kDropMenuUserInfo = true
+
+    const val kTabBar = false
+    const val kTabBarKPI = false
+    const val kTabBarAnalyse = false
+    const val kTabBarApp = false
+    const val kTabBarMessage = false
+
+    const val kSubjectComment = false
+    const val kSubjectShare = true
+
 
     /**
      * 启动页更新资源开关
@@ -25,7 +76,7 @@ object ConfigConstants {
      * true : 显示
      * false : 不显示
      */
-    const val SPLASH_ADV: Boolean = true
+    const val SPLASH_ADV: Boolean = false
     /**
      * 第一次登录是否展示 使用 Guide 说明页面
      *

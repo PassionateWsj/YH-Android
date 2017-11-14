@@ -254,7 +254,7 @@ class BarCodeScannerActivity : AppCompatActivity(), QRCodeView.Delegate, View.On
 //            isLightOn = false
             isStartActivity = true
 //            checkLightStatus(isLightOn, view!!.tv_input_barcode_light, view!!.cb_input_barcode_light)
-            goToUrl(trim, "input", K.kAppCode)
+            goToUrl(trim, "input", ConfigConstants.kAppCode)
 
         }
 
@@ -276,9 +276,9 @@ class BarCodeScannerActivity : AppCompatActivity(), QRCodeView.Delegate, View.On
 
     private fun goToUrl(result: String, codeType: String, type: String) {
         val mUserSP = getSharedPreferences("UserBean", Context.MODE_PRIVATE)
-        when (type) {
-            "ruishang" -> {
-                val link = K.kBaseUrl + "/websites/cav/quan.html?" + "uid=" + mUserSP.getString("user_num", "") + "&code=" + result + "&groupName=" + mUserSP.getString(URLs.kGroupName, "") + "&groupId=" + mUserSP.getString(URLs.kGroupId, "")
+        when {
+            type.contains("ruishang") -> {
+                val link = ConfigConstants.kBaseUrl + "/websites/cav/quan.html?" + "uid=" + mUserSP.getString("user_num", "") + "&code=" + result + "&groupName=" + mUserSP.getString(URLs.kGroupName, "") + "&groupId=" + mUserSP.getString(URLs.kGroupId, "")
                 val intent = Intent(this, WebApplicationActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
                 intent.putExtra(URLs.kBannerName, "核销奖券")
@@ -344,7 +344,7 @@ class BarCodeScannerActivity : AppCompatActivity(), QRCodeView.Delegate, View.On
                 "qrcode"
             }
         }
-        goToUrl(result, codeType, K.kAppCode)
+        goToUrl(result, codeType, ConfigConstants.kAppCode)
 //        val intent = Intent(this, ScannerResultActivity::class.java)
 //        intent.putExtra(URLs.kCodeInfo, result)
 //        intent.putExtra(URLs.kCodeType, codeType)

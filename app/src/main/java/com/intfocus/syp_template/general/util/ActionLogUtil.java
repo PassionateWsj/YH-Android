@@ -5,6 +5,8 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 
+import com.intfocus.syp_template.general.constant.ConfigConstants;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -34,7 +36,7 @@ public class ActionLogUtil {
      *                 "screen_lock": ""
      */
     public static void screenLock(String deviceID, String password, boolean state) {
-        String urlString = String.format(K.K_SCREEN_LOCK_API_PATH, K.kBaseUrl);
+        String urlString = String.format(K.K_SCREEN_LOCK_API_PATH, ConfigConstants.kBaseUrl);
 
         Map<String, String> params = new HashMap<>();
         params.put("screen_lock_state", "1");
@@ -77,7 +79,7 @@ public class ActionLogUtil {
 
                     params.put("api_token", ApiHelper.checkApiToken("/api/v1.1/device/logger"));
 
-                    String urlString = String.format(K.K_ACTION_LOG, K.kBaseUrl);
+                    String urlString = String.format(K.K_ACTION_LOG, ConfigConstants.kBaseUrl);
                     HttpUtil.httpPost(urlString, params);
                 } catch (JSONException | PackageManager.NameNotFoundException e) {
                     e.printStackTrace();
@@ -108,7 +110,7 @@ public class ActionLogUtil {
 
                     params.put("api_token", ApiHelper.checkApiToken("/api/v1.1/device/logger"));
 
-                    String urlString = String.format(K.K_ACTION_LOG, K.kBaseUrl);
+                    String urlString = String.format(K.K_ACTION_LOG, ConfigConstants.kBaseUrl);
                     HttpUtil.httpPost(urlString, params);
                 } catch (JSONException | PackageManager.NameNotFoundException e) {
                     e.printStackTrace();

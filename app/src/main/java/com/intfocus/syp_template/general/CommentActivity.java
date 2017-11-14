@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.intfocus.syp_template.R;
 import com.intfocus.syp_template.general.base.BaseActivity;
+import com.intfocus.syp_template.general.constant.ConfigConstants;
 import com.intfocus.syp_template.general.constant.ToastColor;
 import com.intfocus.syp_template.general.data.request.CommentBody;
 import com.intfocus.syp_template.general.data.response.BaseResult;
@@ -59,7 +60,7 @@ public class CommentActivity extends BaseActivity {
         objectType = intent.getStringExtra(URLs.kObjectType);
 
         mTitle.setText(bannerName);
-        urlString = String.format(K.K_COMMENT_MOBILE_PATH, K.kBaseUrl, URLs.currentUIVersion(mAppContext), objectID, objectType);
+        urlString = String.format(K.K_COMMENT_MOBILE_PATH, ConfigConstants.kBaseUrl, URLs.currentUIVersion(mAppContext), objectID, objectType);
 
         new Thread(mRunnableForDetecting).start();
     }

@@ -11,14 +11,14 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.intfocus.syp_template.R;
-import com.intfocus.syp_template.general.base.BaseModeFragment;
-import com.intfocus.syp_template.general.view.CustomCurveChartV2;
-import com.intfocus.syp_template.general.view.RateCursor;
 import com.intfocus.syp_template.business.subject.template.one.entity.MDRPUnitCurveChartEntity;
 import com.intfocus.syp_template.business.subject.template.one.entity.MDRPUnitSeries;
 import com.intfocus.syp_template.business.subject.template.one.mode.MDRPUnitCurveChartMode;
 import com.intfocus.syp_template.business.subject.templateone.curvechart.CurveChartContract;
 import com.intfocus.syp_template.business.subject.templateone.curvechart.CurveChartImpl;
+import com.intfocus.syp_template.general.base.BaseModeFragment;
+import com.intfocus.syp_template.general.view.CustomCurveChartV2;
+import com.intfocus.syp_template.general.view.RateCursor;
 import com.zbl.lib.baseframe.core.Subject;
 import com.zbl.lib.baseframe.utils.StringUtil;
 

@@ -10,6 +10,7 @@ import com.intfocus.syp_template.business.dashboard.mine.adapter.InstituteAdapte
 import com.intfocus.syp_template.business.dashboard.mine.bean.InstituteDataBean
 import com.intfocus.syp_template.business.subject.webapplication.WebApplicationActivity
 import com.intfocus.syp_template.general.base.RefreshActivity
+import com.intfocus.syp_template.general.constant.ConfigConstants
 import com.intfocus.syp_template.general.constant.ToastColor
 import com.intfocus.syp_template.general.data.request.RequestFavourite
 import com.intfocus.syp_template.general.data.response.BaseResult
@@ -146,7 +147,7 @@ class FavoriteArticleActivity : RefreshActivity(), InstituteAdapter.NoticeItemLi
     override fun itemClick(instituteDataBean: InstituteDataBean) {
         val intent = Intent(mActivity, WebApplicationActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-        val link = String.format("%s/mobile/v2/user/%s/article/%s", K.kBaseUrl, mUserSP.getString(K.K_USER_ID, "0").toString(), instituteDataBean.acticleId.toString())
+        val link = String.format("%s/mobile/v2/user/%s/article/%s", ConfigConstants.kBaseUrl, mUserSP.getString(K.K_USER_ID, "0").toString(), instituteDataBean.acticleId.toString())
         intent.putExtra(URLs.kBannerName, instituteDataBean.title.toString())
         intent.putExtra(URLs.kLink, link)
         intent.putExtra("hideBannerSetting", true)

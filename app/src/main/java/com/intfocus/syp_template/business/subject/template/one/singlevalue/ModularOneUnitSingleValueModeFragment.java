@@ -8,11 +8,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.intfocus.syp_template.R;
-import com.intfocus.syp_template.general.base.BaseModeFragment;
-import com.intfocus.syp_template.general.view.RateCursor;
 import com.intfocus.syp_template.business.subject.template.one.entity.MDRPUnitSingleValue;
 import com.intfocus.syp_template.business.subject.templateone.singlevalue.SingleValueContract;
 import com.intfocus.syp_template.business.subject.templateone.singlevalue.SingleValueImpl;
+import com.intfocus.syp_template.general.base.BaseModeFragment;
+import com.intfocus.syp_template.general.view.RateCursor;
 
 import org.jetbrains.annotations.NotNull;
 import org.xutils.view.annotation.Event;

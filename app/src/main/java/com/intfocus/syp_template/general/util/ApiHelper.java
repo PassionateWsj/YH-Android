@@ -7,6 +7,8 @@ import android.location.LocationManager;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.intfocus.syp_template.general.constant.ConfigConstants;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -30,7 +32,7 @@ public class ApiHelper {
      * params: {device: {name, platform, os, os_version, uuid}}
      */
 //    public static String authentication(Context context, String username, String password) {
-//        String responseState = "success", urlString = String.format(K.K_USER_AUTHENTICATE_API_PATH, K.kBaseUrl, "android", username, password);
+//        String responseState = "success", urlString = String.format(K.K_USER_AUTHENTICATE_API_PATH, ConfigConstants.kBaseUrl, "android", username, password);
 //        SharedPreferences mUserSP = context.getApplicationContext().getSharedPreferences("UserBean", MODE_PRIVATE);
 //        try {
 //            JSONObject device = new JSONObject();
@@ -119,9 +121,9 @@ public class ApiHelper {
      *  获取报表网页数据
      */
     public static boolean reportData(Context context, String groupID, String templateID, String reportID) {
-//        String urlString = String.format(K.K_REPORT_DATA_API_PATH, K.kBaseUrl, groupID, templateID, reportID);
+//        String urlString = String.format(K.K_REPORT_DATA_API_PATH, ConfigConstants.kBaseUrl, groupID, templateID, reportID);
         // %s/api/v1.1/report/data?api_token=%s&group_id=%s&template_id=%s&report_id=%s&disposition=zip
-        String urlString = String.format(K.K_REPORT_ZIP_DATA, K.kBaseUrl, URLs.MD5(K.ANDROID_API_KEY + K.K_REPORT_BASE_API + K.ANDROID_API_KEY), groupID, templateID, reportID);
+        String urlString = String.format(K.K_REPORT_ZIP_DATA, ConfigConstants.kBaseUrl, URLs.MD5(K.ANDROID_API_KEY + K.K_REPORT_BASE_API + K.ANDROID_API_KEY), groupID, templateID, reportID);
         String assetsPath = FileUtil.sharedPath(context);
         String headerPath = String.format("%s/%s", assetsPath, K.K_CACHED_HEADER_CONFIG_FILE_NAME);
         File headerFile = new File(headerPath);
@@ -193,7 +195,7 @@ public class ApiHelper {
      *  获取报表 JSON 数据
      */
     public static boolean reportJsonData(Context context, String groupID, String templateID, String reportID) {
-        String urlString = String.format(K.K_REPORT_JSON_DATA_API_PATH, K.kBaseUrl, groupID, templateID, reportID);
+        String urlString = String.format(K.K_REPORT_JSON_DATA_API_PATH, ConfigConstants.kBaseUrl, groupID, templateID, reportID);
         String assetsPath = FileUtil.sharedPath(context);
         Map<String, String> headers = ApiHelper.checkResponseHeader(urlString, assetsPath);
         String jsonFileName = String.format("group_%s_template_%s_report_%s.json", groupID, templateID, reportID);
@@ -459,7 +461,7 @@ public class ApiHelper {
 //            params.put(URLs.kCodeInfo, codeInfo);
 //            params.put(URLs.kCodeType, codeType);
 //
-//            String urlString = String.format(K.K_BAR_CODE_SCAN_API_PATH, K.kBaseUrl, groupID, roleID, userNum, storeID, codeInfo, codeType);
+//            String urlString = String.format(K.K_BAR_CODE_SCAN_API_PATH, ConfigConstants.kBaseUrl, groupID, roleID, userNum, storeID, codeInfo, codeType);
 //            // Map<String, String> response = HttpUtil.httpPost(urlString, params);
 //
 //            return (Map<String, String>) HttpUtil.httpGet(urlString, new HashMap());

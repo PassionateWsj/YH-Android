@@ -53,3 +53,6 @@ proguard/
 
 # Android Studio captures folder
 captures/
+/appChangeTo.sh
+/diystyle/
+/app/src/main/java/com/intfocus/syp_template/general/constant/ConfigConstants.kt

@@ -1,10 +1,6 @@
 package com.intfocus.syp_template.general.mode
 
 import android.content.Context
-import com.google.gson.Gson
-import com.intfocus.syp_template.business.dashboard.mine.bean.NoticeListBean
-import com.intfocus.syp_template.general.util.K
-import com.intfocus.syp_template.general.util.URLs
 import com.zbl.lib.baseframe.core.AbstractMode
 
 /**
@@ -21,7 +17,7 @@ class NoticeMode(var ctx: Context) : AbstractMode() {
 //    var errorMsg: String? = "未知异常"
 //
 //    fun getUrl(): String {
-//        val url = String.format(K.K_NOTICE_LIST_PATH, K.kBaseUrl,
+//        val url = String.format(K.K_NOTICE_LIST_PATH, ConfigConstants.kBaseUrl,
 //                mUserSP.getString(URLs.kUserNum, ""), typeStr, page, 10.toString())
 //        return url
 //    }
@@ -45,7 +41,7 @@ class NoticeMode(var ctx: Context) : AbstractMode() {
 //    var errorMsg: String? = "未知异常"
 //
 //    fun getUrl(): String {
-//        var url = String.format(K.K_NOTICE_LIST_PATH, K.kBaseUrl,
+//        var url = String.format(K.K_NOTICE_LIST_PATH, ConfigConstants.kBaseUrl,
 //                mUserSP.getString(URLs.kUserNum, ""), typeStr, page, 10.toString())
 //        return url
 //    }

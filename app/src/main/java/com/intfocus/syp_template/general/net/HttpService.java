@@ -1,5 +1,8 @@
 package com.intfocus.syp_template.general.net;
 
+import com.intfocus.syp_template.business.login.bean.Device;
+import com.intfocus.syp_template.business.login.bean.DeviceRequest;
+import com.intfocus.syp_template.business.login.bean.NewUser;
 import com.intfocus.syp_template.general.data.request.CommentBody;
 import com.intfocus.syp_template.general.data.request.RequestFavourite;
 import com.intfocus.syp_template.general.data.response.BaseResult;
@@ -17,9 +20,6 @@ import com.intfocus.syp_template.general.data.response.notice.NoticesResult;
 import com.intfocus.syp_template.general.data.response.scanner.NearestStoresResult;
 import com.intfocus.syp_template.general.data.response.scanner.StoreListResult;
 import com.intfocus.syp_template.general.util.K;
-import com.intfocus.syp_template.business.login.bean.Device;
-import com.intfocus.syp_template.business.login.bean.DeviceRequest;
-import com.intfocus.syp_template.business.login.bean.NewUser;
 
 import java.util.Map;
 

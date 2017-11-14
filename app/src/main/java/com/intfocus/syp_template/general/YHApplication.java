@@ -19,6 +19,7 @@ import com.intfocus.syp_template.BuildConfig;
 import com.intfocus.syp_template.business.dashboard.DashboardActivity;
 import com.intfocus.syp_template.business.launcher.ConfirmPassCodeActivity;
 import com.intfocus.syp_template.business.login.LoginActivity;
+import com.intfocus.syp_template.general.constant.ConfigConstants;
 import com.intfocus.syp_template.general.util.FileUtil;
 import com.intfocus.syp_template.general.util.K;
 import com.intfocus.syp_template.general.util.URLs;
@@ -88,7 +89,7 @@ public class YHApplication extends Application {
         /*
          * Bugly 异常上报
          */
-        CrashReport.initCrashReport(getApplicationContext(), K.BUGLY_APP_ID, BuildConfig.DEBUG);
+        CrashReport.initCrashReport(getApplicationContext(), ConfigConstants.BUGLY_APP_ID, BuildConfig.DEBUG);
 
         /*
          * 友盟分享初始化
@@ -98,7 +99,7 @@ public class YHApplication extends Application {
         /*
          * 配置微信 appKey
          */
-        PlatformConfig.setWeixin(K.kWXAppId, K.kWXAppSecret);
+        PlatformConfig.setWeixin(ConfigConstants.kWXAppId, ConfigConstants.kWXAppSecret);
 
         initXutils();
 

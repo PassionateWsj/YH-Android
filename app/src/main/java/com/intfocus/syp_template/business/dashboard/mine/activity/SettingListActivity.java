@@ -16,7 +16,7 @@ import android.widget.TextView;
 import com.intfocus.syp_template.R;
 import com.intfocus.syp_template.business.dashboard.mine.adapter.SimpleListAdapter;
 import com.intfocus.syp_template.general.base.BaseActivity;
-import com.intfocus.syp_template.general.util.K;
+import com.intfocus.syp_template.general.constant.ConfigConstants;
 import com.intfocus.syp_template.general.util.ToastUtils;
 import com.umeng.message.PushAgent;
 
@@ -57,7 +57,7 @@ public class SettingListActivity extends BaseActivity {
                 }
                 String appName = getString(getApplicationInfo().labelRes);
                 String deviceInfo = String.format("%s(Android %s)", TextUtils.split(android.os.Build.MODEL, " - ")[0], Build.VERSION.RELEASE);
-                String apiDomain = K.kBaseUrl.replace("http://", "").replace("https://", "");
+                String apiDomain = ConfigConstants.kBaseUrl.replace("http://", "").replace("https://", "");
                 String versionInfo = String.format("%s(%d)", packageInfo.versionName, packageInfo.versionCode);
                 String appPackageInfo = packageInfo.packageName;
                 mItemNameList = new String[]{"应用名称", "检测更新", "设备型号", "数据接口", "应用标识"};

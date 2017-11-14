@@ -10,7 +10,7 @@ import java.io.Serializable;
  * @created 2016-01-06
  * Created by lijunjie on 16/9/22.
  */
-public class K extends PrivateURLs implements Serializable {
+public class K  implements Serializable {
 
     public final static Integer K_TIMER_INTERVAL = 30;
 

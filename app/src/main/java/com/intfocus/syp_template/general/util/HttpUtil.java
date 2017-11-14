@@ -8,6 +8,8 @@ import android.os.AsyncTask;
 import android.os.PowerManager;
 import android.util.Log;
 
+import com.intfocus.syp_template.general.constant.ConfigConstants;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -82,7 +84,7 @@ public class HttpUtil {
         Request baseRequest = builder.build();
 
         //提取api_path
-        String apiPath = baseRequest.url().toString().replace(K.kBaseUrl, "");
+        String apiPath = baseRequest.url().toString().replace(ConfigConstants.kBaseUrl, "");
         if (apiPath.contains("?")) {
             apiPath = apiPath.substring(0, apiPath.indexOf("?"));
         }
@@ -340,7 +342,7 @@ public class HttpUtil {
     public static String urlToFileName(String urlString) {
         String path = "default";
         try {
-            urlString = urlString.replace(K.kBaseUrl, "");
+            urlString = urlString.replace(ConfigConstants.kBaseUrl, "");
             URI uri = new URI(urlString);
             path = uri.getPath().replace("/", "_");
         } catch (Exception e) {
@@ -500,7 +502,7 @@ public class HttpUtil {
         final HttpUtil.DownloadAssetsTask downloadTask = new DownloadAssetsTask(context, assetName, isInAssets);
 
         // AsyncTask并行下载
-        downloadTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, String.format(K.K_DOWNLOAD_ASSETS_API_PATH, K.kBaseUrl, assetName), assetZipPath);
+        downloadTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, String.format(K.K_DOWNLOAD_ASSETS_API_PATH, ConfigConstants.kBaseUrl, assetName), assetZipPath);
     }
 
     /**

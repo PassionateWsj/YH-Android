@@ -39,7 +39,7 @@
     <application
         android:name="com.intfocus.syp_template.general.YHApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/launcher"
+        android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme"
         tools:replace="android:icon,android:theme">
@@ -250,10 +250,10 @@
         <!-- 友盟 必选 -->
         <meta-data
             android:name="UMENG_APPKEY"
-            android:value="5993ec76310c931d82000bb6"/>
+            android:value="5705c952e0f55a391a0011cc"/>
         <meta-data
             android:name="UMENG_MESSAGE_SECRET"
-            android:value="5db40171b505cc5f14373a9607b4aeb1"/>
+            android:value="2e4260da6ddedf736b3e67aceb4c8893"/>
         <meta-data
             android:name="UMENG_CHANNEL"
             android:value="Umeng"/>

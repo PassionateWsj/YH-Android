@@ -280,7 +280,7 @@ class LoginActivity : FragmentActivity() {
      * 返回键监听
      */
     override fun onBackPressed() {
-        val toast = Toast.makeText(ctx, "再按一次退出生意人", Toast.LENGTH_SHORT)
+        val toast = Toast.makeText(ctx, "再按一次退出应用", Toast.LENGTH_SHORT)
         val currentTime = Calendar.getInstance().timeInMillis
         if (currentTime - mLastClickTime > MIN_CLICK_DELAY_TIME) {
             mLastClickTime = currentTime

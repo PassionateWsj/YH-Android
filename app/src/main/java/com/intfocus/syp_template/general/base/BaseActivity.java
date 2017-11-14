@@ -33,6 +33,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.intfocus.syp_template.R;
+import com.intfocus.syp_template.business.login.LoginActivity;
 import com.intfocus.syp_template.general.YHApplication;
 import com.intfocus.syp_template.general.constant.ToastColor;
 import com.intfocus.syp_template.general.util.ApiHelper;
@@ -42,7 +43,6 @@ import com.intfocus.syp_template.general.util.K;
 import com.intfocus.syp_template.general.util.LogUtil;
 import com.intfocus.syp_template.general.util.ToastUtils;
 import com.intfocus.syp_template.general.util.URLs;
-import com.intfocus.syp_template.business.login.LoginActivity;
 import com.pgyersdk.javabean.AppBean;
 import com.pgyersdk.update.PgyUpdateManager;
 import com.pgyersdk.update.UpdateManagerListener;
