@@ -19,7 +19,7 @@
             android:text="标题"/>
     </RelativeLayout>
 
-    <com.intfocus.syp_template.general.view.RootScrollView
+    <com.intfocus.yhdev.general.view.RootScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/btn__submit"
@@ -39,7 +39,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
         </LinearLayout>
-    </com.intfocus.syp_template.general.view.RootScrollView>
+    </com.intfocus.yhdev.general.view.RootScrollView>
 
     <View
         android:id="@+id/view_shadow"
