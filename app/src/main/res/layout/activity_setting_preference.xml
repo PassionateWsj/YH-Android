@@ -110,7 +110,7 @@
 
             <TextView
                 style="@style/SettingKey"
-                android:text="清理缓存"/>
+                android:text="@string/clear_cache"/>
 
             <ImageView
                 style="@style/SettingArrow"/>

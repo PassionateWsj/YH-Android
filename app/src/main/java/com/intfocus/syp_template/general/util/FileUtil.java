@@ -17,8 +17,8 @@ import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.intfocus.syp_template.general.data.response.assets.AssetsMD5;
-import com.intfocus.syp_template.general.data.response.assets.AssetsResult;
+import com.intfocus.syp_template.general.data.response.asset.AssetsMD5;
+import com.intfocus.syp_template.general.data.response.asset.AssetsResult;
 import com.intfocus.syp_template.general.net.ApiException;
 import com.intfocus.syp_template.general.net.CodeHandledSubscriber;
 import com.intfocus.syp_template.general.net.RetrofitUtil;

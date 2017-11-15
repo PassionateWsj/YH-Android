@@ -3,7 +3,7 @@ package com.intfocus.syp_template.general.util
 import android.content.Context
 import com.daimajia.numberprogressbar.NumberProgressBar
 import com.intfocus.syp_template.general.constant.ConfigConstants
-import com.intfocus.syp_template.general.data.response.assets.AssetsResult
+import com.intfocus.syp_template.general.data.response.asset.AssetsResult
 import com.intfocus.syp_template.general.net.ApiException
 import com.intfocus.syp_template.general.net.CodeHandledSubscriber
 import com.intfocus.syp_template.general.net.HttpService

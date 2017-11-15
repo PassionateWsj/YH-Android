@@ -7,7 +7,7 @@ import com.intfocus.syp_template.general.data.request.CommentBody;
 import com.intfocus.syp_template.general.data.request.RequestFavourite;
 import com.intfocus.syp_template.general.data.response.BaseResult;
 import com.intfocus.syp_template.general.data.response.article.ArticleResult;
-import com.intfocus.syp_template.general.data.response.assets.AssetsResult;
+import com.intfocus.syp_template.general.data.response.asset.AssetsResult;
 import com.intfocus.syp_template.general.data.response.filter.MenuResult;
 import com.intfocus.syp_template.general.data.response.home.HomeMsgResult;
 import com.intfocus.syp_template.general.data.response.home.KpiResult;

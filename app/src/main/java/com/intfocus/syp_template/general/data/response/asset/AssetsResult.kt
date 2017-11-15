@@ -1,4 +1,4 @@
-package com.intfocus.syp_template.general.data.response.assets
+package com.intfocus.syp_template.general.data.response.asset
 
 import com.google.gson.annotations.SerializedName
 import com.intfocus.syp_template.general.data.response.BaseResult

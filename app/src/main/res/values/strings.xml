@@ -90,6 +90,7 @@
     <string name="hint_login_user">员工号</string>
     <string name="tip_attribution_department">归属部门</string>
     <string name="keep_pwd">记住密码</string>
-    <string name="screenLock">启用锁屏</string>
     <string name="report_copy">报表操作</string>
+    <string name="screenLock">启用锁屏</string>
+    <string name="clear_cache">清理缓存</string>
 </resources>

@@ -1,4 +1,4 @@
-package com.intfocus.syp_template.general.data.response.assets
+package com.intfocus.syp_template.general.data.response.asset
 
 /**
  * Created by liuruilin on 2017/8/12.
