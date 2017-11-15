@@ -33,10 +33,29 @@
 
             <TextView
                 style="@style/SettingKey"
-                android:text="启用锁屏"/>
+                android:text="@string/screenLock"/>
 
             <Switch
                 android:id="@+id/switch_screenLock"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"/>
+
+            <View style="@style/OptionSettingDivider"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            style="@style/SettingGroupOptionSetting"
+            android:visibility="gone">
+
+            <TextView
+                style="@style/SettingKey"
+                android:text="@string/keep_pwd"/>
+
+            <Switch
+                android:id="@+id/switch_keep_pwd"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
@@ -52,7 +71,7 @@
 
             <TextView
                 style="@style/SettingKey"
-                android:text="报表操作"/>
+                android:text="@string/report_copy"/>
 
             <Switch
                 android:id="@+id/switch_report_copy"
@@ -67,7 +86,6 @@
 
         <RelativeLayout
             style="@style/SettingGroupOptionSetting"
-
             android:visibility="gone">
 
             <TextView
