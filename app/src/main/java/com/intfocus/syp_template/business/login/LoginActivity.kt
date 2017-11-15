@@ -487,7 +487,7 @@ class LoginActivity : FragmentActivity() {
      * 偶数: 正式版本，点击安装更新
      */
     fun checkPgyerVersionUpgrade(activity: Activity, isShowToast: Boolean) {
-        PgyUpdateManager.register(activity, "com.intfocus.yh_android.fileprovider", object : UpdateManagerListener() {
+        PgyUpdateManager.register(activity, "com.intfocus.syp_template.fileprovider", object : UpdateManagerListener() {
             override fun onUpdateAvailable(result: String?) {
                 try {
                     val appBean = UpdateManagerListener.getAppBeanFromString(result)

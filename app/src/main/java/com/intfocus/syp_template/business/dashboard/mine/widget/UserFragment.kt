@@ -378,7 +378,7 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
                 val tempFile = File(Environment.getExternalStorageDirectory(), "icon.jpg")
                 if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                     val photoURI = FileProvider.getUriForFile(ctx,
-                            "com.intfocus.yh_android.fileprovider",
+                            "com.intfocus.syp_template.fileprovider",
                             tempFile)
                     cropIntent = launchSystemImageCrop(ctx, photoURI)
                 } else {

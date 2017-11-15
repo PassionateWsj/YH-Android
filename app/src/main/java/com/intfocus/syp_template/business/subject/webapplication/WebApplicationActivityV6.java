@@ -1110,7 +1110,7 @@ public class WebApplicationActivityV6 extends BaseActivity implements OnPageChan
         if (FileUtil.hasSdcard()) {
             Uri imageUri;
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                imageUri = FileProvider.getUriForFile(this, "com.intfocus.yh_android.fileprovider", new File(Environment.getExternalStorageDirectory(), "upload.jpg"));
+                imageUri = FileProvider.getUriForFile(this, "com.intfocus.syp_template.fileprovider", new File(Environment.getExternalStorageDirectory(), "upload.jpg"));
                 intentFromCapture.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 intentFromCapture.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
             } else {
