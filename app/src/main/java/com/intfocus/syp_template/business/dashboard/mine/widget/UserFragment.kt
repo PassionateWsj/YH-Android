@@ -74,6 +74,7 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
     private val CODE_GALLERY_REQUEST = 0xa0
     private val CODE_CAMERA_REQUEST = 0xa1
     private val CODE_RESULT_REQUEST = 0xa2
+    private var rl_logout_confirm: RelativeLayout? = null
 
     override fun setSubject(): Subject {
         mUserInfoSP = ctx.getSharedPreferences("UserInfo", Context.MODE_PRIVATE)
@@ -302,8 +303,8 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
         popupWindow.isTouchable = true
         popupWindow.showAtLocation(activity!!.toolBar, Gravity.BOTTOM, 0, 0)
         popupWindow.animationStyle = R.anim.popup_bottombar_in
-
-        contentView.findViewById<RelativeLayout>(R.id.rl_logout_confirm).setOnClickListener {
+        rl_logout_confirm = contentView.findViewById(R.id.rl_logout_confirm)
+        rl_logout_confirm!!.setOnClickListener {
             // 确认退出
             logout()
         }
@@ -321,6 +322,7 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
      * 退出登录
      */
     private fun logout() {
+        rl_logout_confirm!!.isClickable = false
         // 判断有无网络
         if (!isNetworkConnected(ctx)) {
             ToastUtils.show(ctx, "未连接网络, 无法退出")
@@ -352,9 +354,11 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
                     }
 
                     override fun onCompleted() {
+                        rl_logout_confirm!!.isClickable = true
                     }
 
                     override fun onError(apiException: ApiException?) {
+                        rl_logout_confirm!!.isClickable = true
                         ToastUtils.show(ctx, apiException!!.message!!)
                     }
 
