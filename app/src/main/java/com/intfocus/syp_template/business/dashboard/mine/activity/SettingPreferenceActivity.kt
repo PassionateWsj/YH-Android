@@ -106,14 +106,15 @@ class SettingPreferenceActivity : BaseActivity() {
                                         mProgressDialog.dismiss()
                                     }
 
-                                    override fun onFailure() {
+                                    override fun onFailure(errorMsg: Throwable) {
+                                        AssetsUpDateUtil.unSubscribe()
                                         ToastUtils.show(applicationContext, "清除缓存失败，请重试")
                                         mProgressDialog.dismiss()
                                     }
                                 })
                             }
 
-                            override fun onFailure() {
+                            override fun onFailure(errorMsg: Throwable) {
                             }
                         })
 

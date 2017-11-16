@@ -439,7 +439,7 @@ public class FileUtil {
 
     /**
      * 保存截屏文件
-	 */
+     */
     public static File saveImage(String filePath, Bitmap bmp) {
         // 如果有目标文件，删除它
         File file = new File(filePath);
@@ -812,7 +812,7 @@ public class FileUtil {
     public static boolean unZipAssets(Context mContext, String assetName) {
         boolean isInAssets = true;
         String sharedPath = String.format("%s/%s", FileUtil.basePath(mContext), K.K_SHARED_DIR_NAME);
-        if (URLs.kAssets == assetName || URLs.kLoading == assetName) {
+        if (URLs.kAssets.equals(assetName) || URLs.kLoading.equals(assetName)) {
             isInAssets = false;
         }
         try {

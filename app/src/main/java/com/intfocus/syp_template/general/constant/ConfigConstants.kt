@@ -20,7 +20,7 @@ object ConfigConstants {
     const val kBannerTextColor = "#ffffff"
     const val kInitPassword = "123456"
 
-    const val kBaseUrl: String = "http://yonghui-dev.idata.mobi"
+    const val kBaseUrl: String = "https://shengyiplus.com"
     const val kBaseUrl1 = "http://10.0.3.2:4567"
 
     /**
