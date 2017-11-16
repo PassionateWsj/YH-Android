@@ -28,7 +28,6 @@ import org.json.JSONObject
  * ****************************************************
  */
 object PageLinkManage {
-
     private val EXTERNAL_LINK = "-1"
     private val SCANNER = "-2"
     private val TEMPLATE_ONE = "1"
@@ -179,6 +178,7 @@ object PageLinkManage {
         } else {
             logParams.put(URLs.kAction, "点击/" + objectTypeName[objectType.toInt() - 1] + "/报表")
         }
+
         logParams.put(URLs.kObjTitle, objTitle)
         logParams.put("obj_id", objectId)
         logParams.put("obj_link", link)

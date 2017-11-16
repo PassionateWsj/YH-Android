@@ -43,6 +43,7 @@ android {
         buildConfigField "boolean", "TINKER_ENABLE", "${tinkerpatchSupport.tinkerEnable}"
     }
 }
+
 /**
  * 一般来说,我们无需对下面的参数做任何的修改
  * 对于各参数的详细介绍请参考:

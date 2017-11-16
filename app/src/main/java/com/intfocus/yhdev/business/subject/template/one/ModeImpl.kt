@@ -163,7 +163,7 @@ class ModeImpl: ReportModelImpl() {
                     }
 
                     override fun onNext(t: MererDetailEntity?) {
-//                        t ?:callback.onSuccess(t)
+//                        t ?:callback.onLoadData(t)
                         t?.let { callback.onDataLoaded(it) }
 
                     }

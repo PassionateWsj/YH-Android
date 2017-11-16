@@ -1,16 +1,13 @@
 package com.intfocus.yhdev.business.subject.template.model
 
+import android.util.Log
 import com.intfocus.yhdev.YHApplication.globalContext
 import com.intfocus.yhdev.general.bean.Report
 import com.intfocus.yhdev.general.gen.ReportDao
-import com.intfocus.yhdev.general.util.ApiHelper
-import com.intfocus.yhdev.general.util.DaoUtil
-import com.intfocus.yhdev.general.util.HttpUtil
-import com.intfocus.yhdev.general.util.URLs
-import java.io.BufferedReader
-import java.io.IOException
-import java.io.InputStream
-import java.io.InputStreamReader
+import com.intfocus.yhdev.general.util.*
+import java.io.*
+import java.net.HttpURLConnection
+import java.net.URL
 
 /**
  * @author liuruilin
@@ -42,6 +39,69 @@ open class ReportModelImpl : ReportModel {
                 .list()
 
         return reports.isNotEmpty()
+    }
+
+    override fun download(url: String, outputPath: String): HashMap<String, String> {
+        val response = HashMap<String, String>()
+        var input: InputStream? = null
+        var output: OutputStream? = null
+        var connection: HttpURLConnection? = null
+
+        try {
+            val url = URL(url)
+            connection = url.openConnection() as HttpURLConnection
+
+            connection.setRequestProperty("accept", "*/*")
+            connection.setRequestProperty("connection", "Keep-Alive")
+            connection.setRequestProperty("user-agent", HttpUtil.webViewUserAgent())
+            connection.connectTimeout = 5 * 1000
+            connection.readTimeout = 10 * 1000
+
+            connection.connect()
+            response.put(URLs.kCode, String.format("%d", connection.responseCode))
+            val map = connection.headerFields
+            for ((key, value) in map) {
+                response.put(key, value[0])
+            }
+            Log.i("DownloadZIP", String.format("%d - %s - %s", connection.responseCode, url, response.toString()))
+            // expect HTTP 200 OK, so we don't mistakenly save error report
+            // instead of the file
+            if (connection.responseCode != HttpURLConnection.HTTP_OK) {
+                return response
+            }
+
+            input = connection.inputStream
+            output = FileOutputStream(outputPath)
+
+            val data = ByteArray(4096)
+            var total: Long = 0
+            var count = 0
+
+            while (input.read(data).let { count = it; it != -1 }) {
+                total += count.toLong()
+                output!!.write(data, 0, count)
+            }
+
+        } catch (e: Exception) {
+            LogUtil.d("Exception", e.toString())
+            response.put(URLs.kCode, "400")
+            return response
+        } finally {
+            try {
+                if (output != null) {
+                    output.close()
+                }
+                if (input != null) {
+                    input.close()
+                }
+            } catch (ignored: IOException) {
+            }
+
+            if (connection != null) {
+                connection.disconnect()
+            }
+        }
+        return response
     }
 
     /**
@@ -93,7 +153,7 @@ open class ReportModelImpl : ReportModel {
     }
 
     /**
-     * 加载本地 json 测试数据的方法
+     * 加载本地 assets 文件夹内 json 测试数据的方法
      * @param assetsName 本地 Json 数据文件名
      * @return
      */

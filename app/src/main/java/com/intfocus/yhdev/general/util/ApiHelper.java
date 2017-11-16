@@ -122,19 +122,11 @@ public class ApiHelper {
      *  获取报表网页数据
      */
     public static boolean reportData(Context context, String groupID, String templateID, String reportID) {
-//        String urlString = String.format(K.K_REPORT_DATA_API_PATH, ConfigConstants.kBaseUrl, groupID, templateID, reportID);
-        // %s/api/v1.1/report/data?api_token=%s&group_id=%s&template_id=%s&report_id=%s&disposition=zip
         String urlString = String.format(K.K_REPORT_ZIP_DATA, ConfigConstants.kBaseUrl, URLs.MD5(K.ANDROID_API_KEY + K.K_REPORT_BASE_API + K.ANDROID_API_KEY), groupID, templateID, reportID);
         String assetsPath = FileUtil.sharedPath(context);
-        String headerPath = String.format("%s/%s", assetsPath, K.K_CACHED_HEADER_CONFIG_FILE_NAME);
-        File headerFile = new File(headerPath);
-        if (headerFile.exists()) {
-            headerFile.delete();
-        }
         Map<String, String> headers = ApiHelper.checkResponseHeader(urlString);
         String jsFileName = String.format("group_%s_template_%s_report_%s.js", groupID, templateID, reportID);
         String cachedZipPath = FileUtil.dirPath(context, K.K_CACHED_DIR_NAME, String.format("%s.zip", jsFileName));
-
 
         Map<String, String> response = HttpUtil.downloadZip(urlString, cachedZipPath, headers);
 
@@ -147,26 +139,23 @@ public class ApiHelper {
 
         switch (codeStatus) {
             case "200":
-
             case "201":
                 break;
             case "304":
-                break;
+                return true;
             default:
                 return false;
         }
 
         try {
-            //获取的内容为attachment; filename="group_%s_template_%s_report_%s.js.zip"
             String contentDis = response.get("Content-Disposition");
 
-            //获取的内容为 group_%s_template_%s_report_%s.js.zip
             String subContentDis = contentDis.substring(contentDis.indexOf("\"") + 1, contentDis.lastIndexOf("\""));
 
             jsFileName = subContentDis.replace(".zip", "");
             String javascriptPath = String.format("%s/assets/javascripts/%s", assetsPath, jsFileName);
 
-            ApiHelper.storeResponseHeader(urlString, assetsPath, response);
+            ApiHelper.storeResponseHeader(urlString, response);
 
             InputStream zipStream = new FileInputStream(cachedZipPath);
             FileUtil.unZip(zipStream, FileUtil.dirPath(context, K.K_CACHED_DIR_NAME), true);
@@ -186,7 +175,7 @@ public class ApiHelper {
             }
         } catch (IOException e) {
             e.printStackTrace();
-            deleteHeadersFile(assetsPath);
+            deleteHeadersFile();
             return false;
         }
         return true;
@@ -225,21 +214,21 @@ public class ApiHelper {
         }
 
         try {
-            ApiHelper.storeResponseHeader(urlString, assetsPath, response);
+            ApiHelper.storeResponseHeader(urlString, response);
 
             InputStream zipStream = new FileInputStream(cachedZipPath);
             FileUtil.unZip(zipStream, FileUtil.dirPath(context, K.K_CACHED_DIR_NAME), true);
             zipStream.close();
         } catch (IOException e) {
             e.printStackTrace();
-            deleteHeadersFile(assetsPath);
+            deleteHeadersFile();
             return false;
         }
         return true;
     }
 
-
-    public static void deleteHeadersFile(String assetsPath) {
+    public static void deleteHeadersFile() {
+        String assetsPath = FileUtil.dirPath(globalContext, K.K_HTML_DIR_NAME);
         String headersFilePath = String.format("%s/%s", assetsPath, K.K_CACHED_HEADER_CONFIG_FILE_NAME);
         if ((new File(headersFilePath)).exists()) {
             new File(headersFilePath).delete();
@@ -264,7 +253,7 @@ public class ApiHelper {
             retMap.put("path", htmlPath);
 
             if ("200".equals(statusCode)) {
-                ApiHelper.storeResponseHeader(urlKey, assetsPath, response);
+                ApiHelper.storeResponseHeader(urlKey, response);
 
                 String htmlContent = response.get(URLs.kBody);
 
@@ -282,13 +271,14 @@ public class ApiHelper {
         return retMap;
     }
 
-    /*
+    /**
      * 缓存文件中，清除指定链接的内容
      *
      * @param 链接
      * @param 缓存头文件相对文件夹
      */
-    public static void clearResponseHeader(String urlKey, String assetsPath) {
+    public static void clearResponseHeader(String urlKey) {
+        String assetsPath = FileUtil.dirPath(globalContext, K.K_HTML_DIR_NAME);
         String headersFilePath = String.format("%s/%s", assetsPath, K.K_CACHED_HEADER_CONFIG_FILE_NAME);
         if (!(new File(headersFilePath)).exists()) {
             return;
@@ -314,12 +304,11 @@ public class ApiHelper {
      */
     public static Map<String, String> checkResponseHeader(String urlKey) {
         String assetsPath = FileUtil.dirPath(globalContext, K.K_HTML_DIR_NAME);
-        Map<String, String> headers = new HashMap<>();
+        String headersFilePath = String.format("%s/%s", assetsPath, K.K_CACHED_HEADER_CONFIG_FILE_NAME);
+        Map<String, String> headers = new HashMap<>(16);
 
         try {
             JSONObject headersJSON = new JSONObject();
-
-            String headersFilePath = String.format("%s/%s", assetsPath, K.K_CACHED_HEADER_CONFIG_FILE_NAME);
             if ((new File(headersFilePath)).exists()) {
                 headersJSON = FileUtil.readConfigFile(headersFilePath);
             }
@@ -346,14 +335,14 @@ public class ApiHelper {
      * 把服务器响应的ETag/Last-Modified存入本地
      *
      * @param urlKey     链接
-     * @param assetsPath 缓存头文件相对文件夹
      * @param response   服务器响应的ETag/Last-Modifiede
      */
-    public static void storeResponseHeader(String urlKey, String assetsPath, Map<String, String> response) {
+    public static void storeResponseHeader(String urlKey, Map<String, String> response) {
+        String assetsPath = FileUtil.dirPath(globalContext, K.K_HTML_DIR_NAME);
+        String headersFilePath = String.format("%s/%s", assetsPath, K.K_CACHED_HEADER_CONFIG_FILE_NAME);
+
         try {
             JSONObject headersJSON = new JSONObject();
-
-            String headersFilePath = String.format("%s/%s", assetsPath, K.K_CACHED_HEADER_CONFIG_FILE_NAME);
             if ((new File(headersFilePath)).exists()) {
                 headersJSON = FileUtil.readConfigFile(headersFilePath);
             }

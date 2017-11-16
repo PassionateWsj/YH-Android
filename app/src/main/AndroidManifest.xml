@@ -257,7 +257,7 @@
         <!-- 友盟 必选 -->
         <meta-data
             android:name="UMENG_APPKEY"
-            android:value="5993ec76310c931d82000bb6"/>
+            android:value="5db40171b505cc5f14373a9607b4aeb1"/>
         <meta-data
             android:name="UMENG_MESSAGE_SECRET"
             android:value="5db40171b505cc5f14373a9607b4aeb1"/>

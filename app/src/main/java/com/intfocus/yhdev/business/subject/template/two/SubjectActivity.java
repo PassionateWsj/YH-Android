@@ -535,10 +535,10 @@ public class SubjectActivity extends BaseActivity implements FilterMenuAdapter.F
                 String urlKey;
                 if (urlString != null && !urlString.isEmpty()) {
                     urlKey = urlString.contains("?") ? TextUtils.split(urlString, "?")[0] : urlString;
-                    ApiHelper.clearResponseHeader(urlKey, assetsPath);
+                    ApiHelper.clearResponseHeader(urlKey);
                 }
                 urlKey = String.format(K.K_REPORT_DATA_API_PATH, ConfigConstants.kBaseUrl, groupID, templateID, objectID);
-                ApiHelper.clearResponseHeader(urlKey, FileUtil.sharedPath(mAppContext));
+                ApiHelper.clearResponseHeader(urlKey);
                 subscriber.onNext(ApiHelper.reportData(mAppContext, groupID, templateID, objectID));
                 subscriber.onCompleted();
             }

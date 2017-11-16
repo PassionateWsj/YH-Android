@@ -275,14 +275,6 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
         mTabView
                 .filter { v.id == it.id }
                 .forEach { mViewPager!!.currentItem = mTabView.indexOf(it) }
-//        when (v.id) {
-//            R.id.tab_kpi -> mViewPager!!.currentItem = PAGE_KPI
-//            R.id.tab_report -> mViewPager!!.currentItem = PAGE_REPORTS
-//            R.id.tab_workbox -> mViewPager!!.currentItem = PAGE_APP
-//            R.id.tab_mine -> mViewPager!!.currentItem = PAGE_MINE
-//            else -> {
-//            }
-//        }
         refreshTabView()
     }
 
@@ -294,15 +286,6 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
     override fun onPageScrollStateChanged(state: Int) {
         if (state == 2) {
             mTabView[mViewPager!!.currentItem].setActive(true)
-//            when (mViewPager!!.currentItem) {
-//                PAGE_KPI -> mTabKPI!!.setActive(true)
-//
-//                PAGE_REPORTS -> mTabReport!!.setActive(true)
-//
-//                PAGE_APP -> mTabWorkBox!!.setActive(true)
-//
-//                PAGE_MINE -> mTabMessage!!.setActive(true)
-//            }
         }
         refreshTabView()
         mSharedPreferences!!.edit().putInt("LastTab", mViewPager!!.currentItem).apply()
