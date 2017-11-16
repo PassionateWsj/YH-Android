@@ -4,12 +4,12 @@ import android.app.Activity
 import android.content.Context
 import android.os.Bundle
 import android.view.View
-import android.webkit.WebSettings
-import android.webkit.WebView
-import android.webkit.WebViewClient
 import com.intfocus.yhdev.R
 import com.intfocus.yhdev.general.constant.ConfigConstants
 import com.intfocus.yhdev.general.util.K
+import com.tencent.smtt.sdk.WebSettings
+import com.tencent.smtt.sdk.WebView
+import com.tencent.smtt.sdk.WebViewClient
 import kotlinx.android.synthetic.main.activity_institute_content.*
 
 class InstituteContentActivity : Activity() {
