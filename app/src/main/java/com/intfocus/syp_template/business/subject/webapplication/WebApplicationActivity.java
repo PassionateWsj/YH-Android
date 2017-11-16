@@ -38,6 +38,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.barteksc.pdfviewer.PDFView;
+import com.github.barteksc.pdfviewer.listener.OnLoadCompleteListener;
+import com.github.barteksc.pdfviewer.listener.OnPageChangeListener;
+import com.github.barteksc.pdfviewer.listener.OnPageErrorListener;
+import com.github.barteksc.pdfviewer.scroll.DefaultScrollHandle;
 import com.intfocus.syp_template.R;
 import com.intfocus.syp_template.general.CommentActivity;
 import com.intfocus.syp_template.general.base.BaseActivity;
@@ -51,10 +56,6 @@ import com.intfocus.syp_template.general.util.LogUtil;
 import com.intfocus.syp_template.general.util.PageLinkManage;
 import com.intfocus.syp_template.general.util.ToastUtils;
 import com.intfocus.syp_template.general.util.URLs;
-import com.joanzapata.pdfview.PDFView;
-import com.joanzapata.pdfview.listener.OnErrorOccurredListener;
-import com.joanzapata.pdfview.listener.OnLoadCompleteListener;
-import com.joanzapata.pdfview.listener.OnPageChangeListener;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.UMShareListener;
@@ -73,7 +74,7 @@ import java.util.Iterator;
 import static android.webkit.WebView.enableSlowWholeDocumentDraw;
 import static java.lang.String.format;
 
-public class WebApplicationActivity extends BaseActivity implements OnPageChangeListener, OnLoadCompleteListener, OnErrorOccurredListener {
+public class WebApplicationActivity extends BaseActivity implements OnPageChangeListener, OnLoadCompleteListener, OnPageErrorListener {
     @ViewInject(R.id.ll_shaixuan)
     LinearLayout llShaixuan;
     @ViewInject(R.id.ll_copylink)
@@ -405,34 +406,63 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
     }
 
     @Override
-    public void errorOccured(String errorType, String errorMessage) {
-        String htmlPath = String.format("%s/loading/%s.html", sharedPath, "500"),
-                outputPath = String.format("%s/loading/%s.html", sharedPath, "500.output");
-
-        if (!(new File(htmlPath)).exists()) {
-            ToastUtils.INSTANCE.show(mContext, String.format("链接打开失败: %s", link));
-            return;
-        }
-
-        mWebView.setVisibility(View.VISIBLE);
-        mPDFView.setVisibility(View.INVISIBLE);
-
-        String htmlContent = FileUtil.readFile(htmlPath);
-        htmlContent = htmlContent.replace("$exception_type$", errorType);
-        htmlContent = htmlContent.replace("$exception_message$", errorMessage);
-        htmlContent = htmlContent.replace("$visit_url$", link);
-        try {
-            FileUtil.writeFile(outputPath, htmlContent);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        Message message = mHandlerWithAPI.obtainMessage();
-        message.what = 200;
-        message.obj = outputPath;
-
-        mHandlerWithAPI.sendMessage(message);
+    public void onPageError(int page, Throwable t) {
+//        String htmlPath = String.format("%s/loading/%s.html", sharedPath, "500"),
+//                outputPath = String.format("%s/loading/%s.html", sharedPath, "500.output");
+//
+//        if (!(new File(htmlPath)).exists()) {
+        ToastUtils.INSTANCE.show(mContext, String.format("链接打开失败: %s", link));
+//            return;
+//        }
+//
+//        mWebView.setVisibility(View.VISIBLE);
+//        mPDFView.setVisibility(View.INVISIBLE);
+//
+//        String htmlContent = FileUtil.readFile(htmlPath);
+//        htmlContent = htmlContent.replace("$exception_type$", errorType);
+//        htmlContent = htmlContent.replace("$exception_message$", errorMessage);
+//        htmlContent = htmlContent.replace("$visit_url$", link);
+//        try {
+//            FileUtil.writeFile(outputPath, htmlContent);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//
+//        Message message = mHandlerWithAPI.obtainMessage();
+//        message.what = 200;
+//        message.obj = outputPath;
+//
+//        mHandlerWithAPI.sendMessage(message);
     }
+//    @Override
+//    public void errorOccured(String errorType, String errorMessage) {
+//        String htmlPath = String.format("%s/loading/%s.html", sharedPath, "500"),
+//                outputPath = String.format("%s/loading/%s.html", sharedPath, "500.output");
+//
+//        if (!(new File(htmlPath)).exists()) {
+//            ToastUtils.INSTANCE.show(mContext, String.format("链接打开失败: %s", link));
+//            return;
+//        }
+//
+//        mWebView.setVisibility(View.VISIBLE);
+//        mPDFView.setVisibility(View.INVISIBLE);
+//
+//        String htmlContent = FileUtil.readFile(htmlPath);
+//        htmlContent = htmlContent.replace("$exception_type$", errorType);
+//        htmlContent = htmlContent.replace("$exception_message$", errorMessage);
+//        htmlContent = htmlContent.replace("$visit_url$", link);
+//        try {
+//            FileUtil.writeFile(outputPath, htmlContent);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//
+//        Message message = mHandlerWithAPI.obtainMessage();
+//        message.what = 200;
+//        message.obj = outputPath;
+//
+//        mHandlerWithAPI.sendMessage(message);
+//   }
 
     private void loadHtml() {
         urlString = link;
@@ -460,15 +490,24 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
         @Override
         public void handleMessage(Message message) {
             if (pdfFile.exists()) {
+//                mPDFView.fromFile(pdfFile)
+//                        .defaultPage(1)
+//                        .showMinimap(true)
+//                        .swipeVertical(true)
+//                        .onLoad(WebApplicationActivityV6.this)
+//                        .onPageChange(WebApplicationActivityV6.this)
+//                        .onPageError(WebApplicationActivityV6.this)
+//                        .load();
                 mPDFView.fromFile(pdfFile)
                         .defaultPage(1)
-                        .showMinimap(true)
-                        .enableSwipe(true)
-                        .swipeVertical(true)
-                        .onLoad(WebApplicationActivity.this)
                         .onPageChange(WebApplicationActivity.this)
-                        .onErrorOccured(WebApplicationActivity.this)
+                        .enableAnnotationRendering(true)
+                        .onLoad(WebApplicationActivity.this)
+                        .scrollHandle(new DefaultScrollHandle(WebApplicationActivity.this))
+                        .spacing(10) // in dp
+                        .onPageError(WebApplicationActivity.this)
                         .load();
+
                 mWebView.setVisibility(View.INVISIBLE);
                 mPDFView.setVisibility(View.VISIBLE);
             } else {
