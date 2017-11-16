@@ -303,6 +303,7 @@ class LoginActivity : FragmentActivity() {
     }
 
     override fun onDestroy() {
+        LogUtil.e(LogUtil.TAG,"LoginActivity ::: onDestroy")
         PgyUpdateManager.unregister()
         super.onDestroy()
     }

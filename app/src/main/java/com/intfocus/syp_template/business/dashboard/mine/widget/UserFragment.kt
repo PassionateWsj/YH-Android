@@ -305,6 +305,8 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
         popupWindow.animationStyle = R.anim.popup_bottombar_in
         rl_logout_confirm = contentView.findViewById(R.id.rl_logout_confirm)
         rl_logout_confirm!!.setOnClickListener {
+            // 取消
+            popupWindow.dismiss()
             // 确认退出
             logout()
         }
@@ -322,7 +324,6 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
      * 退出登录
      */
     private fun logout() {
-        rl_logout_confirm!!.isClickable = false
         // 判断有无网络
         if (!isNetworkConnected(ctx)) {
             ToastUtils.show(ctx, "未连接网络, 无法退出")
@@ -354,11 +355,9 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
                     }
 
                     override fun onCompleted() {
-                        rl_logout_confirm!!.isClickable = true
                     }
 
                     override fun onError(apiException: ApiException?) {
-                        rl_logout_confirm!!.isClickable = true
                         ToastUtils.show(ctx, apiException!!.message!!)
                     }
 
