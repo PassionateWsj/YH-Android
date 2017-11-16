@@ -419,21 +419,24 @@ class LoginActivity : FragmentActivity() {
                             } else {
                                 // 检测用户空间，版本是否升级版本是否升级
                                 FileUtil.checkVersionUpgrade(ctx, assetsPath, sharedPath)
-
-                                val pageLinkManagerSP = this@LoginActivity.getSharedPreferences("PageLinkManager", Context.MODE_PRIVATE)
-                                val pageSaved = pageLinkManagerSP.getBoolean("pageSaved", false)
-                                if (pageSaved) {
-                                    val objTitle = pageLinkManagerSP.getString("objTitle", "")
-                                    val link = pageLinkManagerSP.getString("link", "")
-                                    val objectId = pageLinkManagerSP.getString("objectId", "")
-                                    val templateId = pageLinkManagerSP.getString("templateId", "")
-                                    val objectType = pageLinkManagerSP.getString("objectType", "")
-                                    PageLinkManage.pageLink(this@LoginActivity, objTitle, link, objectId, templateId, objectType)
+                                // 在报表页面结束应用，再次登录时是否自动跳转上次报表页面
+                                if (ConfigConstants.REVIEW_LAST_PAGE) {
+                                    val pageLinkManagerSP = this@LoginActivity.getSharedPreferences("PageLinkManager", Context.MODE_PRIVATE)
+                                    val pageSaved = pageLinkManagerSP.getBoolean("pageSaved", false)
+                                    if (pageSaved) {
+                                        val objTitle = pageLinkManagerSP.getString("objTitle", "")
+                                        val link = pageLinkManagerSP.getString("link", "")
+                                        val objectId = pageLinkManagerSP.getString("objectId", "")
+                                        val templateId = pageLinkManagerSP.getString("templateId", "")
+                                        val objectType = pageLinkManagerSP.getString("objectType", "")
+                                        PageLinkManage.pageLink(this@LoginActivity, objTitle, link, objectId, templateId, objectType)
+                                    } else {
+                                        // 跳转至主界面
+                                        this@LoginActivity.startActivity(Intent(this@LoginActivity, DashboardActivity::class.java))
+                                    }
                                 } else {
                                     // 跳转至主界面
-                                    val intent = Intent(this@LoginActivity, DashboardActivity::class.java)
-//                                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                                    this@LoginActivity.startActivity(intent)
+                                    this@LoginActivity.startActivity(Intent(this@LoginActivity, DashboardActivity::class.java))
                                 }
                             }
 

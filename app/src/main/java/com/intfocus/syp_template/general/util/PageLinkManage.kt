@@ -188,14 +188,16 @@ object PageLinkManage {
     }
 
     private fun savePageLink(context: Context, objTitle: String, link: String, objectId: String, templateId: String, objectType: String) {
-        val pageLinkManagerSP = context.getSharedPreferences("PageLinkManager", Context.MODE_PRIVATE)
-        val pageLinkManagerSPED = pageLinkManagerSP.edit()
-        pageLinkManagerSPED.putBoolean("pageSaved", true)
-        pageLinkManagerSPED.putString("objTitle", objTitle)
-        pageLinkManagerSPED.putString("link", link)
-        pageLinkManagerSPED.putString("objectId", objectId)
-        pageLinkManagerSPED.putString("templateId", templateId)
-        pageLinkManagerSPED.putString("objectType", objectType).apply()
+        if (ConfigConstants.REVIEW_LAST_PAGE) {
+            val pageLinkManagerSP = context.getSharedPreferences("PageLinkManager", Context.MODE_PRIVATE)
+            val pageLinkManagerSPED = pageLinkManagerSP.edit()
+            pageLinkManagerSPED.putBoolean("pageSaved", true)
+            pageLinkManagerSPED.putString("objTitle", objTitle)
+            pageLinkManagerSPED.putString("link", link)
+            pageLinkManagerSPED.putString("objectId", objectId)
+            pageLinkManagerSPED.putString("templateId", templateId)
+            pageLinkManagerSPED.putString("objectType", objectType).apply()
+        }
     }
 
     fun pageBackIntent(context: Context) {
