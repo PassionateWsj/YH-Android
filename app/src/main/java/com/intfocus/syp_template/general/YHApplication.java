@@ -20,6 +20,7 @@ import com.intfocus.syp_template.business.dashboard.DashboardActivity;
 import com.intfocus.syp_template.business.launcher.ConfirmPassCodeActivity;
 import com.intfocus.syp_template.business.login.LoginActivity;
 import com.intfocus.syp_template.general.constant.ConfigConstants;
+import com.intfocus.syp_template.general.util.AppStatusTracker;
 import com.intfocus.syp_template.general.util.FileUtil;
 import com.intfocus.syp_template.general.util.K;
 import com.intfocus.syp_template.general.util.URLs;
@@ -58,10 +59,10 @@ public class YHApplication extends Application {
     SharedPreferences mSettingSP;
     SharedPreferences mUserSP;
     PackageInfo packageInfo;
-
     @Override
     public void onCreate() {
         super.onCreate();
+        AppStatusTracker.init(this);
         if (BuildConfig.TINKER_ENABLE) {
             // 我们可以从这里获得Tinker加载过程的信息
             ApplicationLike tinkerApplicationLike = TinkerPatchApplicationLike.getTinkerPatchApplicationLike();
@@ -184,7 +185,7 @@ public class YHApplication extends Application {
     }
 
     /**
-     *  手机待机再激活时接收解屏广播,进入解锁密码页
+     * 手机待机再激活时接收解屏广播,进入解锁密码页
      */
     private final BroadcastReceiver broadcastScreenOnAndOff = new BroadcastReceiver() {
         @Override
