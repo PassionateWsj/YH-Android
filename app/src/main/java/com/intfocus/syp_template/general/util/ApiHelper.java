@@ -274,8 +274,8 @@ public class ApiHelper {
     /**
      * 缓存文件中，清除指定链接的内容
      *
-     * @param 链接
-     * @param 缓存头文件相对文件夹
+     *  链接
+     *  缓存头文件相对文件夹
      */
     public static void clearResponseHeader(String urlKey) {
         String assetsPath = FileUtil.dirPath(globalContext, K.K_HTML_DIR_NAME);

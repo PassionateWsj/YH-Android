@@ -37,7 +37,7 @@
 
     </FrameLayout>
 
-    <com.joanzapata.pdfview.PDFView
+    <com.github.barteksc.pdfviewer.PDFView
         android:id="@+id/pdfview"
         android:visibility="gone"
         android:layout_width="match_parent"

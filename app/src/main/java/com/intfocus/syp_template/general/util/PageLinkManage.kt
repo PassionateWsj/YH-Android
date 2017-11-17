@@ -13,7 +13,7 @@ import com.intfocus.syp_template.business.subject.template.three.TemplateThreeAc
 import com.intfocus.syp_template.business.subject.template.two.SubjectActivity
 import com.intfocus.syp_template.business.subject.webapplication.WebApplicationActivity
 import com.intfocus.syp_template.business.subject.webapplication.WebApplicationActivityV6
-import com.intfucos.yhdev.collection.CollectionActivity
+import com.intfocus.syp_template.collection.CollectionActivity
 import com.intfocus.syp_template.general.constant.ConfigConstants
 import org.json.JSONException
 import org.json.JSONObject
@@ -201,14 +201,16 @@ object PageLinkManage {
     }
 
     private fun savePageLink(context: Context, objTitle: String, link: String, objectId: String, templateId: String, objectType: String) {
-        val pageLinkManagerSP = context.getSharedPreferences("PageLinkManager", Context.MODE_PRIVATE)
-        val pageLinkManagerSPED = pageLinkManagerSP.edit()
-        pageLinkManagerSPED.putBoolean("pageSaved", true)
-        pageLinkManagerSPED.putString("objTitle", objTitle)
-        pageLinkManagerSPED.putString("link", link)
-        pageLinkManagerSPED.putString("objectId", objectId)
-        pageLinkManagerSPED.putString("templateId", templateId)
-        pageLinkManagerSPED.putString("objectType", objectType).apply()
+        if (ConfigConstants.REVIEW_LAST_PAGE) {
+            val pageLinkManagerSP = context.getSharedPreferences("PageLinkManager", Context.MODE_PRIVATE)
+            val pageLinkManagerSPED = pageLinkManagerSP.edit()
+            pageLinkManagerSPED.putBoolean("pageSaved", true)
+            pageLinkManagerSPED.putString("objTitle", objTitle)
+            pageLinkManagerSPED.putString("link", link)
+            pageLinkManagerSPED.putString("objectId", objectId)
+            pageLinkManagerSPED.putString("templateId", templateId)
+            pageLinkManagerSPED.putString("objectType", objectType).apply()
+        }
     }
 
     fun pageBackIntent(context: Context) {

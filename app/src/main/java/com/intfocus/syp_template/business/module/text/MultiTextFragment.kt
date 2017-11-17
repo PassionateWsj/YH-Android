@@ -1,4 +1,4 @@
-package com.intfucos.yhdev.module.text
+package com.intfocus.syp_template.module.text
 
 import android.os.Bundle
 import android.text.Editable
@@ -7,8 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.intfocus.syp_template.R
-import com.intfucos.yhdev.base.BaseWidgetFragment
-import com.intfucos.yhdev.constant.Params
+import com.intfocus.syp_template.base.BaseWidgetFragment
+import com.intfocus.syp_template.constant.Params
 import kotlinx.android.synthetic.main.module_single_text.*
 
 /**

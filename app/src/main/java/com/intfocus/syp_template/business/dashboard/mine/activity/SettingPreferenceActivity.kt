@@ -36,22 +36,24 @@ class SettingPreferenceActivity : BaseActivity() {
         switch_screenLock!!.isChecked = mSharedPreferences!!.getBoolean("ScreenLock", false)
     }
 
-    /*
+    /**
      * Switch 状态初始化
      */
     private fun initSwitchPreference() {
         mSharedPreferences = getSharedPreferences("SettingPreference", Context.MODE_PRIVATE)
         switch_screenLock.isChecked = mSharedPreferences!!.getBoolean("ScreenLock", false)
+        switch_keep_pwd.isChecked = mSharedPreferences!!.getBoolean("keep_pwd", false)
         switch_report_copy.isChecked = mSharedPreferences!!.getBoolean("ReportCopy", false)
         switch_landscape_banner.isChecked = mSharedPreferences!!.getBoolean("Landscape", false)
     }
 
     private fun initListener() {
         switch_screenLock.setOnCheckedChangeListener(mSwitchScreenLockListener)
+        switch_keep_pwd.setOnCheckedChangeListener(mSwitchKeepPwdListener)
         switch_report_copy.setOnCheckedChangeListener(mSwitchReportCopyListener)
     }
 
-    /*
+    /**
      *  Switch ScreenLock 开关
      */
     private val mSwitchScreenLockListener = CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
@@ -65,13 +67,17 @@ class SettingPreferenceActivity : BaseActivity() {
             mSharedPreferences!!.edit().putBoolean("ScreenLock", isChecked).apply()
         }
     }
+    /**
+     *  Switch Keep Password 开关
+     */
+    private val mSwitchKeepPwdListener = CompoundButton.OnCheckedChangeListener { _, isChecked -> mSharedPreferences!!.edit().putBoolean("keep_pwd", isChecked).apply() }
 
-    /*
+    /**
      *  Switch Report Copy 开关
      */
     private val mSwitchReportCopyListener = CompoundButton.OnCheckedChangeListener { _, isChecked -> mSharedPreferences!!.edit().putBoolean("ReportCopy", isChecked).apply() }
 
-    /*
+    /**
      * 清理缓存
      */
     fun clearUserCache(v: View) {
@@ -100,14 +106,15 @@ class SettingPreferenceActivity : BaseActivity() {
                                         mProgressDialog.dismiss()
                                     }
 
-                                    override fun onFailure() {
+                                    override fun onFailure(errorMsg: Throwable) {
+                                        AssetsUpDateUtil.unSubscribe()
                                         ToastUtils.show(applicationContext, "清除缓存失败，请重试")
                                         mProgressDialog.dismiss()
                                     }
                                 })
                             }
 
-                            override fun onFailure() {
+                            override fun onFailure(errorMsg: Throwable) {
                             }
                         })
 

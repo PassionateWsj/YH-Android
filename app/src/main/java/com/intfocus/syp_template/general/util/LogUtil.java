@@ -8,6 +8,7 @@ import com.intfocus.syp_template.BuildConfig;
  * Created by lijunjie on 16/7/22.
  */
 public class LogUtil {
+    public static final String TAG = "hjjzzz";
 
     /**
      * Log.d(tag, str, limit)
@@ -26,14 +27,28 @@ public class LogUtil {
      * Log.d(tag, str)
      */
     public static void d(String tag, String str) {
-    /**
-     * 若应用不处于 DEBUG 模式，则不打印输出信息
-     */
+        /**
+         * 若应用不处于 DEBUG 模式，则不打印输出信息
+         */
         if (!BuildConfig.DEBUG) {
             return;
         }
 
         LogUtil.d(tag, str, 0);
+    }
+
+    /**
+     * Log.e(tag, str)
+     */
+    public static void e(String tag, String str) {
+        /**
+         * 若应用不处于 DEBUG 模式，则不打印输出信息
+         */
+        if (!BuildConfig.DEBUG) {
+            return;
+        }
+
+        Log.e(tag, str);
     }
 
     /**

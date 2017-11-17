@@ -1,8 +1,7 @@
-package com.intfucos.yhdev.collection.entity
+package com.intfocus.syp_template.collection.entity
 
-import com.intfucos.yhdev.collection.entity.Content
 import java.io.Serializable
-import java.util.ArrayList
+import java.util.*
 
 /**
  * @author liuruilin

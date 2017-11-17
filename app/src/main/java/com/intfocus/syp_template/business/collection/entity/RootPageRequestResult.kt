@@ -1,6 +1,6 @@
-package com.intfucos.yhdev.collection.entity
+package com.intfocus.syp_template.collection.entity
 
-import java.util.ArrayList
+import java.util.*
 
 /**
  * @author liuruilin

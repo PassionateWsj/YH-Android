@@ -1,4 +1,4 @@
-package com.intfucos.yhdev.collection.callback
+package com.intfocus.syp_template.collection.callback
 
 /**
  * @author liuruilin

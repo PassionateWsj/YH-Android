@@ -74,6 +74,7 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
     private val CODE_GALLERY_REQUEST = 0xa0
     private val CODE_CAMERA_REQUEST = 0xa1
     private val CODE_RESULT_REQUEST = 0xa2
+    private var rl_logout_confirm: RelativeLayout? = null
 
     override fun setSubject(): Subject {
         mUserInfoSP = ctx.getSharedPreferences("UserInfo", Context.MODE_PRIVATE)
@@ -302,8 +303,10 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
         popupWindow.isTouchable = true
         popupWindow.showAtLocation(activity!!.toolBar, Gravity.BOTTOM, 0, 0)
         popupWindow.animationStyle = R.anim.popup_bottombar_in
-
-        contentView.findViewById<RelativeLayout>(R.id.rl_logout_confirm).setOnClickListener {
+        rl_logout_confirm = contentView.findViewById(R.id.rl_logout_confirm)
+        rl_logout_confirm!!.setOnClickListener {
+            // 取消
+            popupWindow.dismiss()
             // 确认退出
             logout()
         }
@@ -378,7 +381,7 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
                 val tempFile = File(Environment.getExternalStorageDirectory(), "icon.jpg")
                 if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                     val photoURI = FileProvider.getUriForFile(ctx,
-                            "com.intfocus.yh_android.fileprovider",
+                            "com.intfocus.syp_template.fileprovider",
                             tempFile)
                     cropIntent = launchSystemImageCrop(ctx, photoURI)
                 } else {

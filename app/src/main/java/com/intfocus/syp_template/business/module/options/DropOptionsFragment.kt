@@ -1,4 +1,4 @@
-package com.intfucos.yhdev.module.options
+package com.intfocus.syp_template.module.options
 
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
@@ -9,8 +9,8 @@ import android.widget.ListView
 import android.widget.TextView
 import com.intfocus.syp_template.R
 import com.intfocus.syp_template.business.module.options.SingleOptionsAdapter
-import com.intfucos.yhdev.base.BaseWidgetFragment
-import com.intfucos.yhdev.constant.Params
+import com.intfocus.syp_template.base.BaseWidgetFragment
+import com.intfocus.syp_template.constant.Params
 import kotlinx.android.synthetic.main.module_drop_options.*
 
 /**

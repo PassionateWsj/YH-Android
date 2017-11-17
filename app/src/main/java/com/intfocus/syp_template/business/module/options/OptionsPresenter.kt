@@ -1,8 +1,8 @@
-package com.intfucos.yhdev.module.options
+package com.intfocus.syp_template.module.options
 
-import com.intfucos.yhdev.collection.callback.LoadDataCallback
-import com.intfucos.yhdev.module.text.TextModuleContract
-import com.intfucos.yhdev.module.text.TextEntity
+import com.intfocus.syp_template.collection.callback.LoadDataCallback
+import com.intfocus.syp_template.module.text.TextModuleContract
+import com.intfocus.syp_template.module.text.TextEntity
 
 /**
  * @author liuruilin

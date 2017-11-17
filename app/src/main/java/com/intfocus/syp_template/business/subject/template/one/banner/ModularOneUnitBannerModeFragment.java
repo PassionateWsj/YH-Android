@@ -24,7 +24,7 @@ import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
-import static com.intfucos.yhdev.constant.Params.REPORT_TYPE_BANNER;
+import static com.intfocus.syp_template.constant.Params.REPORT_TYPE_BANNER;
 
 /**
  * 模板一标题栏 负责显示标题、日期、帮助说明

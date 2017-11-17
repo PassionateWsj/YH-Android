@@ -1,4 +1,4 @@
-package com.intfucos.yhdev.constant
+package com.intfocus.syp_template.constant
 
 /**
  * @author liuruilin

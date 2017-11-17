@@ -1,4 +1,4 @@
-package com.intfucos.yhdev.module.image
+package com.intfocus.syp_template.module.image
 
 import android.app.Activity.RESULT_OK
 import android.content.Intent
@@ -14,9 +14,9 @@ import com.intfocus.syp_template.YHApplication
 import com.intfocus.syp_template.business.dashboard.mine.activity.FeedbackActivity
 import com.intfocus.syp_template.general.util.GifSizeFilter
 import com.intfocus.syp_template.general.util.ImageUtil
-import com.intfucos.yhdev.base.BaseWidgetFragment
-import com.intfucos.yhdev.constant.Params
-import com.intfucos.yhdev.constant.Params.REQUEST_CODE_CHOOSE
+import com.intfocus.syp_template.base.BaseWidgetFragment
+import com.intfocus.syp_template.constant.Params
+import com.intfocus.syp_template.constant.Params.REQUEST_CODE_CHOOSE
 import com.zhihu.matisse.Matisse
 import com.zhihu.matisse.MimeType
 import com.zhihu.matisse.engine.impl.GlideEngine

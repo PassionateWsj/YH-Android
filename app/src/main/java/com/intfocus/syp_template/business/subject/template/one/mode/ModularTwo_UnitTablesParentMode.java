@@ -17,7 +17,7 @@ import java.io.StringReader;
 import java.util.ArrayList;
 
 import static com.intfocus.syp_template.YHApplication.threadPool;
-import static com.intfucos.yhdev.constant.Params.REPORT_TYPE_TABLE;
+import static com.intfocus.syp_template.constant.Params.REPORT_TYPE_TABLE;
 
 /**
  * 仪表盘-数据处理模块
@@ -44,7 +44,7 @@ public class ModularTwo_UnitTablesParentMode extends AbstractMode {
     /**
      * 解析数据
      *
-     * @param result
+     * result
      */
     public void analysisData(final String uuid, final int index) {
 

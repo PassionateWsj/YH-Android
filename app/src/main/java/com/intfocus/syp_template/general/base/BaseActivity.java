@@ -530,7 +530,7 @@ public class BaseActivity extends FragmentActivity {
      * 偶数: 正式版本，点击安装更新
      */
     public void checkPgyerVersionUpgrade(final Activity activity, final boolean isShowToast) {
-        PgyUpdateManager.register(activity, "com.intfocus.yh_android.fileprovider", new UpdateManagerListener() {
+        PgyUpdateManager.register(activity, "com.intfocus.syp_template.fileprovider", new UpdateManagerListener() {
             @Override
             public void onUpdateAvailable(final String result) {
                 try {

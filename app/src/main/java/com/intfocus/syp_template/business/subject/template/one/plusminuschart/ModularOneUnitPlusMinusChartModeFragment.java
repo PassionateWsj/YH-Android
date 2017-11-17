@@ -33,7 +33,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
 
-import static com.intfucos.yhdev.constant.Params.REPORT_TYPE_PLUS_MINUS;
+import static com.intfocus.syp_template.constant.Params.REPORT_TYPE_PLUS_MINUS;
 
 /**
  * 正负图表模块
