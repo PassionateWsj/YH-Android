@@ -14,7 +14,7 @@ import com.intfocus.yhdev.business.subject.template.two.SubjectActivity
 import com.intfocus.yhdev.business.subject.template.two.SubjectActivity2
 import com.intfocus.yhdev.business.subject.webapplication.WebApplicationActivity
 import com.intfocus.yhdev.business.subject.webapplication.WebApplicationActivityV6
-import com.intfucos.yhdev.collection.CollectionActivity
+import com.intfocus.yhdev.collection.CollectionActivity
 import com.intfocus.yhdev.general.constant.ConfigConstants
 import org.json.JSONException
 import org.json.JSONObject

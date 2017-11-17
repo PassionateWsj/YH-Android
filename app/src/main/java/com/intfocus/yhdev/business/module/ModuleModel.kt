@@ -1,8 +1,8 @@
-package com.intfucos.yhdev.module
+package com.intfocus.yhdev.module
 
-import com.intfucos.yhdev.collection.callback.LoadDataCallback
-import com.intfucos.yhdev.module.image.ImageEntity
-import com.intfucos.yhdev.module.text.TextEntity
+import com.intfocus.yhdev.collection.callback.LoadDataCallback
+import com.intfocus.yhdev.module.image.ImageEntity
+import com.intfocus.yhdev.module.text.TextEntity
 
 /**
  * @author liuruilin

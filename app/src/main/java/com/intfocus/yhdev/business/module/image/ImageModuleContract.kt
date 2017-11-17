@@ -1,4 +1,4 @@
-package com.intfucos.yhdev.module.image
+package com.intfocus.yhdev.module.image
 
 import com.intfocus.yhdev.general.base.BasePresenter
 import com.intfocus.yhdev.general.base.BaseView

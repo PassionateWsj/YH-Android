@@ -1,4 +1,4 @@
-package com.intfucos.yhdev.collection.callback
+package com.intfocus.yhdev.collection.callback
 
 /**
  * @author liuruilin

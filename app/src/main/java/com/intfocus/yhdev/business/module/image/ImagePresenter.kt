@@ -1,7 +1,7 @@
-package com.intfucos.yhdev.module.image
+package com.intfocus.yhdev.module.image
 
 import com.intfocus.yhdev.general.util.Utils
-import com.intfucos.yhdev.collection.callback.LoadDataCallback
+import com.intfocus.yhdev.collection.callback.LoadDataCallback
 
 /**
  * @author liuruilin

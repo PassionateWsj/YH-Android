@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSON
 import com.intfocus.yhdev.business.subject.template.one.entity.MDRPUnitSingleValue
 import com.intfocus.yhdev.general.gen.ReportDao
 import com.intfocus.yhdev.general.util.DaoUtil
-import com.intfucos.yhdev.constant.Params.REPORT_TYPE_SINGLE_VALUE
+import com.intfocus.yhdev.constant.Params.REPORT_TYPE_SINGLE_VALUE
 import rx.Observable
 import rx.Observer
 import rx.android.schedulers.AndroidSchedulers

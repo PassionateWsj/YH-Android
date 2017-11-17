@@ -1,4 +1,4 @@
-package com.intfucos.yhdev.module.options
+package com.intfocus.yhdev.module.options
 
 import com.intfocus.yhdev.general.base.BasePresenter
 import com.intfocus.yhdev.general.base.BaseView

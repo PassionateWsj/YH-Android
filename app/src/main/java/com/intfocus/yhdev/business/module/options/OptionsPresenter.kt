@@ -1,8 +1,8 @@
-package com.intfucos.yhdev.module.options
+package com.intfocus.yhdev.module.options
 
-import com.intfucos.yhdev.collection.callback.LoadDataCallback
-import com.intfucos.yhdev.module.text.TextModuleContract
-import com.intfucos.yhdev.module.text.TextEntity
+import com.intfocus.yhdev.collection.callback.LoadDataCallback
+import com.intfocus.yhdev.module.text.TextModuleContract
+import com.intfocus.yhdev.module.text.TextEntity
 
 /**
  * @author liuruilin

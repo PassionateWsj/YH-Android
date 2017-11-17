@@ -1,6 +1,6 @@
-package com.intfucos.yhdev.collection.root
+package com.intfocus.yhdev.collection.root
 
-import com.intfucos.yhdev.collection.callback.LoadDataCallback
+import com.intfocus.yhdev.collection.callback.LoadDataCallback
 import org.jetbrains.annotations.NotNull
 
 /**

@@ -1,12 +1,12 @@
-package com.intfucos.yhdev.collection.root
+package com.intfocus.yhdev.collection.root
 
 import android.util.Log
 import com.alibaba.fastjson.JSONReader
-import com.intfucos.yhdev.collection.CollectionModelImpl.Companion.insertData
-import com.intfucos.yhdev.collection.callback.LoadDataCallback
-import com.intfucos.yhdev.collection.entity.Content
-import com.intfucos.yhdev.collection.entity.RootPageRequestResult
-import com.intfucos.yhdev.constant.StateParams.STATE_CODE_SUCCESS
+import com.intfocus.yhdev.collection.CollectionModelImpl.Companion.insertData
+import com.intfocus.yhdev.collection.callback.LoadDataCallback
+import com.intfocus.yhdev.collection.entity.Content
+import com.intfocus.yhdev.collection.entity.RootPageRequestResult
+import com.intfocus.yhdev.constant.StateParams.STATE_CODE_SUCCESS
 import rx.Observable
 import rx.Observer
 import rx.android.schedulers.AndroidSchedulers

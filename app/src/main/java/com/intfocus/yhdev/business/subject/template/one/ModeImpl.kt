@@ -8,7 +8,7 @@ import com.intfocus.yhdev.business.subject.templateone.entity.MererDetailEntity
 import com.intfocus.yhdev.general.util.ApiHelper
 import com.intfocus.yhdev.general.util.FileUtil
 import com.intfocus.yhdev.general.util.K
-import com.intfucos.yhdev.constant.Params.REPORT_TYPE_MAIN_DATA
+import com.intfocus.yhdev.constant.Params.REPORT_TYPE_MAIN_DATA
 import com.zbl.lib.baseframe.utils.TimeUtil
 import rx.Observable
 import rx.Subscriber

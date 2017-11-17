@@ -7,7 +7,7 @@ import com.intfocus.yhdev.business.subject.template.model.ReportModelImpl
 import com.intfocus.yhdev.general.constant.ConfigConstants
 import com.intfocus.yhdev.general.util.*
 import com.intfocus.yhdev.general.util.ApiHelper.deleteHeadersFile
-import com.intfucos.yhdev.collection.callback.LoadDataCallback
+import com.intfocus.yhdev.collection.callback.LoadDataCallback
 import rx.Observable
 import rx.Subscriber
 import rx.android.schedulers.AndroidSchedulers

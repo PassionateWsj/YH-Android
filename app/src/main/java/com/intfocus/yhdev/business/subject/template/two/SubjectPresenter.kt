@@ -1,6 +1,6 @@
 package com.intfocus.yhdev.business.subject.template.two
 
-import com.intfucos.yhdev.collection.callback.LoadDataCallback
+import com.intfocus.yhdev.collection.callback.LoadDataCallback
 
 /**
  * @author liuruilin

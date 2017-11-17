@@ -1,9 +1,9 @@
-package com.intfucos.yhdev.collection
+package com.intfocus.yhdev.collection
 
 import android.content.Context
 import com.intfocus.yhdev.general.base.BasePresenter
 import com.intfocus.yhdev.general.base.BaseView
-import com.intfucos.yhdev.collection.entity.CollectionEntity
+import com.intfocus.yhdev.collection.entity.CollectionEntity
 
 /**
  * @author liuruilin

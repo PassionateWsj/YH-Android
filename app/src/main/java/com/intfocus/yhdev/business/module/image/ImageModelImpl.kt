@@ -1,11 +1,11 @@
-package com.intfucos.yhdev.module.image
+package com.intfocus.yhdev.module.image
 
 import com.alibaba.fastjson.JSONObject
 import com.intfocus.yhdev.general.gen.SourceDao
 import com.intfocus.yhdev.general.util.DaoUtil
-import com.intfucos.yhdev.collection.CollectionModelImpl.Companion.uuid
-import com.intfucos.yhdev.collection.callback.LoadDataCallback
-import com.intfucos.yhdev.module.ModuleModel
+import com.intfocus.yhdev.collection.CollectionModelImpl.Companion.uuid
+import com.intfocus.yhdev.collection.callback.LoadDataCallback
+import com.intfocus.yhdev.module.ModuleModel
 
 /**
  * @author liuruilin

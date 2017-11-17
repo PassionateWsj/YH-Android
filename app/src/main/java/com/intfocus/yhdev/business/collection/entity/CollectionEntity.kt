@@ -1,6 +1,6 @@
-package com.intfucos.yhdev.collection.entity
+package com.intfocus.yhdev.collection.entity
 
-import com.intfucos.yhdev.collection.entity.Content
+import com.intfocus.yhdev.collection.entity.Content
 import java.io.Serializable
 import java.util.ArrayList
 

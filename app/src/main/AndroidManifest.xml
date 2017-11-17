@@ -96,7 +96,7 @@
             android:theme="@style/Theme.AppCompat.NoActionBar"/>
 
         <activity
-            android:name="com.intfucos.yhdev.collection.CollectionActivity"
+            android:name="com.intfocus.yhdev.collection.CollectionActivity"
             android:screenOrientation="portrait"
             ></activity>
         <!-- 公告详情 -->

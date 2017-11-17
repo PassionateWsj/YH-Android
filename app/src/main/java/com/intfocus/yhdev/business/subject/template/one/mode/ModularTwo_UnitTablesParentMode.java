@@ -17,7 +17,7 @@ import java.io.StringReader;
 import java.util.ArrayList;
 
 import static com.intfocus.yhdev.YHApplication.threadPool;
-import static com.intfucos.yhdev.constant.Params.REPORT_TYPE_TABLE;
+import static com.intfocus.yhdev.constant.Params.REPORT_TYPE_TABLE;
 
 /**
  * 仪表盘-数据处理模块

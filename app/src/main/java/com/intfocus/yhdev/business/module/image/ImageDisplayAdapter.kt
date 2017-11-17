@@ -1,4 +1,4 @@
-package com.intfucos.yhdev.module.image
+package com.intfocus.yhdev.module.image
 
 import android.content.Context
 import android.net.Uri

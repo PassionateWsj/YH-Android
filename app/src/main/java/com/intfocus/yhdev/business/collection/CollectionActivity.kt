@@ -1,4 +1,4 @@
-package com.intfucos.yhdev.collection
+package com.intfocus.yhdev.collection
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -11,11 +11,11 @@ import android.widget.RadioGroup
 import com.intfocus.yhdev.R
 import com.intfocus.yhdev.general.util.PageLinkManage
 import com.intfocus.yhdev.general.util.URLs
-import com.intfucos.yhdev.base.BaseWidgetFragment
-import com.intfucos.yhdev.collection.entity.CollectionEntity
-import com.intfucos.yhdev.collection.root.RootPageFragment
-import com.intfucos.yhdev.collection.root.RootPageModelImpl
-import com.intfucos.yhdev.collection.root.RootPagePresenter
+import com.intfocus.yhdev.base.BaseWidgetFragment
+import com.intfocus.yhdev.collection.entity.CollectionEntity
+import com.intfocus.yhdev.collection.root.RootPageFragment
+import com.intfocus.yhdev.collection.root.RootPageModelImpl
+import com.intfocus.yhdev.collection.root.RootPagePresenter
 import kotlinx.android.synthetic.main.activity_collection.*
 
 /**

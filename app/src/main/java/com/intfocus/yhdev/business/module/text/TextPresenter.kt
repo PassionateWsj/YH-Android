@@ -1,6 +1,6 @@
-package com.intfucos.yhdev.module.text
+package com.intfocus.yhdev.module.text
 
-import com.intfucos.yhdev.collection.callback.LoadDataCallback
+import com.intfocus.yhdev.collection.callback.LoadDataCallback
 
 /**
  * @author liuruilin
