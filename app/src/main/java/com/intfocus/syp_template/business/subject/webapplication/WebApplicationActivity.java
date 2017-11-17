@@ -499,7 +499,7 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
 //                        .onPageError(WebApplicationActivityV6.this)
 //                        .load();
                 mPDFView.fromFile(pdfFile)
-                        .defaultPage(1)
+                        .defaultPage(0)
                         .onPageChange(WebApplicationActivity.this)
                         .enableAnnotationRendering(true)
                         .onLoad(WebApplicationActivity.this)

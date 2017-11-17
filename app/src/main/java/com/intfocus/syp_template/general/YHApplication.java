@@ -83,6 +83,9 @@ public class YHApplication extends Application {
         mUserSP = getSharedPreferences("UserBean", Context.MODE_PRIVATE);
         try {
             packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+            if (mSettingSP.getInt("Version", 0) != packageInfo.versionCode) {
+                getSharedPreferences("AssetsMD5", Context.MODE_PRIVATE).edit().clear().commit();
+            }
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }

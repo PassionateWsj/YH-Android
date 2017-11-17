@@ -26,6 +26,7 @@ import com.intfocus.syp_template.business.subject.template.one.entity.msg.EventR
 import com.intfocus.syp_template.business.subject.template.one.mode.ModularTwo_UnitTableContMode;
 import com.intfocus.syp_template.business.subject.templateone.adapter.ModularOneTableNameAdapter;
 import com.intfocus.syp_template.general.base.BaseModeFragment;
+import com.intfocus.syp_template.general.data.TempSubData;
 import com.intfocus.syp_template.general.util.DisplayUtil;
 import com.intfocus.syp_template.general.util.ToastUtils;
 import com.intfocus.syp_template.general.view.NotScrollListView;
@@ -522,7 +523,10 @@ public class ModularOneUnitTablesContModeFragment extends BaseModeFragment<Modul
             Intent intent = new Intent(ctx, ModularOneSubTableActivity.class);
             String itemData = dataEntity.data.get(index).main_data[0];
             intent.putExtra("Title", new JSONObject(itemData).getString("value"));
-            intent.putExtra("subData", subData);
+            if (!TempSubData.hasData()) {
+                TempSubData.setData(subData);
+            }
+//            intent.putExtra("subData", subData);
             int checkId = suRootID;
             intent.putExtra("suRootID", checkId);
             startActivity(intent);

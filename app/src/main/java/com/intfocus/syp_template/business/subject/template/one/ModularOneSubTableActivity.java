@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.intfocus.syp_template.R;
 import com.intfocus.syp_template.business.subject.template.one.table.ModularOneUnitTablesContModeFragment;
+import com.intfocus.syp_template.general.data.TempSubData;
 import com.zbl.lib.baseframe.utils.StringUtil;
 
 import org.xutils.view.annotation.Event;
@@ -54,7 +55,10 @@ public class ModularOneSubTableActivity extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             String titel = bundle.getString("Title");
-            subData = bundle.getString("subData");
+            if (TempSubData.hasData()) {
+                subData = TempSubData.getData();
+            }
+//            subData = bundle.getString("subData");
             suRootID = bundle.getInt("suRootID");
             title.setText(titel);
             if (StringUtil.isEmpty(subData)) {
