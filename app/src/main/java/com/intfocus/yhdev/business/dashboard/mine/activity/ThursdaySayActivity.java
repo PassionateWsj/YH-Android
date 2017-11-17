@@ -24,8 +24,8 @@ public class ThursdaySayActivity extends BaseActivity {
 
         animLoading.setVisibility(View.VISIBLE);
         setWebViewLongListener(false);
-//        urlString = String.format(K.K_THURSDAY_SAY_MOBILE_PATH, ConfigConstants.kBaseUrl, URLs.currentUIVersion(ThursdaySayActivity.this));
-        urlString = "http://123.59.75.85:8080/yhportal/appClientReport/personnelTracking.pdf";
+        urlString = String.format(K.K_THURSDAY_SAY_MOBILE_PATH, ConfigConstants.kBaseUrl, URLs.currentUIVersion(ThursdaySayActivity.this));
+//        urlString = "http://123.59.75.85:8080/yhportal/appClientReport/personnelTracking.pdf";
         new Thread(mRunnableForDetecting).start();
     }
 
