@@ -1,7 +1,7 @@
-package com.intfucos.yhdev.module.image
+package com.intfocus.syp_template.module.image
 
 import com.intfocus.syp_template.general.util.Utils
-import com.intfucos.yhdev.collection.callback.LoadDataCallback
+import com.intfocus.syp_template.collection.callback.LoadDataCallback
 
 /**
  * @author liuruilin

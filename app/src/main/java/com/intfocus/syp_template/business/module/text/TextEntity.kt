@@ -1,4 +1,4 @@
-package com.intfucos.yhdev.module.text
+package com.intfocus.syp_template.module.text
 
 import org.json.JSONObject
 

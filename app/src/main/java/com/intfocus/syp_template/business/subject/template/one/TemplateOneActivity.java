@@ -49,7 +49,7 @@ import org.json.JSONObject;
 
 import java.util.List;
 
-import static com.intfucos.yhdev.constant.Params.REPORT_TYPE_MAIN_DATA;
+import static com.intfocus.syp_template.constant.Params.REPORT_TYPE_MAIN_DATA;
 
 
 /**

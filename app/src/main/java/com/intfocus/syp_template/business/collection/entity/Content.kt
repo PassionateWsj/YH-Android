@@ -1,4 +1,4 @@
-package com.intfucos.yhdev.collection.entity
+package com.intfocus.syp_template.collection.entity
 
 import org.json.JSONObject
 

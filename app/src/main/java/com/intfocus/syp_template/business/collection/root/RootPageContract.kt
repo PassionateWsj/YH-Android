@@ -1,8 +1,8 @@
-package com.intfucos.yhdev.collection.root
+package com.intfocus.syp_template.collection.root
 
+import com.intfocus.syp_template.collection.entity.RootPageRequestResult
 import com.intfocus.syp_template.general.base.BasePresenter
 import com.intfocus.syp_template.general.base.BaseView
-import com.intfucos.yhdev.collection.entity.RootPageRequestResult
 
 /**
  * ****************************************************

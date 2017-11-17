@@ -1,4 +1,4 @@
-package com.intfucos.yhdev.collection
+package com.intfocus.syp_template.collection
 
 import android.content.Context
 import android.content.Intent
@@ -10,9 +10,9 @@ import com.intfocus.syp_template.general.bean.Source
 import com.intfocus.syp_template.general.net.RetrofitUtil
 import com.intfocus.syp_template.general.service.CollectionUploadService
 import com.intfocus.syp_template.general.util.*
-import com.intfucos.yhdev.collection.callback.LoadDataCallback
-import com.intfucos.yhdev.collection.entity.CollectionEntity
-import com.intfucos.yhdev.collection.entity.Content
+import com.intfocus.syp_template.collection.callback.LoadDataCallback
+import com.intfocus.syp_template.collection.entity.CollectionEntity
+import com.intfocus.syp_template.collection.entity.Content
 import rx.Observable
 import rx.Subscriber
 import rx.android.schedulers.AndroidSchedulers

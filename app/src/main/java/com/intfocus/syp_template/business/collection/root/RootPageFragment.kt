@@ -1,4 +1,4 @@
-package com.intfucos.yhdev.collection.root
+package com.intfocus.syp_template.collection.root
 
 import android.os.Bundle
 import android.support.design.widget.AppBarLayout
@@ -11,20 +11,20 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import com.intfocus.syp_template.R
-import com.intfucos.yhdev.base.BaseWidgetFragment
-import com.intfucos.yhdev.collection.entity.RootPageRequestResult
-import com.intfucos.yhdev.constant.Params.ARG_PARAM
-import com.intfucos.yhdev.constant.Params.SU_ROOT_ID
-import com.intfucos.yhdev.module.image.ImageFragment
-import com.intfucos.yhdev.module.image.ImageModelImpl
-import com.intfucos.yhdev.module.image.ImagePresenter
-import com.intfucos.yhdev.module.options.DropOptionsFragment
-import com.intfucos.yhdev.module.options.OptionsModelImpl
-import com.intfucos.yhdev.module.options.OptionsPresenter
-import com.intfucos.yhdev.module.text.MultiTextFragment
-import com.intfucos.yhdev.module.text.TextModelImpl
-import com.intfucos.yhdev.module.text.SingleTextFragment
-import com.intfucos.yhdev.module.text.TextPresenter
+import com.intfocus.syp_template.base.BaseWidgetFragment
+import com.intfocus.syp_template.collection.entity.RootPageRequestResult
+import com.intfocus.syp_template.constant.Params.ARG_PARAM
+import com.intfocus.syp_template.constant.Params.SU_ROOT_ID
+import com.intfocus.syp_template.module.image.ImageFragment
+import com.intfocus.syp_template.module.image.ImageModelImpl
+import com.intfocus.syp_template.module.image.ImagePresenter
+import com.intfocus.syp_template.module.options.DropOptionsFragment
+import com.intfocus.syp_template.module.options.OptionsModelImpl
+import com.intfocus.syp_template.module.options.OptionsPresenter
+import com.intfocus.syp_template.module.text.MultiTextFragment
+import com.intfocus.syp_template.module.text.SingleTextFragment
+import com.intfocus.syp_template.module.text.TextModelImpl
+import com.intfocus.syp_template.module.text.TextPresenter
 import kotlinx.android.synthetic.main.fragment_root.*
 import java.util.*
 

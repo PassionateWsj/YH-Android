@@ -1,7 +1,7 @@
-package com.intfucos.yhdev.collection
+package com.intfocus.syp_template.collection
 
 import android.content.Context
-import com.intfucos.yhdev.collection.callback.LoadDataCallback
+import com.intfocus.syp_template.collection.callback.LoadDataCallback
 
 /**
  * @author liuruilin

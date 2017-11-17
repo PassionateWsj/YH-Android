@@ -1,4 +1,4 @@
-package com.intfucos.yhdev.module.text
+package com.intfocus.syp_template.module.text
 
 import com.intfocus.syp_template.general.base.BasePresenter
 import com.intfocus.syp_template.general.base.BaseView

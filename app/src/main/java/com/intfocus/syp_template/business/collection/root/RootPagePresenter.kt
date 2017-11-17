@@ -1,8 +1,8 @@
-package com.intfucos.yhdev.collection.root
+package com.intfocus.syp_template.collection.root
 
 import android.util.Log
-import com.intfucos.yhdev.collection.callback.LoadDataCallback
-import com.intfucos.yhdev.collection.entity.RootPageRequestResult
+import com.intfocus.syp_template.collection.callback.LoadDataCallback
+import com.intfocus.syp_template.collection.entity.RootPageRequestResult
 
 /**
  * @author liuruilin

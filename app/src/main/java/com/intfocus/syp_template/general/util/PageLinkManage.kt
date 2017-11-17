@@ -13,7 +13,7 @@ import com.intfocus.syp_template.business.subject.template.three.TemplateThreeAc
 import com.intfocus.syp_template.business.subject.template.two.SubjectActivity
 import com.intfocus.syp_template.business.subject.webapplication.WebApplicationActivity
 import com.intfocus.syp_template.business.subject.webapplication.WebApplicationActivityV6
-import com.intfucos.yhdev.collection.CollectionActivity
+import com.intfocus.syp_template.collection.CollectionActivity
 import com.intfocus.syp_template.general.constant.ConfigConstants
 import org.json.JSONException
 import org.json.JSONObject
