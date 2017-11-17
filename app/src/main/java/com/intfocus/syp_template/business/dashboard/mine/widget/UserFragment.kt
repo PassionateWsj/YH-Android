@@ -337,7 +337,7 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
                 .subscribe(object : CodeHandledSubscriber<BaseResult>() {
                     override fun onBusinessNext(data: BaseResult?) {
                         if (data!!.code == "200") {
-                            mUserSP.edit().putBoolean("isLogin", false).apply()
+                            mUserSP.edit().putBoolean(URLs.kIsLogin, false).apply()
 
                             val logParams = JSONObject()
                             logParams.put(URLs.kAction, "退出登录")

@@ -303,15 +303,6 @@ class LauncherActivity : Activity(), Animation.AnimationListener {
 
             override fun onFailure(errorMsg: Throwable) {
                 LogUtil.d("hjjzzsb", "更新失败")
-                LogUtil.d("hjjzzsb", "更新失败")
-                LogUtil.d("hjjzzsb", "更新失败")
-                LogUtil.d("hjjzzsb", "更新失败")
-                LogUtil.d("hjjzzsb", "更新失败")
-                LogUtil.d("hjjzzsb", "更新失败")
-                LogUtil.d("hjjzzsb", "更新失败")
-                LogUtil.d("hjjzzsb", "更新失败")
-                LogUtil.d("hjjzzsb", "更新失败")
-                LogUtil.d("hjjzzsb", "更新失败")
                 AssetsUpDateUtil.unSubscribe()
                 number_progress_bar_splash.progress = 0
                 tv_splash_status.text = "更新失败"

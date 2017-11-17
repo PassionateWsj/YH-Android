@@ -5,16 +5,17 @@ import com.alibaba.fastjson.JSONReader
 import com.intfocus.syp_template.YHApplication.globalContext
 import com.intfocus.syp_template.business.subject.template.model.ReportModelImpl
 import com.intfocus.syp_template.business.subject.templateone.entity.MererDetailEntity
+import com.intfocus.syp_template.constant.Params.REPORT_TYPE_MAIN_DATA
 import com.intfocus.syp_template.general.util.ApiHelper
 import com.intfocus.syp_template.general.util.FileUtil
 import com.intfocus.syp_template.general.util.K
-import com.intfocus.syp_template.constant.Params.REPORT_TYPE_MAIN_DATA
 import com.zbl.lib.baseframe.utils.TimeUtil
 import rx.Observable
 import rx.Subscriber
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
-import java.io.*
+import java.io.File
+import java.io.StringReader
 import java.util.*
 
 /**
@@ -26,7 +27,7 @@ import java.util.*
  * desc:
  * ****************************************************
  */
-class ModeImpl: ReportModelImpl() {
+class ModeImpl : ReportModelImpl() {
 
     companion object {
         private val TAG = "ModeImpl"
@@ -128,10 +129,10 @@ class ModeImpl: ReportModelImpl() {
                                                     moduleReader.startObject()
                                                     while (moduleReader.hasNext()) {
                                                         when (moduleReader.readString()) {
-                                                        "config" -> moduleConfig = moduleReader.readObject().toString()
+                                                            "config" -> moduleConfig = moduleReader.readObject().toString()
 
-                                                        "type" -> moduleType = moduleReader.readObject().toString()
-                                                    }
+                                                            "type" -> moduleType = moduleReader.readObject().toString()
+                                                        }
                                                     }
                                                     moduleReader.endObject()
                                                     insert(uuid, moduleConfig, moduleType, index, page)
@@ -139,7 +140,7 @@ class ModeImpl: ReportModelImpl() {
                                                 }
                                                 moduleReader.endArray()
                                             }
-                                            "title" ->  title = reader.readObject().toString()
+                                            "title" -> title = reader.readObject().toString()
                                         }
                                     }
                                     insertMainData(uuid, config, REPORT_TYPE_MAIN_DATA, title, page)
