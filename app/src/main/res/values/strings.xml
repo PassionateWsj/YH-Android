@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">永辉开发</string>
-    <string name="title_activity_main">永辉开发</string>
+    <string name="app_name">生意＋模板</string>
+    <string name="title_activity_main">生意＋模板</string>
     <string name="image_error">错误</string>
     <string name="cansel">取消</string>
     <string name="passcode_lock">启用锁屏</string>
@@ -89,4 +89,8 @@
     <string name="report_selector_hint">搜索门店名称或门店编号</string>
     <string name="hint_login_user">员工号</string>
     <string name="tip_attribution_department">归属部门</string>
+    <string name="keep_pwd">记住密码</string>
+    <string name="report_copy">报表操作</string>
+    <string name="screenLock">启用锁屏</string>
+    <string name="clear_cache">清理缓存</string>
 </resources>
