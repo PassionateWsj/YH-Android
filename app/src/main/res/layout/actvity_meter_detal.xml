@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <com.intfocus.yhdev.general.view.RootScrollView
+    <com.intfocus.syp_template.general.view.RootScrollView
         android:id="@+id/rootScrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -32,7 +32,7 @@
                 android:layout_height="wrap_content" />
 
         </LinearLayout>
-    </com.intfocus.yhdev.general.view.RootScrollView>
+    </com.intfocus.syp_template.general.view.RootScrollView>
 
     <FrameLayout
         android:id="@+id/fl_mdetal_top_suspend_container"
