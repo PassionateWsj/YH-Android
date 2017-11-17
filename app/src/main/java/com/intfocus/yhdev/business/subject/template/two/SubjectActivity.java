@@ -24,9 +24,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.webkit.JavascriptInterface;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
+import com.tencent.smtt.sdk.WebSettings;
+import com.tencent.smtt.sdk.WebView;
+import com.tencent.smtt.sdk.WebViewClient;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
@@ -76,7 +76,6 @@ import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-import static android.webkit.WebView.enableSlowWholeDocumentDraw;
 import static java.lang.String.format;
 
 public class SubjectActivity extends BaseActivity implements FilterMenuAdapter.FilterMenuListener, FilterPopupWindow.MenuLisenter, MyFilterDialogFragment.FilterListener {
@@ -121,12 +120,6 @@ public class SubjectActivity extends BaseActivity implements FilterMenuAdapter.F
     @SuppressLint("SetJavaScriptEnabled")
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        /*
-         * 判断当前设备版本，5.0 以 上 Android 系统使用才 enableSlowWholeDocumentDraw();
-		 */
-        if (Build.VERSION.SDK_INT > 20) {
-            enableSlowWholeDocumentDraw();
-        }
         setContentView(R.layout.activity_subject);
 
 
@@ -244,7 +237,7 @@ public class SubjectActivity extends BaseActivity implements FilterMenuAdapter.F
 
         mWebView.setWebViewClient(new WebViewClient() {
             @Override
-            public boolean shouldOverrideUrlLoading(android.webkit.WebView view, String url) {
+            public boolean shouldOverrideUrlLoading(com.tencent.smtt.sdk.WebView view, String url) {
                 //返回值是true的时候控制去WebView打开，为false调用系统浏览器或第三方浏览器
                 view.loadUrl(url);
                 return true;

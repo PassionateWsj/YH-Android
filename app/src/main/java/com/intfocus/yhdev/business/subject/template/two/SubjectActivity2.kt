@@ -2,8 +2,11 @@ package com.intfocus.yhdev.business.subject.template.two
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.webkit.WebView
+import com.tencent.smtt.sdk.WebView
 import com.intfocus.yhdev.R
+import com.tencent.smtt.sdk.WebSettings
+import com.tencent.smtt.sdk.WebViewClient
+import kotlinx.android.synthetic.main.activity_subject.*
 
 /**
  * @author liuruilin
@@ -45,40 +48,40 @@ class SubjectActivity2 : AppCompatActivity(), SubjectContract.View {
     }
 
     private fun initWebView() {
-//        webView = WebView(this)
-//        browser.addView(webView)
-//
-//        val webSettings = webView.settings
-//
-//        // 允许 JS 执行
-//        webSettings.javaScriptEnabled = true
-//        // 缓存模式为无缓存
-//        webSettings.cacheMode = WebSettings.LOAD_NO_CACHE
-//        webSettings.domStorageEnabled = true
-//        // 允许访问文件
-//        webSettings.allowFileAccess = true
-//        // 使用 WebView 推荐的窗口
-//        webSettings.useWideViewPort = true
-//        // 设置网页自适应屏幕大小
-//        webSettings.loadWithOverviewMode = true
-//        // 显示网页滚动条
-//        webView.isHorizontalScrollBarEnabled = false
-//        // 设置是否支持缩放
-//        webSettings.setSupportZoom(false)
-//        // 设置是否支持对网页进行长按操作
-//        webView.setOnKeyListener { _, _, _ -> return@setOnKeyListener false }
-//        // 设置网页默认编码
-//        webSettings.defaultTextEncodingName = "utf-8"
-//
-//        webView.setWebViewClient(object : WebViewClient() {
-//            override fun shouldOverrideUrlLoading(view: android.webkit.WebView, url: String): Boolean {
-//                view.loadUrl(url)
-//                return true
-//            }
-//
-//            override fun onPageFinished(view: WebView, url: String) {
-//            }
-//        })
+        webView = WebView(this)
+        browser.addView(webView)
+
+        val webSettings = webView.settings
+
+        // 允许 JS 执行
+        webSettings.javaScriptEnabled = true
+        // 缓存模式为无缓存
+        webSettings.cacheMode = WebSettings.LOAD_NO_CACHE
+        webSettings.domStorageEnabled = true
+        // 允许访问文件
+        webSettings.allowFileAccess = true
+        // 使用 WebView 推荐的窗口
+        webSettings.useWideViewPort = true
+        // 设置网页自适应屏幕大小
+        webSettings.loadWithOverviewMode = true
+        // 显示网页滚动条
+        webView.isHorizontalScrollBarEnabled = false
+        // 设置是否支持缩放
+        webSettings.setSupportZoom(false)
+        // 设置是否支持对网页进行长按操作
+        webView.setOnKeyListener { _, _, _ -> return@setOnKeyListener false }
+        // 设置网页默认编码
+        webSettings.defaultTextEncodingName = "utf-8"
+
+        webView.webViewClient = object : WebViewClient() {
+            override fun shouldOverrideUrlLoading(p0: WebView?, p1: String?): Boolean {
+                p0!!.loadUrl(url)
+                return true
+            }
+
+            override fun onPageFinished(view: WebView, url: String) {
+            }
+        }
     }
 
     override fun show(path: String) {

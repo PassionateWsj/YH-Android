@@ -26,8 +26,8 @@ class InstituteContentActivity : Activity() {
         var intent = intent
         institute_id = intent.getStringExtra("id")
         tv_banner_title.text = "数据学院"
-        var link = String.format("%s/mobile/v2/user/%s/article/%s", ConfigConstants.kBaseUrl, mUserSP.getString(K.K_USER_ID, "0").toString(), institute_id)
-//        var link = "https://ssl.sunny-tech.com/mobile_v2_group_165_template_2_report_67.html?from=groupmessage&isappinstalled=0";
+//        var link = String.format("%s/mobile/v2/user/%s/article/%s", ConfigConstants.kBaseUrl, mUserSP.getString(K.K_USER_ID, "0").toString(), institute_id)
+        var link = "http://123.59.75.85:8080/yhportal/appClientReport/personnelTracking.pdf";
         mWebView.loadUrl(link)
     }
 

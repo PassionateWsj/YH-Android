@@ -23,11 +23,11 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.JavascriptInterface;
-import android.webkit.ValueCallback;
-import android.webkit.WebChromeClient;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
+import com.tencent.smtt.sdk.ValueCallback;
+import com.tencent.smtt.sdk.WebChromeClient;
+import com.tencent.smtt.sdk.WebSettings;
+import com.tencent.smtt.sdk.WebView;
+import com.tencent.smtt.sdk.WebViewClient;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -73,7 +73,7 @@ public class BaseActivity extends FragmentActivity {
     public PopupWindow popupWindow;
     public DisplayMetrics displayMetrics;
     public boolean isWeiXinShared = false;
-    public android.webkit.WebView mWebView;
+    public com.tencent.smtt.sdk.WebView mWebView;
     public RelativeLayout animLoading;
     public String userID;
     public String urlString;
@@ -195,7 +195,7 @@ public class BaseActivity extends FragmentActivity {
         });
     }
 
-    public android.webkit.WebView initSubWebView() {
+    public com.tencent.smtt.sdk.WebView initSubWebView() {
         animLoading = (RelativeLayout) findViewById(R.id.anim_loading);
         WebSettings webSettings = mWebView.getSettings();
         webSettings.setJavaScriptEnabled(true);
@@ -213,7 +213,7 @@ public class BaseActivity extends FragmentActivity {
         mWebView.setDrawingCacheEnabled(true);
         mWebView.setWebViewClient(new WebViewClient() {
             @Override
-            public boolean shouldOverrideUrlLoading(android.webkit.WebView view, String url) {
+            public boolean shouldOverrideUrlLoading(com.tencent.smtt.sdk.WebView view, String url) {
                 //返回值是true的时候控制去WebView打开，为false调用系统浏览器或第三方浏览器
                 view.loadUrl(url);
                 return true;

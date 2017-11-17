@@ -43,9 +43,6 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import static com.intfocus.yhdev.general.constant.Constants.BUGLY_APP_ID;
-
-
 /**
  * Created by lijunjie on 16/1/15.
  */
@@ -97,7 +94,7 @@ public class YHApplication extends Application {
         QbSdk.PreInitCallback cb = new QbSdk.PreInitCallback() {
             @Override
             public void onViewInitFinished(boolean b) {
-                                //x5內核初始化完成的回调，为true表示x5内核加载成功，否则表示x5内核加载失败，会自动切换到系统内核。
+                //x5內核初始化完成的回调，为true表示x5内核加载成功，否则表示x5内核加载失败，会自动切换到系统内核。
                 Log.i("x5_app", " onViewInitFinished is " + b);
             }
 

@@ -25,11 +25,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.JavascriptInterface;
-import android.webkit.ValueCallback;
-import android.webkit.WebChromeClient;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
+import com.tencent.smtt.sdk.ValueCallback;
+import com.tencent.smtt.sdk.WebChromeClient;
+import com.tencent.smtt.sdk.WebSettings;
+import com.tencent.smtt.sdk.WebView;
+import com.tencent.smtt.sdk.WebViewClient;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -70,7 +70,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
 
-import static android.webkit.WebView.enableSlowWholeDocumentDraw;
 import static java.lang.String.format;
 
 public class WebApplicationActivity extends BaseActivity implements OnPageChangeListener, OnLoadCompleteListener, OnErrorOccurredListener {
@@ -110,12 +109,6 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        /*
-         * 判断当前设备版本，5.0 以 上 Android 系统使用才 enableSlowWholeDocumentDraw();
-		 */
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT_WATCH) {
-            enableSlowWholeDocumentDraw();
-        }
         setContentView(R.layout.activity_web_app);
 
         mContext = this;
@@ -135,7 +128,7 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
         mWebView.setWebChromeClient(new WebApplicationActivity.MyWebChromeClient());
         mWebView.setWebViewClient(new WebViewClient() {
             @Override
-            public boolean shouldOverrideUrlLoading(android.webkit.WebView view, String url) {
+            public boolean shouldOverrideUrlLoading(com.tencent.smtt.sdk.WebView view, String url) {
                 //返回值是true的时候控制去WebView打开，为false调用系统浏览器或第三方浏览器
                 view.loadUrl(url);
                 return true;
@@ -208,7 +201,7 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
     }
 
 
-    public android.webkit.WebView initWebAppWebView() {
+    public com.tencent.smtt.sdk.WebView initWebAppWebView() {
         animLoading = (RelativeLayout) findViewById(R.id.anim_loading);
         WebSettings webSettings = mWebView.getSettings();
         webSettings.setJavaScriptEnabled(true);
@@ -227,7 +220,7 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
         mWebView.setWebViewClient(new WebViewClient() {
 
             @Override
-            public boolean shouldOverrideUrlLoading(android.webkit.WebView view, String url) {
+            public boolean shouldOverrideUrlLoading(com.tencent.smtt.sdk.WebView view, String url) {
                 //返回值是true的时候控制去WebView打开，为false调用系统浏览器或第三方浏览器
                 view.loadUrl(url);
                 return true;
@@ -285,6 +278,7 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
         }
 
         // Android 4.0 - 4.4.4
+        @Override
         public void openFileChooser(ValueCallback<Uri> uploadMsg, String acceptType, String capture) {
             mUploadMessage = uploadMsg;
             showOptions();

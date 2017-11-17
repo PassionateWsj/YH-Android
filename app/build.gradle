@@ -17,9 +17,9 @@ android {
         versionCode 1
         versionName "1.0.0"
 
+        //X5兼容64位手机
         ndk {
-            // 设置支持的SO库架构
-            abiFilters "armeabi", 'arm64-v8a', "x86", "mips"
+            abiFilters "armeabi", "armeabi-v7a", "x86", "mips"
         }
         javaCompileOptions {
             annotationProcessorOptions {
@@ -148,11 +148,10 @@ dependencies {
     implementation 'com.daimajia.numberprogressbar:library:1.4@aar'
     compileOnly 'com.tinkerpatch.tinker:tinker-android-anno:1.8.0'
     implementation 'com.tinkerpatch.sdk:tinkerpatch-android-sdk:1.1.8'
-
     // greenDAO
     implementation "org.greenrobot:greendao:$rootProject.greenDAO_version"
-
     implementation 'com.squareup.retrofit2:converter-scalars:2.0.0'
+    implementation files('libs/tbs_sdk_3.5.jar')
 }
 
 greendao {
