@@ -10,7 +10,7 @@ android {
     compileSdkVersion 26
     buildToolsVersion '26.0.2'
     defaultConfig {
-        applicationId 'com.intfocus.syp_template'
+        applicationId 'com.intfocus.yhdev'
         minSdkVersion 19
         targetSdkVersion 26
         multiDexEnabled false
@@ -156,7 +156,7 @@ dependencies {
 
 greendao {
     schemaVersion 1
-    daoPackage 'com.intfocus.syp_template.general.gen'
+    daoPackage 'com.intfocus.yhdev.general.gen'
     targetGenDir 'src/main/java'
 }
 
