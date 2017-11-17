@@ -3,6 +3,7 @@ package com.intfocus.syp_template.business.subject.template.two
 import android.text.TextUtils
 import android.util.Log
 import com.intfocus.syp_template.YHApplication.globalContext
+import com.intfocus.syp_template.YHApplication.threadPool
 import com.intfocus.syp_template.business.subject.template.model.ReportModelImpl
 import com.intfocus.syp_template.general.constant.ConfigConstants
 import com.intfocus.syp_template.general.util.*
@@ -23,7 +24,8 @@ import java.util.HashMap
  * @describe
  */
 class SubjectModelImpl : ReportModelImpl() {
-    private var url = ""
+    private var jsUrl = ""
+    private var htmlUrl = ""
     private var jsFileName = ""
 
     companion object {
@@ -53,16 +55,17 @@ class SubjectModelImpl : ReportModelImpl() {
      * 检测报表是否需要更新数据
      */
     fun checkReportData(reportId: String, templateId: String, groupId: String, callback: LoadDataCallback<String>) {
-        url = String.format(K.K_REPORT_ZIP_DATA, ConfigConstants.kBaseUrl, URLs.MD5(K.ANDROID_API_KEY + K.K_REPORT_BASE_API + K.ANDROID_API_KEY), groupId, templateId, reportId)
+        jsUrl = String.format(K.K_REPORT_ZIP_DATA, ConfigConstants.kBaseUrl, URLs.MD5(K.ANDROID_API_KEY + K.K_REPORT_BASE_API + K.ANDROID_API_KEY), groupId, templateId, reportId)
         jsFileName = String.format("group_%s_template_%s_report_%s.js", groupId, templateId, reportId)
+        htmlUrl = String.format(K.K_REPORT_HTML, ConfigConstants.kBaseUrl, groupId, templateId, reportId)
 
         Observable.just(jsFileName)
                 .subscribeOn(Schedulers.io())
                 .map {
                     var htmlResponse = generateHtml()
-                    var htmlPath = htmlResponse["path"]?: ""
+                    var htmlPath = htmlResponse["path"] ?: ""
                     if (htmlPath.isNotEmpty()) {
-                        if (checkUpdate(url)) {
+                        if (checkUpdate(jsUrl)) {
                             getData(callback)
                         }
                     }
@@ -90,7 +93,7 @@ class SubjectModelImpl : ReportModelImpl() {
     fun getData(callback: LoadDataCallback<String>) {
         var assetsPath = FileUtil.sharedPath(globalContext)
         var outputPath = FileUtil.dirPath(globalContext, K.K_CACHED_DIR_NAME, String.format("%s.zip", jsFileName))
-        var response = download(url, outputPath)
+        var response = download(jsUrl, outputPath)
 
         //添加code字段是否存在。原因:网络不好的情况下response为{}
         if (!response.containsKey(URLs.kCode) || !response[URLs.kCode].equals("200")) {
@@ -103,7 +106,7 @@ class SubjectModelImpl : ReportModelImpl() {
 
             val javascriptPath = String.format("%s/assets/javascripts/%s", assetsPath, jsZipFileName.replace(".zip", ""))
 
-            ApiHelper.storeResponseHeader(url, response)
+            ApiHelper.storeResponseHeader(jsUrl, response)
 
             val zipStream = FileInputStream(outputPath)
             FileUtil.unZip(zipStream, FileUtil.dirPath(globalContext, K.K_CACHED_DIR_NAME), true)
@@ -134,26 +137,29 @@ class SubjectModelImpl : ReportModelImpl() {
      */
     private fun generateHtml(): Map<String, String> {
         var retMap = HashMap<String, String>(16)
-        var htmlName = HttpUtil.urlToFileName(url)
+        var htmlName = HttpUtil.urlToFileName(htmlUrl)
         var htmlPath = String.format("%s/%s", FileUtil.dirPath(globalContext, K.K_HTML_DIR_NAME), htmlName)
         val relativeAssetsPath = "../../Shared/assets"
-        val urlKey = if (url.contains("?")) TextUtils.split(url, "?")[0] else url
 
-        val headers = ApiHelper.checkResponseHeader(urlKey)
-        val response = HttpUtil.httpGet(globalContext, urlKey, headers)
+        val headers = ApiHelper.checkResponseHeader(htmlUrl)
+        val response = HttpUtil.httpGet(globalContext, htmlUrl, headers)
         val statusCode = response[URLs.kCode] ?: "400"
         var htmlContent = response[URLs.kBody] ?: ""
         retMap.put(URLs.kCode, statusCode)
 
-        if (statusCode == "200" && htmlContent.isNotEmpty()) {
-            File(htmlPath).delete()
-            ApiHelper.storeResponseHeader(urlKey, response)
+        when(statusCode) {
+            "200" -> {
+                File(htmlPath).delete()
+                ApiHelper.storeResponseHeader(htmlUrl, response)
 
-            htmlContent = htmlContent!!.replace("/javascripts/", String.format("%s/javascripts/", relativeAssetsPath))
-            htmlContent = htmlContent.replace("/stylesheets/", String.format("%s/stylesheets/", relativeAssetsPath))
-            htmlContent = htmlContent.replace("/images/", String.format("%s/images/", relativeAssetsPath))
-            FileUtil.writeFile(htmlPath, htmlContent)
-            retMap.put("path", htmlPath)
+                htmlContent = htmlContent!!.replace("/javascripts/", String.format("%s/javascripts/", relativeAssetsPath))
+                htmlContent = htmlContent.replace("/stylesheets/", String.format("%s/stylesheets/", relativeAssetsPath))
+                htmlContent = htmlContent.replace("/images/", String.format("%s/images/", relativeAssetsPath))
+                FileUtil.writeFile(htmlPath, htmlContent)
+                retMap.put("path", htmlPath)
+            }
+            "304" -> {retMap.put("path", htmlPath)}
+            else -> {}
         }
 
         return retMap

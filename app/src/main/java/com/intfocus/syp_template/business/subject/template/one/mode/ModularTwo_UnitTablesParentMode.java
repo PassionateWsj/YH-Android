@@ -44,7 +44,7 @@ public class ModularTwo_UnitTablesParentMode extends AbstractMode {
     /**
      * 解析数据
      *
-     * @param result
+     * result
      */
     public void analysisData(final String uuid, final int index) {
 

@@ -232,6 +232,11 @@ public class K  implements Serializable {
      * 推送设备 push_token
      */
     public final static String K_PUSH_TOKEN = "/api/v1.1/device/push_token";
+
+    /**
+     * 报表 Html 数据
+     */
+    public final static String K_REPORT_HTML = "%s/mobile/v2/group/%s/template/%s/report/%s";
     /**
      * 报表 Zip 数据
      */

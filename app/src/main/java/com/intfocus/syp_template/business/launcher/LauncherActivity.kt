@@ -73,7 +73,7 @@ class LauncherActivity : Activity(), Animation.AnimationListener {
         val permissionsList = permissionsArray.filter { ContextCompat.checkSelfPermission(this, it) != PackageManager.PERMISSION_GRANTED }
         if (!permissionsList.isEmpty()) {
             ActivityCompat.requestPermissions(this, permissionsList.toTypedArray(), CODE_AUTHORITY_REQUEST)
-        } else  {
+        } else {
             initShow()
             initData()
             initListener()
@@ -172,26 +172,38 @@ class LauncherActivity : Activity(), Animation.AnimationListener {
     }
 
     private fun confirmNetWorkToUpdateAssets(isDefaultStart: Boolean) {
-        if (HttpUtil.isConnected(ctx) && (isDefaultStart || rl_splash_container.isClickable)) {
-            LogUtil.d("sadfafsdafsd", "adfsafdsafdsdafssfdfa")
-            LogUtil.d("sadfafsdafsd:::isClickable", "" + rl_splash_container.isClickable)
-            LogUtil.d("sadfafsdafsd:::isDefaultStart", "" + isDefaultStart)
-            rl_splash_container.isClickable = false
-            tv_splash_status.text = "正在下载报表样式文件.."
-            firstUnZipAssets()
+        confirmNetWorkToUpdateAssets(isDefaultStart, "")
+    }
+
+    private fun confirmNetWorkToUpdateAssets(isDefaultStart: Boolean, errorMsg: String) {
+        if (HttpUtil.isConnected(ctx)) {
+            if (isDefaultStart || rl_splash_container.isClickable) {
+                LogUtil.d("hjjzzsb", "adfsafdsafdsdafssfdfa")
+                LogUtil.d("hjjzzsb:::isClickable", "" + rl_splash_container.isClickable)
+                LogUtil.d("hjjzzsb:::isDefaultStart", "" + isDefaultStart)
+                rl_splash_container.isClickable = false
+                tv_splash_status.text = "正在下载报表样式文件.."
+                firstUnZipAssets()
+            } else {
+                showUpdateAssetsErrorDetail(errorMsg)
+            }
         } else {
-            rl_splash_container.isClickable = true
-            toast_view.visibility = View.VISIBLE
-            toast_text.text = "请检查网络"
-            tv_splash_status.text = "点击屏幕重试"
-            Timer().schedule(object : TimerTask() {
-                override fun run() {
-                    runOnUiThread {
-                        toast_view.visibility = View.GONE
-                    }
-                }
-            }, 2000)
+            showUpdateAssetsErrorDetail("请检查网络")
         }
+    }
+
+    private fun showUpdateAssetsErrorDetail(errorMsg: String) {
+        toast_view.visibility = View.VISIBLE
+        tv_splash_status.text = "点击屏幕重试"
+        rl_splash_container.isClickable = true
+        toast_text.text = errorMsg
+        Timer().schedule(object : TimerTask() {
+            override fun run() {
+                runOnUiThread {
+                    toast_view.visibility = View.GONE
+                }
+            }
+        }, 2000)
     }
 
     /**
@@ -264,7 +276,7 @@ class LauncherActivity : Activity(), Animation.AnimationListener {
                     checkAssets()
                 }
 
-                override fun onFailure() {
+                override fun onFailure(errorMsg: Throwable) {
                 }
             })
         } else {
@@ -277,15 +289,34 @@ class LauncherActivity : Activity(), Animation.AnimationListener {
         AssetsUpDateUtil.checkAssetsUpdate(ctx, number_progress_bar_splash, object : OnCheckAssetsUpdateResultListener {
             override fun onResultSuccess() {
                 LogUtil.d("hjjzz", "onResultSuccess:::" + Thread.currentThread().name)
-                tv_splash_status.text = "已是最新资源"
-                enter()
+                if (number_progress_bar_splash.progress == 80) {
+                    number_progress_bar_splash.progress += 20
+                    tv_splash_status.text = "已是最新资源"
+                    enter()
+                } else {
+                    number_progress_bar_splash.progress = 0
+                    tv_splash_status.text = "更新失败"
+//                    Thread.sleep(2000)
+//                    confirmNetWorkToUpdateAssets(false,"资源更新失败")
+                }
             }
 
-            override fun onFailure() {
+            override fun onFailure(errorMsg: Throwable) {
+                LogUtil.d("hjjzzsb", "更新失败")
+                LogUtil.d("hjjzzsb", "更新失败")
+                LogUtil.d("hjjzzsb", "更新失败")
+                LogUtil.d("hjjzzsb", "更新失败")
+                LogUtil.d("hjjzzsb", "更新失败")
+                LogUtil.d("hjjzzsb", "更新失败")
+                LogUtil.d("hjjzzsb", "更新失败")
+                LogUtil.d("hjjzzsb", "更新失败")
+                LogUtil.d("hjjzzsb", "更新失败")
+                LogUtil.d("hjjzzsb", "更新失败")
+                AssetsUpDateUtil.unSubscribe()
                 number_progress_bar_splash.progress = 0
                 tv_splash_status.text = "更新失败"
-                Thread.sleep(2000)
-                confirmNetWorkToUpdateAssets(false)
+//                Thread.sleep(2000)
+                confirmNetWorkToUpdateAssets(false, errorMsg.message ?: "资源更新出错")
             }
         })
     }

@@ -19,6 +19,7 @@ android {
 
         //X5兼容64位手机
         ndk {
+            // 设置支持的SO库架构
             abiFilters "armeabi", "armeabi-v7a", "x86", "mips"
         }
         javaCompileOptions {
@@ -85,8 +86,8 @@ dependencies {
     implementation 'com.android.support:appcompat-v7:' + SUPPORT_VERSION
     implementation 'com.android.support:support-v4:' + SUPPORT_VERSION
     implementation 'com.android.support:design:' + SUPPORT_VERSION
-    //PDF 阅读
-    implementation project(':android-pdfview')
+//    //PDF 阅读
+    compile 'com.github.barteksc:android-pdf-viewer:2.8.1'
     //模板三相关
     implementation project(':HomeMetrics')
     //模板二/KPI 图标

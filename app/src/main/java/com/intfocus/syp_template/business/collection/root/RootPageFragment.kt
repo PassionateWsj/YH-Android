@@ -22,8 +22,8 @@ import com.intfocus.syp_template.module.options.DropOptionsFragment
 import com.intfocus.syp_template.module.options.OptionsModelImpl
 import com.intfocus.syp_template.module.options.OptionsPresenter
 import com.intfocus.syp_template.module.text.MultiTextFragment
-import com.intfocus.syp_template.module.text.TextModelImpl
 import com.intfocus.syp_template.module.text.SingleTextFragment
+import com.intfocus.syp_template.module.text.TextModelImpl
 import com.intfocus.syp_template.module.text.TextPresenter
 import kotlinx.android.synthetic.main.fragment_root.*
 import java.util.*

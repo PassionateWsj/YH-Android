@@ -65,11 +65,15 @@ class LoginActivity : FragmentActivity() {
     private var mUserSP: SharedPreferences? = null
     private var mUserSPEdit: SharedPreferences.Editor? = null
     private var mPushSP: SharedPreferences? = null
+    private var mSettingSP: SharedPreferences? = null
+    private var mSettingSPEdit: SharedPreferences.Editor? = null
     private var mProgressDialog: ProgressDialog? = null
     private var logParams = JSONObject()
     private var ctx: Context? = null
     private var assetsPath: String? = null
     private var sharedPath: String? = null
+    private var loginWithLastPwd = false
+    private var loginWithLastUser = false
     /**
      * 最短点击间隔时长 ms
      */
@@ -82,6 +86,8 @@ class LoginActivity : FragmentActivity() {
 
         mUserSP = getSharedPreferences("UserBean", Context.MODE_PRIVATE)
         mPushSP = getSharedPreferences("PushMessage", Context.MODE_PRIVATE)
+        mSettingSP = getSharedPreferences("SettingPreference", Context.MODE_PRIVATE)
+        mSettingSPEdit = mSettingSP!!.edit()
         mUserSPEdit = mUserSP!!.edit()
 
         ctx = this
@@ -96,12 +102,21 @@ class LoginActivity : FragmentActivity() {
 
         initShow()
 
+        loginWithLastPwd = mSettingSP!!.getBoolean("keep_pwd", false)
+        // 显示记住用户名称
+        if ("" != mUserSP!!.getString("user_num", "")) {
+            etUsername.setText(mUserSP!!.getString("user_num", ""))
+//            loginWithLastUser = true
+        }
+        if (loginWithLastPwd) {
+            etPassword!!.setText("1234567890")
+            cb_login_keep_pwd.isChecked = true
+//            ll_etPassword_clear.visibility = View.GONE
+        }
         // 初始化监听
         initListener()
 
 
-        // 显示记住用户名称
-        etUsername.setText(mUserSP!!.getString("user_num", ""))
     }
 
     private fun initShow() {
@@ -193,12 +208,22 @@ class LoginActivity : FragmentActivity() {
 
             }
 
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
 
-            override fun afterTextChanged(s: Editable) = if (s.toString().isNotEmpty()) {
-                ll_etUsername_clear.visibility = View.VISIBLE
-            } else {
-                ll_etUsername_clear.visibility = View.GONE
+            }
+
+            override fun afterTextChanged(s: Editable) {
+//                if (loginWithLastPwd && loginWithLastUser) {
+                etPassword.setText("")
+                ll_etPassword_clear.visibility = View.GONE
+                cb_login_keep_pwd.isChecked = false
+                loginWithLastPwd = false
+//                }
+                if (s.toString().isNotEmpty()) {
+                    ll_etUsername_clear.visibility = View.VISIBLE
+                } else {
+                    ll_etUsername_clear.visibility = View.GONE
+                }
             }
         })
 
@@ -222,12 +247,18 @@ class LoginActivity : FragmentActivity() {
 
             }
 
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+//                if ( ) {
+//                }
+                loginWithLastPwd = false
+            }
 
-            override fun afterTextChanged(s: Editable) = if (s.toString().isNotEmpty()) {
-                ll_etPassword_clear.visibility = View.VISIBLE
-            } else {
-                ll_etPassword_clear.visibility = View.GONE
+            override fun afterTextChanged(s: Editable) {
+                if (s.toString().isNotEmpty()) {
+                    ll_etPassword_clear.visibility = View.VISIBLE
+                } else {
+                    ll_etPassword_clear.visibility = View.GONE
+                }
             }
         })
 
@@ -272,6 +303,7 @@ class LoginActivity : FragmentActivity() {
     }
 
     override fun onDestroy() {
+        LogUtil.e(LogUtil.TAG,"LoginActivity ::: onDestroy")
         PgyUpdateManager.unregister()
         super.onDestroy()
     }
@@ -293,7 +325,7 @@ class LoginActivity : FragmentActivity() {
     }
 
     /**
-     * 登录按钮点击事件
+     * 登录按钮点击事件  cb_login_keep_pwd
      */
     fun actionSubmit(v: View) {
         try {
@@ -318,9 +350,13 @@ class LoginActivity : FragmentActivity() {
             mUserSPEdit!!.putString(K.K_APP_VERSION, String.format("a%s", packageInfo.versionName))
             mUserSPEdit!!.putString("os_version", "android" + Build.VERSION.RELEASE)
             mUserSPEdit!!.putString("device_info", android.os.Build.MODEL).apply()
-
+            val loginPwd = if (loginWithLastPwd) {
+                mUserSP!!.getString("password", "")
+            } else {
+                URLs.MD5(userPass)
+            }
             // 登录验证
-            RetrofitUtil.getHttpService(ctx).userLogin(userNum, URLs.MD5(userPass), mUserSP!!.getString("location", "0,0"))
+            RetrofitUtil.getHttpService(ctx).userLogin(userNum, loginPwd, mUserSP!!.getString("location", "0,0"))
                     .compose(RetrofitUtil.CommonOptions())
                     .subscribe(object : CodeHandledSubscriber<NewUser>() {
 
@@ -352,7 +388,16 @@ class LoginActivity : FragmentActivity() {
                          * @param data 返回的数据
                          */
                         override fun onBusinessNext(data: NewUser) {
-                            mUserSPEdit!!.putString("password", URLs.MD5(userPass))
+                            when {
+                                cb_login_keep_pwd.isChecked && !loginWithLastPwd -> {
+                                    mSettingSPEdit!!.putBoolean("keep_pwd", true).apply()
+                                    mUserSPEdit!!.putString("password", URLs.MD5(userPass))
+                                }
+                                !cb_login_keep_pwd.isChecked -> {
+                                    mSettingSPEdit!!.putBoolean("keep_pwd", false).apply()
+                                }
+                            }
+
                             upLoadDevice() //上传设备信息
 
                             mUserSPEdit!!.putBoolean(URLs.kIsLogin, true)
@@ -375,21 +420,24 @@ class LoginActivity : FragmentActivity() {
                             } else {
                                 // 检测用户空间，版本是否升级版本是否升级
                                 FileUtil.checkVersionUpgrade(ctx, assetsPath, sharedPath)
-
-                                val pageLinkManagerSP = this@LoginActivity.getSharedPreferences("PageLinkManager", Context.MODE_PRIVATE)
-                                val pageSaved = pageLinkManagerSP.getBoolean("pageSaved", false)
-                                if (false) {
-                                    val objTitle = pageLinkManagerSP.getString("objTitle", "")
-                                    val link = pageLinkManagerSP.getString("link", "")
-                                    val objectId = pageLinkManagerSP.getString("objectId", "")
-                                    val templateId = pageLinkManagerSP.getString("templateId", "")
-                                    val objectType = pageLinkManagerSP.getString("objectType", "")
-                                    PageLinkManage.pageLink(this@LoginActivity, objTitle, link, objectId, templateId, objectType)
+                                // 在报表页面结束应用，再次登录时是否自动跳转上次报表页面
+                                if (ConfigConstants.REVIEW_LAST_PAGE) {
+                                    val pageLinkManagerSP = this@LoginActivity.getSharedPreferences("PageLinkManager", Context.MODE_PRIVATE)
+                                    val pageSaved = pageLinkManagerSP.getBoolean("pageSaved", false)
+                                    if (pageSaved) {
+                                        val objTitle = pageLinkManagerSP.getString("objTitle", "")
+                                        val link = pageLinkManagerSP.getString("link", "")
+                                        val objectId = pageLinkManagerSP.getString("objectId", "")
+                                        val templateId = pageLinkManagerSP.getString("templateId", "")
+                                        val objectType = pageLinkManagerSP.getString("objectType", "")
+                                        PageLinkManage.pageLink(this@LoginActivity, objTitle, link, objectId, templateId, objectType)
+                                    } else {
+                                        // 跳转至主界面
+                                        this@LoginActivity.startActivity(Intent(this@LoginActivity, DashboardActivity::class.java))
+                                    }
                                 } else {
                                     // 跳转至主界面
-                                    val intent = Intent(this@LoginActivity, DashboardActivity::class.java)
-//                                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                                    this@LoginActivity.startActivity(intent)
+                                    this@LoginActivity.startActivity(Intent(this@LoginActivity, DashboardActivity::class.java))
                                 }
                             }
 
@@ -487,7 +535,7 @@ class LoginActivity : FragmentActivity() {
      * 偶数: 正式版本，点击安装更新
      */
     fun checkPgyerVersionUpgrade(activity: Activity, isShowToast: Boolean) {
-        PgyUpdateManager.register(activity, "com.intfocus.yh_android.fileprovider", object : UpdateManagerListener() {
+        PgyUpdateManager.register(activity, "com.intfocus.syp_template.fileprovider", object : UpdateManagerListener() {
             override fun onUpdateAvailable(result: String?) {
                 try {
                     val appBean = UpdateManagerListener.getAppBeanFromString(result)

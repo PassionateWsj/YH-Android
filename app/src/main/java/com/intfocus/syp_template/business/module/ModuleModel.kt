@@ -1,8 +1,6 @@
 package com.intfocus.syp_template.module
 
 import com.intfocus.syp_template.collection.callback.LoadDataCallback
-import com.intfocus.syp_template.module.image.ImageEntity
-import com.intfocus.syp_template.module.text.TextEntity
 
 /**
  * @author liuruilin

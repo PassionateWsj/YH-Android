@@ -166,6 +166,7 @@
         <!-- 模板二/主题页面 -->
         <activity
             android:name="com.intfocus.syp_template.business.subject.template.two.SubjectActivity"
+
             android:configChanges="orientation|screenSize"
             android:screenOrientation="fullSensor"
             android:theme="@style/AppTheme"/>
@@ -173,6 +174,7 @@
         <!-- 模板二/主题页面 -->
         <activity
             android:name="com.intfocus.syp_template.business.subject.template.two.SubjectActivity2"
+
             android:configChanges="orientation|screenSize"
             android:screenOrientation="fullSensor"
             android:theme="@style/AppTheme"/>

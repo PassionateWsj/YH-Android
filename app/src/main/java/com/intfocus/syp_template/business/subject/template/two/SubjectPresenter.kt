@@ -24,7 +24,7 @@ class SubjectPresenter(
             "2", "4" -> {
                 mModel.checkReportData(reportId, templateId, groupId, object: LoadDataCallback<String>{
                     override fun onSuccess(path: String) {
-                        mView.show(path)
+                        mView.show("file://" + path)
                     }
 
                     override fun onError(e: Throwable) {

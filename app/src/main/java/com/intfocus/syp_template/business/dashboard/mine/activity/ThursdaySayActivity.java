@@ -10,6 +10,9 @@ import com.tencent.smtt.sdk.WebView;
 
 import com.intfocus.syp_template.R;
 import com.intfocus.syp_template.general.base.BaseActivity;
+import com.intfocus.syp_template.general.constant.ConfigConstants;
+import com.intfocus.syp_template.general.util.K;
+import com.intfocus.syp_template.general.util.URLs;
 
 /**
  * Created by 40284 on 2016/9/10.

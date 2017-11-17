@@ -42,6 +42,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.barteksc.pdfviewer.PDFView;
+import com.github.barteksc.pdfviewer.listener.OnLoadCompleteListener;
+import com.github.barteksc.pdfviewer.listener.OnPageChangeListener;
+import com.github.barteksc.pdfviewer.listener.OnPageErrorListener;
+import com.github.barteksc.pdfviewer.scroll.DefaultScrollHandle;
 import com.intfocus.syp_template.R;
 import com.intfocus.syp_template.business.dashboard.mine.adapter.FilterMenuAdapter;
 import com.intfocus.syp_template.general.CommentActivity;
@@ -62,10 +67,6 @@ import com.intfocus.syp_template.general.util.PageLinkManage;
 import com.intfocus.syp_template.general.util.ToastUtils;
 import com.intfocus.syp_template.general.util.URLs;
 import com.intfocus.syp_template.general.view.addressselector.FilterPopupWindow;
-import com.joanzapata.pdfview.PDFView;
-import com.joanzapata.pdfview.listener.OnErrorOccurredListener;
-import com.joanzapata.pdfview.listener.OnLoadCompleteListener;
-import com.joanzapata.pdfview.listener.OnPageChangeListener;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.UMShareListener;
@@ -88,7 +89,7 @@ import retrofit2.Response;
 
 import static java.lang.String.format;
 
-public class WebApplicationActivityV6 extends BaseActivity implements OnPageChangeListener, OnLoadCompleteListener, OnErrorOccurredListener
+public class WebApplicationActivityV6 extends BaseActivity implements OnPageChangeListener, OnLoadCompleteListener, OnPageErrorListener
         , FilterMenuAdapter.FilterMenuListener, FilterPopupWindow.MenuLisenter, MyFilterDialogFragment.FilterListener {
     @ViewInject(R.id.ll_shaixuan)
     LinearLayout llShaixuan;
@@ -413,6 +414,7 @@ public class WebApplicationActivityV6 extends BaseActivity implements OnPageChan
         }
     }
 
+
     public class MyWebChromeClient extends WebChromeClient {
         // Android 5.0 以上
         @Override
@@ -568,34 +570,63 @@ public class WebApplicationActivityV6 extends BaseActivity implements OnPageChan
     }
 
     @Override
-    public void errorOccured(String errorType, String errorMessage) {
-        String htmlPath = String.format("%s/loading/%s.html", sharedPath, "500"),
-                outputPath = String.format("%s/loading/%s.html", sharedPath, "500.output");
-
-        if (!(new File(htmlPath)).exists()) {
+    public void onPageError(int page, Throwable t) {
+//        String htmlPath = String.format("%s/loading/%s.html", sharedPath, "500"),
+//                outputPath = String.format("%s/loading/%s.html", sharedPath, "500.output");
+//
+//        if (!(new File(htmlPath)).exists()) {
             ToastUtils.INSTANCE.show(mContext, String.format("链接打开失败: %s", link));
-            return;
-        }
-
-        mWebView.setVisibility(View.VISIBLE);
-        mPDFView.setVisibility(View.INVISIBLE);
-
-        String htmlContent = FileUtil.readFile(htmlPath);
-        htmlContent = htmlContent.replace("$exception_type$", errorType);
-        htmlContent = htmlContent.replace("$exception_message$", errorMessage);
-        htmlContent = htmlContent.replace("$visit_url$", link);
-        try {
-            FileUtil.writeFile(outputPath, htmlContent);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        Message message = mHandlerWithAPI.obtainMessage();
-        message.what = 200;
-        message.obj = outputPath;
-
-        mHandlerWithAPI.sendMessage(message);
+//            return;
+//        }
+//
+//        mWebView.setVisibility(View.VISIBLE);
+//        mPDFView.setVisibility(View.INVISIBLE);
+//
+//        String htmlContent = FileUtil.readFile(htmlPath);
+//        htmlContent = htmlContent.replace("$exception_type$", errorType);
+//        htmlContent = htmlContent.replace("$exception_message$", errorMessage);
+//        htmlContent = htmlContent.replace("$visit_url$", link);
+//        try {
+//            FileUtil.writeFile(outputPath, htmlContent);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//
+//        Message message = mHandlerWithAPI.obtainMessage();
+//        message.what = 200;
+//        message.obj = outputPath;
+//
+//        mHandlerWithAPI.sendMessage(message);
     }
+//    @Override
+//    public void errorOccured(String errorType, String errorMessage) {
+//        String htmlPath = String.format("%s/loading/%s.html", sharedPath, "500"),
+//                outputPath = String.format("%s/loading/%s.html", sharedPath, "500.output");
+//
+//        if (!(new File(htmlPath)).exists()) {
+//            ToastUtils.INSTANCE.show(mContext, String.format("链接打开失败: %s", link));
+//            return;
+//        }
+//
+//        mWebView.setVisibility(View.VISIBLE);
+//        mPDFView.setVisibility(View.INVISIBLE);
+//
+//        String htmlContent = FileUtil.readFile(htmlPath);
+//        htmlContent = htmlContent.replace("$exception_type$", errorType);
+//        htmlContent = htmlContent.replace("$exception_message$", errorMessage);
+//        htmlContent = htmlContent.replace("$visit_url$", link);
+//        try {
+//            FileUtil.writeFile(outputPath, htmlContent);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//
+//        Message message = mHandlerWithAPI.obtainMessage();
+//        message.what = 200;
+//        message.obj = outputPath;
+//
+//        mHandlerWithAPI.sendMessage(message);
+//   }
 
     private void loadHtml() {
         urlString = link;
@@ -623,15 +654,24 @@ public class WebApplicationActivityV6 extends BaseActivity implements OnPageChan
         public void handleMessage(Message message) {
             //Log.i("PDF", pdfFile.getAbsolutePath());
             if (pdfFile.exists()) {
+//                mPDFView.fromFile(pdfFile)
+//                        .defaultPage(1)
+//                        .showMinimap(true)
+//                        .swipeVertical(true)
+//                        .onLoad(WebApplicationActivityV6.this)
+//                        .onPageChange(WebApplicationActivityV6.this)
+//                        .onPageError(WebApplicationActivityV6.this)
+//                        .load();
                 mPDFView.fromFile(pdfFile)
-                        .defaultPage(1)
-                        .showMinimap(true)
-                        .enableSwipe(true)
-                        .swipeVertical(true)
-                        .onLoad(WebApplicationActivityV6.this)
+                        .defaultPage(0)
                         .onPageChange(WebApplicationActivityV6.this)
-                        .onErrorOccured(WebApplicationActivityV6.this)
+                        .enableAnnotationRendering(true)
+                        .onLoad(WebApplicationActivityV6.this)
+                        .scrollHandle(new DefaultScrollHandle(WebApplicationActivityV6.this))
+                        .spacing(10) // in dp
+                        .onPageError(WebApplicationActivityV6.this)
                         .load();
+
                 mWebView.setVisibility(View.INVISIBLE);
                 mPDFView.setVisibility(View.VISIBLE);
             } else {
@@ -1103,7 +1143,7 @@ public class WebApplicationActivityV6 extends BaseActivity implements OnPageChan
         if (FileUtil.hasSdcard()) {
             Uri imageUri;
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                imageUri = FileProvider.getUriForFile(this, "com.intfocus.yh_android.fileprovider", new File(Environment.getExternalStorageDirectory(), "upload.jpg"));
+                imageUri = FileProvider.getUriForFile(this, "com.intfocus.syp_template.fileprovider", new File(Environment.getExternalStorageDirectory(), "upload.jpg"));
                 intentFromCapture.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 intentFromCapture.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
             } else {

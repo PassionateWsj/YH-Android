@@ -40,7 +40,7 @@ public class ImageUtil {
         if (FileUtil.hasSdcard()) {
             Uri imageUri;
             if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                imageUri = FileProvider.getUriForFile(context, "com.intfocus.yh_android.fileprovider", new File(Environment.getExternalStorageDirectory(), "icon.jpg"));
+                imageUri = FileProvider.getUriForFile(context, "com.intfocus.syp_template.fileprovider", new File(Environment.getExternalStorageDirectory(), "icon.jpg"));
                 intentFromCapture.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 intentFromCapture.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
             } else {
