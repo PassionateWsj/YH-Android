@@ -1,5 +1,4 @@
-include ':app', ':android-pdfview', ':HomeMetrics', ':switchText', ':jgraph', ':PushSDK'
-project(':android-pdfview').projectDir = new File('libs/android-pdfview')
+include ':app', ':HomeMetrics', ':switchText', ':jgraph', ':PushSDK'
 project(':HomeMetrics').projectDir = new File('libs/HomeMetrics')
 project(':switchText').projectDir = new File('libs/switchText')
 project(':jgraph').projectDir = new File('libs/jgraph')
