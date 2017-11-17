@@ -14,6 +14,6 @@ interface SubjectContract {
     }
 
     interface Presenter: BasePresenter {
-        fun load(reportId: String, templateId: String, groupId: String, url: String)
+        fun load(reportId: String, templateId: String, groupId: String)
     }
 }

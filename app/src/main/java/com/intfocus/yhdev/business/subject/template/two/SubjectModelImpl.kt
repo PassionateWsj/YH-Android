@@ -49,6 +49,9 @@ class SubjectModelImpl : ReportModelImpl() {
         }
     }
 
+    /**
+     * 检测报表是否需要更新数据
+     */
     fun checkReportData(reportId: String, templateId: String, groupId: String, callback: LoadDataCallback<String>) {
         url = String.format(K.K_REPORT_ZIP_DATA, ConfigConstants.kBaseUrl, URLs.MD5(K.ANDROID_API_KEY + K.K_REPORT_BASE_API + K.ANDROID_API_KEY), groupId, templateId, reportId)
         jsFileName = String.format("group_%s_template_%s_report_%s.js", groupId, templateId, reportId)
@@ -81,6 +84,9 @@ class SubjectModelImpl : ReportModelImpl() {
                 })
     }
 
+    /**
+     * 获取报表最新数据
+     */
     fun getData(callback: LoadDataCallback<String>) {
         var assetsPath = FileUtil.sharedPath(globalContext)
         var outputPath = FileUtil.dirPath(globalContext, K.K_CACHED_DIR_NAME, String.format("%s.zip", jsFileName))
@@ -123,6 +129,9 @@ class SubjectModelImpl : ReportModelImpl() {
         }
     }
 
+    /**
+     * 下载报表 html 页面
+     */
     private fun generateHtml(): Map<String, String> {
         var retMap = HashMap<String, String>(16)
         var htmlName = HttpUtil.urlToFileName(url)

@@ -19,7 +19,7 @@ class SubjectPresenter(
     override fun start() {
     }
 
-    override fun load(reportId: String, templateId: String, groupId: String, url: String) {
+    override fun load(reportId: String, templateId: String, groupId: String) {
         when(templateId) {
             "2", "4" -> {
                 mModel.checkReportData(reportId, templateId, groupId, object: LoadDataCallback<String>{
@@ -35,7 +35,7 @@ class SubjectPresenter(
                 })
             }
             else -> {
-                mView.show(url)
+                mView.show("")
             }
         }
     }

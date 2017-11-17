@@ -2,6 +2,7 @@ package com.intfocus.yhdev.business.subject.template.two
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.view.View
 import com.tencent.smtt.sdk.WebView
 import com.intfocus.yhdev.R
 import com.tencent.smtt.sdk.WebSettings
@@ -29,7 +30,7 @@ class SubjectActivity2 : AppCompatActivity(), SubjectContract.View {
         init()
         SubjectPresenter(SubjectModelImpl.getInstance(), this)
 
-        presenter.load(reportId, templateId, groupId, url)
+        presenter.load(reportId, templateId, groupId)
     }
 
     override fun onDestroy() {
@@ -42,6 +43,7 @@ class SubjectActivity2 : AppCompatActivity(), SubjectContract.View {
         reportId = intent.getStringExtra("objectID")
         objectType = intent.getStringExtra("objectType")
         bannerName = intent.getStringExtra("bannerName")
+        templateId = intent.getStringExtra("templateId")
         url = intent.getStringExtra("link")
 
         initWebView()
@@ -55,7 +57,7 @@ class SubjectActivity2 : AppCompatActivity(), SubjectContract.View {
 
         // 允许 JS 执行
         webSettings.javaScriptEnabled = true
-        // 缓存模式为无缓存
+        // 缓存模式为无缓存s
         webSettings.cacheMode = WebSettings.LOAD_NO_CACHE
         webSettings.domStorageEnabled = true
         // 允许访问文件
@@ -66,6 +68,8 @@ class SubjectActivity2 : AppCompatActivity(), SubjectContract.View {
         webSettings.loadWithOverviewMode = true
         // 显示网页滚动条
         webView.isHorizontalScrollBarEnabled = false
+        // 添加 javascript 接口
+        webView.addJavascriptInterface(null, null)
         // 设置是否支持缩放
         webSettings.setSupportZoom(false)
         // 设置是否支持对网页进行长按操作
@@ -85,6 +89,16 @@ class SubjectActivity2 : AppCompatActivity(), SubjectContract.View {
     }
 
     override fun show(path: String) {
+        if (path.isNotEmpty()) url = path
+        webView.loadUrl(url)
+        hideLoading()
+    }
 
+    private fun hideLoading() {
+        anim_loading.visibility = View.GONE
+    }
+
+    private fun showLoading() {
+        anim_loading.visibility = View.VISIBLE
     }
 }

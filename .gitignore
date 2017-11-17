@@ -54,5 +54,5 @@ proguard/
 # Android Studio captures folder
 captures/
 appChangeTo.sh
-diy-style/
+/diy-style/
 ConfigConstants.kt

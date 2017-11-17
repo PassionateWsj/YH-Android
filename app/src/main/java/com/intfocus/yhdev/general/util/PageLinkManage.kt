@@ -11,6 +11,7 @@ import com.intfocus.yhdev.business.subject.template.five.TemplateFiveActivity
 import com.intfocus.yhdev.business.subject.template.one.TemplateOneActivity
 import com.intfocus.yhdev.business.subject.template.three.TemplateThreeActivity
 import com.intfocus.yhdev.business.subject.template.two.SubjectActivity
+import com.intfocus.yhdev.business.subject.template.two.SubjectActivity2
 import com.intfocus.yhdev.business.subject.webapplication.WebApplicationActivity
 import com.intfocus.yhdev.business.subject.webapplication.WebApplicationActivityV6
 import com.intfucos.yhdev.collection.CollectionActivity
@@ -151,10 +152,11 @@ object PageLinkManage {
                         urlString = splitUrl(userSP, urlString, key, value)
                     }
                     savePageLink(context, objTitle, link, objectId, templateId, objectType)
-                    intent = Intent(context, WebApplicationActivity::class.java)
+                    intent = Intent(context, SubjectActivity2::class.java)
                     intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
                     intent.putExtra(URLs.kBannerName, objTitle)
                     intent.putExtra(URLs.kLink, link)
+                    intent.putExtra(URLs.kGroupId, groupID)
                     intent.putExtra(URLs.kObjectId, objectId)
                     intent.putExtra(URLs.kObjectType, objectType)
                     intent.putExtra(URLs.kTemplatedId, templateId)

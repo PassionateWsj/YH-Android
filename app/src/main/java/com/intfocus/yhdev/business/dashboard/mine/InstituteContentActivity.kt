@@ -26,8 +26,7 @@ class InstituteContentActivity : Activity() {
         var intent = intent
         institute_id = intent.getStringExtra("id")
         tv_banner_title.text = "数据学院"
-//        var link = String.format("%s/mobile/v2/user/%s/article/%s", ConfigConstants.kBaseUrl, mUserSP.getString(K.K_USER_ID, "0").toString(), institute_id)
-        var link = "http://123.59.75.85:8080/yhportal/appClientReport/personnelTracking.pdf";
+        var link = String.format("%s/mobile/v2/user/%s/article/%s", ConfigConstants.kBaseUrl, mUserSP.getString(K.K_USER_ID, "0").toString(), institute_id)
         mWebView.loadUrl(link)
     }
 
@@ -43,12 +42,12 @@ class InstituteContentActivity : Activity() {
         webSettings.javaScriptEnabled = true
         webSettings.defaultTextEncodingName = "utf-8"
         webSettings.cacheMode = WebSettings.LOAD_NO_CACHE
-        mWebView.setWebViewClient(object : WebViewClient() {
+        mWebView.webViewClient = object : WebViewClient() {
             override fun onPageFinished(view: WebView?, url: String?) {
                 anim_loading.visibility = View.GONE
                 super.onPageFinished(view, url)
             }
-        })
+        }
     }
 
     override fun onBackPressed() {
