@@ -35,9 +35,11 @@ import java.util.Collections;
  * 仪表盘-详情页面-根页签-曲线图单元
  */
 public class ModularOneUnitCurveChartModeFragment extends BaseModeFragment<MDRPUnitCurveChartMode> implements CustomCurveChartV2.PointClickListener,CurveChartContract.View {
-    private static final String ARG_PARAM = "param";
-    private String mParam;
+    private static final String ARG_INDEX = "index";
+    private static final String ARG_UUID = "uuid";
     private View rootView;
+    private int index;
+    private String uuid;
 
     @ViewInject(R.id.ll_mdrpUnit_curvechart)
     private LinearLayout mLlCurvechart;
@@ -80,10 +82,11 @@ public class ModularOneUnitCurveChartModeFragment extends BaseModeFragment<MDRPU
         return new MDRPUnitCurveChartMode(ctx, getTag());
     }
 
-    public static ModularOneUnitCurveChartModeFragment newInstance(String param) {
+    public static ModularOneUnitCurveChartModeFragment newInstance(String uuid, int index) {
         ModularOneUnitCurveChartModeFragment fragment = new ModularOneUnitCurveChartModeFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM, param);
+        args.putInt(ARG_INDEX, index);
+        args.putString(ARG_UUID, uuid);
         fragment.setArguments(args);
         return fragment;
     }
@@ -92,7 +95,8 @@ public class ModularOneUnitCurveChartModeFragment extends BaseModeFragment<MDRPU
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam = getArguments().getString(ARG_PARAM);
+            index = getArguments().getInt(ARG_INDEX);
+            uuid = getArguments().getString(ARG_UUID);
         }
     }
 
@@ -110,97 +114,10 @@ public class ModularOneUnitCurveChartModeFragment extends BaseModeFragment<MDRPU
             x.view().inject(this, rootView);
             coGroup = getResources().getIntArray(R.array.co_order);
             coCursor = getResources().getIntArray(R.array.co_cursor);
-            // --------------------------- 老代码 ---------------------------
-//            getModel().analysisData(mParam);
-            // -------------------------- 重构代码 --------------------------
-            mPresenter.loadData(mParam);
+            mPresenter.loadData(uuid, index);
         }
         return rootView;
     }
-
-    // ----------------------------------------------------------------
-    // --------------------------- 老代码起始 ---------------------------
-    // ----------------------------------------------------------------
-//    /**
-//     * 图表点击事件统一处理方法
-//     */
-//    public void onMessageEvent(final MDRPUnitCurveChartEntity entity) {
-//        if (entity != null && entity.stateCode == 200) {
-//            dealData(entity);
-//        }
-//    }
-//
-//    /**
-//     * 绑定数据
-//     */
-//    private void dealData(MDRPUnitCurveChartEntity result) {
-//        this.curveChartEntity = result;
-//        xLabel = result.xAxis;
-//        yLabel = new String[5];
-//        int yMaxValue;
-//        int yMinValue;
-//        int yIntervalValue;
-//        seriesLables = new ArrayList<>();
-//        ArrayList<Float> seriesA = new ArrayList<>();
-//
-//        ArrayList<MDRPUnitCurveChartEntity.SeriesEntity> arrays = result.series;
-//        for (MDRPUnitCurveChartEntity.SeriesEntity array : arrays) {
-//            String datas = array.data;
-//            chartType = array.type;
-//            if (datas.contains("{")) {
-//                ArrayList<MDRPUnitSeries> list = (ArrayList<MDRPUnitSeries>) JSON.parseArray(datas, MDRPUnitSeries.class);
-//                color = new int[list.size()];
-//                Float[] lables = new Float[list.size()];
-//                for (int i = 0; i < list.size(); i++) {
-//                    MDRPUnitSeries seriesEntity = list.get(i);
-//                    color[i] = seriesEntity.color;
-//                    Float lableV = seriesEntity.value;
-//                    lables[i] = lableV;
-//                    seriesA.add(lableV);
-//                }
-//                seriesLables.add(lables);
-//            } else {
-//                datas = datas.trim().substring(1, datas.length() - 1).trim();
-//                String[] topW = datas.trim().split(",");
-//                int dataLength = topW.length;
-//                Float[] lables = new Float[dataLength];
-//                for (int i = 0; i < dataLength; i++) {
-//                    String strValue = topW[i].trim();
-//                    strValue = strValue.replace("\"", "");
-//                    if (StringUtil.isEmpty(strValue)) {
-//                        strValue = "0";
-//                    }
-//                    Float lableV = Float.valueOf(strValue);
-//                    lables[i] = lableV;
-//                    seriesA.add(lableV);
-//                }
-//                seriesLables.add(lables);
-//            }
-//        }
-//
-//        Collections.sort(seriesA);
-//        yMaxValue = seriesA.get(seriesA.size() - 1).intValue();
-//        yMinValue = seriesA.get(0).intValue();
-//        if (yMinValue > 0) {
-//            yMinValue = 0;
-//        }
-//        yIntervalValue = Math.abs(yMaxValue - yMinValue);
-//        YCOORDINATEVALENUM = 4;
-//        while (yIntervalValue % YCOORDINATEVALENUM != 0) {
-//            yIntervalValue++;
-//        }
-//
-//        int part = yIntervalValue / 4;
-//        for (int i = 0; i < 5; i++) {
-//            yLabel[i] = String.valueOf(yMinValue + part * i);
-//        }
-//        act.runOnUiThread(new UIRunnable());
-//        Log.d("TAG", seriesA.get(0) + ":" + seriesA.get(seriesA.size() - 1));
-//    }
-
-    // ----------------------------------------------------------------
-    // ----------------------- 我是 到此为止分割线 ------------------------
-    // ----------------------------------------------------------------
 
     class UIRunnable implements Runnable {
 
@@ -316,11 +233,6 @@ public class ModularOneUnitCurveChartModeFragment extends BaseModeFragment<MDRPU
                 }
 
                 boolean isPlus = rate > 0;
-//                if (rate > 0) {
-//                    isPlus = true;
-//                } else {
-//                    isPlus = false;
-//                }
 
                 if (cursorIndex == -1) {
                     baseColor = 0x73737373;

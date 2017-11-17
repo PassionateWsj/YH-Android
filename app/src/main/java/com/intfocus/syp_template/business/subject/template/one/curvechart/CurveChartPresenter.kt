@@ -1,5 +1,7 @@
 package com.intfocus.syp_template.business.subject.templateone.curvechart
 
+import com.intfocus.syp_template.business.subject.template.one.entity.MDRPUnitCurveChartEntity
+
 /**
  * ****************************************************
  * @author jameswong
@@ -21,9 +23,9 @@ class CurveChartPresenter(
 
     }
 
-    override fun loadData(mParam: String) {
-        mModel.getData(mParam,object :CurveChartModel.LoadDataCallback{
-            override fun onDataLoaded(data: com.intfocus.syp_template.business.subject.template.one.entity.MDRPUnitCurveChartEntity) {
+    override fun loadData(uuid: String, index: Int) {
+        mModel.getData(uuid, index, object :CurveChartModel.LoadDataCallback{
+            override fun onDataLoaded(data: MDRPUnitCurveChartEntity) {
                 mView.showData(data)
             }
             override fun onDataNotAvailable(e: Throwable) {
@@ -32,6 +34,5 @@ class CurveChartPresenter(
 
         })
     }
-
 
 }

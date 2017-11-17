@@ -13,6 +13,7 @@ import com.intfocus.syp_template.business.subject.template.three.TemplateThreeAc
 import com.intfocus.syp_template.business.subject.template.two.SubjectActivity
 import com.intfocus.syp_template.business.subject.webapplication.WebApplicationActivity
 import com.intfocus.syp_template.business.subject.webapplication.WebApplicationActivityV6
+import com.intfucos.yhdev.collection.CollectionActivity
 import com.intfocus.syp_template.general.constant.ConfigConstants
 import org.json.JSONException
 import org.json.JSONObject
@@ -27,7 +28,6 @@ import org.json.JSONObject
  * ****************************************************
  */
 object PageLinkManage {
-
     private val EXTERNAL_LINK = "-1"
     private val SCANNER = "-2"
     private val TEMPLATE_ONE = "1"
@@ -130,6 +130,18 @@ object PageLinkManage {
                     intent.putExtra(URLs.kTemplatedId, templateId)
                     context.startActivity(intent)
                 }
+                TEMPLATE_NINE -> {
+                    savePageLink(context, objTitle, link, objectId, templateId, objectType)
+                    intent = Intent(context, CollectionActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+                    intent.putExtra(URLs.kBannerName, objTitle)
+                    intent.putExtra(URLs.kLink, link)
+                    intent.putExtra(URLs.kGroupId, groupID)
+                    intent.putExtra(URLs.kObjectId, objectId)
+                    intent.putExtra(URLs.kObjectType, objectType)
+                    intent.putExtra(URLs.kTemplatedId, templateId)
+                    context.startActivity(intent)
+                }
                 EXTERNAL_LINK -> {
                     var urlString = link
                     for ((key, value) in paramsMappingBean) {
@@ -166,6 +178,7 @@ object PageLinkManage {
         } else {
             logParams.put(URLs.kAction, "点击/" + objectTypeName[objectType.toInt() - 1] + "/报表")
         }
+
         logParams.put(URLs.kObjTitle, objTitle)
         logParams.put("obj_id", objectId)
         logParams.put("obj_link", link)

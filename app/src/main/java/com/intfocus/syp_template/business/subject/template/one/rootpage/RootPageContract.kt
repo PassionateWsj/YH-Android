@@ -3,6 +3,7 @@ package com.intfocus.syp_template.business.subject.templateone.rootpage
 import com.intfocus.syp_template.business.subject.template.one.entity.msg.MDetailRootPageRequestResult
 import com.intfocus.syp_template.general.base.BasePresenter
 import com.intfocus.syp_template.general.base.BaseView
+import com.intfocus.syp_template.general.bean.Report
 
 /**
  * ****************************************************
@@ -16,11 +17,11 @@ import com.intfocus.syp_template.general.base.BaseView
 interface RootPageContract {
     interface View : BaseView<Presenter> {
         // 展示数据
-        fun showData(entity: MDetailRootPageRequestResult)
+        fun showData(reports: List<Report>)
     }
 
     interface Presenter : BasePresenter {
         // 加载数据
-        fun loadData(mParam: String)
+        fun loadData(uuid: String, page: Int)
     }
 }

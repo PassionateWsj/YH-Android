@@ -34,10 +34,13 @@ import java.util.Random;
  */
 public class ModularOneUnitTablesModeFragment extends BaseModeFragment<ModularTwo_UnitTablesParentMode> implements TableTitleAdapter.NoticeItemListener {
     private String fragmentTag;
-    private static final String ARG_PARAM = "TablesParam";
     private static final String SU_ROOT_ID = "SuRootId";
+    private static final String ARG_INDEX = "index";
+    private static final String ARG_UUID = "uuid";
 
     private String mParam;
+    private int index;
+    private String uuid;
 
     private View rootView;
 
@@ -68,11 +71,12 @@ public class ModularOneUnitTablesModeFragment extends BaseModeFragment<ModularTw
     private List<MDetailUnitEntity> datas;
 
 
-    public static ModularOneUnitTablesModeFragment newInstance(int suRootID, String param) {
+    public static ModularOneUnitTablesModeFragment newInstance(int suRootID, String uuid, int index) {
         ModularOneUnitTablesModeFragment fragment = new ModularOneUnitTablesModeFragment();
         Bundle args = new Bundle();
         args.putInt(SU_ROOT_ID, suRootID);
-        args.putString(ARG_PARAM, param);
+        args.putInt(ARG_INDEX, index);
+        args.putString(ARG_UUID, uuid);
         fragment.setArguments(args);
         return fragment;
     }
@@ -87,7 +91,8 @@ public class ModularOneUnitTablesModeFragment extends BaseModeFragment<ModularTw
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             suRootID = getArguments().getInt(SU_ROOT_ID);
-            mParam = getArguments().getString(ARG_PARAM);
+            index = getArguments().getInt(ARG_INDEX);
+            uuid = getArguments().getString(ARG_UUID);
         }
 
         Random random = new Random();
@@ -107,10 +112,8 @@ public class ModularOneUnitTablesModeFragment extends BaseModeFragment<ModularTw
         return rootView;
     }
 
-
     private void init() {
-//        rootTableListener = new RootTableCheckedChangeListener();
-        getModel().analysisData(mParam);
+        getModel().analysisData(uuid, index);
         datas = new ArrayList<>();
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         adapter = new TableTitleAdapter(getContext(), datas, this);

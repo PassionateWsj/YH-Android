@@ -1,6 +1,6 @@
 package com.intfocus.syp_template.business.subject.templateone.rootpage
 
-import com.intfocus.syp_template.business.subject.template.one.entity.msg.MDetailRootPageRequestResult
+import com.intfocus.syp_template.general.bean.Report
 
 /**
  * ****************************************************
@@ -23,10 +23,10 @@ class RootPagePresenter(
     override fun start() {
     }
 
-    override fun loadData(mParam: String) {
-        mModel.getData(mParam, object : RootPageModel.LoadDataCallback {
-            override fun onDataLoaded(data: MDetailRootPageRequestResult) {
-                mView.showData(data)
+    override fun loadData(uuid: String, page: Int) {
+        mModel.getData(uuid, page, object : RootPageModel.LoadDataCallback {
+            override fun onDataLoaded(reports: List<Report>) {
+                mView.showData(reports)
             }
 
             override fun onDataNotAvailable(e: Throwable) {

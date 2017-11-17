@@ -7,13 +7,17 @@ import com.alibaba.fastjson.JSONReader;
 import com.intfocus.syp_template.business.subject.template.one.entity.MDetailUnitEntity;
 import com.intfocus.syp_template.business.subject.template.one.entity.msg.MDetailRootPageRequestResult;
 import com.intfocus.syp_template.business.subject.templateone.entity.MererDetailEntity;
+import com.intfocus.syp_template.general.bean.Report;
+import com.intfocus.syp_template.general.gen.ReportDao;
+import com.intfocus.syp_template.general.util.DaoUtil;
 import com.zbl.lib.baseframe.core.AbstractMode;
 import com.zbl.lib.baseframe.utils.TimeUtil;
 
 import java.io.StringReader;
 import java.util.ArrayList;
 
-import static com.intfocus.syp_template.general.YHApplication.threadPool;
+import static com.intfocus.syp_template.YHApplication.threadPool;
+import static com.intfucos.yhdev.constant.Params.REPORT_TYPE_TABLE;
 
 /**
  * 仪表盘-数据处理模块
@@ -40,9 +44,20 @@ public class ModularTwo_UnitTablesParentMode extends AbstractMode {
     /**
      * 解析数据
      *
-     * @param result
+     * result
      */
-    public void analysisData(final String result) {
+    public void analysisData(final String uuid, final int index) {
+
+        ReportDao reportDao = DaoUtil.INSTANCE.getReportDao();
+        Report report = reportDao.queryBuilder()
+                .where(reportDao.queryBuilder()
+                        .and(ReportDao.Properties.Uuid.eq(uuid)
+                                , ReportDao.Properties.Type.eq(REPORT_TYPE_TABLE)
+                                , ReportDao.Properties.Index.eq(index)))
+                .unique();
+
+        final String result = report.getConfig();
+
         Log.i(TAG, "StartAnalysisTime:" + TimeUtil.getNowTime());
         datas = new ArrayList<>();
         threadPool.execute(new Runnable() {

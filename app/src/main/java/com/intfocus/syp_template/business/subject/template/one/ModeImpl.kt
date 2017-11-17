@@ -1,12 +1,14 @@
 package com.intfocus.syp_template.business.subject.template.one
 
-import android.content.Context
 import android.util.Log
 import com.alibaba.fastjson.JSONReader
+import com.intfocus.syp_template.YHApplication.globalContext
+import com.intfocus.syp_template.business.subject.template.model.ReportModelImpl
 import com.intfocus.syp_template.business.subject.templateone.entity.MererDetailEntity
 import com.intfocus.syp_template.general.util.ApiHelper
 import com.intfocus.syp_template.general.util.FileUtil
 import com.intfocus.syp_template.general.util.K
+import com.intfucos.yhdev.constant.Params.REPORT_TYPE_MAIN_DATA
 import com.zbl.lib.baseframe.utils.TimeUtil
 import rx.Observable
 import rx.Subscriber
@@ -24,12 +26,13 @@ import java.util.*
  * desc:
  * ****************************************************
  */
-class ModeImpl : ModeModel {
+class ModeImpl: ReportModelImpl() {
 
     companion object {
         private val TAG = "ModeImpl"
-
+        private var uuid = ""
         private var INSTANCE: ModeImpl? = null
+
         /**
          * Returns the single instance of this class, creating it if necessary.
          */
@@ -49,21 +52,38 @@ class ModeImpl : ModeModel {
         }
     }
 
-    override fun getData(ctx: Context, groupId: String, reportId: String, callback: ModeModel.LoadDataCallback) {
+    fun checkReportData(reportId: String, templateId: String, groupId: String, callback: ModeModel.LoadDataCallback) {
+        uuid = reportId + templateId + groupId
+        var urlString = reportId + templateId + groupId
+        when {
+            checkUpdate(urlString) -> analyseData(groupId, reportId, callback)
+            available(uuid) -> {
+                var entity = MererDetailEntity()
+                entity.name = "123"
+                callback.onDataLoaded(entity)
+//                analyseData(groupId, reportId, callback)
+            }
+            else -> analyseData(groupId, reportId, callback)
+        }
+    }
+
+    fun analyseData(groupId: String, reportId: String, callback: ModeModel.LoadDataCallback) {
         val jsonFileName = String.format("group_%s_template_%s_report_%s.json", groupId, "1", reportId)
 
         Observable.just(jsonFileName)
                 .subscribeOn(Schedulers.io())
                 .map {
+                    uuid = reportId + "1" + groupId
+                    delete(uuid)
                     val response: String?
-                    val jsonFilePath = FileUtil.dirPath(ctx, K.K_CACHED_DIR_NAME, it)
-                    val dataState = ApiHelper.reportJsonData(ctx, groupId, "1", reportId)
+                    val jsonFilePath = FileUtil.dirPath(globalContext, K.K_CACHED_DIR_NAME, it)
+                    val dataState = ApiHelper.reportJsonData(globalContext, groupId, "1", reportId)
                     if (dataState || File(jsonFilePath).exists()) {
                         response = FileUtil.readFile(jsonFilePath)
                     } else {
                         throw Throwable("获取数据失败")
                     }
-//                    response = getJsonData(ctx,"kpi_detaldata.json")
+//                    response = getAssetsJsonData("kpi_detaldata.json")
                     Log.i(TAG, "analysisDataStartTime:" + TimeUtil.getNowTime())
                     val stringReader = StringReader(response)
                     Log.i(TAG, "analysisDataReaderTime1:" + TimeUtil.getNowTime())
@@ -72,6 +92,8 @@ class ModeImpl : ModeModel {
                     reader.startObject()
                     val entity = MererDetailEntity()
                     entity.data = ArrayList()
+                    var page = 0
+                    var index = 0
                     Log.i(TAG, "analysisDataReaderTime2:" + TimeUtil.getNowTime())
 
                     while (reader.hasNext()) {
@@ -88,16 +110,40 @@ class ModeImpl : ModeModel {
 
                                 while (reader.hasNext()) {
                                     reader.startObject()
+                                    var config = ""
+                                    var title = ""
                                     val data = MererDetailEntity.PageData()
                                     while (reader.hasNext()) {
                                         val dataKey = reader.readString()
                                         when (dataKey) {
-                                            "parts" -> data.parts = reader.readObject().toString()
+                                            "parts" -> {
+                                                config = reader.readObject().toString()
+                                                data.parts = config
+                                                var moduleStringReader = StringReader(config)
+                                                var moduleReader = JSONReader(moduleStringReader)
+                                                moduleReader.startArray()
+                                                while (moduleReader.hasNext()) {
+                                                    var moduleConfig = ""
+                                                    var moduleType = ""
+                                                    moduleReader.startObject()
+                                                    while (moduleReader.hasNext()) {
+                                                        when (moduleReader.readString()) {
+                                                        "config" -> moduleConfig = moduleReader.readObject().toString()
 
-                                            "title" -> data.title = reader.readObject().toString()
-
+                                                        "type" -> moduleType = moduleReader.readObject().toString()
+                                                    }
+                                                    }
+                                                    moduleReader.endObject()
+                                                    insert(uuid, moduleConfig, moduleType, index, page)
+                                                    index++
+                                                }
+                                                moduleReader.endArray()
+                                            }
+                                            "title" ->  title = reader.readObject().toString()
                                         }
                                     }
+                                    insertMainData(uuid, config, REPORT_TYPE_MAIN_DATA, title, page)
+                                    page++
                                     reader.endObject()
                                     entity.data!!.add(data)
                                 }
@@ -117,7 +163,7 @@ class ModeImpl : ModeModel {
                     }
 
                     override fun onNext(t: MererDetailEntity?) {
-//                        t ?:callback.onDataLoaded(t)
+//                        t ?:callback.onLoadData(t)
                         t?.let { callback.onDataLoaded(it) }
 
                     }
@@ -127,44 +173,5 @@ class ModeImpl : ModeModel {
                     }
 
                 })
-
-
-    }
-
-    /**
-     * 加载 模板一 本地 json 测试数据的方法
-     * @param context
-     * @return
-     */
-     fun getJsonData(context: Context,assetsName:String): String {
-        var inputStream: InputStream? = null
-        var reader: BufferedReader? = null
-        var sb: StringBuilder? = null
-        try {
-            inputStream = context.resources.assets.open(assetsName)
-            //            is = context.getResources().getAssets().open("temple-v1.json");
-            reader = BufferedReader(InputStreamReader(inputStream!!))
-            sb = StringBuilder()
-            var line: String?
-            while (true) {
-                line = reader.readLine()
-                if (line != null) sb.append(line + "\n") else break
-
-            }
-        } catch (e: IOException) {
-            e.printStackTrace()
-        } finally {
-            try {
-                if (reader != null) {
-                    reader.close()
-                }
-                if (inputStream != null) {
-                    inputStream.close()
-                }
-            } catch (e: IOException) {
-                e.printStackTrace()
-            }
-        }
-        return sb!!.toString()
     }
 }

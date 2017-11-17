@@ -176,13 +176,11 @@ public class ModularOneUnitTablesContModeFragment extends BaseModeFragment<Modul
                         if (fl_tableTitle_container.getChildCount() != 0) {
                             if (rect.top <= offsetTop && rect.bottom - 165 > offsetTop) {
                                 fl_tableTitle_container.removeView(suspensionView);
-                                Log.i("testlog", "1");
                                 ((TemplateOneActivity) getActivity()).suspendContainer.addView(suspensionView);
                             }
                         } else {
                             int viewCont = ((TemplateOneActivity) getActivity()).suspendContainer.getChildCount();
                             if (rect.top > offsetTop || rect.bottom - 150 < offsetTop && viewCont != 0) {
-                                Log.i("testlog", "2");
                                 ((TemplateOneActivity) getActivity()).suspendContainer.removeView(suspensionView);
                                 fl_tableTitle_container.addView(suspensionView);
                             }
@@ -287,8 +285,11 @@ public class ModularOneUnitTablesContModeFragment extends BaseModeFragment<Modul
         this.dataEntity = result;
         // 表头数据
         String[] header = result.head;
-        tv_header.setText(header[0]);
+        if (header.length == 0) {
+            return;
+        }
 
+        tv_header.setText(header[0]);
         headerSize = header.length - 1;
         LayoutInflater inflater = LayoutInflater.from(ctx);
         SortViewClickListener listener = new SortViewClickListener();

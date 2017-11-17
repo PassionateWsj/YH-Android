@@ -8,7 +8,7 @@ import com.intfocus.syp_template.business.subject.template.one.entity.MDRPUnitCu
 import com.zbl.lib.baseframe.core.AbstractMode;
 import com.zbl.lib.baseframe.utils.TimeUtil;
 
-import static com.intfocus.syp_template.general.YHApplication.threadPool;
+import static com.intfocus.syp_template.YHApplication.threadPool;
 
 
 /**

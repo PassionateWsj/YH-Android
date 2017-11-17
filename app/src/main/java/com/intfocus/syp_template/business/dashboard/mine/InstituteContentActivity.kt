@@ -4,12 +4,12 @@ import android.app.Activity
 import android.content.Context
 import android.os.Bundle
 import android.view.View
-import android.webkit.WebSettings
-import android.webkit.WebView
-import android.webkit.WebViewClient
 import com.intfocus.syp_template.R
 import com.intfocus.syp_template.general.constant.ConfigConstants
 import com.intfocus.syp_template.general.util.K
+import com.tencent.smtt.sdk.WebSettings
+import com.tencent.smtt.sdk.WebView
+import com.tencent.smtt.sdk.WebViewClient
 import kotlinx.android.synthetic.main.activity_institute_content.*
 
 class InstituteContentActivity : Activity() {
@@ -27,7 +27,6 @@ class InstituteContentActivity : Activity() {
         institute_id = intent.getStringExtra("id")
         tv_banner_title.text = "数据学院"
         var link = String.format("%s/mobile/v2/user/%s/article/%s", ConfigConstants.kBaseUrl, mUserSP.getString(K.K_USER_ID, "0").toString(), institute_id)
-//        var link = "https://ssl.sunny-tech.com/mobile_v2_group_165_template_2_report_67.html?from=groupmessage&isappinstalled=0";
         mWebView.loadUrl(link)
     }
 
@@ -43,12 +42,12 @@ class InstituteContentActivity : Activity() {
         webSettings.javaScriptEnabled = true
         webSettings.defaultTextEncodingName = "utf-8"
         webSettings.cacheMode = WebSettings.LOAD_NO_CACHE
-        mWebView.setWebViewClient(object : WebViewClient() {
+        mWebView.webViewClient = object : WebViewClient() {
             override fun onPageFinished(view: WebView?, url: String?) {
                 anim_loading.visibility = View.GONE
                 super.onPageFinished(view, url)
             }
-        })
+        }
     }
 
     override fun onBackPressed() {

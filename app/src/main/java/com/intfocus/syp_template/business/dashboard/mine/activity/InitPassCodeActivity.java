@@ -17,7 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.intfocus.syp_template.R;
-import com.intfocus.syp_template.general.YHApplication;
+import com.intfocus.syp_template.YHApplication;
 import com.intfocus.syp_template.general.constant.ToastColor;
 import com.intfocus.syp_template.general.util.ActionLogUtil;
 import com.intfocus.syp_template.general.util.FileUtil;

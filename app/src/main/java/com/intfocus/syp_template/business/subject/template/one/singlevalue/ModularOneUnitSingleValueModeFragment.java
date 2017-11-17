@@ -25,10 +25,12 @@ import java.text.DecimalFormat;
  * 单值组件
  */
 public class ModularOneUnitSingleValueModeFragment extends BaseModeFragment implements SingleValueContract.View {
-    @NonNull
-    private static final String ARG_PARAM = "SingleValueParam";
+    private static final String ARG_INDEX = "index";
+    private static final String ARG_UUID = "uuid";
     private String mParam;
     private int showCount = 0;
+    private int index;
+    private String uuid;
 
     private View rootView;
 
@@ -54,10 +56,11 @@ public class ModularOneUnitSingleValueModeFragment extends BaseModeFragment impl
     private boolean isSwitch;
     private SingleValueContract.Presenter mPresenter;
 
-    public static ModularOneUnitSingleValueModeFragment newInstance(String param) {
+    public static ModularOneUnitSingleValueModeFragment newInstance(String uuid, int index) {
         ModularOneUnitSingleValueModeFragment fragment = new ModularOneUnitSingleValueModeFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM, param);
+        args.putInt(ARG_INDEX, index);
+        args.putString(ARG_UUID, uuid);
         fragment.setArguments(args);
         return fragment;
     }
@@ -71,9 +74,11 @@ public class ModularOneUnitSingleValueModeFragment extends BaseModeFragment impl
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam = getArguments().getString(ARG_PARAM);
+            index = getArguments().getInt(ARG_INDEX);
+            uuid = getArguments().getString(ARG_UUID);
         }
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -81,7 +86,7 @@ public class ModularOneUnitSingleValueModeFragment extends BaseModeFragment impl
         if (rootView == null) {
             rootView = inflater.inflate(R.layout.fragment_singlevalue, container, false);
             x.view().inject(this, rootView);
-            mPresenter.loadData(mParam);
+            mPresenter.loadData(uuid, index);
         }
         return rootView;
     }

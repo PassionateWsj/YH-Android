@@ -29,7 +29,7 @@ import com.intfocus.syp_template.business.subject.template.three.TemplateThreeAc
 import com.intfocus.syp_template.business.subject.template.two.SubjectActivity
 import com.intfocus.syp_template.business.subject.webapplication.WebApplicationActivity
 import com.intfocus.syp_template.business.subject.webapplication.WebApplicationActivityV6
-import com.intfocus.syp_template.general.YHApplication
+import com.intfocus.syp_template.YHApplication
 import com.intfocus.syp_template.general.bean.DashboardItemBean
 import com.intfocus.syp_template.general.constant.ConfigConstants
 import com.intfocus.syp_template.general.data.response.scanner.StoreItem
@@ -277,14 +277,6 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
         mTabView
                 .filter { v.id == it.id }
                 .forEach { mViewPager!!.currentItem = mTabView.indexOf(it) }
-//        when (v.id) {
-//            R.id.tab_kpi -> mViewPager!!.currentItem = PAGE_KPI
-//            R.id.tab_report -> mViewPager!!.currentItem = PAGE_REPORTS
-//            R.id.tab_workbox -> mViewPager!!.currentItem = PAGE_APP
-//            R.id.tab_mine -> mViewPager!!.currentItem = PAGE_MINE
-//            else -> {
-//            }
-//        }
         refreshTabView()
     }
 
@@ -296,15 +288,6 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
     override fun onPageScrollStateChanged(state: Int) {
         if (state == 2) {
             mTabView[mViewPager!!.currentItem].setActive(true)
-//            when (mViewPager!!.currentItem) {
-//                PAGE_KPI -> mTabKPI!!.setActive(true)
-//
-//                PAGE_REPORTS -> mTabReport!!.setActive(true)
-//
-//                PAGE_APP -> mTabWorkBox!!.setActive(true)
-//
-//                PAGE_MINE -> mTabMessage!!.setActive(true)
-//            }
         }
         refreshTabView()
         mSharedPreferences!!.edit().putInt("LastTab", mViewPager!!.currentItem).apply()
@@ -437,17 +420,6 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
                     intent.putExtra("urlString", urlString)
                     startActivity(intent)
                 }
-//                TEMPLATE_FOUR -> {
-//                    intent = Intent(this, SubjectActivity::class.java)
-//                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-//                    intent.putExtra(URLs.kBannerName, objTitle)
-//                    intent.putExtra(URLs.kLink, link)
-//                    intent.putExtra(URLs.kObjectId, objectId)
-//                    intent.putExtra(URLs.kObjectType, objectType)
-//                    intent.putExtra(URLs.kTemplatedId, templateId)
-//                    intent.putExtra("groupID", groupID)
-//                    startActivity(intent)
-//                }
                 TEMPLATE_FIVE -> {
                     intent = Intent(this, TemplateFiveActivity::class.java)
                     urlString = String.format("%s/api/v1/group/%s/template/%s/report/%s/json",

@@ -14,7 +14,10 @@ import com.intfocus.syp_template.business.subject.template.one.adapter.BargraptA
 import com.intfocus.syp_template.business.subject.template.one.entity.BargraphComparator;
 import com.intfocus.syp_template.business.subject.template.one.entity.MDRPUnitBargraph;
 import com.intfocus.syp_template.general.base.BaseModeFragment;
+import com.intfocus.syp_template.general.bean.Report;
+import com.intfocus.syp_template.general.gen.ReportDao;
 import com.intfocus.syp_template.general.util.BargraphDataComparator;
+import com.intfocus.syp_template.general.util.DaoUtil;
 import com.intfocus.syp_template.general.util.PinyinUtil;
 import com.intfocus.syp_template.general.util.ToastUtils;
 import com.intfocus.syp_template.general.view.NotScrollListView;
@@ -30,12 +33,17 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
 
+import static com.intfucos.yhdev.constant.Params.REPORT_TYPE_PLUS_MINUS;
+
 /**
  * 正负图表模块
  */
 public class ModularOneUnitPlusMinusChartModeFragment extends BaseModeFragment implements AdapterView.OnItemClickListener {
-    private static final String ARG_PARAM = "param1";
+    private static final String ARG_INDEX = "index";
+    private static final String ARG_UUID = "uuid";
     private View rootView;
+    private int index;
+    private String uuid;
 
     @ViewInject(R.id.lv_MDRPUnit_PlusMinusChart)
     private NotScrollListView lv;
@@ -57,10 +65,11 @@ public class ModularOneUnitPlusMinusChartModeFragment extends BaseModeFragment i
     private BargraphNameComparator nameComparator;
     private BargraphDataComparator dataComparator;
 
-    public static ModularOneUnitPlusMinusChartModeFragment newInstance(String param) {
+    public static ModularOneUnitPlusMinusChartModeFragment newInstance(String uuid, int index) {
         ModularOneUnitPlusMinusChartModeFragment fragment = new ModularOneUnitPlusMinusChartModeFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM, param);
+        args.putInt(ARG_INDEX, index);
+        args.putString(ARG_UUID, uuid);
         fragment.setArguments(args);
         return fragment;
     }
@@ -69,7 +78,8 @@ public class ModularOneUnitPlusMinusChartModeFragment extends BaseModeFragment i
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam = getArguments().getString(ARG_PARAM);
+            index = getArguments().getInt(ARG_INDEX);
+            uuid = getArguments().getString(ARG_UUID);
         }
     }
 
@@ -80,6 +90,7 @@ public class ModularOneUnitPlusMinusChartModeFragment extends BaseModeFragment i
             rootView = inflater.inflate(R.layout.fragment_mdrpunit_plus_minus_chart, container, false);
             x.view().inject(this, rootView);
             initView();
+            init();
             bindData();
         }
         return rootView;
@@ -171,4 +182,15 @@ public class ModularOneUnitPlusMinusChartModeFragment extends BaseModeFragment i
         }
     }
 
+    private void init() {
+        ReportDao reportDao = DaoUtil.INSTANCE.getReportDao();
+        Report report = reportDao.queryBuilder()
+                .where(reportDao.queryBuilder()
+                        .and(ReportDao.Properties.Uuid.eq(uuid)
+                                , ReportDao.Properties.Type.eq(REPORT_TYPE_PLUS_MINUS)
+                                , ReportDao.Properties.Index.eq(index)))
+                .unique();
+
+        mParam = report.getConfig();
+    }
 }

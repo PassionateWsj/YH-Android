@@ -1,5 +1,6 @@
 package com.intfocus.syp_template.business.subject.templateone.curvechart
 
+import com.intfocus.syp_template.business.subject.template.one.entity.MDRPUnitCurveChartEntity
 import com.intfocus.syp_template.general.base.BasePresenter
 import com.intfocus.syp_template.general.base.BaseView
 
@@ -15,11 +16,11 @@ import com.intfocus.syp_template.general.base.BaseView
 interface CurveChartContract {
     interface View : BaseView<Presenter> {
         // 展示数据
-        fun showData(entity: com.intfocus.syp_template.business.subject.template.one.entity.MDRPUnitCurveChartEntity)
+        fun showData(entity: MDRPUnitCurveChartEntity)
     }
 
     interface Presenter : BasePresenter {
         // 加载数据
-        fun loadData(mParam: String)
+        fun loadData(uuid: String, index: Int)
     }
 }

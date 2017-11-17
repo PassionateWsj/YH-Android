@@ -9,7 +9,7 @@ import com.intfocus.syp_template.business.subject.template.one.entity.msg.MDetai
 import com.zbl.lib.baseframe.core.AbstractMode;
 import com.zbl.lib.baseframe.utils.TimeUtil;
 
-import static com.intfocus.syp_template.general.YHApplication.threadPool;
+import static com.intfocus.syp_template.YHApplication.threadPool;
 
 /**
  * 仪表盘-数据处理模块

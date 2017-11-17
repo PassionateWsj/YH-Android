@@ -128,16 +128,18 @@ class KpiFragment : RefreshFragment(), KpiAdapter.HomePageListener {
                                     homeBean.data = KpiResultData.data
                                     mKpiData!!.add(homeBean)
                                 }
-                                if ("经营预警" == KpiResultData.group_name) {
+
+                                if ("number2" == KpiResultData.data!![0].dashboard_type) {
                                     val homeBean = KpiBean()
-                                    homeBean.group_name = "经营预警"
+                                    homeBean.group_name = KpiResultData.group_name
                                     homeBean.index = 2
                                     homeBean.data = KpiResultData.data
                                     mKpiData!!.add(homeBean)
                                 }
-                                if ("生意概况" == KpiResultData.group_name) {
+
+                                if ("number3" == KpiResultData.data!![0].dashboard_type) {
                                     val homeBean = KpiBean()
-                                    homeBean.group_name = "生意概况"
+                                    homeBean.group_name = KpiResultData.group_name
                                     homeBean.index = 3
                                     homeBean.data = KpiResultData.data
                                     mKpiData!!.add(homeBean)

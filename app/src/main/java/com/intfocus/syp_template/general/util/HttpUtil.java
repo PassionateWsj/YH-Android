@@ -297,48 +297,6 @@ public class HttpUtil {
         return retMap;
     }
 
-    /**
-     * ִ执行一个HTTP POST请求，上传文件
-     */
-    public static Map<String, String> httpPostFile(String urlString, String fileType, String fileKey, String filePath) {
-        Map<String, String> retMap = new HashMap<>();
-        OkHttpClient client = new OkHttpClient.Builder()
-                .connectTimeout(5, TimeUnit.SECONDS)
-                .writeTimeout(10, TimeUnit.SECONDS)
-                .readTimeout(10, TimeUnit.SECONDS)
-                .build();
-
-        Request request;
-        Response response;
-        Request.Builder requestBuilder = new Request.Builder();
-        try {
-            File file = new File(filePath);
-            RequestBody fileBody = RequestBody.create(MediaType.parse(fileType), file);
-            MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
-            builder.addFormDataPart(fileKey, file.getName(), fileBody);
-            MultipartBody requestBody = builder.build();
-
-            request = requestBuilder
-                    .url(urlString)
-                    .post(requestBody)
-                    .build();
-            response = client.newCall(request).execute();
-
-            retMap.put(URLs.kCode, String.format("%d", response.code()));
-            retMap.put("body", response.body().string());
-        } catch (UnknownHostException e) {
-            if (e != null && e.getMessage() != null) {
-                LogUtil.d("UnknownHostException2", e.getMessage());
-            }
-            retMap.put(URLs.kCode, "400");
-            retMap.put(URLs.kBody, "{\"info\": \"请检查网络环境！\"}");
-        } catch (Exception e) {
-            retMap.put(URLs.kCode, "400");
-            retMap.put(URLs.kBody, "{\"info\": \"请检查网络环境！\"}");
-        }
-        return retMap;
-    }
-
     public static String urlToFileName(String urlString) {
         String path = "default";
         try {
@@ -351,7 +309,7 @@ public class HttpUtil {
         return String.format("%s.html", path);
     }
 
-    private static String webViewUserAgent() {
+    public static String webViewUserAgent() {
         String userAgent = System.getProperty("http.agent");
         if (userAgent == null) {
             userAgent = "Mozilla/5.0 (Linux; U; Android 4.3; en-us; HTC One - 4.3 - API 18 - 1080x1920 Build/JLS36G) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30 default-by-hand";
@@ -513,6 +471,7 @@ public class HttpUtil {
         InputStream input = null;
         OutputStream output = null;
         HttpURLConnection connection = null;
+
         try {
             URL url = new URL(urlString);
             connection = (HttpURLConnection) url.openConnection();
@@ -536,11 +495,10 @@ public class HttpUtil {
                 response.put(entry.getKey(), entry.getValue().get(0));
             }
             Log.i("DownloadZIP", String.format("%d - %s - %s", connection.getResponseCode(), urlString, response.toString()));
-
-            // expect HTTP 200 OK, so we don't mistakenly save error report
-            // instead of the file
-            if (connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
-                return response;
+                // expect HTTP 200 OK, so we don't mistakenly save error report
+                // instead of the file
+                if (connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
+                    return response;
             }
 
             // this will be useful to display download percentage
@@ -574,6 +532,37 @@ public class HttpUtil {
             if (connection != null) {
                 connection.disconnect();
             }
+        }
+        return response;
+    }
+
+    public static Map<String, String> downloadResponse(String urlString, Map<String, String> headers) {
+        Map<String, String> response = new HashMap<>(16);
+        try {
+            URL url = new URL(urlString);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestProperty("accept", "*/*");
+            connection.setRequestProperty("connection", "Keep-Alive");
+            connection.setRequestProperty("user-agent", HttpUtil.webViewUserAgent());
+            connection.setConnectTimeout(5 * 1000);
+            connection.setReadTimeout(10 * 1000);
+            if (headers.containsKey(URLs.kETag)) {
+                connection.setRequestProperty("IF-None-Match", headers.get(URLs.kETag));
+            }
+            if (headers.containsKey(URLs.kLastModified)) {
+                connection.setRequestProperty("If-Modified-Since", headers.get(URLs.kLastModified));
+            }
+
+            connection.connect();
+            response.put(URLs.kCode, String.valueOf(connection.getResponseCode()));
+            Map<String, List<String>> map = connection.getHeaderFields();
+            for (Map.Entry<String, List<String>> entry : map.entrySet()) {
+                response.put(entry.getKey(), entry.getValue().get(0));
+            }
+        } catch (Exception e) {
+            LogUtil.d("Exception", e.toString());
+            response.put(URLs.kCode, "400");
+            return response;
         }
         return response;
     }

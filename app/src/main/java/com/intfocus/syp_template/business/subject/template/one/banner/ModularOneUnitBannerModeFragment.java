@@ -13,6 +13,9 @@ import android.widget.TextView;
 
 import com.intfocus.syp_template.R;
 import com.intfocus.syp_template.business.subject.template.one.TemplateOneActivity;
+import com.intfocus.syp_template.general.bean.Report;
+import com.intfocus.syp_template.general.gen.ReportDao;
+import com.intfocus.syp_template.general.util.DaoUtil;
 import com.intfocus.syp_template.general.base.BaseModeFragment;
 
 import org.json.JSONException;
@@ -21,12 +24,17 @@ import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
+import static com.intfucos.yhdev.constant.Params.REPORT_TYPE_BANNER;
+
 /**
  * 模板一标题栏 负责显示标题、日期、帮助说明
  */
 public class ModularOneUnitBannerModeFragment extends BaseModeFragment {
-    private static final String ARG_PARAM = "param";
+    private static final String ARG_INDEX = "index";
+    private static final String ARG_UUID = "uuid";
     private String mParam;
+    private int index;
+    private String uuid;
 
     private View rootView;
 
@@ -47,10 +55,11 @@ public class ModularOneUnitBannerModeFragment extends BaseModeFragment {
     public ModularOneUnitBannerModeFragment() {
     }
 
-    public static ModularOneUnitBannerModeFragment newInstance(String param) {
+    public static ModularOneUnitBannerModeFragment newInstance(String uuid, int index) {
         ModularOneUnitBannerModeFragment fragment = new ModularOneUnitBannerModeFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM, param);
+        args.putInt(ARG_INDEX, index);
+        args.putString(ARG_UUID, uuid);
         fragment.setArguments(args);
         return fragment;
     }
@@ -59,7 +68,8 @@ public class ModularOneUnitBannerModeFragment extends BaseModeFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam = getArguments().getString(ARG_PARAM);
+            index = getArguments().getInt(ARG_INDEX);
+            uuid = getArguments().getString(ARG_UUID);
         }
     }
 
@@ -69,6 +79,7 @@ public class ModularOneUnitBannerModeFragment extends BaseModeFragment {
         if (rootView == null) {
             rootView = inflater.inflate(R.layout.fragment_banner, container, false);
             x.view().inject(this, rootView);
+            init();
             initPopup(container);
             bindData();
         }
@@ -136,5 +147,14 @@ public class ModularOneUnitBannerModeFragment extends BaseModeFragment {
         //设置PopupWindow显示的位置
         TemplateOneActivity activity = (TemplateOneActivity) getActivity();
         popupWindow.showAsDropDown(activity.actionbar);
+    }
+
+    private void init() {
+        ReportDao reportDao = DaoUtil.INSTANCE.getReportDao();
+        Report report = reportDao.queryBuilder()
+                .where(reportDao.queryBuilder().and(ReportDao.Properties.Uuid.eq(uuid), ReportDao.Properties.Type.eq(REPORT_TYPE_BANNER), ReportDao.Properties.Index.eq(index)))
+                .unique();
+
+        mParam = report.getConfig();
     }
 }

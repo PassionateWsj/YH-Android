@@ -1,5 +1,6 @@
 package com.intfocus.syp_template.business.subject.templateone.singlevalue
 
+import com.intfocus.syp_template.business.subject.template.one.entity.MDRPUnitSingleValue
 import org.jetbrains.annotations.NotNull
 
 /**
@@ -14,10 +15,10 @@ import org.jetbrains.annotations.NotNull
 interface SingleValueModel {
 
     interface LoadDataCallback {
-        fun onDataLoaded(data: com.intfocus.syp_template.business.subject.template.one.entity.MDRPUnitSingleValue)
+        fun onDataLoaded(data: MDRPUnitSingleValue)
 
         fun onDataNotAvailable(e: Throwable?)
     }
-    fun getData(@NotNull mParam:String,@NotNull callback: LoadDataCallback)
+    fun getData(@NotNull uuid: String, @NotNull index: Int, @NotNull callback: LoadDataCallback)
 
 }

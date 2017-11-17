@@ -1,5 +1,6 @@
 package com.intfocus.syp_template.general.net;
 
+import com.intfocus.syp_template.business.collection.entity.CollectionRequestBody;
 import com.intfocus.syp_template.business.login.bean.Device;
 import com.intfocus.syp_template.business.login.bean.DeviceRequest;
 import com.intfocus.syp_template.business.login.bean.NewUser;
@@ -329,6 +330,26 @@ public interface HttpService {
      */
     @POST(K.K_NEW_UPDATE_PWD)
     Observable<BaseResult> updatePwd(@Query("user_num") String userNum, @Query("password") String newPwd);
+
+    /**
+     * 同步获取报表JSON数据
+     * @param reportId
+     * @param templateId
+     * @param groupId
+     * @return
+     */
+    @GET(K.K_REPORT_JSON_DATA)
+    Call<ResponseBody> getJsonReportData(@Query("report_id") String reportId, @Query("template_id") String templateId, @Query("group_id") String groupId);
+
+    /**
+     * 上传采集信息
+     * <p>
+     * POST
+     * /api/v1.1/acquisition/data
+     * @return
+     */
+    @POST(K.KCollectionUpload)
+    Call<BaseResult> submitCollection(@Body CollectionRequestBody collectionRequestBody);
 
     /**
      * 重置密码

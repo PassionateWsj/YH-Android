@@ -18,7 +18,6 @@
     <!-- 获取用户位置信息 -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
 
     <!-- 必选 -->
     <uses-permission android:name="android.permission.INTERNET"/> <!-- 网络通信 -->
@@ -37,7 +36,7 @@
     <uses-permission android:name="android.permission.READ_LOGS"/>
     <!-- 获取logcat日志 -->
     <application
-        android:name="com.intfocus.syp_template.general.YHApplication"
+        android:name="com.intfocus.syp_template.YHApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -69,6 +68,8 @@
         <!-- 高德地图 -->
         <service android:name="com.amap.api.location.APSService"/>
 
+        <service android:name="com.intfocus.syp_template.general.service.CollectionUploadService"/>
+
         <activity
             android:name="com.intfocus.syp_template.business.launcher.LauncherActivity"
             android:screenOrientation="portrait"
@@ -81,10 +82,6 @@
         </activity>
 
         <!-- 登录 -->
-        <activity
-            android:name="com.intfocus.syp_template.business.login.LoginActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme"/>
 
         <!-- 模板三 -->
         <activity
@@ -97,6 +94,11 @@
             android:name="com.intfocus.syp_template.business.dashboard.mine.activity.FeedbackActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar"/>
+
+        <activity
+            android:name="com.intfucos.yhdev.collection.CollectionActivity"
+            android:screenOrientation="portrait"
+            ></activity>
         <!-- 公告详情 -->
         <activity
             android:name="com.intfocus.syp_template.business.dashboard.mine.activity.NoticeContentActivity"
@@ -110,6 +112,11 @@
         <!-- 忘记密码 -->
         <activity
             android:name="com.intfocus.syp_template.business.login.ForgetPasswordActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"/>
+        <!-- 修改密码页 -->
+        <activity
+            android:name="com.intfocus.syp_template.business.login.LoginActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
         <!-- 修改密码页 -->
@@ -246,7 +253,6 @@
         <meta-data
             android:name="PGYER_APPID"
             android:value="0a1d27ec9681648cbf62a0e4fe5df54a"/>
-
         <!-- 友盟 必选 -->
         <meta-data
             android:name="UMENG_APPKEY"

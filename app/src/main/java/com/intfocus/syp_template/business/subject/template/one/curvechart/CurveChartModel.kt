@@ -1,5 +1,6 @@
 package com.intfocus.syp_template.business.subject.templateone.curvechart
 
+import com.intfocus.syp_template.business.subject.template.one.entity.MDRPUnitCurveChartEntity
 import org.jetbrains.annotations.NotNull
 
 /**
@@ -14,10 +15,10 @@ import org.jetbrains.annotations.NotNull
 interface CurveChartModel {
     // 加载数据结果 回调接口
     interface LoadDataCallback {
-        fun onDataLoaded(data: com.intfocus.syp_template.business.subject.template.one.entity.MDRPUnitCurveChartEntity)
+        fun onDataLoaded(data: MDRPUnitCurveChartEntity)
 
         fun onDataNotAvailable(e: Throwable)
     }
-    fun getData(@NotNull mParam:String, @NotNull callback: LoadDataCallback)
+    fun getData(@NotNull uuid: String, @NotNull index: Int, @NotNull callback: LoadDataCallback)
 
 }

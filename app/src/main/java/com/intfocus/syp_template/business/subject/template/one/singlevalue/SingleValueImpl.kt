@@ -1,6 +1,10 @@
 package com.intfocus.syp_template.business.subject.templateone.singlevalue
 
 import com.alibaba.fastjson.JSON
+import com.intfocus.syp_template.business.subject.template.one.entity.MDRPUnitSingleValue
+import com.intfocus.syp_template.general.gen.ReportDao
+import com.intfocus.syp_template.general.util.DaoUtil
+import com.intfucos.yhdev.constant.Params.REPORT_TYPE_SINGLE_VALUE
 import rx.Observable
 import rx.Observer
 import rx.android.schedulers.AndroidSchedulers
@@ -40,13 +44,18 @@ class SingleValueImpl : SingleValueModel {
         }
     }
 
-    override fun getData(mParam: String, callback: SingleValueModel.LoadDataCallback) {
-        Observable.just(mParam)
+    override fun getData(uuid: String, index: Int, callback: SingleValueModel.LoadDataCallback) {
+        val reportDao = DaoUtil.getReportDao()
+        val report = reportDao.queryBuilder()
+                .where(reportDao.queryBuilder().and(ReportDao.Properties.Uuid.eq(uuid), ReportDao.Properties.Type.eq(REPORT_TYPE_SINGLE_VALUE), ReportDao.Properties.Index.eq(index)))
+                .unique()
+
+        Observable.just(report.config)
                 .subscribeOn(Schedulers.io())
-                .map { JSON.parseObject<com.intfocus.syp_template.business.subject.template.one.entity.MDRPUnitSingleValue>(it, com.intfocus.syp_template.business.subject.template.one.entity.MDRPUnitSingleValue::class.java) }
+                .map { JSON.parseObject<MDRPUnitSingleValue>(it, MDRPUnitSingleValue::class.java) }
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(object : Observer<com.intfocus.syp_template.business.subject.template.one.entity.MDRPUnitSingleValue> {
-                    override fun onNext(t: com.intfocus.syp_template.business.subject.template.one.entity.MDRPUnitSingleValue?) {
+                .subscribe(object : Observer<MDRPUnitSingleValue> {
+                    override fun onNext(t: MDRPUnitSingleValue?) {
                         t?.let { callback.onDataLoaded(t) }
                     }
 
@@ -57,8 +66,6 @@ class SingleValueImpl : SingleValueModel {
                     override fun onCompleted() {
                     }
                 })
-//        val valueData = JSON.parseObject(mParam, MDRPUnitSingleValue::class.java)
-//        callback.onDataLoaded(valueData)
     }
 
 }

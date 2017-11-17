@@ -1,16 +1,14 @@
 package com.intfocus.syp_template.business.subject.templateone.rootpage
 
 import android.util.Log
-import com.alibaba.fastjson.JSONReader
-import com.intfocus.syp_template.business.subject.template.one.entity.MDetailUnitEntity
-import com.intfocus.syp_template.business.subject.template.one.entity.msg.MDetailRootPageRequestResult
+import com.intfocus.syp_template.general.bean.Report
+import com.intfocus.syp_template.general.gen.ReportDao
+import com.intfocus.syp_template.general.util.DaoUtil
 import com.zbl.lib.baseframe.utils.TimeUtil
 import rx.Observable
 import rx.Observer
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
-import java.io.StringReader
-import java.util.*
 
 /**
  * ****************************************************
@@ -46,40 +44,27 @@ class RootPageImpl : RootPageModel {
         }
     }
 
-    override fun getData(mParam: String, callback: RootPageModel.LoadDataCallback) {
+    override fun getData(uuid: String, page: Int, callback: RootPageModel.LoadDataCallback) {
         Log.i(TAG, "StartAnalysisTime:" + TimeUtil.getNowTime())
-        Observable.just(mParam)
+        Observable.just("")
                 .subscribeOn(Schedulers.io())
                 .map {
-                    val isr = StringReader(it)
-                    val reader = JSONReader(isr)
-                    val datas = ArrayList<MDetailUnitEntity>()
-                    reader.startArray()
-                    while (reader.hasNext()) {
-                        val entity = MDetailUnitEntity()
-                        reader.startObject()
-                        while (reader.hasNext()) {
-                            val key = reader.readString()
-                            when (key) {
-                                "config" -> entity.config = reader.readObject().toString()
-
-                                "type" -> entity.type = reader.readObject().toString()
-                            }
-                        }
-                        datas.add(entity)
-                        reader.endObject()
-                    }
-                    reader.endArray()
-                    datas
+                    var reports: List<Report>
+                    val reportDao = DaoUtil.getReportDao()
+                    reports = reportDao.queryBuilder()
+                            .where(reportDao.queryBuilder()
+                                    .and(ReportDao.Properties.Uuid.eq(uuid), ReportDao.Properties.Page.eq(page)))
+                            .list()
+                    reports
                 }
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(object : Observer<ArrayList<MDetailUnitEntity>> {
+                .subscribe(object : Observer<List<Report>> {
                     override fun onError(e: Throwable?) {
                         callback.onDataNotAvailable(e!!)
                     }
 
-                    override fun onNext(t: ArrayList<MDetailUnitEntity>?) {
-                        callback.onDataLoaded(MDetailRootPageRequestResult(true, 200, t))
+                    override fun onNext(t: List<Report>?) {
+                        callback.onDataLoaded(t!!)
                     }
 
                     override fun onCompleted() {

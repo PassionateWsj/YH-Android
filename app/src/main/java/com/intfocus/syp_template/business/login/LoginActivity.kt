@@ -20,7 +20,7 @@ import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import android.webkit.WebView
+import com.tencent.smtt.sdk.WebView
 import android.widget.Toast
 import com.intfocus.syp_template.R
 import com.intfocus.syp_template.business.dashboard.DashboardActivity

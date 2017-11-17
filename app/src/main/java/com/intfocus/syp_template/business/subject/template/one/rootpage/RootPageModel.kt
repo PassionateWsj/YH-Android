@@ -1,6 +1,6 @@
 package com.intfocus.syp_template.business.subject.templateone.rootpage
 
-import com.intfocus.syp_template.business.subject.template.one.entity.msg.MDetailRootPageRequestResult
+import com.intfocus.syp_template.general.bean.Report
 import org.jetbrains.annotations.NotNull
 
 /**
@@ -15,9 +15,9 @@ import org.jetbrains.annotations.NotNull
 interface RootPageModel {
 
     interface LoadDataCallback {
-        fun onDataLoaded(data: MDetailRootPageRequestResult)
+        fun onDataLoaded(reports: List<Report>)
         fun onDataNotAvailable(e: Throwable)
     }
 
-    fun getData(@NotNull mParam: String, @NotNull callback: LoadDataCallback)
+    fun getData(@NotNull uuid: String, @NotNull page: Int, @NotNull callback: LoadDataCallback)
 }

@@ -29,12 +29,6 @@ public class RootScrollView extends ScrollView {
     @Override
     protected void onScrollChanged(int l, int t, int oldl, int oldt) {
         super.onScrollChanged(l, t, oldl, oldt);
-//        Log.i("hjjdbzz", "RootScrollView:::Current horizontal  ---  " + l);
-//        Log.i("hjjdbzz", "RootScrollView:::Current vertical    ---  " + t);
-//        Log.i("hjjdbzz", "RootScrollView:::Previous horizontal ---  " + oldl);
-//        Log.i("hjjdbzz", "RootScrollView:::Previous vertical   ---  " + oldt);
-//        int abs = Math.abs(t - oldt);
-//        Log.i("hjjdbzz", "竖向绝对值:::Previous vertical         ---  " + abs);
         if (onScrollListener != null) {
             onScrollListener.onScroll(t);
         }

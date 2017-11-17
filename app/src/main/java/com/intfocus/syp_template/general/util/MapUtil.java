@@ -7,6 +7,8 @@ import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.intfocus.syp_template.general.constant.ConfigConstants;
 
+import static com.intfocus.syp_template.general.constant.Constants.GAODE_MAP_APP_KEY;
+
 /**
  * ****************************************************
  * @author jameswong

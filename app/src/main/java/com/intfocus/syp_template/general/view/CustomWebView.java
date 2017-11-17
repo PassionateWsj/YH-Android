@@ -2,7 +2,7 @@ package com.intfocus.syp_template.general.view;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.webkit.WebView;
+import com.tencent.smtt.sdk.WebView;
 
 /**
  * Created by liuruilin on 2017/3/30.

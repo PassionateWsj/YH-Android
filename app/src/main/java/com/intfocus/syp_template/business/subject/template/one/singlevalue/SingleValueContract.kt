@@ -1,5 +1,6 @@
 package com.intfocus.syp_template.business.subject.templateone.singlevalue
 
+import com.intfocus.syp_template.business.subject.template.one.entity.MDRPUnitSingleValue
 import com.intfocus.syp_template.general.base.BasePresenter
 import com.intfocus.syp_template.general.base.BaseView
 
@@ -15,11 +16,11 @@ import com.intfocus.syp_template.general.base.BaseView
 interface SingleValueContract {
     interface View : BaseView<Presenter> {
         // 展示数据
-        fun showData(data: com.intfocus.syp_template.business.subject.template.one.entity.MDRPUnitSingleValue)
+        fun showData(data: MDRPUnitSingleValue)
     }
 
     interface Presenter : BasePresenter {
         // 加载数据
-        fun loadData(mParam: String)
+        fun loadData(uuid: String, index: Int)
     }
 }

@@ -20,7 +20,7 @@ public class K  implements Serializable {
     public final static String K_USER_AUTHENTICATE_API_PATH = "%s/api/v1/%s/%s/%s/authentication";
     public final static String K_USER_FORGET_API_PATH = "%s/api/v1/:platform/reset_password";
     public final static String K_REPORT_DATA_API_PATH = "%s/api/v1/group/%s/template/%s/report/%s/zip";
-    public final static String K_REPORT_JSON_DATA_API_PATH = "%s/api/v1/group/%s/template/%s/report/%s/jzip";
+    public final static String K_REPORT_JSON_ZIP_API_PATH = "%s/api/v1/group/%s/template/%s/report/%s/jzip";
     public final static String K_REPORT_JSON_API_PATH = "%s/api/v1/group/%s/template/%s/report/%s/json";
 //    public final static String kCommentAPIPath = "%s/api/v1/user/%d/id/%d/type/%d";
 
@@ -125,10 +125,15 @@ public class K  implements Serializable {
      * 新API及所需api key
      */
     public final static String API_TOKEN = "api_token";
+
     /**
      * 加密所需api key
      */
     public final static String ANDROID_API_KEY = "578905f6e0c4189caa344ee4b1e460e5";
+
+    public final static String KCollectionUpload = "/api/v1.1/acquisition/data"; //提交采集数据
+    public final static String KUploadImage = "/api/v1.1/upload/images"; //上传图片
+
 
     /**
      * 扫码结果
@@ -235,10 +240,17 @@ public class K  implements Serializable {
      * 报表 Zip 数据
      */
     public final static String K_REPORT_ZIP_DATA = "%s/api/v1.1/report/data?api_token=%s&group_id=%s&template_id=%s&report_id=%s&disposition=zip";
+
+    /**
+     * 报表 Json 数据
+     */
+    public final static String K_REPORT_JSON_DATA = "/api/v1.1/report/data?disposition=json";
+
     /**
      * 上传设备
      */
     public final static String K_ACTION_LOG = "%s/api/v1.1/device/logger";
+
     /**
      * 上传锁屏信息
      */
@@ -262,6 +274,7 @@ public class K  implements Serializable {
      * 设备列表
      */
     public final static String K_DEVICE_TOKEN_API_PATH = "/api/v1.1/user/devices";
+
     /**
      * 上传头像
      */
@@ -269,4 +282,5 @@ public class K  implements Serializable {
     public final static String K_NEW_CHOICE_MENU = "/api/v1.1/report/choice_menus";
     public final static String K_DOWNLOAD_ASSETS_ZIP = "/api/v1.1/download/assets";
     public final static String K_NEAREST_STORES = "/api/v1.1/nearest_stores";
+    public final static String KCollectionConfig = "/api/v1.1/acquisition/config";
 }

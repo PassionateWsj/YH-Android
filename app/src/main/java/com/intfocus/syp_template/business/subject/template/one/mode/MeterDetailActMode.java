@@ -22,7 +22,7 @@ import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.util.ArrayList;
 
-import static com.intfocus.syp_template.general.YHApplication.threadPool;
+import static com.intfocus.syp_template.YHApplication.threadPool;
 
 /**
  * 仪表盘-数据处理模块
