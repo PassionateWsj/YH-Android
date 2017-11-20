@@ -54,7 +54,7 @@ class WorkBoxAdapter(var ctx: Context, val datas: List<WorkBoxItem>?) : BaseAdap
                 .into(viewTag.mIcon)
         viewTag.rlItem.setOnClickListener {
             EventBus.getDefault().post(DashboardItemBean(datas[position].obj_link ?: "KotlinNullPointerException", datas[position].obj_title ?: "KotlinNullPointerException",
-                    datas[position].obj_id ?: "KotlinNullPointerException", datas[position].template_id ?: "-100", "3",datas[position].params_mapping!!))
+                    datas[position].obj_id ?: "KotlinNullPointerException", datas[position].template_id ?: "-100", "3",datas[position].params_mapping?:HashMap()))
         }
 
         return convertView

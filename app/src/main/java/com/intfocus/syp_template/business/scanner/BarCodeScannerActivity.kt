@@ -275,14 +275,18 @@ class BarCodeScannerActivity : AppCompatActivity(), QRCodeView.Delegate, View.On
     }
 
     private fun goToUrl(result: String, codeType: String, type: String) {
-        val mUserSP = getSharedPreferences("UserBean", Context.MODE_PRIVATE)
+//        val mUserSP = getSharedPreferences("UserBean", Context.MODE_PRIVATE)
         when {
             type.contains("ruishang") -> {
-                val link = ConfigConstants.kBaseUrl + "/websites/cav/quan.html?" + "uid=" + mUserSP.getString("user_num", "") + "&code=" + result + "&groupName=" + mUserSP.getString(URLs.kGroupName, "") + "&groupId=" + mUserSP.getString(URLs.kGroupId, "")
+                var urlString = intent.getStringExtra(URLs.kLink)
+                // val link = ConfigConstants.kBaseUrl + "/websites/cav/quan.html?" + "uid=" + mUserSP.getString("userNum", "") + "&code=" + result + "&groupName=" + mUserSP.getString(URLs.kGroupName, "") + "&groupId=" + mUserSP.getString(URLs.kGroupId, "")
+                val appendParams = String.format("code=%s", result)
+                val splitString = if (urlString.contains("?")) "&" else "?"
+                urlString = String.format("%s%s%s", urlString, splitString, appendParams)
                 val intent = Intent(this, WebApplicationActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
                 intent.putExtra(URLs.kBannerName, "核销奖券")
-                intent.putExtra(URLs.kLink, link)
+                intent.putExtra(URLs.kLink, urlString)
                 startActivity(intent)
             }
             else -> {
@@ -370,7 +374,7 @@ class BarCodeScannerActivity : AppCompatActivity(), QRCodeView.Delegate, View.On
                 override fun onPostExecute(result: String) {
                     mProgressDialog.dismiss()
                     if (TextUtils.isEmpty(result) || "" == result) {
-                        ToastUtils.show(this@BarCodeScannerActivity, "未发现条形码")
+                        ToastUtils.show(this@BarCodeScannerActivity, if (ConfigConstants.SCAN_BARCODE) "未发现条形码" else "未发现二维码")
 //                        tv_barcode_scanning.visibility = View.GONE
                         zbarview_barcode_scanner.postDelayed({ zbarview_barcode_scanner.startSpot() }, 2000)
                     } else {

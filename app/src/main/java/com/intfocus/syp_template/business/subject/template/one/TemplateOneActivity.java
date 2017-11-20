@@ -44,6 +44,7 @@ import com.umeng.socialize.media.UMImage;
 import com.zbl.lib.baseframe.core.ActManager;
 import com.zbl.lib.baseframe.core.Subject;
 
+import org.greenrobot.eventbus.EventBus;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 
@@ -186,6 +187,7 @@ public class TemplateOneActivity extends BaseModeActivity<MeterDetailActMode> im
             }
             mCurrentFragment = toFragment;
         }
+        EventBus.getDefault().post(new EventRefreshTableRect(checkId));
     }
 
     @Override

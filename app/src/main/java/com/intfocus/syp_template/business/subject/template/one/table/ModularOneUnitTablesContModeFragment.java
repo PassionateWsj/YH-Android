@@ -370,8 +370,10 @@ public class ModularOneUnitTablesContModeFragment extends BaseModeFragment<Modul
 
         // 表头加载完成后, 开始加载表格首列及表格内容
         if (al_HeaderLenght.size() == headerSize) {
-            loadTableLeftData(); // 加载首列数据
-            loadTableContentData(); // 加载表格内容
+            // 加载首列数据
+            loadTableLeftData();
+            // 加载表格内容
+            loadTableContentData();
         }
     }
 
