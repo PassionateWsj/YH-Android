@@ -138,6 +138,16 @@ public class TemplateOneActivity extends BaseModeActivity<MeterDetailActMode> im
         rScrollView = mContentView.findViewById(R.id.rootScrollView);
         new ModePresenter(ModeImpl.getInstance(), this);
         init();
+        initListener();
+    }
+
+    private void initListener() {
+        rScrollView.setOnScrollListener(new RootScrollView.OnScrollListener() {
+            @Override
+            public void onScroll(int scrollY) {
+                EventBus.getDefault().post(new EventRefreshTableRect(lastCheckId));
+            }
+        });
     }
 
     private void init() {
@@ -187,7 +197,7 @@ public class TemplateOneActivity extends BaseModeActivity<MeterDetailActMode> im
             }
             mCurrentFragment = toFragment;
         }
-        EventBus.getDefault().post(new EventRefreshTableRect(checkId));
+
     }
 
     @Override

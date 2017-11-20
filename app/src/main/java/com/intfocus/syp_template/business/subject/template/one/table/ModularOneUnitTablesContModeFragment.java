@@ -30,7 +30,6 @@ import com.intfocus.syp_template.general.data.TempSubData;
 import com.intfocus.syp_template.general.util.DisplayUtil;
 import com.intfocus.syp_template.general.util.ToastUtils;
 import com.intfocus.syp_template.general.view.NotScrollListView;
-import com.intfocus.syp_template.general.view.RootScrollView;
 import com.intfocus.syp_template.general.view.SortCheckBox;
 import com.intfocus.syp_template.general.view.TableHorizontalScrollView;
 import com.intfocus.syp_template.general.view.TableValueView;
@@ -159,16 +158,9 @@ public class ModularOneUnitTablesContModeFragment extends BaseModeFragment<Modul
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void measureLocation(EventRefreshTableRect event) {
-        ModularOneUnitTablesModeFragment parentFt = (ModularOneUnitTablesModeFragment) getParentFragment();
-        if (parentFt == null) {
-            return;
-        }
         final int surootID = suRootID;
 
         if (event.eventTag == surootID) {
-            ((TemplateOneActivity) getActivity()).rScrollView.setOnScrollListener(new RootScrollView.OnScrollListener() {
-                @Override
-                public void onScroll(int scrollY) {
                     Log.d("hjjzz", "isHidden:::" + ModularOneUnitTablesContModeFragment.this.isHidden());
                     Rect rect = new Rect();
                     rootView.getGlobalVisibleRect(rect);
@@ -186,10 +178,8 @@ public class ModularOneUnitTablesContModeFragment extends BaseModeFragment<Modul
                             }
                         }
                     }
-                }
-            });
-        } else {
-            ((TemplateOneActivity) getActivity()).rScrollView.setOnScrollListener(null);
+//                }
+//            });
         }
     }
 
@@ -232,29 +222,29 @@ public class ModularOneUnitTablesContModeFragment extends BaseModeFragment<Modul
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        if (!hidden) {
-            ((TemplateOneActivity) getActivity()).rScrollView.setOnScrollListener(new RootScrollView.OnScrollListener() {
-                @Override
-                public void onScroll(int scrollY) {
-                    Rect rect = new Rect();
-                    rootView.getGlobalVisibleRect(rect);
-                    synchronized (this) {
-                        if (fl_tableTitle_container.getChildCount() != 0) {
-                            if (rect.top <= offsetTop && rect.bottom - 165 > offsetTop) {
-                                fl_tableTitle_container.removeView(suspensionView);
-                                ((TemplateOneActivity) getActivity()).suspendContainer.addView(suspensionView);
-                            }
-                        } else {
-                            int viewCont = ((TemplateOneActivity) getActivity()).suspendContainer.getChildCount();
-                            if (rect.top > offsetTop || rect.bottom - 150 < offsetTop && viewCont != 0) {
-                                ((TemplateOneActivity) getActivity()).suspendContainer.removeView(suspensionView);
-                                fl_tableTitle_container.addView(suspensionView);
-                            }
-                        }
-                    }
-                }
-            });
-        }
+//        if (!hidden) {
+//            ((TemplateOneActivity) getActivity()).rScrollView.setOnScrollListener(new RootScrollView.OnScrollListener() {
+//                @Override
+//                public void onScroll(int scrollY) {
+//                    Rect rect = new Rect();
+//                    rootView.getGlobalVisibleRect(rect);
+//                    synchronized (this) {
+//                        if (fl_tableTitle_container.getChildCount() != 0) {
+//                            if (rect.top <= offsetTop && rect.bottom - 165 > offsetTop) {
+//                                fl_tableTitle_container.removeView(suspensionView);
+//                                ((TemplateOneActivity) getActivity()).suspendContainer.addView(suspensionView);
+//                            }
+//                        } else {
+//                            int viewCont = ((TemplateOneActivity) getActivity()).suspendContainer.getChildCount();
+//                            if (rect.top > offsetTop || rect.bottom - 150 < offsetTop && viewCont != 0) {
+//                                ((TemplateOneActivity) getActivity()).suspendContainer.removeView(suspensionView);
+//                                fl_tableTitle_container.addView(suspensionView);
+//                            }
+//                        }
+//                    }
+//                }
+//            });
+//        }
     }
 
     /**
