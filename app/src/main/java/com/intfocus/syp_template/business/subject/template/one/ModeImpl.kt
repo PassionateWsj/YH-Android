@@ -55,20 +55,20 @@ class ModeImpl : ReportModelImpl() {
 
     fun checkReportData(reportId: String, templateId: String, groupId: String, callback: ModeModel.LoadDataCallback) {
         uuid = reportId + templateId + groupId
-        var urlString = reportId + templateId + groupId
+        val urlString = reportId + templateId + groupId
         when {
-            checkUpdate(urlString) -> analyseData(groupId, reportId, callback)
+            checkUpdate(urlString) -> analysisData(groupId, reportId, callback)
             available(uuid) -> {
-                var entity = MererDetailEntity()
+                val entity = MererDetailEntity()
                 entity.name = "123"
                 callback.onDataLoaded(entity)
-//                analyseData(groupId, reportId, callback)
+//                analysisData(groupId, reportId, callback)
             }
-            else -> analyseData(groupId, reportId, callback)
+            else -> analysisData(groupId, reportId, callback)
         }
     }
 
-    fun analyseData(groupId: String, reportId: String, callback: ModeModel.LoadDataCallback) {
+    fun analysisData(groupId: String, reportId: String, callback: ModeModel.LoadDataCallback) {
         val jsonFileName = String.format("group_%s_template_%s_report_%s.json", groupId, "1", reportId)
 
         Observable.just(jsonFileName)
@@ -120,8 +120,8 @@ class ModeImpl : ReportModelImpl() {
                                             "parts" -> {
                                                 config = reader.readObject().toString()
                                                 data.parts = config
-                                                var moduleStringReader = StringReader(config)
-                                                var moduleReader = JSONReader(moduleStringReader)
+                                                val moduleStringReader = StringReader(config)
+                                                val moduleReader = JSONReader(moduleStringReader)
                                                 moduleReader.startArray()
                                                 while (moduleReader.hasNext()) {
                                                     var moduleConfig = ""

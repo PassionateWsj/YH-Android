@@ -161,9 +161,17 @@ object PageLinkManage {
                     context.startActivity(intent)
                 }
                 SCANNER -> {
-                    savePageLink(context, objTitle, link, objectId, templateId, objectType)
+                    var urlString = link
+                    for ((key, value) in paramsMappingBean) {
+//                        if (key == "user_num") {
+//                            continue
+//                        }
+                        urlString = splitUrl(userSP, urlString, key, value)
+                    }
+                    savePageLink(context, objTitle, urlString, objectId, templateId, objectType)
                     intent = Intent(context, BarCodeScannerActivity::class.java)
                     intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+                    intent.putExtra(URLs.kLink,urlString)
                     context.startActivity(intent)
                 }
                 else -> showTemplateErrorDialog(context)
