@@ -326,6 +326,10 @@ class LauncherActivity : Activity(), Animation.AnimationListener {
     }
 
     override fun onDestroy() {
+        if (!ConfigConstants.GUIDE_SHOW) {
+            val packageInfo = packageManager.getPackageInfo(packageName, 0)
+            mSettingSP.edit().putInt("Version", packageInfo.versionCode).apply()
+        }
         AssetsUpDateUtil.unSubscribe()
         super.onDestroy()
     }

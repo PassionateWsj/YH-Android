@@ -331,7 +331,7 @@ class LoginActivity : FragmentActivity() {
             userNum = etUsername.text.toString()
             userPass = etPassword.text.toString()
 
-            mUserSP!!.edit().putString("user_num", userNum).apply()
+            mUserSP!!.edit().putString(kUserNum, userNum).apply()
 
             if (userNum!!.isEmpty() || userPass!!.isEmpty()) {
                 ToastUtils.show(this@LoginActivity, "请输入用户名与密码")

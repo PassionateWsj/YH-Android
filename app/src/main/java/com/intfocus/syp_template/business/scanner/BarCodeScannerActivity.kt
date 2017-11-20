@@ -370,7 +370,7 @@ class BarCodeScannerActivity : AppCompatActivity(), QRCodeView.Delegate, View.On
                 override fun onPostExecute(result: String) {
                     mProgressDialog.dismiss()
                     if (TextUtils.isEmpty(result) || "" == result) {
-                        ToastUtils.show(this@BarCodeScannerActivity, "未发现条形码")
+                        ToastUtils.show(this@BarCodeScannerActivity, if (ConfigConstants.SCAN_BARCODE) "未发现条形码" else "未发现二维码")
 //                        tv_barcode_scanning.visibility = View.GONE
                         zbarview_barcode_scanner.postDelayed({ zbarview_barcode_scanner.startSpot() }, 2000)
                     } else {
