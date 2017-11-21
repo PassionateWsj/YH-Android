@@ -326,7 +326,7 @@ class BarCodeScannerActivity : AppCompatActivity(), QRCodeView.Delegate, View.On
     }
 
     override fun onScanQRCodeSuccess(result: String?) {
-        Log.i(TAG, "result:" + result)
+        LogUtil.d(TAG, "result:" + result)
 
         if (result == null) {
             ToastUtils.show(this@BarCodeScannerActivity, "扫描失败，请重新扫描")
@@ -439,10 +439,10 @@ class BarCodeScannerActivity : AppCompatActivity(), QRCodeView.Delegate, View.On
 
                 //解析定位结果
                 val result = sb.toString()
-                Log.i("testlog", result)
+                LogUtil.d("testlog", result)
             } else {
                 tv_barcode_local_position.text = "定位失败"
-                Log.i("testlog", "定位失败，loc is null")
+                LogUtil.d("testlog", "定位失败，loc is null")
             }
         }
 

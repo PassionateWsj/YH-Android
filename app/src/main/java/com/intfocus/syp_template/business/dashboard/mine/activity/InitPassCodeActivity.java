@@ -10,7 +10,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -22,6 +21,7 @@ import com.intfocus.syp_template.general.constant.ToastColor;
 import com.intfocus.syp_template.general.util.ActionLogUtil;
 import com.intfocus.syp_template.general.util.FileUtil;
 import com.intfocus.syp_template.general.util.K;
+import com.intfocus.syp_template.general.util.LogUtil;
 import com.intfocus.syp_template.general.util.ToastUtils;
 import com.intfocus.syp_template.general.util.URLs;
 
@@ -290,7 +290,7 @@ public class InitPassCodeActivity extends Activity {
                     initStringBuilder();
                     initCircleColor();
 
-                    Log.i("confirmPassword2", "no");
+                    LogUtil.d("confirmPassword2", "no");
                 }
                 break;
         }

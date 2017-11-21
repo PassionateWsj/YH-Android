@@ -95,18 +95,18 @@ class CollectionModelImpl: CollectionModel<CollectionEntity> {
                     reader.startObject()
                     val entity = CollectionEntity()
                     entity.data = ArrayList()
-                    Log.i(TAG, "analysisDataReaderTime2:")
+                    LogUtil.d(TAG, "analysisDataReaderTime2:")
 
                     while (reader.hasNext()) {
                         val key = reader.readString()
                         when (key) {
                             "title" -> {
                                 entity.name = reader.readObject().toString()
-                                Log.i(TAG, "name:")
+                                LogUtil.d(TAG, "name:")
                             }
 
                             "content" -> {
-                                Log.i(TAG, "dataStart:")
+                                LogUtil.d(TAG, "dataStart:")
                                 reader.startArray()
 
                                 while (reader.hasNext()) {
@@ -124,14 +124,14 @@ class CollectionModelImpl: CollectionModel<CollectionEntity> {
                                     entity.data!!.add(data)
                                 }
                                 reader.endArray()
-                                Log.i(TAG, "dataEnd:")
+                                LogUtil.d(TAG, "dataEnd:")
                             }
                             "id" -> Companion.reportId = reader.readString()
                             else -> {Log.i("testlog", key + reader.readString() + " is error reason")}
                         }
                     }
                     reader.endObject()
-                    Log.i(TAG, "analysisDataEndTime:")
+                    LogUtil.d(TAG, "analysisDataEndTime:")
                     entity
                 }
                 .observeOn(AndroidSchedulers.mainThread())

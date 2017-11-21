@@ -6,14 +6,12 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.PowerManager;
-import android.util.Log;
 
 import com.intfocus.syp_template.general.constant.ConfigConstants;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -31,7 +29,6 @@ import java.util.concurrent.TimeUnit;
 import okhttp3.Headers;
 import okhttp3.HttpUrl;
 import okhttp3.MediaType;
-import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -494,7 +491,7 @@ public class HttpUtil {
             for (Map.Entry<String, List<String>> entry : map.entrySet()) {
                 response.put(entry.getKey(), entry.getValue().get(0));
             }
-            Log.i("DownloadZIP", String.format("%d - %s - %s", connection.getResponseCode(), urlString, response.toString()));
+            LogUtil.d("DownloadZIP", String.format("%d - %s - %s", connection.getResponseCode(), urlString, response.toString()));
                 // expect HTTP 200 OK, so we don't mistakenly save error report
                 // instead of the file
                 if (connection.getResponseCode() != HttpURLConnection.HTTP_OK) {

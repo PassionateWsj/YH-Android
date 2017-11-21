@@ -9,7 +9,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -22,6 +21,7 @@ import com.intfocus.syp_template.business.login.LoginActivity;
 import com.intfocus.syp_template.general.util.ActionLogUtil;
 import com.intfocus.syp_template.general.util.FileUtil;
 import com.intfocus.syp_template.general.util.K;
+import com.intfocus.syp_template.general.util.LogUtil;
 import com.intfocus.syp_template.general.util.URLs;
 
 import org.json.JSONException;
@@ -219,7 +219,7 @@ public class ConfirmPassCodeActivity extends Activity {
 
     private void confirmPassword() {
         try {
-            Log.i("confirmPassword", "confirmPassword");
+            LogUtil.d("confirmPassword", "confirmPassword");
 
             String userConfigPath = String.format("%s/%s", FileUtil.basePath(mContext), K.K_USER_CONFIG_FILE_NAME);
             JSONObject userJSON = FileUtil.readConfigFile(userConfigPath);
@@ -250,7 +250,7 @@ public class ConfirmPassCodeActivity extends Activity {
                 }).start();
                 finish();
             } else {
-                Log.i("confirmPassword", "no");
+                LogUtil.d("confirmPassword", "no");
 
                 String TEXT_MAIN_MISTAKE = "请输入密码";
                 text_main_pass.setText(TEXT_MAIN_MISTAKE);

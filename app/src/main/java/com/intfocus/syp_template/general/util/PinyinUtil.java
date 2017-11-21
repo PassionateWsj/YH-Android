@@ -1,7 +1,5 @@
 package com.intfocus.syp_template.general.util;
 
-import android.util.Log;
-
 import net.sourceforge.pinyin4j.PinyinHelper;
 import net.sourceforge.pinyin4j.format.HanyuPinyinCaseType;
 import net.sourceforge.pinyin4j.format.HanyuPinyinOutputFormat;
@@ -48,7 +46,7 @@ public class PinyinUtil {
                 output += Character.toString(input[i]);
             }
         } catch (Exception e) {
-            Log.e("Exception", e.toString());
+            LogUtil.e("Exception", e.toString());
         }
         return output;
     }

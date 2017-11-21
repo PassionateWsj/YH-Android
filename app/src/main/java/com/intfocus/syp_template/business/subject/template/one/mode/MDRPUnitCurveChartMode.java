@@ -1,10 +1,10 @@
 package com.intfocus.syp_template.business.subject.template.one.mode;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.alibaba.fastjson.JSON;
 import com.intfocus.syp_template.business.subject.template.one.entity.MDRPUnitCurveChartEntity;
+import com.intfocus.syp_template.general.util.LogUtil;
 import com.zbl.lib.baseframe.core.AbstractMode;
 import com.zbl.lib.baseframe.utils.TimeUtil;
 
@@ -37,14 +37,14 @@ public class MDRPUnitCurveChartMode extends AbstractMode {
      * @param result
      */
     public void analysisData(final String result) {
-        Log.i(TAG, "StartAnalysisTime:" + TimeUtil.getNowTime());
+        LogUtil.d(TAG, "StartAnalysisTime:" + TimeUtil.getNowTime());
         threadPool.execute(new Runnable() {
             @Override
             public void run() {
                 try {
                     MDRPUnitCurveChartEntity entity = JSON.parseObject(result, MDRPUnitCurveChartEntity.class);
                     dataCallback(entity, "onMessageEvent");
-                    Log.i(TAG, "EndAnalysisTime:" + TimeUtil.getNowTime());
+                    LogUtil.d(TAG, "EndAnalysisTime:" + TimeUtil.getNowTime());
                 } catch (Exception e) {
                     e.printStackTrace();
                     MDRPUnitCurveChartEntity entity = new MDRPUnitCurveChartEntity();

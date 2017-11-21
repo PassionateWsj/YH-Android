@@ -14,13 +14,13 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
 
 import com.intfocus.syp_template.R;
+import com.intfocus.syp_template.general.util.LogUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -388,11 +388,11 @@ public class CustomCurveChartV2 extends View implements ValueAnimator.AnimatorUp
             if (data[i] < 0) {
                 top = yPoint;
                 bottom = toY(data[i] - Float.parseFloat(yLabel[0])) * ratio;
-                Log.i("hjjzz", "数据 负 ：ratio " + ratio);
+                LogUtil.d("hjjzz", "数据 负 ：ratio " + ratio);
             } else {
                 top = toY(data[i] - Float.parseFloat(yLabel[0])) * (1 + (1 - ratio));
                 bottom = yPoint;
-                Log.i("hjjzz", "数据 正 ：ratio " + ratio);
+                LogUtil.d("hjjzz", "数据 正 ：ratio " + ratio);
             }
 
             RectF rectF = new RectF(left, top, right, bottom);

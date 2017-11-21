@@ -5,7 +5,6 @@ import android.support.design.widget.AppBarLayout
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentTransaction
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +14,7 @@ import com.intfocus.syp_template.base.BaseWidgetFragment
 import com.intfocus.syp_template.collection.entity.RootPageRequestResult
 import com.intfocus.syp_template.constant.Params.ARG_PARAM
 import com.intfocus.syp_template.constant.Params.SU_ROOT_ID
+import com.intfocus.syp_template.general.util.LogUtil
 import com.intfocus.syp_template.module.image.ImageFragment
 import com.intfocus.syp_template.module.image.ImageModelImpl
 import com.intfocus.syp_template.module.image.ImagePresenter
@@ -109,7 +109,7 @@ class RootPageFragment : BaseWidgetFragment(), RootPageContract.View {
                     ImagePresenter(ImageModelImpl.getInstance(), fragment)
                 }
 
-                else -> Log.i(TAG, entity.type + ">>>>>> is unknown module!")
+                else -> LogUtil.d(TAG, entity.type + ">>>>>> is unknown module!")
             }
 
             if (fragment != null) {

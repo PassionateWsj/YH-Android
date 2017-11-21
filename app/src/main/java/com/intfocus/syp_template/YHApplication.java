@@ -13,17 +13,17 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.multidex.MultiDex;
-import android.util.Log;
 
 import com.intfocus.syp_template.business.dashboard.DashboardActivity;
 import com.intfocus.syp_template.business.launcher.ConfirmPassCodeActivity;
 import com.intfocus.syp_template.business.login.LoginActivity;
 import com.intfocus.syp_template.general.FetchPatchHandler;
-import com.intfocus.syp_template.general.util.DaoUtil;
 import com.intfocus.syp_template.general.constant.ConfigConstants;
 import com.intfocus.syp_template.general.util.AppStatusTracker;
+import com.intfocus.syp_template.general.util.DaoUtil;
 import com.intfocus.syp_template.general.util.FileUtil;
 import com.intfocus.syp_template.general.util.K;
+import com.intfocus.syp_template.general.util.LogUtil;
 import com.intfocus.syp_template.general.util.URLs;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.tencent.smtt.sdk.QbSdk;
@@ -76,7 +76,7 @@ public class YHApplication extends Application {
 
             // 每隔1个小时去访问后台时候有更新,通过handler实现轮训的效果
             new FetchPatchHandler().fetchPatchWithInterval(1);
-            Log.i("TAG", "tinker init");
+            LogUtil.d("TAG", "tinker init");
         }
 
         appContext = getApplicationContext();
@@ -99,7 +99,7 @@ public class YHApplication extends Application {
             @Override
             public void onViewInitFinished(boolean b) {
                 //x5內核初始化完成的回调，为true表示x5内核加载成功，否则表示x5内核加载失败，会自动切换到系统内核。
-                Log.i("x5_app", " onViewInitFinished is " + b);
+                LogUtil.d("x5_app", " onViewInitFinished is " + b);
             }
 
             @Override
@@ -216,10 +216,10 @@ public class YHApplication extends Application {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (!intent.getAction().equals(Intent.ACTION_SCREEN_ON) || isBackground(appContext)) {
-                Log.i("BroadcastReceiver", "return" + isBackground(appContext));
+                LogUtil.d("BroadcastReceiver", "return" + isBackground(appContext));
                 return;
             }
-            Log.i("BroadcastReceiver", "Screen On");
+            LogUtil.d("BroadcastReceiver", "Screen On");
             String currentActivityName = ((YHApplication) context.getApplicationContext()).getCurrentActivity();
             if ((currentActivityName != null && !"ConfirmPassCodeActivity".equals(currentActivityName.trim())) && // 当前活动的Activity非解锁界面
                     FileUtil.checkIsLocked(appContext)) { //应用处于登录状态，并且开启了密码锁
@@ -245,7 +245,7 @@ public class YHApplication extends Application {
         String mActivity = context.toString();
         String mActivityName = mActivity.substring(mActivity.lastIndexOf(".") + 1, mActivity.indexOf("@"));
         mCurrentActivity = mActivityName;
-        Log.i("activityName", mCurrentActivity);
+        LogUtil.d("activityName", mCurrentActivity);
     }
 
     /**
