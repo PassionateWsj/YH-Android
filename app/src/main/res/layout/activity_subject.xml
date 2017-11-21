@@ -112,7 +112,7 @@
         android:id="@+id/pdfview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/actionBar"
+        android:layout_below="@+id/rl_action_bar"
         android:visibility="gone" />
 
 </RelativeLayout>

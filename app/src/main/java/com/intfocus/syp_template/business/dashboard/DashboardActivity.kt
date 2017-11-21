@@ -52,10 +52,9 @@ import org.json.JSONObject
 import rx.Observable
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
-import sumimakito.android.advtextswitcher.AdvTextSwitcher
 import java.sql.SQLException
 
-class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, AdvTextSwitcher.Callback {
+class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener{
     //    private var mDashboardFragmentAdapter: DashboardFragmentAdapter? = null
     private var mSharedPreferences: SharedPreferences? = null
     private val mTabView: ArrayList<TabView> = ArrayList()
@@ -291,17 +290,6 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener, Ad
         }
         refreshTabView()
         mSharedPreferences!!.edit().putInt("LastTab", mViewPager!!.currentItem).apply()
-    }
-
-    /*
-     * 公告点击事件
-     */
-    override fun onItemClick(position: Int) {
-        mTabView
-                .filter { R.id.tab_mine == it.id }
-                .forEach { mViewPager!!.currentItem = mTabView.indexOf(it) }
-//        mViewPager!!.currentItem = PAGE_MINE
-        refreshTabView()
     }
 
     /*

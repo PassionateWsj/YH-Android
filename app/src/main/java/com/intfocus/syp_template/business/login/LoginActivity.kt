@@ -303,7 +303,7 @@ class LoginActivity : FragmentActivity() {
     }
 
     override fun onDestroy() {
-        LogUtil.e(LogUtil.TAG,"LoginActivity ::: onDestroy")
+        LogUtil.e(LogUtil.TAG, "LoginActivity ::: onDestroy")
         PgyUpdateManager.unregister()
         super.onDestroy()
     }
@@ -408,7 +408,8 @@ class LoginActivity : FragmentActivity() {
                             mUserSPEdit!!.putString(URLs.kRoleName, data.data!!.role_name)
                             mUserSPEdit!!.putString(URLs.kGroupName, data.data!!.group_name)
                             mUserSPEdit!!.putString(kUserNum, data.data!!.user_num)
-                            mUserSPEdit!!.putString(K_CURRENT_UI_VERSION, "v2").apply()
+                            mUserSPEdit!!.putString(K_CURRENT_UI_VERSION, "v2")
+                            mUserSPEdit!!.apply()
 
                             // 判断是否包含推送信息，如果包含 登录成功直接跳转推送信息指定页面
                             if (intent.hasExtra("msgData")) {

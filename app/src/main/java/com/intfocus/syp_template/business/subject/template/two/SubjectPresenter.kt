@@ -10,7 +10,7 @@ import com.intfocus.syp_template.collection.callback.LoadDataCallback
 class SubjectPresenter(
         var mModel: SubjectModelImpl,
         var mView: SubjectContract.View
-): SubjectContract.Presenter {
+) : SubjectContract.Presenter {
 
     init {
         mView.presenter = this
@@ -19,24 +19,32 @@ class SubjectPresenter(
     override fun start() {
     }
 
-    override fun load(reportId: String, templateId: String, groupId: String) {
-        when(templateId) {
+    override fun load(reportId: String, templateId: String, groupId: String, url: String) {
+        when (templateId) {
             "2", "4" -> {
-                mModel.checkReportData(reportId, templateId, groupId, object: LoadDataCallback<String>{
-                    override fun onSuccess(path: String) {
-                        mView.show("file://" + path)
-                    }
-
-                    override fun onError(e: Throwable) {
-
-                    }
-
-                    override fun onComplete() {}
-                })
+                mModel.getReportData(reportId, templateId, groupId, LoadDataCallBack())
             }
             else -> {
-                mView.show("")
+                if (url.toLowerCase().endsWith(".pdf")) {
+                    mModel.getPdfFilePath(url, LoadDataCallBack())
+                }
+                else {
+                    mView.show(url)
+                }
             }
         }
     }
+
+    inner class LoadDataCallBack: LoadDataCallback<String> {
+        override fun onSuccess(path: String) {
+            mView.show(path)
+        }
+
+        override fun onError(e: Throwable) {
+
+        }
+
+        override fun onComplete() {}
+    }
 }
+

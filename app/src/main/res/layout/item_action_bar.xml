@@ -14,12 +14,6 @@
         android:onClick="dismissActivity"/>
 
     <TextView
-        android:id="@+id/tv_banner_back"
-        style="@style/BannerBackText"
-        android:layout_toRightOf="@id/bannerBack"
-        android:onClick="dismissActivity"/>
-
-    <TextView
         android:id="@+id/tv_banner_title"
         style="@style/BannerTitle"
         android:layout_width="match_parent"

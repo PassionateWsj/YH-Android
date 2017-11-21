@@ -96,7 +96,7 @@ object PageLinkManage {
                 }
                 TEMPLATE_FOUR -> {
                     savePageLink(context, objTitle, link, objectId, templateId, objectType)
-                    intent = Intent(context, SubjectActivity::class.java)
+                    intent = Intent(context, SubjectActivity2::class.java)
                     intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
                     intent.putExtra(URLs.kBannerName, objTitle)
                     intent.putExtra(URLs.kLink, link)
@@ -122,7 +122,7 @@ object PageLinkManage {
                 }
                 TEMPLATE_SIX -> {
                     savePageLink(context, objTitle, link, objectId, templateId, objectType)
-                    intent = Intent(context, WebApplicationActivityV6::class.java)
+                    intent = Intent(context, SubjectActivity2::class.java)
                     intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
                     intent.putExtra(URLs.kBannerName, objTitle)
                     intent.putExtra(URLs.kLink, link)
@@ -152,7 +152,7 @@ object PageLinkManage {
                         urlString = splitUrl(userSP, urlString, key, value)
                     }
                     savePageLink(context, objTitle, link, objectId, templateId, objectType)
-                    intent = Intent(context, WebApplicationActivity::class.java)
+                    intent = Intent(context, SubjectActivity2::class.java)
                     intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
                     intent.putExtra(URLs.kBannerName, objTitle)
                     intent.putExtra(URLs.kLink, link)

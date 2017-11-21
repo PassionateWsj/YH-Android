@@ -28,7 +28,8 @@ public class ThursdaySayActivity extends BaseActivity {
 
         animLoading.setVisibility(View.VISIBLE);
         setWebViewLongListener(false);
-        urlString = String.format(K.K_THURSDAY_SAY_MOBILE_PATH, ConfigConstants.kBaseUrl, URLs.currentUIVersion(ThursdaySayActivity.this));
+//        urlString = String.format(K.K_THURSDAY_SAY_MOBILE_PATH, ConfigConstants.kBaseUrl, URLs.currentUIVersion(ThursdaySayActivity.this));
+        urlString = "http://111.231.113.158:8080/websites/cav/quan2.html";
         new Thread(mRunnableForDetecting).start();
     }
 

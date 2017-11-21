@@ -52,9 +52,9 @@ class SubjectModelImpl : ReportModelImpl() {
     }
 
     /**
-     * 检测报表是否需要更新数据
+     * 获取报表数据
      */
-    fun checkReportData(reportId: String, templateId: String, groupId: String, callback: LoadDataCallback<String>) {
+    fun getReportData(reportId: String, templateId: String, groupId: String, callback: LoadDataCallback<String>) {
         jsUrl = String.format(K.K_REPORT_ZIP_DATA, ConfigConstants.kBaseUrl, URLs.MD5(K.ANDROID_API_KEY + K.K_REPORT_BASE_API + K.ANDROID_API_KEY), groupId, templateId, reportId)
         jsFileName = String.format("group_%s_template_%s_report_%s.js", groupId, templateId, reportId)
         htmlUrl = String.format(K.K_REPORT_HTML, ConfigConstants.kBaseUrl, groupId, templateId, reportId)
@@ -62,14 +62,46 @@ class SubjectModelImpl : ReportModelImpl() {
         Observable.just(jsFileName)
                 .subscribeOn(Schedulers.io())
                 .map {
+                    var reportPath: String
+
                     var htmlResponse = generateHtml()
-                    var htmlPath = htmlResponse["path"] ?: ""
-                    if (htmlPath.isNotEmpty()) {
+                    reportPath = htmlResponse["path"] ?: ""
+                    if (reportPath.isNotEmpty()) {
                         if (checkUpdate(jsUrl)) {
                             getData(callback)
                         }
                     }
-                    htmlPath
+
+                    reportPath
+                }
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(object : Subscriber<String>() {
+                    override fun onCompleted() {
+                    }
+
+                    override fun onNext(t: String?) {
+                        callback.onSuccess("file://" + t!!)
+                    }
+
+                    override fun onError(e: Throwable?) {
+                        Log.i(TAG, e.toString())
+                    }
+
+                })
+    }
+
+    /**
+     * 获取 PDF 文件
+     */
+    fun getPdfFilePath(url: String, callback: LoadDataCallback<String>) {
+        Observable.just(jsFileName)
+                .subscribeOn(Schedulers.io())
+                .map {
+                    var reportPath = ""
+                    if (url.toLowerCase().endsWith(".pdf")) {
+                        reportPath = downloadPdfFile(url)
+                    }
+                    reportPath
                 }
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(object : Subscriber<String>() {
@@ -83,7 +115,6 @@ class SubjectModelImpl : ReportModelImpl() {
                     override fun onError(e: Throwable?) {
                         Log.i(TAG, e.toString())
                     }
-
                 })
     }
 
@@ -147,7 +178,7 @@ class SubjectModelImpl : ReportModelImpl() {
         var htmlContent = response[URLs.kBody] ?: ""
         retMap.put(URLs.kCode, statusCode)
 
-        when(statusCode) {
+        when (statusCode) {
             "200" -> {
                 File(htmlPath).delete()
                 ApiHelper.storeResponseHeader(htmlUrl, response)
@@ -158,10 +189,20 @@ class SubjectModelImpl : ReportModelImpl() {
                 FileUtil.writeFile(htmlPath, htmlContent)
                 retMap.put("path", htmlPath)
             }
-            "304" -> {retMap.put("path", htmlPath)}
-            else -> {}
+            "304" -> {
+                retMap.put("path", htmlPath)
+            }
+            else -> {
+            }
         }
 
         return retMap
+    }
+
+    private fun downloadPdfFile(pdfUrl: String): String {
+        val outputPath = String.format("%s/%s/%s.pdf", FileUtil.basePath(globalContext), K.K_CACHED_DIR_NAME, URLs.MD5(pdfUrl))
+        val pdfFile = File(outputPath)
+        ApiHelper.downloadFile(globalContext, pdfUrl, pdfFile)
+        return outputPath
     }
 }

@@ -38,7 +38,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
 import com.github.barteksc.pdfviewer.PDFView;
 import com.github.barteksc.pdfviewer.listener.OnLoadCompleteListener;
 import com.github.barteksc.pdfviewer.listener.OnPageChangeListener;
@@ -119,77 +118,14 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
         userNum = mUserSP.getString(URLs.kUserNum, "no-set");
 
         iv_BannerBack = findViewById(R.id.iv_banner_back);
-        tv_BannerBack = findViewById(R.id.tv_banner_back);
+//        tv_BannerBack = findViewById(R.id.tv_banner_back);
         iv_BannerSetting = findViewById(R.id.iv_banner_setting);
         browser = findViewById(R.id.browser);
-        mWebView = new WebView(getApplicationContext());
-        browser.addView(mWebView, 0);
+        mWebView = new WebView(this);
+        browser.addView(mWebView);
         initActiongBar();
         initWebAppWebView();
 
-        mWebView.setWebChromeClient(new WebApplicationActivity.MyWebChromeClient());
-        mWebView.setWebViewClient(new WebViewClient() {
-            @Override
-            public boolean shouldOverrideUrlLoading(com.tencent.smtt.sdk.WebView view, String url) {
-                //返回值是true的时候控制去WebView打开，为false调用系统浏览器或第三方浏览器
-                view.loadUrl(url);
-                return true;
-            }
-
-            @Override
-            public void onPageStarted(WebView view, String url, Bitmap favicon) {
-                super.onPageStarted(view, url, favicon);
-                LogUtil.d("onPageStarted", String.format("%s - %s", URLs.timestamp(), url));
-            }
-
-            @Override
-            public void onPageFinished(WebView view, String url) {
-                super.onPageFinished(view, url);
-                animLoading.setVisibility(View.GONE);
-                isWeiXinShared = true;
-                LogUtil.d("onPageFinished", String.format("%s - %s", URLs.timestamp(), url));
-
-                // 报表缓存列表:是否把报表标题存储
-                if (reportDataState && url.contains("report_" + objectID)) {
-                    try {
-                        SharedPreferences sp = getSharedPreferences("subjectCache", MODE_PRIVATE);
-                        SharedPreferences.Editor editor = sp.edit();
-                        String cache = sp.getString("cache", "");
-                        JSONObject json;
-                        if ("".equals(cache)) {
-                            json = new JSONObject();
-                            json.put("0", bannerName);
-                        } else {
-                            boolean isAdd = true;
-                            json = new JSONObject(cache);
-                            Iterator<String> it = json.keys();
-                            while (it.hasNext()) {
-                                String key = it.next();
-                                if (json.getString(key).equals(bannerName)) {
-                                    isAdd = false;
-                                }
-                            }
-                            if (isAdd) {
-                                json.put("" + json.length(), bannerName);
-                            }
-                        }
-                        editor.putString("cache", json.toString());
-                        editor.apply();
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-
-            @Override
-            public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
-                LogUtil.d("onReceivedError",
-                        String.format("errorCode: %d, description: %s, url: %s", errorCode, description,
-                                failingUrl));
-            }
-        });
-
-        mWebView.requestFocus();
         mWebView.setVisibility(View.VISIBLE);
         mWebView.addJavascriptInterface(new WebApplicationActivity.JavaScriptInterface(), URLs.kJSInterfaceName);
         animLoading.setVisibility(View.VISIBLE);
@@ -217,7 +153,7 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
 
         mWebView.getSettings().setAppCacheEnabled(true);
 
-        mWebView.setWebChromeClient(new WebChromeClient());
+        mWebView.setWebChromeClient(new MyWebChromeClient());
         mWebView.setDrawingCacheEnabled(true);
         mWebView.setWebViewClient(new WebViewClient() {
 
@@ -256,7 +192,7 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
                 return false;
             }
         });
-        setWebViewLongListener(false);
+//        setWebViewLongListener(false);
         return mWebView;
     }
 
@@ -402,62 +338,8 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
 
     @Override
     public void onPageError(int page, Throwable t) {
-//        String htmlPath = String.format("%s/loading/%s.html", sharedPath, "500"),
-//                outputPath = String.format("%s/loading/%s.html", sharedPath, "500.output");
-//
-//        if (!(new File(htmlPath)).exists()) {
         ToastUtils.INSTANCE.show(mContext, String.format("链接打开失败: %s", link));
-//            return;
-//        }
-//
-//        mWebView.setVisibility(View.VISIBLE);
-//        mPDFView.setVisibility(View.INVISIBLE);
-//
-//        String htmlContent = FileUtil.readFile(htmlPath);
-//        htmlContent = htmlContent.replace("$exception_type$", errorType);
-//        htmlContent = htmlContent.replace("$exception_message$", errorMessage);
-//        htmlContent = htmlContent.replace("$visit_url$", link);
-//        try {
-//            FileUtil.writeFile(outputPath, htmlContent);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//
-//        Message message = mHandlerWithAPI.obtainMessage();
-//        message.what = 200;
-//        message.obj = outputPath;
-//
-//        mHandlerWithAPI.sendMessage(message);
     }
-//    @Override
-//    public void errorOccured(String errorType, String errorMessage) {
-//        String htmlPath = String.format("%s/loading/%s.html", sharedPath, "500"),
-//                outputPath = String.format("%s/loading/%s.html", sharedPath, "500.output");
-//
-//        if (!(new File(htmlPath)).exists()) {
-//            ToastUtils.INSTANCE.show(mContext, String.format("链接打开失败: %s", link));
-//            return;
-//        }
-//
-//        mWebView.setVisibility(View.VISIBLE);
-//        mPDFView.setVisibility(View.INVISIBLE);
-//
-//        String htmlContent = FileUtil.readFile(htmlPath);
-//        htmlContent = htmlContent.replace("$exception_type$", errorType);
-//        htmlContent = htmlContent.replace("$exception_message$", errorMessage);
-//        htmlContent = htmlContent.replace("$visit_url$", link);
-//        try {
-//            FileUtil.writeFile(outputPath, htmlContent);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//
-//        Message message = mHandlerWithAPI.obtainMessage();
-//        message.what = 200;
-//        message.obj = outputPath;
-//
-//        mHandlerWithAPI.sendMessage(message);
-//   }
 
     private void loadHtml() {
         urlString = link;

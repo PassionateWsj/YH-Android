@@ -137,6 +137,7 @@ public class WebApplicationActivityV6 extends BaseActivity implements OnPageChan
      */
     private List<MenuItem> locationDatas;
     private MenuResult msg;
+
     /**
      * 菜单
      */
@@ -159,7 +160,7 @@ public class WebApplicationActivityV6 extends BaseActivity implements OnPageChan
         userNum = mUserSP.getString(URLs.kUserNum, "no-set");
 
         iv_BannerBack = findViewById(R.id.iv_banner_back);
-        tv_BannerBack = findViewById(R.id.tv_banner_back);
+//        tv_BannerBack = findViewById(R.id.tv_banner_back);
         iv_BannerSetting = findViewById(R.id.iv_banner_setting);
 
         mWebFrameLayout = findViewById(R.id.browser);
@@ -701,7 +702,7 @@ public class WebApplicationActivityV6 extends BaseActivity implements OnPageChan
         ToastUtils.INSTANCE.show(mContext, "链接已拷贝", ToastColor.SUCCESS);
     }
 
-    /*
+    /**
      * 分享截图至微信
      */
     public void actionShare2Weixin(View v) {
@@ -784,23 +785,7 @@ public class WebApplicationActivityV6 extends BaseActivity implements OnPageChan
 
     @Override
     public void onBackPressed() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-        builder.setTitle("温馨提示")
-                .setMessage("退出当前页面?")
-                .setPositiveButton("确认", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        PageLinkManage.INSTANCE.pageBackIntent(WebApplicationActivityV6.this);
-                        finish();
-                    }
-                })
-                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // 不进行任何操作
-                    }
-                });
-        builder.show();
+
     }
 
     public void refresh(View v) {
