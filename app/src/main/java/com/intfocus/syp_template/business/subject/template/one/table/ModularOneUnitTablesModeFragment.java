@@ -19,6 +19,7 @@ import com.intfocus.syp_template.business.subject.template.one.entity.MDetailUni
 import com.intfocus.syp_template.business.subject.template.one.entity.msg.MDetailRootPageRequestResult;
 import com.intfocus.syp_template.business.subject.template.one.mode.ModularTwo_UnitTablesParentMode;
 import com.intfocus.syp_template.general.base.BaseModeFragment;
+import com.intfocus.syp_template.general.data.TempSubData;
 import com.zbl.lib.baseframe.core.Subject;
 import com.zbl.lib.baseframe.utils.ToastUtil;
 
@@ -164,7 +165,9 @@ public class ModularOneUnitTablesModeFragment extends BaseModeFragment<ModularTw
         }
 
         if (toFragment == null) {
-            toFragment = ModularOneUnitTablesContModeFragment.newInstance(suRootID, entity.datas.get(checkId).config);
+            toFragment = ModularOneUnitTablesContModeFragment.newInstance(suRootID);
+            TempSubData.setData(entity.datas.get(checkId).config);
+            new TablePresenter(TableImpl.getInstance(),(ModularOneUnitTablesContModeFragment)toFragment);
         }
 
         FragmentTransaction ft = fm.beginTransaction();

@@ -18,13 +18,14 @@ public enum TempSubData {
         return INSTANCE.mObjectList != null;
     }
 
-    public static void setData(final String objectList) {
+    public static void setData(String objectList) {
         INSTANCE.mObjectList = objectList;
     }
 
     public static String getData() {
-        final String retList = INSTANCE.mObjectList;
+        String retList = INSTANCE.mObjectList;
         INSTANCE.mObjectList = null;
         return retList;
+//        return INSTANCE.mObjectList;
     }
 }

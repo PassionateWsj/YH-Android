@@ -13,8 +13,9 @@ import android.widget.TextView;
 
 import com.intfocus.syp_template.R;
 import com.intfocus.syp_template.business.subject.template.one.table.ModularOneUnitTablesContModeFragment;
+import com.intfocus.syp_template.business.subject.template.one.table.TableImpl;
+import com.intfocus.syp_template.business.subject.template.one.table.TablePresenter;
 import com.intfocus.syp_template.general.data.TempSubData;
-import com.zbl.lib.baseframe.utils.StringUtil;
 
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
@@ -54,18 +55,15 @@ public class ModularOneSubTableActivity extends AppCompatActivity {
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
-            String titel = bundle.getString("Title");
-            if (TempSubData.hasData()) {
-                subData = TempSubData.getData();
-            }
-//            subData = bundle.getString("subData");
+            String title = bundle.getString("Title");
             suRootID = bundle.getInt("suRootID");
-            title.setText(titel);
-            if (StringUtil.isEmpty(subData)) {
+            this.title.setText(title);
+            if (!TempSubData.hasData()) {
                 finish();
             }
 
-            ModularOneUnitTablesContModeFragment toFragment = ModularOneUnitTablesContModeFragment.newInstance(suRootID, subData);
+            ModularOneUnitTablesContModeFragment toFragment = ModularOneUnitTablesContModeFragment.newInstance(suRootID);
+            new TablePresenter(TableImpl.getInstance(), toFragment);
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
             ft.replace(R.id.fl_subtable_container, toFragment);
