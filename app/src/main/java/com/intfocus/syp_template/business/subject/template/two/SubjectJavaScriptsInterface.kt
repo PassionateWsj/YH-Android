@@ -143,13 +143,17 @@ class SubjectJavaScriptsInterface constructor(
             val msg = Gson().fromJson(arrayString, MenuResult::class.java)
             if (msg != null && msg.data.isNotEmpty()) {
                 for (menu in msg.data) {
-                    if ("location" == menu.type) {
-                        mView.locationDataList = menu.data!!
-                        val selectedItemPath = String.format("%s.selected_item", FileUtil.reportJavaScriptDataPath(globalContext, mView.groupId, mView.templateId, mView.reportId))
-                        if (!File(selectedItemPath).exists()) {
-                            if (mView.locationDataList != null) {
-                            mView.runOnUiThread { mView.setAddressFilterText(menu.current_location!!.display!!) }
-                        }
+                    if (menu.data!!.isNotEmpty()) {
+                        if ("location" == menu.type) {
+                            mView.locationDataList = menu.data!!
+                            val selectedItemPath = String.format("%s.selected_item", FileUtil.reportJavaScriptDataPath(globalContext, mView.groupId, mView.templateId, mView.reportId))
+                            if (!File(selectedItemPath).exists()) {
+                                if (mView.locationDataList != null) {
+                                    mView.runOnUiThread {
+                                        mView.setAddressFilterText(menu.current_location!!.display!!)
+                                    }
+                                }
+                            }
                         }
                     }
                     if ("faster_select" == menu.type) {

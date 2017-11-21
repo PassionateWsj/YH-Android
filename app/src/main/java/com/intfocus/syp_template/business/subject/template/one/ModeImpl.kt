@@ -5,16 +5,17 @@ import com.alibaba.fastjson.JSONReader
 import com.intfocus.syp_template.YHApplication.globalContext
 import com.intfocus.syp_template.business.subject.template.model.ReportModelImpl
 import com.intfocus.syp_template.business.subject.templateone.entity.MererDetailEntity
+import com.intfocus.syp_template.constant.Params.REPORT_TYPE_MAIN_DATA
 import com.intfocus.syp_template.general.util.ApiHelper
 import com.intfocus.syp_template.general.util.FileUtil
 import com.intfocus.syp_template.general.util.K
-import com.intfocus.syp_template.constant.Params.REPORT_TYPE_MAIN_DATA
 import com.zbl.lib.baseframe.utils.TimeUtil
 import rx.Observable
 import rx.Subscriber
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
-import java.io.*
+import java.io.File
+import java.io.StringReader
 import java.util.*
 
 /**
@@ -26,7 +27,7 @@ import java.util.*
  * desc:
  * ****************************************************
  */
-class ModeImpl: ReportModelImpl() {
+class ModeImpl : ReportModelImpl() {
 
     companion object {
         private val TAG = "ModeImpl"
@@ -54,20 +55,20 @@ class ModeImpl: ReportModelImpl() {
 
     fun checkReportData(reportId: String, templateId: String, groupId: String, callback: ModeModel.LoadDataCallback) {
         uuid = reportId + templateId + groupId
-        var urlString = reportId + templateId + groupId
+        val urlString = reportId + templateId + groupId
         when {
-            checkUpdate(urlString) -> analyseData(groupId, reportId, callback)
+            checkUpdate(urlString) -> analysisData(groupId, reportId, callback)
             available(uuid) -> {
-                var entity = MererDetailEntity()
+                val entity = MererDetailEntity()
                 entity.name = "123"
                 callback.onDataLoaded(entity)
-//                analyseData(groupId, reportId, callback)
+//                analysisData(groupId, reportId, callback)
             }
-            else -> analyseData(groupId, reportId, callback)
+            else -> analysisData(groupId, reportId, callback)
         }
     }
 
-    fun analyseData(groupId: String, reportId: String, callback: ModeModel.LoadDataCallback) {
+    fun analysisData(groupId: String, reportId: String, callback: ModeModel.LoadDataCallback) {
         val jsonFileName = String.format("group_%s_template_%s_report_%s.json", groupId, "1", reportId)
 
         Observable.just(jsonFileName)
@@ -119,8 +120,8 @@ class ModeImpl: ReportModelImpl() {
                                             "parts" -> {
                                                 config = reader.readObject().toString()
                                                 data.parts = config
-                                                var moduleStringReader = StringReader(config)
-                                                var moduleReader = JSONReader(moduleStringReader)
+                                                val moduleStringReader = StringReader(config)
+                                                val moduleReader = JSONReader(moduleStringReader)
                                                 moduleReader.startArray()
                                                 while (moduleReader.hasNext()) {
                                                     var moduleConfig = ""
@@ -128,10 +129,10 @@ class ModeImpl: ReportModelImpl() {
                                                     moduleReader.startObject()
                                                     while (moduleReader.hasNext()) {
                                                         when (moduleReader.readString()) {
-                                                        "config" -> moduleConfig = moduleReader.readObject().toString()
+                                                            "config" -> moduleConfig = moduleReader.readObject().toString()
 
-                                                        "type" -> moduleType = moduleReader.readObject().toString()
-                                                    }
+                                                            "type" -> moduleType = moduleReader.readObject().toString()
+                                                        }
                                                     }
                                                     moduleReader.endObject()
                                                     insert(uuid, moduleConfig, moduleType, index, page)
@@ -139,7 +140,7 @@ class ModeImpl: ReportModelImpl() {
                                                 }
                                                 moduleReader.endArray()
                                             }
-                                            "title" ->  title = reader.readObject().toString()
+                                            "title" -> title = reader.readObject().toString()
                                         }
                                     }
                                     insertMainData(uuid, config, REPORT_TYPE_MAIN_DATA, title, page)

@@ -20,7 +20,6 @@ import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import com.tencent.smtt.sdk.WebView
 import android.widget.Toast
 import com.intfocus.syp_template.R
 import com.intfocus.syp_template.business.dashboard.DashboardActivity
@@ -41,6 +40,7 @@ import com.intfocus.syp_template.general.util.K.*
 import com.intfocus.syp_template.general.util.URLs.*
 import com.pgyersdk.update.PgyUpdateManager
 import com.pgyersdk.update.UpdateManagerListener
+import com.tencent.smtt.sdk.WebView
 import kotlinx.android.synthetic.main.activity_login.*
 import org.OpenUDID.OpenUDID_manager
 import org.json.JSONException
@@ -303,7 +303,7 @@ class LoginActivity : FragmentActivity() {
     }
 
     override fun onDestroy() {
-        LogUtil.e(LogUtil.TAG, "LoginActivity ::: onDestroy")
+
         PgyUpdateManager.unregister()
         super.onDestroy()
     }
@@ -332,7 +332,7 @@ class LoginActivity : FragmentActivity() {
             userNum = etUsername.text.toString()
             userPass = etPassword.text.toString()
 
-            mUserSP!!.edit().putString("user_num", userNum).apply()
+            mUserSP!!.edit().putString(kUserNum, userNum).apply()
 
             if (userNum!!.isEmpty() || userPass!!.isEmpty()) {
                 ToastUtils.show(this@LoginActivity, "请输入用户名与密码")

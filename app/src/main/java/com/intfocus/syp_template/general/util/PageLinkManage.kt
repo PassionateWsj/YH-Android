@@ -68,7 +68,7 @@ object PageLinkManage {
                     intent.putExtra(URLs.kTemplatedId, templateId)
                     context.startActivity(intent)
                 }
-                TEMPLATE_TWO -> {
+                TEMPLATE_TWO, TEMPLATE_FOUR -> {
                     savePageLink(context, objTitle, link, objectId, templateId, objectType)
                     intent = Intent(context, SubjectActivity2::class.java)
                     intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
@@ -94,18 +94,6 @@ object PageLinkManage {
                     intent.putExtra("urlString", urlString)
                     context.startActivity(intent)
                 }
-                TEMPLATE_FOUR -> {
-                    savePageLink(context, objTitle, link, objectId, templateId, objectType)
-                    intent = Intent(context, SubjectActivity2::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-                    intent.putExtra(URLs.kBannerName, objTitle)
-                    intent.putExtra(URLs.kLink, link)
-                    intent.putExtra(URLs.kObjectId, objectId)
-                    intent.putExtra(URLs.kObjectType, objectType)
-                    intent.putExtra(URLs.kTemplatedId, templateId)
-                    intent.putExtra("groupID", groupID)
-                    context.startActivity(intent)
-                }
                 TEMPLATE_FIVE -> {
                     savePageLink(context, objTitle, link, objectId, templateId, objectType)
                     intent = Intent(context, TemplateFiveActivity::class.java)
@@ -120,17 +108,6 @@ object PageLinkManage {
                     intent.putExtra("urlString", urlString)
                     context.startActivity(intent)
                 }
-                TEMPLATE_SIX -> {
-                    savePageLink(context, objTitle, link, objectId, templateId, objectType)
-                    intent = Intent(context, SubjectActivity2::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-                    intent.putExtra(URLs.kBannerName, objTitle)
-                    intent.putExtra(URLs.kLink, link)
-                    intent.putExtra(URLs.kObjectId, objectId)
-                    intent.putExtra(URLs.kObjectType, objectType)
-                    intent.putExtra(URLs.kTemplatedId, templateId)
-                    context.startActivity(intent)
-                }
                 TEMPLATE_NINE -> {
                     savePageLink(context, objTitle, link, objectId, templateId, objectType)
                     intent = Intent(context, CollectionActivity::class.java)
@@ -143,12 +120,9 @@ object PageLinkManage {
                     intent.putExtra(URLs.kTemplatedId, templateId)
                     context.startActivity(intent)
                 }
-                EXTERNAL_LINK -> {
+                EXTERNAL_LINK, TEMPLATE_SIX -> {
                     var urlString = link
                     for ((key, value) in paramsMappingBean) {
-                        if (key == "user_num") {
-                            continue
-                        }
                         urlString = splitUrl(userSP, urlString, key, value)
                     }
                     savePageLink(context, objTitle, link, objectId, templateId, objectType)
@@ -163,9 +137,17 @@ object PageLinkManage {
                     context.startActivity(intent)
                 }
                 SCANNER -> {
-                    savePageLink(context, objTitle, link, objectId, templateId, objectType)
+                    var urlString = link
+                    for ((key, value) in paramsMappingBean) {
+//                        if (key == "user_num") {
+//                            continue
+//                        }
+                        urlString = splitUrl(userSP, urlString, key, value)
+                    }
+                    savePageLink(context, objTitle, urlString, objectId, templateId, objectType)
                     intent = Intent(context, BarCodeScannerActivity::class.java)
                     intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+                    intent.putExtra(URLs.kLink,urlString)
                     context.startActivity(intent)
                 }
                 else -> showTemplateErrorDialog(context)

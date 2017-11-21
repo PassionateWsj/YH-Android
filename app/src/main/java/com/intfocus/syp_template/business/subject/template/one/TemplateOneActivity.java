@@ -44,6 +44,7 @@ import com.umeng.socialize.media.UMImage;
 import com.zbl.lib.baseframe.core.ActManager;
 import com.zbl.lib.baseframe.core.Subject;
 
+import org.greenrobot.eventbus.EventBus;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 
@@ -137,6 +138,16 @@ public class TemplateOneActivity extends BaseModeActivity<MeterDetailActMode> im
         rScrollView = mContentView.findViewById(R.id.rootScrollView);
         new ModePresenter(ModeImpl.getInstance(), this);
         init();
+        initListener();
+    }
+
+    private void initListener() {
+        rScrollView.setOnScrollListener(new RootScrollView.OnScrollListener() {
+            @Override
+            public void onScroll(int scrollY) {
+                EventBus.getDefault().post(new EventRefreshTableRect(lastCheckId));
+            }
+        });
     }
 
     private void init() {
@@ -186,6 +197,7 @@ public class TemplateOneActivity extends BaseModeActivity<MeterDetailActMode> im
             }
             mCurrentFragment = toFragment;
         }
+
     }
 
     @Override

@@ -29,11 +29,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.JavascriptInterface;
-import com.tencent.smtt.sdk.ValueCallback;
-import com.tencent.smtt.sdk.WebChromeClient;
-import com.tencent.smtt.sdk.WebSettings;
-import com.tencent.smtt.sdk.WebView;
-import com.tencent.smtt.sdk.WebViewClient;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -67,6 +62,11 @@ import com.intfocus.syp_template.general.util.PageLinkManage;
 import com.intfocus.syp_template.general.util.ToastUtils;
 import com.intfocus.syp_template.general.util.URLs;
 import com.intfocus.syp_template.general.view.addressselector.FilterPopupWindow;
+import com.tencent.smtt.sdk.ValueCallback;
+import com.tencent.smtt.sdk.WebChromeClient;
+import com.tencent.smtt.sdk.WebSettings;
+import com.tencent.smtt.sdk.WebView;
+import com.tencent.smtt.sdk.WebViewClient;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.UMShareListener;
@@ -115,7 +115,9 @@ public class WebApplicationActivityV6 extends BaseActivity implements OnPageChan
     private Intent mSourceIntent;
     private Boolean isFromActivityResult = false;
 
-    /* 请求识别码 */
+    /**
+     *  请求识别码
+     */
     private static final int CODE_RESULT_REQUEST = 0xa2;
     private static final int CODE_CAMERA_REQUEST = 0xa1;
     private static final int CODE_CAMERA_RESULT = 0xa0;
@@ -164,7 +166,7 @@ public class WebApplicationActivityV6 extends BaseActivity implements OnPageChan
         iv_BannerSetting = findViewById(R.id.iv_banner_setting);
 
         mWebFrameLayout = findViewById(R.id.browser);
-        mWebView = new WebView(getApplicationContext());
+        mWebView = new WebView(this);
         mWebFrameLayout.addView(mWebView, 0);
 
         llFilter = findViewById(R.id.ll_filter);
@@ -185,7 +187,7 @@ public class WebApplicationActivityV6 extends BaseActivity implements OnPageChan
             }
         });
 
-        initActiongBar();
+        initActionBar();
         initWebAppWebView();
 
         mWebView.setWebChromeClient(new WebApplicationActivityV6.MyWebChromeClient());
@@ -429,26 +431,37 @@ public class WebApplicationActivityV6 extends BaseActivity implements OnPageChan
             return true;
         }
 
-        //Android 4.0 以下
+        /**
+         * Android 4.0 以下
+         *
+         * @param uploadMsg
+         * @param acceptType
+         */
         public void openFileChooser(ValueCallback<Uri> uploadMsg, String acceptType) {
             mUploadMessage = uploadMsg;
             showOptions();
         }
 
-        // Android 4.0 - 4.4.4
+        /**
+         * Android 4.0 - 4.4.4
+         *
+         * @param uploadMsg
+         * @param acceptType
+         * @param capture
+         */
+        @Override
         public void openFileChooser(ValueCallback<Uri> uploadMsg, String acceptType, String capture) {
             mUploadMessage = uploadMsg;
             showOptions();
         }
     }
 
-    private void initActiongBar() {
-        bannerView = (RelativeLayout) findViewById(R.id.rl_action_bar);
-        mTitle = (TextView) findViewById(R.id.tv_banner_title);
+    private void initActionBar() {
+        bannerView = findViewById(R.id.rl_action_bar);
+        mTitle = findViewById(R.id.tv_banner_title);
 
-		/*
-         * Intent Data || JSON Data
-         */
+
+        // Intent Data || JSON Data
         Intent intent = getIntent();
         link = intent.getStringExtra(URLs.kLink);
         templateID = intent.getStringExtra(URLs.kTemplatedId);
@@ -460,7 +473,7 @@ public class WebApplicationActivityV6 extends BaseActivity implements OnPageChan
         mTitle.setText(bannerName);
 
         if (link.toLowerCase().endsWith(".pdf")) {
-            mPDFView = (PDFView) findViewById(R.id.pdfview);
+            mPDFView = findViewById(R.id.pdfview);
             mPDFView.setVisibility(View.INVISIBLE);
         }
         iv_BannerSetting.setVisibility(View.VISIBLE);
@@ -469,7 +482,7 @@ public class WebApplicationActivityV6 extends BaseActivity implements OnPageChan
         }
     }
 
-    /*
+    /**
      * 标题栏点击设置按钮显示下拉菜单
      */
     public void launchDropMenuActivity(View v) {
@@ -494,7 +507,8 @@ public class WebApplicationActivityV6 extends BaseActivity implements OnPageChan
         popupWindow = new PopupWindow(contentView,
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
-        popupWindow.setFocusable(true);// 取得焦点
+        // 取得焦点
+        popupWindow.setFocusable(true);
         //注意  要是点击外部空白处弹框消息  那么必须给弹框设置一个背景色  不然是不起作用的
         popupWindow.setBackgroundDrawable(new BitmapDrawable());
         //点击外部消失
@@ -576,7 +590,7 @@ public class WebApplicationActivityV6 extends BaseActivity implements OnPageChan
 //                outputPath = String.format("%s/loading/%s.html", sharedPath, "500.output");
 //
 //        if (!(new File(htmlPath)).exists()) {
-            ToastUtils.INSTANCE.show(mContext, String.format("链接打开失败: %s", link));
+        ToastUtils.INSTANCE.show(mContext, String.format("链接打开失败: %s", link));
 //            return;
 //        }
 //
@@ -637,10 +651,10 @@ public class WebApplicationActivityV6 extends BaseActivity implements OnPageChan
                 if (urlString.toLowerCase().endsWith(".pdf")) {
                     new Thread(mRunnableForPDF).start();
                 } else {
-                        /*
-                         * 外部链接传参: user_num, timestamp
-                         */
-                    String appendParams = String.format("user_num=%s&timestamp=%s", userNum, URLs.timestamp());
+
+                    // 外部链接传参: user_num, timestamp
+//                    String appendParams = String.format("user_num=%s&timestamp=%s", userNum, URLs.timestamp());
+                    String appendParams = String.format("timestamp=%s", URLs.timestamp());
                     String splitString = urlString.contains("?") ? "&" : "?";
                     urlString = String.format("%s%s%s", urlString, splitString, appendParams);
                     mWebView.loadUrl(urlString);
@@ -693,7 +707,7 @@ public class WebApplicationActivityV6 extends BaseActivity implements OnPageChan
         }
     };
 
-    /*
+    /**
      * 拷贝链接
      */
     public void actionCopyLink(View v) {
@@ -728,9 +742,8 @@ public class WebApplicationActivityV6 extends BaseActivity implements OnPageChan
                 .withMedia(image)
                 .setCallback(umShareListener)
                 .open();
-        /*
-         * 用户行为记录, 单独异常处理，不可影响用户体验
-         */
+
+        // 用户行为记录, 单独异常处理，不可影响用户体验
         try {
             logParams = new JSONObject();
             logParams.put("action", "分享");
@@ -764,7 +777,7 @@ public class WebApplicationActivityV6 extends BaseActivity implements OnPageChan
         }
     };
 
-    /*
+    /**
      * 评论
      */
     public void actionLaunchCommentActivity(View v) {
@@ -775,7 +788,7 @@ public class WebApplicationActivityV6 extends BaseActivity implements OnPageChan
         mContext.startActivity(intent);
     }
 
-    /*
+    /**
      * 返回
      */
     @Override
@@ -808,7 +821,7 @@ public class WebApplicationActivityV6 extends BaseActivity implements OnPageChan
             }
         }
 
-        /*
+        /**
          * JS 接口，暴露给JS的方法使用@JavascriptInterface装饰
          */
         @JavascriptInterface
@@ -850,9 +863,8 @@ public class WebApplicationActivityV6 extends BaseActivity implements OnPageChan
 
         @JavascriptInterface
         public void jsException(final String ex) {
-            /*
-             * 用户行为记录, 单独异常处理，不可影响用户体验
-             */
+
+            // 用户行为记录, 单独异常处理，不可影响用户体验
             try {
                 logParams = new JSONObject();
                 logParams.put(URLs.kAction, "JS异常");
@@ -1116,15 +1128,14 @@ public class WebApplicationActivityV6 extends BaseActivity implements OnPageChan
         }
     }
 
-    /*
+    /**
      * 启动拍照并获取图片
      */
     private void getCameraCapture() {
         Intent intentFromCapture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
-        /*
-         * 需要调用裁剪图片功能，无法读取内部存储，故使用 SD 卡先存储图片
-         */
+
+        // 需要调用裁剪图片功能，无法读取内部存储，故使用 SD 卡先存储图片
         if (FileUtil.hasSdcard()) {
             Uri imageUri;
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {

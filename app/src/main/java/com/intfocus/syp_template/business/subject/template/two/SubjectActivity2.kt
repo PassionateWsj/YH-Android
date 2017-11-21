@@ -1,13 +1,17 @@
 package com.intfocus.syp_template.business.subject.template.two
 
+import android.app.Activity
 import android.app.AlertDialog
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.graphics.drawable.BitmapDrawable
+import android.net.Uri
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,7 +20,9 @@ import android.widget.PopupWindow
 import com.github.barteksc.pdfviewer.listener.OnPageErrorListener
 import com.github.barteksc.pdfviewer.scroll.DefaultScrollHandle
 import com.intfocus.syp_template.R
+import com.intfocus.syp_template.business.dashboard.mine.activity.FeedbackActivity
 import com.intfocus.syp_template.business.dashboard.mine.adapter.FilterMenuAdapter
+import com.intfocus.syp_template.constant.Params
 import com.intfocus.syp_template.general.CommentActivity
 import com.intfocus.syp_template.general.constant.ToastColor
 import com.intfocus.syp_template.general.data.response.filter.MenuItem
@@ -24,14 +30,16 @@ import com.intfocus.syp_template.general.data.response.filter.MenuResult
 import com.intfocus.syp_template.general.filter.MyFilterDialogFragment
 import com.intfocus.syp_template.general.listen.UMSharedListener
 import com.intfocus.syp_template.general.util.*
-import com.intfocus.syp_template.general.util.URLs.kJSInterfaceName
+import com.intfocus.syp_template.general.util.URLs.*
 import com.intfocus.syp_template.general.view.addressselector.FilterPopupWindow
-import com.tencent.smtt.sdk.WebSettings
-import com.tencent.smtt.sdk.WebView
-import com.tencent.smtt.sdk.WebViewClient
+import com.tencent.smtt.sdk.*
 import com.umeng.socialize.ShareAction
 import com.umeng.socialize.bean.SHARE_MEDIA
 import com.umeng.socialize.media.UMImage
+import com.zhihu.matisse.Matisse
+import com.zhihu.matisse.MimeType
+import com.zhihu.matisse.engine.impl.GlideEngine
+import com.zhihu.matisse.filter.Filter
 import kotlinx.android.synthetic.main.activity_subject.*
 import kotlinx.android.synthetic.main.item_action_bar.*
 import java.io.File
@@ -42,6 +50,7 @@ import java.io.File
  * @describe
  */
 class SubjectActivity2 : AppCompatActivity(), SubjectContract.View, OnPageErrorListener, FilterMenuAdapter.FilterMenuListener, FilterPopupWindow.MenuLisenter, MyFilterDialogFragment.FilterListener {
+    private val REQUEST_CODE_CHOOSE = 1
     override lateinit var presenter: SubjectContract.Presenter
     lateinit var bannerName: String
     lateinit var reportId: String
@@ -51,6 +60,12 @@ class SubjectActivity2 : AppCompatActivity(), SubjectContract.View, OnPageErrorL
     lateinit var objectType: String
     private lateinit var webView: WebView
     lateinit var popupWindow: PopupWindow
+
+    /**
+     * 图片上传接收参数
+     */
+    private var uploadFile: ValueCallback<Uri>? = null
+    private var uploadFiles: ValueCallback<Array<Uri>>? = null
 
     /**
      * 地址选择
@@ -73,6 +88,37 @@ class SubjectActivity2 : AppCompatActivity(), SubjectContract.View, OnPageErrorL
         SubjectPresenter(SubjectModelImpl.getInstance(), this)
 
         presenter.load(reportId, templateId, groupId, url)
+    }
+
+    override fun setBannerTitle(title: String) {
+        runOnUiThread { tv_banner_title.text = title }
+    }
+
+    override fun setBannerMenuVisibility(state: Int) {
+        iv_banner_setting.visibility = state
+    }
+
+    override fun setBannerVisibility(state: Int) {
+        rl_action_bar.visibility = state
+    }
+
+    override fun setBannerBackVisibility(state: Int) {
+        iv_banner_back.visibility = state
+    }
+
+    override fun setAddressFilterText(text: String) {
+        if (null != tv_location_address) {
+            tv_location_address.text = text
+        }
+    }
+
+    private fun setLoadingVisibility(state: Int) {
+        anim_loading.visibility = state
+    }
+
+    override fun finishActivity() {
+        PageLinkManage.pageBackIntent(this)
+        finish()
     }
 
     override fun onDestroy() {
@@ -99,12 +145,12 @@ class SubjectActivity2 : AppCompatActivity(), SubjectContract.View, OnPageErrorL
     }
 
     private fun init() {
-        groupId = intent.getStringExtra("group_id")
-        reportId = intent.getStringExtra("objectID")
-        objectType = intent.getStringExtra("objectType")
-        bannerName = intent.getStringExtra("bannerName")
-        templateId = intent.getStringExtra("templateId")
-        url = intent.getStringExtra("link")
+        groupId = intent.getStringExtra(kGroupId)
+        reportId = intent.getStringExtra(kObjectId)
+        objectType = intent.getStringExtra(kObjectType)
+        bannerName = intent.getStringExtra(kBannerName)
+        templateId = intent.getStringExtra(kTemplatedId)
+        url = intent.getStringExtra(kLink)
 
         tv_banner_title.text = bannerName
         iv_banner_setting.setOnClickListener { launchDropMenuActivity() }
@@ -112,8 +158,7 @@ class SubjectActivity2 : AppCompatActivity(), SubjectContract.View, OnPageErrorL
 
         if (url.toLowerCase().endsWith(".pdf")) {
             pdfview.visibility = View.INVISIBLE
-        }
-        else {
+        } else {
             if (!url.startsWith("http")) {
                 initAdapter()
             }
@@ -149,6 +194,23 @@ class SubjectActivity2 : AppCompatActivity(), SubjectContract.View, OnPageErrorL
         // 设置网页默认编码
         webSettings.defaultTextEncodingName = "utf-8"
 
+        webView.webChromeClient = object : WebChromeClient() {
+            // For Android  > 4.1.1
+            override fun openFileChooser(uploadMsg: ValueCallback<Uri>, acceptType: String?, capture: String?) {
+                uploadFile = uploadMsg
+                imageSelect()
+            }
+
+            // For Android  >= 5.0
+            override fun onShowFileChooser(webView: com.tencent.smtt.sdk.WebView?,
+                                           filePathCallback: ValueCallback<Array<Uri>>?,
+                                           fileChooserParams: WebChromeClient.FileChooserParams?): Boolean {
+                uploadFiles = filePathCallback
+                imageSelect()
+                return true
+            }
+        }
+
         webView.webViewClient = object : WebViewClient() {
             override fun shouldOverrideUrlLoading(p0: WebView?, p1: String?): Boolean {
                 p0!!.loadUrl(url)
@@ -177,37 +239,48 @@ class SubjectActivity2 : AppCompatActivity(), SubjectContract.View, OnPageErrorL
         }
     }
 
-    override fun setBannerTitle(title: String) {
-        runOnUiThread { tv_banner_title.text = title }
-    }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, intent: Intent) {
+        super.onActivityResult(requestCode, resultCode, intent)
+        if (requestCode == Params.REQUEST_CODE_CHOOSE && resultCode == Activity.RESULT_OK) {
+            if (null != uploadFile) {
+                val result = if (intent == null || resultCode != Activity.RESULT_OK) null else Matisse.obtainResult(intent)
 
-    override fun setBannerMenuVisibility(state: Int) {
-        iv_banner_setting.visibility = state
-    }
+                uploadFile!!.onReceiveValue(result!![0])
+                uploadFile = null
+            }
+            if (null != uploadFiles) {
+                val result = if (intent == null || resultCode != Activity.RESULT_OK) null else Matisse.obtainResult(intent)
 
-    override fun setBannerVisibility(state: Int) {
-        rl_action_bar.visibility = state
-    }
-
-    override fun setBannerBackVisibility(state: Int) {
-        iv_banner_back.visibility = state
-    }
-
-    override fun setAddressFilterText(text: String) {
-        tv_location_address.text = text
-    }
-
-    override fun finishActivity() {
-        PageLinkManage.pageBackIntent(this)
-        finish()
+                uploadFiles!!.onReceiveValue(arrayOf(result!![0]))
+                uploadFiles = null
+            }
+        } else {
+            if (null != uploadFile) {
+                uploadFile!!.onReceiveValue(null)
+                uploadFile = null
+            } else if (null != uploadFiles) {
+                uploadFiles!!.onReceiveValue(null)
+                uploadFiles = null
+            }
+        }
     }
 
     override fun goBack() {
         webView.goBack()
     }
 
-    private fun setLoadingVisibility(state: Int) {
-        anim_loading.visibility = state
+    private fun imageSelect() {
+        Matisse.from(this)
+                .choose(MimeType.allOf())
+                .countable(true)
+                .maxSelectable(1)
+                .addFilter(GifSizeFilter(320, 320, 5 * Filter.K * Filter.K))
+                .gridExpectedSize(
+                        resources.getDimensionPixelSize(R.dimen.grid_expected_size))
+                .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
+                .thumbnailScale(0.85f)
+                .imageEngine(GlideEngine())
+                .forResult(REQUEST_CODE_CHOOSE)
     }
 
     /**
@@ -249,7 +322,6 @@ class SubjectActivity2 : AppCompatActivity(), SubjectContract.View, OnPageErrorL
         } else {
             filterPopupWindow.upDateDatas(menuDatas[position].data!!)
         }
-        //        viewBg.visibility = View.VISIBLE
         filterPopupWindow.showAsDropDown(view_line)
         filterPopupWindow.setOnDismissListener {
             for (menuItem in menuDatas) {

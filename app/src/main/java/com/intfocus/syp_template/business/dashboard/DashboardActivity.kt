@@ -16,6 +16,7 @@ import android.support.v4.view.ViewPager
 import android.view.View
 import com.google.gson.Gson
 import com.intfocus.syp_template.R
+import com.intfocus.syp_template.YHApplication
 import com.intfocus.syp_template.business.dashboard.adapter.DashboardFragmentAdapter
 import com.intfocus.syp_template.business.dashboard.kpi.KpiFragment
 import com.intfocus.syp_template.business.dashboard.mine.MineFragment
@@ -23,13 +24,6 @@ import com.intfocus.syp_template.business.dashboard.mine.bean.PushMessageBean
 import com.intfocus.syp_template.business.dashboard.report.ReportFragment
 import com.intfocus.syp_template.business.dashboard.workbox.WorkBoxFragment
 import com.intfocus.syp_template.business.scanner.BarCodeScannerActivity
-import com.intfocus.syp_template.business.subject.template.five.TemplateFiveActivity
-import com.intfocus.syp_template.business.subject.template.one.TemplateOneActivity
-import com.intfocus.syp_template.business.subject.template.three.TemplateThreeActivity
-import com.intfocus.syp_template.business.subject.template.two.SubjectActivity
-import com.intfocus.syp_template.business.subject.webapplication.WebApplicationActivity
-import com.intfocus.syp_template.business.subject.webapplication.WebApplicationActivityV6
-import com.intfocus.syp_template.YHApplication
 import com.intfocus.syp_template.general.bean.DashboardItemBean
 import com.intfocus.syp_template.general.constant.ConfigConstants
 import com.intfocus.syp_template.general.data.response.scanner.StoreItem
@@ -47,7 +41,6 @@ import com.intfocus.syp_template.general.view.TabView
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import org.json.JSONException
 import org.json.JSONObject
 import rx.Observable
 import rx.android.schedulers.AndroidSchedulers
@@ -139,7 +132,7 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener{
         super.onDestroy()
     }
 
-    /*
+    /**
      * 推送消息处理
      */
     private fun handlePushMessage(message: String) {
@@ -230,7 +223,7 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener{
         }
     }
 
-    /*
+    /**
      * 跳转系统设置页面
      */
     private fun goToAppSetting() {
@@ -269,7 +262,7 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener{
         mViewPager!!.addOnPageChangeListener(this)
     }
 
-    /*
+    /**
      * Tab 栏按钮监听事件
      */
     private val mTabChangeListener = View.OnClickListener { v ->
@@ -279,7 +272,9 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener{
         refreshTabView()
     }
 
-    //重写ViewPager页面切换的处理方法
+    /**
+     * 重写ViewPager页面切换的处理方法
+     */
     override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
 
     override fun onPageSelected(position: Int) {}
@@ -292,7 +287,7 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener{
         mSharedPreferences!!.edit().putInt("LastTab", mViewPager!!.currentItem).apply()
     }
 
-    /*
+    /**
      * 刷新 TabView 高亮状态
      */
     private fun refreshTabView() {
@@ -338,13 +333,7 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener{
                 })
     }
 
-//    @Subscribe(threadMode = ThreadMode.MAIN)
-//    fun onNoticeItemEvent(click: NoticeBoardRequest) {
-//        mViewPager!!.currentItem = PAGE_MINE
-//        refreshTabView()
-//    }
-
-    /*
+    /**
      * 图表点击事件统一处理方法
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -361,136 +350,5 @@ class DashboardActivity : FragmentActivity(), ViewPager.OnPageChangeListener{
         } else {
             ToastUtils.show(this, "没有指定链接")
         }
-    }
-
-    /*
-     * 页面跳转事件
-     */
-    private fun pageLink(objTitle: String, link: String, objectId: String, templateId: String, objectType: String, paramsMappingBean: HashMap<String, String>) {
-        try {
-            val groupID = getSharedPreferences("UserBean", Context.MODE_PRIVATE).getString(URLs.kGroupId, "0")
-            val urlString: String
-            val intent: Intent
-
-            when (templateId) {
-                TEMPLATE_ONE -> {
-                    intent = Intent(this, TemplateOneActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-                    intent.putExtra(URLs.kBannerName, objTitle)
-                    intent.putExtra(URLs.kObjectId, objectId)
-                    intent.putExtra(URLs.kObjectType, objectType)
-                    intent.putExtra(URLs.kGroupId, groupID)
-                    intent.putExtra(URLs.kLink, link)
-                    intent.putExtra(URLs.kTemplatedId, templateId)
-                    startActivity(intent)
-                }
-                TEMPLATE_TWO, TEMPLATE_FOUR -> {
-                    intent = Intent(this, SubjectActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-                    intent.putExtra(URLs.kBannerName, objTitle)
-                    intent.putExtra(URLs.kLink, link)
-                    intent.putExtra(URLs.kObjectId, objectId)
-                    intent.putExtra(URLs.kObjectType, objectType)
-                    intent.putExtra(URLs.kTemplatedId, templateId)
-                    intent.putExtra("groupID", groupID)
-                    startActivity(intent)
-                }
-                TEMPLATE_THREE -> {
-                    intent = Intent(this, TemplateThreeActivity::class.java)
-                    urlString = String.format("%s/api/v1/group/%s/template/%s/report/%s/json",
-                            ConfigConstants.kBaseUrl, groupID, "3", objectId)
-                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-                    intent.putExtra(URLs.kBannerName, objTitle)
-                    intent.putExtra(URLs.kObjectId, objectId)
-                    intent.putExtra(URLs.kObjectType, objectType)
-                    intent.putExtra(URLs.kTemplatedId, templateId)
-                    intent.putExtra("groupID", groupID)
-                    intent.putExtra("urlString", urlString)
-                    startActivity(intent)
-                }
-                TEMPLATE_FIVE -> {
-                    intent = Intent(this, TemplateFiveActivity::class.java)
-                    urlString = String.format("%s/api/v1/group/%s/template/%s/report/%s/json",
-                            ConfigConstants.kBaseUrl, groupID, "5", objectId)
-                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-                    intent.putExtra(URLs.kBannerName, objTitle)
-                    intent.putExtra(URLs.kObjectId, objectId)
-                    intent.putExtra(URLs.kObjectType, objectType)
-                    intent.putExtra(URLs.kTemplatedId, templateId)
-                    intent.putExtra("groupID", groupID)
-                    intent.putExtra("urlString", urlString)
-                    startActivity(intent)
-                }
-                TEMPLATE_SIX -> {
-                    intent = Intent(this, WebApplicationActivityV6::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-                    intent.putExtra(URLs.kBannerName, objTitle)
-                    intent.putExtra(URLs.kLink, link)
-                    intent.putExtra(URLs.kObjectId, objectId)
-                    intent.putExtra(URLs.kObjectType, objectType)
-                    intent.putExtra(URLs.kTemplatedId, templateId)
-                    startActivity(intent)
-                }
-                EXTERNAL_LINK -> {
-                    var urlString = link
-                    intent = Intent(this, WebApplicationActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-                    intent.putExtra(URLs.kBannerName, objTitle)
-                    for ((key, value) in paramsMappingBean) {
-                        if (key == "user_num") {
-                            continue
-                        }
-                        urlString = splitUrl(urlString, key, value)
-                    }
-                    intent.putExtra(URLs.kLink, urlString)
-                    intent.putExtra(URLs.kObjectId, objectId)
-                    intent.putExtra(URLs.kObjectType, objectType)
-                    intent.putExtra(URLs.kTemplatedId, templateId)
-                    startActivity(intent)
-                }
-                SCANNER -> {
-                    intent = Intent(this, BarCodeScannerActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-                    intent.putExtra("fromWorkBox", true)
-//                    intent.putExtra("userNum", paramsMappingBean.user_name ?: "")
-//                    intent.putExtra("groupName", paramsMappingBean.group_name ?: "")
-                    startActivity(intent)
-                }
-                else -> showTemplateErrorDialog()
-            }
-        } catch (e: JSONException) {
-            e.printStackTrace()
-        }
-
-        val logParams = JSONObject()
-        if ("-1" == templateId) {
-            logParams.put(URLs.kAction, "点击/" + objectTypeName[objectType.toInt() - 1] + "/链接")
-        } else {
-            logParams.put(URLs.kAction, "点击/" + objectTypeName[objectType.toInt() - 1] + "/报表")
-        }
-        logParams.put(URLs.kObjTitle, objTitle)
-        logParams.put("obj_id", objectId)
-        logParams.put("obj_link", link)
-        ActionLogUtil.actionLog(mAppContext, logParams)
-    }
-
-    private fun splitUrl(urlString: String, paramsKey: String, paramsValue: String): String {
-        val params = paramsValue + "=" + mUserSP.getString(paramsKey, "null")
-        val splitString = if (urlString.contains("?")) "&" else "?"
-        return String.format("%s%s%s", urlString, splitString, params)
-    }
-
-    private fun showTemplateErrorDialog() {
-        val builder = AlertDialog.Builder(this)
-        builder.setTitle("温馨提示")
-                .setMessage("当前版本暂不支持该模板, 请升级应用后查看")
-                .setPositiveButton("前去升级") { _, _ ->
-                    val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(ConfigConstants.kPgyerUrl))
-                    startActivity(browserIntent)
-                }
-                .setNegativeButton("稍后升级") { _, _ ->
-                    // 返回 LoginActivity
-                }
-        builder.show()
     }
 }

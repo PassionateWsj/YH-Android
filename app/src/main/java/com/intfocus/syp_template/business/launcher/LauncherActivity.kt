@@ -300,15 +300,6 @@ class LauncherActivity : Activity(), Animation.AnimationListener {
 
             override fun onFailure(errorMsg: Throwable) {
                 LogUtil.d("hjjzzsb", "更新失败")
-                LogUtil.d("hjjzzsb", "更新失败")
-                LogUtil.d("hjjzzsb", "更新失败")
-                LogUtil.d("hjjzzsb", "更新失败")
-                LogUtil.d("hjjzzsb", "更新失败")
-                LogUtil.d("hjjzzsb", "更新失败")
-                LogUtil.d("hjjzzsb", "更新失败")
-                LogUtil.d("hjjzzsb", "更新失败")
-                LogUtil.d("hjjzzsb", "更新失败")
-                LogUtil.d("hjjzzsb", "更新失败")
                 AssetsUpDateUtil.unSubscribe()
                 number_progress_bar_splash.progress = 0
                 tv_splash_status.text = "更新失败"
@@ -332,6 +323,10 @@ class LauncherActivity : Activity(), Animation.AnimationListener {
     }
 
     override fun onDestroy() {
+        if (!ConfigConstants.GUIDE_SHOW) {
+            val packageInfo = packageManager.getPackageInfo(packageName, 0)
+            mSettingSP.edit().putInt("Version", packageInfo.versionCode).apply()
+        }
         AssetsUpDateUtil.unSubscribe()
         super.onDestroy()
     }
