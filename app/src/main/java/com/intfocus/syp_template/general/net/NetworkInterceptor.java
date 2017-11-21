@@ -23,16 +23,16 @@ public class NetworkInterceptor implements Interceptor {
     public okhttp3.Response intercept(Chain chain) throws IOException {
         Request oriRequest = chain.request();
         //打印url
-        Log.d(TAG, URLDecoder.decode(oriRequest.toString(), "UTF-8"));
+        LogUtil.d(TAG, URLDecoder.decode(oriRequest.toString(), "UTF-8"));
         //打印requestBody
         if ("POST".equals(oriRequest.method())) {
             Buffer buffer1 = new Buffer();
             oriRequest.body().writeTo(buffer1);
             String con = buffer1.readUtf8();
             if (con.length() > 0) {
-                Log.d(TAG, "requestBody：" + con);
+                LogUtil.d(TAG, "requestBody：" + con);
             } else {
-                Log.d(TAG, "requestBody：length=" + con.length());
+                LogUtil.d(TAG, "requestBody：length=" + con.length());
             }
         }
 

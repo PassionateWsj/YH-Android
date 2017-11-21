@@ -2,10 +2,10 @@ package com.intfocus.syp_template.general.net;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
 
 import com.intfocus.syp_template.general.constant.ConfigConstants;
 import com.intfocus.syp_template.general.util.K;
+import com.intfocus.syp_template.general.util.LogUtil;
 import com.intfocus.syp_template.general.util.Utils;
 
 import java.io.IOException;
@@ -65,8 +65,8 @@ public class BaseParamsInterceptor implements Interceptor {
                 .url(authorizedUrlBuilder.build())
                 .build();
 
-        Log.i("apiPath", apiPath);
-        Log.i("apiToken", apiToken);
+        LogUtil.d("apiPath", apiPath);
+        LogUtil.d("apiToken", apiToken);
         okhttp3.Response response = chain.proceed(newRequest);
         return response;
     }

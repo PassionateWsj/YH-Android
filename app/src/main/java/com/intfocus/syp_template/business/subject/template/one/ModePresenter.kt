@@ -1,8 +1,8 @@
 package com.intfocus.syp_template.business.subject.template.one
 
 import android.content.Context
-import android.util.Log
 import com.intfocus.syp_template.business.subject.templateone.entity.MererDetailEntity
+import com.intfocus.syp_template.general.util.LogUtil
 
 /**
  * ****************************************************
@@ -30,7 +30,7 @@ class ModePresenter(
             }
 
             override fun onDataNotAvailable(e: Throwable) {
-                Log.i("testlog", e.toString())
+                LogUtil.d("testlog", e.toString())
             }
         })
     }

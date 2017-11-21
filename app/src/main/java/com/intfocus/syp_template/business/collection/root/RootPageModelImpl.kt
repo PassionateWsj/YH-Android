@@ -1,18 +1,18 @@
 package com.intfocus.syp_template.collection.root
 
-import android.util.Log
 import com.alibaba.fastjson.JSONReader
 import com.intfocus.syp_template.collection.CollectionModelImpl.Companion.insertData
 import com.intfocus.syp_template.collection.callback.LoadDataCallback
 import com.intfocus.syp_template.collection.entity.Content
 import com.intfocus.syp_template.collection.entity.RootPageRequestResult
 import com.intfocus.syp_template.constant.StateParams.STATE_CODE_SUCCESS
+import com.intfocus.syp_template.general.util.LogUtil
 import rx.Observable
 import rx.Observer
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
 import java.io.StringReader
-import java.util.ArrayList
+import java.util.*
 
 /**
  * ****************************************************
@@ -75,7 +75,7 @@ class RootPageModelImpl: RootPageModel<RootPageRequestResult> {
 
                                 "config" -> entity.config = reader.readObject().toString()
 
-                                else -> Log.i(TAG, key + "is error key in ContentEntity")
+                                else -> LogUtil.d(TAG, key + "is error key in ContentEntity")
                             }
                         }
                         datas.add(entity)
@@ -98,7 +98,7 @@ class RootPageModelImpl: RootPageModel<RootPageRequestResult> {
                     }
 
                     override fun onCompleted() {
-                        Log.i(TAG, "EndAnalysisTime")
+                        LogUtil.d(TAG, "EndAnalysisTime")
                     }
                 })
     }

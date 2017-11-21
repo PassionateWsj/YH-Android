@@ -15,7 +15,6 @@ import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.intfocus.syp_template.general.data.response.asset.AssetsMD5;
 import com.intfocus.syp_template.general.data.response.asset.AssetsResult;
@@ -62,22 +61,22 @@ public class FileUtil {
                 JSONObject userJSON = FileUtil.readConfigFile(userConfigPath);
                 if (!userJSON.has(URLs.kUseGesturePassword)) {
                     userJSON.put(URLs.kUseGesturePassword, false);
-                    Log.i("ScreenLock", "use_gesture_password not set");
+                    LogUtil.d("ScreenLock", "use_gesture_password not set");
                 }
                 if (!userJSON.has(URLs.kGesturePassword)) {
                     userJSON.put(URLs.kGesturePassword, "");
-                    Log.i("ScreenLock", "gesture_password not set");
+                    LogUtil.d("ScreenLock", "gesture_password not set");
                 }
                 if (!userJSON.has(URLs.kIsLogin)) {
                     userJSON.put(URLs.kIsLogin, false);
-                    Log.i("ScreenLock", "is_login not set");
+                    LogUtil.d("ScreenLock", "is_login not set");
                 }
 
                 FileUtil.writeFile(userConfigPath, userJSON.toString());
 
                 return userJSON.getBoolean(URLs.kIsLogin) && userJSON.getBoolean(URLs.kUseGesturePassword) && !userJSON.getString(URLs.kGesturePassword).isEmpty();
             } else {
-                Log.i("ScreenLock", "userConfigPath not exist");
+                LogUtil.d("ScreenLock", "userConfigPath not exist");
                 return false;
             }
         } catch (Exception e) {
@@ -165,7 +164,7 @@ public class FileUtil {
                 fs.close();
                 inStream.close();
             }
-            Log.i("response", "file is copy");
+            LogUtil.d("response", "file is copy");
         } catch (Exception e) {
             System.out.println("复制单个文件操作出错");
             e.printStackTrace();
@@ -290,7 +289,7 @@ public class FileUtil {
         ZipInputStream zipInputStream = new ZipInputStream(inputStream);
         // 读取一个进入点
         ZipEntry zipEntry = zipInputStream.getNextEntry();
-//        Log.i("response", outputDirectory + File.separator + zipEntry.getName());
+//        LogUtil.d("response", outputDirectory + File.separator + zipEntry.getName());
         // 使用1Mbuffer
         byte[] buffer = new byte[10 * 1024 * 1024];
         // 解压时字节计数
@@ -372,7 +371,7 @@ public class FileUtil {
 
 
             if (isShouldUnZip) {
-                Log.i("checkAssets", String.format("%s[%s] != %s", zipFileName, keyName, md5String));
+                LogUtil.d("checkAssets", String.format("%s[%s] != %s", zipFileName, keyName, md5String));
 
                 String folderPath = sharedPath;
                 if (isInAssets) {
@@ -390,7 +389,7 @@ public class FileUtil {
                 // zipStream = mContext.getApplicationContext().getAssets().open(zipName);
                 zipStream = new FileInputStream(zipFilePath);
                 FileUtil.unZip(zipStream, folderPath, true);
-                Log.i("unZip", String.format("%s, %s", zipFileName, md5String));
+                LogUtil.d("unZip", String.format("%s, %s", zipFileName, md5String));
 
                 mAssetsSPEdit.putString(keyName, md5String).apply();
             }
@@ -456,7 +455,7 @@ public class FileUtil {
             outStream.close();
             return file;
         } catch (IOException e) {
-            Log.e("snapshot", e.toString());
+            LogUtil.e("snapshot", e.toString());
         }
         return null;
     }
@@ -784,7 +783,7 @@ public class FileUtil {
 
                 fileSizeDownloaded += read;
 
-                Log.d("hjjzz", "file download: " + fileSizeDownloaded + " of " + fileSize);
+                LogUtil.d("hjjzz", "file download: " + fileSizeDownloaded + " of " + fileSize);
             }
 
             outputStream.flush();

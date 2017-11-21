@@ -1,18 +1,11 @@
 package com.intfocus.syp_template.business.subject.template.one.mode;
 
 import android.content.Context;
-import android.util.Log;
 
-import com.alibaba.fastjson.JSONReader;
 import com.intfocus.syp_template.business.subject.template.one.entity.MDetailUnitEntity;
-import com.intfocus.syp_template.business.subject.template.one.entity.msg.MDetailRootPageRequestResult;
 import com.zbl.lib.baseframe.core.AbstractMode;
-import com.zbl.lib.baseframe.utils.TimeUtil;
 
-import java.io.StringReader;
 import java.util.ArrayList;
-
-import static com.intfocus.syp_template.YHApplication.threadPool;
 
 
 /**
@@ -41,42 +34,42 @@ public class MDetalRootPageMode extends AbstractMode {
      * @param result
      */
     public void analysisData(final String result) {
-        Log.i(TAG, "StartAnalysisTime:" + TimeUtil.getNowTime());
-        datas = new ArrayList<>();
-        threadPool.execute(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    StringReader isr = new StringReader(result);
-                    JSONReader reader = new JSONReader(isr);
-                    reader.startArray();
-                    while (reader.hasNext()) {
-                        MDetailUnitEntity entity = new MDetailUnitEntity();
-                        reader.startObject();
-                        while (reader.hasNext()) {
-                            String key = reader.readString();
-                            switch (key) {
-                                case "config":
-                                    entity.config = reader.readObject().toString();
-                                    break;
-
-                                case "type":
-                                    entity.type = reader.readObject().toString();
-                                    break;
-                            }
-                        }
-                        datas.add(entity);
-                        reader.endObject();
-                    }
-                    reader.endArray();
-                    MDetailRootPageRequestResult requestResult = new MDetailRootPageRequestResult(true, 200, datas);
-                    dataCallback(requestResult, "onMessageEvent");
-                    Log.i(TAG, "EndAnalysisTime:" + TimeUtil.getNowTime());
-                } catch (Exception e) {
-                    dataCallback(new MDetailRootPageRequestResult(true, 400, null), "onMessageEvent");
-                    e.printStackTrace();
-                }
-            }
-        });
+//        LogUtil.d(TAG, "StartAnalysisTime:" + TimeUtil.getNowTime());
+//        datas = new ArrayList<>();
+//        threadPool.execute(new Runnable() {
+//            @Override
+//            public void run() {
+//                try {
+//                    StringReader isr = new StringReader(result);
+//                    JSONReader reader = new JSONReader(isr);
+//                    reader.startArray();
+//                    while (reader.hasNext()) {
+//                        MDetailUnitEntity entity = new MDetailUnitEntity();
+//                        reader.startObject();
+//                        while (reader.hasNext()) {
+//                            String key = reader.readString();
+//                            switch (key) {
+//                                case "config":
+//                                    entity.config = reader.readObject().toString();
+//                                    break;
+//
+//                                case "type":
+//                                    entity.type = reader.readObject().toString();
+//                                    break;
+//                            }
+//                        }
+//                        datas.add(entity);
+//                        reader.endObject();
+//                    }
+//                    reader.endArray();
+//                    MDetailRootPageRequestResult requestResult = new MDetailRootPageRequestResult(true, 200, datas);
+//                    dataCallback(requestResult, "onMessageEvent");
+//                    LogUtil.d(TAG, "EndAnalysisTime:" + TimeUtil.getNowTime());
+//                } catch (Exception e) {
+//                    dataCallback(new MDetailRootPageRequestResult(true, 400, null), "onMessageEvent");
+//                    e.printStackTrace();
+//                }
+//            }
+//        });
     }
 }

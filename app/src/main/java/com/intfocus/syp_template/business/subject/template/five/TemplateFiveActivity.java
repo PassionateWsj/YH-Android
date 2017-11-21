@@ -15,7 +15,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutCompat.LayoutParams;
 import android.support.v7.widget.LinearLayoutManager;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -55,6 +54,7 @@ import com.intfocus.syp_template.general.util.ApiHelper;
 import com.intfocus.syp_template.general.util.FileUtil;
 import com.intfocus.syp_template.general.util.ImageUtil;
 import com.intfocus.syp_template.general.util.K;
+import com.intfocus.syp_template.general.util.LogUtil;
 import com.intfocus.syp_template.general.util.MyHorizontalScrollView;
 import com.intfocus.syp_template.general.util.PageLinkManage;
 import com.intfocus.syp_template.general.util.ToastUtils;
@@ -1135,7 +1135,7 @@ public class TemplateFiveActivity extends BaseActivity implements ColumAdapter.C
         @Override
         public void onError(SHARE_MEDIA platform, Throwable t) {
             if (t != null) {
-                Log.d("throw", "throw:" + t.getMessage());
+                LogUtil.d("throw", "throw:" + t.getMessage());
             }
             ToastUtils.INSTANCE.show(mAppContext,"分享失败");
         }

@@ -13,7 +13,7 @@ import com.intfocus.syp_template.general.base.BaseView
  * desc:
  * ****************************************************
  */
-interface TableContract {
+interface TableContentContract {
     interface View : BaseView<Presenter> {
         // 展示数据
         fun showData(data: ModularTwo_UnitTableEntity)
