@@ -13,8 +13,9 @@ import android.widget.TextView;
 
 import com.intfocus.syp_template.R;
 import com.intfocus.syp_template.business.subject.template.one.table.ModularOneUnitTablesContModeFragment;
+import com.intfocus.syp_template.business.subject.template.one.table.TableImpl;
+import com.intfocus.syp_template.business.subject.template.one.table.TablePresenter;
 import com.intfocus.syp_template.general.data.TempSubData;
-import com.zbl.lib.baseframe.utils.StringUtil;
 
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
@@ -24,6 +25,9 @@ import org.xutils.x;
  * 模板一弹出显示的子Table页面
  */
 public class ModularOneSubTableActivity extends AppCompatActivity {
+
+    private static final String SU_ROOT_ID = "suRootID";
+    private static final String ARG_INDEX = "index";
 
     @ViewInject(R.id.tv_subtable_name)
     private TextView title;
@@ -35,6 +39,7 @@ public class ModularOneSubTableActivity extends AppCompatActivity {
     @ViewInject(R.id.imgBtn_ColsPopupWindow_bannerInfo)
     private ImageButton imgBtn_Cols;
     public int suRootID;
+    private int mIndex;
 
     /**
      * @param savedInstanceState
@@ -54,18 +59,16 @@ public class ModularOneSubTableActivity extends AppCompatActivity {
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
-            String titel = bundle.getString("Title");
-            if (TempSubData.hasData()) {
-                subData = TempSubData.getData();
-            }
-//            subData = bundle.getString("subData");
-            suRootID = bundle.getInt("suRootID");
-            title.setText(titel);
-            if (StringUtil.isEmpty(subData)) {
+            String title = bundle.getString("Title");
+            suRootID = bundle.getInt(SU_ROOT_ID);
+            mIndex = bundle.getInt(ARG_INDEX);
+            this.title.setText(title);
+            if (!TempSubData.hasData(mIndex)) {
                 finish();
             }
 
-            ModularOneUnitTablesContModeFragment toFragment = ModularOneUnitTablesContModeFragment.newInstance(suRootID, subData);
+            ModularOneUnitTablesContModeFragment toFragment = ModularOneUnitTablesContModeFragment.newInstance(suRootID, mIndex);
+            new TablePresenter(TableImpl.getInstance(), toFragment);
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
             ft.replace(R.id.fl_subtable_container, toFragment);

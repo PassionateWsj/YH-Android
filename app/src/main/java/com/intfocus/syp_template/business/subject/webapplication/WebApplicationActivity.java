@@ -25,11 +25,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.JavascriptInterface;
-import com.tencent.smtt.sdk.ValueCallback;
-import com.tencent.smtt.sdk.WebChromeClient;
-import com.tencent.smtt.sdk.WebSettings;
-import com.tencent.smtt.sdk.WebView;
-import com.tencent.smtt.sdk.WebViewClient;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -56,6 +51,11 @@ import com.intfocus.syp_template.general.util.LogUtil;
 import com.intfocus.syp_template.general.util.PageLinkManage;
 import com.intfocus.syp_template.general.util.ToastUtils;
 import com.intfocus.syp_template.general.util.URLs;
+import com.tencent.smtt.sdk.ValueCallback;
+import com.tencent.smtt.sdk.WebChromeClient;
+import com.tencent.smtt.sdk.WebSettings;
+import com.tencent.smtt.sdk.WebView;
+import com.tencent.smtt.sdk.WebViewClient;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.UMShareListener;
@@ -121,7 +121,7 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
         tv_BannerBack = findViewById(R.id.tv_banner_back);
         iv_BannerSetting = findViewById(R.id.iv_banner_setting);
         browser = findViewById(R.id.browser);
-        mWebView = new WebView(getApplicationContext());
+        mWebView = new WebView(this);
         browser.addView(mWebView, 0);
         initActiongBar();
         initWebAppWebView();
@@ -203,7 +203,7 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
 
 
     public com.tencent.smtt.sdk.WebView initWebAppWebView() {
-        animLoading = (RelativeLayout) findViewById(R.id.anim_loading);
+        animLoading = findViewById(R.id.anim_loading);
         WebSettings webSettings = mWebView.getSettings();
         webSettings.setJavaScriptEnabled(true);
         webSettings.setDefaultTextEncodingName("utf-8");
@@ -260,7 +260,13 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
     }
 
     public class MyWebChromeClient extends WebChromeClient {
-        // Android 5.0 以上
+        /**
+         * Android 5.0 以上
+         * @param webView
+         * @param filePathCallback
+         * @param fileChooserParams
+         * @return
+         */
         @Override
         public boolean onShowFileChooser(WebView webView, ValueCallback<Uri[]> filePathCallback, FileChooserParams fileChooserParams) {
             if (mUploadMessage1 != null) {
@@ -272,13 +278,23 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
             return true;
         }
 
-        //Android 4.0 以下
+        /**
+         * Android 4.0 以下
+         *
+         * @param uploadMsg
+         * @param acceptType
+         */
         public void openFileChooser(ValueCallback<Uri> uploadMsg, String acceptType) {
             mUploadMessage = uploadMsg;
             showOptions();
         }
 
-        // Android 4.0 - 4.4.4
+        /**
+         * Android 4.0 - 4.4.4
+         * @param uploadMsg
+         * @param acceptType
+         * @param capture
+         */
         @Override
         public void openFileChooser(ValueCallback<Uri> uploadMsg, String acceptType, String capture) {
             mUploadMessage = uploadMsg;
@@ -290,7 +306,7 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
         bannerView = (RelativeLayout) findViewById(R.id.rl_action_bar);
         mTitle = (TextView) findViewById(R.id.tv_banner_title);
 
-		/*
+        /**
          * Intent Data || JSON Data
          */
         Intent intent = getIntent();
@@ -312,7 +328,7 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
         }
     }
 
-    /*
+    /**
      * 标题栏点击设置按钮显示下拉菜单
      */
     public void launchDropMenuActivity(View v) {
@@ -466,11 +482,11 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
                 if (urlString.toLowerCase().endsWith(".pdf")) {
                     new Thread(mRunnableForPDF).start();
                 } else {
-                    /*
-                     * 外部链接传参: user_num, timestamp, location
-                     */
+
+                    // 外部链接传参: user_num, timestamp, location
                     SharedPreferences mUserSP = getSharedPreferences("UserBean", Context.MODE_PRIVATE);
-                    String appendParams = String.format("user_num=%s&timestamp=%s&location=%s", userNum, URLs.timestamp(), mUserSP.getString("location", "0,0"));
+//                    String appendParams = String.format("user_num=%s&timestamp=%s&location=%s", userNum, URLs.timestamp(), mUserSP.getString("location", "0,0"));
+                    String appendParams = String.format("timestamp=%s&location=%s", URLs.timestamp(), mUserSP.getString("location", "0,0"));
                     String splitString = urlString.contains("?") ? "&" : "?";
                     urlString = String.format("%s%s%s", urlString, splitString, appendParams);
                     mWebView.loadUrl(urlString);
@@ -522,7 +538,7 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
         }
     };
 
-    /*
+    /**
      * 拷贝链接
      */
     public void actionCopyLink(View v) {
@@ -531,7 +547,7 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
         ToastUtils.INSTANCE.show(mContext, "链接已拷贝", ToastColor.SUCCESS);
     }
 
-    /*
+    /**
      * 分享截图至微信
      */
     public void actionShare2Weixin(View v) {
@@ -557,9 +573,8 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
                 .withMedia(image)
                 .setCallback(umShareListener)
                 .open();
-        /*
-         * 用户行为记录, 单独异常处理，不可影响用户体验
-         */
+
+        // 用户行为记录, 单独异常处理，不可影响用户体验
         try {
             logParams = new JSONObject();
             logParams.put("action", "分享");
@@ -593,7 +608,7 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
         }
     };
 
-    /*
+    /**
      * 评论
      */
     public void actionLaunchCommentActivity(View v) {
@@ -604,7 +619,7 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
         mContext.startActivity(intent);
     }
 
-    /*
+    /**
      * 返回
      */
     @Override
@@ -653,7 +668,7 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
             }
         }
 
-        /*
+        /**
          * JS 接口，暴露给JS的方法使用@JavascriptInterface装饰
          */
         @JavascriptInterface
@@ -695,7 +710,7 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
 
         @JavascriptInterface
         public void jsException(final String ex) {
-            /*
+            /**
              * 用户行为记录, 单独异常处理，不可影响用户体验
              */
             try {
@@ -907,15 +922,14 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
         }
     }
 
-    /*
+    /**
      * 启动拍照并获取图片
      */
     private void getCameraCapture() {
         Intent intentFromCapture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
-        /*
-         * 需要调用裁剪图片功能，无法读取内部存储，故使用 SD 卡先存储图片
-         */
+
+        //需要调用裁剪图片功能，无法读取内部存储，故使用 SD 卡先存储图片
         if (FileUtil.hasSdcard()) {
             Uri imageUri;
             if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
