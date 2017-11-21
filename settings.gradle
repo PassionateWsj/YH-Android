@@ -1,5 +1,4 @@
-include ':app', ':HomeMetrics', ':switchText', ':jgraph', ':PushSDK'
+include ':app', ':HomeMetrics', ':jgraph', ':PushSDK'
 project(':HomeMetrics').projectDir = new File('libs/HomeMetrics')
-project(':switchText').projectDir = new File('libs/switchText')
 project(':jgraph').projectDir = new File('libs/jgraph')
 project(':PushSDK').projectDir = new File('libs/PushSDK')

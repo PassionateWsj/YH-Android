@@ -157,7 +157,7 @@ public class SubjectActivity extends BaseActivity implements FilterMenuAdapter.F
         mWebFrameLayout.addView(mWebView, 0);
 
         iv_BannerBack = findViewById(R.id.iv_banner_back);
-        tv_BannerBack = findViewById(R.id.tv_banner_back);
+//        tv_BannerBack = findViewById(R.id.tv_banner_back);
         iv_BannerSetting = findViewById(R.id.iv_banner_setting);
         rlAddressFilter = findViewById(R.id.rl_address_filter);
         tvLocationAddress = findViewById(R.id.tv_location_address);
@@ -515,8 +515,7 @@ public class SubjectActivity extends BaseActivity implements FilterMenuAdapter.F
 
     @Override
     public void onBackPressed() {
-        PageLinkManage.INSTANCE.pageBackIntent(this);
-        finish();
+
     }
 
     public void refresh(View v) {
@@ -627,7 +626,6 @@ public class SubjectActivity extends BaseActivity implements FilterMenuAdapter.F
             menuItem.setArrorDirection(false);
         }
 
-        //标记点击位置
         menuDatas.get(currentPosition).getData().get(position).setArrorDirection(true);
         filterPopupWindow.dismiss();
     }

@@ -1,5 +1,6 @@
 package com.intfocus.syp_template.collection.entity
 
+import com.intfocus.syp_template.collection.entity.Content
 import java.io.Serializable
 import java.util.*
 

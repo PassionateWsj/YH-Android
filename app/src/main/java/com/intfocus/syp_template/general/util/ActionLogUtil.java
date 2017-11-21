@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static android.content.Context.MODE_PRIVATE;
+import static com.intfocus.syp_template.YHApplication.globalContext;
 import static com.intfocus.syp_template.general.util.K.K_APP_VERSION;
 import static com.intfocus.syp_template.general.util.K.K_USER_NAME;
 
@@ -45,6 +46,17 @@ public class ActionLogUtil {
         params.put("api_token", ApiHelper.checkApiToken("/api/v1.1/device/screen_lock"));
         params.put("id", deviceID);
         HttpUtil.httpPost(urlString, params);
+    }
+
+    public static void actionLog(String actionContent) {
+        try {
+            JSONObject logParams = new JSONObject();
+            logParams.put("action", "分享");
+            actionLog(globalContext, logParams);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
     }
 
     /**

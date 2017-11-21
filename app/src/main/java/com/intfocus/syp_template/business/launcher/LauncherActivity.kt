@@ -144,18 +144,15 @@ class LauncherActivity : Activity(), Animation.AnimationListener {
     private fun initData() {
         mSettingSP = getSharedPreferences("SettingPreference", Context.MODE_PRIVATE)
         mUserSP = getSharedPreferences("UserBean", Context.MODE_PRIVATE)
-//        mAssetsSP = getSharedPreferences("AssetsMD5", Context.MODE_PRIVATE)
         try {
             packageInfo = packageManager.getPackageInfo(packageName, 0)
         } catch (e: PackageManager.NameNotFoundException) {
             e.printStackTrace()
         }
-//        mAssetsSPEdit = mAssetsSP.edit()
-
-        if (mSettingSP.getInt("Version", 0) != packageInfo.versionCode) {
-            mUserSP.edit().clear().apply()
-            mSettingSP.edit().clear().apply()
-        }
+//        if (mSettingSP.getInt("Version", 0) != packageInfo.versionCode) {
+//            mUserSP.edit().clear().apply()
+//            mSettingSP.edit().clear().apply()
+//        }
 
     }
 

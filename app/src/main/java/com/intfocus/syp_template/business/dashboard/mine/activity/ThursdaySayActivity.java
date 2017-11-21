@@ -2,6 +2,10 @@ package com.intfocus.syp_template.business.dashboard.mine.activity;
 
 import android.os.Bundle;
 import android.view.View;
+
+import com.intfocus.syp_template.general.constant.ConfigConstants;
+import com.intfocus.syp_template.general.util.K;
+import com.intfocus.syp_template.general.util.URLs;
 import com.tencent.smtt.sdk.WebView;
 
 import com.intfocus.syp_template.R;
@@ -24,8 +28,8 @@ public class ThursdaySayActivity extends BaseActivity {
 
         animLoading.setVisibility(View.VISIBLE);
         setWebViewLongListener(false);
-        urlString = String.format(K.K_THURSDAY_SAY_MOBILE_PATH, ConfigConstants.kBaseUrl, URLs.currentUIVersion(ThursdaySayActivity.this));
-//        urlString = "http://123.59.75.85:8080/yhportal/appClientReport/personnelTracking.pdf";
+//        urlString = String.format(K.K_THURSDAY_SAY_MOBILE_PATH, ConfigConstants.kBaseUrl, URLs.currentUIVersion(ThursdaySayActivity.this));
+        urlString = "http://111.231.113.158:8080/websites/cav/quan2.html";
         new Thread(mRunnableForDetecting).start();
     }
 
