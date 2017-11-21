@@ -1,5 +1,8 @@
 package com.intfocus.syp_template.general.data;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * ****************************************************
  * author jameswong
@@ -12,19 +15,22 @@ package com.intfocus.syp_template.general.data;
 public enum TempSubData {
     INSTANCE;
 
-    private String mObjectList;
+    private Map<String, String> mObjectList;
 
-    public static boolean hasData() {
-        return INSTANCE.mObjectList != null;
+    public static boolean hasData(int index) {
+        return INSTANCE.mObjectList.get(""+index) != null;
     }
 
-    public static void setData(String objectList) {
-        INSTANCE.mObjectList = objectList;
+    public static void setData(int index, String objectList) {
+        if (INSTANCE.mObjectList == null) {
+            INSTANCE.mObjectList = new HashMap<>(16);
+        }
+        INSTANCE.mObjectList.put(""+index, objectList);
     }
 
-    public static String getData() {
-        String retList = INSTANCE.mObjectList;
-        INSTANCE.mObjectList = null;
+    public static String getData(int index) {
+        String retList = INSTANCE.mObjectList.get(""+index);
+        INSTANCE.mObjectList.remove(""+index);
         return retList;
 //        return INSTANCE.mObjectList;
     }

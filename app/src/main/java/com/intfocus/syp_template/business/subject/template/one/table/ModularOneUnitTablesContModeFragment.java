@@ -1,13 +1,13 @@
 package com.intfocus.syp_template.business.subject.template.one.table;
 
 import android.content.Intent;
+import android.graphics.Point;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.util.ArrayMap;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -58,6 +58,7 @@ import java.util.Comparator;
 public class ModularOneUnitTablesContModeFragment extends BaseModeFragment<ModularTwo_UnitTableContMode> implements SortCheckBox.SortViewSizeListener, AdapterView.OnItemClickListener, TableContract.View {
     private static final String ARG_PARAM = "param";
     private static final String SU_ROOT_ID = "suRootID";
+    private static final String ARG_INDEX = "index";
     private String mParam;
 
     private View rootView;
@@ -122,16 +123,23 @@ public class ModularOneUnitTablesContModeFragment extends BaseModeFragment<Modul
      */
     public int suRootID;
     private TableContract.Presenter mPresenter;
+    /**
+     * 表格在当前页面的下标（处理一个页面多表格逻辑）
+     */
+    private int mIndex;
+    private int mTitleHight;
 
     @Override
     public Subject setSubject() {
         return null;
     }
 
-    public static ModularOneUnitTablesContModeFragment newInstance(int suRootID) {
+    public static ModularOneUnitTablesContModeFragment newInstance(int suRootID, int index) {
         ModularOneUnitTablesContModeFragment fragment = new ModularOneUnitTablesContModeFragment();
         Bundle args = new Bundle();
         args.putInt(SU_ROOT_ID, suRootID);
+        args.putInt(ARG_INDEX, index);
+//        TempSubData.setData(param);
 //        args.putString(ARG_PARAM, param);
         fragment.setArguments(args);
         return fragment;
@@ -148,12 +156,13 @@ public class ModularOneUnitTablesContModeFragment extends BaseModeFragment<Modul
         EventBus.getDefault().register(this);
         if (getArguments() != null) {
             suRootID = getArguments().getInt(SU_ROOT_ID);
-            if (TempSubData.hasData()) {
+            mIndex = getArguments().getInt(ARG_INDEX);
+            if (TempSubData.hasData(mIndex)) {
                 LogUtil.e(TAG, "表格有数据");
+                mParam = TempSubData.getData(mIndex);
             } else {
                 LogUtil.e(TAG, "表格无数据");
             }
-            mParam = TempSubData.getData();
         }
     }
 
@@ -174,13 +183,14 @@ public class ModularOneUnitTablesContModeFragment extends BaseModeFragment<Modul
         final int surootID = suRootID;
 
         if (event.eventTag == surootID) {
-            Log.d("hjjzz", "isHidden:::" + ModularOneUnitTablesContModeFragment.this.isHidden());
+            LogUtil.d("hjjzz", "isHidden:::" + ModularOneUnitTablesContModeFragment.this.isHidden());
             Rect rect = new Rect();
-            rootView.getGlobalVisibleRect(rect);
+            Point globalOffset = new Point();
+            rootView.getGlobalVisibleRect(rect, globalOffset);
             synchronized (this) {
                 if (fl_tableTitle_container.getChildCount() != 0) {
                     if (getActivity() instanceof TemplateOneActivity) {
-                        boolean showSuspendTableTitle = rect.top <= offsetTop && rect.bottom - 165 > offsetTop;
+                        boolean showSuspendTableTitle = globalOffset.y <= offsetTop && rect.bottom - mTitleHight > offsetTop;
                         if (showSuspendTableTitle) {
                             fl_tableTitle_container.removeView(suspensionView);
                             ((TemplateOneActivity) getActivity()).suspendContainer.addView(suspensionView);
@@ -189,7 +199,8 @@ public class ModularOneUnitTablesContModeFragment extends BaseModeFragment<Modul
                 } else {
                     if (getActivity() instanceof TemplateOneActivity) {
                         int viewCont = ((TemplateOneActivity) getActivity()).suspendContainer.getChildCount();
-                        boolean removeSuspendTableTitle = rect.top > offsetTop || rect.bottom - 150 < offsetTop && viewCont != 0;
+                        boolean removeSuspendTableTitle = globalOffset.y > offsetTop || rect.bottom - mTitleHight < offsetTop && viewCont != 0;
+//                        boolean removeSuspendTableTitle = rect.top > offsetTop || rect.bottom - 150 < offsetTop && viewCont != 0;
                         if (removeSuspendTableTitle) {
                             ((TemplateOneActivity) getActivity()).suspendContainer.removeView(suspensionView);
                             fl_tableTitle_container.addView(suspensionView);
@@ -219,15 +230,16 @@ public class ModularOneUnitTablesContModeFragment extends BaseModeFragment<Modul
             thscroll_header.setScrollView(thscroll_data);
             thscroll_data.setScrollView(thscroll_header);
             hideLoading();
+
+            mTitleHight = getResources().getDimensionPixelOffset(R.dimen.action_bar_height);
             rootView.post(new Runnable() {
                 @Override
                 public void run() {
                     Rect frame = new Rect();
                     act.getWindow().getDecorView().getWindowVisibleDisplayFrame(frame);
                     //状态栏+标题栏高度-间隙
-                    offsetTop = frame.top + 165 - 30;
-
-                    Log.i(TAG, "offsetTop:" + offsetTop);
+                    LogUtil.d(LogUtil.TAG, "标题栏高度px ::: " + mTitleHight);
+                    offsetTop = frame.top + mTitleHight;
                 }
             });
 
@@ -520,9 +532,10 @@ public class ModularOneUnitTablesContModeFragment extends BaseModeFragment<Modul
             Intent intent = new Intent(ctx, ModularOneSubTableActivity.class);
             String itemData = dataEntity.data.get(index).main_data[0];
             intent.putExtra("Title", new JSONObject(itemData).getString("value"));
-            TempSubData.setData(subData);
+            TempSubData.setData(index, subData);
             int checkId = suRootID;
-            intent.putExtra("suRootID", checkId);
+            intent.putExtra(SU_ROOT_ID, checkId);
+            intent.putExtra(ARG_INDEX, index);
             startActivity(intent);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -553,4 +566,6 @@ public class ModularOneUnitTablesContModeFragment extends BaseModeFragment<Modul
         }
         return 0;
     }
+
+
 }

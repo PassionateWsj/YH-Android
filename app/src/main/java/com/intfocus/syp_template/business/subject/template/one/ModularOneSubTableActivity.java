@@ -26,6 +26,9 @@ import org.xutils.x;
  */
 public class ModularOneSubTableActivity extends AppCompatActivity {
 
+    private static final String SU_ROOT_ID = "suRootID";
+    private static final String ARG_INDEX = "index";
+
     @ViewInject(R.id.tv_subtable_name)
     private TextView title;
 
@@ -36,6 +39,7 @@ public class ModularOneSubTableActivity extends AppCompatActivity {
     @ViewInject(R.id.imgBtn_ColsPopupWindow_bannerInfo)
     private ImageButton imgBtn_Cols;
     public int suRootID;
+    private int mIndex;
 
     /**
      * @param savedInstanceState
@@ -56,13 +60,14 @@ public class ModularOneSubTableActivity extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             String title = bundle.getString("Title");
-            suRootID = bundle.getInt("suRootID");
+            suRootID = bundle.getInt(SU_ROOT_ID);
+            mIndex = bundle.getInt(ARG_INDEX);
             this.title.setText(title);
-            if (!TempSubData.hasData()) {
+            if (!TempSubData.hasData(mIndex)) {
                 finish();
             }
 
-            ModularOneUnitTablesContModeFragment toFragment = ModularOneUnitTablesContModeFragment.newInstance(suRootID);
+            ModularOneUnitTablesContModeFragment toFragment = ModularOneUnitTablesContModeFragment.newInstance(suRootID, mIndex);
             new TablePresenter(TableImpl.getInstance(), toFragment);
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);

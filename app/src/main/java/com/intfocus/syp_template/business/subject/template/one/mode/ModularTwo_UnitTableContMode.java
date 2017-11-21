@@ -1,15 +1,6 @@
 package com.intfocus.syp_template.business.subject.template.one.mode;
 
-import android.util.Log;
-
-import com.alibaba.fastjson.JSON;
-import com.intfocus.syp_template.business.subject.template.one.entity.ModularTwo_UnitTableEntity;
-import com.intfocus.syp_template.business.subject.template.one.entity.msg.MDetailRootPageRequestResult;
-import com.intfocus.syp_template.general.data.TempSubData;
 import com.zbl.lib.baseframe.core.AbstractMode;
-import com.zbl.lib.baseframe.utils.TimeUtil;
-
-import static com.intfocus.syp_template.YHApplication.threadPool;
 
 /**
  * 仪表盘-数据处理模块
@@ -35,21 +26,5 @@ public class ModularTwo_UnitTableContMode extends AbstractMode {
      * @param
      */
     public void analysisData() {
-        Log.i(TAG, "StartAnalysisTime:" + TimeUtil.getNowTime());
-        threadPool.execute(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    if (TempSubData.hasData()) {
-                        ModularTwo_UnitTableEntity entity = JSON.parseObject(TempSubData.getData(), ModularTwo_UnitTableEntity.class);
-                        dataCallback(entity, "onMessageEvent");
-                    }
-                    Log.i(TAG, "EndAnalysisTime:" + TimeUtil.getNowTime());
-                } catch (Exception e) {
-                    dataCallback(new MDetailRootPageRequestResult(true, 400, null), "onMessageEvent");
-                    e.printStackTrace();
-                }
-            }
-        });
     }
 }

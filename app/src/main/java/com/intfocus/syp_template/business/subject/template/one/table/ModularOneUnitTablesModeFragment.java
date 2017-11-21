@@ -35,7 +35,7 @@ import java.util.Random;
  */
 public class ModularOneUnitTablesModeFragment extends BaseModeFragment<ModularTwo_UnitTablesParentMode> implements TableTitleAdapter.NoticeItemListener {
     private String fragmentTag;
-    private static final String SU_ROOT_ID = "SuRootId";
+    private static final String SU_ROOT_ID = "suRootId";
     private static final String ARG_INDEX = "index";
     private static final String ARG_UUID = "uuid";
 
@@ -165,9 +165,9 @@ public class ModularOneUnitTablesModeFragment extends BaseModeFragment<ModularTw
         }
 
         if (toFragment == null) {
-            toFragment = ModularOneUnitTablesContModeFragment.newInstance(suRootID);
-            TempSubData.setData(entity.datas.get(checkId).config);
-            new TablePresenter(TableImpl.getInstance(),(ModularOneUnitTablesContModeFragment)toFragment);
+            toFragment = ModularOneUnitTablesContModeFragment.newInstance(suRootID, index);
+            TempSubData.setData(index, entity.datas.get(checkId).config);
+            new TablePresenter(TableImpl.getInstance(), (ModularOneUnitTablesContModeFragment) toFragment);
         }
 
         FragmentTransaction ft = fm.beginTransaction();
