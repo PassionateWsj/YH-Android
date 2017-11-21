@@ -1,13 +1,13 @@
 package com.intfocus.syp_template.business.subject.template.one.table;
 
 import android.content.Intent;
+import android.graphics.Point;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.util.ArrayMap;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -28,9 +28,8 @@ import com.intfocus.syp_template.business.subject.templateone.adapter.ModularOne
 import com.intfocus.syp_template.general.base.BaseModeFragment;
 import com.intfocus.syp_template.general.data.TempSubData;
 import com.intfocus.syp_template.general.util.DisplayUtil;
-import com.intfocus.syp_template.general.util.ToastUtils;
+import com.intfocus.syp_template.general.util.LogUtil;
 import com.intfocus.syp_template.general.view.NotScrollListView;
-import com.intfocus.syp_template.general.view.RootScrollView;
 import com.intfocus.syp_template.general.view.SortCheckBox;
 import com.intfocus.syp_template.general.view.TableHorizontalScrollView;
 import com.intfocus.syp_template.general.view.TableValueView;
@@ -39,6 +38,7 @@ import com.zbl.lib.baseframe.core.Subject;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -55,9 +55,10 @@ import java.util.Comparator;
 /**
  * 模板一表格内容页面
  */
-public class ModularOneUnitTablesContModeFragment extends BaseModeFragment<ModularTwo_UnitTableContMode> implements SortCheckBox.SortViewSizeListener, AdapterView.OnItemClickListener {
+public class ModularOneUnitTablesContModeFragment extends BaseModeFragment<ModularTwo_UnitTableContMode> implements SortCheckBox.SortViewSizeListener, AdapterView.OnItemClickListener, TableContract.View {
     private static final String ARG_PARAM = "param";
     private static final String SU_ROOT_ID = "suRootID";
+    private static final String ARG_INDEX = "index";
     private String mParam;
 
     private View rootView;
@@ -121,17 +122,25 @@ public class ModularOneUnitTablesContModeFragment extends BaseModeFragment<Modul
      * 最上层跟跟标签ID
      */
     public int suRootID;
+    private TableContract.Presenter mPresenter;
+    /**
+     * 表格在当前页面的下标（处理一个页面多表格逻辑）
+     */
+    private int mIndex;
+    private int mTitleHight;
 
     @Override
     public Subject setSubject() {
-        return new ModularTwo_UnitTableContMode(ctx);
+        return null;
     }
 
-    public static ModularOneUnitTablesContModeFragment newInstance(int suRootID, String param) {
+    public static ModularOneUnitTablesContModeFragment newInstance(int suRootID, int index) {
         ModularOneUnitTablesContModeFragment fragment = new ModularOneUnitTablesContModeFragment();
         Bundle args = new Bundle();
         args.putInt(SU_ROOT_ID, suRootID);
-        args.putString(ARG_PARAM, param);
+        args.putInt(ARG_INDEX, index);
+//        TempSubData.setData(param);
+//        args.putString(ARG_PARAM, param);
         fragment.setArguments(args);
         return fragment;
     }
@@ -147,8 +156,20 @@ public class ModularOneUnitTablesContModeFragment extends BaseModeFragment<Modul
         EventBus.getDefault().register(this);
         if (getArguments() != null) {
             suRootID = getArguments().getInt(SU_ROOT_ID);
-            mParam = getArguments().getString(ARG_PARAM);
+            mIndex = getArguments().getInt(ARG_INDEX);
+            if (TempSubData.hasData(mIndex)) {
+                LogUtil.e(TAG, "表格有数据");
+                mParam = TempSubData.getData(mIndex);
+            } else {
+                LogUtil.e(TAG, "表格无数据");
+            }
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        TableImpl.destroyInstance();
     }
 
     @Override
@@ -159,43 +180,41 @@ public class ModularOneUnitTablesContModeFragment extends BaseModeFragment<Modul
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void measureLocation(EventRefreshTableRect event) {
-        ModularOneUnitTablesModeFragment parentFt = (ModularOneUnitTablesModeFragment) getParentFragment();
-        if (parentFt == null) {
-            return;
-        }
         final int surootID = suRootID;
 
         if (event.eventTag == surootID) {
-            ((TemplateOneActivity) getActivity()).rScrollView.setOnScrollListener(new RootScrollView.OnScrollListener() {
-                @Override
-                public void onScroll(int scrollY) {
-                    Log.d("hjjzz", "isHidden:::" + ModularOneUnitTablesContModeFragment.this.isHidden());
-                    Rect rect = new Rect();
-                    rootView.getGlobalVisibleRect(rect);
-                    synchronized (this) {
-                        if (fl_tableTitle_container.getChildCount() != 0) {
-                            if (rect.top <= offsetTop && rect.bottom - 165 > offsetTop) {
-                                fl_tableTitle_container.removeView(suspensionView);
-                                ((TemplateOneActivity) getActivity()).suspendContainer.addView(suspensionView);
-                            }
-                        } else {
-                            int viewCont = ((TemplateOneActivity) getActivity()).suspendContainer.getChildCount();
-                            if (rect.top > offsetTop || rect.bottom - 150 < offsetTop && viewCont != 0) {
-                                ((TemplateOneActivity) getActivity()).suspendContainer.removeView(suspensionView);
-                                fl_tableTitle_container.addView(suspensionView);
-                            }
+            LogUtil.d("hjjzz", "isHidden:::" + ModularOneUnitTablesContModeFragment.this.isHidden());
+            Rect rect = new Rect();
+            Point globalOffset = new Point();
+            rootView.getGlobalVisibleRect(rect, globalOffset);
+            synchronized (this) {
+                if (fl_tableTitle_container.getChildCount() != 0) {
+                    if (getActivity() instanceof TemplateOneActivity) {
+                        boolean showSuspendTableTitle = globalOffset.y <= offsetTop && rect.bottom - mTitleHight > offsetTop;
+                        if (showSuspendTableTitle) {
+                            fl_tableTitle_container.removeView(suspensionView);
+                            ((TemplateOneActivity) getActivity()).suspendContainer.addView(suspensionView);
+                        }
+                    }
+                } else {
+                    if (getActivity() instanceof TemplateOneActivity) {
+                        int viewCont = ((TemplateOneActivity) getActivity()).suspendContainer.getChildCount();
+                        boolean removeSuspendTableTitle = globalOffset.y > offsetTop || rect.bottom - mTitleHight < offsetTop && viewCont != 0;
+//                        boolean removeSuspendTableTitle = rect.top > offsetTop || rect.bottom - 150 < offsetTop && viewCont != 0;
+                        if (removeSuspendTableTitle) {
+                            ((TemplateOneActivity) getActivity()).suspendContainer.removeView(suspensionView);
+                            fl_tableTitle_container.addView(suspensionView);
                         }
                     }
                 }
-            });
-        } else {
-            ((TemplateOneActivity) getActivity()).rScrollView.setOnScrollListener(null);
+            }
+//                }
+//            });
         }
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         fm = getFragmentManager();
         if (rootView == null) {
             rootView = inflater.inflate(R.layout.modulartwo_unittablescontfragment, container, false);
@@ -211,80 +230,57 @@ public class ModularOneUnitTablesContModeFragment extends BaseModeFragment<Modul
             thscroll_header.setScrollView(thscroll_data);
             thscroll_data.setScrollView(thscroll_header);
             hideLoading();
+
+            mTitleHight = getResources().getDimensionPixelOffset(R.dimen.action_bar_height);
             rootView.post(new Runnable() {
                 @Override
                 public void run() {
                     Rect frame = new Rect();
                     act.getWindow().getDecorView().getWindowVisibleDisplayFrame(frame);
                     //状态栏+标题栏高度-间隙
-                    offsetTop = frame.top + 165 - 30;
-
-                    Log.i(TAG, "offsetTop:" + offsetTop);
+                    LogUtil.d(LogUtil.TAG, "标题栏高度px ::: " + mTitleHight);
+                    offsetTop = frame.top + mTitleHight;
                 }
             });
 
             dataComparator = new TableDataComparator();
-            getModel().analysisData(mParam);
+            mPresenter.loadData(mParam);
         }
         return rootView;
     }
 
+
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        if (!hidden) {
-            ((TemplateOneActivity) getActivity()).rScrollView.setOnScrollListener(new RootScrollView.OnScrollListener() {
-                @Override
-                public void onScroll(int scrollY) {
-                    Rect rect = new Rect();
-                    rootView.getGlobalVisibleRect(rect);
-                    synchronized (this) {
-                        if (fl_tableTitle_container.getChildCount() != 0) {
-                            if (rect.top <= offsetTop && rect.bottom - 165 > offsetTop) {
-                                fl_tableTitle_container.removeView(suspensionView);
-                                ((TemplateOneActivity) getActivity()).suspendContainer.addView(suspensionView);
-                            }
-                        } else {
-                            int viewCont = ((TemplateOneActivity) getActivity()).suspendContainer.getChildCount();
-                            if (rect.top > offsetTop || rect.bottom - 150 < offsetTop && viewCont != 0) {
-                                ((TemplateOneActivity) getActivity()).suspendContainer.removeView(suspensionView);
-                                fl_tableTitle_container.addView(suspensionView);
-                            }
-                        }
-                    }
-                }
-            });
-        }
     }
 
-    /**
-     * 图表点击事件统一处理方法
-     */
-    public void onMessageEvent(final ModularTwo_UnitTableEntity entity) {
-        act.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                bindData(entity);
 
-                int checkId;
-                FragmentActivity fa = getActivity();
-                if (fa instanceof ModularOneSubTableActivity) {
-                    checkId = ((ModularOneSubTableActivity) fa).suRootID;
-                } else {
-                    checkId = suRootID;
-                }
-                EventBus.getDefault().post(new EventRefreshTableRect(checkId));
-            }
-        });
+    @Override
+    public void showData(@NotNull ModularTwo_UnitTableEntity data) {
+        bindData(data);
+
+//        refreshTableTitle();
+    }
+
+    private void refreshTableTitle() {
+        int checkId;
+        FragmentActivity fa = getActivity();
+        if (fa instanceof ModularOneSubTableActivity) {
+            checkId = ((ModularOneSubTableActivity) fa).suRootID;
+        } else {
+            checkId = suRootID;
+        }
+        EventBus.getDefault().post(new EventRefreshTableRect(checkId));
     }
 
     /**
      * 绑定数据
      */
-    private void bindData(ModularTwo_UnitTableEntity result) {
-        this.dataEntity = result;
+    private void bindData(ModularTwo_UnitTableEntity entity) {
+        this.dataEntity = entity;
         // 表头数据
-        String[] header = result.head;
+        String[] header = entity.head;
         if (header.length == 0) {
             return;
         }
@@ -301,10 +297,10 @@ public class ModularOneUnitTablesContModeFragment extends BaseModeFragment<Modul
 
         lineData.add(headerData);
         for (int i = 0; i < headerSize; i++) {
-            for (int j = 0; j < result.data.size(); j++) {
+            for (int j = 0; j < entity.data.size(); j++) {
                 ArrayList<String> data = new ArrayList<>();
-                for (int k = 1; k < result.data.get(j).main_data.length; k++) {
-                    data.add(result.data.get(j).main_data[k]);
+                for (int k = 1; k < entity.data.get(j).main_data.length; k++) {
+                    data.add(entity.data.get(j).main_data[k]);
                 }
                 lineData.add(data);
             }
@@ -415,11 +411,21 @@ public class ModularOneUnitTablesContModeFragment extends BaseModeFragment<Modul
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
-        if (dataEntity.data.get(position).sub_data == null) {
-            ToastUtils.INSTANCE.showDefault(ctx, dataEntity.data.get(position).main_data[0]);
+        if ("{}".equals(dataEntity.data.get(position).sub_data)) {
+//            ToastUtils.INSTANCE.showDefault(ctx, dataEntity.data.get(position).main_data[0]);
             return;
         }
         startSubTable(position);
+    }
+
+    @Override
+    public TableContract.Presenter getPresenter() {
+        return mPresenter;
+    }
+
+    @Override
+    public void setPresenter(TableContract.Presenter presenter) {
+        mPresenter = presenter;
     }
 
     class SortViewClickListener implements View.OnClickListener {
@@ -526,12 +532,10 @@ public class ModularOneUnitTablesContModeFragment extends BaseModeFragment<Modul
             Intent intent = new Intent(ctx, ModularOneSubTableActivity.class);
             String itemData = dataEntity.data.get(index).main_data[0];
             intent.putExtra("Title", new JSONObject(itemData).getString("value"));
-            if (!TempSubData.hasData()) {
-                TempSubData.setData(subData);
-            }
-//            intent.putExtra("subData", subData);
+            TempSubData.setData(index, subData);
             int checkId = suRootID;
-            intent.putExtra("suRootID", checkId);
+            intent.putExtra(SU_ROOT_ID, checkId);
+            intent.putExtra(ARG_INDEX, index);
             startActivity(intent);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -562,4 +566,6 @@ public class ModularOneUnitTablesContModeFragment extends BaseModeFragment<Modul
         }
         return 0;
     }
+
+
 }

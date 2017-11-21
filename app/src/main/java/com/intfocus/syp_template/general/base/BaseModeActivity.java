@@ -202,16 +202,16 @@ public abstract class BaseModeActivity<T extends Subject> extends AbstractActivi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.frame_baseui);
 
-        stubHeader = (ViewStub) findViewById(R.id.ll_baseUI_title);
+        stubHeader = findViewById(R.id.ll_baseUI_title);
 
-        rootView = (FrameLayout) findViewById(R.id.rootView);
+        rootView = findViewById(R.id.rootView);
 //        progressBar = (ProgressBar) findViewById(R.id.progressBar_baseUI);
 
         int contentID = setLayoutRes();
         if (contentID != 0 && contentID != -1) {
             mContentView = LayoutInflater.from(this).inflate(contentID, null);
         }
-        flContainer = (FrameLayout) findViewById(R.id.fl_baseUI_container);
+        flContainer = findViewById(R.id.fl_baseUI_container);
         if (mContentView != null) {
             flContainer.addView(mContentView);
         }
@@ -229,10 +229,10 @@ public abstract class BaseModeActivity<T extends Subject> extends AbstractActivi
      */
     public void initHeader() {
         stubHeader.inflate();
-        tvLeft = (TextView) findViewById(R.id.tv_baseUI_back);
+        tvLeft = findViewById(R.id.tv_baseUI_back);
         tvLeft.setOnClickListener(viewListener);
-        tvTitle = (TextView) findViewById(R.id.tv_baseUI_title);
-        topRightLayout = (LinearLayout) findViewById(R.id.ll_baseUI_title_RightView);
+        tvTitle = findViewById(R.id.tv_baseUI_title);
+        topRightLayout = findViewById(R.id.ll_baseUI_title_RightView);
         topRightLayout.setOnClickListener(viewListener);
     }
 
@@ -302,7 +302,7 @@ public abstract class BaseModeActivity<T extends Subject> extends AbstractActivi
      * @param drawable
      */
     public void setLeftTVSrc(int drawable) {
-        Drawable nav_up = ContextCompat.getDrawable(ctx,drawable);
+        Drawable nav_up = ContextCompat.getDrawable(ctx, drawable);
         nav_up.setBounds(0, 0, nav_up.getMinimumWidth(),
                 nav_up.getMinimumHeight());
         tvLeft.setCompoundDrawables(nav_up, null, null, null);
