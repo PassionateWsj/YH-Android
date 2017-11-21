@@ -2,11 +2,12 @@ package com.intfocus.syp_template.business.subject.templateone.singlevalue
 
 import com.alibaba.fastjson.JSON
 import com.intfocus.syp_template.business.subject.template.one.entity.MDRPUnitSingleValue
+import com.intfocus.syp_template.constant.Params.REPORT_TYPE_SINGLE_VALUE
 import com.intfocus.syp_template.general.gen.ReportDao
 import com.intfocus.syp_template.general.util.DaoUtil
-import com.intfocus.syp_template.constant.Params.REPORT_TYPE_SINGLE_VALUE
 import rx.Observable
 import rx.Observer
+import rx.Subscription
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
 
@@ -24,6 +25,7 @@ class SingleValueImpl : SingleValueModel {
     companion object {
 
         private var INSTANCE: SingleValueImpl? = null
+        private var observable: Subscription? = null
 
         /**
          * Returns the single instance of this class, creating it if necessary.
@@ -40,7 +42,15 @@ class SingleValueImpl : SingleValueModel {
          */
         @JvmStatic
         fun destroyInstance() {
+            unSubscribe()
             INSTANCE = null
+        }
+
+        /**
+         * 取消订阅
+         */
+        private fun unSubscribe() {
+            observable?.unsubscribe() ?: return
         }
     }
 
@@ -50,7 +60,7 @@ class SingleValueImpl : SingleValueModel {
                 .where(reportDao.queryBuilder().and(ReportDao.Properties.Uuid.eq(uuid), ReportDao.Properties.Type.eq(REPORT_TYPE_SINGLE_VALUE), ReportDao.Properties.Index.eq(index)))
                 .unique()
 
-        Observable.just(report.config)
+        observable = Observable.just(report.config)
                 .subscribeOn(Schedulers.io())
                 .map { JSON.parseObject<MDRPUnitSingleValue>(it, MDRPUnitSingleValue::class.java) }
                 .observeOn(AndroidSchedulers.mainThread())

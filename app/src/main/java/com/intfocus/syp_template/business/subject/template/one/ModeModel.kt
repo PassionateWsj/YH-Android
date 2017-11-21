@@ -1,7 +1,7 @@
 package com.intfocus.syp_template.business.subject.template.one
 
 import android.content.Context
-import com.intfocus.syp_template.business.subject.templateone.entity.MererDetailEntity
+import com.intfocus.syp_template.general.bean.Report
 
 /**
  * ****************************************************
@@ -14,7 +14,7 @@ import com.intfocus.syp_template.business.subject.templateone.entity.MererDetail
  */
 interface ModeModel {
     interface LoadDataCallback {
-        fun onDataLoaded(entity: MererDetailEntity)
+        fun onDataLoaded(reports: List<Report>)
         fun onDataNotAvailable(e: Throwable)
     }
 

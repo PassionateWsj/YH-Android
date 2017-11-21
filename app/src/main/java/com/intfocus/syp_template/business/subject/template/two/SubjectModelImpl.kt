@@ -1,22 +1,21 @@
 package com.intfocus.syp_template.business.subject.template.two
 
-import android.text.TextUtils
 import android.util.Log
 import com.intfocus.syp_template.YHApplication.globalContext
-import com.intfocus.syp_template.YHApplication.threadPool
 import com.intfocus.syp_template.business.subject.template.model.ReportModelImpl
+import com.intfocus.syp_template.collection.callback.LoadDataCallback
 import com.intfocus.syp_template.general.constant.ConfigConstants
 import com.intfocus.syp_template.general.util.*
 import com.intfocus.syp_template.general.util.ApiHelper.deleteHeadersFile
-import com.intfocus.syp_template.collection.callback.LoadDataCallback
 import rx.Observable
 import rx.Subscriber
+import rx.Subscription
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
 import java.io.File
 import java.io.FileInputStream
 import java.io.IOException
-import java.util.HashMap
+import java.util.*
 
 /**
  * @author liuruilin
@@ -31,6 +30,7 @@ class SubjectModelImpl : ReportModelImpl() {
     companion object {
         private val TAG = "SubjectModelImpl"
         private var INSTANCE: SubjectModelImpl? = null
+        private var observable: Subscription? = null
 
         /**
          * Returns the single instance of this class, creating it if necessary.
@@ -47,7 +47,15 @@ class SubjectModelImpl : ReportModelImpl() {
          */
         @JvmStatic
         fun destroyInstance() {
+            unSubscribe()
             INSTANCE = null
+        }
+
+        /**
+         * 取消订阅
+         */
+        private fun unSubscribe() {
+            observable?.unsubscribe() ?: return
         }
     }
 
@@ -59,12 +67,12 @@ class SubjectModelImpl : ReportModelImpl() {
         jsFileName = String.format("group_%s_template_%s_report_%s.js", groupId, templateId, reportId)
         htmlUrl = String.format(K.K_REPORT_HTML, ConfigConstants.kBaseUrl, groupId, templateId, reportId)
 
-        Observable.just(jsFileName)
+        observable = Observable.just(jsFileName)
                 .subscribeOn(Schedulers.io())
                 .map {
-                    var reportPath: String
+                    val reportPath: String
 
-                    var htmlResponse = generateHtml()
+                    val htmlResponse = generateHtml()
                     reportPath = htmlResponse["path"] ?: ""
                     if (reportPath.isNotEmpty()) {
                         if (checkUpdate(jsUrl)) {

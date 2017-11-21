@@ -3,8 +3,10 @@ package com.intfocus.syp_template.business.subject.template.one
 import android.util.Log
 import com.alibaba.fastjson.JSONReader
 import com.intfocus.syp_template.business.subject.template.model.ReportModelImpl
-import com.intfocus.syp_template.business.subject.templateone.entity.MererDetailEntity
 import com.intfocus.syp_template.constant.Params.REPORT_TYPE_MAIN_DATA
+import com.intfocus.syp_template.general.bean.Report
+import com.intfocus.syp_template.general.gen.ReportDao
+import com.intfocus.syp_template.general.util.DaoUtil
 import com.zbl.lib.baseframe.utils.TimeUtil
 import rx.Observable
 import rx.Subscriber
@@ -12,7 +14,6 @@ import rx.Subscription
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
 import java.io.StringReader
-import java.util.*
 
 /**
  * ****************************************************
@@ -25,7 +26,7 @@ import java.util.*
  */
 class ModeImpl : ReportModelImpl() {
 
-    private var uuid = ""
+    private val TEMPLATE_ID = "1"
 
     companion object {
         private val TAG = "ModeImpl"
@@ -60,27 +61,41 @@ class ModeImpl : ReportModelImpl() {
     }
 
     fun checkReportData(reportId: String, templateId: String, groupId: String, callback: ModeModel.LoadDataCallback) {
-        uuid = reportId + templateId + groupId
+        val uuid = reportId + templateId + groupId
         val urlString = reportId + templateId + groupId
         when {
             checkUpdate(urlString) -> analysisData(groupId, reportId, callback)
             available(uuid) -> {
-                val entity = MererDetailEntity()
-                entity.name = "123"
-                callback.onDataLoaded(entity)
-//                analysisData(groupId, reportId, callback)
+                observable = Observable.just(uuid)
+                        .subscribeOn(Schedulers.io())
+                        .map { queryDateBase(it) }
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(object : Subscriber<List<Report>>() {
+                            override fun onCompleted() {
+                            }
+
+                            override fun onNext(t: List<Report>?) {
+                                t?.let { callback.onDataLoaded(it) }
+
+                            }
+
+                            override fun onError(e: Throwable?) {
+                                callback.onDataNotAvailable(e!!)
+                            }
+
+                        })
             }
             else -> analysisData(groupId, reportId, callback)
         }
     }
 
     fun analysisData(groupId: String, reportId: String, callback: ModeModel.LoadDataCallback) {
-        val jsonFileName = String.format("group_%s_template_%s_report_%s.json", groupId, "1", reportId)
+        val jsonFileName = String.format("group_%s_template_%s_report_%s.json", groupId, TEMPLATE_ID, reportId)
 
         observable = Observable.just(jsonFileName)
                 .subscribeOn(Schedulers.io())
                 .map {
-                    uuid = reportId + "1" + groupId
+                    val uuid = reportId + TEMPLATE_ID + groupId
                     delete(uuid)
                     val response: String?
 //                    val jsonFilePath = FileUtil.dirPath(globalContext, K.K_CACHED_DIR_NAME, it)
@@ -98,8 +113,8 @@ class ModeImpl : ReportModelImpl() {
                     val reader = JSONReader(stringReader)
                     reader.startArray()
                     reader.startObject()
-                    val entity = MererDetailEntity()
-                    entity.data = ArrayList()
+//                    val entity = MererDetailEntity()
+//                    entity.data = ArrayList()
                     var page = 0
                     var index = 0
                     Log.i(TAG, "analysisDataReaderTime2:" + TimeUtil.getNowTime())
@@ -108,7 +123,7 @@ class ModeImpl : ReportModelImpl() {
                         val key = reader.readString()
                         when (key) {
                             "name" -> {
-                                entity.name = reader.readObject().toString()
+                                reader.readObject().toString()
                                 Log.i(TAG, "name:" + TimeUtil.getNowTime())
                             }
 
@@ -120,13 +135,13 @@ class ModeImpl : ReportModelImpl() {
                                     reader.startObject()
                                     var config = ""
                                     var title = ""
-                                    val data = MererDetailEntity.PageData()
+//                                    val data = MererDetailEntity.PageData()
                                     while (reader.hasNext()) {
                                         val dataKey = reader.readString()
                                         when (dataKey) {
                                             "parts" -> {
                                                 config = reader.readObject().toString()
-                                                data.parts = config
+//                                                data.parts = config
                                                 val moduleStringReader = StringReader(config)
                                                 val moduleReader = JSONReader(moduleStringReader)
                                                 moduleReader.startArray()
@@ -153,7 +168,7 @@ class ModeImpl : ReportModelImpl() {
                                     insertMainData(uuid, config, REPORT_TYPE_MAIN_DATA, title, page)
                                     page++
                                     reader.endObject()
-                                    entity.data!!.add(data)
+//                                    entity.data!!.add(data)
                                 }
                                 reader.endArray()
                                 Log.i(TAG, "dataEnd:" + TimeUtil.getNowTime())
@@ -163,15 +178,15 @@ class ModeImpl : ReportModelImpl() {
                     reader.endObject()
                     reader.endArray()
                     Log.i(TAG, "analysisDataEndTime:" + TimeUtil.getNowTime())
-                    entity
+//                    entity
+                    queryDateBase(uuid)
                 }
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(object : Subscriber<MererDetailEntity>() {
+                .subscribe(object : Subscriber<List<Report>>() {
                     override fun onCompleted() {
                     }
 
-                    override fun onNext(t: MererDetailEntity?) {
-//                        t ?:callback.onLoadData(t)
+                    override fun onNext(t: List<Report>?) {
                         t?.let { callback.onDataLoaded(it) }
 
                     }
@@ -181,5 +196,13 @@ class ModeImpl : ReportModelImpl() {
                     }
 
                 })
+    }
+
+    private fun queryDateBase(uuid: String): List<Report> {
+        val reportDao = DaoUtil.getReportDao()
+        return reportDao.queryBuilder()
+                .where(reportDao.queryBuilder()
+                        .and(ReportDao.Properties.Uuid.eq(uuid), ReportDao.Properties.Type.eq(REPORT_TYPE_MAIN_DATA)))
+                .list() ?: mutableListOf()
     }
 }

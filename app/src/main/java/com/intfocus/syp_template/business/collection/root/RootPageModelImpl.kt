@@ -9,6 +9,7 @@ import com.intfocus.syp_template.constant.StateParams.STATE_CODE_SUCCESS
 import com.intfocus.syp_template.general.util.LogUtil
 import rx.Observable
 import rx.Observer
+import rx.Subscription
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
 import java.io.StringReader
@@ -23,11 +24,13 @@ import java.util.*
  * desc:
  * ****************************************************
  */
-class RootPageModelImpl: RootPageModel<RootPageRequestResult> {
+class RootPageModelImpl : RootPageModel<RootPageRequestResult> {
     private val TAG = "hjjzz"
 
     companion object {
         private var INSTANCE: RootPageModelImpl? = null
+        private var observable: Subscription? = null
+
         /**
          * Returns the single instance of this class, creating it if necessary.
          */
@@ -43,13 +46,21 @@ class RootPageModelImpl: RootPageModel<RootPageRequestResult> {
          */
         @JvmStatic
         fun destroyInstance() {
+            unSubscribe()
             INSTANCE = null
+        }
+
+        /**
+         * 取消订阅
+         */
+        private fun unSubscribe() {
+            observable?.unsubscribe() ?: return
         }
     }
 
     override fun getData(mParam: String, callback: LoadDataCallback<RootPageRequestResult>) {
         val datas = ArrayList<Content>()
-        Observable.just(mParam)
+        observable = Observable.just(mParam)
                 .subscribeOn(Schedulers.io())
                 .map {
                     val isr = StringReader(it)
