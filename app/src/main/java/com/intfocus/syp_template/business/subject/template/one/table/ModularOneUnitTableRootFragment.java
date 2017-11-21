@@ -5,24 +5,23 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.RadioGroup;
 
 import com.intfocus.syp_template.R;
 import com.intfocus.syp_template.business.dashboard.mine.adapter.TableTitleAdapter;
-import com.intfocus.syp_template.business.subject.template.one.TemplateOneActivity;
 import com.intfocus.syp_template.business.subject.template.one.entity.MDetailUnitEntity;
 import com.intfocus.syp_template.business.subject.template.one.entity.msg.MDetailRootPageRequestResult;
 import com.intfocus.syp_template.business.subject.template.one.mode.ModularTwo_UnitTablesParentMode;
 import com.intfocus.syp_template.general.base.BaseModeFragment;
 import com.intfocus.syp_template.general.data.TempSubData;
+import com.intfocus.syp_template.general.util.LogUtil;
 import com.zbl.lib.baseframe.core.Subject;
 import com.zbl.lib.baseframe.utils.ToastUtil;
 
+import org.jetbrains.annotations.NotNull;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
@@ -33,13 +32,12 @@ import java.util.Random;
 /**
  * 表格根
  */
-public class ModularOneUnitTablesModeFragment extends BaseModeFragment<ModularTwo_UnitTablesParentMode> implements TableTitleAdapter.NoticeItemListener {
+public class ModularOneUnitTableRootFragment extends BaseModeFragment<ModularTwo_UnitTablesParentMode> implements TableTitleAdapter.NoticeItemListener, TableRootContract.View {
     private String fragmentTag;
     private static final String SU_ROOT_ID = "suRootId";
     private static final String ARG_INDEX = "index";
     private static final String ARG_UUID = "uuid";
 
-    private String mParam;
     private int index;
     private String uuid;
 
@@ -57,8 +55,6 @@ public class ModularOneUnitTablesModeFragment extends BaseModeFragment<ModularTw
     private BaseModeFragment toFragment;
     private String currentFtName;
 
-    private RadioGroup radioGroup;
-    private TemplateOneActivity.RootTableCheckedChangeListener rootTableListener;
     private MDetailRootPageRequestResult entity;
 
     /**
@@ -70,10 +66,11 @@ public class ModularOneUnitTablesModeFragment extends BaseModeFragment<ModularTw
     private RecyclerView recyclerView;
     private TableTitleAdapter adapter;
     private List<MDetailUnitEntity> datas;
+    private TableRootContract.Presenter mPresenter;
 
 
-    public static ModularOneUnitTablesModeFragment newInstance(int suRootID, String uuid, int index) {
-        ModularOneUnitTablesModeFragment fragment = new ModularOneUnitTablesModeFragment();
+    public static ModularOneUnitTableRootFragment newInstance(int suRootID, String uuid, int index) {
+        ModularOneUnitTableRootFragment fragment = new ModularOneUnitTableRootFragment();
         Bundle args = new Bundle();
         args.putInt(SU_ROOT_ID, suRootID);
         args.putInt(ARG_INDEX, index);
@@ -114,27 +111,31 @@ public class ModularOneUnitTablesModeFragment extends BaseModeFragment<ModularTw
     }
 
     private void init() {
-        getModel().analysisData(uuid, index);
+        mPresenter.loadData(uuid, index);
         datas = new ArrayList<>();
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         adapter = new TableTitleAdapter(getContext(), datas, this);
         recyclerView.setAdapter(adapter);
     }
 
-    public void onMessageEvent(final MDetailRootPageRequestResult entity) {
-        if (entity != null && entity.stateCode == 200) {
-            act.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    bindData(entity);
-                }
-            });
-        }
+    @Override
+    public void dataLoaded(@NotNull MDetailRootPageRequestResult data) {
+        bindData(data);
+    }
+
+    @Override
+    public TableRootContract.Presenter getPresenter() {
+        return mPresenter;
+    }
+
+    @Override
+    public void setPresenter(TableRootContract.Presenter presenter) {
+        mPresenter = presenter;
     }
 
     private void bindData(MDetailRootPageRequestResult entity) {
         this.entity = entity;
-        if (entity != null) {
+        if (entity != null && entity.datas != null) {
             datas = entity.datas;
             adapter.setData(datas);
 
@@ -159,15 +160,15 @@ public class ModularOneUnitTablesModeFragment extends BaseModeFragment<ModularTw
         lastCheckId = checkId;
         currentFtName = fragmentTag + checkId;
         toFragment = (BaseModeFragment) fm.findFragmentByTag(currentFtName);
-        Log.i(this.getClass().getSimpleName(), "currentFtName:" + currentFtName);
+        LogUtil.d(this.getClass().getSimpleName(), "currentFtName:" + currentFtName);
         if (currFragment != null && currFragment == toFragment) {
             return;
         }
 
         if (toFragment == null) {
-            toFragment = ModularOneUnitTablesContModeFragment.newInstance(suRootID, index);
+            toFragment = ModularOneUnitTablesContentModeFragment.newInstance(suRootID, index);
             TempSubData.setData(index, entity.datas.get(checkId).config);
-            new TablePresenter(TableImpl.getInstance(), (ModularOneUnitTablesContModeFragment) toFragment);
+            new TableContentPresenter(TableImpl.getInstance(), (ModularOneUnitTablesContentModeFragment) toFragment);
         }
 
         FragmentTransaction ft = fm.beginTransaction();
@@ -204,4 +205,5 @@ public class ModularOneUnitTablesModeFragment extends BaseModeFragment<ModularTw
     public void itemClick(int position) {
         switchFragment(position);
     }
+
 }

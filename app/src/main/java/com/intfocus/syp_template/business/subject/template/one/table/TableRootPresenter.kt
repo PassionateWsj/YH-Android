@@ -1,6 +1,6 @@
 package com.intfocus.syp_template.business.subject.template.one.table
 
-import com.intfocus.syp_template.business.subject.template.one.entity.ModularTwo_UnitTableEntity
+import com.intfocus.syp_template.business.subject.template.one.entity.msg.MDetailRootPageRequestResult
 
 /**
  * ****************************************************
@@ -11,10 +11,11 @@ import com.intfocus.syp_template.business.subject.template.one.entity.ModularTwo
  * desc:
  * ****************************************************
  */
-class TablePresenter(
+class TableRootPresenter(
         private val mModel: TableImpl,
-        private val mView: TableContract.View
-) : TableContract.Presenter {
+        private val mView: TableRootContract.View
+) : TableRootContract.Presenter {
+
     init {
         mView.presenter = this
     }
@@ -23,16 +24,14 @@ class TablePresenter(
 
     }
 
-    override fun loadData(dataJson: String) {
-        mModel.getData(dataJson,  object : TableModel.LoadDataCallback {
-            override fun onDataLoaded(data: ModularTwo_UnitTableEntity) {
-                mView.showData(data)
+    override fun loadData(uuid: String, index: Int) {
+        mModel.getRootData(uuid,index,object :TableModel.TableRootLoadDataCallback{
+            override fun onDataLoaded(data: MDetailRootPageRequestResult) {
+                mView.dataLoaded(data)
             }
 
             override fun onDataNotAvailable(e: Throwable?) {
-
             }
-
         })
     }
 }

@@ -5,7 +5,6 @@ import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,15 +18,18 @@ import com.intfocus.syp_template.business.subject.template.one.curvechart.Modula
 import com.intfocus.syp_template.business.subject.template.one.mode.MDetalRootPageMode;
 import com.intfocus.syp_template.business.subject.template.one.plusminuschart.ModularOneUnitPlusMinusChartModeFragment;
 import com.intfocus.syp_template.business.subject.template.one.singlevalue.ModularOneUnitSingleValueModeFragment;
-import com.intfocus.syp_template.business.subject.template.one.table.ModularOneUnitTablesModeFragment;
+import com.intfocus.syp_template.business.subject.template.one.table.ModularOneUnitTableRootFragment;
+import com.intfocus.syp_template.business.subject.template.one.table.TableImpl;
+import com.intfocus.syp_template.business.subject.template.one.table.TableRootPresenter;
 import com.intfocus.syp_template.business.subject.templateone.curvechart.CurveChartImpl;
 import com.intfocus.syp_template.business.subject.templateone.curvechart.CurveChartPresenter;
 import com.intfocus.syp_template.business.subject.templateone.rootpage.RootPageContract;
 import com.intfocus.syp_template.business.subject.templateone.rootpage.RootPageImpl;
 import com.intfocus.syp_template.business.subject.templateone.singlevalue.SingleValueImpl;
 import com.intfocus.syp_template.business.subject.templateone.singlevalue.SingleValuePresenter;
-import com.intfocus.syp_template.general.bean.Report;
 import com.intfocus.syp_template.general.base.BaseModeFragment;
+import com.intfocus.syp_template.general.bean.Report;
+import com.intfocus.syp_template.general.util.LogUtil;
 import com.zbl.lib.baseframe.core.Subject;
 import com.zzhoujay.richtext.RichText;
 
@@ -66,7 +68,7 @@ public class ModularOneRootPageModeFragment extends BaseModeFragment<MDetalRootP
 
     @Override
     public Subject setSubject() {
-        return new MDetalRootPageMode(ctx);
+        return null;
     }
 
     public static ModularOneRootPageModeFragment newInstance(int suRootID, String uuid) {
@@ -106,10 +108,6 @@ public class ModularOneRootPageModeFragment extends BaseModeFragment<MDetalRootP
         return rootView;
     }
 
-    // ----------------------------------------------------------------
-    // -------------------------- 重构代码起始 --------------------------
-    // ----------------------------------------------------------------
-
     @Override
     public void showData(@NotNull List<? extends Report> reports) {
         Random random = new Random();
@@ -136,7 +134,7 @@ public class ModularOneRootPageModeFragment extends BaseModeFragment<MDetalRootP
                         RichText.from(info).into(tv);
                         llMdrpContainer.addView(view);
                     } catch (Exception e) {
-                        Log.e(TAG, "json 创建失败");
+                        LogUtil.e(TAG, "json 创建失败");
                     }
                     break;
 
@@ -153,7 +151,8 @@ public class ModularOneRootPageModeFragment extends BaseModeFragment<MDetalRootP
 
                 //类Excel冻结横竖首列表格
                 case "tables":
-                    fragment = ModularOneUnitTablesModeFragment.newInstance(suRootID, uuid, report.getIndex());
+                    fragment = ModularOneUnitTableRootFragment.newInstance(suRootID, uuid, report.getIndex());
+                    new TableRootPresenter(TableImpl.getInstance(),(ModularOneUnitTableRootFragment)fragment);
                     break;
                 default:
                     break;
@@ -186,7 +185,4 @@ public class ModularOneRootPageModeFragment extends BaseModeFragment<MDetalRootP
     public void setPresenter(RootPageContract.Presenter presenter) {
         this.mPresenter = presenter;
     }
-    // ----------------------------------------------------------------
-    // ----------------------- 我是 到此为止分割线 ------------------------
-    // ----------------------------------------------------------------
 }
