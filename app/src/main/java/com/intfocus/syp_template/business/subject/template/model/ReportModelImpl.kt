@@ -63,7 +63,7 @@ open class ReportModelImpl : ReportModel {
             for ((key, value) in map) {
                 response.put(key, value[0])
             }
-            Log.i("DownloadZIP", String.format("%d - %s - %s", connection.responseCode, url, response.toString()))
+            LogUtil.d("DownloadZIP", String.format("%d - %s - %s", connection.responseCode, url, response.toString()))
             // expect HTTP 200 OK, so we don't mistakenly save error report
             // instead of the file
             if (connection.responseCode != HttpURLConnection.HTTP_OK) {

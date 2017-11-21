@@ -16,7 +16,6 @@ import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 
@@ -163,7 +162,7 @@ public class ImageUtil {
                     return picPath;
                 }
 
-                Log.w(TAG, String.format("retrievePath failed from dataIntent:%s, extras:%s", dataIntent, dataIntent.getExtras()));
+                LogUtil.e(TAG, String.format("retrievePath failed from dataIntent:%s, extras:%s", dataIntent, dataIntent.getExtras()));
             }
 
             if (sourceIntent != null) {
@@ -177,7 +176,7 @@ public class ImageUtil {
                 if (!TextUtils.isEmpty(picPath)) {
                     File file = new File(picPath);
                     if (!file.exists() || !file.isFile()) {
-                        Log.w(TAG, String.format("retrievePath file not found from sourceIntent path:%s", picPath));
+                        LogUtil.e(TAG, String.format("retrievePath file not found from sourceIntent path:%s", picPath));
                     }
                 }
             }
@@ -186,7 +185,7 @@ public class ImageUtil {
 
             return picPath;
         } finally {
-            Log.d(TAG, "retrievePath(" + sourceIntent + "," + dataIntent + ") ret: " + picPath);
+            LogUtil.d(TAG, "retrievePath(" + sourceIntent + "," + dataIntent + ") ret: " + picPath);
         }
     }
 

@@ -478,19 +478,19 @@ public class SubjectActivity extends BaseActivity implements FilterMenuAdapter.F
 
         @Override
         public void onResult(SHARE_MEDIA platform) {
-            Log.d("plat", "platform" + platform);
+            LogUtil.d("plat", "platform" + platform);
         }
 
         @Override
         public void onError(SHARE_MEDIA platform, Throwable t) {
             if (t != null) {
-                Log.d("throw", "throw:" + t.getMessage());
+                LogUtil.d("throw", "throw:" + t.getMessage());
             }
         }
 
         @Override
         public void onCancel(SHARE_MEDIA platform) {
-            Log.d("throw", "throw:" + " 分享取消了");
+            LogUtil.d("throw", "throw:" + " 分享取消了");
         }
     };
 

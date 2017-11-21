@@ -157,9 +157,9 @@ class LoginActivity : FragmentActivity() {
 
                 //解析定位结果
                 val result = sb.toString()
-                Log.i("testlog", result)
+                LogUtil.d("testlog", result)
             } else {
-                Log.i("testlog", "定位失败，loc is null")
+                LogUtil.d("testlog", "定位失败，loc is null")
             }
         }
     }

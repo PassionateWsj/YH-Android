@@ -10,13 +10,9 @@ import java.util.ArrayList;
  * Created by zbaoliang on 17-4-28.
  */
 public class MDetailRootPageRequestResult {
-    public boolean isSuccress;
-    public int stateCode;
     public ArrayList<MDetailUnitEntity> datas;
 
-    public MDetailRootPageRequestResult(boolean isSuccress, int stateCode, ArrayList<MDetailUnitEntity> datas) {
-        this.isSuccress = isSuccress;
-        this.stateCode = stateCode;
+    public MDetailRootPageRequestResult(ArrayList<MDetailUnitEntity> datas) {
         this.datas = datas;
     }
 }

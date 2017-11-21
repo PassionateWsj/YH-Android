@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,6 +33,7 @@ import com.intfocus.syp_template.general.util.ActionLogUtil;
 import com.intfocus.syp_template.general.util.DaoUtil;
 import com.intfocus.syp_template.general.util.DisplayUtil;
 import com.intfocus.syp_template.general.util.ImageUtil;
+import com.intfocus.syp_template.general.util.LogUtil;
 import com.intfocus.syp_template.general.util.ToastUtils;
 import com.intfocus.syp_template.general.util.URLs;
 import com.intfocus.syp_template.general.view.RootScrollView;
@@ -318,19 +318,19 @@ public class TemplateOneActivity extends BaseModeActivity<MeterDetailActMode> im
 
         @Override
         public void onResult(SHARE_MEDIA platform) {
-            Log.d("plat", "platform" + platform);
+            LogUtil.d("plat", "platform" + platform);
         }
 
         @Override
         public void onError(SHARE_MEDIA platform, Throwable t) {
             if (t != null) {
-                Log.d("throw", "throw:" + t.getMessage());
+                LogUtil.d("throw", "throw:" + t.getMessage());
             }
         }
 
         @Override
         public void onCancel(SHARE_MEDIA platform) {
-            Log.d("throw", "throw:" + " 分享取消了");
+            LogUtil.d("throw", "throw:" + " 分享取消了");
         }
     };
 

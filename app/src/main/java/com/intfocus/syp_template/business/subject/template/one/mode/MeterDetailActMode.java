@@ -1,7 +1,6 @@
 package com.intfocus.syp_template.business.subject.template.one.mode;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.alibaba.fastjson.JSONReader;
 import com.intfocus.syp_template.business.subject.templateone.entity.MererDetailEntity;
@@ -9,6 +8,7 @@ import com.intfocus.syp_template.business.subject.templateone.entity.msg.MDetail
 import com.intfocus.syp_template.general.util.ApiHelper;
 import com.intfocus.syp_template.general.util.FileUtil;
 import com.intfocus.syp_template.general.util.K;
+import com.intfocus.syp_template.general.util.LogUtil;
 import com.zbl.lib.baseframe.core.AbstractMode;
 import com.zbl.lib.baseframe.utils.TimeUtil;
 
@@ -70,27 +70,27 @@ public class MeterDetailActMode extends AbstractMode {
                         return;
                     }
 //                    response = getJsonData(ctx);
-                    Log.i(TAG, "analysisDataStartTime:" + TimeUtil.getNowTime());
+                    LogUtil.d(TAG, "analysisDataStartTime:" + TimeUtil.getNowTime());
                     StringReader stringReader = new StringReader(response);
-                    Log.i(TAG, "analysisDataReaderTime1:" + TimeUtil.getNowTime());
+                    LogUtil.d(TAG, "analysisDataReaderTime1:" + TimeUtil.getNowTime());
                     JSONReader reader = new JSONReader(stringReader);
                     reader.startArray();
                     reader.startObject();
 
                     entity = new MererDetailEntity();
                     entity.setData(new ArrayList<MererDetailEntity.PageData>());
-                    Log.i(TAG, "analysisDataReaderTime2:" + TimeUtil.getNowTime());
+                    LogUtil.d(TAG, "analysisDataReaderTime2:" + TimeUtil.getNowTime());
 
                     while (reader.hasNext()) {
                         String key = reader.readString();
                         switch (key) {
                             case "name":
                                 entity.setName(reader.readObject().toString());
-                                Log.i(TAG, "name:" + TimeUtil.getNowTime());
+                                LogUtil.d(TAG, "name:" + TimeUtil.getNowTime());
                                 break;
 
                             case "data":
-                                Log.i(TAG, "dataStart:" + TimeUtil.getNowTime());
+                                LogUtil.d(TAG, "dataStart:" + TimeUtil.getNowTime());
                                 reader.startArray();
 
                                 while (reader.hasNext()) {
@@ -115,7 +115,7 @@ public class MeterDetailActMode extends AbstractMode {
                                     entity.getData().add(data);
                                 }
                                 reader.endArray();
-                                Log.i(TAG, "dataEnd:" + TimeUtil.getNowTime());
+                                LogUtil.d(TAG, "dataEnd:" + TimeUtil.getNowTime());
                                 break;
 
                             default:
@@ -125,7 +125,7 @@ public class MeterDetailActMode extends AbstractMode {
                     reader.endObject();
                     reader.endArray();
                     EventBus.getDefault().post(new MDetailActRequestResult(true, 200, entity));
-                    Log.i(TAG, "analysisDataEndTime:" + TimeUtil.getNowTime());
+                    LogUtil.d(TAG, "analysisDataEndTime:" + TimeUtil.getNowTime());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

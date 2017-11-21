@@ -53,7 +53,7 @@ public class ApiHelper {
 //            mUserSP.edit().putString("os_version", "android" + Build.VERSION.RELEASE).commit();
 //            mUserSP.edit().putString("device_info", android.os.Build.MODEL).commit();
 //
-//            Log.i("DeviceParams", params.toString());
+//            LogUtil.d("DeviceParams", params.toString());
 //
 //            Map<String, String> response = HttpUtil.httpPost(urlString, params);
 //            String userConfigPath = String.format("%s/%s", FileUtil.basePath(context), K.K_USER_CONFIG_FILE_NAME);
@@ -288,7 +288,7 @@ public class ApiHelper {
         if (headersJSON.has(urlKey)) {
             try {
                 headersJSON.remove(urlKey);
-                Log.i("clearResponseHeader", String.format("%s[%s]", headersFilePath, urlKey));
+                LogUtil.d("clearResponseHeader", String.format("%s[%s]", headersFilePath, urlKey));
 
                 FileUtil.writeFile(headersFilePath, headersJSON.toString());
             } catch (IOException e) {
@@ -411,7 +411,7 @@ public class ApiHelper {
             boolean isDownloaded = outputFile.exists() && headerJSON.has(urlString) && etag != null && !etag.isEmpty() && headerJSON.getString(urlString).equals(etag);
 
             if (isDownloaded) {
-                Log.i("downloadFile", "exist - " + outputFile.getAbsolutePath());
+                LogUtil.d("downloadFile", "exist - " + outputFile.getAbsolutePath());
             } else {
                 InputStream in = url.openStream();
                 FileOutputStream fos = new FileOutputStream(outputFile);

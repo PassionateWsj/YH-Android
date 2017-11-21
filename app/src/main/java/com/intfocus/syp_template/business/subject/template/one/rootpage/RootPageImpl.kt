@@ -1,9 +1,9 @@
 package com.intfocus.syp_template.business.subject.templateone.rootpage
 
-import android.util.Log
 import com.intfocus.syp_template.general.bean.Report
 import com.intfocus.syp_template.general.gen.ReportDao
 import com.intfocus.syp_template.general.util.DaoUtil
+import com.intfocus.syp_template.general.util.LogUtil
 import com.zbl.lib.baseframe.utils.TimeUtil
 import rx.Observable
 import rx.Observer
@@ -45,11 +45,11 @@ class RootPageImpl : RootPageModel {
     }
 
     override fun getData(uuid: String, page: Int, callback: RootPageModel.LoadDataCallback) {
-        Log.i(TAG, "StartAnalysisTime:" + TimeUtil.getNowTime())
+        LogUtil.d(TAG, "StartAnalysisTime:" + TimeUtil.getNowTime())
         Observable.just("")
                 .subscribeOn(Schedulers.io())
                 .map {
-                    var reports: List<Report>
+                    val reports: List<Report>
                     val reportDao = DaoUtil.getReportDao()
                     reports = reportDao.queryBuilder()
                             .where(reportDao.queryBuilder()
@@ -68,7 +68,7 @@ class RootPageImpl : RootPageModel {
                     }
 
                     override fun onCompleted() {
-                        Log.i(TAG, "EndAnalysisTime:" + TimeUtil.getNowTime())
+                        LogUtil.d(TAG, "EndAnalysisTime:" + TimeUtil.getNowTime())
                     }
 
                 })

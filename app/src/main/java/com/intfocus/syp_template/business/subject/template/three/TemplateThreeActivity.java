@@ -13,7 +13,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,6 +47,7 @@ import com.intfocus.syp_template.general.util.FileUtil;
 import com.intfocus.syp_template.general.util.HttpUtil;
 import com.intfocus.syp_template.general.util.ImageUtil;
 import com.intfocus.syp_template.general.util.K;
+import com.intfocus.syp_template.general.util.LogUtil;
 import com.intfocus.syp_template.general.util.PageLinkManage;
 import com.intfocus.syp_template.general.util.ToastUtils;
 import com.intfocus.syp_template.general.util.URLs;
@@ -665,8 +665,8 @@ public class TemplateThreeActivity extends AppCompatActivity implements ProductL
 
     @Override
     public void onValueSelected(Entry e, Highlight h) {
-        Log.d("X:", e.getX() + "");
-        Log.d("Y:", e.getX() + "");
+        LogUtil.d("X:", e.getX() + "");
+        LogUtil.d("Y:", e.getX() + "");
         dateSelected = ((int) e.getX() - 1);
         changeDate(dateSelected);
         updateTitle(items.get(dateSelected));
@@ -834,7 +834,7 @@ public class TemplateThreeActivity extends AppCompatActivity implements ProductL
         @Override
         public void onError(SHARE_MEDIA platform, Throwable t) {
             if (t != null) {
-                Log.d("throw", "throw:" + t.getMessage());
+                LogUtil.d("throw", "throw:" + t.getMessage());
             }
             ToastUtils.INSTANCE.show(mContext, "分享失败");
         }

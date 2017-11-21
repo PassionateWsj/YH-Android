@@ -209,7 +209,7 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
             if (mUploadMessage1 != null) {
                 mUploadMessage1 = null;
             }
-            Log.i("FileType1", fileChooserParams.toString());
+            LogUtil.d("FileType1", fileChooserParams.toString());
             mUploadMessage1 = filePathCallback;
             showOptions();
             return true;
@@ -344,12 +344,12 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
      */
     @Override
     public void onPageChanged(int page, int pageCount) {
-        Log.i("onPageChanged", format("%s %d / %d", bannerName, page, pageCount));
+        LogUtil.d("onPageChanged", format("%s %d / %d", bannerName, page, pageCount));
     }
 
     @Override
     public void loadComplete(int nbPages) {
-        Log.d("loadComplete", "load pdf done");
+        LogUtil.d("loadComplete", "load pdf done");
     }
 
     @Override
@@ -373,7 +373,7 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
                     String splitString = urlString.contains("?") ? "&" : "?";
                     urlString = String.format("%s%s%s", urlString, splitString, appendParams);
                     mWebView.loadUrl(urlString);
-                    Log.i("OutLink", urlString);
+                    LogUtil.d("OutLink", urlString);
                 }
             }
         });
@@ -475,19 +475,19 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
 
         @Override
         public void onResult(SHARE_MEDIA platform) {
-            Log.d("plat", "platform" + platform);
+            LogUtil.d("plat", "platform" + platform);
         }
 
         @Override
         public void onError(SHARE_MEDIA platform, Throwable t) {
             if (t != null) {
-                Log.d("throw", "throw:" + t.getMessage());
+                LogUtil.d("throw", "throw:" + t.getMessage());
             }
         }
 
         @Override
         public void onCancel(SHARE_MEDIA platform) {
-            Log.d("throw", "throw:" + " 分享取消了");
+            LogUtil.d("throw", "throw:" + " 分享取消了");
         }
     };
 
@@ -833,7 +833,7 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
         isFromActivityResult = true;
         super.onActivityResult(requestCode, resultCode, intent);
         UMShareAPI.get(this).onActivityResult(requestCode, resultCode, intent);
-        Log.e("uploadImg", resultCode + "");
+        LogUtil.e("uploadImg", resultCode + "");
         if (resultCode != Activity.RESULT_OK) {
             if (mUploadMessage != null) {
                 mUploadMessage.onReceiveValue(null);
@@ -882,7 +882,7 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
                         String sourcePath = ImageUtil.retrievePath(this, mSourceIntent, intent);
 
                         if (TextUtils.isEmpty(sourcePath) || !new File(sourcePath).exists()) {
-                            Log.e("uploadImg", "sourcePath empty or not exists.");
+                            LogUtil.e("uploadImg", "sourcePath empty or not exists.");
                             break;
                         }
 
@@ -897,7 +897,7 @@ public class WebApplicationActivity extends BaseActivity implements OnPageChange
                         String sourcePath = ImageUtil.retrievePath(this, mSourceIntent, intent);
 
                         if (TextUtils.isEmpty(sourcePath) || !new File(sourcePath).exists()) {
-                            Log.e("uploadImg", "sourcePath empty or not exists.");
+                            LogUtil.e("uploadImg", "sourcePath empty or not exists.");
                             break;
                         }
 

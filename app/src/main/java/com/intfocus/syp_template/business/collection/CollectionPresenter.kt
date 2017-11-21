@@ -1,9 +1,9 @@
 package com.intfocus.syp_template.collection
 
 import android.content.Context
-import android.util.Log
 import com.intfocus.syp_template.collection.callback.LoadDataCallback
 import com.intfocus.syp_template.collection.entity.CollectionEntity
+import com.intfocus.syp_template.general.util.LogUtil
 
 /**
  * ****************************************************
@@ -32,7 +32,7 @@ class CollectionPresenter(
             }
 
             override fun onError(e: Throwable) {
-                Log.i("testlog", e.toString())
+                LogUtil.d("testlog", e.toString())
             }
 
             override fun onComplete() {

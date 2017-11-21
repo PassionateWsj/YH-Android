@@ -5,22 +5,18 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.JavascriptInterface
-import com.tencent.smtt.sdk.WebSettings
-import com.tencent.smtt.sdk.WebView
-import com.tencent.smtt.sdk.WebViewClient
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.PopupWindow
 import com.intfocus.syp_template.R
-import com.intfocus.syp_template.general.util.FileUtil
-import com.intfocus.syp_template.general.util.ImageUtil
-import com.intfocus.syp_template.general.util.ToastUtils
-import com.intfocus.syp_template.general.util.URLs
+import com.intfocus.syp_template.general.util.*
+import com.tencent.smtt.sdk.WebSettings
+import com.tencent.smtt.sdk.WebView
+import com.tencent.smtt.sdk.WebViewClient
 import com.umeng.socialize.ShareAction
 import com.umeng.socialize.UMShareListener
 import com.umeng.socialize.bean.SHARE_MEDIA
@@ -210,17 +206,17 @@ class ScannerResultActivity : AbstractActivity<ScannerMode>() {
         }
 
         override fun onResult(platform: SHARE_MEDIA) {
-            Log.d("plat", "platform" + platform)
+            LogUtil.d("plat", "platform" + platform)
         }
 
         override fun onError(platform: SHARE_MEDIA, t: Throwable?) {
             if (t != null) {
-                Log.d("throw", "throw:" + t.message)
+                LogUtil.d("throw", "throw:" + t.message)
             }
         }
 
         override fun onCancel(platform: SHARE_MEDIA) {
-            Log.d("throw", "throw:" + " 分享取消了")
+            LogUtil.d("throw", "throw:" + " 分享取消了")
         }
     }
 

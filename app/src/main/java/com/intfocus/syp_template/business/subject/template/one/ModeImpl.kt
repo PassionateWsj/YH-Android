@@ -2,19 +2,15 @@ package com.intfocus.syp_template.business.subject.template.one
 
 import android.util.Log
 import com.alibaba.fastjson.JSONReader
-import com.intfocus.syp_template.YHApplication.globalContext
 import com.intfocus.syp_template.business.subject.template.model.ReportModelImpl
 import com.intfocus.syp_template.business.subject.templateone.entity.MererDetailEntity
 import com.intfocus.syp_template.constant.Params.REPORT_TYPE_MAIN_DATA
-import com.intfocus.syp_template.general.util.ApiHelper
-import com.intfocus.syp_template.general.util.FileUtil
-import com.intfocus.syp_template.general.util.K
 import com.zbl.lib.baseframe.utils.TimeUtil
 import rx.Observable
 import rx.Subscriber
+import rx.Subscription
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
-import java.io.File
 import java.io.StringReader
 import java.util.*
 
@@ -29,10 +25,12 @@ import java.util.*
  */
 class ModeImpl : ReportModelImpl() {
 
+    private var uuid = ""
+
     companion object {
         private val TAG = "ModeImpl"
-        private var uuid = ""
         private var INSTANCE: ModeImpl? = null
+        private var observable: Subscription? = null
 
         /**
          * Returns the single instance of this class, creating it if necessary.
@@ -49,7 +47,15 @@ class ModeImpl : ReportModelImpl() {
          */
         @JvmStatic
         fun destroyInstance() {
+            unSubscribe()
             INSTANCE = null
+        }
+
+        /**
+         * 取消订阅
+         */
+        private fun unSubscribe() {
+            observable?.unsubscribe() ?: return
         }
     }
 
@@ -71,19 +77,20 @@ class ModeImpl : ReportModelImpl() {
     fun analysisData(groupId: String, reportId: String, callback: ModeModel.LoadDataCallback) {
         val jsonFileName = String.format("group_%s_template_%s_report_%s.json", groupId, "1", reportId)
 
-        Observable.just(jsonFileName)
+        observable = Observable.just(jsonFileName)
                 .subscribeOn(Schedulers.io())
                 .map {
                     uuid = reportId + "1" + groupId
                     delete(uuid)
                     val response: String?
-                    val jsonFilePath = FileUtil.dirPath(globalContext, K.K_CACHED_DIR_NAME, it)
-                    val dataState = ApiHelper.reportJsonData(globalContext, groupId, "1", reportId)
-                    if (dataState || File(jsonFilePath).exists()) {
-                        response = FileUtil.readFile(jsonFilePath)
-                    } else {
-                        throw Throwable("获取数据失败")
-                    }
+//                    val jsonFilePath = FileUtil.dirPath(globalContext, K.K_CACHED_DIR_NAME, it)
+//                    val dataState = ApiHelper.reportJsonData(globalContext, groupId, "1", reportId)
+//                    if (dataState || File(jsonFilePath).exists()) {
+//                        response = FileUtil.readFile(jsonFilePath)
+//                    } else {
+//                        throw Throwable("获取数据失败")
+//                    }
+                    response = getAssetsJsonData("test.json")
 //                    response = getAssetsJsonData("kpi_detaldata.json")
                     Log.i(TAG, "analysisDataStartTime:" + TimeUtil.getNowTime())
                     val stringReader = StringReader(response)

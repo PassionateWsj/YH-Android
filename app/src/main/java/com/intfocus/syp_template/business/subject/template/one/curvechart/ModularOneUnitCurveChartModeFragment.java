@@ -2,7 +2,6 @@ package com.intfocus.syp_template.business.subject.template.one.curvechart;
 
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +16,7 @@ import com.intfocus.syp_template.business.subject.template.one.mode.MDRPUnitCurv
 import com.intfocus.syp_template.business.subject.templateone.curvechart.CurveChartContract;
 import com.intfocus.syp_template.business.subject.templateone.curvechart.CurveChartImpl;
 import com.intfocus.syp_template.general.base.BaseModeFragment;
+import com.intfocus.syp_template.general.util.LogUtil;
 import com.intfocus.syp_template.general.view.CustomCurveChartV2;
 import com.intfocus.syp_template.general.view.RateCursor;
 import com.zbl.lib.baseframe.core.Subject;
@@ -340,7 +340,7 @@ public class ModularOneUnitCurveChartModeFragment extends BaseModeFragment<MDRPU
             yLabel[i] = String.valueOf(yMinValue + part * i);
         }
         act.runOnUiThread(new UIRunnable());
-        Log.d("TAG", seriesA.get(0) + ":" + seriesA.get(seriesA.size() - 1));
+        LogUtil.d("TAG", seriesA.get(0) + ":" + seriesA.get(seriesA.size() - 1));
     }
 
     // ----------------------------------------------------------------

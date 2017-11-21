@@ -55,10 +55,10 @@ import java.util.Comparator;
 /**
  * 模板一表格内容页面
  */
-public class ModularOneUnitTablesContModeFragment extends BaseModeFragment<ModularTwo_UnitTableContMode> implements SortCheckBox.SortViewSizeListener, AdapterView.OnItemClickListener, TableContract.View {
+public class ModularOneUnitTablesContentModeFragment extends BaseModeFragment<ModularTwo_UnitTableContMode> implements SortCheckBox.SortViewSizeListener, AdapterView.OnItemClickListener, TableContentContract.View {
     private static final String ARG_PARAM = "param";
     private static final String SU_ROOT_ID = "suRootID";
-    private static final String ARG_INDEX = "index";
+    private static final String TABLE_ROOT_INDEX = "tableRootIndex";
     private String mParam;
 
     private View rootView;
@@ -114,7 +114,7 @@ public class ModularOneUnitTablesContModeFragment extends BaseModeFragment<Modul
      * 悬浮View
      */
     private View suspensionView;
-    private String TAG = ModularOneUnitTablesContModeFragment.class.getSimpleName();
+    private String TAG = ModularOneUnitTablesContentModeFragment.class.getSimpleName();
 
     private int offsetTop;
 
@@ -122,25 +122,23 @@ public class ModularOneUnitTablesContModeFragment extends BaseModeFragment<Modul
      * 最上层跟跟标签ID
      */
     public int suRootID;
-    private TableContract.Presenter mPresenter;
+    private TableContentContract.Presenter mPresenter;
     /**
      * 表格在当前页面的下标（处理一个页面多表格逻辑）
      */
-    private int mIndex;
-    private int mTitleHight;
+    private int mTableRootIndex;
+    private int mTitleHigh;
 
     @Override
     public Subject setSubject() {
         return null;
     }
 
-    public static ModularOneUnitTablesContModeFragment newInstance(int suRootID, int index) {
-        ModularOneUnitTablesContModeFragment fragment = new ModularOneUnitTablesContModeFragment();
+    public static ModularOneUnitTablesContentModeFragment newInstance(int suRootID, int tableRootIndex) {
+        ModularOneUnitTablesContentModeFragment fragment = new ModularOneUnitTablesContentModeFragment();
         Bundle args = new Bundle();
         args.putInt(SU_ROOT_ID, suRootID);
-        args.putInt(ARG_INDEX, index);
-//        TempSubData.setData(param);
-//        args.putString(ARG_PARAM, param);
+        args.putInt(TABLE_ROOT_INDEX, tableRootIndex);
         fragment.setArguments(args);
         return fragment;
     }
@@ -156,10 +154,10 @@ public class ModularOneUnitTablesContModeFragment extends BaseModeFragment<Modul
         EventBus.getDefault().register(this);
         if (getArguments() != null) {
             suRootID = getArguments().getInt(SU_ROOT_ID);
-            mIndex = getArguments().getInt(ARG_INDEX);
-            if (TempSubData.hasData(mIndex)) {
+            mTableRootIndex = getArguments().getInt(TABLE_ROOT_INDEX);
+            if (TempSubData.hasData(mTableRootIndex)) {
                 LogUtil.e(TAG, "表格有数据");
-                mParam = TempSubData.getData(mIndex);
+                mParam = TempSubData.getData(mTableRootIndex);
             } else {
                 LogUtil.e(TAG, "表格无数据");
             }
@@ -181,16 +179,15 @@ public class ModularOneUnitTablesContModeFragment extends BaseModeFragment<Modul
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void measureLocation(EventRefreshTableRect event) {
         final int surootID = suRootID;
-
-        if (event.eventTag == surootID) {
-            LogUtil.d("hjjzz", "isHidden:::" + ModularOneUnitTablesContModeFragment.this.isHidden());
+        LogUtil.d("hjjzz", "isHidden:::" + ModularOneUnitTablesContentModeFragment.this.isHidden());
+        if (event.eventTag == surootID && !isHidden()) {
             Rect rect = new Rect();
             Point globalOffset = new Point();
             rootView.getGlobalVisibleRect(rect, globalOffset);
             synchronized (this) {
                 if (fl_tableTitle_container.getChildCount() != 0) {
                     if (getActivity() instanceof TemplateOneActivity) {
-                        boolean showSuspendTableTitle = globalOffset.y <= offsetTop && rect.bottom - mTitleHight > offsetTop;
+                        boolean showSuspendTableTitle = globalOffset.y <= offsetTop && rect.bottom - mTitleHigh > offsetTop;
                         if (showSuspendTableTitle) {
                             fl_tableTitle_container.removeView(suspensionView);
                             ((TemplateOneActivity) getActivity()).suspendContainer.addView(suspensionView);
@@ -199,7 +196,7 @@ public class ModularOneUnitTablesContModeFragment extends BaseModeFragment<Modul
                 } else {
                     if (getActivity() instanceof TemplateOneActivity) {
                         int viewCont = ((TemplateOneActivity) getActivity()).suspendContainer.getChildCount();
-                        boolean removeSuspendTableTitle = globalOffset.y > offsetTop || rect.bottom - mTitleHight < offsetTop && viewCont != 0;
+                        boolean removeSuspendTableTitle = globalOffset.y > offsetTop || rect.bottom - mTitleHigh < offsetTop && viewCont != 0;
 //                        boolean removeSuspendTableTitle = rect.top > offsetTop || rect.bottom - 150 < offsetTop && viewCont != 0;
                         if (removeSuspendTableTitle) {
                             ((TemplateOneActivity) getActivity()).suspendContainer.removeView(suspensionView);
@@ -231,15 +228,15 @@ public class ModularOneUnitTablesContModeFragment extends BaseModeFragment<Modul
             thscroll_data.setScrollView(thscroll_header);
             hideLoading();
 
-            mTitleHight = getResources().getDimensionPixelOffset(R.dimen.action_bar_height);
+            mTitleHigh = getResources().getDimensionPixelOffset(R.dimen.action_bar_height);
             rootView.post(new Runnable() {
                 @Override
                 public void run() {
                     Rect frame = new Rect();
                     act.getWindow().getDecorView().getWindowVisibleDisplayFrame(frame);
                     //状态栏+标题栏高度-间隙
-                    LogUtil.d(LogUtil.TAG, "标题栏高度px ::: " + mTitleHight);
-                    offsetTop = frame.top + mTitleHight;
+                    LogUtil.d(LogUtil.TAG, "标题栏高度px ::: " + mTitleHigh);
+                    offsetTop = frame.top + mTitleHigh;
                 }
             });
 
@@ -419,12 +416,12 @@ public class ModularOneUnitTablesContModeFragment extends BaseModeFragment<Modul
     }
 
     @Override
-    public TableContract.Presenter getPresenter() {
+    public TableContentContract.Presenter getPresenter() {
         return mPresenter;
     }
 
     @Override
-    public void setPresenter(TableContract.Presenter presenter) {
+    public void setPresenter(TableContentContract.Presenter presenter) {
         mPresenter = presenter;
     }
 
@@ -535,7 +532,7 @@ public class ModularOneUnitTablesContModeFragment extends BaseModeFragment<Modul
             TempSubData.setData(index, subData);
             int checkId = suRootID;
             intent.putExtra(SU_ROOT_ID, checkId);
-            intent.putExtra(ARG_INDEX, index);
+            intent.putExtra(TABLE_ROOT_INDEX, index);
             startActivity(intent);
         } catch (JSONException e) {
             e.printStackTrace();
