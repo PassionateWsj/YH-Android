@@ -402,15 +402,14 @@ public class CustomCurveChartV2 extends View implements ValueAnimator.AnimatorUp
             if (i == selectItem) {
                 switch (dataIndex) {
                     case 0:
-                        paintCurve.setColor(barSelectColor);
+                        paintCurve.setColor(orderColors[dataIndex]);
                         break;
                     case 1:
-                        paintCurve.setColor(orderColors[dataIndex]);
+                        paintCurve.setColor(defaultColor);
                         break;
                     default:
                         break;
                 }
-
             } else {
                 paintCurve.setColor(defaultColor);
             }
