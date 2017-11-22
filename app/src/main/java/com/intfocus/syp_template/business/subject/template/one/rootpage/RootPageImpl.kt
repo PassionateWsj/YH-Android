@@ -7,6 +7,7 @@ import com.intfocus.syp_template.general.util.LogUtil
 import com.zbl.lib.baseframe.utils.TimeUtil
 import rx.Observable
 import rx.Observer
+import rx.Subscription
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
 
@@ -25,6 +26,7 @@ class RootPageImpl : RootPageModel {
     companion object {
 
         private var INSTANCE: RootPageImpl? = null
+        private var observable: Subscription? = null
         /**
          * Returns the single instance of this class, creating it if necessary.
          */
@@ -40,13 +42,21 @@ class RootPageImpl : RootPageModel {
          */
         @JvmStatic
         fun destroyInstance() {
+            unSubscribe()
             INSTANCE = null
+        }
+
+        /**
+         * 取消订阅
+         */
+        private fun unSubscribe() {
+            observable?.unsubscribe() ?: return
         }
     }
 
     override fun getData(uuid: String, page: Int, callback: RootPageModel.LoadDataCallback) {
         LogUtil.d(TAG, "StartAnalysisTime:" + TimeUtil.getNowTime())
-        Observable.just("")
+        observable = Observable.just("")
                 .subscribeOn(Schedulers.io())
                 .map {
                     val reports: List<Report>

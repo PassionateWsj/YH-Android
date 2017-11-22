@@ -10,10 +10,7 @@ import com.intfocus.syp_template.business.scanner.BarCodeScannerActivity
 import com.intfocus.syp_template.business.subject.template.five.TemplateFiveActivity
 import com.intfocus.syp_template.business.subject.template.one.TemplateOneActivity
 import com.intfocus.syp_template.business.subject.template.three.TemplateThreeActivity
-import com.intfocus.syp_template.business.subject.template.two.SubjectActivity
 import com.intfocus.syp_template.business.subject.template.two.SubjectActivity2
-import com.intfocus.syp_template.business.subject.webapplication.WebApplicationActivity
-import com.intfocus.syp_template.business.subject.webapplication.WebApplicationActivityV6
 import com.intfocus.syp_template.collection.CollectionActivity
 import com.intfocus.syp_template.general.constant.ConfigConstants
 import org.json.JSONException
@@ -38,6 +35,7 @@ object PageLinkManage {
     private val TEMPLATE_FIVE = "5"
     private val TEMPLATE_SIX = "6"
     private val TEMPLATE_NINE = "9"
+    private val TEMPLATE_TEN = "10"
 
     private var objectTypeName = arrayOf("生意概况", "报表", "工具箱")
     /**
@@ -56,7 +54,7 @@ object PageLinkManage {
             val intent: Intent
 
             when (templateId) {
-                TEMPLATE_ONE -> {
+                TEMPLATE_ONE,TEMPLATE_TEN -> {
                     savePageLink(context, objTitle, link, objectId, templateId, objectType)
                     intent = Intent(context, TemplateOneActivity::class.java)
                     intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP

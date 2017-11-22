@@ -1,6 +1,5 @@
 package com.intfocus.syp_template.business.subject.template.model
 
-import android.util.Log
 import com.intfocus.syp_template.YHApplication.globalContext
 import com.intfocus.syp_template.general.bean.Report
 import com.intfocus.syp_template.general.gen.ReportDao
@@ -23,8 +22,8 @@ open class ReportModelImpl : ReportModel {
      * @param url 报表数据下载链接
      */
     override fun checkUpdate(url: String): Boolean {
-        var header = ApiHelper.checkResponseHeader(url)
-        var response = HttpUtil.downloadResponse(url, header)
+        val header = ApiHelper.checkResponseHeader(url)
+        val response = HttpUtil.downloadResponse(url, header)
 
         return "200" == response[URLs.kCode]
     }
@@ -79,7 +78,7 @@ open class ReportModelImpl : ReportModel {
 
             while (input.read(data).let { count = it; it != -1 }) {
                 total += count.toLong()
-                output!!.write(data, 0, count)
+                output.write(data, 0, count)
             }
 
         } catch (e: Exception) {
@@ -112,7 +111,7 @@ open class ReportModelImpl : ReportModel {
      * @param index 报表组件对应index
      */
     override fun insert(uuid: String, config: String, type: String, index: Int, page: Int) {
-        var report = Report()
+        val report = Report()
         report.id = null
         report.config = config
         report.type = type
@@ -124,7 +123,7 @@ open class ReportModelImpl : ReportModel {
     }
 
     fun insertMainData(uuid: String, config: String, type: String, title: String, page: Int) {
-        var report = Report()
+        val report = Report()
         report.id = null
         report.config = config
         report.type = type

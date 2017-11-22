@@ -1,4 +1,4 @@
-package com.intfocus.syp_template.business.subject.template.one;
+package com.intfocus.syp_template.business.subject.template.one.table;
 
 import android.os.Build;
 import android.os.Bundle;
@@ -12,9 +12,6 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.intfocus.syp_template.R;
-import com.intfocus.syp_template.business.subject.template.one.table.ModularOneUnitTablesContentModeFragment;
-import com.intfocus.syp_template.business.subject.template.one.table.TableImpl;
-import com.intfocus.syp_template.business.subject.template.one.table.TableContentPresenter;
 import com.intfocus.syp_template.general.data.TempSubData;
 
 import org.xutils.view.annotation.Event;
