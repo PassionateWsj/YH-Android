@@ -1,18 +1,18 @@
 package com.intfocus.syp_template.business.subject.template.one
 
-import android.util.Log
 import com.alibaba.fastjson.JSONReader
+import com.intfocus.syp_template.YHApplication.globalContext
 import com.intfocus.syp_template.business.subject.template.model.ReportModelImpl
 import com.intfocus.syp_template.constant.Params.REPORT_TYPE_MAIN_DATA
 import com.intfocus.syp_template.general.bean.Report
 import com.intfocus.syp_template.general.gen.ReportDao
-import com.intfocus.syp_template.general.util.DaoUtil
-import com.zbl.lib.baseframe.utils.TimeUtil
+import com.intfocus.syp_template.general.util.*
 import rx.Observable
 import rx.Subscriber
 import rx.Subscription
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
+import java.io.File
 import java.io.StringReader
 
 /**
@@ -91,25 +91,25 @@ class ModeImpl : ReportModelImpl() {
 
     fun analysisData(groupId: String, reportId: String, callback: ModeModel.LoadDataCallback) {
         val jsonFileName = String.format("group_%s_template_%s_report_%s.json", groupId, TEMPLATE_ID, reportId)
-
+        LogUtil.d(TAG, "ModeImpl 表格数据开始转为对象")
+        var startTime = System.currentTimeMillis()
         observable = Observable.just(jsonFileName)
                 .subscribeOn(Schedulers.io())
                 .map {
                     val uuid = reportId + TEMPLATE_ID + groupId
                     delete(uuid)
                     val response: String?
-//                    val jsonFilePath = FileUtil.dirPath(globalContext, K.K_CACHED_DIR_NAME, it)
-//                    val dataState = ApiHelper.reportJsonData(globalContext, groupId, "1", reportId)
-//                    if (dataState || File(jsonFilePath).exists()) {
-//                        response = FileUtil.readFile(jsonFilePath)
-//                    } else {
-//                        throw Throwable("获取数据失败")
-//                    }
-                    response = getAssetsJsonData("test.json")
+                    val jsonFilePath = FileUtil.dirPath(globalContext, K.K_CACHED_DIR_NAME, it)
+                    val dataState = ApiHelper.reportJsonData(globalContext, groupId, "1", reportId)
+                    if (dataState || File(jsonFilePath).exists()) {
+                        response = FileUtil.readFile(jsonFilePath)
+                    } else {
+                        throw Throwable("获取数据失败")
+                    }
+//                    response = getAssetsJsonData("temple-v1.json")
+//                    response = getAssetsJsonData("test.json")
 //                    response = getAssetsJsonData("kpi_detaldata.json")
-                    Log.i(TAG, "analysisDataStartTime:" + TimeUtil.getNowTime())
                     val stringReader = StringReader(response)
-                    Log.i(TAG, "analysisDataReaderTime1:" + TimeUtil.getNowTime())
                     val reader = JSONReader(stringReader)
                     reader.startArray()
                     reader.startObject()
@@ -117,18 +117,15 @@ class ModeImpl : ReportModelImpl() {
 //                    entity.data = ArrayList()
                     var page = 0
                     var index = 0
-                    Log.i(TAG, "analysisDataReaderTime2:" + TimeUtil.getNowTime())
 
                     while (reader.hasNext()) {
                         val key = reader.readString()
                         when (key) {
                             "name" -> {
                                 reader.readObject().toString()
-                                Log.i(TAG, "name:" + TimeUtil.getNowTime())
                             }
 
                             "data" -> {
-                                Log.i(TAG, "dataStart:" + TimeUtil.getNowTime())
                                 reader.startArray()
 
                                 while (reader.hasNext()) {
@@ -171,19 +168,20 @@ class ModeImpl : ReportModelImpl() {
 //                                    entity.data!!.add(data)
                                 }
                                 reader.endArray()
-                                Log.i(TAG, "dataEnd:" + TimeUtil.getNowTime())
                             }
                         }
                     }
                     reader.endObject()
                     reader.endArray()
-                    Log.i(TAG, "analysisDataEndTime:" + TimeUtil.getNowTime())
 //                    entity
                     queryDateBase(uuid)
                 }
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(object : Subscriber<List<Report>>() {
                     override fun onCompleted() {
+                        LogUtil.d(TAG, "ModeImpl 表格数据转为对象结束")
+                        LogUtil.d(TAG, "ModeImpl 转换耗时 ::: " + (System.currentTimeMillis() - startTime) + " 毫秒")
+                        startTime = System.currentTimeMillis()
                     }
 
                     override fun onNext(t: List<Report>?) {
