@@ -94,6 +94,7 @@ public class ModularOneUnitTablesContentModeFragment extends BaseModeFragment<Mo
      */
     @ViewInject(R.id.fl_tableValue_container)
     private FrameLayout fl_tableValue_container;
+
     /**
      * 动态加载首列的列表
      */

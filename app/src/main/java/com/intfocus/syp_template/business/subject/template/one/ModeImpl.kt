@@ -65,10 +65,10 @@ class ModeImpl : ReportModelImpl() {
         when {
             checkUpdate(urlString) -> analysisData(groupId, reportId, callback)
             available(uuid) -> {
-                val entity = MererDetailEntity()
-                entity.name = "123"
-                callback.onDataLoaded(entity)
-//                analysisData(groupId, reportId, callback)
+//                val entity = MererDetailEntity()
+//                entity.name = "123"
+//                callback.onDataLoaded(entity)
+                analysisData(groupId, reportId, callback)
             }
             else -> analysisData(groupId, reportId, callback)
         }
@@ -90,7 +90,7 @@ class ModeImpl : ReportModelImpl() {
 //                    } else {
 //                        throw Throwable("获取数据失败")
 //                    }
-                    response = getAssetsJsonData("test.json")
+                    response = getAssetsJsonData("kpi_detaldata.json")
 //                    response = getAssetsJsonData("kpi_detaldata.json")
                     Log.i(TAG, "analysisDataStartTime:" + TimeUtil.getNowTime())
                     val stringReader = StringReader(response)
