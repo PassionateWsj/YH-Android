@@ -21,16 +21,13 @@ import com.intfocus.syp_template.R;
 import com.intfocus.syp_template.business.subject.template.one.entity.msg.EventRefreshTableRect;
 import com.intfocus.syp_template.business.subject.template.one.mode.MeterDetailActMode;
 import com.intfocus.syp_template.business.subject.template.one.rootpage.ModularOneRootPageModeFragment;
-import com.intfocus.syp_template.business.subject.templateone.entity.MererDetailEntity;
 import com.intfocus.syp_template.business.subject.templateone.rootpage.RootPageImpl;
 import com.intfocus.syp_template.business.subject.templateone.rootpage.RootPagePresenter;
 import com.intfocus.syp_template.general.CommentActivity;
 import com.intfocus.syp_template.general.base.BaseModeActivity;
 import com.intfocus.syp_template.general.base.BaseModeFragment;
 import com.intfocus.syp_template.general.bean.Report;
-import com.intfocus.syp_template.general.gen.ReportDao;
 import com.intfocus.syp_template.general.util.ActionLogUtil;
-import com.intfocus.syp_template.general.util.DaoUtil;
 import com.intfocus.syp_template.general.util.DisplayUtil;
 import com.intfocus.syp_template.general.util.ImageUtil;
 import com.intfocus.syp_template.general.util.LogUtil;
@@ -48,9 +45,8 @@ import org.greenrobot.eventbus.EventBus;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
-
-import static com.intfocus.syp_template.constant.Params.REPORT_TYPE_MAIN_DATA;
 
 
 /**
@@ -201,21 +197,20 @@ public class TemplateOneActivity extends BaseModeActivity<MeterDetailActMode> im
     }
 
     @Override
-    public void initRootView(@NotNull MererDetailEntity entity) {
-        ReportDao reportDao = DaoUtil.INSTANCE.getReportDao();
-        reports = reportDao.queryBuilder()
-                .where(reportDao.queryBuilder()
-                        .and(ReportDao.Properties.Uuid.eq(uuid)
-                                , ReportDao.Properties.Type.eq(REPORT_TYPE_MAIN_DATA)))
-                .list();
-
+    public void initRootView(@NotNull List<? extends Report> report) {
+        if (reports == null) {
+            reports = new ArrayList<>();
+        } else {
+            reports.clear();
+        }
+        reports.addAll(report);
         int dataSize = reports.size();
         // 多个根页签
         if (dataSize > 1) {
             View scrollTitle = LayoutInflater.from(ctx)
                     .inflate(R.layout.item_mdetal_scroll_title, null);
             fl_titleContainer.addView(scrollTitle);
-            radioGroup = (RadioGroup) scrollTitle.findViewById(R.id.radioGroup);
+            radioGroup = scrollTitle.findViewById(R.id.radioGroup);
 
             for (int i = 0; i < dataSize; i++) {
                 RadioButton rbtn = new RadioButton(this);

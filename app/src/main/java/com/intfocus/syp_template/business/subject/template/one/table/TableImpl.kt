@@ -33,6 +33,7 @@ class TableImpl : TableModel {
     companion object {
 
         private var INSTANCE: TableImpl? = null
+        private val TAG = "TableImpl"
         private var observable: Subscription? = null
 
         /**
@@ -63,13 +64,16 @@ class TableImpl : TableModel {
     }
 
     override fun getData(dataJson: String, callbackTableContent: TableModel.TableContentLoadDataCallback) {
-
+        LogUtil.d(LogUtil.TAG, "TableContent 表格数据开始转为对象")
+        val startTime = System.currentTimeMillis()
         observable = Observable.just(dataJson)
                 .subscribeOn(Schedulers.io())
                 .map { JSON.parseObject<ModularTwo_UnitTableEntity>(it, ModularTwo_UnitTableEntity::class.java) }
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(object : Observer<ModularTwo_UnitTableEntity> {
                     override fun onNext(t: ModularTwo_UnitTableEntity?) {
+                        LogUtil.d(LogUtil.TAG, "TableContent 表格数据转为对象结束")
+                        LogUtil.d(LogUtil.TAG, "TableContent 转换耗时 ::: " + (System.currentTimeMillis() - startTime) + " 毫秒")
                         t?.let { callbackTableContent.onDataLoaded(t) }
                     }
 
@@ -83,6 +87,8 @@ class TableImpl : TableModel {
     }
 
     override fun getRootData(uuid: String, index: Int, callbackTableRoot: TableModel.TableRootLoadDataCallback) {
+        LogUtil.d(TAG, "TableRoot 表格数据开始转为对象")
+        val startTime = System.currentTimeMillis()
         observable = Observable.just(1)
                 .subscribeOn(Schedulers.io())
                 .map {
@@ -93,7 +99,7 @@ class TableImpl : TableModel {
                             .unique()
 
                     val result = report.config
-                    Log.i(LogUtil.TAG, "StartAnalysisTime:" + TimeUtil.getNowTime())
+                    Log.i(TAG, "StartAnalysisTime:" + TimeUtil.getNowTime())
                     val datas = ArrayList<MDetailUnitEntity>()
                     val isr = StringReader(result)
                     val reader = JSONReader(isr)
@@ -118,6 +124,8 @@ class TableImpl : TableModel {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(object : Observer<MDetailRootPageRequestResult> {
                     override fun onNext(t: MDetailRootPageRequestResult?) {
+                        LogUtil.d(TAG, "TableRoot 表格数据转为对象结束")
+                        LogUtil.d(TAG, "TableRoot 转换耗时 ::: " + (System.currentTimeMillis() - startTime) + " 毫秒")
                         t?.let { callbackTableRoot.onDataLoaded(t) }
                     }
 

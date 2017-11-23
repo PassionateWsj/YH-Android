@@ -187,7 +187,7 @@
 
         <!-- 原生模板二/表格页面 -->
         <activity
-            android:name="com.intfocus.syp_template.business.subject.template.one.ModularOneSubTableActivity"
+            android:name="com.intfocus.syp_template.business.subject.template.one.table.ModularOneSubTableActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
         <!-- 外部链接 -->

@@ -19,7 +19,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.intfocus.syp_template.R;
-import com.intfocus.syp_template.business.subject.template.one.ModularOneSubTableActivity;
 import com.intfocus.syp_template.business.subject.template.one.TemplateOneActivity;
 import com.intfocus.syp_template.business.subject.template.one.entity.ModularTwo_UnitTableEntity;
 import com.intfocus.syp_template.business.subject.template.one.entity.msg.EventRefreshTableRect;
@@ -180,7 +179,7 @@ public class ModularOneUnitTablesContentModeFragment extends BaseModeFragment<Mo
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void measureLocation(EventRefreshTableRect event) {
         final int surootID = suRootID;
-        LogUtil.d("hjjzz", "isHidden:::" + ModularOneUnitTablesContentModeFragment.this.isHidden());
+//        LogUtil.d("hjjzz", "isHidden:::" + ModularOneUnitTablesContentModeFragment.this.isHidden());
         if (event.eventTag == surootID && !isHidden()) {
             Rect rect = new Rect();
             Point globalOffset = new Point();
