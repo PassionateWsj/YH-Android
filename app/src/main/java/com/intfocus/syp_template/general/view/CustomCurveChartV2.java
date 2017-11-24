@@ -492,7 +492,7 @@ public class CustomCurveChartV2 extends View implements ValueAnimator.AnimatorUp
 //                    break;
 //
 //                case ChartStyle.BAR:
-            if (x > (xPoints.get(i) - xScale) && x < (xPoints.get(i) + xScale)) {
+            if (x > (xPoints.get(i) - xScale/2) && x < (xPoints.get(i) + xScale/2)) {
 
                 selectItem = i;
                 if (listener != null) {
