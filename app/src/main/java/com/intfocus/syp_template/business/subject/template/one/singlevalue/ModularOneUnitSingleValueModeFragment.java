@@ -141,10 +141,8 @@ public class ModularOneUnitSingleValueModeFragment extends BaseModeFragment impl
         boolean isPlus;
         if (absmv <= 0.1f) {
             isPlus = rate <= 0;
-        } else if (rate < -0.1f) {
-            isPlus = false;
         } else {
-            isPlus = true;
+            isPlus = !(rate < -0.1f);
         }
         rateCursor.setCursorState(state, isPlus);
         rateCursor.setDrawingCacheEnabled(true);

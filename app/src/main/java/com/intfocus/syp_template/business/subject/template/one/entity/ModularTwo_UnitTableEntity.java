@@ -11,12 +11,44 @@ public class ModularTwo_UnitTableEntity implements Serializable {
     /**
      * 仪表盘标题
      */
-    public String[] head;
+    private String[] head;
 
-    public ArrayList<TableRowEntity> data;
+    private ArrayList<TableRowEntity> data;
 
     public class TableRowEntity implements Serializable {
-        public String[] main_data;
-        public String sub_data;
+        private String[] main_data;
+        private ModularTwo_UnitTableEntity sub_data;
+
+        public String[] getMain_data() {
+            return main_data;
+        }
+
+        public void setMain_data(String[] main_data) {
+            this.main_data = main_data;
+        }
+
+        public ModularTwo_UnitTableEntity getSub_data() {
+            return sub_data;
+        }
+
+        public void setSub_data(ModularTwo_UnitTableEntity sub_data) {
+            this.sub_data = sub_data;
+        }
+    }
+
+    public String[] getHead() {
+        return head;
+    }
+
+    public void setHead(String[] head) {
+        this.head = head;
+    }
+
+    public ArrayList<TableRowEntity> getData() {
+        return data;
+    }
+
+    public void setData(ArrayList<TableRowEntity> data) {
+        this.data = data;
     }
 }

@@ -20,8 +20,8 @@ import org.xutils.x
 class ModularOneTableNameAdapter(private val ctx: Context, ltdata: List<com.intfocus.syp_template.business.subject.template.one.entity.ModularTwo_UnitTableEntity.TableRowEntity>) : BaseAdapter() {
     private var ltdata: List<com.intfocus.syp_template.business.subject.template.one.entity.ModularTwo_UnitTableEntity.TableRowEntity>? = null
 
-    private val defaultColor: Int = ContextCompat.getColor(ctx,R.color.co6)
-    private val hasSubColor: Int = ContextCompat.getColor(ctx,R.color.co15)
+    private val defaultColor: Int = ContextCompat.getColor(ctx, R.color.co6)
+    private val hasSubColor: Int = ContextCompat.getColor(ctx, R.color.co15)
 
     init {
         setData(ltdata)
@@ -58,7 +58,7 @@ class ModularOneTableNameAdapter(private val ctx: Context, ltdata: List<com.intf
 
         val entity = ltdata!![position]
 
-        if (entity.sub_data == "{}") {
+        if (entity.sub_data == null || (entity.sub_data.data == null && entity.sub_data.head == null)) {
             viewHolder.tvName!!.setTextColor(defaultColor)
             viewHolder.imgDot!!.visibility = View.GONE
         } else {

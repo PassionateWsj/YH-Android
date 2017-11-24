@@ -15,8 +15,32 @@ public class MDetailUnitEntity {
      * bargraph 条状图(横);
      * tables#v3 类Excel冻结横竖首列表格;
      */
-    public String type;
-    public String config;
+    private String title;
+    private ModularTwo_UnitTableEntity table;
     //是否选中
-    public boolean isCheck = false;
+    private boolean isCheck = false;
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public ModularTwo_UnitTableEntity getTable() {
+        return table;
+    }
+
+    public void setTable(ModularTwo_UnitTableEntity table) {
+        this.table = table;
+    }
+
+    public boolean isCheck() {
+        return isCheck;
+    }
+
+    public void setCheck(boolean check) {
+        isCheck = check;
+    }
 }

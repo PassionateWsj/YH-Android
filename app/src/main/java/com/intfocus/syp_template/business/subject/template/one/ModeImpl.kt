@@ -1,18 +1,17 @@
 package com.intfocus.syp_template.business.subject.template.one
 
 import com.alibaba.fastjson.JSONReader
-import com.intfocus.syp_template.YHApplication.globalContext
 import com.intfocus.syp_template.business.subject.template.model.ReportModelImpl
 import com.intfocus.syp_template.constant.Params.REPORT_TYPE_MAIN_DATA
 import com.intfocus.syp_template.general.bean.Report
 import com.intfocus.syp_template.general.gen.ReportDao
-import com.intfocus.syp_template.general.util.*
+import com.intfocus.syp_template.general.util.DaoUtil
+import com.intfocus.syp_template.general.util.LogUtil
 import rx.Observable
 import rx.Subscriber
 import rx.Subscription
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
-import java.io.File
 import java.io.StringReader
 
 /**
@@ -99,22 +98,20 @@ class ModeImpl : ReportModelImpl() {
                     val uuid = reportId + TEMPLATE_ID + groupId
                     delete(uuid)
                     val response: String?
-                    val jsonFilePath = FileUtil.dirPath(globalContext, K.K_CACHED_DIR_NAME, it)
-                    val dataState = ApiHelper.reportJsonData(globalContext, groupId, "1", reportId)
-                    if (dataState || File(jsonFilePath).exists()) {
-                        response = FileUtil.readFile(jsonFilePath)
-                    } else {
-                        throw Throwable("获取数据失败")
-                    }
-//                    response = getAssetsJsonData("temple-v1.json")
-//                    response = getAssetsJsonData("test.json")
+//                    val jsonFilePath = FileUtil.dirPath(globalContext, K.K_CACHED_DIR_NAME, it)
+//                    val dataState = ApiHelper.reportJsonData(globalContext, groupId, "1", reportId)
+//                    if (dataState || File(jsonFilePath).exists()) {
+//                        response = FileUtil.readFile(jsonFilePath)
+//                    } else {
+//                        throw Throwable("获取数据失败")
+//                    }
+//                    response = getAssetsJsonData("testLargeData.json")
+                    response = getAssetsJsonData("test.json")
 //                    response = getAssetsJsonData("kpi_detaldata.json")
                     val stringReader = StringReader(response)
                     val reader = JSONReader(stringReader)
                     reader.startArray()
                     reader.startObject()
-//                    val entity = MererDetailEntity()
-//                    entity.data = ArrayList()
                     var page = 0
                     var index = 0
 
@@ -132,13 +129,11 @@ class ModeImpl : ReportModelImpl() {
                                     reader.startObject()
                                     var config = ""
                                     var title = ""
-//                                    val data = MererDetailEntity.PageData()
                                     while (reader.hasNext()) {
                                         val dataKey = reader.readString()
                                         when (dataKey) {
                                             "parts" -> {
                                                 config = reader.readObject().toString()
-//                                                data.parts = config
                                                 val moduleStringReader = StringReader(config)
                                                 val moduleReader = JSONReader(moduleStringReader)
                                                 moduleReader.startArray()
@@ -165,7 +160,6 @@ class ModeImpl : ReportModelImpl() {
                                     insertMainData(uuid, config, REPORT_TYPE_MAIN_DATA, title, page)
                                     page++
                                     reader.endObject()
-//                                    entity.data!!.add(data)
                                 }
                                 reader.endArray()
                             }
@@ -173,7 +167,6 @@ class ModeImpl : ReportModelImpl() {
                     }
                     reader.endObject()
                     reader.endArray()
-//                    entity
                     queryDateBase(uuid)
                 }
                 .observeOn(AndroidSchedulers.mainThread())
@@ -185,7 +178,7 @@ class ModeImpl : ReportModelImpl() {
                     }
 
                     override fun onNext(t: List<Report>?) {
-                        t?.let { callback.onDataLoaded(it) }
+                        t?.let { callback.onDataLoaded(it) } ?: onError(Throwable("数据位空"))
 
                     }
 
