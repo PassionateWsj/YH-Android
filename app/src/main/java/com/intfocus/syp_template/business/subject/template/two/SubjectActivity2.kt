@@ -11,7 +11,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,7 +19,6 @@ import android.widget.PopupWindow
 import com.github.barteksc.pdfviewer.listener.OnPageErrorListener
 import com.github.barteksc.pdfviewer.scroll.DefaultScrollHandle
 import com.intfocus.syp_template.R
-import com.intfocus.syp_template.business.dashboard.mine.activity.FeedbackActivity
 import com.intfocus.syp_template.business.dashboard.mine.adapter.FilterMenuAdapter
 import com.intfocus.syp_template.constant.Params
 import com.intfocus.syp_template.general.CommentActivity
@@ -118,12 +116,8 @@ class SubjectActivity2 : AppCompatActivity(), SubjectContract.View, OnPageErrorL
 
     override fun finishActivity() {
         PageLinkManage.pageBackIntent(this)
-        finish()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
         SubjectModelImpl.destroyInstance()
+        finish()
     }
 
     override fun onBackPressed() {
