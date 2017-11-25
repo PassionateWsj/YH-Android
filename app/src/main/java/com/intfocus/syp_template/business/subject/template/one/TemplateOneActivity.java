@@ -105,12 +105,6 @@ public class TemplateOneActivity extends BaseModeActivity<MeterDetailActMode> im
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        ModeImpl.destroyInstance();
-    }
-
-    @Override
     public ModeContract.Presenter getPresenter() {
         return mPresenter;
     }
@@ -135,6 +129,12 @@ public class TemplateOneActivity extends BaseModeActivity<MeterDetailActMode> im
         new ModePresenter(ModeImpl.getInstance(), this);
         init();
         initListener();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+//        ModeImpl.destroyInstance();
     }
 
     private void initListener() {

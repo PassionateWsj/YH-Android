@@ -20,7 +20,7 @@ android {
         //X5兼容64位手机
         ndk {
             // 设置支持的SO库架构
-            abiFilters 'armeabi-v7a','arm64-v8a','armeabi', 'x86', 'mips'
+            abiFilters 'armeabi-v7a','arm64-v8a'
         }
         javaCompileOptions {
             annotationProcessorOptions {

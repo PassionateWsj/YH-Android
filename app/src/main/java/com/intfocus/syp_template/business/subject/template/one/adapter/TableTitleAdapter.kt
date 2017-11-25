@@ -32,7 +32,7 @@ class TableTitleAdapter(val context: Context,
     override fun onBindViewHolder(holder: NoticeMenuHolder, position: Int) {
         if (data != null) {
             val noticeMenuData = data!![position]
-            holder.tvText.text = noticeMenuData.type
+            holder.tvText.text = noticeMenuData.title
             if (noticeMenuData.isCheck) {
                 holder.tvText.setTextColor(ContextCompat.getColor(context, R.color.co1_syr))
                 holder.viewLine.visibility = View.VISIBLE

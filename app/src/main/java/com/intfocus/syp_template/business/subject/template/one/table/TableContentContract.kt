@@ -21,6 +21,6 @@ interface TableContentContract {
 
     interface Presenter : BasePresenter {
         // 加载数据
-        fun loadData(dataJson: String)
+        fun loadData(data: ModularTwo_UnitTableEntity)
     }
 }

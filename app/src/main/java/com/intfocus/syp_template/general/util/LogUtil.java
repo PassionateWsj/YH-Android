@@ -38,6 +38,21 @@ public class LogUtil {
     }
 
     /**
+     * Log.d(tag, str)
+     */
+    public static void d(Object obj, String str) {
+        /**
+         * 若应用不处于 DEBUG 模式，则不打印输出信息
+         */
+        if (!BuildConfig.DEBUG) {
+            return;
+        }
+
+        LogUtil.d(obj.getClass().getSimpleName(), str, 0);
+    }
+
+
+    /**
      * Log.e(tag, str)
      */
     public static void e(String tag, String str) {

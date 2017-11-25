@@ -72,7 +72,7 @@ public class ModularOneTableValueAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         convertView = inflate.inflate(R.layout.item_tabledatavalue_row, parent, false);
         ModularTwo_UnitTableEntity.TableRowEntity entity = ltdata.get(position);
-        String[] main_data = entity.main_data;
+        String[] main_data = entity.getMain_data();
         int length = main_data.length;
         for (int i = 1; i < length; i++) {
             View v = inflate.inflate(R.layout.item_table_value, null);

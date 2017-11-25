@@ -1,5 +1,6 @@
 package com.intfocus.syp_template.business.subject.template.one.table;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Point;
 import android.graphics.Rect;
@@ -27,6 +28,7 @@ import com.intfocus.syp_template.business.subject.templateone.adapter.ModularOne
 import com.intfocus.syp_template.general.base.BaseModeFragment;
 import com.intfocus.syp_template.general.data.TempSubData;
 import com.intfocus.syp_template.general.util.DisplayUtil;
+import com.intfocus.syp_template.general.util.LoadingUtils;
 import com.intfocus.syp_template.general.util.LogUtil;
 import com.intfocus.syp_template.general.view.NotScrollListView;
 import com.intfocus.syp_template.general.view.SortCheckBox;
@@ -38,7 +40,6 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import org.jetbrains.annotations.NotNull;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.xutils.view.annotation.ViewInject;
@@ -58,8 +59,8 @@ public class ModularOneUnitTablesContentModeFragment extends BaseModeFragment<Mo
     private static final String ARG_PARAM = "param";
     private static final String SU_ROOT_ID = "suRootID";
     private static final String TABLE_ROOT_INDEX = "tableRootIndex";
-    private String mParam;
-
+    private ModularTwo_UnitTableEntity mParam;
+    private Dialog loadingDialog;
     private View rootView;
 
     private FragmentManager fm;
@@ -133,6 +134,16 @@ public class ModularOneUnitTablesContentModeFragment extends BaseModeFragment<Mo
         return null;
     }
 
+    @Override
+    public TableContentContract.Presenter getPresenter() {
+        return mPresenter;
+    }
+
+    @Override
+    public void setPresenter(TableContentContract.Presenter presenter) {
+        mPresenter = presenter;
+    }
+
     public static ModularOneUnitTablesContentModeFragment newInstance(int suRootID, int tableRootIndex) {
         ModularOneUnitTablesContentModeFragment fragment = new ModularOneUnitTablesContentModeFragment();
         Bundle args = new Bundle();
@@ -150,6 +161,7 @@ public class ModularOneUnitTablesContentModeFragment extends BaseModeFragment<Mo
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+//        showLoading();
         EventBus.getDefault().register(this);
         if (getArguments() != null) {
             suRootID = getArguments().getInt(SU_ROOT_ID);
@@ -162,6 +174,7 @@ public class ModularOneUnitTablesContentModeFragment extends BaseModeFragment<Mo
             }
         }
     }
+
 
     @Override
     public void onDestroy() {
@@ -225,7 +238,6 @@ public class ModularOneUnitTablesContentModeFragment extends BaseModeFragment<Mo
 
             thscroll_header.setScrollView(thscroll_data);
             thscroll_data.setScrollView(thscroll_header);
-            hideLoading();
 
             mTitleHigh = getResources().getDimensionPixelOffset(R.dimen.action_bar_height);
             rootView.post(new Runnable() {
@@ -234,17 +246,17 @@ public class ModularOneUnitTablesContentModeFragment extends BaseModeFragment<Mo
                     Rect frame = new Rect();
                     act.getWindow().getDecorView().getWindowVisibleDisplayFrame(frame);
                     //状态栏+标题栏高度-间隙
-                    LogUtil.d(LogUtil.TAG, "标题栏高度px ::: " + mTitleHigh);
+//                    LogUtil.d(ModularOneUnitTablesContentModeFragment.class, "标题栏高度px ::: " + mTitleHigh);
                     offsetTop = frame.top + mTitleHigh;
                 }
             });
 
             dataComparator = new TableDataComparator();
+            LogUtil.d(this, "mParam ::: " + mParam);
             mPresenter.loadData(mParam);
         }
         return rootView;
     }
-
 
     @Override
     public void onHiddenChanged(boolean hidden) {
@@ -255,7 +267,7 @@ public class ModularOneUnitTablesContentModeFragment extends BaseModeFragment<Mo
     @Override
     public void showData(@NotNull ModularTwo_UnitTableEntity data) {
         bindData(data);
-
+//        hideLoading();
 //        refreshTableTitle();
     }
 
@@ -276,7 +288,7 @@ public class ModularOneUnitTablesContentModeFragment extends BaseModeFragment<Mo
     private void bindData(ModularTwo_UnitTableEntity entity) {
         this.dataEntity = entity;
         // 表头数据
-        String[] header = entity.head;
+        String[] header = entity.getHead();
         if (header.length == 0) {
             return;
         }
@@ -292,11 +304,14 @@ public class ModularOneUnitTablesContentModeFragment extends BaseModeFragment<Mo
         headerData.addAll(Arrays.asList(header).subList(1, headerSize + 1));
 
         lineData.add(headerData);
+        int entityDataSize = entity.getData().size();
+        int mainDataLength;
         for (int i = 0; i < headerSize; i++) {
-            for (int j = 0; j < entity.data.size(); j++) {
+            for (int j = 0; j < entityDataSize; j++) {
                 ArrayList<String> data = new ArrayList<>();
-                for (int k = 1; k < entity.data.get(j).main_data.length; k++) {
-                    data.add(entity.data.get(j).main_data[k]);
+                mainDataLength = entity.getData().get(j).getMain_data().length;
+                for (int k = 1; k < mainDataLength; k++) {
+                    data.add(entity.getData().get(j).getMain_data()[k]);
                 }
                 lineData.add(data);
             }
@@ -304,9 +319,12 @@ public class ModularOneUnitTablesContentModeFragment extends BaseModeFragment<Mo
 
         ArrayList<Integer> mColumnMaxWidths = new ArrayList<Integer>();
         //初始化每列最大宽度
-        for (int i = 0; i < lineData.size(); i++) {
+        int lineDataSize = lineData.size();
+        int rowDataSize;
+        for (int i = 0; i < lineDataSize; i++) {
             ArrayList<String> rowDatas = lineData.get(i);
-            for (int j = 0; j < rowDatas.size(); j++) {
+            rowDataSize = rowDatas.size();
+            for (int j = 0; j < rowDataSize; j++) {
                 TextView textView = new TextView(ctx);
                 textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 11);
                 textView.setText(rowDatas.get(j));
@@ -350,6 +368,7 @@ public class ModularOneUnitTablesContentModeFragment extends BaseModeFragment<Mo
             linear_header.addView(box);
             al_SortView.add(box);
         }
+
     }
 
     @Override
@@ -373,7 +392,7 @@ public class ModularOneUnitTablesContentModeFragment extends BaseModeFragment<Mo
      * 加载首列数据
      */
     private void loadTableLeftData() {
-        nameAdapter = new ModularOneTableNameAdapter(ctx, dataEntity.data);
+        nameAdapter = new ModularOneTableNameAdapter(ctx, dataEntity.getData());
         nslistView_LineName.setAdapter(nameAdapter);
         ViewGroup.LayoutParams params = nslistView_LineName.getLayoutParams();
         params.height = nslistView_LineName.getTotalHeight();
@@ -385,11 +404,11 @@ public class ModularOneUnitTablesContentModeFragment extends BaseModeFragment<Mo
      * 加载表格内容
      */
     private void loadTableContentData() {
-        ArrayList<ModularTwo_UnitTableEntity.TableRowEntity> datas = dataEntity.data;
+        ArrayList<ModularTwo_UnitTableEntity.TableRowEntity> datas = dataEntity.getData();
         ArrayMap<Integer, String[]> lables = new ArrayMap<>();
         int dataSize = datas.size();
         for (int i = 0; i < dataSize; i++) {
-            lables.put(i, datas.get(i).main_data);
+            lables.put(i, datas.get(i).getMain_data());
         }
 
         int itemHeight = getResources().getDimensionPixelSize(R.dimen.size_default);
@@ -407,21 +426,12 @@ public class ModularOneUnitTablesContentModeFragment extends BaseModeFragment<Mo
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
-        if ("{}".equals(dataEntity.data.get(position).sub_data)) {
-//            ToastUtils.INSTANCE.showDefault(ctx, dataEntity.data.get(position).main_data[0]);
+        ModularTwo_UnitTableEntity modularTwoUnitTableEntitySubData = dataEntity.getData().get(position).getSub_data();
+        boolean subDataNull = modularTwoUnitTableEntitySubData == null || (modularTwoUnitTableEntitySubData.getData() == null && modularTwoUnitTableEntitySubData.getHead() == null);
+        if (subDataNull) {
             return;
         }
         startSubTable(position);
-    }
-
-    @Override
-    public TableContentContract.Presenter getPresenter() {
-        return mPresenter;
-    }
-
-    @Override
-    public void setPresenter(TableContentContract.Presenter presenter) {
-        mPresenter = presenter;
     }
 
     class SortViewClickListener implements View.OnClickListener {
@@ -439,22 +449,22 @@ public class ModularOneUnitTablesContentModeFragment extends BaseModeFragment<Mo
             SortCheckBox box = al_SortView.get(index);
             if (box.getCheckedState() == SortCheckBox.CheckedState.sort_noneicon) {
                 dataComparator.setIndex(tag);
-                Collections.sort(dataEntity.data, dataComparator);
+                Collections.sort(dataEntity.getData(), dataComparator);
             } else {
-                Collections.reverse(dataEntity.data);
+                Collections.reverse(dataEntity.getData());
             }
 
-            nameAdapter.updateData(dataEntity.data);
+            nameAdapter.updateData(dataEntity.getData());
             updateTableValue();
         }
     }
 
     public void updateTableValue() {
-        ArrayList<ModularTwo_UnitTableEntity.TableRowEntity> datas = dataEntity.data;
+        ArrayList<ModularTwo_UnitTableEntity.TableRowEntity> datas = dataEntity.getData();
         ArrayMap<Integer, String[]> lables = new ArrayMap<>();
         int dataSize = datas.size();
         for (int i = 0; i < dataSize; i++) {
-            lables.put(i, datas.get(i).main_data);
+            lables.put(i, datas.get(i).getMain_data());
         }
         tableValue.setTableValues(lables);
         tableValue.invalidate();
@@ -474,8 +484,8 @@ public class ModularOneUnitTablesContentModeFragment extends BaseModeFragment<Mo
             float v1 = 0;
             float v2 = 0;
             try {
-                String strv1 = new JSONObject(obj1.main_data[index]).getString("value");
-                String strv2 = new JSONObject(obj2.main_data[index]).getString("value");
+                String strv1 = new JSONObject(obj1.getMain_data()[index]).getString("value");
+                String strv2 = new JSONObject(obj2.getMain_data()[index]).getString("value");
 
                 if (strv1.contains("%")) {
                     v1 = Float.valueOf(strv1.substring(0, strv1.indexOf("%"))) / 100;
@@ -511,24 +521,10 @@ public class ModularOneUnitTablesContentModeFragment extends BaseModeFragment<Mo
      */
     public void startSubTable(int index) {
         try {
-            JSONObject sub_data = new JSONObject(dataEntity.data.get(index).sub_data);
-//            if (sub_data == null) {
-//                String tableName = (String) nameAdapter.getItem(index);
-//                ToastUtil.showToast(ctx, tableName);
-//                return;
-//            }
-
-            JSONObject jsonObject = new JSONObject();
-            String header = sub_data.getJSONArray("head").toString();
-            jsonObject.put("head", new JSONArray(header));
-            JSONArray array = sub_data.getJSONArray("data");
-            jsonObject.put("data", array);
-            String subData = jsonObject.toString();
-
+            TempSubData.setData(index, dataEntity.getData().get(index).getSub_data());
             Intent intent = new Intent(ctx, ModularOneSubTableActivity.class);
-            String itemData = dataEntity.data.get(index).main_data[0];
+            String itemData = dataEntity.getData().get(index).getMain_data()[0];
             intent.putExtra("Title", new JSONObject(itemData).getString("value"));
-            TempSubData.setData(index, subData);
             int checkId = suRootID;
             intent.putExtra(SU_ROOT_ID, checkId);
             intent.putExtra(TABLE_ROOT_INDEX, index);
@@ -563,5 +559,20 @@ public class ModularOneUnitTablesContentModeFragment extends BaseModeFragment<Mo
         return 0;
     }
 
+    /**
+     * 显示正在加载提示
+     */
+    private void showLoading() {
+        loadingDialog = LoadingUtils.createLoadingDialog(getContext());
+        loadingDialog.show();
+    }
 
+    /**
+     * 隐藏正在加载提示
+     */
+    private void hideLoading() {
+        if (loadingDialog != null && loadingDialog.isShowing()) {
+            loadingDialog.dismiss();
+        }
+    }
 }

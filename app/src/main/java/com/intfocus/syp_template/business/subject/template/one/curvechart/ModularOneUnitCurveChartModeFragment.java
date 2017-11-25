@@ -34,7 +34,7 @@ import java.util.Collections;
 /**
  * 仪表盘-详情页面-根页签-曲线图单元
  */
-public class ModularOneUnitCurveChartModeFragment extends BaseModeFragment<MDRPUnitCurveChartMode> implements CustomCurveChartV2.PointClickListener,CurveChartContract.View {
+public class ModularOneUnitCurveChartModeFragment extends BaseModeFragment<MDRPUnitCurveChartMode> implements CustomCurveChartV2.PointClickListener, CurveChartContract.View {
     private static final String ARG_INDEX = "index";
     private static final String ARG_UUID = "uuid";
     private View rootView;
@@ -130,13 +130,14 @@ public class ModularOneUnitCurveChartModeFragment extends BaseModeFragment<MDRPU
                 String unit = jsonObject.getString("name");
                 chart = new CustomCurveChartV2(act);
                 chart.setDrawingCacheEnabled(true);
-                chart.setBarWidth(25);
+                //设置柱形图之间间隔
+                chart.setBarChartInterval(50);
                 chart.setxLabel(xLabel);
                 chart.setyLabel(yLabel);
                 chart.setUnit(unit);
                 chart.setColorList(color);
                 int selectItem = chart.setDataList(seriesLables);
-                chart.setDefaultColor(ContextCompat.getColor(ctx,R.color.co9));
+                chart.setDefaultColor(ContextCompat.getColor(ctx, R.color.co9));
                 chart.setDefauteMargin((int) margin);
                 chart.setPointClickListener(ModularOneUnitCurveChartModeFragment.this);
                 int chartStyle;
@@ -247,6 +248,11 @@ public class ModularOneUnitCurveChartModeFragment extends BaseModeFragment<MDRPU
                 chart.setBarSelectColor(baseColor);
                 mTvTarget3Name.setText("变化率");
             }
+        } else if (seriesLables.size() < 2) {
+            mTvTarget2Name.setVisibility(View.GONE);
+            mTvTarget3Name.setVisibility(View.GONE);
+            mTvRate.setVisibility(View.GONE);
+            mTvTarget2.setVisibility(View.GONE);
         }
 
         if (seriesLables.size() > 2) {

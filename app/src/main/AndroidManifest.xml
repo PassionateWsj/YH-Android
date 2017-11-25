@@ -3,6 +3,7 @@
           xmlns:tools="http://schemas.android.com/tools"
           package="com.intfocus.syp_template"
           android:hardwareAccelerated="false"
+          android:largeHeap="true"
           android:versionCode="1"
           android:versionName="1.0.0">
 

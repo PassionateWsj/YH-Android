@@ -23,16 +23,19 @@ class TableContentPresenter(
 
     }
 
-    override fun loadData(dataJson: String) {
-        mModel.getData(dataJson,  object : TableModel.TableContentLoadDataCallback {
-            override fun onDataLoaded(data: ModularTwo_UnitTableEntity) {
-                mView.showData(data)
-            }
-
-            override fun onDataNotAvailable(e: Throwable?) {
-
-            }
-
-        })
+    override fun loadData(data: ModularTwo_UnitTableEntity) {
+        mView.showData(data)
     }
+//    override fun loadData(dataJson: String) {
+//        mModel.getData(dataJson,  object : TableModel.TableContentLoadDataCallback {
+//            override fun onDataLoaded(data: ModularTwo_UnitTableEntity) {
+//                mView.showData(data)
+//            }
+//
+//            override fun onDataNotAvailable(e: Throwable?) {
+//
+//            }
+//
+//        })
+//    }
 }
