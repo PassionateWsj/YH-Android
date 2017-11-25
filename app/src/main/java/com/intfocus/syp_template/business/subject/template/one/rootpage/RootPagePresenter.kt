@@ -23,8 +23,8 @@ class RootPagePresenter(
     override fun start() {
     }
 
-    override fun loadData(uuid: String, page: Int) {
-        mModel.getData(uuid, page, object : RootPageModel.LoadDataCallback {
+    override fun loadData(uuid: String, pageId: Int) {
+        mModel.getData(uuid, pageId, object : RootPageModel.LoadDataCallback {
             override fun onDataLoaded(reports: List<Report>) {
                 mView.showData(reports)
             }

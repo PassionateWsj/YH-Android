@@ -1,13 +1,58 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
+    <RelativeLayout
+        android:id="@+id/rl_address_filter"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/white"
+        android:orientation="horizontal"
+        android:layout_alignParentTop="true"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/tv_location_address"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toLeftOf="@+id/tv_address_filter"
+            android:drawablePadding="15dp"
+            android:ellipsize="end"
+            android:gravity="center_vertical"
+            android:hint=""
+            android:maxLines="1"
+            android:paddingLeft="16dp"
+            android:textColor="@color/co15_syr"
+            android:textColorHint="@color/co4_syr"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/tv_address_filter"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:drawablePadding="6dp"
+            android:drawableRight="@drawable/pop_screen_gray"
+            android:gravity="center_vertical"
+            android:paddingRight="16dp"
+            android:text="筛选"
+            android:textColor="@color/co6_syr"
+            android:textSize="15sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/co9_syr" />
+    </RelativeLayout>
+
     <com.intfocus.syp_template.general.view.RootScrollView
         android:id="@+id/rootScrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@+id/rl_address_filter"
         android:scrollbars="none">
 
         <LinearLayout
@@ -37,6 +82,7 @@
     <FrameLayout
         android:id="@+id/fl_mdetal_top_suspend_container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rl_address_filter"/>
 
-</FrameLayout>
+</RelativeLayout>

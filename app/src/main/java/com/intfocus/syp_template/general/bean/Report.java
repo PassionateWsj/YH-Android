@@ -23,19 +23,19 @@ public class Report {
     String uuid;
 
     /**
+     * 报表筛选条件
+     */
+    String name;
+
+    /**
      * 报表组件id
      */
     int index;
 
     /**
-     * 报表根页签id
-     */
-    int page;
-
-    /**
      * 报表根页签名
      */
-    String title;
+    String page_title;
 
     /**
      * 组件类型
@@ -48,14 +48,14 @@ public class Report {
      */
     String config;
 
-    @Generated(hash = 824925627)
-    public Report(Long id, String uuid, int index, int page, String title,
+    @Generated(hash = 265585219)
+    public Report(Long id, String uuid, String name, int index, String page_title,
             String type, String config) {
         this.id = id;
         this.uuid = uuid;
+        this.name = name;
         this.index = index;
-        this.page = page;
-        this.title = title;
+        this.page_title = page_title;
         this.type = type;
         this.config = config;
     }
@@ -80,6 +80,14 @@ public class Report {
         this.uuid = uuid;
     }
 
+    public String getName() {
+        return this.name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public int getIndex() {
         return this.index;
     }
@@ -88,20 +96,12 @@ public class Report {
         this.index = index;
     }
 
-    public int getPage() {
-        return this.page;
+    public String getPage_title() {
+        return this.page_title;
     }
 
-    public void setPage(int page) {
-        this.page = page;
-    }
-
-    public String getTitle() {
-        return this.title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
+    public void setPage_title(String page_title) {
+        this.page_title = page_title;
     }
 
     public String getType() {

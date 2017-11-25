@@ -3,6 +3,7 @@ package com.intfocus.syp_template.business.subject.template.one.table
 import android.util.Log
 import com.alibaba.fastjson.JSON
 import com.alibaba.fastjson.JSONReader
+import com.intfocus.syp_template.business.subject.template.one.ModeImpl
 import com.intfocus.syp_template.business.subject.template.one.entity.MDetailUnitEntity
 import com.intfocus.syp_template.business.subject.template.one.entity.ModularTwo_UnitTableEntity
 import com.intfocus.syp_template.business.subject.template.one.entity.msg.MDetailRootPageRequestResult
@@ -86,19 +87,13 @@ class TableImpl : TableModel {
                 })
     }
 
-    override fun getRootData(uuid: String, index: Int, callbackTableRoot: TableModel.TableRootLoadDataCallback) {
+    override fun getRootData(rootId: Int, index: Int, callbackTableRoot: TableModel.TableRootLoadDataCallback) {
         LogUtil.d(TAG, "TableRoot 表格数据开始转为对象")
         val startTime = System.currentTimeMillis()
         observable = Observable.just(1)
                 .subscribeOn(Schedulers.io())
                 .map {
-                    val reportDao = DaoUtil.getReportDao()
-                    val report = reportDao.queryBuilder()
-                            .where(reportDao.queryBuilder()
-                                    .and(ReportDao.Properties.Uuid.eq(uuid), ReportDao.Properties.Type.eq(REPORT_TYPE_TABLE), ReportDao.Properties.Index.eq(index)))
-                            .unique()
-
-                    val result = report.config
+                    val result = ModeImpl.getInstance().queryModuleConfig(index, rootId)
                     Log.i(TAG, "StartAnalysisTime:" + TimeUtil.getNowTime())
                     val datas = ArrayList<MDetailUnitEntity>()
                     val isr = StringReader(result)

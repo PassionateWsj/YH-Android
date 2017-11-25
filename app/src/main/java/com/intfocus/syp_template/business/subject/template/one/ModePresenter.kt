@@ -25,7 +25,7 @@ class ModePresenter(
 
     override fun loadData(ctx: Context, groupId: String, reportId: String) {
         mModel.checkReportData(reportId, "1", groupId, object : ModeModel.LoadDataCallback {
-            override fun onDataLoaded(reports: List<Report>) {
+            override fun onDataLoaded(reports: List<String>) {
                 mView.initRootView(reports)
             }
 
@@ -33,5 +33,9 @@ class ModePresenter(
                 LogUtil.d("testlog", e.toString())
             }
         })
+    }
+
+    override fun loadFilterData() {
+        mModel.checkFilter()
     }
 }

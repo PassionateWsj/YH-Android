@@ -110,27 +110,27 @@ open class ReportModelImpl : ReportModel {
      * @param config 报表组件配置Json数据
      * @param index 报表组件对应index
      */
-    override fun insert(uuid: String, config: String, type: String, index: Int, page: Int) {
+    override fun insert(uuid: String, config: String, type: String, index: Int, page: String) {
         val report = Report()
         report.id = null
         report.config = config
         report.type = type
         report.uuid = uuid
         report.index = index
-        report.page = page
+        report.page_title = page
 
         reportDao.insert(report)
     }
 
-    fun insertMainData(uuid: String, config: String, type: String, title: String, page: Int) {
+    fun insertMainData(uuid: String, config: String, type: String, title: String, page: String) {
         val report = Report()
         report.id = null
         report.config = config
         report.type = type
         report.uuid = uuid
         report.index = 1000
-        report.page = page
-        report.title = title
+        report.page_title = page
+        report.page_title = title
 
         reportDao.insert(report)
     }

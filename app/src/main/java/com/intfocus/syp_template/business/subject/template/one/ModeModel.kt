@@ -14,7 +14,7 @@ import com.intfocus.syp_template.general.bean.Report
  */
 interface ModeModel {
     interface LoadDataCallback {
-        fun onDataLoaded(reports: List<Report>)
+        fun onDataLoaded(reports: List<String>)
         fun onDataNotAvailable(e: Throwable)
     }
 

@@ -21,8 +21,8 @@ class SingleValuePresenter(
 
     }
 
-    override fun loadData(uuid: String, index: Int) {
-        mModel.getData(uuid, index, object : SingleValueModel.LoadDataCallback {
+    override fun loadData(rootId: Int, index: Int) {
+        mModel.getData(rootId, index, object : SingleValueModel.LoadDataCallback {
             override fun onDataLoaded(data: com.intfocus.syp_template.business.subject.template.one.entity.MDRPUnitSingleValue) {
                 mView.showData(data)
             }

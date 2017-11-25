@@ -24,8 +24,8 @@ class TableRootPresenter(
 
     }
 
-    override fun loadData(uuid: String, index: Int) {
-        mModel.getRootData(uuid,index,object :TableModel.TableRootLoadDataCallback{
+    override fun loadData(rootId: Int, index: Int) {
+        mModel.getRootData(rootId, index, object :TableModel.TableRootLoadDataCallback{
             override fun onDataLoaded(data: MDetailRootPageRequestResult) {
                 mView.dataLoaded(data)
             }

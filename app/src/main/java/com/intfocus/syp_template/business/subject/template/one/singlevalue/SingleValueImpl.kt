@@ -1,6 +1,7 @@
 package com.intfocus.syp_template.business.subject.templateone.singlevalue
 
 import com.alibaba.fastjson.JSON
+import com.intfocus.syp_template.business.subject.template.one.ModeImpl
 import com.intfocus.syp_template.business.subject.template.one.entity.MDRPUnitSingleValue
 import com.intfocus.syp_template.constant.Params.REPORT_TYPE_SINGLE_VALUE
 import com.intfocus.syp_template.general.gen.ReportDao
@@ -54,13 +55,8 @@ class SingleValueImpl : SingleValueModel {
         }
     }
 
-    override fun getData(uuid: String, index: Int, callback: SingleValueModel.LoadDataCallback) {
-        val reportDao = DaoUtil.getReportDao()
-        val report = reportDao.queryBuilder()
-                .where(reportDao.queryBuilder().and(ReportDao.Properties.Uuid.eq(uuid), ReportDao.Properties.Type.eq(REPORT_TYPE_SINGLE_VALUE), ReportDao.Properties.Index.eq(index)))
-                .unique()
-
-        observable = Observable.just(report.config)
+    override fun getData(rootId: Int, index: Int, callback: SingleValueModel.LoadDataCallback) {
+        observable = Observable.just(ModeImpl.getInstance().queryModuleConfig(index, rootId))
                 .subscribeOn(Schedulers.io())
                 .map { JSON.parseObject<MDRPUnitSingleValue>(it, MDRPUnitSingleValue::class.java) }
                 .observeOn(AndroidSchedulers.mainThread())

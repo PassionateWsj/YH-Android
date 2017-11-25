@@ -23,8 +23,8 @@ class CurveChartPresenter(
 
     }
 
-    override fun loadData(uuid: String, index: Int) {
-        mModel.getData(uuid, index, object :CurveChartModel.LoadDataCallback{
+    override fun loadData(rootId: Int, index: Int) {
+        mModel.getData(rootId, index, object :CurveChartModel.LoadDataCallback{
             override fun onDataLoaded(data: MDRPUnitCurveChartEntity) {
                 mView.showData(data)
             }

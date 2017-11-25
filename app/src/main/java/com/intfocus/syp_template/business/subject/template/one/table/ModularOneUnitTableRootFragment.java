@@ -111,7 +111,7 @@ public class ModularOneUnitTableRootFragment extends BaseModeFragment<ModularTwo
     }
 
     private void init() {
-        mPresenter.loadData(uuid, index);
+        mPresenter.loadData(suRootID, index);
         datas = new ArrayList<>();
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         adapter = new TableTitleAdapter(getContext(), datas, this);

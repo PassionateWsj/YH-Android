@@ -25,23 +25,13 @@ object DaoUtil {
         daoSession = daoMaster.newSession()
     }
 
-    fun getDaoSession(): DaoSession? {
-        return daoSession
-    }
+    fun getDaoSession(): DaoSession? = daoSession
 
-    fun getDatabase(): SQLiteDatabase? {
-        return database
-    }
+    fun getDatabase(): SQLiteDatabase? = database
 
-    fun getSourceDao(): SourceDao {
-        return daoSession!!.sourceDao
-    }
+    fun getSourceDao(): SourceDao = daoSession!!.sourceDao
 
-    fun getCollectionDao(): CollectionDao {
-        return daoSession!!.collectionDao
-    }
+    fun getCollectionDao(): CollectionDao = daoSession!!.collectionDao
 
-    fun getReportDao(): ReportDao {
-        return daoSession!!.reportDao
-    }
+    fun getReportDao(): ReportDao = daoSession!!.reportDao
 }

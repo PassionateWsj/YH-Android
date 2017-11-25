@@ -1,14 +1,23 @@
 package com.intfocus.syp_template.business.subject.template.one
 
+import android.support.v4.view.ViewPager
 import android.util.Log
+import com.alibaba.fastjson.JSON
+import com.alibaba.fastjson.JSONObject
 import com.alibaba.fastjson.JSONReader
+import com.intfocus.syp_template.YHApplication.globalContext
 import com.intfocus.syp_template.business.subject.template.model.ReportModelImpl
 import com.intfocus.syp_template.constant.Params.REPORT_TYPE_MAIN_DATA
 import com.intfocus.syp_template.general.bean.Report
+import com.intfocus.syp_template.general.bean.ReportModule
+import com.intfocus.syp_template.general.constant.ConfigConstants
 import com.intfocus.syp_template.general.gen.ReportDao
+import com.intfocus.syp_template.general.util.ApiHelper
+import com.intfocus.syp_template.general.util.ApiHelper.clearResponseHeader
 import com.intfocus.syp_template.general.util.DaoUtil
+import com.intfocus.syp_template.general.util.K
+import com.j256.ormlite.dao.Dao
 import com.zbl.lib.baseframe.utils.TimeUtil
-import org.json.JSONObject
 import rx.Observable
 import rx.Subscriber
 import rx.Subscription
@@ -28,11 +37,14 @@ import java.io.StringReader
 class ModeImpl : ReportModelImpl() {
 
     private val TEMPLATE_ID = "1"
+    lateinit private var filterObject: JSONObject
+    lateinit private var pageTitleList: List<String>
 
     companion object {
         private val TAG = "ModeImpl"
         private var INSTANCE: ModeImpl? = null
         private var observable: Subscription? = null
+        private var uuid: String = ""
 
         /**
          * Returns the single instance of this class, creating it if necessary.
@@ -62,34 +74,35 @@ class ModeImpl : ReportModelImpl() {
     }
 
     fun checkReportData(reportId: String, templateId: String, groupId: String, callback: ModeModel.LoadDataCallback) {
-        val uuid = reportId + templateId + groupId
-        val urlString = reportId + templateId + groupId
+        uuid = reportId + templateId + groupId
+        val urlString = String.format(K.K_REPORT_JSON_ZIP_API_PATH, ConfigConstants.kBaseUrl, groupId, templateId, reportId)
         when {
             checkUpdate(urlString) -> analysisData(groupId, reportId, callback)
             available(uuid) -> {
-                observable = Observable.just(uuid)
-                        .subscribeOn(Schedulers.io())
-                        .map { queryDateBase(it) }
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(object : Subscriber<List<Report>>() {
-                            override fun onCompleted() {
-                            }
-
-                            override fun onNext(t: List<Report>?) {
-                                t?.let { callback.onDataLoaded(it) }
-
-                            }
-
-                            override fun onError(e: Throwable?) {
-                                callback.onDataNotAvailable(e!!)
-                            }
-
-                        })
+                analysisData(groupId, reportId, callback)
+//                observable = Observable.just(uuid)
+//                        .subscribeOn(Schedulers.io())
+//                        .map { queryDateBase(it) }
+//                        .observeOn(AndroidSchedulers.mainThread())
+//                        .subscribe(object : Subscriber<List<String>>() {
+//                            override fun onCompleted() {
+//                            }
+//
+//                            override fun onNext(t: List<String>?) {
+//                                t?.let { callback.onDataLoaded(it) }
+//                            }
+//
+//                            override fun onError(e: Throwable?) {
+//                                delete(uuid)
+//                                clearResponseHeader(urlString)
+//                                callback.onDataNotAvailable(e!!)
+//                            }
+//                        })
             }
             else -> analysisData(groupId, reportId, callback)
         }
     }
-    
+
     fun analysisData(groupId: String, reportId: String, callback: ModeModel.LoadDataCallback) {
         val jsonFileName = String.format("group_%s_template_%s_report_%s.json", groupId, TEMPLATE_ID, reportId)
 
@@ -106,84 +119,54 @@ class ModeImpl : ReportModelImpl() {
 //                    } else {
 //                        throw Throwable("获取数据失败")
 //                    }
-                    response = getAssetsJsonData("test.json")
-                    Log.i(TAG, "analysisDataStartTime:" + TimeUtil.getNowTime())
+                    response = getAssetsJsonData("template1_05.json")
+
                     val stringReader = StringReader(response)
-                    Log.i(TAG, "analysisDataReaderTime1:" + TimeUtil.getNowTime())
                     val reader = JSONReader(stringReader)
-                    reader.startArray()
+                    Log.i(TAG, "analysisDataStartTime:" + TimeUtil.getNowTime())
+
                     reader.startObject()
-                    var page = 0
-                    var index = 0
-                    Log.i(TAG, "analysisDataReaderTime2:" + TimeUtil.getNowTime())
-
                     while (reader.hasNext()) {
-                        val key = reader.readString()
-                        when (key) {
-                            "name" -> {
-                                reader.readObject().toString()
-                                Log.i(TAG, "name:" + TimeUtil.getNowTime())
+                        val configKey = reader.readString()
+                        when (configKey) {
+                            "filter" -> {
+                                var report = Report()
+                                report.id = null
+                                report.uuid = uuid
+                                report.type = "filter"
+                                report.config = reader.readObject().toString()
+                                insertDateBase(report)
                             }
-
-                            "data" -> {
-                                Log.i(TAG, "dataStart:" + TimeUtil.getNowTime())
+                            "parts" -> {
                                 reader.startArray()
-
+                                var i = 0
                                 while (reader.hasNext()) {
-                                    reader.startObject()
-                                    var config = ""
-                                    var title = ""
-//                                    val data = MererDetailEntity.PageData()
-                                    while (reader.hasNext()) {
-                                        val dataKey = reader.readString()
-                                        when (dataKey) {
-                                            "parts" -> {
-                                                config = reader.readObject().toString()
-//                                                data.parts = config
-                                                val moduleStringReader = StringReader(config)
-                                                val moduleReader = JSONReader(moduleStringReader)
-                                                moduleReader.startArray()
-                                                while (moduleReader.hasNext()) {
-                                                    var moduleConfig = ""
-                                                    var moduleType = ""
-                                                    moduleReader.startObject()
-                                                    while (moduleReader.hasNext()) {
-                                                        when (moduleReader.readString()) {
-                                                            "config" -> moduleConfig = moduleReader.readObject().toString()
-
-                                                            "type" -> moduleType = moduleReader.readObject().toString()
-                                                        }
-                                                    }
-                                                    moduleReader.endObject()
-                                                    insert(uuid, moduleConfig, moduleType, index, page)
-                                                    index++
-                                                }
-                                                moduleReader.endArray()
-                                            }
-                                            "title" -> title = reader.readObject().toString()
-                                        }
-                                    }
-                                    insertMainData(uuid, config, REPORT_TYPE_MAIN_DATA, title, page)
-                                    page++
-                                    reader.endObject()
-//                                    entity.data!!.add(data)
+                                    var partsItem = JSON.parseObject(reader.readObject().toString(), ReportModule::class.java)
+                                    var report = Report()
+                                    report.id = null
+                                    report.uuid = uuid
+                                    report.name = partsItem.name ?: "name"
+                                    report.page_title = partsItem.page_title ?: "page_title"
+                                    report.index = i
+                                    report.type = partsItem.type ?: "unknown_type"
+                                    report.config = partsItem.config ?: "null_config"
+                                    insertDateBase(report)
+                                    i++
                                 }
                                 reader.endArray()
-                                Log.i(TAG, "dataEnd:" + TimeUtil.getNowTime())
                             }
                         }
                     }
                     reader.endObject()
-                    reader.endArray()
                     Log.i(TAG, "analysisDataEndTime:" + TimeUtil.getNowTime())
-                    queryDateBase(uuid)
+                    generatePageList(queryDateBase(uuid))
                 }
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(object : Subscriber<List<Report>>() {
+                .subscribe(object : Subscriber<List<String>>() {
                     override fun onCompleted() {
                     }
 
-                    override fun onNext(t: List<Report>?) {
+                    override fun onNext(t: List<String>?) {
                         t?.let { callback.onDataLoaded(it) }
 
                     }
@@ -191,15 +174,76 @@ class ModeImpl : ReportModelImpl() {
                     override fun onError(e: Throwable?) {
                         callback.onDataNotAvailable(e!!)
                     }
-
                 })
+    }
+
+    private fun insertDateBase(report: Report) {
+        val reportDao = DaoUtil.getReportDao()
+        reportDao.insert(report)
     }
 
     private fun queryDateBase(uuid: String): List<Report> {
         val reportDao = DaoUtil.getReportDao()
-        return reportDao.queryBuilder()
+        val filter = reportDao.queryBuilder()
                 .where(reportDao.queryBuilder()
-                        .and(ReportDao.Properties.Uuid.eq(uuid), ReportDao.Properties.Type.eq(REPORT_TYPE_MAIN_DATA)))
-                .list() ?: mutableListOf()
+                        .and(ReportDao.Properties.Uuid.eq(uuid), ReportDao.Properties.Type.eq("filter"))).unique()
+        filterObject = JSON.parseObject(filter.config)
+
+        return if (filterObject.isEmpty()) {
+            reportDao.queryBuilder()
+                    .where(ReportDao.Properties.Uuid.eq(uuid))
+                    .list() ?: mutableListOf()
+        } else {
+            reportDao.queryBuilder()
+                    .where(reportDao.queryBuilder()
+                            .and(ReportDao.Properties.Uuid.eq(uuid), ReportDao.Properties.Name.eq(filterObject["display"])))
+                    .list() ?: mutableListOf()
+        }
+    }
+
+    fun queryDateBase(pageId: Int): List<Report> {
+        val reportDao = DaoUtil.getReportDao()
+        return if (filterObject.isEmpty()) {
+            reportDao.queryBuilder()
+                    .where(reportDao.queryBuilder()
+                            .and(ReportDao.Properties.Uuid.eq(uuid), ReportDao.Properties.Page_title.eq(pageTitleList[pageId])))
+                    .list()
+        }
+        else {
+            reportDao.queryBuilder()
+                    .where(reportDao.queryBuilder()
+                            .and(ReportDao.Properties.Uuid.eq(uuid), ReportDao.Properties.Page_title.eq(pageTitleList[pageId]), ReportDao.Properties.Name.eq(filterObject["display"])))
+                    .list()
+        }
+    }
+
+    fun queryModuleConfig(index: Int, pageId: Int): String {
+        val reportDao = DaoUtil.getReportDao()
+        return if (filterObject.isEmpty()) {
+            reportDao.queryBuilder()
+                    .where(reportDao.queryBuilder()
+                            .and(ReportDao.Properties.Uuid.eq(uuid), ReportDao.Properties.Page_title.eq(pageTitleList[pageId]), ReportDao.Properties.Index.eq(index)))
+                    .unique().config
+        }
+        else {
+            reportDao.queryBuilder()
+                    .where(reportDao.queryBuilder()
+                            .and(ReportDao.Properties.Uuid.eq(uuid), ReportDao.Properties.Page_title.eq(pageTitleList[pageId]), ReportDao.Properties.Name.eq(filterObject["display"]), ReportDao.Properties.Index.eq(index)))
+                    .unique().config
+        }
+    }
+
+    fun checkFilter() {
+
+    }
+
+    private fun generatePageList(reports: List<Report>): List<String> {
+        var pageSet = HashSet<String>()
+        for (report in reports) {
+            if (null != report.page_title) {
+                pageSet.add(report.page_title)
+            }
+        }
+        return pageSet.toList()
     }
 }

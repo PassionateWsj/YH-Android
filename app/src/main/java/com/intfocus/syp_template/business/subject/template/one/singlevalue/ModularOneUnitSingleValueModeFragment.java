@@ -26,11 +26,11 @@ import java.text.DecimalFormat;
  */
 public class ModularOneUnitSingleValueModeFragment extends BaseModeFragment implements SingleValueContract.View {
     private static final String ARG_INDEX = "index";
-    private static final String ARG_UUID = "uuid";
+    private static final String ARG_ROOT_ID = "rootId";
     private String mParam;
     private int showCount = 0;
     private int index;
-    private String uuid;
+    private int rootId;
 
     private View rootView;
 
@@ -56,11 +56,11 @@ public class ModularOneUnitSingleValueModeFragment extends BaseModeFragment impl
     private boolean isSwitch;
     private SingleValueContract.Presenter mPresenter;
 
-    public static ModularOneUnitSingleValueModeFragment newInstance(String uuid, int index) {
+    public static ModularOneUnitSingleValueModeFragment newInstance(int rootId, int index) {
         ModularOneUnitSingleValueModeFragment fragment = new ModularOneUnitSingleValueModeFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_INDEX, index);
-        args.putString(ARG_UUID, uuid);
+        args.putInt(ARG_ROOT_ID, rootId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -75,7 +75,7 @@ public class ModularOneUnitSingleValueModeFragment extends BaseModeFragment impl
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             index = getArguments().getInt(ARG_INDEX);
-            uuid = getArguments().getString(ARG_UUID);
+            rootId = getArguments().getInt(ARG_ROOT_ID);
         }
     }
 
@@ -86,7 +86,7 @@ public class ModularOneUnitSingleValueModeFragment extends BaseModeFragment impl
         if (rootView == null) {
             rootView = inflater.inflate(R.layout.fragment_singlevalue, container, false);
             x.view().inject(this, rootView);
-            mPresenter.loadData(uuid, index);
+            mPresenter.loadData(rootId, index);
         }
         return rootView;
     }

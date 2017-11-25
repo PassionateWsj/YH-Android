@@ -36,10 +36,10 @@ import java.util.Collections;
  */
 public class ModularOneUnitCurveChartModeFragment extends BaseModeFragment<MDRPUnitCurveChartMode> implements CustomCurveChartV2.PointClickListener,CurveChartContract.View {
     private static final String ARG_INDEX = "index";
-    private static final String ARG_UUID = "uuid";
+    private static final String ARG_ROOT_ID = "rootId";
     private View rootView;
     private int index;
-    private String uuid;
+    private int rootId;
 
     @ViewInject(R.id.ll_mdrpUnit_curvechart)
     private LinearLayout mLlCurvechart;
@@ -82,11 +82,11 @@ public class ModularOneUnitCurveChartModeFragment extends BaseModeFragment<MDRPU
         return new MDRPUnitCurveChartMode(ctx, getTag());
     }
 
-    public static ModularOneUnitCurveChartModeFragment newInstance(String uuid, int index) {
+    public static ModularOneUnitCurveChartModeFragment newInstance(int rootId, int index) {
         ModularOneUnitCurveChartModeFragment fragment = new ModularOneUnitCurveChartModeFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_INDEX, index);
-        args.putString(ARG_UUID, uuid);
+        args.putInt(ARG_ROOT_ID, rootId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -96,7 +96,7 @@ public class ModularOneUnitCurveChartModeFragment extends BaseModeFragment<MDRPU
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             index = getArguments().getInt(ARG_INDEX);
-            uuid = getArguments().getString(ARG_UUID);
+            rootId = getArguments().getInt(ARG_ROOT_ID);
         }
     }
 
@@ -114,7 +114,7 @@ public class ModularOneUnitCurveChartModeFragment extends BaseModeFragment<MDRPU
             x.view().inject(this, rootView);
             coGroup = getResources().getIntArray(R.array.co_order);
             coCursor = getResources().getIntArray(R.array.co_cursor);
-            mPresenter.loadData(uuid, index);
+            mPresenter.loadData(rootId, index);
         }
         return rootView;
     }

@@ -28,5 +28,5 @@ interface TableModel {
     }
 
     fun getData(@NotNull dataJson: String, @NotNull callbackTableContent: TableContentLoadDataCallback)
-    fun getRootData(@NotNull uuid: String, @NotNull index: Int, @NotNull callbackTableRoot: TableRootLoadDataCallback)
+    fun getRootData(@NotNull rootId: Int, @NotNull index: Int, @NotNull callbackTableRoot: TableRootLoadDataCallback)
 }
