@@ -1,10 +1,8 @@
 package com.intfocus.syp_template.general.base;
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Context;
 
-import com.intfocus.syp_template.general.util.LoadingUtils;
 import com.zbl.lib.baseframe.core.AbstractFragment;
 import com.zbl.lib.baseframe.core.Subject;
 
@@ -16,7 +14,7 @@ public abstract class BaseModeFragment<Target extends Subject> extends AbstractF
     public Activity act;
     public Context ctx;
 
-    protected Dialog loadingDialog;
+//    protected Dialog loadingDialog;
 
     @Override
     public void onAttach(Context context) {
@@ -44,14 +42,14 @@ public abstract class BaseModeFragment<Target extends Subject> extends AbstractF
     }
 
 
-    protected void showLoading(Context context) {
-        loadingDialog = LoadingUtils.createLoadingDialog(context);
-        loadingDialog.show();
-    }
+//    protected void showLoading(Context context) {
+//        loadingDialog = LoadingUtils.createLoadingDialog(context);
+//        loadingDialog.show();
+//    }
 
-    protected void hideLoading() {
-        if (loadingDialog != null && loadingDialog.isShowing()) {
-            loadingDialog.dismiss();
-        }
-    }
+//    protected void hideLoading() {
+//        if (loadingDialog != null && loadingDialog.isShowing()) {
+//            loadingDialog.dismiss();
+//        }
+//    }
 }

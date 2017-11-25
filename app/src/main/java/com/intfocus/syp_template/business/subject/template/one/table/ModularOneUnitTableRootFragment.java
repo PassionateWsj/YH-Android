@@ -81,7 +81,7 @@ public class ModularOneUnitTableRootFragment extends BaseModeFragment<ModularTwo
 
     @Override
     public Subject setSubject() {
-        return new ModularTwo_UnitTablesParentMode(ctx);
+        return null;
     }
 
     @Override
@@ -153,21 +153,23 @@ public class ModularOneUnitTableRootFragment extends BaseModeFragment<ModularTwo
     public void switchFragment(int checkId) {
 
         for (int i = 0; i < datas.size(); i++) {
-            datas.get(i).isCheck = (i == checkId);
+            datas.get(i).setCheck(i == checkId);
         }
         adapter.setData(datas);
 
         lastCheckId = checkId;
         currentFtName = fragmentTag + checkId;
         toFragment = (BaseModeFragment) fm.findFragmentByTag(currentFtName);
-        LogUtil.d(this.getClass().getSimpleName(), "currentFtName:" + currentFtName);
+        LogUtil.d(this, "currentFtName:" + currentFtName);
+        LogUtil.d(this, "toFragment:" + toFragment);
+        LogUtil.d(this, "currFragment == toFragment:" + (currFragment == toFragment));
         if (currFragment != null && currFragment == toFragment) {
             return;
         }
 
         if (toFragment == null) {
             toFragment = ModularOneUnitTablesContentModeFragment.newInstance(suRootID, index);
-            TempSubData.setData(index, entity.datas.get(checkId).config);
+            TempSubData.setData(index, entity.datas.get(checkId).getTable());
             new TableContentPresenter(TableImpl.getInstance(), (ModularOneUnitTablesContentModeFragment) toFragment);
         }
 
@@ -179,18 +181,18 @@ public class ModularOneUnitTableRootFragment extends BaseModeFragment<ModularTwo
             // 隐藏当前的fragment，add下一个到Activity中
             if (currFragment == null) {
                 ft.add(R.id.fl_mdetal_table_cont_container,
-                        toFragment, currentFtName).commitAllowingStateLoss();
+                        toFragment, currentFtName).commitNow();
             } else {
                 ft.hide(currFragment).add(R.id.fl_mdetal_table_cont_container,
                         toFragment, currentFtName)
-                        .commitAllowingStateLoss();
+                        .commitNow();
             }
         } else {
             // 隐藏当前的fragment，显示下一个
             if (currFragment == null) {
-                ft.show(toFragment).commitAllowingStateLoss();
+                ft.show(toFragment).commitNow();
             } else {
-                ft.hide(currFragment).show(toFragment).commitAllowingStateLoss();
+                ft.hide(currFragment).show(toFragment).commitNow();
             }
         }
         currFragment = toFragment;
@@ -203,7 +205,7 @@ public class ModularOneUnitTableRootFragment extends BaseModeFragment<ModularTwo
      */
     @Override
     public void itemClick(int position) {
-        switchFragment(position);
+            switchFragment(position);
     }
 
 }

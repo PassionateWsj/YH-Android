@@ -20,6 +20,7 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.intfocus.syp_template.R;
+import com.intfocus.syp_template.business.subject.template.one.ModeImpl;
 import com.intfocus.syp_template.general.constant.Permissions;
 import com.intfocus.syp_template.general.util.LoadingUtils;
 import com.intfocus.syp_template.general.util.PageLinkManage;
@@ -259,6 +260,7 @@ public abstract class BaseModeActivity<T extends Subject> extends AbstractActivi
      */
     protected void onBack() {
         PageLinkManage.INSTANCE.pageBackIntent(BaseModeActivity.this);
+        ModeImpl.destroyInstance();
         ActManager.getActManager().finishActivity();
     }
 

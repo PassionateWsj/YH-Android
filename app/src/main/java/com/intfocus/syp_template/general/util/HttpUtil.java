@@ -118,7 +118,7 @@ public class HttpUtil {
             }
         } catch (UnknownHostException e) {
             // 400: Unable to resolve host "yonghui.idata.mobi": No address associated with hostname
-            if (e != null && e.getMessage() != null) {
+            if (e.getMessage() != null) {
                 LogUtil.d("UnknownHostException2", e.getMessage());
             }
             retMap.put(URLs.kCode, "400");
@@ -128,7 +128,7 @@ public class HttpUtil {
             retMap.put(URLs.kCode, "400");
             retMap.put(URLs.kBody, "{\"info\": \"请检查网络环境！\"}");
 
-            if (e != null && e.getMessage() != null) {
+            if (e.getMessage() != null) {
                 String errorMessage = e.getMessage().toLowerCase();
                 LogUtil.d("Exception", errorMessage);
                 if (errorMessage.contains(kUnableToResolveHost) || errorMessage.contains(kFailedToConnectTo)) {

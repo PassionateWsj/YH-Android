@@ -62,7 +62,12 @@ class SubjectModelImpl : ReportModelImpl() {
     /**
      * 获取报表数据
      */
-    fun getReportData(reportId: String, templateId: String, groupId: String, callback: LoadDataCallback<String>) {
+    fun getReportData(reportId: String, templateId: String, groupID: String, callback: LoadDataCallback<String>) {
+        var groupId = groupID
+        // 模板 4 的 groupID 为 0
+        if (Integer.valueOf(templateId) == 4) {
+            groupId = "0"
+        }
         jsUrl = String.format(K.K_REPORT_ZIP_DATA, ConfigConstants.kBaseUrl, URLs.MD5(K.ANDROID_API_KEY + K.K_REPORT_BASE_API + K.ANDROID_API_KEY), groupId, templateId, reportId)
         jsFileName = String.format("group_%s_template_%s_report_%s.js", groupId, templateId, reportId)
         htmlUrl = String.format(K.K_REPORT_HTML, ConfigConstants.kBaseUrl, groupId, templateId, reportId)
@@ -130,9 +135,9 @@ class SubjectModelImpl : ReportModelImpl() {
      * 获取报表最新数据
      */
     fun getData(callback: LoadDataCallback<String>) {
-        var assetsPath = FileUtil.sharedPath(globalContext)
-        var outputPath = FileUtil.dirPath(globalContext, K.K_CACHED_DIR_NAME, String.format("%s.zip", jsFileName))
-        var response = download(jsUrl, outputPath)
+        val assetsPath = FileUtil.sharedPath(globalContext)
+        val outputPath = FileUtil.dirPath(globalContext, K.K_CACHED_DIR_NAME, String.format("%s.zip", jsFileName))
+        val response = download(jsUrl, outputPath)
 
         //添加code字段是否存在。原因:网络不好的情况下response为{}
         if (!response.containsKey(URLs.kCode) || !response[URLs.kCode].equals("200")) {
@@ -175,9 +180,9 @@ class SubjectModelImpl : ReportModelImpl() {
      * 下载报表 html 页面
      */
     private fun generateHtml(): Map<String, String> {
-        var retMap = HashMap<String, String>(16)
-        var htmlName = HttpUtil.urlToFileName(htmlUrl)
-        var htmlPath = String.format("%s/%s", FileUtil.dirPath(globalContext, K.K_HTML_DIR_NAME), htmlName)
+        val retMap = HashMap<String, String>(16)
+        val htmlName = HttpUtil.urlToFileName(htmlUrl)
+        val htmlPath = String.format("%s/%s", FileUtil.dirPath(globalContext, K.K_HTML_DIR_NAME), htmlName)
         val relativeAssetsPath = "../../Shared/assets"
 
         val headers = ApiHelper.checkResponseHeader(htmlUrl)
@@ -191,7 +196,7 @@ class SubjectModelImpl : ReportModelImpl() {
                 File(htmlPath).delete()
                 ApiHelper.storeResponseHeader(htmlUrl, response)
 
-                htmlContent = htmlContent!!.replace("/javascripts/", String.format("%s/javascripts/", relativeAssetsPath))
+                htmlContent = htmlContent.replace("/javascripts/", String.format("%s/javascripts/", relativeAssetsPath))
                 htmlContent = htmlContent.replace("/stylesheets/", String.format("%s/stylesheets/", relativeAssetsPath))
                 htmlContent = htmlContent.replace("/images/", String.format("%s/images/", relativeAssetsPath))
                 FileUtil.writeFile(htmlPath, htmlContent)
