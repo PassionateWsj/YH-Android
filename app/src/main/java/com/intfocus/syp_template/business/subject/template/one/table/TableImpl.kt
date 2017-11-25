@@ -82,6 +82,7 @@ class TableImpl : TableModel {
                 })
     }
 
+<<<<<<< HEAD
     override fun getRootData(uuid: String, index: Int, callbackTableRoot: TableModel.TableRootLoadDataCallback) {
 
         observable = Observable.just(1)
@@ -99,6 +100,36 @@ class TableImpl : TableModel {
                     val data = MDetailRootPageRequestResult(JSON.parseArray(report.config, MDetailUnitEntity::class.java))
                     LogUtil.d(TAG, "TableRoot 转换耗时 ::: " + (System.currentTimeMillis() - startTime) + " 毫秒")
                     data
+=======
+    override fun getRootData(rootId: Int, index: Int, callbackTableRoot: TableModel.TableRootLoadDataCallback) {
+        LogUtil.d(TAG, "TableRoot 表格数据开始转为对象")
+        val startTime = System.currentTimeMillis()
+        observable = Observable.just(1)
+                .subscribeOn(Schedulers.io())
+                .map {
+                    val result = ModeImpl.getInstance().queryModuleConfig(index, rootId)
+                    Log.i(TAG, "StartAnalysisTime:" + TimeUtil.getNowTime())
+                    val datas = ArrayList<MDetailUnitEntity>()
+                    val isr = StringReader(result)
+                    val reader = JSONReader(isr)
+                    reader.startArray()
+                    while (reader.hasNext()) {
+                        val entity = MDetailUnitEntity()
+                        reader.startObject()
+                        while (reader.hasNext()) {
+                            val key = reader.readString()
+                            when (key) {
+                                "table" -> entity.config = reader.readObject().toString()
+
+                                "title" -> entity.type = reader.readObject().toString()
+                            }
+                        }
+                        datas.add(entity)
+                        reader.endObject()
+                    }
+                    reader.endArray()
+                    MDetailRootPageRequestResult(datas)
+>>>>>>> refactor-template1
                 }
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(object : Observer<MDetailRootPageRequestResult> {

@@ -23,19 +23,19 @@ public class Report {
     String uuid;
 
     /**
+     * 报表筛选条件
+     */
+    String name;
+
+    /**
      * 报表组件id
      */
     int index;
 
     /**
-     * 报表根页签id
-     */
-    int page;
-
-    /**
      * 报表根页签名
      */
-    String title;
+    String page_title;
 
     /**
      * 组件类型

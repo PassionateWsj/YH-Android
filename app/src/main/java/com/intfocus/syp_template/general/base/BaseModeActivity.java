@@ -259,6 +259,7 @@ public abstract class BaseModeActivity<T extends Subject> extends AbstractActivi
      * 返回键回掉方法
      */
     protected void onBack() {
+        ModeImpl.destroyInstance();
         PageLinkManage.INSTANCE.pageBackIntent(BaseModeActivity.this);
         ModeImpl.destroyInstance();
         ActManager.getActManager().finishActivity();

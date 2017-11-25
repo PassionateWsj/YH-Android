@@ -116,12 +116,12 @@ public class ModularOneRootPageModeFragment extends BaseModeFragment<MDetalRootP
             switch (report.getType()) {
                 //标题栏
                 case "banner":
-                    fragment = ModularOneUnitBannerModeFragment.newInstance(uuid, report.getIndex());
+                    fragment = ModularOneUnitBannerModeFragment.newInstance(suRootID, report.getIndex());
                     break;
 
                 //曲线图表/柱状图(竖)
                 case "chart":
-                    fragment = ModularOneUnitCurveChartModeFragment.newInstance(uuid, report.getIndex());
+                    fragment = ModularOneUnitCurveChartModeFragment.newInstance(suRootID, report.getIndex());
                     new CurveChartPresenter(CurveChartImpl.getInstance(), (ModularOneUnitCurveChartModeFragment) fragment);
                     break;
 
@@ -140,13 +140,13 @@ public class ModularOneRootPageModeFragment extends BaseModeFragment<MDetalRootP
 
                 //单值组件
                 case "single_value":
-                    fragment = ModularOneUnitSingleValueModeFragment.newInstance(uuid, report.getIndex());
+                    fragment = ModularOneUnitSingleValueModeFragment.newInstance(suRootID, report.getIndex());
                     new SingleValuePresenter(SingleValueImpl.getInstance(), (ModularOneUnitSingleValueModeFragment) fragment);
                     break;
 
                 //条状图(横)
                 case "bargraph":
-                    fragment = ModularOneUnitPlusMinusChartModeFragment.newInstance(uuid, report.getIndex());
+                    fragment = ModularOneUnitPlusMinusChartModeFragment.newInstance(suRootID, report.getIndex());
                     break;
 
                 //类Excel冻结横竖首列表格

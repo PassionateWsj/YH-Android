@@ -19,5 +19,5 @@ interface RootPageModel {
         fun onDataNotAvailable(e: Throwable)
     }
 
-    fun getData(@NotNull uuid: String, @NotNull page: Int, @NotNull callback: LoadDataCallback)
+    fun getData(@NotNull uuid: String, @NotNull pageId: Int, @NotNull callback: LoadDataCallback)
 }

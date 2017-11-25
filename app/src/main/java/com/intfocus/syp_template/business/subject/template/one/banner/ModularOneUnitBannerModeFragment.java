@@ -12,6 +12,7 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.intfocus.syp_template.R;
+import com.intfocus.syp_template.business.subject.template.one.ModeImpl;
 import com.intfocus.syp_template.business.subject.template.one.TemplateOneActivity;
 import com.intfocus.syp_template.general.bean.Report;
 import com.intfocus.syp_template.general.gen.ReportDao;
@@ -31,10 +32,10 @@ import static com.intfocus.syp_template.constant.Params.REPORT_TYPE_BANNER;
  */
 public class ModularOneUnitBannerModeFragment extends BaseModeFragment {
     private static final String ARG_INDEX = "index";
-    private static final String ARG_UUID = "uuid";
+    private static final String ARG_ROOT_ID = "rootId";
     private String mParam;
     private int index;
-    private String uuid;
+    private int rootId;
 
     private View rootView;
 
@@ -55,11 +56,11 @@ public class ModularOneUnitBannerModeFragment extends BaseModeFragment {
     public ModularOneUnitBannerModeFragment() {
     }
 
-    public static ModularOneUnitBannerModeFragment newInstance(String uuid, int index) {
+    public static ModularOneUnitBannerModeFragment newInstance(int rootId, int index) {
         ModularOneUnitBannerModeFragment fragment = new ModularOneUnitBannerModeFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_INDEX, index);
-        args.putString(ARG_UUID, uuid);
+        args.putInt(ARG_ROOT_ID, rootId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -69,7 +70,7 @@ public class ModularOneUnitBannerModeFragment extends BaseModeFragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             index = getArguments().getInt(ARG_INDEX);
-            uuid = getArguments().getString(ARG_UUID);
+            rootId = getArguments().getInt(ARG_ROOT_ID);
         }
     }
 
@@ -79,7 +80,7 @@ public class ModularOneUnitBannerModeFragment extends BaseModeFragment {
         if (rootView == null) {
             rootView = inflater.inflate(R.layout.fragment_banner, container, false);
             x.view().inject(this, rootView);
-            init();
+            mParam = ModeImpl.getInstance().queryModuleConfig(index, rootId);
             initPopup(container);
             bindData();
         }
@@ -87,7 +88,7 @@ public class ModularOneUnitBannerModeFragment extends BaseModeFragment {
     }
 
     private void initPopup(ViewGroup container) {
-        View contentView = LayoutInflater.from(act).inflate(R.layout.item_bannerinfo, container,false);
+        View contentView = LayoutInflater.from(act).inflate(R.layout.item_bannerinfo, container, false);
         tv_name = contentView.findViewById(R.id.tv_name_bannerInfo);
         tv_count = contentView.findViewById(R.id.tv_count_bannerInfo);
         imgbtn_close = contentView.findViewById(R.id.imgBtn_ColsPopupWindow_bannerInfo);
@@ -147,14 +148,5 @@ public class ModularOneUnitBannerModeFragment extends BaseModeFragment {
         //设置PopupWindow显示的位置
         TemplateOneActivity activity = (TemplateOneActivity) getActivity();
         popupWindow.showAsDropDown(activity.actionbar);
-    }
-
-    private void init() {
-        ReportDao reportDao = DaoUtil.INSTANCE.getReportDao();
-        Report report = reportDao.queryBuilder()
-                .where(reportDao.queryBuilder().and(ReportDao.Properties.Uuid.eq(uuid), ReportDao.Properties.Type.eq(REPORT_TYPE_BANNER), ReportDao.Properties.Index.eq(index)))
-                .unique();
-
-        mParam = report.getConfig();
     }
 }

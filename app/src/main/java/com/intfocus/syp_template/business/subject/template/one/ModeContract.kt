@@ -17,10 +17,11 @@ import com.intfocus.syp_template.general.bean.Report
 interface ModeContract {
 
     interface View : BaseView<Presenter> {
-        fun initRootView(reports: List<Report>)
+        fun initRootView(reportPage: List<String>)
     }
 
     interface Presenter : BasePresenter {
         fun loadData(ctx: Context, groupId: String, reportId: String)
+        fun loadFilterData()
     }
 }

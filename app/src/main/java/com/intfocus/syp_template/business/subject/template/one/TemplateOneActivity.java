@@ -92,7 +92,7 @@ public class TemplateOneActivity extends BaseModeActivity<MeterDetailActMode> im
      * 数据实体
      */
     private ModeContract.Presenter mPresenter;
-    private List<Report> reports;
+    private List<String> reportPages;
 
     @Override
     public int setLayoutRes() {
@@ -175,7 +175,7 @@ public class TemplateOneActivity extends BaseModeActivity<MeterDetailActMode> im
         }
 
         if (toFragment == null) {
-            if (reports != null && reports.size() > 0) {
+            if (reportPages != null && reportPages.size() > 0) {
                 toFragment = ModularOneRootPageModeFragment.newInstance(checkId, uuid);
                 new RootPagePresenter(RootPageImpl.getInstance(), (ModularOneRootPageModeFragment) toFragment);
             }
@@ -197,14 +197,14 @@ public class TemplateOneActivity extends BaseModeActivity<MeterDetailActMode> im
     }
 
     @Override
-    public void initRootView(@NotNull List<? extends Report> report) {
-        if (reports == null) {
-            reports = new ArrayList<>();
+    public void initRootView(@NotNull List<String> reportPage) {
+        if (reportPages == null) {
+            reportPages = new ArrayList<>();
         } else {
-            reports.clear();
+            reportPages.clear();
         }
-        reports.addAll(report);
-        int dataSize = reports.size();
+        reportPages.addAll(reportPage);
+        int dataSize = reportPages.size();
         // 多个根页签
         if (dataSize > 1) {
             View scrollTitle = LayoutInflater.from(ctx)
@@ -226,7 +226,7 @@ public class TemplateOneActivity extends BaseModeActivity<MeterDetailActMode> im
                 rbtn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.font_medium));
                 ColorStateList colorStateList = getResources().getColorStateList(R.color.color_mdetal_act_rbtn);
                 rbtn.setTextColor(colorStateList);
-                rbtn.setText(reports.get(i).getTitle());
+                rbtn.setText(reportPages.get(i));
                 radioGroup.addView(rbtn, paramsRb);
                 rbtn.setOnCheckedChangeListener(rootTableListener);
                 if (i == 0) {

@@ -22,6 +22,6 @@ interface RootPageContract {
 
     interface Presenter : BasePresenter {
         // 加载数据
-        fun loadData(uuid: String, page: Int)
+        fun loadData(uuid: String, pageId: Int)
     }
 }
