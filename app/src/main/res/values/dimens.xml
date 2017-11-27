@@ -3,7 +3,6 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
-
     <!-- EX -->
     <dimen name="titlebar_height">45dip</dimen>
     <dimen name="button_height">37dip</dimen>

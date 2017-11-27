@@ -1,7 +1,7 @@
 package com.intfocus.syp_template.general.net;
 
 import com.google.gson.Gson;
-import com.intfocus.syp_template.general.data.response.BaseResultMember;
+import com.intfocus.syp_template.model.response.BaseResultMember;
 
 import java.io.IOException;
 import java.lang.reflect.Type;

@@ -3,9 +3,9 @@ package com.intfocus.syp_template.general.net;
 import android.annotation.SuppressLint;
 import android.content.Context;
 
-import com.intfocus.syp_template.YHApplication;
-import com.intfocus.syp_template.general.constant.ConfigConstants;
-import com.intfocus.syp_template.general.util.HttpUtil;
+import com.intfocus.syp_template.SYPApplication;
+import com.intfocus.syp_template.ConfigConstants;
+import com.intfocus.syp_template.util.HttpUtil;
 
 import java.security.SecureRandom;
 import java.security.cert.CertificateException;
@@ -98,7 +98,7 @@ public class RetrofitUtil {
                     .doOnSubscribe(new Action0() {
                         @Override
                         public void call() {
-                            if (!HttpUtil.isConnected(YHApplication.globalContext)) {
+                            if (!HttpUtil.isConnected(SYPApplication.globalContext)) {
                                 throw new NetStatusException(9000, "网络未连接");
                             }
                         }

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="184dp">
 
-    <com.intfocus.syp_template.general.view.AutoScrollViewPager
+    <com.intfocus.syp_template.ui.view.AutoScrollViewPager
         android:id="@+id/vp_icons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />

@@ -5,7 +5,7 @@
               android:layout_height="match_parent"
               android:background="@color/co8_syr"
               android:orientation="vertical"
-              tools:context=".business.dashboard.mine.activity.ShowListMsgActivity">
+              tools:context=".dashboard.mine.activity.ShowListMsgActivity">
 
 
     <RelativeLayout
