@@ -61,7 +61,9 @@ public class ModularOneUnitTableRootFragment extends BaseModeFragment<ModularTwo
      * 最上层跟跟标签ID
      */
     public int suRootID;
-    //title
+    /**
+     * title
+     */
     @ViewInject(R.id.recycler_view)
     private RecyclerView recyclerView;
     private TableTitleAdapter adapter;
@@ -205,7 +207,7 @@ public class ModularOneUnitTableRootFragment extends BaseModeFragment<ModularTwo
      */
     @Override
     public void itemClick(int position) {
-            switchFragment(position);
+        switchFragment(position);
     }
 
 }

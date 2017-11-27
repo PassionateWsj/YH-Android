@@ -30,6 +30,7 @@ import org.xutils.x;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 /**
  * 仪表盘-详情页面-根页签-曲线图单元
@@ -72,7 +73,7 @@ public class ModularOneUnitCurveChartModeFragment extends BaseModeFragment<MDRPU
 
     int[] coGroup;
     int[] coCursor;
-    private String chartType;
+    private List<String> chartType;
     private CustomCurveChartV2 chart;
     private int YCOORDINATEVALENUM;
     private CurveChartContract.Presenter mPresenter;
@@ -132,29 +133,15 @@ public class ModularOneUnitCurveChartModeFragment extends BaseModeFragment<MDRPU
                 chart.setDrawingCacheEnabled(true);
                 //设置柱形图之间间隔
                 chart.setBarChartInterval(50);
-                chart.setxLabel(xLabel);
-                chart.setyLabel(yLabel);
+                chart.setXLabel(xLabel);
+                chart.setYLabel(yLabel);
                 chart.setUnit(unit);
                 chart.setColorList(color);
                 int selectItem = chart.setDataList(seriesLables);
                 chart.setDefaultColor(ContextCompat.getColor(ctx, R.color.co9));
-                chart.setDefauteMargin((int) margin);
+                chart.setDefaultMargin((int) margin);
                 chart.setPointClickListener(ModularOneUnitCurveChartModeFragment.this);
-                int chartStyle;
-                switch (chartType) {
-                    case "line":
-                        chartStyle = CustomCurveChartV2.ChartStyle.LINE;
-                        break;
-                    case "bar":
-                        chartStyle = CustomCurveChartV2.ChartStyle.BAR;
-                        break;
-                    case "line-bar":
-                        chartStyle = CustomCurveChartV2.ChartStyle.LINE_BAR;
-                        break;
-                    default:
-                        chartStyle = CustomCurveChartV2.ChartStyle.LINE;
-                }
-                chart.setCharStyle(chartStyle);
+                chart.setCharStyle(chartType);
                 onPointClick(selectItem);
                 mLlCurvechart.addView(chart);
             } catch (Exception e) {
@@ -207,7 +194,6 @@ public class ModularOneUnitCurveChartModeFragment extends BaseModeFragment<MDRPU
                         case 3:
                             cursorIndex = 0;
                             break;
-
                         case 1:
                         case 4:
                             cursorIndex = 1;
@@ -293,16 +279,17 @@ public class ModularOneUnitCurveChartModeFragment extends BaseModeFragment<MDRPU
         int yIntervalValue;
         seriesLables = new ArrayList<>();
         ArrayList<Float> seriesA = new ArrayList<>();
-
+        chartType = new ArrayList<>();
         ArrayList<MDRPUnitCurveChartEntity.SeriesEntity> arrays = result.series;
         for (MDRPUnitCurveChartEntity.SeriesEntity array : arrays) {
             String datas = array.data;
-            chartType = array.type;
+            chartType .add(array.type);
             if (datas.contains("{")) {
                 ArrayList<MDRPUnitSeries> list = (ArrayList<MDRPUnitSeries>) JSON.parseArray(datas, MDRPUnitSeries.class);
                 color = new int[list.size()];
                 Float[] lables = new Float[list.size()];
-                for (int i = 0; i < list.size(); i++) {
+                int dataSize = list.size();
+                for (int i = 0; i < dataSize; i++) {
                     MDRPUnitSeries seriesEntity = list.get(i);
                     color[i] = seriesEntity.color;
                     Float lableV = seriesEntity.value;
