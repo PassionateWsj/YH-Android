@@ -60,7 +60,7 @@ class ModularOneTableNameAdapter(private val ctx: Context, ltdata: List<com.intf
 
         if (entity.sub_data == null || (entity.sub_data.data == null && entity.sub_data.head == null)) {
             viewHolder.tvName!!.setTextColor(defaultColor)
-            viewHolder.imgDot!!.visibility = View.GONE
+            viewHolder.imgDot!!.visibility = View.INVISIBLE
         } else {
             viewHolder.tvName!!.setTextColor(hasSubColor)
             viewHolder.imgDot!!.visibility = View.VISIBLE
