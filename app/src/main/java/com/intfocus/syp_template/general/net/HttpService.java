@@ -1,26 +1,26 @@
 package com.intfocus.syp_template.general.net;
 
-import com.intfocus.syp_template.business.collection.entity.CollectionRequestBody;
-import com.intfocus.syp_template.business.login.bean.Device;
-import com.intfocus.syp_template.business.login.bean.DeviceRequest;
-import com.intfocus.syp_template.business.login.bean.NewUser;
-import com.intfocus.syp_template.general.data.request.CommentBody;
-import com.intfocus.syp_template.general.data.request.RequestFavourite;
-import com.intfocus.syp_template.general.data.response.BaseResult;
-import com.intfocus.syp_template.general.data.response.article.ArticleResult;
-import com.intfocus.syp_template.general.data.response.asset.AssetsResult;
-import com.intfocus.syp_template.general.data.response.filter.MenuResult;
-import com.intfocus.syp_template.general.data.response.home.HomeMsgResult;
-import com.intfocus.syp_template.general.data.response.home.KpiResult;
-import com.intfocus.syp_template.general.data.response.home.ReportListResult;
-import com.intfocus.syp_template.general.data.response.home.WorkBoxResult;
-import com.intfocus.syp_template.general.data.response.login.RegisterResult;
-import com.intfocus.syp_template.general.data.response.mine_page.NoticeContentResult;
-import com.intfocus.syp_template.general.data.response.mine_page.UserInfoResult;
-import com.intfocus.syp_template.general.data.response.notice.NoticesResult;
-import com.intfocus.syp_template.general.data.response.scanner.NearestStoresResult;
-import com.intfocus.syp_template.general.data.response.scanner.StoreListResult;
-import com.intfocus.syp_template.general.util.K;
+import com.intfocus.syp_template.subject.nine.entity.CollectionRequestBody;
+import com.intfocus.syp_template.login.bean.Device;
+import com.intfocus.syp_template.login.bean.DeviceRequest;
+import com.intfocus.syp_template.login.bean.NewUser;
+import com.intfocus.syp_template.model.request.CommentBody;
+import com.intfocus.syp_template.model.request.RequestFavourite;
+import com.intfocus.syp_template.model.response.BaseResult;
+import com.intfocus.syp_template.model.response.article.ArticleResult;
+import com.intfocus.syp_template.model.response.asset.AssetsResult;
+import com.intfocus.syp_template.model.response.filter.MenuResult;
+import com.intfocus.syp_template.model.response.home.HomeMsgResult;
+import com.intfocus.syp_template.model.response.home.KpiResult;
+import com.intfocus.syp_template.model.response.home.ReportListResult;
+import com.intfocus.syp_template.model.response.home.WorkBoxResult;
+import com.intfocus.syp_template.model.response.login.RegisterResult;
+import com.intfocus.syp_template.model.response.mine_page.NoticeContentResult;
+import com.intfocus.syp_template.model.response.mine_page.UserInfoResult;
+import com.intfocus.syp_template.model.response.notice.NoticesResult;
+import com.intfocus.syp_template.model.response.scanner.NearestStoresResult;
+import com.intfocus.syp_template.model.response.scanner.StoreListResult;
+import com.intfocus.syp_template.util.K;
 
 import java.util.Map;
 

@@ -1,7 +1,9 @@
 package com.intfocus.syp_template.general.net;
 
 /**
- * Created by admin on 2016/6/30.
+ *
+ * @author admin
+ * @date 2016/6/30
  */
 public class ApiException extends Exception {
     private final int code;

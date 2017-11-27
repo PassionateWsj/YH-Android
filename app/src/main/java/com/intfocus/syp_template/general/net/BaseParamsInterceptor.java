@@ -3,10 +3,10 @@ package com.intfocus.syp_template.general.net;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.intfocus.syp_template.general.constant.ConfigConstants;
-import com.intfocus.syp_template.general.util.K;
-import com.intfocus.syp_template.general.util.LogUtil;
-import com.intfocus.syp_template.general.util.Utils;
+import com.intfocus.syp_template.ConfigConstants;
+import com.intfocus.syp_template.util.K;
+import com.intfocus.syp_template.util.LogUtil;
+import com.intfocus.syp_template.util.Utils;
 
 import java.io.IOException;
 

@@ -37,7 +37,7 @@
     <uses-permission android:name="android.permission.READ_LOGS"/>
     <!-- 获取logcat日志 -->
     <application
-        android:name="com.intfocus.syp_template.YHApplication"
+        android:name="com.intfocus.syp_template.SYPApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -58,21 +58,21 @@
                 android:resource="@xml/provider_paths"/>
         </provider>
 
-        <service android:name="org.OpenUDID.OpenUDID_service">
+        <service android:name=".service.OpenUDIDService">
             <intent-filter>
                 <action android:name="org.openudid.GETUDID"/>
             </intent-filter>
         </service>
 
         <!-- 定位服务 -->
-        <service android:name="com.intfocus.syp_template.general.service.LocationService"/>
+        <service android:name="com.intfocus.syp_template.service.LocationService"/>
         <!-- 高德地图 -->
         <service android:name="com.amap.api.location.APSService"/>
 
-        <service android:name="com.intfocus.syp_template.general.service.CollectionUploadService"/>
+        <service android:name="com.intfocus.syp_template.service.CollectionUploadService"/>
 
         <activity
-            android:name="com.intfocus.syp_template.business.launcher.LauncherActivity"
+            android:name="com.intfocus.syp_template.launcher.LauncherActivity"
             android:screenOrientation="portrait"
             android:theme="@style/LauncherTheme">
             <intent-filter>
@@ -86,95 +86,89 @@
 
         <!-- 模板三 -->
         <activity
-            android:name="com.intfocus.syp_template.business.subject.template.three.TemplateThreeActivity"
+            android:name=".subject.three.MultiIndexActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
 
         <!-- 问题反馈 -->
         <activity
-            android:name="com.intfocus.syp_template.business.dashboard.mine.activity.FeedbackActivity"
+            android:name="com.intfocus.syp_template.dashboard.mine.activity.FeedbackActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar"/>
 
         <activity
-            android:name="com.intfocus.syp_template.collection.CollectionActivity"
+            android:name="com.intfocus.syp_template.subject.nine.CollectionActivity"
             android:screenOrientation="portrait"
             ></activity>
         <!-- 公告详情 -->
         <activity
-            android:name="com.intfocus.syp_template.business.dashboard.mine.activity.NoticeContentActivity"
+            android:name="com.intfocus.syp_template.dashboard.mine.activity.NoticeContentActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
         <!-- 模板五 -->
         <activity
-            android:name="com.intfocus.syp_template.business.subject.template.five.TemplateFiveActivity"
+            android:name="com.intfocus.syp_template.subject.five.SuperTableActivity"
             android:screenOrientation="fullSensor"
             android:theme="@style/AppTheme"/>
         <!-- 忘记密码 -->
         <activity
-            android:name="com.intfocus.syp_template.business.login.ForgetPasswordActivity"
+            android:name="com.intfocus.syp_template.login.ForgetPasswordActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
         <!-- 修改密码页 -->
         <activity
-            android:name="com.intfocus.syp_template.business.login.LoginActivity"
+            android:name="com.intfocus.syp_template.login.LoginActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
         <!-- 修改密码页 -->
         <activity
-            android:name="com.intfocus.syp_template.business.dashboard.mine.activity.AlterPasswordActivity"
+            android:name="com.intfocus.syp_template.dashboard.mine.activity.AlterPasswordActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
         <!-- 文章收藏页 -->
         <activity
-            android:name="com.intfocus.syp_template.business.dashboard.mine.activity.FavoriteArticleActivity"
+            android:name="com.intfocus.syp_template.dashboard.mine.activity.FavoriteArticleActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
         <!-- 筛选界面 -->
         <activity
-            android:name="com.intfocus.syp_template.general.filter.FilterActivity"
+            android:name="com.intfocus.syp_template.filter.FilterActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
         <!-- 扫码页 -->
         <activity
-            android:name="com.intfocus.syp_template.business.scanner.BarCodeScannerActivity"
+            android:name="com.intfocus.syp_template.scanner.BarCodeScannerActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar"
             android:windowSoftInputMode="adjustResize"/>
         <!-- 个人信息 -->
         <activity
-            android:name="com.intfocus.syp_template.business.dashboard.mine.activity.SettingActivity"
+            android:name="com.intfocus.syp_template.dashboard.mine.activity.SettingActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme2"/>
         <!-- 个人信息页信息展示 -->
         <activity
-            android:name="com.intfocus.syp_template.business.dashboard.mine.activity.SettingListActivity"
+            android:name="com.intfocus.syp_template.dashboard.mine.activity.SettingListActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
         <!-- 选项配置 -->
         <activity
-            android:name="com.intfocus.syp_template.business.dashboard.mine.activity.SettingPreferenceActivity"
+            android:name="com.intfocus.syp_template.dashboard.mine.activity.SettingPreferenceActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
 
         <!-- 主页面 -->
         <activity
-            android:name="com.intfocus.syp_template.business.dashboard.DashboardActivity"
+            android:name="com.intfocus.syp_template.dashboard.DashboardActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/AppDashboardTheme"/>
 
         <!-- 模板二/主题页面 -->
-        <activity
-            android:name="com.intfocus.syp_template.business.subject.template.two.SubjectActivity"
-
-            android:configChanges="orientation|screenSize"
-            android:screenOrientation="fullSensor"
-            android:theme="@style/AppTheme"/>
 
         <!-- 模板二/主题页面 -->
         <activity
-            android:name="com.intfocus.syp_template.business.subject.template.two.SubjectActivity2"
+            android:name="com.intfocus.syp_template.subject.two.WebPageActivity"
 
             android:configChanges="orientation|screenSize"
             android:screenOrientation="fullSensor"
@@ -182,80 +176,68 @@
 
         <!-- 原生模板二/主题页面 -->
         <activity
-            android:name="com.intfocus.syp_template.business.subject.template.one.TemplateOneActivity"
+            android:name="com.intfocus.syp_template.subject.one.NativeReportActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
 
         <!-- 原生模板二/表格页面 -->
         <activity
-            android:name="com.intfocus.syp_template.business.subject.template.one.table.ModularOneSubTableActivity"
+            android:name="com.intfocus.syp_template.subject.one.module.tables.SubTableActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
         <!-- 外部链接 -->
         <activity
-            android:name="com.intfocus.syp_template.business.subject.webapplication.WebApplicationActivity"
+            android:name="com.intfocus.syp_template.subject.webapplication.WebApplicationActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
         <!-- 模版六外部链接 -->
         <activity
-            android:name="com.intfocus.syp_template.business.subject.webapplication.WebApplicationActivityV6"
+            android:name="com.intfocus.syp_template.subject.webapplication.WebApplicationActivityV6"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
         <!-- 评论页 -->
-        <activity
-            android:name="com.intfocus.syp_template.general.CommentActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme"/>
         <!-- 扫码结果页 -->
         <activity
-            android:name="com.intfocus.syp_template.business.scanner.ScannerResultActivity"
+            android:name="com.intfocus.syp_template.scanner.ScannerResultActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
         <!-- 门店选择页 -->
         <activity
-            android:name="com.intfocus.syp_template.business.scanner.StoreSelectorActivity"
+            android:name="com.intfocus.syp_template.scanner.StoreSelectorActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
         <!-- 锁屏密码设置 -->
         <activity
-            android:name="com.intfocus.syp_template.business.dashboard.mine.activity.InitPassCodeActivity"
+            android:name="com.intfocus.syp_template.dashboard.mine.activity.InitPassCodeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
         <!-- 锁屏登录 -->
         <activity
-            android:name="com.intfocus.syp_template.business.launcher.ConfirmPassCodeActivity"
+            android:name="com.intfocus.syp_template.launcher.ConfirmPassCodeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
         <!-- 更新日志 -->
-        <activity
-            android:name="com.intfocus.syp_template.business.dashboard.mine.activity.ThursdaySayActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme"/>
         <!-- 开发者选项 -->
-        <activity
-            android:name="com.intfocus.syp_template.business.dashboard.mine.activity.DeveloperActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme"/>
         <activity
             android:name="com.intfocus.syp_template.general.wxapi.WXEntryActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
-        <activity android:name="com.intfocus.syp_template.business.dashboard.mine.activity.ShowListMsgActivity"/>
-        <activity android:name="com.intfocus.syp_template.business.dashboard.mine.InstituteContentActivity"/>
+        <activity android:name="com.intfocus.syp_template.dashboard.mine.activity.ShowListMsgActivity"/>
+        <activity android:name="com.intfocus.syp_template.dashboard.mine.InstituteContentActivity"/>
         <activity
-            android:name="com.intfocus.syp_template.business.dashboard.mine.activity.ShowPushMessageActivity"
+            android:name="com.intfocus.syp_template.dashboard.mine.activity.ShowPushMessageActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar"/>
         <!-- 消息页 -->
         <activity
-            android:name="com.intfocus.syp_template.business.dashboard.mine.activity.PushMessageContentActivity"
+            android:name="com.intfocus.syp_template.dashboard.mine.activity.PushMessageContentActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar"/>
         <!-- 引导页 -->
         <activity
-            android:name="com.intfocus.syp_template.business.launcher.GuideActivity"
+            android:name="com.intfocus.syp_template.launcher.GuideActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar"/>
 
