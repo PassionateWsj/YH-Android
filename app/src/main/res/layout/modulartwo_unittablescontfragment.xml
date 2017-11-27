@@ -10,7 +10,6 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/size_default_medium" />-->
 
-
     <FrameLayout
         android:id="@+id/fl_tableTitle_container"
         android:layout_width="match_parent"
@@ -36,7 +35,7 @@
 
                 <com.intfocus.syp_template.general.view.NotScrollListView
                     android:id="@+id/nslistView_unit_table_LineName"
-                    android:layout_width="100dp"
+                    android:layout_width="108dp"
                     android:layout_height="match_parent"
                     android:dividerHeight="1px" />
 
