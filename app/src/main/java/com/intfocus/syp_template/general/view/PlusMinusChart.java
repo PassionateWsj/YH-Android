@@ -9,6 +9,7 @@ import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
@@ -79,6 +80,9 @@ public class PlusMinusChart extends View implements ValueAnimator.AnimatorUpdate
      * 轴线
      */
     private float xCenter;
+    private int mSelectItem;
+    private int mDsize;
+    private float mBarOffset;
 
     public PlusMinusChart(Context context) {
         super(context);
@@ -121,8 +125,8 @@ public class PlusMinusChart extends View implements ValueAnimator.AnimatorUpdate
      */
     private void drawBAR(Canvas canvas, Paint paint) {
         paint.setStyle(Paint.Style.FILL);
-        int dsize = lt_data.size();
-        float barOffset = yScale / 3;
+        mDsize = lt_data.size();
+        mBarOffset = yScale / 3;
         float yOffset = yScale / 2;
         float pOffset = paintStrokeW / 2;
 
@@ -130,22 +134,33 @@ public class PlusMinusChart extends View implements ValueAnimator.AnimatorUpdate
         float top;
         float right;
         float bottom;
-
-        for (int i = 0; i < dsize; i++) {
+        float selectXIncrement = 16;
+        float selectYIncrement = 8;
+        for (int i = 0; i < mDsize; i++) {
             float value = Float.parseFloat(lt_data.get(i).data.replace("%", ""));
 
             float length = toX(value * (1 + (ratio - 1)));
             float y = yPoint + yScale * (i + 1) - yOffset;
             if (value < 0) {
                 left = xCenter + length;
-                top = y - barOffset;
+                top = y - mBarOffset;
                 right = xCenter - pOffset;
-                bottom = y + barOffset;
+                bottom = y + mBarOffset;
+                if (mSelectItem == i) {
+                    left -= selectXIncrement;
+                }
             } else {
                 left = xCenter + pOffset;
-                top = y - barOffset;
+                top = y - mBarOffset;
                 right = xCenter + length;
-                bottom = y + barOffset;
+                bottom = y + mBarOffset;
+                if (mSelectItem == i) {
+                    right += selectXIncrement;
+                }
+            }
+            if (mSelectItem == i) {
+                top -= selectYIncrement;
+                bottom += selectYIncrement;
             }
             RectF rectF = new RectF(left, top, right, bottom);
 
@@ -240,7 +255,6 @@ public class PlusMinusChart extends View implements ValueAnimator.AnimatorUpdate
         Collections.sort(datas, new BargraphDataComparator());
 
 
-
         float maxminus = Float.parseFloat(datas.get(0).data.replace("%", ""));
         float maxplus = Float.parseFloat(datas.get(datasize - 1).data.replace("%", ""));
 
@@ -298,5 +312,76 @@ public class PlusMinusChart extends View implements ValueAnimator.AnimatorUpdate
     public void updateData(@NonNull List<BargraphComparator> datas) {
         setDataValues(datas);
         animateExcels();
+    }
+
+    /**
+     * 图表触摸事件回调方法
+     *
+     * @param event
+     * @return
+     */
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_UP:
+                onActionUpEvent(event);
+                break;
+            default:
+                break;
+        }
+        return true;
+    }
+
+    private void onActionUpEvent(MotionEvent event) {
+        boolean isValidTouch = validateTouch(event.getX(), event.getY());
+        if (isValidTouch) {
+            if (listener != null) {
+                listener.onPointClick(mSelectItem);
+            }
+            invalidate();
+        }
+    }
+
+    /**
+     * 是否是有效的触摸范围
+     *
+     * @param xTouchPoint
+     * @param yTouchPoint
+     * @return
+     */
+    private boolean validateTouch(float xTouchPoint, float yTouchPoint) {
+        //触摸区域
+        int dsize = lt_data.size();
+        float barOffset = yScale / 3;
+        float yOffset = yScale / 2;
+        float top;
+        float bottom;
+        for (int i = 0; i < dsize; i++) {
+            float y = yPoint + yScale * (i + 1) - yOffset;
+            top = y - barOffset;
+            bottom = y + barOffset;
+            if (yTouchPoint < bottom && yTouchPoint > top) {
+
+                mSelectItem = i;
+                if (listener != null) {
+                    listener.onPointClick(mSelectItem);
+                }
+                return true;
+            }
+        }
+        return false;
+    }
+    public void onClickItem(int index){
+        mSelectItem = index;
+        invalidate();
+    }
+    private PlusMinusOnItemClickListener listener;
+
+    public void setPointClickListener(PlusMinusOnItemClickListener listener) {
+        this.listener = listener;
+    }
+
+    public interface PlusMinusOnItemClickListener {
+        void onPointClick(int index);
     }
 }

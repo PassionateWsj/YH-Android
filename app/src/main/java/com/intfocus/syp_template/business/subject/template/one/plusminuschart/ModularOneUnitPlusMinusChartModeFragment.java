@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.intfocus.syp_template.R;
@@ -19,7 +20,6 @@ import com.intfocus.syp_template.general.gen.ReportDao;
 import com.intfocus.syp_template.general.util.BargraphDataComparator;
 import com.intfocus.syp_template.general.util.DaoUtil;
 import com.intfocus.syp_template.general.util.PinyinUtil;
-import com.intfocus.syp_template.general.util.ToastUtils;
 import com.intfocus.syp_template.general.view.NotScrollListView;
 import com.intfocus.syp_template.general.view.PlusMinusChart;
 import com.intfocus.syp_template.general.view.SortCheckBox;
@@ -38,7 +38,7 @@ import static com.intfocus.syp_template.constant.Params.REPORT_TYPE_PLUS_MINUS;
 /**
  * 正负图表模块
  */
-public class ModularOneUnitPlusMinusChartModeFragment extends BaseModeFragment implements AdapterView.OnItemClickListener {
+public class ModularOneUnitPlusMinusChartModeFragment extends BaseModeFragment implements AdapterView.OnItemClickListener,PlusMinusChart.PlusMinusOnItemClickListener {
     private static final String ARG_INDEX = "index";
     private static final String ARG_UUID = "uuid";
     private View rootView;
@@ -131,15 +131,10 @@ public class ModularOneUnitPlusMinusChartModeFragment extends BaseModeFragment i
                 break;
         }
         adapter.updateData(mLtData);
-//        ArrayList<String> chartData = new ArrayList<>();
-//        for (BargraphComparator bargraphComparator : mLtData) {
-//            chartData.add(bargraphComparator.data);
-//        }
         pmChart.updateData(mLtData);
     }
 
     private void bindData() {
-//        mLtData.clear();
         entityData = JSON.parseObject(mParam, MDRPUnitBargraph.class);
         String[] dataName = entityData.xAxis.data;
         ArrayList<MDRPUnitBargraph.Series.Data> dataValue = entityData.series.data;
@@ -153,8 +148,6 @@ public class ModularOneUnitPlusMinusChartModeFragment extends BaseModeFragment i
 
         mCboxPercentage.setText(entityData.series.name);
         mCboxName.setText(entityData.xAxis.name);
-//        LinkedList<BargraphComparator> lvdata = new LinkedList<>();
-//        lvdata.addAll(mLtData);
         adapter.updateData(mLtData);
 
         //设置图表数据
@@ -162,14 +155,24 @@ public class ModularOneUnitPlusMinusChartModeFragment extends BaseModeFragment i
         pmChart.setDrawingCacheEnabled(true);
         pmChart.setDefauteolor(ContextCompat.getColor(ctx,R.color.co9));
         pmChart.setDataValues(mLtData);
+        pmChart.setPointClickListener(this);
         mFlContainer.addView(pmChart);
+    }
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        pmChart.onClickItem(position);
+        itemClick(position);
     }
 
     @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        adapter.setSelectItem(position);
-        String xValue = entityData.xAxis.data[position];
-        ToastUtils.INSTANCE.show(ctx, xValue);
+    public void onPointClick(int index) {
+        itemClick(index);
+    }
+
+    private void itemClick(int index){
+        adapter.setSelectItem(index);
+        String xValue = entityData.xAxis.data[index];
+        Toast.makeText(ctx, xValue, Toast.LENGTH_SHORT).show();
     }
 
     class BargraphNameComparator implements Comparator<BargraphComparator> {
