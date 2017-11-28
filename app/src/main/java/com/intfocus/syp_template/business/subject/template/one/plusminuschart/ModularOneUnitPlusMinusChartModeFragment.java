@@ -38,7 +38,7 @@ import static com.intfocus.syp_template.constant.Params.REPORT_TYPE_PLUS_MINUS;
 /**
  * 正负图表模块
  */
-public class ModularOneUnitPlusMinusChartModeFragment extends BaseModeFragment implements AdapterView.OnItemClickListener,PlusMinusChart.PlusMinusOnItemClickListener {
+public class ModularOneUnitPlusMinusChartModeFragment extends BaseModeFragment implements AdapterView.OnItemClickListener, PlusMinusChart.PlusMinusOnItemClickListener {
     private static final String ARG_INDEX = "index";
     private static final String ARG_UUID = "uuid";
     private View rootView;
@@ -64,6 +64,7 @@ public class ModularOneUnitPlusMinusChartModeFragment extends BaseModeFragment i
     private LinkedList<BargraphComparator> mLtData;
     private BargraphNameComparator nameComparator;
     private BargraphDataComparator dataComparator;
+    private BargraphComparator mSelectItem;
 
     public static ModularOneUnitPlusMinusChartModeFragment newInstance(String uuid, int index) {
         ModularOneUnitPlusMinusChartModeFragment fragment = new ModularOneUnitPlusMinusChartModeFragment();
@@ -132,6 +133,8 @@ public class ModularOneUnitPlusMinusChartModeFragment extends BaseModeFragment i
         }
         adapter.updateData(mLtData);
         pmChart.updateData(mLtData);
+        adapter.setSelectItem(mLtData.indexOf(mSelectItem));
+        pmChart.onClickItem(mLtData.indexOf(mSelectItem));
     }
 
     private void bindData() {
@@ -153,11 +156,12 @@ public class ModularOneUnitPlusMinusChartModeFragment extends BaseModeFragment i
         //设置图表数据
         pmChart = new PlusMinusChart(ctx);
         pmChart.setDrawingCacheEnabled(true);
-        pmChart.setDefauteolor(ContextCompat.getColor(ctx,R.color.co9));
+        pmChart.setDefauteolor(ContextCompat.getColor(ctx, R.color.co9));
         pmChart.setDataValues(mLtData);
         pmChart.setPointClickListener(this);
         mFlContainer.addView(pmChart);
     }
+
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         pmChart.onClickItem(position);
@@ -169,7 +173,8 @@ public class ModularOneUnitPlusMinusChartModeFragment extends BaseModeFragment i
         itemClick(index);
     }
 
-    private void itemClick(int index){
+    private void itemClick(int index) {
+        mSelectItem = mLtData.get(index);
         adapter.setSelectItem(index);
         String xValue = entityData.xAxis.data[index];
         Toast.makeText(ctx, xValue, Toast.LENGTH_SHORT).show();

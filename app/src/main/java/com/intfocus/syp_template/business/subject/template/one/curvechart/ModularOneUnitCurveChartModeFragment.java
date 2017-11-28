@@ -132,7 +132,7 @@ public class ModularOneUnitCurveChartModeFragment extends BaseModeFragment<MDRPU
                 chart = new CustomCurveChartV2(act);
                 chart.setDrawingCacheEnabled(true);
                 //设置柱形图之间间隔
-                chart.setBarChartInterval(50);
+                chart.setBarChartInterval(0.4f);
                 chart.setXLabel(xLabel);
                 chart.setYLabel(yLabel);
                 chart.setUnit(unit);

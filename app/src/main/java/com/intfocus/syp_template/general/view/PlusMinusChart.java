@@ -139,7 +139,7 @@ public class PlusMinusChart extends View implements ValueAnimator.AnimatorUpdate
         for (int i = 0; i < mDsize; i++) {
             float value = Float.parseFloat(lt_data.get(i).data.replace("%", ""));
 
-            float length = toX(value * (1 + (ratio - 1)));
+            float length = (value * (1 + (ratio - 1))) * xScale;
             float y = yPoint + yScale * (i + 1) - yOffset;
             if (value < 0) {
                 left = xCenter + length;
@@ -255,29 +255,25 @@ public class PlusMinusChart extends View implements ValueAnimator.AnimatorUpdate
         Collections.sort(datas, new BargraphDataComparator());
 
 
-        float maxminus = Float.parseFloat(datas.get(0).data.replace("%", ""));
-        float maxplus = Float.parseFloat(datas.get(datasize - 1).data.replace("%", ""));
+        float minData = Float.parseFloat(datas.get(0).data.replace("%", ""));
+        float maxData = Float.parseFloat(datas.get(datasize - 1).data.replace("%", ""));
 
         float count;
-        if (maxminus < 0 || maxplus < 0) {
-            count = Math.abs(maxplus) + Math.abs(maxminus);
+        if (minData > 0 || maxData < 0) {
+            count = Math.max(Math.abs(minData), Math.abs(maxData));
         } else {
-            count = Math.max(maxminus, maxplus);
+            count = Math.abs(maxData) + Math.abs(minData);
         }
-
-
-/*        float offset = margin * 2;
-        xPoint = margin;
-        yPoint = padding;
-        xScale = (getWidth() - offset) / count;
-        yScale = (getHeight() - padding * 2) / datasize;
-        xCenter = xPoint + Math.abs(maxminus) * xScale;*/
 
         xPoint = 0;
         yPoint = 0;
-        xScale = getWidth() / count;
+        xScale = (getWidth() - paintStrokeW) / count;
         yScale = getHeight() / datasize;
-        xCenter = xPoint + Math.abs(maxminus) * xScale;
+        if (minData > 0 && maxData > 0) {
+            xCenter = xPoint;
+        } else {
+            xCenter = xPoint + Math.abs(minData) * xScale;
+        }
 
     }
 
@@ -371,10 +367,12 @@ public class PlusMinusChart extends View implements ValueAnimator.AnimatorUpdate
         }
         return false;
     }
-    public void onClickItem(int index){
+
+    public void onClickItem(int index) {
         mSelectItem = index;
         invalidate();
     }
+
     private PlusMinusOnItemClickListener listener;
 
     public void setPointClickListener(PlusMinusOnItemClickListener listener) {
