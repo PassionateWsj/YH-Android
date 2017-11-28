@@ -20,6 +20,7 @@ import com.intfocus.syp_template.general.gen.ReportDao;
 import com.intfocus.syp_template.general.util.BargraphDataComparator;
 import com.intfocus.syp_template.general.util.DaoUtil;
 import com.intfocus.syp_template.general.util.PinyinUtil;
+import com.intfocus.syp_template.general.util.ToastUtils;
 import com.intfocus.syp_template.general.view.NotScrollListView;
 import com.intfocus.syp_template.general.view.PlusMinusChart;
 import com.intfocus.syp_template.general.view.SortCheckBox;
@@ -65,6 +66,7 @@ public class ModularOneUnitPlusMinusChartModeFragment extends BaseModeFragment i
     private BargraphNameComparator nameComparator;
     private BargraphDataComparator dataComparator;
     private BargraphComparator mSelectItem;
+    private Toast mToast;
 
     public static ModularOneUnitPlusMinusChartModeFragment newInstance(String uuid, int index) {
         ModularOneUnitPlusMinusChartModeFragment fragment = new ModularOneUnitPlusMinusChartModeFragment();
@@ -177,7 +179,7 @@ public class ModularOneUnitPlusMinusChartModeFragment extends BaseModeFragment i
         mSelectItem = mLtData.get(index);
         adapter.setSelectItem(index);
         String xValue = entityData.xAxis.data[index];
-        Toast.makeText(ctx, xValue, Toast.LENGTH_SHORT).show();
+        ToastUtils.INSTANCE.showDefault(ctx, xValue);
     }
 
     class BargraphNameComparator implements Comparator<BargraphComparator> {
