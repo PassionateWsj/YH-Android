@@ -29,7 +29,6 @@ import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import java.io.File
 
-
 class FeedbackActivity : AbstractActivity<IssueMode>(), View.OnClickListener, FeedbackPageScreenshotAdapter.ScreenshotItemClickListener {
     override fun setLayoutRes(): Int {
         TODO("重写 BaseActivity 后, 需重写相关联 Activity 的 setLayoutRes")
@@ -60,7 +59,6 @@ class FeedbackActivity : AbstractActivity<IssueMode>(), View.OnClickListener, Fe
         initView()
         initAdapter()
     }
-
 
     private fun initData() {
         EventBus.getDefault().register(this)

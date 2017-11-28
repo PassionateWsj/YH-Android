@@ -124,6 +124,11 @@ class WebPageActivity : AppCompatActivity(), WebPageContract.View, OnPageErrorLi
         finish()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        webView.destroy()
+    }
+
     override fun onBackPressed() {
         if (url.startsWith("http")) {
             val builder = AlertDialog.Builder(this)

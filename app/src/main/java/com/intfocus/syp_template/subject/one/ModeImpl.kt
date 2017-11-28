@@ -125,14 +125,14 @@ class ModeImpl : ReportModelImpl() {
                 .map {
                     delete(uuid)
                     val response: String?
-                    val jsonFilePath = FileUtil.dirPath(globalContext, K.K_CACHED_DIR_NAME, it)
-                    val dataState = ApiHelper.reportJsonData(globalContext, groupId, templateId, reportId)
-                    if (dataState || File(jsonFilePath).exists()) {
-                        response = FileUtil.readFile(jsonFilePath)
-                    } else {
-                        throw Throwable("获取数据失败")
-                    }
-//                    response = getAssetsJsonData("template1_05.json")
+//                    val jsonFilePath = FileUtil.dirPath(globalContext, K.K_CACHED_DIR_NAME, it)
+//                    val dataState = ApiHelper.reportJsonData(globalContext, groupId, templateId, reportId)
+//                    if (dataState || File(jsonFilePath).exists()) {
+//                        response = FileUtil.readFile(jsonFilePath)
+//                    } else {
+//                        throw Throwable("获取数据失败")
+//                    }
+                    response = getAssetsJsonData("template1_05.json")
 
                     val stringReader = StringReader(response)
                     val reader = JSONReader(stringReader)

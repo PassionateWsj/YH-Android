@@ -54,7 +54,7 @@ class UserInfoMode(var ctx: Context) : AbstractMode() {
                 })
     }
 
-    fun uplodeUserIcon(bitmap: Bitmap, imgPath: String) {
+    fun uploadUserIcon(bitmap: Bitmap, imgPath: String) {
         Thread(Runnable {
             var format = SimpleDateFormat("yyyyMMddHHmmss")
             var date = Date(System.currentTimeMillis())
