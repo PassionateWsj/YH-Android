@@ -106,10 +106,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
         <!-- 模板五 -->
-        <activity
-            android:name="com.intfocus.syp_template.subject.five.SuperTableActivity"
-            android:screenOrientation="fullSensor"
-            android:theme="@style/AppTheme"/>
         <!-- 忘记密码 -->
         <activity
             android:name="com.intfocus.syp_template.login.ForgetPasswordActivity"
@@ -128,11 +124,6 @@
         <!-- 文章收藏页 -->
         <activity
             android:name="com.intfocus.syp_template.dashboard.mine.activity.FavoriteArticleActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme"/>
-        <!-- 筛选界面 -->
-        <activity
-            android:name="com.intfocus.syp_template.filter.FilterActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
         <!-- 扫码页 -->
@@ -183,16 +174,6 @@
         <!-- 原生模板二/表格页面 -->
         <activity
             android:name="com.intfocus.syp_template.subject.one.module.tables.SubTableActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme"/>
-        <!-- 外部链接 -->
-        <activity
-            android:name="com.intfocus.syp_template.subject.webapplication.WebApplicationActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme"/>
-        <!-- 模版六外部链接 -->
-        <activity
-            android:name="com.intfocus.syp_template.subject.webapplication.WebApplicationActivityV6"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
         <!-- 评论页 -->

@@ -14,7 +14,7 @@
         <TextView
             android:id="@+id/tv_unit_table_header"
             style="@style/tv_unit_chart_m"
-            android:layout_width="100dp"
+            android:layout_width="108dp"
             android:layout_weight="0"
             android:layout_height="wrap_content"
             android:textSize="11sp"

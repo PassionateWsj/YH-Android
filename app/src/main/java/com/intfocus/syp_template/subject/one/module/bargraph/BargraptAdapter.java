@@ -35,9 +35,9 @@ public class BargraptAdapter extends BaseAdapter {
         herearrow = ContextCompat.getDrawable(ctx,R.drawable.icon_herearrow);
         herearrow.setBounds(0, 0, herearrow.getMinimumWidth(),
                 herearrow.getMinimumHeight());
-        percentDefaultColor = ContextCompat.getColor(ctx,R.color.co4_syr);
-        defaultColor = ContextCompat.getColor(ctx,R.color.co3_syr);
-        selectColor = ContextCompat.getColor(ctx,R.color.co14_syr);
+        percentDefaultColor = ContextCompat.getColor(ctx, R.color.co4_syr);
+        defaultColor = ContextCompat.getColor(ctx, R.color.co3_syr);
+        selectColor = ContextCompat.getColor(ctx, R.color.co14_syr);
     }
 
     public void updateData(LinkedList<BargraphComparator> ltdata) {
@@ -104,5 +104,6 @@ public class BargraptAdapter extends BaseAdapter {
         TextView tv_percentage;
         @ViewInject(R.id.img_cursor)
         ImageView img_cursor;
+
     }
 }

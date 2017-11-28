@@ -66,7 +66,9 @@ public class TableRootFragment extends Fragment implements TableTitleAdapter.Not
      * 最上层跟跟标签ID
      */
     public int suRootID;
-    //title
+    /**
+     * title
+     */
     @ViewInject(R.id.recycler_view)
     private RecyclerView recyclerView;
     private TableTitleAdapter adapter;
@@ -205,7 +207,7 @@ public class TableRootFragment extends Fragment implements TableTitleAdapter.Not
      */
     @Override
     public void itemClick(int position) {
-            switchFragment(position);
+        switchFragment(position);
     }
 
 }

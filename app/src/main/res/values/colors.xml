@@ -185,7 +185,15 @@
         <item>@color/co12</item>
         <item>@color/co13</item>
     </array>
-
+    <array name="co_order_new">
+        <item>@color/co17_syr</item>
+        <item>@color/co16_syr</item>
+        <item>@color/co15_syr</item>
+        <item>@color/co2_syr</item>
+        <item>@color/co11_syr</item>
+        <item>@color/co12_syr</item>
+        <item>@color/co13_syr</item>
+    </array>
     <array name="co_cursor">
         <item>#ffea4335</item>
         <item>#fffbbc05</item>

@@ -29,6 +29,7 @@ import org.xutils.x;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 /**
  * 仪表盘-详情页面-根页签-曲线图单元
@@ -73,7 +74,7 @@ public class ChartFragment extends Fragment implements CustomCurveChart.PointCli
 
     int[] coGroup;
     int[] coCursor;
-    private String chartType;
+    private List<String> chartType;
     private CustomCurveChart chart;
     private int YCOORDINATEVALENUM;
     private ChartContract.Presenter mPresenter;
@@ -127,30 +128,16 @@ public class ChartFragment extends Fragment implements CustomCurveChart.PointCli
                 chart = new CustomCurveChart(getActivity());
                 chart.setDrawingCacheEnabled(true);
                 //设置柱形图之间间隔
-                chart.setBarChartInterval(50);
-                chart.setxLabel(xLabel);
-                chart.setyLabel(yLabel);
+                chart.setBarChartInterval(0.4f);
+                chart.setXLabel(xLabel);
+                chart.setYLabel(yLabel);
                 chart.setUnit(unit);
                 chart.setColorList(color);
                 int selectItem = chart.setDataList(seriesLables);
                 chart.setDefaultColor(ContextCompat.getColor(ctx, R.color.co9));
-                chart.setDefauteMargin((int) margin);
+                chart.setDefaultMargin((int) margin);
                 chart.setPointClickListener(ChartFragment.this);
-                int chartStyle;
-                switch (chartType) {
-                    case "line":
-                        chartStyle = CustomCurveChart.ChartStyle.LINE;
-                        break;
-                    case "bar":
-                        chartStyle = CustomCurveChart.ChartStyle.BAR;
-                        break;
-                    case "line-bar":
-                        chartStyle = CustomCurveChart.ChartStyle.LINE_BAR;
-                        break;
-                    default:
-                        chartStyle = CustomCurveChart.ChartStyle.LINE;
-                }
-                chart.setCharStyle(chartStyle);
+                chart.setCharStyle(chartType);
                 onPointClick(selectItem);
                 mLlCurvechart.addView(chart);
             } catch (Exception e) {
@@ -203,7 +190,6 @@ public class ChartFragment extends Fragment implements CustomCurveChart.PointCli
                         case 3:
                             cursorIndex = 0;
                             break;
-
                         case 1:
                         case 4:
                             cursorIndex = 1;
@@ -243,25 +229,25 @@ public class ChartFragment extends Fragment implements CustomCurveChart.PointCli
                 mTvRate.setText(strRate);
                 chart.setBarSelectColor(baseColor);
                 mTvTarget3Name.setText("变化率");
+            } else if (seriesLables.size() > 2) {
+                String name3 = curveChartEntity.legend[2];
+                Float[] values3 = seriesLables.get(2);
+                Float target3 = 0f;
+                if (values3.length > index) {
+                    target3 = values3[index];
+                }
+                mTvRate.setText(df.format(target3));
+                mTvRate.setTextColor(coGroup[2]);
+                mTvTarget3Name.setText(name3);
             }
-        } else if (seriesLables.size() < 2) {
+        } else {
             mTvTarget2Name.setVisibility(View.GONE);
             mTvTarget3Name.setVisibility(View.GONE);
             mTvRate.setVisibility(View.GONE);
             mTvTarget2.setVisibility(View.GONE);
         }
 
-        if (seriesLables.size() > 2) {
-            String name3 = curveChartEntity.legend[2];
-            Float[] values3 = seriesLables.get(2);
-            Float target3 = 0f;
-            if (values3.length > index) {
-                target3 = values3[index];
-            }
-            mTvRate.setText(df.format(target3));
-            mTvRate.setTextColor(coGroup[1]);
-            mTvTarget3Name.setText(name3);
-        }
+
     }
 
 
@@ -289,16 +275,18 @@ public class ChartFragment extends Fragment implements CustomCurveChart.PointCli
         int yIntervalValue;
         seriesLables = new ArrayList<>();
         ArrayList<Float> seriesA = new ArrayList<>();
+        chartType = new ArrayList<>();
 
         ArrayList<Chart.SeriesEntity> arrays = result.series;
         for (Chart.SeriesEntity array : arrays) {
             String datas = array.data;
-            chartType = array.type;
+            chartType.add(array.type);
             if (datas.contains("{")) {
                 ArrayList<Series> list = (ArrayList<Series>) JSON.parseArray(datas, Series.class);
                 color = new int[list.size()];
                 Float[] lables = new Float[list.size()];
-                for (int i = 0; i < list.size(); i++) {
+                int dataSize = list.size();
+                for (int i = 0; i < dataSize; i++) {
                     Series seriesEntity = list.get(i);
                     color[i] = seriesEntity.color;
                     Float lableV = seriesEntity.value;
