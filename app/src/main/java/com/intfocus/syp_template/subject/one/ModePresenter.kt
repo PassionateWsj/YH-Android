@@ -1,6 +1,8 @@
 package com.intfocus.syp_template.subject.one
 
 import android.content.Context
+import com.intfocus.syp_template.model.response.filter.MenuItem
+import com.intfocus.syp_template.subject.one.entity.Filter
 import com.intfocus.syp_template.util.LogUtil
 
 /**
@@ -22,19 +24,21 @@ class ModePresenter(
     override fun start() {
     }
 
-    override fun loadData(ctx: Context, groupId: String, reportId: String) {
-        mModel.checkReportData(reportId, "1", groupId, object : ModeModel.LoadDataCallback {
-            override fun onDataLoaded(reports: List<String>) {
-                mView.initRootView(reports)
-            }
-
-            override fun onDataNotAvailable(e: Throwable) {
-                LogUtil.d("testlog", e.toString())
-            }
-        })
+    override fun loadData(ctx: Context, groupId: String, templateId: String, reportId: String) {
+        mModel.getData(reportId, templateId, groupId, ReportDataCallback())
     }
 
-    override fun loadFilterData() {
-        mModel.checkFilter()
+    override fun saveFilterSelected(display: String) {
+        mModel.updateFilter(display, ReportDataCallback())
+    }
+
+    inner class ReportDataCallback: ModeModel.LoadDataCallback {
+        override fun onDataLoaded(reports: List<String>, filter: Filter) {
+            mView.initRootView(reports, filter)
+        }
+
+        override fun onDataNotAvailable(e: Throwable) {
+            LogUtil.d("testlog", e.toString())
+        }
     }
 }

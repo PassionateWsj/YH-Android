@@ -1,6 +1,8 @@
 package com.intfocus.syp_template.subject.one
 
 import android.content.Context
+import com.intfocus.syp_template.model.response.filter.MenuItem
+import com.intfocus.syp_template.subject.one.entity.Filter
 
 /**
  * ****************************************************
@@ -13,7 +15,7 @@ import android.content.Context
  */
 interface ModeModel {
     interface LoadDataCallback {
-        fun onDataLoaded(reports: List<String>)
+        fun onDataLoaded(reports: List<String>, filter: Filter)
         fun onDataNotAvailable(e: Throwable)
     }
 

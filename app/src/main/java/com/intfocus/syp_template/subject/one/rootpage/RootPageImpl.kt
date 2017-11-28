@@ -59,7 +59,7 @@ class RootPageImpl : RootPageModel {
         observable = Observable.just("")
                 .subscribeOn(Schedulers.io())
                 .map {
-                    ModeImpl.getInstance().queryDateBase(pageId)
+                    ModeImpl.getInstance().queryPageData(pageId)
                 }
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(object : Observer<List<Report>> {

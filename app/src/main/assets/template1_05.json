@@ -1,7 +1,7 @@
 {
   "filter": {
     "type": "location",
-    "display": "纽约|一号店",
+    "display": "纽约||一号店",
     "data": [
       {
         "id": "",
@@ -23,7 +23,7 @@
   },
   "parts": [
     {
-      "name": "纽约|一号店",
+      "name": "纽约||一号店",
       "page_title": "",
   
       "type": "banner",
@@ -34,7 +34,7 @@
       }
     },
     {
-      "name": "纽约|一号店",
+      "name": "纽约||一号店",
       "page_title": "",
   
       "type": "info",
@@ -43,7 +43,7 @@
       }
     },
     {
-      "name": "纽约|一号店",
+      "name": "纽约||一号店",
       "page_title": "",
       "type": "tables",
       "config": [
@@ -314,7 +314,7 @@
       ]
     },
     {
-      "name": "纽约|一号店",
+      "name": "纽约||一号店",
       "page_title": "",
   
       "type": "chart",
@@ -387,7 +387,7 @@
       }
     },
     {
-      "name": "纽约|一号店",
+      "name": "纽约||一号店",
       "page_title": "",
   
       "type": "tables",
@@ -659,7 +659,7 @@
       ]
     },
     {
-      "name": "纽约|一号店",
+      "name": "纽约||一号店",
       "page_title": "",
   
       "type": "single_value",
@@ -682,7 +682,7 @@
       }
     },
     {
-      "name": "纽约|一号店",
+      "name": "纽约||一号店",
       "page_title": "",
 
       "type": "chart",
@@ -755,7 +755,7 @@
       }
     },
     {
-      "name": "纽约|一号店",
+      "name": "纽约||一号店",
       "page_title": "",
 
       "type": "bargraph",
@@ -809,7 +809,7 @@
       }
     },
     {
-      "name": "纽约|一号店",
+      "name": "纽约||一号店",
       "page_title": "",
 
       "type": "tables",
@@ -1081,18 +1081,17 @@
       ]
     },
     {
-      "name": "纽约|二号店",
+      "name": "纽约||二号店",
       "page_title": "",
-  
       "type": "banner",
       "config": {
         "date": "20170224",
-        "info": "数据更新时间: 2017-04-28 17:52:29 +0800",
+        "info": "数据更新时间: 2017-04-28 17:52:2222222222222222222222222222222222222222222222222222222222222222222222222229 +0800",
         "title": "销售额VS目标"
       }
     },
     {
-      "name": "纽约|二号店",
+      "name": "纽约||二号店",
       "page_title": "",
   
       "type": "info",
@@ -1101,7 +1100,7 @@
       }
     },
     {
-      "name": "纽约|二号店",
+      "name": "纽约||二号店",
       "page_title": "",
   
       "type": "tables",
@@ -1373,7 +1372,7 @@
       ]
     },
     {
-      "name": "纽约|一号店",
+      "name": "纽约||一号店",
       "page_title": "",
       "type": "chart",
       "config": {
@@ -1637,7 +1636,7 @@
       }
     },
     {
-      "name": "纽约|二号店",
+      "name": "纽约||二号店",
       "page_title": "",
   
       "type": "tables",
@@ -1909,7 +1908,7 @@
       ]
     },
     {
-      "name": "纽约|二号店",
+      "name": "纽约||二号店",
       "page_title": "",
   
       "type": "single_value",
@@ -1932,7 +1931,7 @@
       }
     },
     {
-      "name": "纽约|二号店",
+      "name": "纽约||二号店",
       "page_title": "",
 
       "type": "chart",
@@ -2005,7 +2004,7 @@
       }
     },
     {
-      "name": "纽约|二号店",
+      "name": "纽约||二号店",
       "page_title": "",
 
       "type": "bargraph",
@@ -2059,7 +2058,7 @@
       }
     },
     {
-      "name": "纽约|二号店",
+      "name": "纽约||二号店",
       "page_title": "",
 
       "type": "tables",
