@@ -7,7 +7,6 @@ import android.support.v4.app.FragmentTransaction
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewStub
 import android.widget.FrameLayout
 import android.widget.RadioButton
 import android.widget.RadioGroup

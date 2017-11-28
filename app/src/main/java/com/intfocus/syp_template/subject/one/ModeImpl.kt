@@ -1,19 +1,15 @@
 package com.intfocus.syp_template.subject.one
 
 import com.alibaba.fastjson.JSON
-import com.alibaba.fastjson.JSONObject
 import com.alibaba.fastjson.JSONReader
-import com.intfocus.syp_template.subject.model.ReportModelImpl
+import com.intfocus.syp_template.ConfigConstants
+import com.intfocus.syp_template.model.DaoUtil
 import com.intfocus.syp_template.model.entity.Report
 import com.intfocus.syp_template.model.entity.ReportModule
-import com.intfocus.syp_template.ConfigConstants
-import com.intfocus.syp_template.SYPApplication.globalContext
 import com.intfocus.syp_template.model.gen.ReportDao
-import com.intfocus.syp_template.model.DaoUtil
+import com.intfocus.syp_template.subject.model.ReportModelImpl
 import com.intfocus.syp_template.subject.one.entity.Filter
-import com.intfocus.syp_template.util.ApiHelper
 import com.intfocus.syp_template.util.ApiHelper.clearResponseHeader
-import com.intfocus.syp_template.util.FileUtil
 import com.intfocus.syp_template.util.K
 import com.intfocus.syp_template.util.LogUtil
 import com.zbl.lib.baseframe.utils.TimeUtil
@@ -22,7 +18,6 @@ import rx.Subscriber
 import rx.Subscription
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
-import java.io.File
 import java.io.StringReader
 
 /**
@@ -125,14 +120,14 @@ class ModeImpl : ReportModelImpl() {
                 .map {
                     delete(uuid)
                     val response: String?
-                    val jsonFilePath = FileUtil.dirPath(globalContext, K.K_CACHED_DIR_NAME, it)
-                    val dataState = ApiHelper.reportJsonData(globalContext, groupId, templateId, reportId)
-                    if (dataState || File(jsonFilePath).exists()) {
-                        response = FileUtil.readFile(jsonFilePath)
-                    } else {
-                        throw Throwable("获取数据失败")
-                    }
-//                    response = getAssetsJsonData("template1_05.json")
+//                    val jsonFilePath = FileUtil.dirPath(globalContext, K.K_CACHED_DIR_NAME, it)
+//                    val dataState = ApiHelper.reportJsonData(globalContext, groupId, templateId, reportId)
+//                    if (dataState || File(jsonFilePath).exists()) {
+//                        response = FileUtil.readFile(jsonFilePath)
+//                    } else {
+//                        throw Throwable("获取数据失败")
+//                    }
+                    response = getAssetsJsonData("template1_05.json")
 
                     val stringReader = StringReader(response)
                     val reader = JSONReader(stringReader)
