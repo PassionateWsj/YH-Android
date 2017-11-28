@@ -233,25 +233,25 @@ public class ModularOneUnitCurveChartModeFragment extends BaseModeFragment<MDRPU
                 mTvRate.setText(strRate);
                 chart.setBarSelectColor(baseColor);
                 mTvTarget3Name.setText("变化率");
+            } else if (seriesLables.size() > 2) {
+                String name3 = curveChartEntity.legend[2];
+                Float[] values3 = seriesLables.get(2);
+                Float target3 = 0f;
+                if (values3.length > index) {
+                    target3 = values3[index];
+                }
+                mTvRate.setText(df.format(target3));
+                mTvRate.setTextColor(coGroup[2]);
+                mTvTarget3Name.setText(name3);
             }
-        } else if (seriesLables.size() < 2) {
+        } else {
             mTvTarget2Name.setVisibility(View.GONE);
             mTvTarget3Name.setVisibility(View.GONE);
             mTvRate.setVisibility(View.GONE);
             mTvTarget2.setVisibility(View.GONE);
         }
 
-        if (seriesLables.size() > 2) {
-            String name3 = curveChartEntity.legend[2];
-            Float[] values3 = seriesLables.get(2);
-            Float target3 = 0f;
-            if (values3.length > index) {
-                target3 = values3[index];
-            }
-            mTvRate.setText(df.format(target3));
-            mTvRate.setTextColor(coGroup[1]);
-            mTvTarget3Name.setText(name3);
-        }
+
     }
 
 
@@ -283,7 +283,7 @@ public class ModularOneUnitCurveChartModeFragment extends BaseModeFragment<MDRPU
         ArrayList<MDRPUnitCurveChartEntity.SeriesEntity> arrays = result.series;
         for (MDRPUnitCurveChartEntity.SeriesEntity array : arrays) {
             String datas = array.data;
-            chartType .add(array.type);
+            chartType.add(array.type);
             if (datas.contains("{")) {
                 ArrayList<MDRPUnitSeries> list = (ArrayList<MDRPUnitSeries>) JSON.parseArray(datas, MDRPUnitSeries.class);
                 color = new int[list.size()];

@@ -192,7 +192,7 @@ public class CustomCurveChartV2 extends View implements ValueAnimator.AnimatorUp
             if (orderColors == null || orderColors.length == 0) {
                 color = defaultColor;
             } else {
-                color = orderColors[i];
+                color = orderColors[i % orderColors.length];
             }
             switch (mChartStyle.get(i)) {
                 case ChartStyle.LINE:
@@ -247,16 +247,20 @@ public class CustomCurveChartV2 extends View implements ValueAnimator.AnimatorUp
             startX += xPoint + i * xScale;
 
             int color;
-            boolean isBarChartSelected = selectItem == i && (mChartStyle.contains(ChartStyle.BAR));
-            if (isBarChartSelected) {
-                color = blackColor;
-            } else {
+            if (mChartStyle.contains(ChartStyle.LINE)) {
                 if (colorList == null || i > colorList.length - 1) {
                     color = defaultColor;
                 } else {
                     color = getRelativeColor(colorList[i]);
                 }
+            } else  {
+                if (selectItem == i) {
+                    color = blackColor;
+                } else {
+                    color = defaultColor;
+                }
             }
+
 
             paint.setColor(color);
             if (i == 0 || i == xlength - 1) {
@@ -403,16 +407,7 @@ public class CustomCurveChartV2 extends View implements ValueAnimator.AnimatorUp
 
             RectF rectF = new RectF(left, top, right, bottom);
             if (i == selectItem) {
-                switch (dataIndex) {
-                    case 0:
-                        paintCurve.setColor(orderColors[dataIndex]);
-                        break;
-                    case 1:
-                        paintCurve.setColor(defaultColor);
-                        break;
-                    default:
-                        break;
-                }
+                paintCurve.setColor(orderColors[mBarChart.get(dataIndex)]);
             } else {
                 paintCurve.setColor(defaultColor);
             }
