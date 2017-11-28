@@ -361,6 +361,78 @@ public class HttpUtil {
         }
         return response;
     }
+    /**
+     * Zip 档下载
+     */
+    public static Map<String, String> downloadZip(String urlString, String outputPath, Map<String, String> headers) {
+        Map<String, String> response = new HashMap<>();
+        InputStream input = null;
+        OutputStream output = null;
+        HttpURLConnection connection = null;
+
+        try {
+            URL url = new URL(urlString);
+            connection = (HttpURLConnection) url.openConnection();
+
+            connection.setRequestProperty("accept", "*/*");
+            connection.setRequestProperty("connection", "Keep-Alive");
+            connection.setRequestProperty("user-agent", HttpUtil.webViewUserAgent());
+            connection.setConnectTimeout(5 * 1000);
+            connection.setReadTimeout(10 * 1000);
+            if (headers.containsKey(ETAG)) {
+                connection.setRequestProperty("IF-None-Match", headers.get(ETAG));
+            }
+            if (headers.containsKey(LAST_MODIFIED)) {
+                connection.setRequestProperty("If-Modified-Since", headers.get(LAST_MODIFIED));
+            }
+
+            connection.connect();
+            response.put(CODE, String.format("%d", connection.getResponseCode()));
+            Map<String, List<String>> map = connection.getHeaderFields();
+            for (Map.Entry<String, List<String>> entry : map.entrySet()) {
+                response.put(entry.getKey(), entry.getValue().get(0));
+            }
+            LogUtil.d("DownloadZIP", String.format("%d - %s - %s", connection.getResponseCode(), urlString, response.toString()));
+            // expect HTTP 200 OK, so we don't mistakenly save error report
+            // instead of the file
+            if (connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
+                return response;
+            }
+
+            // this will be useful to display download percentage
+            // might be -1: server did not report the length
+            int fileLength = connection.getContentLength();
+            input = connection.getInputStream();
+            output = new FileOutputStream(outputPath);
+
+            byte[] data = new byte[4096];
+            long total = 0;
+            int count;
+            while ((count = input.read(data)) != -1) {
+                total += count;
+                output.write(data, 0, count);
+            }
+        } catch (Exception e) {
+            LogUtil.d("Exception", e.toString());
+            response.put(CODE, "400");
+            return response;
+        } finally {
+            try {
+                if (output != null) {
+                    output.close();
+                }
+                if (input != null) {
+                    input.close();
+                }
+            } catch (IOException ignored) {
+            }
+
+            if (connection != null) {
+                connection.disconnect();
+            }
+        }
+        return response;
+    }
 
     /**
      * 判断当前网络状态是否为 WiFi
