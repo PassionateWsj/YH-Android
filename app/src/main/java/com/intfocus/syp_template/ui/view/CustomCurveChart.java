@@ -242,9 +242,8 @@ public class CustomCurveChart extends View implements ValueAnimator.AnimatorUpda
         int xlength = xLabel.length;
 
         for (int i = 0; i < xlength; i++) {
-            float startX = 0;
-            startX = xScale / 2;
-            startX += xPoint + i * xScale;
+            float startX = xPoint + xScale / 2;
+            startX += i * xScale;
 
             int color;
             if (mChartStyle.contains(ChartStyle.LINE)) {
@@ -260,12 +259,47 @@ public class CustomCurveChart extends View implements ValueAnimator.AnimatorUpda
                     color = defaultColor;
                 }
             }
-
-
             paint.setColor(color);
-            if (i == 0 || i == xlength - 1) {
+
+            // 动态计算 X 刻度 文字大小 && 显示个数
+            Rect rect;
+            // X 小于等于12个值，刻度全显示
+            if (xlength < 13) {
+                while (true) {
+                    rect = new Rect();
+                    paint.getTextBounds(xLabel[i].toCharArray(), 0, xLabel[i].length(), rect);
+                    if (i == xlength - 1) {
+                        if (startX + rect.width() > getWidth()) {
+                            paint.setTextSize(paint.getTextSize() * 0.95f);
+                        } else {
+                            break;
+                        }
+                    } else {
+                        if (startX + rect.width() > startX + xScale) {
+                            paint.setTextSize(paint.getTextSize() * 0.95f);
+                        } else {
+                            break;
+                        }
+                    }
+                }
                 canvas.drawText(xLabel[i], startX, yPoint - paint.getFontMetrics().top, paint);
             }
+            // X 大于12个值，刻度显示头尾
+            else {
+                if (i == 0 || i == xlength - 1) {
+                    while (true) {
+                        rect = new Rect();
+                        paint.getTextBounds(xLabel[i].toCharArray(), 0, xLabel[i].length(), rect);
+                        if (startX + rect.width() / 2 > getWidth()) {
+                            paint.setTextSize(paint.getTextSize() * 0.95f);
+                        } else {
+                            break;
+                        }
+                    }
+                    canvas.drawText(xLabel[i], startX, yPoint - paint.getFontMetrics().top, paint);
+                }
+            }
+
             xPoints.add(startX);
         }
 
@@ -568,7 +602,7 @@ public class CustomCurveChart extends View implements ValueAnimator.AnimatorUpda
         if (yLabel != null && yLabel.length != 0) {
             String lable = yLabel[yLabel.length - 1];
             Rect rect = new Rect();
-            paintAxes.getTextBounds(lable, 0, lable.length(), rect);
+            paintAxes.getTextBounds(lable.toCharArray(), 0, lable.length(), rect);
             textW = rect.width();
             textH = rect.height();
         }
@@ -581,7 +615,7 @@ public class CustomCurveChart extends View implements ValueAnimator.AnimatorUpda
         }
         xPoint = margin + padding + textW;
         yPoint = getHeight() - margin - padding;
-        xScale = (getWidth() - xPoint) / xLabel.length;
+        xScale = (getWidth() - xPoint - padding) / xLabel.length;
 //        xScale = (getWidth() - xPoint) / (xLabel.length + (1 - mBarChartInterval) / (2 * mBarCount));
         barWidth = (1 - mBarChartInterval) * xScale / mBarCount;
         yScale = (getHeight() - margin * 2 - padding * 2 - textH) / (Float.valueOf(yLabel[yLabel.length - 1]) - Float.valueOf(yLabel[0]));
