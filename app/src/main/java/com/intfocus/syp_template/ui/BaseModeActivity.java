@@ -6,6 +6,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,7 +31,7 @@ import org.xutils.x;
  * 基类界面
  * @author liuruilin
  */
-public abstract class BaseModeActivity<T extends Subject> extends AbstractActivity<T> {
+public abstract class BaseModeActivity extends AppCompatActivity {
     protected Context ctx;
 
     /**
@@ -62,7 +63,6 @@ public abstract class BaseModeActivity<T extends Subject> extends AbstractActivi
     public View mContentView;
     //TODO =====================================界面处理=====================================================
 
-    @Override
     public int setLayoutRes() {
         return 0;
     }
@@ -79,10 +79,7 @@ public abstract class BaseModeActivity<T extends Subject> extends AbstractActivi
         setContentView(R.layout.frame_baseui);
 
         stubHeader = findViewById(R.id.ll_baseUI_title);
-
         rootView = findViewById(R.id.rootView);
-//        progressBar = (ProgressBar) findViewById(R.id.progressBar_baseUI);
-
         int contentID = setLayoutRes();
         if (contentID != 0 && contentID != -1) {
             mContentView = LayoutInflater.from(this).inflate(contentID, null);
@@ -93,6 +90,9 @@ public abstract class BaseModeActivity<T extends Subject> extends AbstractActivi
         }
 
         onCreateFinish(savedInstanceState);
+    }
+
+    public void onCreateFinish(Bundle savedInstanceState) {
     }
 
     /**

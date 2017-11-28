@@ -33,7 +33,6 @@ import java.util.*
 
 
 class LauncherActivity : Activity(), Animation.AnimationListener {
-
     val ctx = this
     private val permissionsArray = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_PHONE_STATE, Manifest.permission.CAMERA, Manifest.permission.ACCESS_FINE_LOCATION)
     private val CODE_AUTHORITY_REQUEST = 0
@@ -47,8 +46,6 @@ class LauncherActivity : Activity(), Animation.AnimationListener {
     private var lastClickTime: Long = 0
     private lateinit var mSettingSP: SharedPreferences
     private lateinit var mUserSP: SharedPreferences
-    //    private lateinit var mAssetsSP: SharedPreferences
-//    private lateinit var mAssetsSPEdit: SharedPreferences.Editor
     private lateinit var packageInfo: PackageInfo
 
     override fun onCreate(savedInstanceState: Bundle?) {

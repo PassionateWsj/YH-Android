@@ -124,19 +124,6 @@ open class ReportModelImpl : ReportModel {
         reportDao.insert(report)
     }
 
-    fun insertMainData(uuid: String, config: String, type: String, title: String, page: String) {
-        val report = Report()
-        report.id = null
-        report.config = config
-        report.type = type
-        report.uuid = uuid
-        report.index = 1000
-        report.page_title = page
-        report.page_title = title
-
-        reportDao.insert(report)
-    }
-
     /**
      * 删除 uuid = xxx 的所有数据
      * @param uuid 报表唯一标识 uuid = reportId + templateId + groupId

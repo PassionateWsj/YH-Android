@@ -196,15 +196,15 @@ public class TablesContentFragment extends Fragment implements SortCheckBox.Sort
                         boolean showSuspendTableTitle = globalOffset.y <= offsetTop && rect.bottom - mTitleHigh > offsetTop;
                         if (showSuspendTableTitle) {
                             fl_tableTitle_container.removeView(suspensionView);
-                            ((NativeReportActivity) getActivity()).suspendContainer.addView(suspensionView);
+                            ((NativeReportActivity) getActivity()).getSuspendContainer().addView(suspensionView);
                         }
                     }
                 } else {
                     if (getActivity() instanceof NativeReportActivity) {
-                        int viewCont = ((NativeReportActivity) getActivity()).suspendContainer.getChildCount();
+                        int viewCont = ((NativeReportActivity) getActivity()).getSuspendContainer().getChildCount();
                         boolean removeSuspendTableTitle = globalOffset.y > offsetTop || rect.bottom - mTitleHigh < offsetTop && viewCont != 0;
                         if (removeSuspendTableTitle) {
-                            ((NativeReportActivity) getActivity()).suspendContainer.removeView(suspensionView);
+                            ((NativeReportActivity) getActivity()).getSuspendContainer().removeView(suspensionView);
                             fl_tableTitle_container.addView(suspensionView);
                         }
                     }

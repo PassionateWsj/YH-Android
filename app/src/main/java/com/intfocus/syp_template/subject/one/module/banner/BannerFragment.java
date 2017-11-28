@@ -142,6 +142,6 @@ public class BannerFragment extends BaseModeFragment {
     private void onViewClick(View view) {
         //设置PopupWindow显示的位置
         NativeReportActivity activity = (NativeReportActivity) getActivity();
-        popupWindow.showAsDropDown(activity.actionbar);
+        popupWindow.showAsDropDown(activity.getActionbar());
     }
 }

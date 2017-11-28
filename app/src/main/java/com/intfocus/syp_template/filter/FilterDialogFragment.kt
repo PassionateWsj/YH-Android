@@ -18,7 +18,7 @@ import com.intfocus.syp_template.model.response.filter.MenuItem
  * Created by CANC on 2017/8/9.
  * 筛选专用dialogfragment,支持所有数据深度
  */
-class FilterDialogFragment(mDatas: ArrayList<MenuItem>, listener: FilterListener) : DialogFragment(), FilterFragment.NewFilterFragmentListener {
+class FilterDialogFragment(mDatas: List<MenuItem>, listener: FilterListener) : DialogFragment(), FilterFragment.NewFilterFragmentListener {
     lateinit var mView: View
     lateinit var ivClose: ImageView
     lateinit var tabLayout: TabLayout
@@ -27,7 +27,7 @@ class FilterDialogFragment(mDatas: ArrayList<MenuItem>, listener: FilterListener
     lateinit var adapter: FragmentAdapter
     var titleList = ArrayList<String>()
     var fragments = ArrayList<Fragment>()
-    var datas: ArrayList<MenuItem>? = mDatas
+    var datas: List<MenuItem>? = mDatas
     var mListener: FilterListener? = listener
     var selectedDatas = ArrayList<MenuItem>()
 
@@ -85,7 +85,7 @@ class FilterDialogFragment(mDatas: ArrayList<MenuItem>, listener: FilterListener
         return mView
     }
 
-    override fun itemClick(position: Int, menuDatas: ArrayList<MenuItem>) {
+    override fun itemClick(position: Int, menuDatas: List<MenuItem>) {
         /**
          * 还有下一节点，继续添加新界面,没有下一节点，调用完成方法
          */
@@ -111,13 +111,9 @@ class FilterDialogFragment(mDatas: ArrayList<MenuItem>, listener: FilterListener
                 data.arrorDirection = false
             }
             fragments.add(FilterFragment(menuDatas[position].data!!, this))
-//            if (mAdapter == null) {
-//                mAdapter = FragmentAdapter(childFragmentManager, fragments, titleList)
-//                viewPager.mAdapter = mAdapter
-//            } else {
+
             adapter.updateFragments(fragments)
             adapter.updateTitles(titleList)
-//            }
             tabLayout.setupWithViewPager(viewPager)
             viewPager.currentItem = currentPosition!!
         } else {
@@ -128,13 +124,9 @@ class FilterDialogFragment(mDatas: ArrayList<MenuItem>, listener: FilterListener
             } else {
                 selectedDatas[currentPosition!!] = menuItem
             }
-//            if (mAdapter == null) {
-//                mAdapter = FragmentAdapter(childFragmentManager, fragments, titleList)
-//                viewPager.mAdapter = mAdapter
-//            } else {
+
             adapter.updateFragments(fragments)
             adapter.updateTitles(titleList)
-//            }
             tabLayout.setupWithViewPager(viewPager)
             viewPager.currentItem = currentPosition!!
             mListener!!.complete(selectedDatas)

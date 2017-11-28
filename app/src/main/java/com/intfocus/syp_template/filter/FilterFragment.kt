@@ -15,7 +15,7 @@ import com.intfocus.syp_template.ui.view.CustomLinearLayoutManager
  * Created by CANC on 2017/8/8.
  * 筛选界面
  */
-class FilterFragment(menuDatas: ArrayList<MenuItem>, myLisenter: NewFilterFragmentListener) : Fragment(), FilterAdapter.FilterMenuListener {
+class FilterFragment(menuDatas: List<MenuItem>, myLisenter: NewFilterFragmentListener) : Fragment(), FilterAdapter.FilterMenuListener {
 
     lateinit var mAdapter: FilterAdapter
     var datas = menuDatas
@@ -51,6 +51,6 @@ class FilterFragment(menuDatas: ArrayList<MenuItem>, myLisenter: NewFilterFragme
     }
 
     interface NewFilterFragmentListener {
-        fun itemClick(position: Int, menuDatas: ArrayList<MenuItem>)
+        fun itemClick(position: Int, menuDatas: List<MenuItem>)
     }
 }
