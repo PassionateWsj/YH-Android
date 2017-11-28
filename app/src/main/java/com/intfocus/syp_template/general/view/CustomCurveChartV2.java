@@ -79,9 +79,9 @@ public class CustomCurveChartV2 extends View implements ValueAnimator.AnimatorUp
     private int barSelectColor = 0xff666666;
     private int textSize;
     /**
-     * 条状图之间间隔
+     * 条状图之间间隔 为 x 刻度单位长度的40%
      */
-    private float mBarChartInterval = 10;
+    private float mBarChartInterval = 0.4f;
     private List<Integer> mLineChart;
     private List<Integer> mBarChart;
     private int mBarCount;
@@ -253,7 +253,7 @@ public class CustomCurveChartV2 extends View implements ValueAnimator.AnimatorUp
                 } else {
                     color = getRelativeColor(colorList[i]);
                 }
-            } else  {
+            } else {
                 if (selectItem == i) {
                     color = blackColor;
                 } else {
@@ -572,20 +572,18 @@ public class CustomCurveChartV2 extends View implements ValueAnimator.AnimatorUp
             textW = rect.width();
             textH = rect.height();
         }
-        xPoint = margin + padding + textW;
-        yPoint = getHeight() - margin - padding;
-        xScale = (getWidth() - xPoint - margin * 2) / xLabel.length;
         // 柱图之间间隙不能超过 x轴单位长度的 40%
-        if (mBarChartInterval > xScale * 0.4f) {
-            mBarChartInterval = xScale * 0.4f;
-        }
         mBarCount = 0;
         for (int i = 0; i < mChartStyle.size(); i++) {
             if (ChartStyle.BAR.equals(mChartStyle.get(i))) {
                 mBarCount++;
             }
         }
-        barWidth = (xScale - mBarChartInterval) / mBarCount;
+        xPoint = margin + padding + textW;
+        yPoint = getHeight() - margin - padding;
+        xScale = (getWidth() - xPoint) / xLabel.length;
+//        xScale = (getWidth() - xPoint) / (xLabel.length + (1 - mBarChartInterval) / (2 * mBarCount));
+        barWidth = (1 - mBarChartInterval) * xScale / mBarCount;
         yScale = (getHeight() - margin * 2 - padding * 2 - textH) / (Float.valueOf(yLabel[yLabel.length - 1]) - Float.valueOf(yLabel[0]));
     }
 
@@ -603,20 +601,11 @@ public class CustomCurveChartV2 extends View implements ValueAnimator.AnimatorUp
     }
 
     /**
-     * 设置条柱宽度
-     *
-     * @param barWidth
-     */
-    public void setBarWidth(int barWidth) {
-        this.barWidth = barWidth;
-    }
-
-    /**
      * 设置条状图之间间隔
      *
      * @param barChartInterval
      */
-    public void setBarChartInterval(int barChartInterval) {
+    public void setBarChartInterval(float barChartInterval) {
         this.mBarChartInterval = barChartInterval;
     }
 
