@@ -22,13 +22,13 @@
 
     <application
         tools:replace="android:icon,android:theme"
-        android:name="com.intfocus.syp_template.YHApplication"
+        android:name="com.intfocus.syp_template.SYPApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:hardwareAccelerated="false"
         android:theme="@style/AppTheme" >
-        <service android:name="org.OpenUDID.OpenUDID_service" >
+        <service android:name="com.intfocus.syp_template.service.OpenUDIDService" >
             <intent-filter>
                 <action android:name="org.openudid.GETUDID" />
             </intent-filter>
@@ -43,7 +43,7 @@
             android:enabled="false" />
         -->
         <activity
-            android:name="com.intfocus.syp_template.business.login.LoginActivity"
+            android:name="com.intfocus.syp_template.login.LoginActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/FullscreenTheme" >
@@ -58,11 +58,11 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name="com.intfocus.syp_template.business.dashboard.mine.activity.setting.OldSettingActivity"
+            android:name="com.intfocus.syp_template.dashboard.mine.activity.setting.OldSettingActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name="com.intfocus.syp_template.business.subject.template.two.SubjectActivity"
+            android:name="com.intfocus.syp_template.subject.two.WebPageActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="fullSensor"
             android:theme="@style/AppTheme" />

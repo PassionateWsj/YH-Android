@@ -1,9 +1,7 @@
 package com.intfocus.syp_template.general.net;
 
 
-import android.util.Log;
-
-import com.intfocus.syp_template.general.util.LogUtil;
+import com.intfocus.syp_template.util.LogUtil;
 
 import java.io.IOException;
 import java.net.URLDecoder;

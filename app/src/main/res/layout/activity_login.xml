@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/bg_login"
     android:gravity="center_horizontal"
-    tools:context=".business.login.LoginActivity">
+    tools:context=".login.LoginActivity">
 
     <View
         android:id="@+id/linearUsernameBelowLine"

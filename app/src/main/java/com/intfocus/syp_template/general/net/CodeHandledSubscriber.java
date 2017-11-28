@@ -3,7 +3,7 @@ package com.intfocus.syp_template.general.net;
 import android.net.ParseException;
 
 import com.google.gson.JsonParseException;
-import com.intfocus.syp_template.general.data.response.BaseResult;
+import com.intfocus.syp_template.model.response.BaseResult;
 
 import org.json.JSONException;
 

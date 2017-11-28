@@ -4,7 +4,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 xmlns:app="http://schemas.android.com/apk/res-auto"
-                tools:context=".business.subject.template.two.SubjectActivity">
+                tools:context=".subject.two.WebPageActivity">
 
     <include layout="@layout/item_action_bar"></include>
     <FrameLayout
