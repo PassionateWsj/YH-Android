@@ -27,8 +27,8 @@ class CollectionPresenter(
 
     override fun loadData(reportId: String, templateId: String, groupId: String) {
         mModel.getData(reportId, templateId, groupId, object : LoadDataCallback<CollectionEntity> {
-            override fun onSuccess(entity: CollectionEntity) {
-                mView.initRootView(entity)
+            override fun onSuccess(data: CollectionEntity) {
+                mView.initRootView(data)
             }
 
             override fun onError(e: Throwable) {

@@ -3,7 +3,6 @@ package com.intfocus.syp_template.subject.one
 import android.content.Context
 import com.intfocus.syp_template.base.BasePresenter
 import com.intfocus.syp_template.base.BaseView
-import com.intfocus.syp_template.model.response.filter.MenuItem
 import com.intfocus.syp_template.subject.one.entity.Filter
 
 /**
@@ -18,7 +17,7 @@ import com.intfocus.syp_template.subject.one.entity.Filter
 interface ModeContract {
 
     interface View : BaseView<Presenter> {
-        fun initRootView(reportPage: List<String>, filter: Filter)
+        fun dataLoaded(reportPage: List<String>, filter: Filter)
     }
 
     interface Presenter : BasePresenter {

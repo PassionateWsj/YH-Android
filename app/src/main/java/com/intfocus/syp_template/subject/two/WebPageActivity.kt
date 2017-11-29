@@ -19,7 +19,6 @@ import android.widget.PopupWindow
 import com.github.barteksc.pdfviewer.listener.OnPageErrorListener
 import com.github.barteksc.pdfviewer.scroll.DefaultScrollHandle
 import com.intfocus.syp_template.R
-import com.intfocus.syp_template.dashboard.mine.adapter.FilterMenuAdapter
 import com.intfocus.syp_template.constant.Params
 import com.intfocus.syp_template.constant.Params.BANNER_NAME
 import com.intfocus.syp_template.constant.Params.GROUP_ID
@@ -29,13 +28,15 @@ import com.intfocus.syp_template.constant.Params.OBJECT_ID
 import com.intfocus.syp_template.constant.Params.OBJECT_TYPE
 import com.intfocus.syp_template.constant.Params.TEMPLATE_ID
 import com.intfocus.syp_template.constant.ToastColor
-import com.intfocus.syp_template.model.response.filter.MenuItem
-import com.intfocus.syp_template.model.response.filter.MenuResult
+import com.intfocus.syp_template.dashboard.mine.adapter.FilterMenuAdapter
 import com.intfocus.syp_template.filter.FilterDialogFragment
 import com.intfocus.syp_template.listener.UMSharedListener
 import com.intfocus.syp_template.ui.BaseActivity
 import com.intfocus.syp_template.util.*
+import com.intfocus.syp_template.model.response.filter.MenuItem
+import com.intfocus.syp_template.model.response.filter.MenuResult
 import com.intfocus.syp_template.ui.view.addressselector.FilterPopupWindow
+import com.intfocus.syp_template.util.*
 import com.tencent.smtt.sdk.*
 import com.umeng.socialize.ShareAction
 import com.umeng.socialize.bean.SHARE_MEDIA
@@ -227,13 +228,13 @@ class WebPageActivity : BaseActivity(), WebPageContract.View, OnPageErrorListene
 
             override fun onPageFinished(view: WebView, url: String) {
                 //是否有筛选数据，有就显示出来
-                if (locationDataList != null && locationDataList.isNotEmpty()) {
+                if (locationDataList.isNotEmpty()) {
                     rl_address_filter.visibility = View.VISIBLE
                     LogUtil.d("location", locationDataList.size.toString())
                 } else {
                     rl_address_filter.visibility = View.GONE
                 }
-                if (menuDatas != null && menuDatas.isNotEmpty()) {
+                if ( menuDatas.isNotEmpty()) {
                     LogUtil.d("faster_select", menuDatas.size.toString())
                     filter_recycler_view.visibility = View.VISIBLE
                     view_line.visibility = View.VISIBLE
@@ -251,13 +252,13 @@ class WebPageActivity : BaseActivity(), WebPageContract.View, OnPageErrorListene
         super.onActivityResult(requestCode, resultCode, intent)
         if (requestCode == Params.REQUEST_CODE_CHOOSE && resultCode == Activity.RESULT_OK) {
             if (null != uploadFile) {
-                val result = if (intent == null || resultCode != Activity.RESULT_OK) null else Matisse.obtainResult(intent)
+                val result = if (resultCode != Activity.RESULT_OK) null else Matisse.obtainResult(intent)
 
                 uploadFile!!.onReceiveValue(result!![0])
                 uploadFile = null
             }
             if (null != uploadFiles) {
-                val result = if (intent == null || resultCode != Activity.RESULT_OK) null else Matisse.obtainResult(intent)
+                val result = if (resultCode != Activity.RESULT_OK) null else Matisse.obtainResult(intent)
 
                 uploadFiles!!.onReceiveValue(arrayOf(result!![0]))
                 uploadFiles = null
@@ -309,8 +310,8 @@ class WebPageActivity : BaseActivity(), WebPageContract.View, OnPageErrorListene
             //为了不重复显示dialog，在显示对话框之前移除正在显示的对话框
             mFragTransaction.remove(fragment)
         }
-        val dialogFragment = FilterDialogFragment(locationDataList, this)
-        dialogFragment.show(mFragTransaction, "dialogFragment") //显示一个Fragment并且给该Fragment添加一个Tag，可通过findFragmentByTag找到该Fragment
+        val dialogFragment = FilterDialogFragment.newInstance(locationDataList)
+        dialogFragment!!.show(mFragTransaction, "dialogFragment") //显示一个Fragment并且给该Fragment添加一个Tag，可通过findFragmentByTag找到该Fragment
     }
 
     /**
@@ -429,7 +430,7 @@ class WebPageActivity : BaseActivity(), WebPageContract.View, OnPageErrorListene
             else -> {
             }
         }
-        if (popupWindow != null && popupWindow.isShowing) {
+        if (popupWindow.isShowing) {
             popupWindow.dismiss()
         }
     }

@@ -191,7 +191,7 @@ class CustomJavaScriptsInterface constructor(
 
     @JavascriptInterface
     fun restoreTabIndex(pageName: String): Int {
-        var tabIndex = 0
+        var tabIndex: Int
         val filePath = FileUtil.dirPath(globalContext, K.K_CONFIG_DIR_NAME, K.K_TAB_INDEX_CONFIG_FILE_NAME)
 
         var config = JSONObject()

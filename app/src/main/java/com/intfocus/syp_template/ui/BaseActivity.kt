@@ -2,6 +2,7 @@ package com.intfocus.syp_template.ui
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -24,6 +25,7 @@ import com.intfocus.syp_template.listener.UMSharedListener
 import com.intfocus.syp_template.util.ActionLogUtil
 import com.intfocus.syp_template.util.ImageUtil
 import com.intfocus.syp_template.util.K.API_COMMENT_MOBILE_PATH
+import com.intfocus.syp_template.util.LoadingUtils
 import com.intfocus.syp_template.util.PageLinkManage.pageLink
 import com.intfocus.syp_template.util.ToastUtils
 import com.umeng.socialize.ShareAction
@@ -40,6 +42,7 @@ open class BaseActivity : AppCompatActivity() {
     lateinit var mAppContext: Context
     lateinit var mUserSP: SharedPreferences
     lateinit var popupWindow: PopupWindow
+    lateinit var loadingDialog: Dialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,6 +60,17 @@ open class BaseActivity : AppCompatActivity() {
         super.onDestroy()
     }
 
+
+    protected fun showDialog(context: Context) {
+        loadingDialog = LoadingUtils.createLoadingDialog(context, false)
+        loadingDialog.show()
+    }
+
+    protected fun hideLoading() {
+        if (loadingDialog != null && loadingDialog.isShowing()) {
+            loadingDialog.dismiss()
+        }
+    }
 
     /**
      * 标题栏点击设置按钮显示下拉菜单

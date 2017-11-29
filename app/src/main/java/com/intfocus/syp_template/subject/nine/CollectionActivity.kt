@@ -128,8 +128,8 @@ class CollectionActivity : AppCompatActivity(), CollectionContract.View {
             mToFragment = supportFragmentManager.findFragmentByTag(currentFtName) as BaseModuleFragment
         } else {
             val pageDataArrayList = mEntity!!.data
-            if (pageDataArrayList != null && pageDataArrayList!!.size > 0) {
-                mToFragment = RootPageFragment.newInstance(checkId, pageDataArrayList!![checkId].content!!)
+            if (pageDataArrayList != null && pageDataArrayList.size > 0) {
+                mToFragment = RootPageFragment.newInstance(checkId, pageDataArrayList[checkId].content!!)
                 RootPagePresenter(RootPageModelImpl.getInstance(), mToFragment as RootPageFragment)
             }
         }

@@ -18,8 +18,10 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
 import com.intfocus.syp_template.R;
 import com.intfocus.syp_template.model.entity.TempSubData;
 import com.intfocus.syp_template.ui.view.NotScrollListView;
@@ -32,6 +34,7 @@ import com.intfocus.syp_template.subject.one.entity.Tables;
 import com.intfocus.syp_template.subject.one.module.tables.adapter.TableNameAdapter;
 import com.intfocus.syp_template.util.DisplayUtil;
 import com.intfocus.syp_template.util.LogUtil;
+import com.intfocus.syp_template.util.ToastUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -128,6 +131,8 @@ public class TablesContentFragment extends Fragment implements SortCheckBox.Sort
      */
     private int mTableRootIndex;
     private int mTitleHigh;
+    private RelativeLayout mRlActionBar;
+    private LinearLayout mLlFilter;
 
     @Override
     public TableContentContract.Presenter getPresenter() {
@@ -193,7 +198,7 @@ public class TablesContentFragment extends Fragment implements SortCheckBox.Sort
             synchronized (this) {
                 if (fl_tableTitle_container.getChildCount() != 0) {
                     if (getActivity() instanceof NativeReportActivity) {
-                        boolean showSuspendTableTitle = globalOffset.y <= offsetTop && rect.bottom - mTitleHigh > offsetTop;
+                        boolean showSuspendTableTitle = globalOffset.y <= offsetTop && rect.bottom - DisplayUtil.dip2px(ctx, 44)*1.5 > offsetTop;
                         if (showSuspendTableTitle) {
                             fl_tableTitle_container.removeView(suspensionView);
                             ((NativeReportActivity) getActivity()).getSuspendContainer().addView(suspensionView);
@@ -202,7 +207,7 @@ public class TablesContentFragment extends Fragment implements SortCheckBox.Sort
                 } else {
                     if (getActivity() instanceof NativeReportActivity) {
                         int viewCont = ((NativeReportActivity) getActivity()).getSuspendContainer().getChildCount();
-                        boolean removeSuspendTableTitle = globalOffset.y > offsetTop || rect.bottom - mTitleHigh < offsetTop && viewCont != 0;
+                        boolean removeSuspendTableTitle = globalOffset.y > offsetTop || rect.bottom - DisplayUtil.dip2px(ctx, 44)*1.5 < offsetTop && viewCont != 0;
                         if (removeSuspendTableTitle) {
                             ((NativeReportActivity) getActivity()).getSuspendContainer().removeView(suspensionView);
                             fl_tableTitle_container.addView(suspensionView);
@@ -226,14 +231,19 @@ public class TablesContentFragment extends Fragment implements SortCheckBox.Sort
             tv_header = suspensionView.findViewById(R.id.tv_unit_table_header);
             thscroll_header = suspensionView.findViewById(R.id.thscroll_unit_table_header);
             linear_header = suspensionView.findViewById(R.id.ll_unit_table_header);
+            mRlActionBar = suspensionView.findViewById(R.id.rl_action_bar);
+            mLlFilter = suspensionView.findViewById(R.id.ll_filter);
 
             thscroll_header.setScrollView(thscroll_data);
             thscroll_data.setScrollView(thscroll_header);
 
-            mTitleHigh = getResources().getDimensionPixelOffset(R.dimen.action_bar_height);
+            mTitleHigh = DisplayUtil.dip2px(ctx, 44 + 41);
             rootView.post(new Runnable() {
                 @Override
                 public void run() {
+                    if (getActivity() == null) {
+                        return;
+                    }
                     Rect frame = new Rect();
                     getActivity().getWindow().getDecorView().getWindowVisibleDisplayFrame(frame);
                     //状态栏+标题栏高度-间隙
@@ -406,6 +416,7 @@ public class TablesContentFragment extends Fragment implements SortCheckBox.Sort
         Tables modularTwoUnitTableEntitySubData = dataEntity.getData().get(position).getSub_data();
         boolean subDataNull = modularTwoUnitTableEntitySubData == null || (modularTwoUnitTableEntitySubData.getData() == null && modularTwoUnitTableEntitySubData.getHead() == null);
         if (subDataNull) {
+            ToastUtils.INSTANCE.showDefault(getActivity(), JSON.parseObject(dataEntity.getData().get(position).getMain_data()[0]).getString("value"));
             return;
         }
         startSubTable(position);

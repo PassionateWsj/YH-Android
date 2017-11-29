@@ -73,7 +73,7 @@ class FavoriteArticleActivity : RefreshActivity(), InstituteAdapter.NoticeItemLi
             return
         }
         if (isShowDialog && (loadingDialog == null || !loadingDialog!!.isShowing)) {
-            showLoading()
+            showDialog(this)
         }
         queryMap.put("user_num", userNum)
         queryMap.put("page", page.toString())
@@ -112,7 +112,7 @@ class FavoriteArticleActivity : RefreshActivity(), InstituteAdapter.NoticeItemLi
     fun finishRequest() {
         refreshLayout.finishRefreshing()
         refreshLayout.finishLoadmore()
-        dismissLoading()
+        hideLoading()
     }
 
 
@@ -124,7 +124,7 @@ class FavoriteArticleActivity : RefreshActivity(), InstituteAdapter.NoticeItemLi
             ToastUtils.show(mActivity, "请检查网络链接")
             return
         }
-        showLoading()
+        showDialog(this)
         val body = RequestFavourite()
         body.user_num = userNum
         body.article_id = articleId
@@ -136,7 +136,7 @@ class FavoriteArticleActivity : RefreshActivity(), InstituteAdapter.NoticeItemLi
                     }
 
                     override fun onError(apiException: ApiException) {
-                        dismissLoading()
+                        hideLoading()
                         ToastUtils.show(mActivity, apiException.displayMessage)
                     }
 

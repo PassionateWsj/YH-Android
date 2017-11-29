@@ -66,7 +66,9 @@ public class TableRootFragment extends Fragment implements TableTitleAdapter.Not
      * 最上层跟跟标签ID
      */
     public int suRootID;
-    //title
+    /**
+     * title
+     */
     @ViewInject(R.id.recycler_view)
     private RecyclerView recyclerView;
     private TableTitleAdapter adapter;
@@ -159,7 +161,7 @@ public class TableRootFragment extends Fragment implements TableTitleAdapter.Not
 
         lastCheckId = checkId;
         currentFtName = fragmentTag + checkId;
-        toFragment = (BaseModeFragment) fm.findFragmentByTag(currentFtName);
+        toFragment = fm.findFragmentByTag(currentFtName);
         LogUtil.d(this, "currentFtName:" + currentFtName);
         LogUtil.d(this, "toFragment:" + toFragment);
         LogUtil.d(this, "currFragment == toFragment:" + (currFragment == toFragment));
@@ -205,7 +207,7 @@ public class TableRootFragment extends Fragment implements TableTitleAdapter.Not
      */
     @Override
     public void itemClick(int position) {
-            switchFragment(position);
+        switchFragment(position);
     }
 
 }

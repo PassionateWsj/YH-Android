@@ -79,17 +79,19 @@ public class CustomCurveChart extends View implements ValueAnimator.AnimatorUpda
     private int barSelectColor = 0xff666666;
     private int textSize;
     /**
-     * 条状图之间间隔
+     * 条状图之间间隔 为 x 刻度单位长度的40%
      */
-    private float mBarChartInterval = 10;
+    private float mBarChartInterval = 0.4f;
+    private List<Integer> mLineChart;
+    private List<Integer> mBarChart;
+    private int mBarCount;
 
     public interface ChartStyle {
-        int BAR = 1;
-        int LINE = 2;
-        int LINE_BAR = 3;
+        String BAR = "bar";
+        String LINE = "line";
     }
 
-    private int mChartStyle = ChartStyle.BAR;
+    private List<String> mChartStyle;
 
     private int[] orderColors;
 
@@ -182,23 +184,32 @@ public class CustomCurveChart extends View implements ValueAnimator.AnimatorUpda
 //        setLayerType(View.LAYER_TYPE_SOFTWARE, null);
         setLayerType(View.LAYER_TYPE_HARDWARE, null);
         paintCurve.clearShadowLayer();
-
+        mLineChart = new ArrayList<>();
+        mBarChart = new ArrayList<>();
         int size = dataList.size();
         for (int i = 0; i < size; i++) {
             int color;
             if (orderColors == null || orderColors.length == 0) {
                 color = defaultColor;
             } else {
-                color = orderColors[i];
+                color = orderColors[i % orderColors.length];
             }
-
-            if (mChartStyle == ChartStyle.LINE) {
-                drawLine(canvas, paintCurve, i, color);
-            } else if (mChartStyle == ChartStyle.BAR) {
-                drawBAR(canvas, i, color);
-            } else if (mChartStyle == ChartStyle.LINE_BAR) {
-                drawBAR(canvas, i, color);
-                drawLine(canvas, paintCurve, i, color);
+            switch (mChartStyle.get(i)) {
+                case ChartStyle.LINE:
+                    mLineChart.add(i);
+                    drawLine(canvas, paintCurve, mLineChart.size() - 1, color);
+                    break;
+                case ChartStyle.BAR:
+                    mBarChart.add(i);
+                    drawBAR(canvas, mBarChart.size() - 1, color);
+                    break;
+//                case "line-bar":
+//                    drawBAR(canvas, i, color);
+//                    drawLine(canvas, paintCurve, i, color);
+//                    break;
+                default:
+                    mLineChart.add(i);
+                    drawLine(canvas, paintCurve, mLineChart.size() - 1, color);
             }
         }
     }
@@ -212,10 +223,10 @@ public class CustomCurveChart extends View implements ValueAnimator.AnimatorUpda
      */
     private void drawAxesLine(Canvas canvas, Paint paint) {
         // X
-        canvas.drawLine(xPoint - xScale / 2, yPoint, this.getWidth(), yPoint, paint);
+        canvas.drawLine(xPoint, yPoint, this.getWidth(), yPoint, paint);
         // 零刻度
         if (Float.parseFloat(yLabel[0]) < 0) {
-            canvas.drawLine(xPoint - xScale / 2, toY(-Float.parseFloat(yLabel[0])), this.getWidth(), toY(-Float.parseFloat(yLabel[0])), paint);
+            canvas.drawLine(xPoint, toY(-Float.parseFloat(yLabel[0])), this.getWidth(), toY(-Float.parseFloat(yLabel[0])), paint);
         }
     }
 
@@ -229,32 +240,66 @@ public class CustomCurveChart extends View implements ValueAnimator.AnimatorUpda
         // X轴坐标
         paint.setTextAlign(Paint.Align.CENTER);
         int xlength = xLabel.length;
+
         for (int i = 0; i < xlength; i++) {
-            float startX = 0;
-//            if (mChartStyle == ChartStyle.BAR || mChartStyle == ChartStyle.LINE_BAR)
-            startX = xScale / 2;
-            startX += xPoint + i * xScale;
+            float startX = xPoint + xScale / 2;
+            startX += i * xScale;
 
             int color;
-            boolean isBarChartSelected = selectItem == i && (mChartStyle == ChartStyle.BAR || mChartStyle == ChartStyle.LINE_BAR);
-            if (isBarChartSelected) {
-                color = blackColor;
-            } else {
-                if (colorList == null) {
+            if (mChartStyle.contains(ChartStyle.LINE)) {
+                if (colorList == null || i > colorList.length - 1) {
                     color = defaultColor;
                 } else {
-                    if (colorList == null || i > colorList.length - 1) {
-                        color = defaultColor;
+                    color = getRelativeColor(colorList[i]);
+                }
+            } else {
+                if (selectItem == i) {
+                    color = blackColor;
+                } else {
+                    color = defaultColor;
+                }
+            }
+            paint.setColor(color);
+
+            // 动态计算 X 刻度 文字大小 && 显示个数
+            Rect rect;
+            // X 小于等于12个值，刻度全显示
+            if (xlength < 13) {
+                while (true) {
+                    rect = new Rect();
+                    paint.getTextBounds(xLabel[i].toCharArray(), 0, xLabel[i].length(), rect);
+                    if (i == xlength - 1) {
+                        if (startX + rect.width() > getWidth()) {
+                            paint.setTextSize(paint.getTextSize() * 0.95f);
+                        } else {
+                            break;
+                        }
                     } else {
-                        color = getRelativeColor(colorList[i]);
+                        if (startX + rect.width() > startX + xScale) {
+                            paint.setTextSize(paint.getTextSize() * 0.95f);
+                        } else {
+                            break;
+                        }
                     }
+                }
+                canvas.drawText(xLabel[i], startX, yPoint - paint.getFontMetrics().top, paint);
+            }
+            // X 大于12个值，刻度显示头尾
+            else {
+                if (i == 0 || i == xlength - 1) {
+                    while (true) {
+                        rect = new Rect();
+                        paint.getTextBounds(xLabel[i].toCharArray(), 0, xLabel[i].length(), rect);
+                        if (startX + rect.width() / 2 > getWidth()) {
+                            paint.setTextSize(paint.getTextSize() * 0.95f);
+                        } else {
+                            break;
+                        }
+                    }
+                    canvas.drawText(xLabel[i], startX, yPoint - paint.getFontMetrics().top, paint);
                 }
             }
 
-            paint.setColor(color);
-            if (i == 0 || i == xlength - 1) {
-                canvas.drawText(xLabel[i], startX, yPoint - paint.getFontMetrics().top, paint);
-            }
             xPoints.add(startX);
         }
 
@@ -292,7 +337,7 @@ public class CustomCurveChart extends View implements ValueAnimator.AnimatorUpda
      * 绘制折线
      */
     private void drawLine(Canvas canvas, Paint paint, int dataIndex, int drawColor) {
-        Float[] data = dataList.get(dataIndex);
+        Float[] data = dataList.get(mLineChart.get(dataIndex));
         paint.setColor(drawColor);
         paintCurve.setStyle(Paint.Style.STROKE);
         paintCurve.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_OVER));
@@ -318,8 +363,7 @@ public class CustomCurveChart extends View implements ValueAnimator.AnimatorUpda
             }
         }
         canvas.drawPath(path, paint);
-
-        if (ratio == 1 && mChartStyle != ChartStyle.LINE_BAR) {
+        if (ratio == 1) {
             for (int i = 0; i < loopingCount; i++) {
                 float yPointCircle;
                 if (i == 0) {
@@ -369,7 +413,7 @@ public class CustomCurveChart extends View implements ValueAnimator.AnimatorUpda
      * @param drawColor
      */
     private void drawBAR(Canvas canvas, int dataIndex, int drawColor) {
-        Float[] data = dataList.get(dataIndex);
+        Float[] data = dataList.get(mBarChart.get(dataIndex));
         paintCurve.setStyle(Paint.Style.FILL);
         paintCurve.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_OVER));
         int xsize = xLabel.length;
@@ -382,34 +426,22 @@ public class CustomCurveChart extends View implements ValueAnimator.AnimatorUpda
         float bottom;
         for (int i = 0; i < loopingcont; i++) {
             float yPoint = toY(-Float.parseFloat(yLabel[0]));
-            float startX = xPoint + xScale / 2 + i * xScale - barWidth * (dataList.size() - 1) / 2;
-            left = startX - offset + (dataIndex * barWidth);
-            right = startX + offset + (dataIndex * barWidth);
 
-//            top = toY(data[i]) * (1 + (1 - ratio));
-//            bottom = yPoint;
+            float startX = xPoint + xScale / 2 + i * xScale - barWidth * (mBarCount - 1) / 2;
+            left = startX - offset + (mBarChart.lastIndexOf(mBarChart.get(dataIndex)) * barWidth);
+            right = startX + offset + (mBarChart.lastIndexOf(mBarChart.get(dataIndex)) * barWidth);
+
             if (data[i] < 0) {
                 top = yPoint;
                 bottom = toY(data[i] - Float.parseFloat(yLabel[0])) * ratio;
-//                LogUtil.d("hjjzz", "数据 负 ：ratio " + ratio);
             } else {
                 top = toY(data[i] - Float.parseFloat(yLabel[0])) * (1 + (1 - ratio));
                 bottom = yPoint;
-//                LogUtil.d("hjjzz", "数据 正 ：ratio " + ratio);
             }
 
             RectF rectF = new RectF(left, top, right, bottom);
             if (i == selectItem) {
-                switch (dataIndex) {
-                    case 0:
-                        paintCurve.setColor(orderColors[dataIndex]);
-                        break;
-                    case 1:
-                        paintCurve.setColor(defaultColor);
-                        break;
-                    default:
-                        break;
-                }
+                paintCurve.setColor(orderColors[mBarChart.get(dataIndex)]);
             } else {
                 paintCurve.setColor(defaultColor);
             }
@@ -479,20 +511,7 @@ public class CustomCurveChart extends View implements ValueAnimator.AnimatorUpda
         //曲线触摸区域
         int size = xPoints.size();
         for (int i = 0; i < size; i++) {
-            // dipToPx(8)乘以2为了适当增大触摸面积
-//            switch (mChartStyle) {
-//                case ChartStyle.LINE:
-//                    if (x > (xPoints.get(i) - dipToPx(8) * 2) && x < (xPoints.get(i) + dipToPx(8) * 2)) {
-//                        selectItem = i;
-//                        if (listener != null) {
-//                            listener.onPointClick(selectItem);
-//                        }
-//                        return true;
-//                    }
-//                    break;
-//
-//                case ChartStyle.BAR:
-            if (x > (xPoints.get(i) - xScale/2) && x < (xPoints.get(i) + xScale/2)) {
+            if (x > (xPoints.get(i) - xScale / 2) && x < (xPoints.get(i) + xScale / 2)) {
 
                 selectItem = i;
                 if (listener != null) {
@@ -500,11 +519,6 @@ public class CustomCurveChart extends View implements ValueAnimator.AnimatorUpda
                 }
                 return true;
             }
-//                    break;
-//
-//                default:
-//                    break;
-//            }
         }
         return false;
     }
@@ -588,23 +602,27 @@ public class CustomCurveChart extends View implements ValueAnimator.AnimatorUpda
         if (yLabel != null && yLabel.length != 0) {
             String lable = yLabel[yLabel.length - 1];
             Rect rect = new Rect();
-            paintAxes.getTextBounds(lable, 0, lable.length(), rect);
+            paintAxes.getTextBounds(lable.toCharArray(), 0, lable.length(), rect);
             textW = rect.width();
             textH = rect.height();
         }
+        // 柱图之间间隙不能超过 x轴单位长度的 40%
+        mBarCount = 0;
+        for (int i = 0; i < mChartStyle.size(); i++) {
+            if (ChartStyle.BAR.equals(mChartStyle.get(i))) {
+                mBarCount++;
+            }
+        }
         xPoint = margin + padding + textW;
         yPoint = getHeight() - margin - padding;
-        xScale = (getWidth() - xPoint - margin * 2) / xLabel.length;
-        // 柱图之间间隙不能超过 x轴单位长度的 40%
-        if (mBarChartInterval > xScale * 0.4f) {
-            mBarChartInterval = xScale * 0.4f;
-        }
-        barWidth = (xScale - mBarChartInterval) / dataList.size();
+        xScale = (getWidth() - xPoint - padding) / xLabel.length;
+//        xScale = (getWidth() - xPoint) / (xLabel.length + (1 - mBarChartInterval) / (2 * mBarCount));
+        barWidth = (1 - mBarChartInterval) * xScale / mBarCount;
         yScale = (getHeight() - margin * 2 - padding * 2 - textH) / (Float.valueOf(yLabel[yLabel.length - 1]) - Float.valueOf(yLabel[0]));
     }
 
-    public void setDefauteMargin(int defauteMargin) {
-        this.margin = defauteMargin;
+    public void setDefaultMargin(int defaultMargin) {
+        this.margin = defaultMargin;
     }
 
     /**
@@ -612,17 +630,8 @@ public class CustomCurveChart extends View implements ValueAnimator.AnimatorUpda
      *
      * @param chartStyle
      */
-    public void setCharStyle(int chartStyle) {
+    public void setCharStyle(List<String> chartStyle) {
         mChartStyle = chartStyle;
-    }
-
-    /**
-     * 设置条柱宽度
-     *
-     * @param barWidth
-     */
-    public void setBarWidth(int barWidth) {
-        this.barWidth = barWidth;
     }
 
     /**
@@ -630,7 +639,7 @@ public class CustomCurveChart extends View implements ValueAnimator.AnimatorUpda
      *
      * @param barChartInterval
      */
-    public void setBarChartInterval(int barChartInterval) {
+    public void setBarChartInterval(float barChartInterval) {
         this.mBarChartInterval = barChartInterval;
     }
 
@@ -638,11 +647,11 @@ public class CustomCurveChart extends View implements ValueAnimator.AnimatorUpda
         this.unit = unit;
     }
 
-    public void setxLabel(String[] xLabel) {
+    public void setXLabel(String[] xLabel) {
         this.xLabel = xLabel;
     }
 
-    public void setyLabel(String[] yLabel) {
+    public void setYLabel(String[] yLabel) {
         this.yLabel = yLabel;
     }
 

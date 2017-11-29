@@ -1,13 +1,6 @@
 package com.intfocus.syp_template.util;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
-import android.graphics.Rect;
-import android.graphics.RectF;
 
 /**
  * dp、sp 转换为 px 的工具类
@@ -18,7 +11,7 @@ public class DisplayUtil {
      * 将px值转换为dip或dp值，保证尺寸大小不变
      *
      * @param pxValue px值
-     * @param scale （DisplayMetrics类中属性density）
+     *       （DisplayMetrics类中属性density）
      * @return dip值
      */
     public static int px2dip(Context context, float pxValue) {
@@ -30,7 +23,7 @@ public class DisplayUtil {
      * 将dip或dp值转换为px值，保证尺寸大小不变
      *
      * @param dipValue dip值
-     * @param scale  （DisplayMetrics类中属性density）
+     *        （DisplayMetrics类中属性density）
      * @return px值
      */
     public static int dip2px(Context context, float dipValue) {
@@ -42,7 +35,7 @@ public class DisplayUtil {
      * 将px值转换为sp值，保证文字大小不变
      *
      * @param pxValue px值
-     * @param fontScale （DisplayMetrics类中属性scaledDensity）
+     *       （DisplayMetrics类中属性scaledDensity）
      * @return sp值
      */
     public static int px2sp(Context context, float pxValue) {
@@ -54,7 +47,7 @@ public class DisplayUtil {
      * 将sp值转换为px值，保证文字大小不变
      *
      * @param spValue sp值
-     * @param fontScale （DisplayMetrics类中属性scaledDensity）
+     *       （DisplayMetrics类中属性scaledDensity）
      * @return px值
      */
     public static int sp2px(Context context, float spValue) {

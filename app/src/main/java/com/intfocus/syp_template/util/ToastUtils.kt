@@ -47,7 +47,9 @@ object ToastUtils {
     }
 
     fun showDefault(ctx: Context, info: String) {
-        Toast.makeText(ctx, info, Toast.LENGTH_SHORT).show()
+        cancel()
+        mToast = Toast.makeText(ctx, info, Toast.LENGTH_SHORT)
+        mToast!!.show()
     }
 
     fun cancel() {

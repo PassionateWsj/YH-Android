@@ -2,12 +2,12 @@ package com.intfocus.syp_template.subject.one
 
 import com.alibaba.fastjson.JSON
 import com.alibaba.fastjson.JSONReader
-import com.intfocus.syp_template.subject.model.ReportModelImpl
+import com.intfocus.syp_template.ConfigConstants
+import com.intfocus.syp_template.model.DaoUtil
 import com.intfocus.syp_template.model.entity.Report
 import com.intfocus.syp_template.model.entity.ReportModule
-import com.intfocus.syp_template.ConfigConstants
 import com.intfocus.syp_template.model.gen.ReportDao
-import com.intfocus.syp_template.model.DaoUtil
+import com.intfocus.syp_template.subject.model.ReportModelImpl
 import com.intfocus.syp_template.subject.one.entity.Filter
 import com.intfocus.syp_template.util.ApiHelper.clearResponseHeader
 import com.intfocus.syp_template.util.K
@@ -32,7 +32,7 @@ import java.io.StringReader
 class ModeImpl : ReportModelImpl() {
     lateinit private var pageTitleList: List<String>
     private var reportDao: ReportDao = DaoUtil.getReportDao()
-    private var filterObject: Filter? = null
+    lateinit private var filterObject: Filter
     private var urlString: String = ""
     private var jsonFileName: String = ""
     private var groupId: String = ""
@@ -127,7 +127,7 @@ class ModeImpl : ReportModelImpl() {
 //                    } else {
 //                        throw Throwable("获取数据失败")
 //                    }
-                    response = getAssetsJsonData("template1_05.json")
+                    response = getAssetsJsonData("template1_06.json")
 
                     val stringReader = StringReader(response)
                     val reader = JSONReader(stringReader)
@@ -180,7 +180,7 @@ class ModeImpl : ReportModelImpl() {
                     }
 
                     override fun onNext(t: List<String>?) {
-                        t?.let { callback.onDataLoaded(it, filterObject!!) }
+                        t?.let { callback.onDataLoaded(it, filterObject) }
                     }
 
                     override fun onError(e: Throwable?) {
@@ -202,7 +202,7 @@ class ModeImpl : ReportModelImpl() {
 
         filterObject = JSON.parseObject(filter.config, Filter::class.java)
 
-        return if (null == filterObject) {
+        return if (null == filterObject.data) {
             reportDao.queryBuilder()
                     .where(ReportDao.Properties.Uuid.eq(uuid))
                     .list() ?: mutableListOf()
@@ -221,13 +221,12 @@ class ModeImpl : ReportModelImpl() {
      */
     fun queryPageData(pageId: Int): List<Report> {
         val reportDao = DaoUtil.getReportDao()
-        return if (null == filterObject) {
+        return if (null == filterObject.data) {
             reportDao.queryBuilder()
                     .where(reportDao.queryBuilder()
                             .and(ReportDao.Properties.Uuid.eq(uuid), ReportDao.Properties.Page_title.eq(pageTitleList[pageId])))
                     .list()
-        }
-        else {
+        } else {
             reportDao.queryBuilder()
                     .where(reportDao.queryBuilder()
                             .and(ReportDao.Properties.Uuid.eq(uuid), ReportDao.Properties.Page_title.eq(pageTitleList[pageId]), ReportDao.Properties.Name.eq(filterObject!!.display)))
@@ -243,13 +242,12 @@ class ModeImpl : ReportModelImpl() {
      */
     fun queryModuleConfig(index: Int, pageId: Int): String {
         val reportDao = DaoUtil.getReportDao()
-        return if (null == filterObject) {
+        return if (null == filterObject.data) {
             reportDao.queryBuilder()
                     .where(reportDao.queryBuilder()
                             .and(ReportDao.Properties.Uuid.eq(uuid), ReportDao.Properties.Page_title.eq(pageTitleList[pageId]), ReportDao.Properties.Index.eq(index)))
                     .unique().config
-        }
-        else {
+        } else {
             reportDao.queryBuilder()
                     .where(reportDao.queryBuilder()
                             .and(ReportDao.Properties.Uuid.eq(uuid), ReportDao.Properties.Page_title.eq(pageTitleList[pageId]), ReportDao.Properties.Name.eq(filterObject!!.display), ReportDao.Properties.Index.eq(index)))
@@ -266,7 +264,7 @@ class ModeImpl : ReportModelImpl() {
         filterObject!!.display = display
 
         val reportDao = DaoUtil.getReportDao()
-        var filter = reportDao.queryBuilder()
+        val filter = reportDao.queryBuilder()
                 .where(reportDao.queryBuilder()
                         .and(ReportDao.Properties.Uuid.eq(uuid), ReportDao.Properties.Type.eq("filter"))).unique()
 

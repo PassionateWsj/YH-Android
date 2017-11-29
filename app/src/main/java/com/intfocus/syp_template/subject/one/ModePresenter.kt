@@ -1,7 +1,6 @@
 package com.intfocus.syp_template.subject.one
 
 import android.content.Context
-import com.intfocus.syp_template.model.response.filter.MenuItem
 import com.intfocus.syp_template.subject.one.entity.Filter
 import com.intfocus.syp_template.util.LogUtil
 
@@ -34,7 +33,7 @@ class ModePresenter(
 
     inner class ReportDataCallback: ModeModel.LoadDataCallback {
         override fun onDataLoaded(reports: List<String>, filter: Filter) {
-            mView.initRootView(reports, filter)
+            mView.dataLoaded(reports, filter)
         }
 
         override fun onDataNotAvailable(e: Throwable) {

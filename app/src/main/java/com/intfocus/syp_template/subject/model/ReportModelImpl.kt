@@ -42,14 +42,14 @@ open class ReportModelImpl : ReportModel {
         return reports.isNotEmpty()
     }
 
-    override fun download(url: String, outputPath: String): HashMap<String, String> {
+    override fun download(link: String, outputPath: String): HashMap<String, String> {
         val response = HashMap<String, String>()
         var input: InputStream? = null
         var output: OutputStream? = null
         var connection: HttpURLConnection? = null
 
         try {
-            val url = URL(url)
+            val url = URL(link)
             connection = url.openConnection() as HttpURLConnection
 
             connection.setRequestProperty("accept", "*/*")

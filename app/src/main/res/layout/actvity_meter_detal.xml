@@ -1,8 +1,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
     <include layout="@layout/item_action_bar"></include>
 
@@ -18,7 +18,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
-            android:background="@color/co9_syr" />
+            android:background="@color/co9_syr"/>
 
         <RelativeLayout
             android:id="@+id/rl_address_filter"
@@ -40,7 +40,7 @@
                 android:paddingLeft="16dp"
                 android:textColor="@color/co15_syr"
                 android:textColorHint="@color/co4_syr"
-                android:textSize="14sp" />
+                android:textSize="14sp"/>
 
             <TextView
                 android:id="@+id/tv_address_filter"
@@ -53,13 +53,13 @@
                 android:paddingRight="16dp"
                 android:text="筛选"
                 android:textColor="@color/co6_syr"
-                android:textSize="15sp" />
+                android:textSize="15sp"/>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
                 android:layout_alignParentBottom="true"
-                android:background="@color/co9_syr" />
+                android:background="@color/co9_syr"/>
         </RelativeLayout>
 
         <View
@@ -67,6 +67,8 @@
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
             android:background="@color/co9_syr"/>
+
+
     </LinearLayout>
 
     <com.intfocus.syp_template.ui.view.RootScrollView
@@ -90,12 +92,12 @@
                 android:animateLayoutChanges="true"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                tools:layout_editor_absoluteY="1dp" />
+                tools:layout_editor_absoluteY="1dp"/>
 
             <FrameLayout
                 android:id="@+id/fl_mdetal_cont_container"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"/>
 
         </LinearLayout>
     </com.intfocus.syp_template.ui.view.RootScrollView>
@@ -104,6 +106,6 @@
         android:id="@+id/fl_mdetal_top_suspend_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/rl_address_filter"/>
+        android:layout_below="@+id/ll_filter"/>
 
 </RelativeLayout>

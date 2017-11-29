@@ -61,7 +61,7 @@ class GuideFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        val view = inflater!!.inflate(R.layout.fragment_guide, container, false)
+        val view = inflater.inflate(R.layout.fragment_guide, container, false)
         rlGuideDescribe = view.findViewById(R.id.rl_guide_describe)
         ivGuideScreenshot = view.findViewById(R.id.iv_guide_screenshot)
         ivGuideText = view.findViewById(R.id.iv_guide_text)

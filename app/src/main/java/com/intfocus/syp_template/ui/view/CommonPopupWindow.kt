@@ -23,7 +23,7 @@ class CommonPopupWindow : PopupWindow() {
     /**
      *
      */
-    open fun showPopupWindow(activity: Activity, str1: String, colorId1: Int, str2: String, colorId2: Int, lisenter: ButtonLisenter) {
+    fun showPopupWindow(activity: Activity, str1: String, colorId1: Int, str2: String, colorId2: Int, lisenter: ButtonLisenter) {
         val inflater = LayoutInflater.from(activity)
         conentView = inflater.inflate(R.layout.popup_common, null)
         tvBtn1 = conentView.findViewById(R.id.tv_btn1)

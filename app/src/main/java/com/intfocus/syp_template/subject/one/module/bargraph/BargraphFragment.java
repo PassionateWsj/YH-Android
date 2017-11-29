@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.intfocus.syp_template.R;
@@ -32,7 +33,7 @@ import java.util.LinkedList;
 /**
  * 正负图表模块
  */
-public class BargraphFragment extends BaseModeFragment implements AdapterView.OnItemClickListener {
+public class BargraphFragment extends BaseModeFragment implements AdapterView.OnItemClickListener, PlusMinusChart.PlusMinusOnItemClickListener {
     private static final String ARG_INDEX = "index";
     private static final String ARG_ROOT_ID = "rootId";
     private View rootView;
@@ -58,6 +59,8 @@ public class BargraphFragment extends BaseModeFragment implements AdapterView.On
     private LinkedList<BargraphComparator> mLtData;
     private BargraphNameComparator nameComparator;
     private BargraphDataComparator dataComparator;
+    private BargraphComparator mSelectItem;
+    private Toast mToast;
 
     public static BargraphFragment newInstance(int rootId, int index) {
         BargraphFragment fragment = new BargraphFragment();
@@ -125,11 +128,9 @@ public class BargraphFragment extends BaseModeFragment implements AdapterView.On
                 break;
         }
         adapter.updateData(mLtData);
-//        ArrayList<String> chartData = new ArrayList<>();
-//        for (BargraphComparator bargraphComparator : mLtData) {
-//            chartData.add(bargraphComparator.data);
-//        }
         pmChart.updateData(mLtData);
+        adapter.setSelectItem(mLtData.indexOf(mSelectItem));
+        pmChart.onClickItem(mLtData.indexOf(mSelectItem));
     }
 
     private void bindData() {
@@ -147,23 +148,33 @@ public class BargraphFragment extends BaseModeFragment implements AdapterView.On
 
         mCboxPercentage.setText(entityData.series.name);
         mCboxName.setText(entityData.xAxis.name);
-//        LinkedList<BargraphComparator> lvdata = new LinkedList<>();
-//        lvdata.addAll(mLtData);
         adapter.updateData(mLtData);
 
         //设置图表数据
         pmChart = new PlusMinusChart(ctx);
         pmChart.setDrawingCacheEnabled(true);
-        pmChart.setDefauteolor(ContextCompat.getColor(ctx,R.color.co9));
+        pmChart.setDefauteolor(ContextCompat.getColor(ctx, R.color.co9));
         pmChart.setDataValues(mLtData);
+        pmChart.setPointClickListener(this);
         mFlContainer.addView(pmChart);
     }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        adapter.setSelectItem(position);
-        String xValue = entityData.xAxis.data[position];
-        ToastUtils.INSTANCE.show(ctx, xValue);
+        pmChart.onClickItem(position);
+        itemClick(position);
+    }
+
+    @Override
+    public void onPointClick(int index) {
+        itemClick(index);
+    }
+
+    private void itemClick(int index) {
+        mSelectItem = mLtData.get(index);
+        adapter.setSelectItem(index);
+        String xValue = entityData.xAxis.data[index];
+        ToastUtils.INSTANCE.showDefault(ctx, xValue);
     }
 
     class BargraphNameComparator implements Comparator<BargraphComparator> {
