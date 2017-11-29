@@ -62,7 +62,7 @@
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/space_default_small">
+            android:layout_marginTop="@dimen/space_default_small_xs">
 
             <TextView
                 android:id="@+id/tv_chart_table_target1name"
@@ -93,7 +93,7 @@
         android:id="@+id/ll_mdrpUnit_curvechart"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingBottom="@dimen/size_curve_padding_bottom"
+        android:layout_marginBottom="@dimen/size_curve_padding_bottom"
         android:layout_marginLeft="@dimen/size_padding"
         android:layout_marginTop="@dimen/size_curve_margin"
         android:layout_marginRight="@dimen/size_padding"

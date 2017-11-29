@@ -37,7 +37,7 @@
                 android:gravity="center_vertical"
                 android:hint=""
                 android:maxLines="1"
-                android:paddingLeft="16dp"
+                android:paddingLeft="@dimen/space_default_large_xxs"
                 android:textColor="@color/co15_syr"
                 android:textColorHint="@color/co4_syr"
                 android:textSize="14sp"/>
@@ -50,8 +50,8 @@
                 android:drawablePadding="6dp"
                 android:drawableRight="@drawable/pop_screen_gray"
                 android:gravity="center_vertical"
-                android:paddingRight="16dp"
-                android:text="筛选"
+                android:paddingRight="@dimen/space_default_large_xxs"
+                android:text="@string/text_shaixuan"
                 android:textColor="@color/co6_syr"
                 android:textSize="15sp"/>
 
@@ -83,16 +83,20 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <FrameLayout
-                android:id="@+id/fl_mdetal_title_container"
+            <HorizontalScrollView
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/size_default_medium"
-                android:layout_marginLeft="0dp"
-                android:layout_marginRight="0dp"
-                android:animateLayoutChanges="true"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                tools:layout_editor_absoluteY="1dp"/>
+                android:background="@color/co10_syr"
+                android:paddingRight="@dimen/space_default_large_xxs"
+                android:paddingLeft="@dimen/space_default_large_xxs"
+                android:scrollbars="none">
+
+                <RelativeLayout
+                    android:id="@+id/rl_mdetal_title_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"/>
+            </HorizontalScrollView>
 
             <FrameLayout
                 android:id="@+id/fl_mdetal_cont_container"
