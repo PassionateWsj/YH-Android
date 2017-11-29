@@ -202,7 +202,7 @@ public class TablesContentFragment extends Fragment implements SortCheckBox.Sort
             synchronized (this) {
                 if (fl_tableTitle_container.getChildCount() != 0) {
                     if (getActivity() instanceof NativeReportActivity) {
-                        boolean showSuspendTableTitle = globalOffset.y <= offsetTop && rect.bottom - mNativeReportLlFilterHight > offsetTop;
+                        boolean showSuspendTableTitle = globalOffset.y <= offsetTop && rect.bottom - DisplayUtil.dip2px(getActivity(), 46) > offsetTop;
                         if (showSuspendTableTitle) {
                             fl_tableTitle_container.removeView(suspensionView);
                             ((NativeReportActivity) getActivity()).getSuspendContainer().addView(suspensionView);
@@ -211,7 +211,7 @@ public class TablesContentFragment extends Fragment implements SortCheckBox.Sort
                 } else {
                     if (getActivity() instanceof NativeReportActivity) {
                         int viewCont = ((NativeReportActivity) getActivity()).getSuspendContainer().getChildCount();
-                        boolean removeSuspendTableTitle = globalOffset.y > offsetTop || rect.bottom - mNativeReportLlFilterHight < offsetTop && viewCont != 0;
+                        boolean removeSuspendTableTitle = globalOffset.y > offsetTop || rect.bottom - DisplayUtil.dip2px(getActivity(), 46) < offsetTop && viewCont != 0;
                         if (removeSuspendTableTitle) {
                             ((NativeReportActivity) getActivity()).getSuspendContainer().removeView(suspensionView);
                             fl_tableTitle_container.addView(suspensionView);
@@ -251,8 +251,11 @@ public class TablesContentFragment extends Fragment implements SortCheckBox.Sort
                     Rect frame = new Rect();
                     getActivity().getWindow().getDecorView().getWindowVisibleDisplayFrame(frame);
                     //状态栏 + 标题栏高度 - 间隙
-                    if (mNativeReportActionBarHight != 0 && mNativeReportLlFilterHight != 0) {
-                        mTitleHigh = mNativeReportActionBarHight + mNativeReportActionBarHight;
+                    if (mNativeReportActionBarHight != 0) {
+                        mTitleHigh = +mNativeReportActionBarHight;
+                    }
+                    if (mNativeReportLlFilterHight != 0) {
+                        mTitleHigh += mNativeReportLlFilterHight;
                     }
                     offsetTop = frame.top + mTitleHigh;
                 }
