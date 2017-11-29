@@ -7,10 +7,7 @@ import android.support.v4.app.FragmentTransaction
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.FrameLayout
-import android.widget.RadioButton
-import android.widget.RadioGroup
-import android.widget.RelativeLayout
+import android.widget.*
 import com.intfocus.syp_template.R
 import com.intfocus.syp_template.constant.Params.BANNER_NAME
 import com.intfocus.syp_template.constant.Params.GROUP_ID
@@ -44,10 +41,11 @@ import java.util.*
 class NativeReportActivity : BaseActivity(), ModeContract.View, FilterDialogFragment.FilterListener {
     private var uuid: String? = null
 
-    private lateinit var rScrollView: RootScrollView
+    private lateinit var rootScrollView: RootScrollView
 
     lateinit var suspendContainer: FrameLayout
     lateinit var actionbar: RelativeLayout
+    lateinit var mLlFilter: LinearLayout
     private var toFragment: Fragment? = null
     private var currentFtName: String? = null
     private var filterDisplay: String = ""
@@ -66,7 +64,7 @@ class NativeReportActivity : BaseActivity(), ModeContract.View, FilterDialogFrag
     private var objectType: String? = null
     private var bannerName: String? = null
 
-    private var fl_titleContainer: FrameLayout? = null
+    private var mTlTitleContainer: RelativeLayout? = null
 
     private var radioGroup: RadioGroup? = null
 
@@ -86,9 +84,9 @@ class NativeReportActivity : BaseActivity(), ModeContract.View, FilterDialogFrag
         setContentView(R.layout.actvity_meter_detal)
 
         mFragmentManager = supportFragmentManager
-        fl_titleContainer = findViewById(R.id.fl_mdetal_title_container)
+        mTlTitleContainer = findViewById(R.id.rl_mdetal_title_container)
         suspendContainer = findViewById(R.id.fl_mdetal_top_suspend_container)
-        rScrollView = findViewById(R.id.rootScrollView)
+        rootScrollView = findViewById(R.id.rootScrollView)
         ModePresenter(ModeImpl.getInstance(), this)
         init()
         initListener()
@@ -101,6 +99,7 @@ class NativeReportActivity : BaseActivity(), ModeContract.View, FilterDialogFrag
         objectType = intent.getStringExtra(OBJECT_TYPE)
         bannerName = intent.getStringExtra(BANNER_NAME)
         templateId = intent.getStringExtra(TEMPLATE_ID)
+        mLlFilter = findViewById(R.id.ll_filter)
         tv_banner_title.text = bannerName
         actionbar = rl_action_bar
 
@@ -109,7 +108,7 @@ class NativeReportActivity : BaseActivity(), ModeContract.View, FilterDialogFrag
     }
 
     private fun initListener() {
-        rScrollView.setOnScrollListener { EventBus.getDefault().post(EventRefreshTableRect(lastCheckId)) }
+        rootScrollView.setOnScrollListener { EventBus.getDefault().post(EventRefreshTableRect(lastCheckId)) }
     }
 
     override fun dataLoaded(reportPage: List<String>, filter: Filter) {
@@ -126,7 +125,7 @@ class NativeReportActivity : BaseActivity(), ModeContract.View, FilterDialogFrag
         if (dataSize > 1) {
             val scrollTitle = LayoutInflater.from(this)
                     .inflate(R.layout.item_mdetal_scroll_title, null)
-            fl_titleContainer!!.addView(scrollTitle)
+            mTlTitleContainer!!.addView(scrollTitle)
             radioGroup = scrollTitle.findViewById(R.id.radioGroup)
 
             for (i in 0 until dataSize) {
@@ -156,7 +155,7 @@ class NativeReportActivity : BaseActivity(), ModeContract.View, FilterDialogFrag
                 }
             }
         } else if (dataSize == 1) {
-            fl_titleContainer!!.visibility = View.GONE
+            mTlTitleContainer!!.visibility = View.GONE
             switchFragment(0)
         }
     }
@@ -167,9 +166,13 @@ class NativeReportActivity : BaseActivity(), ModeContract.View, FilterDialogFrag
     private fun initFilter(filter: Filter) {
         this.filterDataList = filter.data!!
         this.filterDisplay = filter.display!!
-        ll_filter.visibility = View.VISIBLE
-        tv_location_address.text = filterDisplay
-        tv_address_filter.setOnClickListener { showDialogFragment() }
+        if (filterDataList.isEmpty()) {
+            ll_filter.visibility = View.GONE
+        } else {
+            ll_filter.visibility = View.VISIBLE
+            tv_location_address.text = filterDisplay
+            tv_address_filter.setOnClickListener { showDialogFragment() }
+        }
     }
 
     private fun showDialogFragment() {
@@ -188,13 +191,6 @@ class NativeReportActivity : BaseActivity(), ModeContract.View, FilterDialogFrag
      * 筛选完成回调
      */
     override fun complete(data: ArrayList<MenuItem>) {
-        // 清空栈中 Fragment
-        val ft = mFragmentManager!!.beginTransaction()
-        mFragmentManager!!.fragments
-                .filterIsInstance<RootPageFragment>()
-                .forEach { ft.remove(it) }
-        ft.commitAllowingStateLoss()
-        LogUtil.d(this, "fragments Num ::: " + mFragmentManager!!.fragments.size)
         var addStr = ""
         val size = data.size
         for (i in 0 until size) {
@@ -202,6 +198,15 @@ class NativeReportActivity : BaseActivity(), ModeContract.View, FilterDialogFrag
         }
         addStr = addStr.substring(0, addStr.length - 2)
         if (filterDisplay != addStr) {
+            // 清空栈中 Fragment
+            val ft = mFragmentManager!!.beginTransaction()
+            mFragmentManager!!.fragments
+                    .filterIsInstance<RootPageFragment>()
+                    .forEach { ft.remove(it) }
+            ft.commitAllowingStateLoss()
+            LogUtil.d(this, "fragments Num ::: " + mFragmentManager!!.fragments.size)
+            mTlTitleContainer!!.removeAllViews()
+
             presenter.saveFilterSelected(addStr)
         }
     }
@@ -212,6 +217,7 @@ class NativeReportActivity : BaseActivity(), ModeContract.View, FilterDialogFrag
      * @param checkId
      */
     private fun switchFragment(checkId: Int) {
+        rootScrollView.smoothScrollTo(0, 0)
         lastCheckId = checkId
         currentFtName = fragmentTag + checkId + filterDisplay
         LogUtil.d(this, "currentFtName ::: " + currentFtName)
@@ -257,9 +263,6 @@ class NativeReportActivity : BaseActivity(), ModeContract.View, FilterDialogFrag
             else -> {
             }
         }
-//        if (popupWindow != null && popupWindow.isShowing) {
-//            popupWindow.dismiss()
-//        }
     }
 
     /**

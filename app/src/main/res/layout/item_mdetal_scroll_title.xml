@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/co10_syr">
+    android:layout_height="match_parent">
 
-    <HorizontalScrollView
-        android:id="@+id/myScrollView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:overScrollMode="never"
-        android:scrollbars="none">
+    <!--<HorizontalScrollView-->
+        <!--android:id="@+id/myScrollView"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:overScrollMode="never"-->
+        <!--android:scrollbars="none">-->
 
         <RadioGroup
             android:id="@+id/radioGroup"
@@ -18,5 +17,5 @@
             android:background="@color/co10_syr"
             android:gravity="center_vertical"
             android:orientation="horizontal" />
-    </HorizontalScrollView>
+    <!--</HorizontalScrollView>-->
 </FrameLayout>

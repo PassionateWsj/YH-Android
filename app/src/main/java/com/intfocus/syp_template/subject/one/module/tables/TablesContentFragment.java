@@ -131,6 +131,8 @@ public class TablesContentFragment extends Fragment implements SortCheckBox.Sort
     private int mTitleHigh;
     private RelativeLayout mRlActionBar;
     private LinearLayout mLlFilter;
+    private int mNativeReportActionBarHight;
+    private int mNativeReportLlFilterHight;
 
     @Override
     public TableContentContract.Presenter getPresenter() {
@@ -173,7 +175,6 @@ public class TablesContentFragment extends Fragment implements SortCheckBox.Sort
         }
     }
 
-
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -186,6 +187,11 @@ public class TablesContentFragment extends Fragment implements SortCheckBox.Sort
         EventBus.getDefault().unregister(this);
     }
 
+    /**
+     * 模板一 最外层 ScrollView 滚动监听回调 -- 显示/隐藏 悬浮标题栏
+     *
+     * @param event
+     */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void measureLocation(EventRefreshTableRect event) {
         final int surootID = suRootID;
@@ -196,7 +202,7 @@ public class TablesContentFragment extends Fragment implements SortCheckBox.Sort
             synchronized (this) {
                 if (fl_tableTitle_container.getChildCount() != 0) {
                     if (getActivity() instanceof NativeReportActivity) {
-                        boolean showSuspendTableTitle = globalOffset.y <= offsetTop && rect.bottom - DisplayUtil.dip2px(ctx, 44)*1.5 > offsetTop;
+                        boolean showSuspendTableTitle = globalOffset.y <= offsetTop && rect.bottom - mNativeReportLlFilterHight > offsetTop;
                         if (showSuspendTableTitle) {
                             fl_tableTitle_container.removeView(suspensionView);
                             ((NativeReportActivity) getActivity()).getSuspendContainer().addView(suspensionView);
@@ -205,7 +211,7 @@ public class TablesContentFragment extends Fragment implements SortCheckBox.Sort
                 } else {
                     if (getActivity() instanceof NativeReportActivity) {
                         int viewCont = ((NativeReportActivity) getActivity()).getSuspendContainer().getChildCount();
-                        boolean removeSuspendTableTitle = globalOffset.y > offsetTop || rect.bottom - DisplayUtil.dip2px(ctx, 44)*1.5 < offsetTop && viewCont != 0;
+                        boolean removeSuspendTableTitle = globalOffset.y > offsetTop || rect.bottom - mNativeReportLlFilterHight < offsetTop && viewCont != 0;
                         if (removeSuspendTableTitle) {
                             ((NativeReportActivity) getActivity()).getSuspendContainer().removeView(suspensionView);
                             fl_tableTitle_container.addView(suspensionView);
@@ -229,13 +235,13 @@ public class TablesContentFragment extends Fragment implements SortCheckBox.Sort
             tv_header = suspensionView.findViewById(R.id.tv_unit_table_header);
             thscroll_header = suspensionView.findViewById(R.id.thscroll_unit_table_header);
             linear_header = suspensionView.findViewById(R.id.ll_unit_table_header);
-            mRlActionBar = suspensionView.findViewById(R.id.rl_action_bar);
-            mLlFilter = suspensionView.findViewById(R.id.ll_filter);
+
+            // 获取 标题栏 和 筛选框 的高度
+            getTitleHeight();
 
             thscroll_header.setScrollView(thscroll_data);
             thscroll_data.setScrollView(thscroll_header);
 
-            mTitleHigh = DisplayUtil.dip2px(ctx, 44 + 41);
             rootView.post(new Runnable() {
                 @Override
                 public void run() {
@@ -244,7 +250,10 @@ public class TablesContentFragment extends Fragment implements SortCheckBox.Sort
                     }
                     Rect frame = new Rect();
                     getActivity().getWindow().getDecorView().getWindowVisibleDisplayFrame(frame);
-                    //状态栏+标题栏高度-间隙
+                    //状态栏 + 标题栏高度 - 间隙
+                    if (mNativeReportActionBarHight != 0 && mNativeReportLlFilterHight != 0) {
+                        mTitleHigh = mNativeReportActionBarHight + mNativeReportActionBarHight;
+                    }
                     offsetTop = frame.top + mTitleHigh;
                 }
             });
@@ -254,6 +263,29 @@ public class TablesContentFragment extends Fragment implements SortCheckBox.Sort
             mPresenter.loadData(mParam);
         }
         return rootView;
+    }
+
+    /**
+     * 获取 标题栏 和 筛选框 的高度
+     */
+    private void getTitleHeight() {
+        if (getActivity() != null && getActivity() instanceof NativeReportActivity) {
+            NativeReportActivity nativeReportActivity = (NativeReportActivity) getActivity();
+            mRlActionBar = nativeReportActivity.getActionbar();
+            mLlFilter = nativeReportActivity.getMLlFilter();
+            mRlActionBar.post(new Runnable() {
+                @Override
+                public void run() {
+                    mNativeReportActionBarHight = mRlActionBar.getHeight();
+                }
+            });
+            mLlFilter.post(new Runnable() {
+                @Override
+                public void run() {
+                    mNativeReportLlFilterHight = mLlFilter.getHeight();
+                }
+            });
+        }
     }
 
     @Override

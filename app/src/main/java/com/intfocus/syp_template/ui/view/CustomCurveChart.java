@@ -119,20 +119,46 @@ public class CustomCurveChart extends View implements ValueAnimator.AnimatorUpda
         init();
     }
 
-    public int getTextSize() {
-        return textSize;
+    @Override
+    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+        super.onLayout(changed, left, top, right, bottom);
+        onMeasureScale();
     }
 
-    public void setTextSize(int textSize) {
-        this.textSize = textSize;
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        int sizeWidth = MeasureSpec.getSize(widthMeasureSpec);
+        int sizeHeight = (int) (sizeWidth * 0.5);
+        setMeasuredDimension(sizeWidth, sizeHeight);
     }
 
-    public int getBarSelectColor() {
-        return barSelectColor;
-    }
-
-    public void setBarSelectColor(int barSelectColor) {
-        this.barSelectColor = barSelectColor;
+    /**
+     * 测量比例
+     */
+    private void onMeasureScale() {
+        int textW = 0;
+        int textH = 0;
+        if (yLabel != null && yLabel.length != 0) {
+            String lable = yLabel[yLabel.length - 1];
+            Rect rect = new Rect();
+            paintAxes.getTextBounds(lable.toCharArray(), 0, lable.length(), rect);
+            textW = rect.width();
+            textH = rect.height();
+        }
+        // 柱图之间间隙不能超过 x轴单位长度的 40%
+        mBarCount = 0;
+        for (int i = 0; i < mChartStyle.size(); i++) {
+            if (ChartStyle.BAR.equals(mChartStyle.get(i))) {
+                mBarCount++;
+            }
+        }
+        xPoint = margin + padding + textW;
+        yPoint = getHeight() - margin - padding;
+        xScale = (getWidth() - xPoint - padding) / xLabel.length;
+//        xScale = (getWidth() - xPoint) / (xLabel.length + (1 - mBarChartInterval) / (2 * mBarCount));
+        barWidth = (1 - mBarChartInterval) * xScale / mBarCount;
+        yScale = (getHeight() - margin * 2 - padding * 2 - textH) / (Float.valueOf(yLabel[yLabel.length - 1]) - Float.valueOf(yLabel[0]));
     }
 
     /**
@@ -223,7 +249,7 @@ public class CustomCurveChart extends View implements ValueAnimator.AnimatorUpda
      */
     private void drawAxesLine(Canvas canvas, Paint paint) {
         // X
-        canvas.drawLine(xPoint, yPoint, this.getWidth(), yPoint, paint);
+        canvas.drawLine(0, yPoint, this.getWidth(), yPoint, paint);
         // 零刻度
         if (Float.parseFloat(yLabel[0]) < 0) {
             canvas.drawLine(xPoint, toY(-Float.parseFloat(yLabel[0])), this.getWidth(), toY(-Float.parseFloat(yLabel[0])), paint);
@@ -578,51 +604,24 @@ public class CustomCurveChart extends View implements ValueAnimator.AnimatorUpda
         void onPointClick(int index);
     }
 
-    @Override
-    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
-        super.onLayout(changed, left, top, right, bottom);
-        onMeasureScale();
-    }
-
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        int sizeWidth = MeasureSpec.getSize(widthMeasureSpec);
-        int sizeHeight = (int) (sizeWidth * 0.5);
-        setMeasuredDimension(sizeWidth, sizeHeight);
-    }
-
-
-    /**
-     * 测量比例
-     */
-    private void onMeasureScale() {
-        int textW = 0;
-        int textH = 0;
-        if (yLabel != null && yLabel.length != 0) {
-            String lable = yLabel[yLabel.length - 1];
-            Rect rect = new Rect();
-            paintAxes.getTextBounds(lable.toCharArray(), 0, lable.length(), rect);
-            textW = rect.width();
-            textH = rect.height();
-        }
-        // 柱图之间间隙不能超过 x轴单位长度的 40%
-        mBarCount = 0;
-        for (int i = 0; i < mChartStyle.size(); i++) {
-            if (ChartStyle.BAR.equals(mChartStyle.get(i))) {
-                mBarCount++;
-            }
-        }
-        xPoint = margin + padding + textW;
-        yPoint = getHeight() - margin - padding;
-        xScale = (getWidth() - xPoint - padding) / xLabel.length;
-//        xScale = (getWidth() - xPoint) / (xLabel.length + (1 - mBarChartInterval) / (2 * mBarCount));
-        barWidth = (1 - mBarChartInterval) * xScale / mBarCount;
-        yScale = (getHeight() - margin * 2 - padding * 2 - textH) / (Float.valueOf(yLabel[yLabel.length - 1]) - Float.valueOf(yLabel[0]));
-    }
-
     public void setDefaultMargin(int defaultMargin) {
         this.margin = defaultMargin;
+    }
+
+    public int getTextSize() {
+        return textSize;
+    }
+
+    public void setTextSize(int textSize) {
+        this.textSize = textSize;
+    }
+
+    public int getBarSelectColor() {
+        return barSelectColor;
+    }
+
+    public void setBarSelectColor(int barSelectColor) {
+        this.barSelectColor = barSelectColor;
     }
 
     /**

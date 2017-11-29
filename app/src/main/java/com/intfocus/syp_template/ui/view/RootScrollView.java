@@ -21,7 +21,6 @@ public class RootScrollView extends ScrollView {
         super(context, attrs);
     }
 
-
     public void setOnScrollListener(OnScrollListener onScrollListener) {
         this.onScrollListener = onScrollListener;
     }
@@ -63,16 +62,13 @@ public class RootScrollView extends ScrollView {
                 int deltaX = x - lastXIntercept;
                 int deltaY = y - lastYIntercept;
                 /*根据条件判断是否拦截该事件*/
-                if (Math.abs(deltaX) > Math.abs(deltaY)) {
-                    intercepted = true;
-                } else {
-                    intercepted = false;
-                }
+                intercepted = Math.abs(deltaX) > Math.abs(deltaY);
                 break;
             case MotionEvent.ACTION_UP:
                 intercepted = false;
                 break;
-
+            default:
+                break;
         }
         lastXIntercept = x;
         lastYIntercept = y;
