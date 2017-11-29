@@ -138,7 +138,7 @@ class ModeImpl : ReportModelImpl() {
                         when (configKey) {
                             "filter" -> {
                                 filterObject = JSON.parseObject(reader.readObject().toString(), Filter::class.java)
-                                var report = Report()
+                                val report = Report()
                                 report.id = null
                                 report.uuid = uuid
                                 report.name = filterObject!!.display
@@ -150,8 +150,8 @@ class ModeImpl : ReportModelImpl() {
                                 reader.startArray()
                                 var i = 0
                                 while (reader.hasNext()) {
-                                    var partsItem = JSON.parseObject(reader.readObject().toString(), ReportModule::class.java)
-                                    var report = Report()
+                                    val partsItem = JSON.parseObject(reader.readObject().toString(), ReportModule::class.java)
+                                    val report = Report()
                                     report.id = null
                                     report.uuid = uuid
                                     report.name = partsItem.name ?: "name"
@@ -184,7 +184,8 @@ class ModeImpl : ReportModelImpl() {
                     }
 
                     override fun onError(e: Throwable?) {
-                        callback.onDataNotAvailable(e!!)
+                        LogUtil.d(TAG, "analysisData onError ::: "+e!!.message)
+                        callback.onDataNotAvailable(e)
                     }
                 })
     }
@@ -196,7 +197,7 @@ class ModeImpl : ReportModelImpl() {
      */
     private fun queryDateBase(uuid: String): List<Report> {
         val reportDao = DaoUtil.getReportDao()
-        var filter = reportDao.queryBuilder()
+        val filter = reportDao.queryBuilder()
                 .where(reportDao.queryBuilder()
                         .and(ReportDao.Properties.Uuid.eq(uuid), ReportDao.Properties.Type.eq("filter"))).unique()
 
@@ -283,12 +284,10 @@ class ModeImpl : ReportModelImpl() {
      * @return 当前报表所有的根页签
      */
     private fun generatePageList(reports: List<Report>): List<String> {
-        var pageSet = HashSet<String>()
-        for (report in reports) {
-            if (null != report.page_title) {
-                pageSet.add(report.page_title)
-            }
-        }
+        val pageSet = HashSet<String>()
+        reports
+                .filter { null != it.page_title }
+                .mapTo(pageSet) { it.page_title }
         return pageSet.toList()
     }
 }

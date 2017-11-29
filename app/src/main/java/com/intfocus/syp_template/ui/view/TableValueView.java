@@ -141,7 +141,9 @@ public class TableValueView extends View {
 
     @NonNull
     private String formatValue(String value) {
-        if (value.contains(".") && !value.contains("%")) {
+        if (value == null || "".equals(value)) {
+            value = "-";
+        } else if (value.contains(".") && !value.contains("%")) {
             value = (value + "00").substring(0, value.indexOf(".") + 3);
         } else if (value.contains("%")) {
             value = (value.replace("%", "") + "00").substring(0, value.indexOf(".") + 3) + "%";

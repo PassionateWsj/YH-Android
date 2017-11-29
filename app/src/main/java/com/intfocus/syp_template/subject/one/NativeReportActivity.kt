@@ -7,10 +7,7 @@ import android.support.v4.app.FragmentTransaction
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.FrameLayout
-import android.widget.RadioButton
-import android.widget.RadioGroup
-import android.widget.RelativeLayout
+import android.widget.*
 import com.intfocus.syp_template.R
 import com.intfocus.syp_template.constant.Params.BANNER_NAME
 import com.intfocus.syp_template.constant.Params.GROUP_ID
@@ -48,6 +45,7 @@ class NativeReportActivity : BaseActivity(), ModeContract.View, FilterDialogFrag
 
     lateinit var suspendContainer: FrameLayout
     lateinit var actionbar: RelativeLayout
+    lateinit var mLlFilter: LinearLayout
     private var toFragment: Fragment? = null
     private var currentFtName: String? = null
     private var filterDisplay: String = ""
@@ -101,6 +99,7 @@ class NativeReportActivity : BaseActivity(), ModeContract.View, FilterDialogFrag
         objectType = intent.getStringExtra(OBJECT_TYPE)
         bannerName = intent.getStringExtra(BANNER_NAME)
         templateId = intent.getStringExtra(TEMPLATE_ID)
+        mLlFilter = findViewById(R.id.ll_filter)
         tv_banner_title.text = bannerName
         actionbar = rl_action_bar
 
@@ -188,13 +187,6 @@ class NativeReportActivity : BaseActivity(), ModeContract.View, FilterDialogFrag
      * 筛选完成回调
      */
     override fun complete(data: ArrayList<MenuItem>) {
-        // 清空栈中 Fragment
-        val ft = mFragmentManager!!.beginTransaction()
-        mFragmentManager!!.fragments
-                .filterIsInstance<RootPageFragment>()
-                .forEach { ft.remove(it) }
-        ft.commitAllowingStateLoss()
-        LogUtil.d(this, "fragments Num ::: " + mFragmentManager!!.fragments.size)
         var addStr = ""
         val size = data.size
         for (i in 0 until size) {
@@ -202,6 +194,14 @@ class NativeReportActivity : BaseActivity(), ModeContract.View, FilterDialogFrag
         }
         addStr = addStr.substring(0, addStr.length - 2)
         if (filterDisplay != addStr) {
+            // 清空栈中 Fragment
+            val ft = mFragmentManager!!.beginTransaction()
+            mFragmentManager!!.fragments
+                    .filterIsInstance<RootPageFragment>()
+                    .forEach { ft.remove(it) }
+            ft.commitAllowingStateLoss()
+            LogUtil.d(this, "fragments Num ::: " + mFragmentManager!!.fragments.size)
+
             presenter.saveFilterSelected(addStr)
         }
     }
