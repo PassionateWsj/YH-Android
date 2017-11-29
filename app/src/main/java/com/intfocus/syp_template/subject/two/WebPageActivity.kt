@@ -19,7 +19,6 @@ import android.widget.PopupWindow
 import com.github.barteksc.pdfviewer.listener.OnPageErrorListener
 import com.github.barteksc.pdfviewer.scroll.DefaultScrollHandle
 import com.intfocus.syp_template.R
-import com.intfocus.syp_template.dashboard.mine.adapter.FilterMenuAdapter
 import com.intfocus.syp_template.constant.Params
 import com.intfocus.syp_template.constant.Params.BANNER_NAME
 import com.intfocus.syp_template.constant.Params.GROUP_ID
@@ -28,12 +27,13 @@ import com.intfocus.syp_template.constant.Params.LINK
 import com.intfocus.syp_template.constant.Params.OBJECT_ID
 import com.intfocus.syp_template.constant.Params.TEMPLATE_ID
 import com.intfocus.syp_template.constant.ToastColor
-import com.intfocus.syp_template.model.response.filter.MenuItem
-import com.intfocus.syp_template.model.response.filter.MenuResult
+import com.intfocus.syp_template.dashboard.mine.adapter.FilterMenuAdapter
 import com.intfocus.syp_template.filter.FilterDialogFragment
 import com.intfocus.syp_template.listener.UMSharedListener
-import com.intfocus.syp_template.util.*
+import com.intfocus.syp_template.model.response.filter.MenuItem
+import com.intfocus.syp_template.model.response.filter.MenuResult
 import com.intfocus.syp_template.ui.view.addressselector.FilterPopupWindow
+import com.intfocus.syp_template.util.*
 import com.tencent.smtt.sdk.*
 import com.umeng.socialize.ShareAction
 import com.umeng.socialize.bean.SHARE_MEDIA
@@ -299,8 +299,8 @@ class WebPageActivity : AppCompatActivity(), WebPageContract.View, OnPageErrorLi
             //为了不重复显示dialog，在显示对话框之前移除正在显示的对话框
             mFragTransaction.remove(fragment)
         }
-        val dialogFragment = FilterDialogFragment(locationDataList, this)
-        dialogFragment.show(mFragTransaction, "dialogFragment") //显示一个Fragment并且给该Fragment添加一个Tag，可通过findFragmentByTag找到该Fragment
+        val dialogFragment = FilterDialogFragment.newInstance(locationDataList)
+        dialogFragment!!.show(mFragTransaction, "dialogFragment") //显示一个Fragment并且给该Fragment添加一个Tag，可通过findFragmentByTag找到该Fragment
     }
 
     /**

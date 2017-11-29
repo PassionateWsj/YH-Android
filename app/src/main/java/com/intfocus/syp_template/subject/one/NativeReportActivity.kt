@@ -7,7 +7,6 @@ import android.support.v4.app.FragmentTransaction
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewStub
 import android.widget.FrameLayout
 import android.widget.RadioButton
 import android.widget.RadioGroup
@@ -28,10 +27,7 @@ import com.intfocus.syp_template.subject.templateone.rootpage.RootPageImpl
 import com.intfocus.syp_template.subject.templateone.rootpage.RootPagePresenter
 import com.intfocus.syp_template.ui.BaseActivity
 import com.intfocus.syp_template.ui.view.RootScrollView
-import com.intfocus.syp_template.util.ActionLogUtil
-import com.intfocus.syp_template.util.DisplayUtil
-import com.intfocus.syp_template.util.ImageUtil
-import com.intfocus.syp_template.util.ToastUtils
+import com.intfocus.syp_template.util.*
 import com.umeng.socialize.ShareAction
 import com.umeng.socialize.bean.SHARE_MEDIA
 import com.umeng.socialize.media.UMImage
@@ -54,7 +50,7 @@ class NativeReportActivity : BaseActivity(), ModeContract.View, FilterDialogFrag
     lateinit var actionbar: RelativeLayout
     private var toFragment: Fragment? = null
     private var currentFtName: String? = null
-    private var filterDisplay: String= ""
+    private var filterDisplay: String = ""
 
     private var mFragmentManager: FragmentManager? = null
     private var mFragmentTransaction: FragmentTransaction? = null
@@ -89,10 +85,6 @@ class NativeReportActivity : BaseActivity(), ModeContract.View, FilterDialogFrag
         super.onCreate(savedInstanceState)
         setContentView(R.layout.actvity_meter_detal)
 
-        onCreateFinish(savedInstanceState)
-    }
-
-    private fun onCreateFinish(bundle: Bundle?) {
         mFragmentManager = supportFragmentManager
         fl_titleContainer = findViewById(R.id.fl_mdetal_title_container)
         suspendContainer = findViewById(R.id.fl_mdetal_top_suspend_container)
@@ -100,10 +92,6 @@ class NativeReportActivity : BaseActivity(), ModeContract.View, FilterDialogFrag
         ModePresenter(ModeImpl.getInstance(), this)
         init()
         initListener()
-    }
-
-    private fun initListener() {
-        rScrollView.setOnScrollListener { EventBus.getDefault().post(EventRefreshTableRect(lastCheckId)) }
     }
 
     private fun init() {
@@ -117,80 +105,15 @@ class NativeReportActivity : BaseActivity(), ModeContract.View, FilterDialogFrag
         actionbar = rl_action_bar
 
         uuid = reportId + templateId + groupId
-        presenter!!.loadData(this, groupId!!, templateId!!, reportId!!)
+        presenter.loadData(this, groupId!!, templateId!!, reportId!!)
     }
 
-    /**
-     * 初始化筛选框
-     */
-    private fun initFilter(filter: Filter) {
-        this.filterDataList = filter.data!!
-        this.filterDisplay = filter.display!!
-        ll_filter.visibility = View.VISIBLE
-        tv_location_address.text = filterDisplay
-        tv_address_filter.setOnClickListener { showDialogFragment() }
+    private fun initListener() {
+        rScrollView.setOnScrollListener { EventBus.getDefault().post(EventRefreshTableRect(lastCheckId)) }
     }
 
-    private fun showDialogFragment() {
-        val mFragTransaction = supportFragmentManager.beginTransaction()
-        val fragment = supportFragmentManager.findFragmentByTag("filterFragment")
-        if (fragment != null) {
-            //为了不重复显示dialog，在显示对话框之前移除正在显示的对话框
-            mFragTransaction.remove(fragment)
-        }
-        val dialogFragment = FilterDialogFragment(filterDataList, this)
-        dialogFragment.show(mFragTransaction, "filterFragment") //显示一个Fragment并且给该Fragment添加一个Tag，可通过findFragmentByTag找到该Fragment
-    }
-
-    override fun complete(data: ArrayList<MenuItem>) {
-        var addStr = ""
-        val size = data.size
-        for (i in 0 until size) {
-            addStr += data[i].name!! + "||"
-        }
-        addStr = addStr.substring(0, addStr.length - 2)
-        presenter.saveFilterSelected(addStr)
-    }
-
-    /**
-     * 将当前选择的fragment显示(show)出来，没选择的隐藏(hide)
-     *
-     * @param checkId
-     */
-    private fun switchFragment(checkId: Int) {
-        lastCheckId = checkId
-        currentFtName = fragmentTag + checkId + filterDisplay
-        toFragment = supportFragmentManager.findFragmentByTag(currentFtName)
-
-        if (mCurrentFragment != null && mCurrentFragment === toFragment) {
-            return
-        }
-
-        if (toFragment == null) {
-            if (reportPages != null && reportPages!!.size > 0) {
-                toFragment = RootPageFragment.newInstance(checkId, uuid)
-                RootPagePresenter(RootPageImpl.getInstance(), (toFragment as RootPageFragment?)!!)
-            }
-        }
-
-        mFragmentTransaction = mFragmentManager!!.beginTransaction()
-        if (mCurrentFragment == null) {
-            mFragmentTransaction!!.add(R.id.fl_mdetal_cont_container, toFragment, currentFtName).commit()
-            mCurrentFragment = toFragment
-        } else if (mCurrentFragment !== toFragment) {
-            if (!toFragment!!.isAdded) {
-                mFragmentTransaction!!.hide(mCurrentFragment).add(R.id.fl_mdetal_cont_container, toFragment, currentFtName).commit()
-            } else {
-                mFragmentTransaction!!.hide(mCurrentFragment).show(toFragment).commit()
-            }
-            mCurrentFragment = toFragment
-        }
-    }
-
-    override fun initRootView(reportPage: List<String>, filter: Filter) {
-        if (null != filter) {
-            initFilter(filter)
-        }
+    override fun dataLoaded(reportPage: List<String>, filter: Filter) {
+        initFilter(filter)
 
         if (reportPages == null) {
             reportPages = ArrayList()
@@ -235,6 +158,87 @@ class NativeReportActivity : BaseActivity(), ModeContract.View, FilterDialogFrag
         } else if (dataSize == 1) {
             fl_titleContainer!!.visibility = View.GONE
             switchFragment(0)
+        }
+    }
+
+    /**
+     * 初始化筛选框
+     */
+    private fun initFilter(filter: Filter) {
+        this.filterDataList = filter.data!!
+        this.filterDisplay = filter.display!!
+        ll_filter.visibility = View.VISIBLE
+        tv_location_address.text = filterDisplay
+        tv_address_filter.setOnClickListener { showDialogFragment() }
+    }
+
+    private fun showDialogFragment() {
+        val mFragTransaction = supportFragmentManager.beginTransaction()
+        val fragment = supportFragmentManager.findFragmentByTag("filterFragment")
+        if (fragment != null) {
+            //为了不重复显示dialog，在显示对话框之前移除正在显示的对话框
+            mFragTransaction.remove(fragment)
+        }
+        val dialogFragment = FilterDialogFragment.newInstance(filterDataList)
+        //显示一个Fragment并且给该Fragment添加一个Tag，可通过findFragmentByTag找到该Fragment
+        dialogFragment!!.show(mFragTransaction, "filterFragment")
+    }
+
+    /**
+     * 筛选完成回调
+     */
+    override fun complete(data: ArrayList<MenuItem>) {
+        // 清空栈中 Fragment
+        val ft = mFragmentManager!!.beginTransaction()
+        mFragmentManager!!.fragments
+                .filterIsInstance<RootPageFragment>()
+                .forEach { ft.remove(it) }
+        ft.commitAllowingStateLoss()
+        LogUtil.d(this, "fragments Num ::: " + mFragmentManager!!.fragments.size)
+        var addStr = ""
+        val size = data.size
+        for (i in 0 until size) {
+            addStr += data[i].name!! + "||"
+        }
+        addStr = addStr.substring(0, addStr.length - 2)
+        if (filterDisplay != addStr) {
+            presenter.saveFilterSelected(addStr)
+        }
+    }
+
+    /**
+     * 将当前选择的fragment显示(show)出来，没选择的隐藏(hide)
+     *
+     * @param checkId
+     */
+    private fun switchFragment(checkId: Int) {
+        lastCheckId = checkId
+        currentFtName = fragmentTag + checkId + filterDisplay
+        LogUtil.d(this, "currentFtName ::: " + currentFtName)
+        toFragment = supportFragmentManager.findFragmentByTag(currentFtName)
+
+        if (mCurrentFragment != null && mCurrentFragment == toFragment) {
+            return
+        }
+
+        if (toFragment == null) {
+            if (reportPages != null && reportPages!!.size > 0) {
+                toFragment = RootPageFragment.newInstance(checkId, uuid)
+                RootPagePresenter(RootPageImpl.getInstance(), (toFragment as RootPageFragment?)!!)
+            }
+        }
+
+        mFragmentTransaction = mFragmentManager!!.beginTransaction()
+        if (mCurrentFragment == null) {
+            mFragmentTransaction!!.add(R.id.fl_mdetal_cont_container, toFragment, currentFtName).commit()
+            mCurrentFragment = toFragment
+        } else if (mCurrentFragment !== toFragment) {
+            if (!toFragment!!.isAdded) {
+                mFragmentTransaction!!.hide(mCurrentFragment).add(R.id.fl_mdetal_cont_container, toFragment, currentFtName).commit()
+            } else {
+                mFragmentTransaction!!.hide(mCurrentFragment).show(toFragment).commit()
+            }
+            mCurrentFragment = toFragment
         }
     }
 
@@ -295,7 +299,7 @@ class NativeReportActivity : BaseActivity(), ModeContract.View, FilterDialogFrag
      * 刷新
      */
     private fun refresh() {
-        presenter!!.loadData(this, groupId!!, templateId!!, reportId!!)
+        presenter.loadData(this, groupId!!, templateId!!, reportId!!)
     }
 
     companion object {

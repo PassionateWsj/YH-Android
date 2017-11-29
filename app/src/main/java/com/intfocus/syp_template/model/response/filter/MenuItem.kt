@@ -2,6 +2,7 @@ package com.intfocus.syp_template.model.response.filter
 
 import com.google.gson.annotations.SerializedName
 import com.intfocus.syp_template.ui.view.addressselector.CityInterface
+import java.io.Serializable
 import java.util.*
 
 /**
@@ -10,7 +11,7 @@ import java.util.*
 class MenuItem constructor(
         var id: String? = null,
         var name: String? = null
-): CityInterface {
+): CityInterface,Serializable {
 
     /**
      * type : single_choices
@@ -28,8 +29,6 @@ class MenuItem constructor(
 
     var arrorDirection: Boolean = false//记录是否点击了 false未点击 true已点击
 
-    override fun getCityName(): String? {
-        return name
-    }
+    override fun getCityName(): String? = name
 
 }
