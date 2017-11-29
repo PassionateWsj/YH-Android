@@ -13,7 +13,7 @@ import com.intfocus.template.util.OpenUDIDManager;
 /*
  * You have to add this in your manifest
  
-<service android:name="com.intfocus.syp_template.service.OpenUDIDService">
+<service android:name="com.intfocus.template.service.OpenUDIDService">
 	<intent-filter>
 		<action android:name="org.OpenUDID.GETUDID" />
 	</intent-filter>

@@ -27,7 +27,7 @@ object VersionUtil {
      * @param isShowToast
      */
     fun checkPgyerVersionUpgrade(activity: Activity, isShowToast: Boolean) {
-        PgyUpdateManager.register(activity, "com.intfocus.syp_template.fileprovider", object : UpdateManagerListener() {
+        PgyUpdateManager.register(activity, "com.intfocus.template.fileprovider", object : UpdateManagerListener() {
             override fun onUpdateAvailable(result: String?) {
                 try {
                     val appBean = UpdateManagerListener.getAppBeanFromString(result)

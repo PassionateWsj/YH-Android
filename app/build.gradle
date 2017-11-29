@@ -182,7 +182,7 @@ dependencies {
 
 greendao {
     schemaVersion 1
-    daoPackage 'com.intfocus.syp_template.model.gen'
+    daoPackage 'com.intfocus.template.model.gen'
     targetGenDir 'src/main/java'
 }
 
