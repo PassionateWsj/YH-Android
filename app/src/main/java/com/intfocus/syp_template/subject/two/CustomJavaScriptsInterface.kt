@@ -6,15 +6,25 @@ import android.text.TextUtils
 import android.view.View
 import android.webkit.JavascriptInterface
 import com.google.gson.Gson
+import com.intfocus.syp_template.SYPApplication.MODE_PRIVATE
 import com.intfocus.syp_template.SYPApplication.globalContext
 import com.intfocus.syp_template.constant.Params.ACTION
 import com.intfocus.syp_template.constant.Params.OBJECT_ID
 import com.intfocus.syp_template.constant.Params.OBJECT_TITLE
 import com.intfocus.syp_template.constant.Params.OBJECT_TYPE
+import com.intfocus.syp_template.constant.Params.USER_NUM
 import com.intfocus.syp_template.model.response.filter.MenuResult
 import com.intfocus.syp_template.util.*
 import org.json.JSONObject
 import java.io.File
+import com.intfocus.syp_template.model.request.CommentBody
+import com.intfocus.syp_template.constant.ToastColor
+import com.intfocus.syp_template.util.ToastUtils
+import com.intfocus.syp_template.model.response.BaseResult
+import com.intfocus.syp_template.general.net.ApiException
+import com.intfocus.syp_template.general.net.CodeHandledSubscriber
+import com.intfocus.syp_template.general.net.RetrofitUtil
+
 
 /**
  * @author liuruilin
@@ -193,4 +203,40 @@ class CustomJavaScriptsInterface constructor(
         return if (tabIndex < 0) 0 else tabIndex
     }
 
+    /**
+     * 提交评论
+     */
+    @JavascriptInterface
+    fun writeComment(content: String) {
+        val commentBody = CommentBody()
+        commentBody.user_num = globalContext.getSharedPreferences("UserBean", Context.MODE_PRIVATE).getString(USER_NUM, "0")
+        commentBody.content = content
+        commentBody.object_type = mView.objectType
+        commentBody.object_id = mView.reportId
+        commentBody.object_title = mView.bannerName
+
+        RetrofitUtil.getHttpService(globalContext).submitComment(commentBody)
+                .compose(RetrofitUtil.CommonOptions())
+                .subscribe(object : CodeHandledSubscriber<BaseResult>() {
+                    override fun onError(apiException: ApiException) {
+                        ToastUtils.show(globalContext, apiException.displayMessage)
+                    }
+
+                    override fun onBusinessNext(data: BaseResult) {
+                        ToastUtils.show(globalContext, data.message!!, ToastColor.SUCCESS)
+                    }
+
+                    override fun onCompleted() {
+                        mView.refresh()
+                    }
+                })
+
+        /*
+         * 用户行为记录, 单独异常处理，不可影响用户体验
+         */
+        val logParams = JSONObject()
+        logParams.put(ACTION, "评论")
+        logParams.put(OBJECT_TITLE, mView.bannerName)
+        ActionLogUtil.actionLog(globalContext, logParams)
+    }
 }

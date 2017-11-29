@@ -26,12 +26,14 @@ import com.intfocus.syp_template.constant.Params.GROUP_ID
 import com.intfocus.syp_template.constant.Params.JAVASCRIPT_INTERFACE_NAME
 import com.intfocus.syp_template.constant.Params.LINK
 import com.intfocus.syp_template.constant.Params.OBJECT_ID
+import com.intfocus.syp_template.constant.Params.OBJECT_TYPE
 import com.intfocus.syp_template.constant.Params.TEMPLATE_ID
 import com.intfocus.syp_template.constant.ToastColor
 import com.intfocus.syp_template.model.response.filter.MenuItem
 import com.intfocus.syp_template.model.response.filter.MenuResult
 import com.intfocus.syp_template.filter.FilterDialogFragment
 import com.intfocus.syp_template.listener.UMSharedListener
+import com.intfocus.syp_template.ui.BaseActivity
 import com.intfocus.syp_template.util.*
 import com.intfocus.syp_template.ui.view.addressselector.FilterPopupWindow
 import com.tencent.smtt.sdk.*
@@ -51,7 +53,7 @@ import java.io.File
  * @data 2017/11/15
  * @describe
  */
-class WebPageActivity : AppCompatActivity(), WebPageContract.View, OnPageErrorListener, FilterMenuAdapter.FilterMenuListener, FilterPopupWindow.MenuLisenter, FilterDialogFragment.FilterListener {
+class WebPageActivity : BaseActivity(), WebPageContract.View, OnPageErrorListener, FilterMenuAdapter.FilterMenuListener, FilterPopupWindow.MenuLisenter, FilterDialogFragment.FilterListener {
     private val REQUEST_CODE_CHOOSE = 1
     override lateinit var presenter: WebPageContract.Presenter
     lateinit var bannerName: String
@@ -61,7 +63,6 @@ class WebPageActivity : AppCompatActivity(), WebPageContract.View, OnPageErrorLi
     lateinit var url: String
     lateinit var objectType: String
     private lateinit var webView: WebView
-    lateinit var popupWindow: PopupWindow
 
     /**
      * 图片上传接收参数
@@ -129,6 +130,10 @@ class WebPageActivity : AppCompatActivity(), WebPageContract.View, OnPageErrorLi
         webView.destroy()
     }
 
+    override fun dismissActivity(v: View) {
+        onBackPressed()
+    }
+
     override fun onBackPressed() {
         if (url.startsWith("http")) {
             val builder = AlertDialog.Builder(this)
@@ -150,13 +155,13 @@ class WebPageActivity : AppCompatActivity(), WebPageContract.View, OnPageErrorLi
     private fun init() {
         groupId = intent.getStringExtra(GROUP_ID)
         reportId = intent.getStringExtra(OBJECT_ID)
-        objectType = intent.getStringExtra(OBJECT_ID)
+        objectType = intent.getStringExtra(OBJECT_TYPE)
         bannerName = intent.getStringExtra(BANNER_NAME)
         templateId = intent.getStringExtra(TEMPLATE_ID)
         url = intent.getStringExtra(LINK)
 
         tv_banner_title.text = bannerName
-        iv_banner_setting.setOnClickListener { launchDropMenuActivity() }
+        iv_banner_setting.setOnClickListener { launchDropMenuActivity(url) }
         iv_banner_back.setOnClickListener { onBackPressed() }
 
         if (url.toLowerCase().endsWith(".pdf")) {
@@ -368,30 +373,6 @@ class WebPageActivity : AppCompatActivity(), WebPageContract.View, OnPageErrorLi
         refresh()
     }
 
-
-    /**
-     * 标题栏点击设置按钮显示下拉菜单
-     */
-    private fun launchDropMenuActivity() {
-        val contentView = LayoutInflater.from(this).inflate(R.layout.pop_menu_v2, null)
-        val copyLinkButton = contentView.findViewById<LinearLayout>(R.id.ll_copylink)
-        copyLinkButton.visibility = if (url.startsWith("http")) View.VISIBLE else View.GONE
-
-        //设置弹出框的宽度和高度
-        popupWindow = PopupWindow(contentView,
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT)
-        popupWindow.isFocusable = true// 取得焦点
-        //注意  要是点击外部空白处弹框消息  那么必须给弹框设置一个背景色  不然是不起作用的
-        popupWindow.setBackgroundDrawable(BitmapDrawable())
-        //点击外部消失
-        popupWindow.isOutsideTouchable = true
-        //设置可以点击
-        popupWindow.isTouchable = true
-        //进入退出的动画
-        popupWindow.showAsDropDown(iv_banner_setting)
-    }
-
     /**
      * 渲染报表
      */
@@ -441,8 +422,8 @@ class WebPageActivity : AppCompatActivity(), WebPageContract.View, OnPageErrorLi
      */
     fun menuItemClick(view: View) {
         when (view.id) {
-            R.id.ll_share -> actionShare2WeiXin()
-            R.id.ll_comment -> actionLaunchCommentActivity()
+            R.id.ll_share -> share(this, url)
+            R.id.ll_comment -> comment(this, reportId, objectType, bannerName)
             R.id.ll_copylink -> actionCopyLink()
             R.id.ll_refresh -> refresh()
             else -> {
@@ -451,42 +432,6 @@ class WebPageActivity : AppCompatActivity(), WebPageContract.View, OnPageErrorLi
         if (popupWindow != null && popupWindow.isShowing) {
             popupWindow.dismiss()
         }
-    }
-
-    /**
-     * 分享截图至微信
-     */
-    private fun actionShare2WeiXin() {
-        if (url.toLowerCase().endsWith(".pdf")) {
-            ToastUtils.show(this, "暂不支持 PDF 分享")
-            return
-        }
-
-        val bmpScreenShot = ImageUtil.takeScreenShot(this)
-        if (bmpScreenShot == null) {
-            ToastUtils.show(this, "截图失败")
-        }
-
-        val image = UMImage(this, bmpScreenShot!!)
-        ShareAction(this)
-                .withText("截图分享")
-                .setPlatform(SHARE_MEDIA.WEIXIN)
-                .setDisplayList(SHARE_MEDIA.WEIXIN)
-                .withMedia(image)
-                .setCallback(UMSharedListener())
-                .open()
-
-        /*
-         * 用户行为记录, 单独异常处理，不可影响用户体验
-         */
-        ActionLogUtil.actionLog("分享")
-    }
-
-    /**
-     * 评论
-     */
-    private fun actionLaunchCommentActivity() {
-        TODO("跳转评论页")
     }
 
     /**

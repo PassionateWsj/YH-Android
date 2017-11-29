@@ -1,19 +1,15 @@
 package com.intfocus.syp_template.subject.one
 
 import com.alibaba.fastjson.JSON
-import com.alibaba.fastjson.JSONObject
 import com.alibaba.fastjson.JSONReader
 import com.intfocus.syp_template.subject.model.ReportModelImpl
 import com.intfocus.syp_template.model.entity.Report
 import com.intfocus.syp_template.model.entity.ReportModule
 import com.intfocus.syp_template.ConfigConstants
-import com.intfocus.syp_template.SYPApplication.globalContext
 import com.intfocus.syp_template.model.gen.ReportDao
 import com.intfocus.syp_template.model.DaoUtil
 import com.intfocus.syp_template.subject.one.entity.Filter
-import com.intfocus.syp_template.util.ApiHelper
 import com.intfocus.syp_template.util.ApiHelper.clearResponseHeader
-import com.intfocus.syp_template.util.FileUtil
 import com.intfocus.syp_template.util.K
 import com.intfocus.syp_template.util.LogUtil
 import com.zbl.lib.baseframe.utils.TimeUtil
@@ -22,7 +18,6 @@ import rx.Subscriber
 import rx.Subscription
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
-import java.io.File
 import java.io.StringReader
 
 /**
@@ -83,7 +78,7 @@ class ModeImpl : ReportModelImpl() {
         this.groupId = groupId
         uuid = reportId + templateId + groupId
         jsonFileName = String.format("group_%s_template_%s_report_%s.json", groupId, templateId, reportId)
-        urlString = String.format(K.K_REPORT_JSON_ZIP_API_PATH, ConfigConstants.kBaseUrl, groupId, templateId, reportId)
+        urlString = String.format(K.API_REPORT_JSON_ZIP, ConfigConstants.kBaseUrl, groupId, templateId, reportId)
         checkReportData(callback)
     }
 

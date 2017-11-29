@@ -98,8 +98,7 @@
 
         <activity
             android:name="com.intfocus.syp_template.subject.nine.CollectionActivity"
-            android:screenOrientation="portrait"
-            ></activity>
+            android:screenOrientation="portrait"></activity>
         <!-- 公告详情 -->
         <activity
             android:name="com.intfocus.syp_template.dashboard.mine.activity.NoticeContentActivity"
@@ -217,6 +216,12 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
         <!-- 更新日志 -->
+
+        <!--评论-->
+        <activity
+            android:name="com.intfocus.syp_template.subject.comment.CommentActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"/>
         <!-- 开发者选项 -->
         <activity
             android:name="com.intfocus.syp_template.general.wxapi.WXEntryActivity"

@@ -64,11 +64,11 @@ class NativeReportActivity : BaseActivity(), ModeContract.View, FilterDialogFrag
      */
     private var mCurrentFragment: Fragment? = null
 
-    private var groupId: String? = null
-    private var reportId: String? = null
-    private var templateId: String? = null
-    private var objectType: String? = null
-    private var bannerName: String? = null
+    private var groupId: String = ""
+    private var reportId: String = ""
+    private var templateId: String = ""
+    private var objectType: String = ""
+    private var bannerName: String = ""
 
     private var fl_titleContainer: FrameLayout? = null
 
@@ -115,6 +115,7 @@ class NativeReportActivity : BaseActivity(), ModeContract.View, FilterDialogFrag
         templateId = intent.getStringExtra(TEMPLATE_ID)
         tv_banner_title.text = bannerName
         actionbar = rl_action_bar
+        iv_banner_setting.setOnClickListener{launchDropMenuActivity("")}
 
         uuid = reportId + templateId + groupId
         presenter!!.loadData(this, groupId!!, templateId!!, reportId!!)
@@ -242,60 +243,26 @@ class NativeReportActivity : BaseActivity(), ModeContract.View, FilterDialogFrag
         when (view.id) {
             R.id.ll_share ->
                 // 分享
-                actionShare2Weixin(view)
+                share(this, "")
             R.id.ll_comment ->
                 // 评论
-                actionLaunchCommentActivity(view)
-            R.id.ll_refresh -> {
+            comment(this, reportId, objectType, bannerName)
+                    R.id.ll_refresh -> {
                 // 刷新
                 refresh()
             }
-            else -> {
-            }
         }
-//        if (popupWindow != null && popupWindow.isShowing) {
-//            popupWindow.dismiss()
-//        }
-    }
-
-    /**
-     * 分享截图至微信
-     */
-    fun actionShare2Weixin(v: View) {
-        val bmpScrennShot = ImageUtil.takeScreenShot(ActManager.getActManager().currentActivity())
-        if (bmpScrennShot == null) {
-            ToastUtils.show(this, "截图失败")
-        }
-        val image = UMImage(this, bmpScrennShot!!)
-        ShareAction(this)
-                .withText("截图分享")
-                .setPlatform(SHARE_MEDIA.WEIXIN)
-                .setDisplayList(SHARE_MEDIA.WEIXIN)
-                .withMedia(image)
-                .setCallback(UMSharedListener())
-                .open()
-
-        // 用户行为记录, 单独异常处理，不可影响用户体验
-        try {
-            val logParams = JSONObject()
-            logParams.put("action", "分享")
-            ActionLogUtil.actionLog(mAppContext, logParams)
-        } catch (e: Exception) {
-            e.printStackTrace()
+        if (popupWindow != null && popupWindow.isShowing) {
+            popupWindow.dismiss()
         }
     }
-
-    /**
-     * 评论
-     */
-    fun actionLaunchCommentActivity(v: View) =// 评论功能待实现
-            Unit
 
     /**
      * 刷新
      */
     private fun refresh() {
-        presenter!!.loadData(this, groupId!!, templateId!!, reportId!!)
+        fl_mdetal_cont_container.removeAllViews()
+        presenter!!.loadData(this, groupId, templateId, reportId)
     }
 
     companion object {

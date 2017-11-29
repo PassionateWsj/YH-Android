@@ -72,10 +72,6 @@ class AlterPasswordActivity : BaseActivity() {
         super.onDestroy()
     }
 
-    override fun dismissActivity(v: View) {
-        this.onBackPressed()
-    }
-
     fun submitPassword() {
         val oldPassword = et_pwd_alter_old_pwd.text.toString()
         val newPassword = et_pwd_alter_new_pwd.text.toString()

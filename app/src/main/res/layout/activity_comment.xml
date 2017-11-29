@@ -1,60 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".general.CommentActivity">
+    android:layout_height="match_parent">
 
-    <RelativeLayout
-        android:id="@+id/actionBar"
+    <EditText
+        android:id="@+id/et_comment"
         android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:background="@color/actionBar">
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:minHeight="100dp"
+        android:layout_margin="10dp"
+        android:padding="10dp"
+        android:background="@drawable/background_item_fillet"
+        android:gravity="start"
+        android:text="请输入您的意见"
+        android:textSize="12sp"/>
 
-        <ImageView
-            android:id="@+id/bannerBack"
-            style="@style/BannerBackButton"
-            android:onClick="dismissActivity" />
-
-        <TextView
-            android:id="@+id/bannerBackText"
-            android:layout_toRightOf="@id/bannerBack"
-            style="@style/BannerBackText"
-            android:onClick="dismissActivity" />
-
-        <TextView
-            android:id="@+id/bannerTitle"
-            android:text="对象"
-            style="@style/BannerTitle" />
-    </RelativeLayout>
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/actionBar">
-
-        <FrameLayout
-            android:id="@+id/browser"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@id/actionBar" />
-
-        <RelativeLayout
-            android:id="@+id/anim_loading"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/white">
-
-            <com.wang.avi.AVLoadingIndicatorView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:visibility="visible"
-                app:indicatorColor="@color/loading"
-                app:indicatorName="BallPulseIndicator"
-                />
-        </RelativeLayout>
-    </FrameLayout>
+    <Button
+        android:id="@+id/btn_affirm_comment"
+        android:layout_width="60dp"
+        android:layout_height="30dp"
+        android:layout_below="@+id/et_comment"
+        android:background="@color/blue_0_191_225"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="10dp"
+        android:text="@string/affirm"
+        android:textColor="@color/white"/>
 
 </RelativeLayout>

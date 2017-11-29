@@ -33,8 +33,8 @@ class ScannerMode(var ctx: Context) : AbstractMode() {
 
     fun requestData(barcode: String, storeId: String) {
         currentBarcode = barcode
-        jsUrl = String.format(K.K_BAR_CODE_SCAN_API_DATA_PATH, ConfigConstants.kBaseUrl, storeId, barcode)
-        htmlUrl = String.format(K.K_BAR_CODE_SCAN_API_VIEW_PATH, ConfigConstants.kBaseUrl, storeId, barcode)
+        jsUrl = String.format(K.API_BAR_CODE_SCAN_DATA, ConfigConstants.kBaseUrl, storeId, barcode)
+        htmlUrl = String.format(K.API_BAR_CODE_SCAN_VIEW, ConfigConstants.kBaseUrl, storeId, barcode)
         store_id = storeId
         requestData()
     }
