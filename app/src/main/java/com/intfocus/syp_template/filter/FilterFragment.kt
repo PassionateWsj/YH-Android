@@ -24,7 +24,7 @@ class FilterFragment(menuDatas: List<MenuItem>, myLisenter: NewFilterFragmentLis
     var lisenter = myLisenter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        mView = inflater!!.inflate(R.layout.fragment_filter, container, false)
+        mView = inflater.inflate(R.layout.fragment_filter, container, false)
         initView()
         return mView
     }

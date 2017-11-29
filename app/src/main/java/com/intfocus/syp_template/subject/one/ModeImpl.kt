@@ -127,7 +127,7 @@ class ModeImpl : ReportModelImpl() {
 //                    } else {
 //                        throw Throwable("获取数据失败")
 //                    }
-                    response = getAssetsJsonData("template1_05.json")
+                    response = getAssetsJsonData("template1_06.json")
 
                     val stringReader = StringReader(response)
                     val reader = JSONReader(stringReader)
@@ -266,7 +266,7 @@ class ModeImpl : ReportModelImpl() {
         filterObject!!.display = display
 
         val reportDao = DaoUtil.getReportDao()
-        var filter = reportDao.queryBuilder()
+        val filter = reportDao.queryBuilder()
                 .where(reportDao.queryBuilder()
                         .and(ReportDao.Properties.Uuid.eq(uuid), ReportDao.Properties.Type.eq("filter"))).unique()
 
