@@ -58,11 +58,11 @@ class NativeReportActivity : BaseActivity(), ModeContract.View, FilterDialogFrag
      */
     private var mCurrentFragment: Fragment? = null
 
-    private var groupId: String? = null
-    private var reportId: String? = null
-    private var templateId: String? = null
-    private var objectType: String? = null
-    private var bannerName: String? = null
+    private var groupId: String = ""
+    private var reportId: String = ""
+    private var templateId: String = ""
+    private var objectType: String = ""
+    private var bannerName: String = ""
 
     private var mTlTitleContainer: RelativeLayout? = null
 
@@ -82,7 +82,7 @@ class NativeReportActivity : BaseActivity(), ModeContract.View, FilterDialogFrag
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.actvity_meter_detal)
-
+        showDialog(this)
         mFragmentManager = supportFragmentManager
         mTlTitleContainer = findViewById(R.id.rl_mdetal_title_container)
         suspendContainer = findViewById(R.id.fl_mdetal_top_suspend_container)
@@ -102,9 +102,10 @@ class NativeReportActivity : BaseActivity(), ModeContract.View, FilterDialogFrag
         mLlFilter = findViewById(R.id.ll_filter)
         tv_banner_title.text = bannerName
         actionbar = rl_action_bar
+        iv_banner_setting.setOnClickListener{launchDropMenuActivity("")}
 
         uuid = reportId + templateId + groupId
-        presenter.loadData(this, groupId!!, templateId!!, reportId!!)
+        presenter.loadData(this, groupId, templateId, reportId)
     }
 
     private fun initListener() {
@@ -112,7 +113,9 @@ class NativeReportActivity : BaseActivity(), ModeContract.View, FilterDialogFrag
     }
 
     override fun dataLoaded(reportPage: List<String>, filter: Filter) {
-        initFilter(filter)
+        if (null != filter.data) {
+            initFilter(filter)
+        }
 
         if (reportPages == null) {
             reportPages = ArrayList()
@@ -123,6 +126,8 @@ class NativeReportActivity : BaseActivity(), ModeContract.View, FilterDialogFrag
         val dataSize = reportPages!!.size
         // 多个根页签
         if (dataSize > 1) {
+            hs_page_btn.visibility = View.VISIBLE
+            mTlTitleContainer!!.visibility = View.VISIBLE
             val scrollTitle = LayoutInflater.from(this)
                     .inflate(R.layout.item_mdetal_scroll_title, null)
             mTlTitleContainer!!.addView(scrollTitle)
@@ -155,6 +160,7 @@ class NativeReportActivity : BaseActivity(), ModeContract.View, FilterDialogFrag
                 }
             }
         } else if (dataSize == 1) {
+            hs_page_btn.visibility = View.GONE
             mTlTitleContainer!!.visibility = View.GONE
             switchFragment(0)
         }
@@ -206,6 +212,8 @@ class NativeReportActivity : BaseActivity(), ModeContract.View, FilterDialogFrag
             ft.commitAllowingStateLoss()
             LogUtil.d(this, "fragments Num ::: " + mFragmentManager!!.fragments.size)
             mTlTitleContainer!!.removeAllViews()
+            hs_page_btn.visibility = View.GONE
+            mTlTitleContainer!!.visibility = View.GONE
 
             presenter.saveFilterSelected(addStr)
         }
@@ -246,68 +254,36 @@ class NativeReportActivity : BaseActivity(), ModeContract.View, FilterDialogFrag
             }
             mCurrentFragment = toFragment
         }
+
+        hideLoading()
     }
 
     fun menuItemClick(view: View) {
         when (view.id) {
-            R.id.ll_share ->
-                // 分享
-                actionShare2Weixin(view)
-            R.id.ll_comment ->
-                // 评论
-                actionLaunchCommentActivity(view)
-            R.id.ll_refresh -> {
-                // 刷新
-                refresh()
-            }
-            else -> {
-            }
+            R.id.ll_share -> share(this, "")
+            R.id.ll_comment -> comment(this, reportId, objectType, bannerName)
+            R.id.ll_refresh -> refresh()
+        }
+        if (popupWindow.isShowing) {
+            popupWindow.dismiss()
         }
     }
-
-    /**
-     * 分享截图至微信
-     */
-    fun actionShare2Weixin(v: View) {
-        val bmpScrennShot = ImageUtil.takeScreenShot(ActManager.getActManager().currentActivity())
-        if (bmpScrennShot == null) {
-            ToastUtils.show(this, "截图失败")
-        }
-        val image = UMImage(this, bmpScrennShot!!)
-        ShareAction(this)
-                .withText("截图分享")
-                .setPlatform(SHARE_MEDIA.WEIXIN)
-                .setDisplayList(SHARE_MEDIA.WEIXIN)
-                .withMedia(image)
-                .setCallback(UMSharedListener())
-                .open()
-
-        // 用户行为记录, 单独异常处理，不可影响用户体验
-        try {
-            val logParams = JSONObject()
-            logParams.put("action", "分享")
-            ActionLogUtil.actionLog(mAppContext, logParams)
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-    }
-
-    /**
-     * 评论
-     */
-    fun actionLaunchCommentActivity(v: View) =// 评论功能待实现
-            Unit
 
     /**
      * 刷新
      */
     private fun refresh() {
-        presenter.loadData(this, groupId!!, templateId!!, reportId!!)
+        //清空栈中 Fragment
+        val ft = mFragmentManager!!.beginTransaction()
+        mFragmentManager!!.fragments
+                .filterIsInstance<RootPageFragment>()
+                .forEach { ft.remove(it) }
+        ft.commitAllowingStateLoss()
+        presenter.loadData(this, groupId, templateId, reportId)
     }
 
     companion object {
         private val fragmentTag = "android:switcher:" + R.layout.actvity_meter_detal + ":"
-
         var lastCheckId: Int = 0
     }
 }

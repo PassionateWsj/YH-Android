@@ -161,7 +161,7 @@ public class TableRootFragment extends Fragment implements TableTitleAdapter.Not
 
         lastCheckId = checkId;
         currentFtName = fragmentTag + checkId;
-        toFragment = (BaseModeFragment) fm.findFragmentByTag(currentFtName);
+        toFragment = fm.findFragmentByTag(currentFtName);
         LogUtil.d(this, "currentFtName:" + currentFtName);
         LogUtil.d(this, "toFragment:" + toFragment);
         LogUtil.d(this, "currFragment == toFragment:" + (currFragment == toFragment));

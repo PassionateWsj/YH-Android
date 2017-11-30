@@ -81,7 +81,6 @@ class TableImpl : TableModel {
     }
 
     override fun getRootData(rootId: Int, index: Int, callbackTableRoot: TableModel.TableRootLoadDataCallback) {
-
         observable = Observable.just(1)
                 .subscribeOn(Schedulers.io())
                 .map {

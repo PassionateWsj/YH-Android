@@ -453,7 +453,7 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
         val bitmap = BitmapFactory.decodeFile(imgPath)
         if (bitmap != null) {
             iv_user_icon.setImageBitmap(makeRoundCorner(bitmap))
-            model.uplodeUserIcon(bitmap, imgPath)
+            model.uploadUserIcon(bitmap, imgPath)
         }
     }
 }

@@ -29,9 +29,9 @@ import java.util.ArrayList
         return position.toLong()
     }
 
-    override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        var convertView = convertView
-        var holder: SelectorListHolder? = null
+    override fun getView(position: Int, view: View?, parent: ViewGroup): View {
+        var convertView = view
+        var holder: SelectorListHolder
         if (convertView == null) {
             convertView = LayoutInflater.from(mContext).inflate(R.layout.list_item_options, parent, false)
             holder = SelectorListHolder(convertView)

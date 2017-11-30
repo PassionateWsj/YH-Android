@@ -79,7 +79,7 @@ class CollectionUploadService : IntentService("collection_upload") {
 
             val requestBody = MultipartBody.Builder()
                     .setType(MultipartBody.FORM)
-                    .addFormDataPart("api_token", URLs.MD5(K.ANDROID_API_KEY + K.KUploadImage + K.ANDROID_API_KEY))
+                    .addFormDataPart("api_token", URLs.MD5(K.ANDROID_API_KEY + K.API_IMAGE_UPLOAD + K.ANDROID_API_KEY))
                     .addFormDataPart("module_name", reportId)
 
             if (!fileList.isEmpty()) {
@@ -91,7 +91,7 @@ class CollectionUploadService : IntentService("collection_upload") {
             }
 
             val request = Request.Builder()
-                    .url(ConfigConstants.kBaseUrl + K.KUploadImage)
+                    .url(ConfigConstants.kBaseUrl + K.API_IMAGE_UPLOAD)
                     .post(requestBody.build())
                     .build()
 

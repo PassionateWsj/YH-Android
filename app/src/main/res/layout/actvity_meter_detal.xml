@@ -1,11 +1,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
     <include layout="@layout/item_action_bar"></include>
-
 
     <LinearLayout
         android:id="@+id/ll_filter"
@@ -84,6 +81,7 @@
             android:orientation="vertical">
 
             <HorizontalScrollView
+                android:id="@+id/hs_page_btn"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/size_default_medium"
                 android:background="@color/co10_syr"

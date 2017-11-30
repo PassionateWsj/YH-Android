@@ -58,7 +58,6 @@ class DashboardActivity : BaseActivity(), ViewPager.OnPageChangeListener{
     private var mTabReport: TabView? = null
     private var mTabWorkBox: TabView? = null
     private var mTabMessage: TabView? = null
-    private var mContext: Context? = null
     private var mGson: Gson? = null
     private var storeList: List<StoreItem>? = null
 
@@ -186,8 +185,8 @@ class DashboardActivity : BaseActivity(), ViewPager.OnPageChangeListener{
                 return
             }
             else -> {
-                val barCodeScannerIntent = Intent(mContext, BarCodeScannerActivity::class.java)
-                mContext!!.startActivity(barCodeScannerIntent)
+                val barCodeScannerIntent = Intent(this, BarCodeScannerActivity::class.java)
+                startActivity(barCodeScannerIntent)
 
                 val logParams = JSONObject()
                 logParams.put(ACTION, "点击/扫一扫")

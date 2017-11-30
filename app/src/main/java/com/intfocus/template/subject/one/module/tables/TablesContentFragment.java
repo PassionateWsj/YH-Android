@@ -21,6 +21,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
 import com.intfocus.template.R;
 import com.intfocus.template.model.entity.TempSubData;
 import com.intfocus.template.ui.view.NotScrollListView;
@@ -33,6 +34,7 @@ import com.intfocus.template.subject.one.entity.Tables;
 import com.intfocus.template.subject.one.module.tables.adapter.TableNameAdapter;
 import com.intfocus.template.util.DisplayUtil;
 import com.intfocus.template.util.LogUtil;
+import com.intfocus.template.util.ToastUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -449,6 +451,7 @@ public class TablesContentFragment extends Fragment implements SortCheckBox.Sort
         Tables modularTwoUnitTableEntitySubData = dataEntity.getData().get(position).getSub_data();
         boolean subDataNull = modularTwoUnitTableEntitySubData == null || (modularTwoUnitTableEntitySubData.getData() == null && modularTwoUnitTableEntitySubData.getHead() == null);
         if (subDataNull) {
+            ToastUtils.INSTANCE.showDefault(getActivity(), JSON.parseObject(dataEntity.getData().get(position).getMain_data()[0]).getString("value"));
             return;
         }
         startSubTable(position);

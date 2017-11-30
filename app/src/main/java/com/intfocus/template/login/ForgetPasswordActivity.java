@@ -87,7 +87,7 @@ public class ForgetPasswordActivity extends BaseActivity {
                     try {
                         JSONObject logParams = new JSONObject();
                         logParams.put(ACTION, "重置密码");
-                        ActionLogUtil.actionLog(mAppContext, logParams);
+                        ActionLogUtil.actionLog(getMAppContext(), logParams);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

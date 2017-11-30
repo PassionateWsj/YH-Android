@@ -92,7 +92,7 @@ public class ShowListMsgActivity extends BaseActivity {
 
             case "cacheHeaders":
                 try {
-                    String cacheHeaderPath = FileUtil.dirPath(mAppContext, "HTML", K.K_CACHED_HEADER_CONFIG_FILE_NAME);
+                    String cacheHeaderPath = FileUtil.dirPath(getMAppContext(), "HTML", K.K_CACHED_HEADER_CONFIG_FILE_NAME);
                     if (new File(cacheHeaderPath).exists()) {
                         JSONObject json = FileUtil.readConfigFile(cacheHeaderPath);
                         Iterator<String> it = json.keys();
@@ -160,10 +160,5 @@ public class ShowListMsgActivity extends BaseActivity {
             default:
                 break;
         }
-    }
-
-    @Override
-    public void dismissActivity(View v) {
-        this.onBackPressed();
     }
 }

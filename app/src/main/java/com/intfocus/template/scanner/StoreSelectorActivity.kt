@@ -112,10 +112,6 @@ class StoreSelectorActivity : BaseActivity(), StoreSelectorView {
         finish()
     }
 
-    override fun dismissActivity(v: View?) {
-        super.dismissActivity(v)
-    }
-
     /**
      * 隐藏软件盘
      */

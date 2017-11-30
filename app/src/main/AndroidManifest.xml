@@ -4,8 +4,8 @@
           package="com.intfocus.template"
           android:hardwareAccelerated="false"
           android:largeHeap="true"
-          android:versionCode="1"
-          android:versionName="1.0.0">
+          android:versionCode="58"
+          android:versionName="1.6.08">
 
     <!-- 扫描条形码或二维码 -->
     <uses-permission android:name="android.permission.CAMERA"/>

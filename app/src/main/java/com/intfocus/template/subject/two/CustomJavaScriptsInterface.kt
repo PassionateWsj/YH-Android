@@ -11,6 +11,13 @@ import com.intfocus.template.constant.Params.ACTION
 import com.intfocus.template.constant.Params.OBJECT_ID
 import com.intfocus.template.constant.Params.OBJECT_TITLE
 import com.intfocus.template.constant.Params.OBJECT_TYPE
+import com.intfocus.template.constant.Params.USER_NUM
+import com.intfocus.template.constant.ToastColor
+import com.intfocus.template.general.net.ApiException
+import com.intfocus.template.general.net.CodeHandledSubscriber
+import com.intfocus.template.general.net.RetrofitUtil
+import com.intfocus.template.model.request.CommentBody
+import com.intfocus.template.model.response.BaseResult
 import com.intfocus.template.model.response.filter.MenuResult
 import com.intfocus.template.util.*
 import org.json.JSONObject
@@ -181,7 +188,7 @@ class CustomJavaScriptsInterface constructor(
 
     @JavascriptInterface
     fun restoreTabIndex(pageName: String): Int {
-        var tabIndex = 0
+        var tabIndex: Int
         val filePath = FileUtil.dirPath(globalContext, K.K_CONFIG_DIR_NAME, K.K_TAB_INDEX_CONFIG_FILE_NAME)
 
         var config = JSONObject()
@@ -193,4 +200,40 @@ class CustomJavaScriptsInterface constructor(
         return if (tabIndex < 0) 0 else tabIndex
     }
 
+    /**
+     * 提交评论
+     */
+    @JavascriptInterface
+    fun writeComment(content: String) {
+        val commentBody = CommentBody()
+        commentBody.user_num = globalContext.getSharedPreferences("UserBean", Context.MODE_PRIVATE).getString(USER_NUM, "0")
+        commentBody.content = content
+        commentBody.object_type = mView.objectType
+        commentBody.object_id = mView.reportId
+        commentBody.object_title = mView.bannerName
+
+        RetrofitUtil.getHttpService(globalContext).submitComment(commentBody)
+                .compose(RetrofitUtil.CommonOptions())
+                .subscribe(object : CodeHandledSubscriber<BaseResult>() {
+                    override fun onError(apiException: ApiException) {
+                        ToastUtils.show(globalContext, apiException.displayMessage)
+                    }
+
+                    override fun onBusinessNext(data: BaseResult) {
+                        ToastUtils.show(globalContext, data.message!!, ToastColor.SUCCESS)
+                    }
+
+                    override fun onCompleted() {
+                        mView.refresh()
+                    }
+                })
+
+        /*
+         * 用户行为记录, 单独异常处理，不可影响用户体验
+         */
+        val logParams = JSONObject()
+        logParams.put(ACTION, "评论")
+        logParams.put(OBJECT_TITLE, mView.bannerName)
+        ActionLogUtil.actionLog(globalContext, logParams)
+    }
 }

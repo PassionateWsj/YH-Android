@@ -31,7 +31,7 @@ public class ApiHelper {
      *  获取报表 JSON 数据
      */
     public static boolean reportJsonData(Context context, String groupID, String templateID, String reportID) {
-        String urlString = String.format(K.K_REPORT_JSON_ZIP_API_PATH, ConfigConstants.kBaseUrl, groupID, templateID, reportID);
+        String urlString = String.format(K.API_REPORT_JSON_ZIP, ConfigConstants.kBaseUrl, groupID, templateID, reportID);
         String assetsPath = FileUtil.sharedPath(context);
         Map<String, String> headers = ApiHelper.checkResponseHeader(urlString);
         String jsonFileName = String.format("group_%s_template_%s_report_%s.json", groupID, templateID, reportID);

@@ -89,7 +89,7 @@ public interface HttpService {
      * @param userNum  user_num
      * @return NoticeContentResult
      */
-    @GET(K.K_NOTICE_CONTENT)
+    @GET(K.API_NOTICE_CONTENT)
     Observable<NoticeContentResult> getNoticeContent(@Query("notice_id") String noticeId, @Query("user_num") String userNum);
 
     /**
@@ -127,7 +127,7 @@ public interface HttpService {
      * @param roleId
      * @return
      */
-    @GET(K.K_REPORT_LIST)
+    @GET(K.API_REPORT_LIST)
     Observable<ReportListResult> getReportList(@Query("group_id") String groupId, @Query("role_id") String roleId);
 
     /**
@@ -139,7 +139,7 @@ public interface HttpService {
      * @param userNum
      * @return
      */
-    @GET(K.K_STORE_LIST)
+    @GET(K.API_STORE_LIST)
     Observable<StoreListResult> getStoreList(@Query("user_num") String userNum);
 
     /**
@@ -151,7 +151,7 @@ public interface HttpService {
      * @param userNum
      * @return
      */
-    @GET(K.K_USER_INFO)
+    @GET(K.API_USER_INFO)
     Observable<UserInfoResult> getUserInfo(@Query("user_num") String userNum);
 
     /**
@@ -164,7 +164,7 @@ public interface HttpService {
      * @param roleId
      * @return
      */
-    @GET(K.K_NOTIFICATIONS)
+    @GET(K.API_NOTIFICATIONS)
     Observable<HomeMsgResult> getNotifications(@Query("group_id") String groupId, @Query("role_id") String roleId);
 
     /**
@@ -177,7 +177,7 @@ public interface HttpService {
      * @param codeInfo
      * @return
      */
-    @GET(K.K_SCANNER_RESULT)
+    @GET(K.API_SCANNER_RESULT)
     Observable<BaseResult> getScannerResult(@Query("store_id") String storeId, @Query("code_info") String codeInfo);
 
     /**
@@ -189,7 +189,7 @@ public interface HttpService {
      * @param queryMap
      * @return
      */
-    @GET(K.K_MY_FAVOURITE_LIST)
+    @GET(K.API_FAVOURITE_LIST)
     Observable<ArticleResult> getMyFavouritedList(@QueryMap Map<String, String> queryMap);
 
     /**
@@ -201,7 +201,7 @@ public interface HttpService {
      * @param requestFavourite
      * @return
      */
-    @POST(K.K_FAVOURITE_STATUS)
+    @POST(K.API_FAVOURITE_STATUS)
     Observable<BaseResult> articleOperating(@Body RequestFavourite requestFavourite);
 
     /**
@@ -213,7 +213,7 @@ public interface HttpService {
      * @param queryMap
      * @return
      */
-    @GET(K.K_ARTICLES_LIST)
+    @GET(K.API_ARTICLES_LIST)
     Observable<ArticleResult> getArticleList(@QueryMap Map<String, String> queryMap);
 
 
@@ -226,7 +226,7 @@ public interface HttpService {
      * @param queryMap
      * @return
      */
-    @GET(K.K_OVERVIEW)
+    @GET(K.API_OVERVIEW)
     Observable<KpiResult> getHomeIndex(@QueryMap Map<String, String> queryMap);
 
     /**
@@ -238,7 +238,7 @@ public interface HttpService {
      * @param queryMap
      * @return
      */
-    @GET(K.K_NOTIFICATIONS)
+    @GET(K.API_NOTIFICATIONS)
     Observable<HomeMsgResult> getHomeMsg(@QueryMap Map<String, String> queryMap);
 
     /**
@@ -250,7 +250,7 @@ public interface HttpService {
      * @param queryMap
      * @return
      */
-    @GET(K.K_NOTICE_LIST)
+    @GET(K.API_NOTICE_LIST)
     Observable<NoticesResult> getNoticeList(@QueryMap Map<String, String> queryMap);
 
     /**
@@ -261,7 +261,7 @@ public interface HttpService {
      *
      * @return
      */
-    @GET(K.K_FILTER_MENU_PATH)
+    @GET(K.API_FILTER_MENU)
     Observable<MenuResult> getFilterMenu();
 
 
@@ -348,7 +348,7 @@ public interface HttpService {
      * /api/v1.1/acquisition/data
      * @return
      */
-    @POST(K.KCollectionUpload)
+    @POST(K.API_COLLECTION_UPLOAD)
     Call<BaseResult> submitCollection(@Body CollectionRequestBody collectionRequestBody);
 
     /**
@@ -401,5 +401,8 @@ public interface HttpService {
      */
     @GET(K.K_NEAREST_STORES)
     Observable<NearestStoresResult> getNearestStores(@Query("limit") int limit, @Query("distance") double distance, @Query("location") String location);
+
+//    @GET(K.API_FEEDBACK_LIST)
+//    Observable<> getFeedbackList();
 
 }

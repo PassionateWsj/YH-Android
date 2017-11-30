@@ -80,9 +80,7 @@ object PageLinkManage {
                 }
                 TEMPLATE_TWO, TEMPLATE_FOUR -> {
                     savePageLink(context, objTitle, link, objectId, templateId, objectType)
-                    intent = Intent(context, NativeReportActivity::class.java)
-//                    intent = Intent(context, WebPageActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+                    intent = Intent(context, WebPageActivity::class.java)
                     intent.putExtra(GROUP_ID, groupID)
                     intent.putExtra(TEMPLATE_ID, templateId)
                     intent.putExtra(BANNER_NAME, objTitle)
@@ -122,7 +120,6 @@ object PageLinkManage {
                     }
                     savePageLink(context, objTitle, link, objectId, templateId, objectType)
                     intent = Intent(context, WebPageActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
                     intent.putExtra(GROUP_ID, groupID)
                     intent.putExtra(TEMPLATE_ID, templateId)
                     intent.putExtra(BANNER_NAME, objTitle)

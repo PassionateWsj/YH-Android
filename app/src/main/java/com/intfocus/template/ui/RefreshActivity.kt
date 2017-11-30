@@ -18,7 +18,6 @@ import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout
  */
  abstract class RefreshActivity : BaseActivity() {
     lateinit var mActivity: Activity
-    var loadingDialog: Dialog? = null
     lateinit var refreshLayout: TwinklingRefreshLayout
     lateinit var recyclerView: RecyclerView
     //错误界面
@@ -78,16 +77,5 @@ import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout
      * @param isShowDialog
      */
     protected abstract fun getData(isShowDialog: Boolean)
-
-    protected fun showLoading() {
-        loadingDialog = LoadingUtils.createLoadingDialog(mActivity)
-        loadingDialog!!.show()
-    }
-
-    protected fun dismissLoading() {
-        if (loadingDialog != null) {
-            loadingDialog!!.dismiss()
-        }
-    }
 
 }
