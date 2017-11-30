@@ -1,11 +1,11 @@
 package com.intfocus.template.util;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 
 import com.intfocus.template.ConfigConstants;
+import com.intfocus.template.general.PriorityRunnable;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -15,6 +15,8 @@ import java.util.Map;
 
 import static android.content.Context.MODE_PRIVATE;
 import static com.intfocus.template.SYPApplication.globalContext;
+import static com.intfocus.template.SYPApplication.priorityThreadPool;
+import static com.intfocus.template.constant.Params.ACTION;
 import static com.intfocus.template.constant.Params.USER_ID;
 import static com.intfocus.template.constant.Params.USER_NAME;
 import static com.intfocus.template.constant.Params.USER_NUM;
@@ -23,7 +25,9 @@ import static com.intfocus.template.util.K.K_APP_VERSION;
 import static com.intfocus.template.util.K.K_USER_NAME;
 
 /**
- * Created by liuruilin on 2017/8/1.
+ *
+ * @author liuruilin
+ * @date 2017/8/1
  */
 
 public class ActionLogUtil {
@@ -40,48 +44,50 @@ public class ActionLogUtil {
      *                 "screen_lock_type": "",
      *                 "screen_lock": ""
      */
-    public static void screenLock(String deviceID, String password, boolean state) {
-        String urlString = String.format(K.K_SCREEN_LOCK_API_PATH, ConfigConstants.kBaseUrl);
+    public static void screenLock(final String deviceID, final String password, boolean state) {
+        priorityThreadPool.execute(new PriorityRunnable(1) {
+            @Override
+            public void doSth() {
+                String urlString = String.format(K.K_SCREEN_LOCK_API_PATH, ConfigConstants.kBaseUrl);
 
-        Map<String, String> params = new HashMap<>();
-        params.put("screen_lock_state", "1");
-        params.put("screen_lock_type", "4位数字");
-        params.put("screen_lock", password);
-        params.put("api_token", ApiHelper.checkApiToken("/api/v1.1/device/screen_lock"));
-        params.put("id", deviceID);
-        HttpUtil.httpPost(urlString, params);
+                Map<String, String> params = new HashMap<>();
+                params.put("screen_lock_state", "1");
+                params.put("screen_lock_type", "4位数字");
+                params.put("screen_lock", password);
+                params.put("api_token", ApiHelper.checkApiToken("/api/v1.1/device/screen_lock"));
+                params.put("id", deviceID);
+                HttpUtil.httpPost(urlString, params);
+            }
+        });
     }
 
     public static void actionLog(String actionContent) {
         try {
             JSONObject logParams = new JSONObject();
-            logParams.put("action", "分享");
-            actionLog(globalContext, logParams);
+            logParams.put(ACTION, actionContent);
+            actionLog(logParams);
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
     }
 
     /**
      * 上传用户行为
-     *
-     * @param context 上下文
      * @param param   用户行为
      */
-    public static void actionLog(final Context context, final JSONObject param) {
-        new Thread(new Runnable() {
+    public static void actionLog(final JSONObject param) {
+        priorityThreadPool.execute(new PriorityRunnable(1) {
             @Override
-            public void run() {
+            public void doSth() {
                 try {
-                    SharedPreferences mUserSP = context.getApplicationContext().getSharedPreferences("UserBean", MODE_PRIVATE);
+                    SharedPreferences mUserSP = globalContext.getApplicationContext().getSharedPreferences("UserBean", MODE_PRIVATE);
 
                     param.put(USER_ID, mUserSP.getString(USER_ID, ""));
                     param.put(USER_NUM, mUserSP.getString(USER_NUM, ""));
                     param.put(USER_NAME, mUserSP.getString(USER_NAME, ""));
                     param.put(K.K_USER_DEVICE_ID, mUserSP.getString(K.K_USER_DEVICE_ID, ""));
 
-                    PackageInfo packageInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+                    PackageInfo packageInfo = globalContext.getPackageManager().getPackageInfo(globalContext.getPackageName(), 0);
                     param.put(K_APP_VERSION, String.format("a%s", packageInfo.versionName));
                     param.put("coordinate", mUserSP.getString("coordinate", ""));
 
@@ -97,33 +103,31 @@ public class ActionLogUtil {
 
                     String urlString = String.format(K.K_ACTION_LOG, ConfigConstants.kBaseUrl);
                     HttpUtil.httpPost(urlString, params);
+
                 } catch (JSONException | PackageManager.NameNotFoundException e) {
                     e.printStackTrace();
                 }
             }
-        }).start();
+        });
     }
 
     /**
      * 上传登录失败行为
-     *
-     * @param context 上下文
      * @param param   用户行为
      */
-    public static void actionLoginLog(final Context context, final JSONObject param) {
-        new Thread(new Runnable() {
+    public static void actionLoginLog(final JSONObject param) {
+        priorityThreadPool.execute(new PriorityRunnable(1) {
             @Override
-            public void run() {
+            public void doSth() {
                 try {
-                    SharedPreferences mUserSP = context.getApplicationContext().getSharedPreferences("UserBean", MODE_PRIVATE);
+                    SharedPreferences mUserSP = globalContext.getApplicationContext().getSharedPreferences("UserBean", MODE_PRIVATE);
 
-                    PackageInfo packageInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+                    PackageInfo packageInfo = globalContext.getPackageManager().getPackageInfo(globalContext.getPackageName(), 0);
                     param.put(K_APP_VERSION, String.format("a%s", packageInfo.versionName));
                     param.put("coordinate", mUserSP.getString("coordinate", ""));
 
                     JSONObject params = new JSONObject();
                     params.put("action_log", param);
-
                     params.put("api_token", ApiHelper.checkApiToken("/api/v1.1/device/logger"));
 
                     String urlString = String.format(K.K_ACTION_LOG, ConfigConstants.kBaseUrl);
@@ -132,6 +136,6 @@ public class ActionLogUtil {
                     e.printStackTrace();
                 }
             }
-        }).start();
+        });
     }
 }

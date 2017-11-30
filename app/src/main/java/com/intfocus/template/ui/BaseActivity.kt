@@ -9,6 +9,7 @@ import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.support.v4.app.FragmentActivity
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -31,7 +32,6 @@ import com.umeng.socialize.media.UMImage
 import kotlinx.android.synthetic.main.item_action_bar.*
 
 /**
- *
  * @author lijunjie
  * @date 16/1/14
  */
@@ -58,14 +58,13 @@ open class BaseActivity : AppCompatActivity() {
         super.onDestroy()
     }
 
-
     protected fun showDialog(context: Context) {
         loadingDialog = LoadingUtils.createLoadingDialog(context, false)
         loadingDialog.show()
     }
 
     protected fun hideLoading() {
-        if (loadingDialog != null && loadingDialog.isShowing()) {
+        if (loadingDialog != null && loadingDialog.isShowing) {
             loadingDialog.dismiss()
         }
     }

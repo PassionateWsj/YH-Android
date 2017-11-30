@@ -137,6 +137,11 @@ public abstract class BaseModeActivity extends AppCompatActivity {
         ActManager.getActManager().finishActivity();
     }
 
+    @Override
+    public void onBackPressed() {
+        onBack();
+    }
+
     /**
      * 显示菜单
      *

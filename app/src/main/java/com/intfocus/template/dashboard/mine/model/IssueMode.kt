@@ -151,9 +151,7 @@ class IssueMode(var ctx: Context) : AbstractMode() {
                 val issueCommitRequest = IssueCommitRequest(false, "提交失败")
                 EventBus.getDefault().post(issueCommitRequest)
 
-                val logParams = JSONObject()
-                logParams.put(ACTION, "点击/问题反馈/失败")
-                ActionLogUtil.actionLog(ctx, logParams)
+                ActionLogUtil.actionLog("点击/问题反馈/失败")
             }
 
             override fun onResponse(call: Call?, response: Response?) {
@@ -163,16 +161,12 @@ class IssueMode(var ctx: Context) : AbstractMode() {
                     issueCommitRequest = IssueCommitRequest(true, "提交成功")
                     EventBus.getDefault().post(issueCommitRequest)
 
-                    logParams = JSONObject()
-                    logParams.put(ACTION, "点击/问题反馈/成功")
-                    ActionLogUtil.actionLog(ctx, logParams)
+                    ActionLogUtil.actionLog("点击/问题反馈/成功")
                 } else {
                     issueCommitRequest = IssueCommitRequest(false, "提交失败")
                     EventBus.getDefault().post(issueCommitRequest)
 
-                    logParams = JSONObject()
-                    logParams.put(ACTION, "点击/问题反馈/失败")
-                    ActionLogUtil.actionLog(ctx, logParams)
+                    ActionLogUtil.actionLog("点击/问题反馈/失败")
                 }
             }
         })

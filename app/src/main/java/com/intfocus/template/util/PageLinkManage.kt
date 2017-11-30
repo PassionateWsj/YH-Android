@@ -158,7 +158,7 @@ object PageLinkManage {
         logParams.put(OBJECT_TITLE, objTitle)
         logParams.put(OBJECT_ID, objectId)
         logParams.put(LINK, link)
-        ActionLogUtil.actionLog(context, logParams)
+        ActionLogUtil.actionLog(logParams)
     }
 
     private fun showTemplateErrorDialog(context: Context) {

@@ -161,9 +161,7 @@ class AnnouncementWarningFragment : RefreshFragment(), NoticeListAdapter.NoticeI
         intent.putExtra("notice_id", position.toString())
         startActivity(intent)
 
-        val logParams = JSONObject()
-        logParams.put(ACTION, "点击/公告预警")
-        ActionLogUtil.actionLog(activity, logParams)
+        ActionLogUtil.actionLog("点击/公告预警")
     }
 
     /**

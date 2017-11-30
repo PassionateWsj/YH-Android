@@ -92,9 +92,7 @@ class AlterPasswordActivity : BaseActivity() {
             ToastUtils.show(this, "密码必须为数字与字母的组合")
             return
         }
-        val logParams = JSONObject()
-        logParams.put(ACTION, "点击/密码修改")
-        ActionLogUtil.actionLog(this@AlterPasswordActivity, logParams)
+        ActionLogUtil.actionLog("点击/密码修改")
 
         if (URLs.MD5(oldPassword) == mUserSP.getString(PASSWORD, "0")) {
             val mRequestDialog = ProgressDialog.show(this, "稍等", "正在修改密码...")

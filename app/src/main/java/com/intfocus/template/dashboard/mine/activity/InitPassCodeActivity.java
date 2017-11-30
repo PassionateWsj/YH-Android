@@ -257,20 +257,8 @@ public class InitPassCodeActivity extends Activity {
                         FileUtil.writeFile(settingsConfigPath, userJSON.toString());
 
                         final JSONObject userInfo = userJSON;
-                        new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                try {
-                                    ActionLogUtil.screenLock(userInfo.get("user_device_id").toString(), stringBuilder.toString(), true);
-
-                                    JSONObject params = new JSONObject();
-                                    params.put(ACTION, "设置锁屏");
-                                    ActionLogUtil.actionLog(mContext, params);
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        }).start();
+                        ActionLogUtil.screenLock(userInfo.get("user_device_id").toString(), stringBuilder.toString(), true);
+                        ActionLogUtil.actionLog("设置锁屏");
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

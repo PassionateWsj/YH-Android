@@ -247,6 +247,47 @@ class WebPageActivity : BaseActivity(), WebPageContract.View, OnPageErrorListene
         }
     }
 
+
+    /**
+     * 渲染报表
+     */
+    override fun show(path: String) {
+        url = path
+        if (url.toLowerCase().endsWith(".pdf")) {
+            showPDF(url)
+        }
+        webView.loadUrl(url)
+    }
+
+    /**
+     * 渲染 PDF 文件
+     */
+    override fun showPDF(path: String) {
+        val pdfFile = File(path)
+        if (pdfFile.exists()) {
+            pdfview.fromFile(pdfFile)
+                    .defaultPage(0)
+                    .enableAnnotationRendering(true)
+                    .scrollHandle(DefaultScrollHandle(this))
+                    .spacing(10) // in dp
+                    .onPageError(this)
+                    .load()
+
+            browser.visibility = View.GONE
+            pdfview.visibility = View.VISIBLE
+        } else {
+            ToastUtils.show(this, "加载PDF失败")
+        }
+    }
+
+    /**
+     * 刷新
+     */
+    override fun refresh() {
+        setLoadingVisibility(View.VISIBLE)
+        show(url)
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, intent: Intent) {
         super.onActivityResult(requestCode, resultCode, intent)
         if (requestCode == Params.REQUEST_CODE_CHOOSE && resultCode == Activity.RESULT_OK) {
@@ -373,48 +414,8 @@ class WebPageActivity : BaseActivity(), WebPageContract.View, OnPageErrorListene
         refresh()
     }
 
-    /**
-     * 渲染报表
-     */
-    override fun show(path: String) {
-        url = path
-        if (url.toLowerCase().endsWith(".pdf")) {
-            showPDF(url)
-        }
-        webView.loadUrl(url)
-    }
-
-    /**
-     * 渲染 PDF 文件
-     */
-    override fun showPDF(path: String) {
-        val pdfFile = File(path)
-        if (pdfFile.exists()) {
-            pdfview.fromFile(pdfFile)
-                    .defaultPage(0)
-                    .enableAnnotationRendering(true)
-                    .scrollHandle(DefaultScrollHandle(this))
-                    .spacing(10) // in dp
-                    .onPageError(this)
-                    .load()
-
-            browser.visibility = View.GONE
-            pdfview.visibility = View.VISIBLE
-        } else {
-            ToastUtils.show(this, "加载PDF失败")
-        }
-    }
-
     override fun onPageError(page: Int, t: Throwable?) {
         ToastUtils.show(this, "加载PDF失败, 失败原因: " + t.toString())
-    }
-
-    /**
-     * 刷新
-     */
-    override fun refresh() {
-        setLoadingVisibility(View.VISIBLE)
-        show(url)
     }
 
     /**

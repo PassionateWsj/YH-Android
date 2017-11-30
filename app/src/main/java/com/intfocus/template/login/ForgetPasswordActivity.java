@@ -81,16 +81,7 @@ public class ForgetPasswordActivity extends BaseActivity {
                     // 发起 post 请求
                     startPost(userNum, mobile);
 
-                    /*
-                     * 用户行为记录, 单独异常处理，不可影响用户体验
-                     */
-                    try {
-                        JSONObject logParams = new JSONObject();
-                        logParams.put(ACTION, "重置密码");
-                        ActionLogUtil.actionLog(getMAppContext(), logParams);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                    ActionLogUtil.actionLog("重置密码");
                 } else {
                     ToastUtils.INSTANCE.show(ForgetPasswordActivity.this, "请输入正确的手机号");
                 }

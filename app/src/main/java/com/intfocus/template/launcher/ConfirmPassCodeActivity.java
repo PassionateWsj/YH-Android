@@ -235,19 +235,7 @@ public class ConfirmPassCodeActivity extends Activity {
 //                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     mContext.startActivity(intent);
                 }
-
-                new Thread(new Runnable() {
-                    @Override
-                    public synchronized void run() {
-                        try {
-                            JSONObject params = new JSONObject();
-                            params.put(ACTION, "解屏/数字");
-                            ActionLogUtil.actionLog(mContext, params);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }).start();
+                ActionLogUtil.actionLog("解屏/数字");
                 finish();
             } else {
                 LogUtil.d("confirmPassword", "no");

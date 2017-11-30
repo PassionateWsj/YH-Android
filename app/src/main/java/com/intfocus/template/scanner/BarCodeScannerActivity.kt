@@ -288,11 +288,7 @@ class BarCodeScannerActivity : AppCompatActivity(), QRCodeView.Delegate, View.On
                 val appendParams = String.format("code=%s", result)
                 val splitString = if (urlString.contains("?")) "&" else "?"
                 urlString = String.format("%s%s%s", urlString, splitString, appendParams)
-                val intent = Intent(this, WebPageActivity::class.java)
-                intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-                intent.putExtra(BANNER_NAME, "核销奖券")
-                intent.putExtra(LINK, urlString)
-                startActivity(intent)
+                PageLinkManage.pageLink(this, "核销奖券", urlString)
             }
             else -> {
                 val intent = Intent(this, ScannerResultActivity::class.java)

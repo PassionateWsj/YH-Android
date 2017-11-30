@@ -9,8 +9,10 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.multidex.MultiDex;
 
+import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.intfocus.template.dashboard.DashboardActivity;
 import com.intfocus.template.general.FetchPatchHandler;
+import com.intfocus.template.general.PriorityThreadPoolExecutor;
 import com.intfocus.template.login.LoginActivity;
 import com.intfocus.template.model.DaoUtil;
 import com.intfocus.template.util.AppStatusTracker;
@@ -32,20 +34,29 @@ import com.umeng.socialize.UMShareAPI;
 import org.xutils.x;
 
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.PriorityBlockingQueue;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.TimeUnit;
 
 import static com.intfocus.template.constant.Params.IS_LOGIN;
 
 /**
- * Created by lijunjie on 16/1/15.
+ *
+ * @author lijunjie
+ * @date 16/1/15
  */
 public class SYPApplication extends Application {
     /**
      * 缓存目录
      */
     public static String CACHEDIR;
-
-    public static ExecutorService threadPool = Executors.newFixedThreadPool(2);
+    public static ThreadFactory priorityThreadFactory = new ThreadFactoryBuilder().setNameFormat("priority-thread-%d").build();
+    public static ExecutorService priorityThreadPool = new PriorityThreadPoolExecutor(1,
+            1,
+            10,
+            TimeUnit.SECONDS,
+            new PriorityBlockingQueue<Runnable>(10),
+            priorityThreadFactory);
 
     private Context appContext;
     public static Context globalContext;
@@ -188,6 +199,7 @@ public class SYPApplication extends Application {
     @Override
     public void onTerminate() {
         super.onTerminate();
+        priorityThreadPool.shutdown();
     }
 }
 

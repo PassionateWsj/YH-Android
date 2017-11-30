@@ -90,6 +90,7 @@ dependencies {
     implementation 'commons-io:commons-io:2.5'
     implementation 'com.android.support:multidex:1.0.2'
     implementation 'org.apache.commons:commons-lang3:3.3.2'
+    implementation 'com.google.guava:guava:23.5-android'
 
     // Kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"

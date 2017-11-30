@@ -51,6 +51,7 @@ import com.intfocus.template.util.ActionLogUtil
 import com.intfocus.template.util.DisplayUtil
 import com.intfocus.template.util.ImageUtil.*
 import com.intfocus.template.util.K.K_USER_DEVICE_ID
+import com.intfocus.template.util.PageLinkManage
 import com.intfocus.template.util.ToastUtils
 import com.taobao.accs.utl.UtilityImpl.isNetworkConnected
 import com.zbl.lib.baseframe.core.Subject
@@ -235,9 +236,7 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
         intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
         startActivity(intent)
 
-        val logParams = JSONObject()
-        logParams.put(ACTION, "点击/个人信息/修改密码")
-        ActionLogUtil.actionLog(ctx, logParams)
+        ActionLogUtil.actionLog("点击/个人信息/修改密码")
     }
 
     private fun startFavoriteActivity() {
@@ -274,14 +273,7 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
 
                     override fun onBusinessNext(data: RegisterResult) {
                         if (data.data!!.contains("http")) {
-                            val intent = Intent(activity, WebPageActivity::class.java)
-                            intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-                            intent.putExtra(BANNER_NAME, "归属部门")
-                            intent.putExtra(LINK, data.data)
-                            intent.putExtra(OBJECT_ID, "-1")
-                            intent.putExtra(OBJECT_TYPE, "-1")
-                            intent.putExtra(TEMPLATE_ID, "-1")
-                            startActivity(intent)
+                            PageLinkManage.pageLink(context!!, "归属部门", data.data!!)
                         } else {
                             ToastUtils.show(ctx, data.data!!)
                         }
@@ -345,9 +337,7 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
                         if (data!!.code == "200") {
                             mUserSP.edit().putBoolean(IS_LOGIN, false).apply()
 
-                            val logParams = JSONObject()
-                            logParams.put(ACTION, "退出登录")
-                            ActionLogUtil.actionLog(ctx, logParams)
+                            ActionLogUtil.actionLog("退出登录")
 
                             model.modifiedUserConfig(false)
                             val intent = Intent()
@@ -440,9 +430,7 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
             popupWindow.dismiss()
         }
 
-        val logParams = JSONObject()
-        logParams.put(ACTION, "点击/个人信息/设置头像")
-        ActionLogUtil.actionLog(ctx, logParams)
+        ActionLogUtil.actionLog("点击/个人信息/设置头像")
     }
 
     /**

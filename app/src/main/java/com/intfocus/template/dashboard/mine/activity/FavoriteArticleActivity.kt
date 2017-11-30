@@ -148,13 +148,8 @@ class FavoriteArticleActivity : RefreshActivity(), InstituteAdapter.NoticeItemLi
     }
 
     override fun itemClick(instituteDataBean: InstituteDataBean) {
-        val intent = Intent(mActivity, WebPageActivity::class.java)
-        intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
         val link = String.format("%s/mobile/v2/user/%s/article/%s", ConfigConstants.kBaseUrl, mUserSP.getString(K.K_USER_ID, "0").toString(), instituteDataBean.acticleId.toString())
-        intent.putExtra(BANNER_NAME, instituteDataBean.title.toString())
-        intent.putExtra(LINK, link)
-        intent.putExtra("hideBannerSetting", true)
-        startActivity(intent)
+        PageLinkManage.pageLink(this, instituteDataBean.title!!, link)
     }
 
     /**

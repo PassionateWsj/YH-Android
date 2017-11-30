@@ -44,7 +44,7 @@ class CustomJavaScriptsInterface constructor(
         logParams.put(OBJECT_ID, mView.reportId)
         logParams.put(OBJECT_TYPE, mView.objectType)
         logParams.put(OBJECT_TITLE, String.format("主题页面/%s/%s", mView.bannerName, ex))
-        ActionLogUtil.actionLog(globalContext, logParams)
+        ActionLogUtil.actionLog(logParams)
     }
 
     @JavascriptInterface
@@ -234,6 +234,6 @@ class CustomJavaScriptsInterface constructor(
         val logParams = JSONObject()
         logParams.put(ACTION, "评论")
         logParams.put(OBJECT_TITLE, mView.bannerName)
-        ActionLogUtil.actionLog(globalContext, logParams)
+        ActionLogUtil.actionLog(logParams)
     }
 }

@@ -16,8 +16,6 @@ public abstract class BaseModeFragment<Target extends Subject> extends AbstractF
     public Activity act;
     public Context ctx;
 
-//    protected Dialog loadingDialog;
-
     @Override
     public void onAttach(Context context) {
         ctx = context.getApplicationContext();
@@ -43,15 +41,4 @@ public abstract class BaseModeFragment<Target extends Subject> extends AbstractF
         super.onDestroy();
     }
 
-
-//    protected void showLoading(Context context) {
-//        loadingDialog = LoadingUtils.createLoadingDialog(context);
-//        loadingDialog.show();
-//    }
-
-//    protected void hideLoading() {
-//        if (loadingDialog != null && loadingDialog.isShowing()) {
-//            loadingDialog.dismiss();
-//        }
-//    }
 }

@@ -197,7 +197,7 @@ class ShowPushMessageActivity : AppCompatActivity(), PushMessageView, ShowPushMe
                 val logParams = JSONObject()
                 logParams.put(ACTION, "点击/" + objectTypeName[objectType - 1] + "/报表")
                 logParams.put(OBJECT_TITLE, mBannerName)
-                ActionLogUtil.actionLog(this, logParams)
+                ActionLogUtil.actionLog(logParams)
             } else {
                 val intent = Intent(this, WebPageActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
@@ -210,7 +210,7 @@ class ShowPushMessageActivity : AppCompatActivity(), PushMessageView, ShowPushMe
                 val logParams = JSONObject()
                 logParams.put(ACTION, "点击/生意概况/链接")
                 logParams.put(OBJECT_TITLE, mBannerName)
-                ActionLogUtil.actionLog(this, logParams)
+                ActionLogUtil.actionLog(logParams)
             }
 
     private fun showTemplateErrorDialog() {

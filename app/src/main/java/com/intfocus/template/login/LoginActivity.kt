@@ -384,7 +384,7 @@ class LoginActivity : FragmentActivity() {
                                 logParams.put(ACTION, "unlogin")
                                 logParams.put(USER_NAME, userNum + "|;|" + userPass)
                                 logParams.put(OBJECT_TITLE, apiException.displayMessage)
-                                ActionLogUtil.actionLoginLog(ctx, logParams)
+                                ActionLogUtil.actionLoginLog(logParams)
                             } catch (e: Exception) {
                                 e.printStackTrace()
                             }
@@ -451,16 +451,7 @@ class LoginActivity : FragmentActivity() {
                                 }
                             }
 
-                            /*
-                            * 用户行为记录, 单独异常处理，不可影响用户体验
-                            */
-                            try {
-                                logParams = JSONObject()
-                                logParams.put("action", "登录")
-                                ActionLogUtil.actionLog(ctx, logParams)
-                            } catch (e: Exception) {
-                                e.printStackTrace()
-                            }
+                            ActionLogUtil.actionLog("登录")
 
                             mProgressDialog!!.dismiss()
                             finish()

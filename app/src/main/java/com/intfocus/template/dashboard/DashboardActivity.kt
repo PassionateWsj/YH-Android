@@ -187,10 +187,7 @@ class DashboardActivity : BaseActivity(), ViewPager.OnPageChangeListener{
             else -> {
                 val barCodeScannerIntent = Intent(this, BarCodeScannerActivity::class.java)
                 startActivity(barCodeScannerIntent)
-
-                val logParams = JSONObject()
-                logParams.put(ACTION, "点击/扫一扫")
-                ActionLogUtil.actionLog(mAppContext, logParams)
+                ActionLogUtil.actionLog("点击/扫一扫")
             }
         }
     }
