@@ -19,6 +19,7 @@ interface SingleValueModel {
 
         fun onDataNotAvailable(e: Throwable?)
     }
+
     fun getData(@NotNull rootId: Int, @NotNull index: Int, @NotNull callback: LoadDataCallback)
 
 }

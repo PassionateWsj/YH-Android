@@ -28,7 +28,7 @@ import kotlinx.android.synthetic.main.module_image.*
  * @data 2017/11/3
  * @describe
  */
-class ImageFragment: BaseModuleFragment(), ImageModuleContract.View, ImageDisplayAdapter.ImageItemClickListener {
+class ImageFragment : BaseModuleFragment(), ImageModuleContract.View, ImageDisplayAdapter.ImageItemClickListener {
     override lateinit var presenter: ImageModuleContract.Presenter
     lateinit var key: String
     lateinit var param: String

@@ -59,11 +59,12 @@ class KpiFragment : RefreshFragment(), KpiAdapter.HomePageListener {
         super.onViewCreated(view, savedInstanceState)
         initShow()
     }
+
     private fun initShow() {
-        bannerSetting.visibility =if (ConfigConstants.SCAN_ENABLE_KPI) {
-             View.VISIBLE
+        bannerSetting.visibility = if (ConfigConstants.SCAN_ENABLE_KPI) {
+            View.VISIBLE
         } else {
-             View.GONE
+            View.GONE
         }
     }
 

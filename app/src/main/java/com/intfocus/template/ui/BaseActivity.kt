@@ -1,13 +1,11 @@
 package com.intfocus.template.ui
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.content.SharedPreferences
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
-import android.support.v4.app.FragmentActivity
 import android.support.v7.app.AppCompatActivity
 import android.view.LayoutInflater
 import android.view.View
@@ -16,7 +14,6 @@ import android.widget.LinearLayout
 import android.widget.PopupWindow
 import com.intfocus.template.ConfigConstants
 import com.intfocus.template.R
-
 import com.intfocus.template.SYPApplication
 import com.intfocus.template.listener.UMSharedListener
 import com.intfocus.template.util.ActionLogUtil
@@ -40,7 +37,7 @@ open class BaseActivity : AppCompatActivity() {
     lateinit var mAppContext: Context
     lateinit var mUserSP: SharedPreferences
     lateinit var popupWindow: PopupWindow
-    lateinit var loadingDialog: Dialog
+    var loadingDialog: Dialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,22 +48,19 @@ open class BaseActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        if (supportActionBar != null) { supportActionBar!!.hide() }
+        if (supportActionBar != null) {
+            supportActionBar!!.hide()
+        }
     }
-
-    override fun onDestroy() {
-        super.onDestroy()
-    }
-
 
     protected fun showDialog(context: Context) {
         loadingDialog = LoadingUtils.createLoadingDialog(context, false)
-        loadingDialog.show()
+        loadingDialog!!.show()
     }
 
     protected fun hideLoading() {
-        if (loadingDialog != null && loadingDialog.isShowing()) {
-            loadingDialog.dismiss()
+        if (loadingDialog != null && loadingDialog!!.isShowing()) {
+            loadingDialog!!.dismiss()
         }
     }
 

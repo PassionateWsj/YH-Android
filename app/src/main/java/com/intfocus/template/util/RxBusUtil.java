@@ -7,12 +7,13 @@ import rx.subjects.SerializedSubject;
 
 /**
  * ****************************************************
+ *
  * @author JamesWong
- * created on: 17/08/02 下午2:17
- * e-mail: PassionateWsj@outlook.com
- * name:
- * desc:
- * ****************************************************
+ *         created on: 17/08/02 下午2:17
+ *         e-mail: PassionateWsj@outlook.com
+ *         name:
+ *         desc:
+ *         ****************************************************
  */
 
 public class RxBusUtil {
@@ -25,6 +26,7 @@ public class RxBusUtil {
 
     /**
      * 双重校验锁单例模式
+     *
      * @return 单例
      */
     public static synchronized RxBusUtil getInstance() {

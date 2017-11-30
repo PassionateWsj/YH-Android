@@ -2,6 +2,7 @@ package com.intfocus.template.util;
 
 /**
  * ****************************************************
+ *
  * @author: JamesWong
  * created on: 17/07/30 下午11:17
  * e-mail: PassionateWsj@outlook.com

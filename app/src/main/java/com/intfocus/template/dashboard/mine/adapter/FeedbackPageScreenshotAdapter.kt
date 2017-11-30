@@ -89,7 +89,7 @@ class FeedbackPageScreenshotAdapter(val mContext: Context, val listener: Screens
     private fun setAddScreenshotView(holder: ScreenshotHolder?) {
         holder!!.rlFeedbackPageScreenshotContainer.visibility = View.VISIBLE
 
-        holder.ivPageScreenshot.setImageDrawable(ContextCompat.getDrawable(mContext,R.drawable.btn_addpic))
+        holder.ivPageScreenshot.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.btn_addpic))
         holder.ivScreenshotDel.visibility = View.GONE
         holder.ivPageScreenshot.setOnClickListener { listener.addScreenshot(4 - itemCount) }
     }

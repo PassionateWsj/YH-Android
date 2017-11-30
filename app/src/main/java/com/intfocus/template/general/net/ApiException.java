@@ -1,7 +1,6 @@
 package com.intfocus.template.general.net;
 
 /**
- *
  * @author admin
  * @date 2016/6/30
  */

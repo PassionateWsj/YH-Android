@@ -17,7 +17,7 @@ import kotlinx.android.synthetic.main.module_drop_options.*
  * @data 2017/11/3
  * @describe
  */
-class DropOptionsFragment: BaseModuleFragment(), OptionsModuleContract.View, SingleOptionsAdapter.OptionsSelectedListener {
+class DropOptionsFragment : BaseModuleFragment(), OptionsModuleContract.View, SingleOptionsAdapter.OptionsSelectedListener {
     override lateinit var presenter: OptionsModuleContract.Presenter
     private lateinit var adapter: SingleOptionsAdapter
     private lateinit var datas: OptionsEntity

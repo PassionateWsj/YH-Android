@@ -5,7 +5,6 @@ import android.util.Log;
 import com.intfocus.template.BuildConfig;
 
 /**
- *
  * @author lijunjie
  * @date 16/7/22
  */

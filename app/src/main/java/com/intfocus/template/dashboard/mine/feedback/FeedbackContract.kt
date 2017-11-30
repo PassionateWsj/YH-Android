@@ -10,12 +10,12 @@ import com.intfocus.template.base.BaseView
  * @describe
  */
 interface FeedbackContract {
-    interface View: BaseView<Presenter> {
+    interface View : BaseView<Presenter> {
         fun showNullPage()
         fun showList()
     }
 
-    interface Presenter: BasePresenter {
+    interface Presenter : BasePresenter {
         fun load()
     }
 }

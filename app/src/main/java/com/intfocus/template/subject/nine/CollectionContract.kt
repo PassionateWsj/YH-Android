@@ -11,11 +11,11 @@ import com.intfocus.template.subject.nine.entity.CollectionEntity
  * @describe
  */
 interface CollectionContract {
-    interface View: BaseView<Presenter> {
+    interface View : BaseView<Presenter> {
         fun initRootView(entity: CollectionEntity)
     }
 
-    interface Presenter: BasePresenter {
+    interface Presenter : BasePresenter {
         fun loadData(reportId: String, templateId: String, groupId: String)
         fun submit(ctx: Context)
     }

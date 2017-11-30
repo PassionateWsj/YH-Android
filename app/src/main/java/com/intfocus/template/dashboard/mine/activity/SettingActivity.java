@@ -18,7 +18,6 @@ import org.xutils.x;
 import java.util.ArrayList;
 
 /**
- *
  * @author liuruilin
  * @date 2017/3/28
  */

@@ -1,6 +1,5 @@
 package com.intfocus.template.subject.one.module.tables.root;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -13,14 +12,14 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.intfocus.template.R;
-import com.intfocus.template.subject.one.module.tables.adapter.TableTitleAdapter;
-import com.intfocus.template.subject.one.entity.MDetailUnitEntity;
-import com.intfocus.template.subject.one.entity.MDetailRootPageRequestResult;
-import com.intfocus.template.ui.BaseModeFragment;
 import com.intfocus.template.model.entity.TempSubData;
+import com.intfocus.template.subject.one.entity.MDetailRootPageRequestResult;
+import com.intfocus.template.subject.one.entity.MDetailUnitEntity;
 import com.intfocus.template.subject.one.module.tables.TableContentPresenter;
 import com.intfocus.template.subject.one.module.tables.TableImpl;
 import com.intfocus.template.subject.one.module.tables.TablesContentFragment;
+import com.intfocus.template.subject.one.module.tables.adapter.TableTitleAdapter;
+import com.intfocus.template.ui.BaseFragment;
 import com.intfocus.template.util.LogUtil;
 import com.zbl.lib.baseframe.utils.ToastUtil;
 
@@ -35,13 +34,11 @@ import java.util.Random;
 /**
  * 表格根
  */
-public class TableRootFragment extends Fragment implements TableTitleAdapter.NoticeItemListener, TableRootContract.View {
+public class TableRootFragment extends BaseFragment implements TableTitleAdapter.NoticeItemListener, TableRootContract.View {
     private String fragmentTag;
     private static final String SU_ROOT_ID = "suRootId";
     private static final String ARG_INDEX = "index";
     private static final String ARG_UUID = "uuid";
-
-    private Context ctx;
 
     private int index;
     private String uuid;
@@ -94,7 +91,6 @@ public class TableRootFragment extends Fragment implements TableTitleAdapter.Not
             index = getArguments().getInt(ARG_INDEX);
             uuid = getArguments().getString(ARG_UUID);
         }
-        ctx = getContext();
         Random random = new Random();
         int currentFTID = random.nextInt(Integer.MAX_VALUE);
         fragmentTag = "android:switcher:" + currentFTID + ":";

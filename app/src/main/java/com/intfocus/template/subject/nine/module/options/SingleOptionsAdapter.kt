@@ -14,8 +14,8 @@ import java.util.ArrayList
  * @data 2017/11/6
  * @describe
  */
-    class SingleOptionsAdapter(var mContext: Context, var listener: OptionsSelectedListener): BaseAdapter() {
-        private var items: MutableList<String>? = null
+class SingleOptionsAdapter(var mContext: Context, var listener: OptionsSelectedListener) : BaseAdapter() {
+    private var items: MutableList<String>? = null
 
     override fun getCount(): Int {
         return if (items == null) 0 else items!!.size
@@ -41,7 +41,7 @@ import java.util.ArrayList
         }
 
         holder.reportSelectorItem.text = items!![position]
-        holder.reportSelectorItem.setOnClickListener{ listener.onItemSelected(items!![position])}
+        holder.reportSelectorItem.setOnClickListener { listener.onItemSelected(items!![position]) }
         return convertView
     }
 

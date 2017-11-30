@@ -44,8 +44,9 @@ class WorkBoxItem {
     var group_order: Any? = null
     var item_order: Any? = null
     var created_at: String? = null
-    var params_mapping: HashMap<String,String>? = null
-//    var params_mapping: ParamsMappingBean? = null
+    var params_mapping: HashMap<String, String>? = null
+
+    //    var params_mapping: ParamsMappingBean? = null
     class ParamsMappingBean {
         /**
          * user_num : 80584332

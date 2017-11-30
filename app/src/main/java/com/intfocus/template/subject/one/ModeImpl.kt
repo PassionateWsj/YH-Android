@@ -97,7 +97,7 @@ class ModeImpl : ReportModelImpl() {
                             }
 
                             override fun onNext(t: List<String>?) {
-                                t?.let { callback.onDataLoaded(it, filterObject!!) }
+                                t?.let { callback.onDataLoaded(it, filterObject) }
                             }
 
                             override fun onError(e: Throwable?) {
@@ -140,7 +140,7 @@ class ModeImpl : ReportModelImpl() {
                                 val report = Report()
                                 report.id = null
                                 report.uuid = uuid
-                                report.name = filterObject!!.display
+                                report.name = filterObject.display
                                 report.type = "filter"
                                 report.config = JSON.toJSONString(filterObject)
                                 reportDao.insert(report)
@@ -183,7 +183,7 @@ class ModeImpl : ReportModelImpl() {
                     }
 
                     override fun onError(e: Throwable?) {
-                        LogUtil.d(TAG, "analysisData onError ::: "+e!!.message)
+                        LogUtil.d(TAG, "analysisData onError ::: " + e!!.message)
                         callback.onDataNotAvailable(e)
                     }
                 })
@@ -209,7 +209,7 @@ class ModeImpl : ReportModelImpl() {
         } else {
             reportDao.queryBuilder()
                     .where(reportDao.queryBuilder()
-                            .and(ReportDao.Properties.Uuid.eq(uuid), ReportDao.Properties.Name.eq(filterObject!!.display)))
+                            .and(ReportDao.Properties.Uuid.eq(uuid), ReportDao.Properties.Name.eq(filterObject.display)))
                     .list() ?: mutableListOf()
         }
     }
@@ -250,7 +250,7 @@ class ModeImpl : ReportModelImpl() {
         } else {
             reportDao.queryBuilder()
                     .where(reportDao.queryBuilder()
-                            .and(ReportDao.Properties.Uuid.eq(uuid), ReportDao.Properties.Page_title.eq(pageTitleList[pageId]), ReportDao.Properties.Name.eq(filterObject!!.display), ReportDao.Properties.Index.eq(index)))
+                            .and(ReportDao.Properties.Uuid.eq(uuid), ReportDao.Properties.Page_title.eq(pageTitleList[pageId]), ReportDao.Properties.Name.eq(filterObject.display), ReportDao.Properties.Index.eq(index)))
                     .unique().config
         }
     }
@@ -261,7 +261,7 @@ class ModeImpl : ReportModelImpl() {
      * @callback 数据加载回调
      */
     fun updateFilter(display: String, callback: ModeModel.LoadDataCallback) {
-        filterObject!!.display = display
+        filterObject.display = display
 
         val reportDao = DaoUtil.getReportDao()
         val filter = reportDao.queryBuilder()

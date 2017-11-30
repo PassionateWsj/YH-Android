@@ -14,8 +14,8 @@ import org.greenrobot.eventbus.EventBus
  * 主页 - 报表 Model
  * Created by liuruilin on 2017/6/15.
  */
-    class ReportsListMode(var ctx: Context) : AbstractMode() {
-        var mUserSP = ctx.getSharedPreferences("UserBean", Context.MODE_PRIVATE)
+class ReportsListMode(var ctx: Context) : AbstractMode() {
+    var mUserSP = ctx.getSharedPreferences("UserBean", Context.MODE_PRIVATE)
 
     override fun requestData() {
         RetrofitUtil.getHttpService(ctx).getReportList(mUserSP.getString(GROUP_ID, "0"), mUserSP.getString(ROLD_ID, "0"))
