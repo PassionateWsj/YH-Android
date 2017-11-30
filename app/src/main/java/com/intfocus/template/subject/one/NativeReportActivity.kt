@@ -15,7 +15,6 @@ import com.intfocus.template.constant.Params.OBJECT_ID
 import com.intfocus.template.constant.Params.OBJECT_TYPE
 import com.intfocus.template.constant.Params.TEMPLATE_ID
 import com.intfocus.template.filter.FilterDialogFragment
-import com.intfocus.template.listener.UMSharedListener
 import com.intfocus.template.model.response.filter.MenuItem
 import com.intfocus.template.subject.one.entity.EventRefreshTableRect
 import com.intfocus.template.subject.one.entity.Filter
@@ -24,15 +23,11 @@ import com.intfocus.template.subject.templateone.rootpage.RootPageImpl
 import com.intfocus.template.subject.templateone.rootpage.RootPagePresenter
 import com.intfocus.template.ui.BaseActivity
 import com.intfocus.template.ui.view.RootScrollView
-import com.intfocus.template.util.*
-import com.umeng.socialize.ShareAction
-import com.umeng.socialize.bean.SHARE_MEDIA
-import com.umeng.socialize.media.UMImage
-import com.zbl.lib.baseframe.core.ActManager
+import com.intfocus.template.util.DisplayUtil
+import com.intfocus.template.util.LogUtil
 import kotlinx.android.synthetic.main.actvity_meter_detal.*
 import kotlinx.android.synthetic.main.item_action_bar.*
 import org.greenrobot.eventbus.EventBus
-import org.json.JSONObject
 import java.util.*
 
 /**

@@ -25,12 +25,8 @@ import android.widget.RelativeLayout
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.BitmapImageViewTarget
 import com.google.gson.Gson
-import com.intfocus.template.R
-import com.intfocus.template.dashboard.mine.activity.*
-import com.intfocus.template.dashboard.mine.bean.UserInfoRequest
-import com.intfocus.template.login.LoginActivity
-import com.intfocus.template.ui.BaseModeFragment
 import com.intfocus.template.ConfigConstants
+import com.intfocus.template.R
 import com.intfocus.template.constant.Params.ACTION
 import com.intfocus.template.constant.Params.BANNER_NAME
 import com.intfocus.template.constant.Params.IS_LOGIN
@@ -39,14 +35,18 @@ import com.intfocus.template.constant.Params.OBJECT_ID
 import com.intfocus.template.constant.Params.OBJECT_TYPE
 import com.intfocus.template.constant.Params.TEMPLATE_ID
 import com.intfocus.template.constant.Params.USER_NUM
-import com.intfocus.template.model.response.BaseResult
-import com.intfocus.template.model.response.login.RegisterResult
-import com.intfocus.template.model.response.mine_page.UserInfoResult
 import com.intfocus.template.dashboard.UserInfoMode
+import com.intfocus.template.dashboard.mine.activity.*
+import com.intfocus.template.dashboard.mine.bean.UserInfoRequest
 import com.intfocus.template.general.net.ApiException
 import com.intfocus.template.general.net.CodeHandledSubscriber
 import com.intfocus.template.general.net.RetrofitUtil
+import com.intfocus.template.login.LoginActivity
+import com.intfocus.template.model.response.BaseResult
+import com.intfocus.template.model.response.login.RegisterResult
+import com.intfocus.template.model.response.mine_page.UserInfoResult
 import com.intfocus.template.subject.two.WebPageActivity
+import com.intfocus.template.ui.BaseModeFragment
 import com.intfocus.template.util.ActionLogUtil
 import com.intfocus.template.util.DisplayUtil
 import com.intfocus.template.util.ImageUtil.*
@@ -104,7 +104,7 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val mTypeFace = Typeface.createFromAsset(act.assets, "ALTGOT2N.TTF")
+        val mTypeFace = Typeface.createFromAsset(ctx.assets, "ALTGOT2N.TTF")
         tv_login_number.typeface = mTypeFace
         tv_report_number.typeface = mTypeFace
         tv_beyond_number.typeface = mTypeFace
@@ -335,7 +335,7 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
             ToastUtils.show(ctx, "未连接网络, 无法退出")
             return
         }
-        val mEditor = act.getSharedPreferences("SettingPreference", MODE_PRIVATE).edit()
+        val mEditor = ctx.getSharedPreferences("SettingPreference", MODE_PRIVATE).edit()
         mEditor.putBoolean("ScreenLock", false).apply()
         // 退出登录 POST 请求
         RetrofitUtil.getHttpService(ctx).userLogout(mUserSP.getString(K_USER_DEVICE_ID, "0"))

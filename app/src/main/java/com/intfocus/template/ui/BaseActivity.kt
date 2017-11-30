@@ -1,13 +1,11 @@
 package com.intfocus.template.ui
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.content.SharedPreferences
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
-import android.support.v4.app.FragmentActivity
 import android.support.v7.app.AppCompatActivity
 import android.view.LayoutInflater
 import android.view.View
@@ -16,7 +14,6 @@ import android.widget.LinearLayout
 import android.widget.PopupWindow
 import com.intfocus.template.ConfigConstants
 import com.intfocus.template.R
-
 import com.intfocus.template.SYPApplication
 import com.intfocus.template.listener.UMSharedListener
 import com.intfocus.template.util.ActionLogUtil

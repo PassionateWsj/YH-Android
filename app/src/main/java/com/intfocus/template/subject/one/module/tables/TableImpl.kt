@@ -1,10 +1,10 @@
 package com.intfocus.template.subject.one.module.tables
 
 import com.alibaba.fastjson.JSON
+import com.intfocus.template.subject.one.ModeImpl
+import com.intfocus.template.subject.one.entity.MDetailRootPageRequestResult
 import com.intfocus.template.subject.one.entity.MDetailUnitEntity
 import com.intfocus.template.subject.one.entity.Tables
-import com.intfocus.template.subject.one.entity.MDetailRootPageRequestResult
-import com.intfocus.template.subject.one.ModeImpl
 import com.intfocus.template.util.LogUtil
 import rx.Observable
 import rx.Observer
@@ -84,7 +84,7 @@ class TableImpl : TableModel {
         observable = Observable.just(1)
                 .subscribeOn(Schedulers.io())
                 .map {
-                    var startTime = System.currentTimeMillis()
+                    val startTime = System.currentTimeMillis()
                     val result = ModeImpl.getInstance().queryModuleConfig(index, rootId)
                     val data = MDetailRootPageRequestResult(JSON.parseArray(result, MDetailUnitEntity::class.java))
                     LogUtil.d(TAG, "TableRoot 转换耗时 ::: " + (System.currentTimeMillis() - startTime) + " 毫秒")
@@ -97,6 +97,7 @@ class TableImpl : TableModel {
                     }
 
                     override fun onError(e: Throwable?) {
+                    LogUtil.d(TAG, "TableRoot onError ::: " + e!!.message)
                         callbackTableRoot.onDataNotAvailable(e)
                     }
 
