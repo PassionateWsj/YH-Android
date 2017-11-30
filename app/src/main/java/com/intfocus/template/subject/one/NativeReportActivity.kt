@@ -203,7 +203,7 @@ class NativeReportActivity : BaseActivity(), ModeContract.View, FilterDialogFrag
             addStr += data[i].name!! + "||"
         }
         addStr = addStr.substring(0, addStr.length - 2)
-        if (filterDisplay != addStr) {
+        if (filterDisplay != addStr && mFragmentManager!!.fragments.isNotEmpty()) {
             // 清空栈中 Fragment
             val ft = mFragmentManager!!.beginTransaction()
             mFragmentManager!!.fragments

@@ -34,11 +34,11 @@
  	- 包名修改 : 
  		- 文件 : `../app/src/main/AndroidManifest.xml`
  		- 搜素关键字 : **package**
- 		- 重命名 : `com.intfocus.{syp_template}`
+ 		- 重命名 : `com.intfocus.{template}`
 	- 应用在系统中的包名修改
 		- 文件 : `../app/build.gradle`
 		- 搜素关键字 : **applicationId**
-		- 重命名 : `com.intfocus.{syp_template}`
+		- 重命名 : `com.intfocus.{template}`
 3. App 名称配置
 	- 文件路径 : `..\app\src\main\res\values\strings.xml`
 	- 搜索 **app_name** 关键字
