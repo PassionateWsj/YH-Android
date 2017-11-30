@@ -16,12 +16,13 @@ import rx.schedulers.Schedulers;
 
 /**
  * ****************************************************
+ *
  * @author JamesWong
- * created on: 17/08/22 上午10:00
- * e-mail: PassionateWsj@outlook.com
- * name:
- * desc:
- * ****************************************************
+ *         created on: 17/08/22 上午10:00
+ *         e-mail: PassionateWsj@outlook.com
+ *         name:
+ *         desc:
+ *         ****************************************************
  */
 
 public class StoreSelectorImpl implements StoreSelectorModel {

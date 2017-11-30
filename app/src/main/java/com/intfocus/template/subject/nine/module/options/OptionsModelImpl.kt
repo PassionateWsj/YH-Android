@@ -12,7 +12,7 @@ import com.intfocus.template.subject.nine.module.ModuleModel
  * @data 2017/11/3
  * @describe
  */
-class OptionsModelImpl: ModuleModel<OptionsEntity> {
+class OptionsModelImpl : ModuleModel<OptionsEntity> {
     companion object {
         private var INSTANCE: OptionsModelImpl? = null
         /**

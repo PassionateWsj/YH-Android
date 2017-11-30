@@ -1,14 +1,12 @@
 package com.intfocus.template.ui
 
 import android.app.Activity
-import android.app.Dialog
 import android.os.Bundle
 import android.support.v7.widget.RecyclerView
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.intfocus.template.R
-import com.intfocus.template.util.LoadingUtils
 import com.intfocus.template.util.ToastUtils
 import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter
 import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout
@@ -16,7 +14,7 @@ import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout
 /**
  * Created by CANC on 2017/7/31.
  */
- abstract class RefreshActivity : BaseActivity() {
+abstract class RefreshActivity : BaseActivity() {
     lateinit var mActivity: Activity
     lateinit var refreshLayout: TwinklingRefreshLayout
     lateinit var recyclerView: RecyclerView

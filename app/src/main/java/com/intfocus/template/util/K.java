@@ -10,7 +10,7 @@ import java.io.Serializable;
  * @created 2016-01-06
  * Created by lijunjie on 16/9/22.
  */
-public class K  implements Serializable {
+public class K implements Serializable {
 
     public final static Integer K_TIMER_INTERVAL = 30;
 
@@ -221,7 +221,7 @@ public class K  implements Serializable {
      */
     public final static String API_FEEDBACK_LIST = "/api/v1.1/feedbacks";
 
-     /**
+    /**
      * 获取用户反馈列表
      */
     public final static String API_FEEDBACK_USER_LIST = "/api/v1.1/user/feedbacks";

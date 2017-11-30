@@ -20,6 +20,7 @@ class ModePresenter(
     init {
         mView.presenter = this
     }
+
     override fun start() {
     }
 
@@ -31,7 +32,7 @@ class ModePresenter(
         mModel.updateFilter(display, ReportDataCallback())
     }
 
-    inner class ReportDataCallback: ModeModel.LoadDataCallback {
+    inner class ReportDataCallback : ModeModel.LoadDataCallback {
         override fun onDataLoaded(reports: List<String>, filter: Filter) {
             mView.dataLoaded(reports, filter)
         }

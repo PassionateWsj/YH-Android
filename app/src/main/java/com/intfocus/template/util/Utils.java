@@ -25,6 +25,7 @@ import java.util.regex.Pattern;
 public class Utils {
 
     private static Pattern IS_NUMBER_PATTERN = Pattern.compile("-?[0-9]+.*[0-9]*");
+
     /**
      * 获得屏幕宽度
      *
@@ -115,16 +116,16 @@ public class Utils {
         return stringToMD5(finalStr);
     }
 
-    public static String listToString(List<String> list){
-        if(list==null){
+    public static String listToString(List<String> list) {
+        if (list == null) {
             return null;
         }
         StringBuilder result = new StringBuilder();
         boolean first = true;
-        for(String string :list) {
-            if(first) {
-                first=false;
-            }else{
+        for (String string : list) {
+            if (first) {
+                first = false;
+            } else {
                 result.append(",");
             }
             result.append(string);
@@ -132,7 +133,7 @@ public class Utils {
         return result.toString();
     }
 
-    public static List<String> stringToList(String strs){
+    public static List<String> stringToList(String strs) {
         String[] str = strs.split(",");
         return Arrays.asList(str);
     }

@@ -10,7 +10,7 @@ import com.intfocus.template.subject.nine.callback.LoadDataCallback
 class TextPresenter(
         private var mModel: TextModelImpl,
         private var mView: TextModuleContract.View
-): TextModuleContract.Presenter {
+) : TextModuleContract.Presenter {
     init {
         mView.presenter = this
     }
@@ -19,7 +19,7 @@ class TextPresenter(
     }
 
     override fun loadData(mParam: String) {
-        mModel.analyseData(mParam, object: LoadDataCallback<TextEntity> {
+        mModel.analyseData(mParam, object : LoadDataCallback<TextEntity> {
             override fun onSuccess(data: TextEntity) {
                 mView.initModule(data)
             }

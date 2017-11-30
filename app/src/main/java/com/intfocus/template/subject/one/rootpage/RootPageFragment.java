@@ -123,7 +123,7 @@ public class RootPageFragment extends Fragment implements RootPageContract.View 
                 case "info":
                     try {
                         View view = LayoutInflater.from(ctx).inflate(R.layout.item_info_layout, null);
-                        TextView tv =  view.findViewById(R.id.tv_info);
+                        TextView tv = view.findViewById(R.id.tv_info);
                         String info = new JSONObject(report.getConfig()).getString("title");
                         RichText.from(info).into(tv);
                         llMdrpContainer.addView(view);
@@ -146,7 +146,7 @@ public class RootPageFragment extends Fragment implements RootPageContract.View 
                 //类Excel冻结横竖首列表格
                 case "tables":
                     fragment = TableRootFragment.newInstance(suRootID, uuid, report.getIndex());
-                    new TableRootPresenter(TableImpl.getInstance(),(TableRootFragment)fragment);
+                    new TableRootPresenter(TableImpl.getInstance(), (TableRootFragment) fragment);
                     break;
                 default:
                     break;

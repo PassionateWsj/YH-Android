@@ -1,9 +1,8 @@
-package com.intfocus.template.dashboard.mine.widget
+package com.intfocus.template.dashboard.mine.widget.user
 
 //import org.xutils.image.ImageOptions
 import android.app.Activity.RESULT_CANCELED
 import android.content.Context
-import android.content.Context.MODE_PRIVATE
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Bitmap
@@ -29,46 +28,40 @@ import com.intfocus.template.ConfigConstants
 import com.intfocus.template.R
 import com.intfocus.template.constant.Params.ACTION
 import com.intfocus.template.constant.Params.BANNER_NAME
-import com.intfocus.template.constant.Params.IS_LOGIN
 import com.intfocus.template.constant.Params.LINK
 import com.intfocus.template.constant.Params.OBJECT_ID
 import com.intfocus.template.constant.Params.OBJECT_TYPE
 import com.intfocus.template.constant.Params.TEMPLATE_ID
 import com.intfocus.template.constant.Params.USER_NUM
-import com.intfocus.template.dashboard.UserInfoMode
+import com.intfocus.template.constant.ToastColor
 import com.intfocus.template.dashboard.mine.activity.*
-import com.intfocus.template.dashboard.mine.bean.UserInfoRequest
 import com.intfocus.template.general.net.ApiException
 import com.intfocus.template.general.net.CodeHandledSubscriber
 import com.intfocus.template.general.net.RetrofitUtil
 import com.intfocus.template.login.LoginActivity
-import com.intfocus.template.model.response.BaseResult
 import com.intfocus.template.model.response.login.RegisterResult
 import com.intfocus.template.model.response.mine_page.UserInfoResult
+import com.intfocus.template.subject.one.UserContract
 import com.intfocus.template.subject.two.WebPageActivity
-import com.intfocus.template.ui.BaseModeFragment
+import com.intfocus.template.ui.BaseFragment
 import com.intfocus.template.util.ActionLogUtil
 import com.intfocus.template.util.DisplayUtil
 import com.intfocus.template.util.ImageUtil.*
-import com.intfocus.template.util.K.K_USER_DEVICE_ID
 import com.intfocus.template.util.ToastUtils
-import com.taobao.accs.utl.UtilityImpl.isNetworkConnected
-import com.zbl.lib.baseframe.core.Subject
 import kotlinx.android.synthetic.main.activity_dashboard.*
 import kotlinx.android.synthetic.main.fragment_user.*
 import kotlinx.android.synthetic.main.item_mine_user_top.*
 import kotlinx.android.synthetic.main.items_single_value.*
 import kotlinx.android.synthetic.main.yh_custom_user.*
-import org.greenrobot.eventbus.EventBus
-import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
 import org.json.JSONObject
 import java.io.File
 
 /**
  * Created by liuruilin on 2017/6/7.
  */
-class UserFragment : BaseModeFragment<UserInfoMode>() {
+class UserFragment : BaseFragment(), UserContract.View {
+
+    override lateinit var presenter: UserContract.Presenter
 
     lateinit var mUserInfoSP: SharedPreferences
     lateinit var mUserSP: SharedPreferences
@@ -82,22 +75,11 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
     private val CODE_RESULT_REQUEST = 0xa2
     private var rl_logout_confirm: RelativeLayout? = null
 
-    override fun setSubject(): Subject {
-        mUserInfoSP = ctx.getSharedPreferences("UserInfo", Context.MODE_PRIVATE)
-        mUserSP = ctx.getSharedPreferences("UserBean", Context.MODE_PRIVATE)
-        return UserInfoMode(ctx)
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        EventBus.getDefault().unregister(this)
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        EventBus.getDefault().register(this)
+        mUserSP = ctx.getSharedPreferences("UserBean", Context.MODE_PRIVATE)
         if (rootView == null) {
             rootView = inflater.inflate(R.layout.fragment_user, container, false)
-            model.requestData()
+            presenter.loadData(ctx)
         }
         return rootView
     }
@@ -201,37 +183,34 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
                 })
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun setData(result: UserInfoRequest) {
-        if (result.isSuccess && result.userInfoBean != null) {
-            val user = result.userInfoBean
-            tv_user_name.text = user!!.user_name
-            tv_login_number.text = user.login_duration
-            tv_report_number.text = user.browse_report_count
-            tv_mine_user_num_value.text = user.user_num
-            tv_beyond_number.text = user.surpass_percentage.toString()
-            tv_user_role.text = user.role_name
-            tv_mine_user_group_value.text = user.group_name
+    override fun dataLoaded(data: UserInfoResult) {
+        val user = data.data
+        tv_user_name.text = user!!.user_name
+        tv_login_number.text = user.login_duration
+        tv_report_number.text = user.browse_report_count
+        tv_mine_user_num_value.text = user.user_num
+        tv_beyond_number.text = user.surpass_percentage.toString()
+        tv_user_role.text = user.role_name
+        tv_mine_user_group_value.text = user.group_name
 //            x.image().bind(iv_user_icon, user.gravatar, imageOptions)
-            Glide.with(ctx)
-                    .load(user.gravatar)
-                    .asBitmap()
-                    .placeholder(R.drawable.face_default)
-                    .error(R.drawable.face_default)
-                    .override(DisplayUtil.dip2px(ctx, 60f), DisplayUtil.dip2px(ctx, 60f))
-                    .into(object : BitmapImageViewTarget(iv_user_icon) {
-                        override fun setResource(resource: Bitmap?) {
-                            val circularBitmapDrawable = RoundedBitmapDrawableFactory.create(context!!.resources, resource)
-                            circularBitmapDrawable.isCircular = true
-                            iv_user_icon.setImageDrawable(circularBitmapDrawable)
-                        }
-                    })
+        Glide.with(ctx)
+                .load(user.gravatar)
+                .asBitmap()
+                .placeholder(R.drawable.face_default)
+                .error(R.drawable.face_default)
+                .override(DisplayUtil.dip2px(ctx, 60f), DisplayUtil.dip2px(ctx, 60f))
+                .into(object : BitmapImageViewTarget(iv_user_icon) {
+                    override fun setResource(resource: Bitmap?) {
+                        val circularBitmapDrawable = RoundedBitmapDrawableFactory.create(context!!.resources, resource)
+                        circularBitmapDrawable.isCircular = true
+                        iv_user_icon.setImageDrawable(circularBitmapDrawable)
+                    }
+                })
 
-        }
     }
 
     private fun startPassWordAlterActivity() {
-        val intent = Intent(activity, AlterPasswordActivity::class.java)
+        val intent = Intent(context, AlterPasswordActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
         startActivity(intent)
 
@@ -294,8 +273,8 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
     /**
      * 退出登录选择窗
      */
-    private fun showLogoutPopupWindow(ctx: Context) {
-        val contentView = LayoutInflater.from(ctx).inflate(R.layout.popup_logout, null)
+    private fun showLogoutPopupWindow(mContext: Context) {
+        val contentView = LayoutInflater.from(mContext).inflate(R.layout.popup_logout, null)
         //设置弹出框的宽度和高度
         val popupWindow = PopupWindow(contentView,
                 ViewGroup.LayoutParams.MATCH_PARENT,
@@ -314,7 +293,7 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
             // 取消
             popupWindow.dismiss()
             // 确认退出
-            logout()
+            presenter.logout(ctx)
         }
         contentView.findViewById<RelativeLayout>(R.id.rl_cancel).setOnClickListener {
             // 取消
@@ -327,47 +306,27 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
     }
 
     /**
-     * 退出登录
+     * 退出登录成功
      */
-    private fun logout() {
-        // 判断有无网络
-        if (!isNetworkConnected(ctx)) {
-            ToastUtils.show(ctx, "未连接网络, 无法退出")
-            return
-        }
-        val mEditor = ctx.getSharedPreferences("SettingPreference", MODE_PRIVATE).edit()
-        mEditor.putBoolean("ScreenLock", false).apply()
-        // 退出登录 POST 请求
-        RetrofitUtil.getHttpService(ctx).userLogout(mUserSP.getString(K_USER_DEVICE_ID, "0"))
-                .compose(RetrofitUtil.CommonOptions<BaseResult>())
-                .subscribe(object : CodeHandledSubscriber<BaseResult>() {
-                    override fun onBusinessNext(data: BaseResult?) {
-                        if (data!!.code == "200") {
-                            mUserSP.edit().putBoolean(IS_LOGIN, false).apply()
+    override fun logoutSuccess() {
+        val intent = Intent(activity, LoginActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK and Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
+        activity!!.finish()
+    }
 
-                            val logParams = JSONObject()
-                            logParams.put(ACTION, "退出登录")
-                            ActionLogUtil.actionLog(ctx, logParams)
+    /**
+     * 吐司错误信息
+     */
+    override fun showErrorMsg(errorMsg: String) {
+        ToastUtils.show(ctx, errorMsg)
+    }
 
-                            model.modifiedUserConfig(false)
-                            val intent = Intent()
-                            intent.setClass(activity, LoginActivity::class.java)
-                            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK and Intent.FLAG_ACTIVITY_CLEAR_TASK
-                            startActivity(intent)
-                            activity!!.finish()
-                        } else {
-                            ToastUtils.show(ctx, data.message!!)
-                        }
-                    }
-
-                    override fun onCompleted() {
-                    }
-
-                    override fun onError(apiException: ApiException?) {
-                        ToastUtils.show(ctx, apiException!!.message!!)
-                    }
-
-                })
+    /**
+     * 吐司成功信息
+     */
+    override fun showSuccessMsg(msg: String) {
+        ToastUtils.show(ctx, msg, ToastColor.SUCCESS)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -405,8 +364,8 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
     /**
      * 显示头像选择菜单
      */
-    private fun showIconSelectPopWindow(ctx: Context) {
-        val contentView = LayoutInflater.from(ctx).inflate(R.layout.popup_mine_icon_select, null)
+    private fun showIconSelectPopWindow(mContext: Context) {
+        val contentView = LayoutInflater.from(mContext).inflate(R.layout.popup_mine_icon_select, null)
         //设置弹出框的宽度和高度
         val popupWindow = PopupWindow(contentView,
                 ViewGroup.LayoutParams.MATCH_PARENT,
@@ -442,7 +401,7 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
 
         val logParams = JSONObject()
         logParams.put(ACTION, "点击/个人信息/设置头像")
-        ActionLogUtil.actionLog(ctx, logParams)
+        ActionLogUtil.actionLog(mContext, logParams)
     }
 
     /**
@@ -453,7 +412,8 @@ class UserFragment : BaseModeFragment<UserInfoMode>() {
         val bitmap = BitmapFactory.decodeFile(imgPath)
         if (bitmap != null) {
             iv_user_icon.setImageBitmap(makeRoundCorner(bitmap))
-            model.uploadUserIcon(bitmap, imgPath)
+            presenter.uploadUserIcon(ctx, bitmap, imgPath)
         }
     }
+
 }

@@ -184,7 +184,7 @@ class ModeImpl : ReportModelImpl() {
                     }
 
                     override fun onError(e: Throwable?) {
-                        LogUtil.d(TAG, "analysisData onError ::: "+e!!.message)
+                        LogUtil.d(TAG, "analysisData onError ::: " + e!!.message)
                         callback.onDataNotAvailable(e)
                     }
                 })

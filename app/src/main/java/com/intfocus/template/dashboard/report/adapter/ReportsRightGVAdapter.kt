@@ -8,9 +8,10 @@ import android.widget.*
 import com.bumptech.glide.Glide
 import com.intfocus.template.R
 import com.intfocus.template.dashboard.report.mode.GroupDataBean
+import com.intfocus.template.listener.NoDoubleClickListener
 import com.intfocus.template.model.entity.DashboardItem
 import com.intfocus.template.util.DisplayUtil
-import org.greenrobot.eventbus.EventBus
+import com.intfocus.template.util.PageLinkManage
 
 /**
  * Created by liuruilin on 2017/6/17.
@@ -51,10 +52,12 @@ class ReportsRightGVAdapter(var ctx: Context, var datas: List<GroupDataBean>?) :
                 .load(datas!![position].icon_link)
                 .into(viewTag.mIcon)
 
-        viewTag.llItem.setOnClickListener {
-            EventBus.getDefault().post(DashboardItem(datas!![position].obj_link!!, datas!![position].obj_title!!,
-                    datas!![position].obj_id!!, datas!![position].template_id!!, "2"))
-        }
+        viewTag.llItem.setOnClickListener(object : NoDoubleClickListener() {
+            override fun onNoDoubleClick(v: View?) {
+                PageLinkManage.pageLink(ctx, DashboardItem(datas!![position].obj_link!!, datas!![position].obj_title!!,
+                        datas!![position].obj_id!!, datas!![position].template_id!!, "2"))
+            }
+        })
         return convertView
     }
 

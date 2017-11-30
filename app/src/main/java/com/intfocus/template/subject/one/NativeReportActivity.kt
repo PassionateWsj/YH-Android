@@ -97,7 +97,7 @@ class NativeReportActivity : BaseActivity(), ModeContract.View, FilterDialogFrag
         mLlFilter = findViewById(R.id.ll_filter)
         tv_banner_title.text = bannerName
         actionbar = rl_action_bar
-        iv_banner_setting.setOnClickListener{launchDropMenuActivity("")}
+        iv_banner_setting.setOnClickListener { launchDropMenuActivity("") }
 
         uuid = reportId + templateId + groupId
         presenter.loadData(this, groupId, templateId, reportId)
@@ -259,8 +259,8 @@ class NativeReportActivity : BaseActivity(), ModeContract.View, FilterDialogFrag
             R.id.ll_comment -> comment(this, reportId, objectType, bannerName)
             R.id.ll_refresh -> refresh()
         }
-        if (popupWindow.isShowing) {
-            popupWindow.dismiss()
+        if (popupWindow!!.isShowing) {
+            popupWindow!!.dismiss()
         }
     }
 

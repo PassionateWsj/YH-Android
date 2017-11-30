@@ -65,7 +65,7 @@ public class Source {
 
     @Generated(hash = 2142487226)
     public Source(Long id, String reportId, String uuid, String key, String config,
-            String type, int isShow, int isList, int isFilter, String value) {
+                  String type, int isShow, int isList, int isFilter, String value) {
         this.id = id;
         this.reportId = reportId;
         this.uuid = uuid;

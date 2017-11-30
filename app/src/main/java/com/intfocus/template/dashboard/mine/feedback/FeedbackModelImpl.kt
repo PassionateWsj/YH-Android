@@ -5,7 +5,7 @@ package com.intfocus.template.dashboard.mine.feedback
  * @data 2017/11/28
  * @describe 问题反馈 Model 实现类
  */
-class FeedbackModelImpl: FeedbackModel {
+class FeedbackModelImpl : FeedbackModel {
     override fun getList() {
 
     }

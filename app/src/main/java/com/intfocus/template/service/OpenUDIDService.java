@@ -21,18 +21,18 @@ import com.intfocus.template.util.OpenUDIDManager;
 
 */
 
-public class OpenUDIDService extends Service{
-	@Override
-	public IBinder onBind(Intent arg0) {
-		return new  Binder() {
-			@Override
-			public boolean onTransact(int code, android.os.Parcel data, android.os.Parcel reply, int flags) {
-				final SharedPreferences preferences = getSharedPreferences(OpenUDIDManager.PREFS_NAME, Context.MODE_PRIVATE);
-		
-				reply.writeInt(data.readInt()); //Return to the sender the input random number
-				reply.writeString(preferences.getString(OpenUDIDManager.PREF_KEY, null));
-				return true;
-			}
-		};
-	}
+public class OpenUDIDService extends Service {
+    @Override
+    public IBinder onBind(Intent arg0) {
+        return new Binder() {
+            @Override
+            public boolean onTransact(int code, android.os.Parcel data, android.os.Parcel reply, int flags) {
+                final SharedPreferences preferences = getSharedPreferences(OpenUDIDManager.PREFS_NAME, Context.MODE_PRIVATE);
+
+                reply.writeInt(data.readInt()); //Return to the sender the input random number
+                reply.writeString(preferences.getString(OpenUDIDManager.PREF_KEY, null));
+                return true;
+            }
+        };
+    }
 }

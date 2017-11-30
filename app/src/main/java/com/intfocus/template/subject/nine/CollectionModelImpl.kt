@@ -27,7 +27,7 @@ import kotlin.collections.ArrayList
  * @data 2017/10/31
  * @describe
  */
-class CollectionModelImpl: CollectionModel<CollectionEntity> {
+class CollectionModelImpl : CollectionModel<CollectionEntity> {
     companion object {
         private val TAG = CollectionModelImpl::class.java.simpleName
         lateinit var uuid: String
@@ -128,7 +128,9 @@ class CollectionModelImpl: CollectionModel<CollectionEntity> {
                                 LogUtil.d(TAG, "dataEnd:")
                             }
                             "id" -> Companion.reportId = reader.readString()
-                            else -> {Log.i("testlog", key + reader.readString() + " is error reason")}
+                            else -> {
+                                Log.i("testlog", key + reader.readString() + " is error reason")
+                            }
                         }
                     }
                     reader.endObject()

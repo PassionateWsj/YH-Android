@@ -14,7 +14,7 @@ import android.widget.TextView;
 import com.intfocus.template.R;
 import com.intfocus.template.subject.one.ModeImpl;
 import com.intfocus.template.subject.one.NativeReportActivity;
-import com.intfocus.template.ui.BaseModeFragment;
+import com.intfocus.template.ui.BaseFragment;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -25,7 +25,7 @@ import org.xutils.x;
 /**
  * 模板一标题栏 负责显示标题、日期、帮助说明
  */
-public class BannerFragment extends BaseModeFragment {
+public class BannerFragment extends BaseFragment {
     private static final String ARG_INDEX = "index";
     private static final String ARG_ROOT_ID = "rootId";
     private String mParam;
@@ -47,9 +47,6 @@ public class BannerFragment extends BaseModeFragment {
     private TextView tv_name;
     private TextView tv_count;
     private ImageButton imgbtn_close;
-
-    public BannerFragment() {
-    }
 
     public static BannerFragment newInstance(int rootId, int index) {
         BannerFragment fragment = new BannerFragment();

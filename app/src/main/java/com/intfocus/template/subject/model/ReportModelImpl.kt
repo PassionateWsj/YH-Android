@@ -145,7 +145,7 @@ open class ReportModelImpl : ReportModel {
      * @param assetsName 本地 Json 数据文件名
      * @return
      */
-    fun getAssetsJsonData(assetsName:String): String {
+    fun getAssetsJsonData(assetsName: String): String {
         var inputStream: InputStream? = null
         var reader: BufferedReader? = null
         var sb: StringBuilder? = null

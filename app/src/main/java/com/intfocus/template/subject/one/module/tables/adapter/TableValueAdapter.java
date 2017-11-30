@@ -33,8 +33,8 @@ public class TableValueAdapter extends BaseAdapter {
         this.ctx = ctx;
         this.al_HeaderLenght = al_HeaderLenght;
         inflate = LayoutInflater.from(ctx);
-        defauteColor = ContextCompat.getColor(ctx,R.color.co3);
-        hasSubColor = ContextCompat.getColor(ctx,R.color.co14);
+        defauteColor = ContextCompat.getColor(ctx, R.color.co3);
+        hasSubColor = ContextCompat.getColor(ctx, R.color.co14);
         setData(ltdata);
     }
 

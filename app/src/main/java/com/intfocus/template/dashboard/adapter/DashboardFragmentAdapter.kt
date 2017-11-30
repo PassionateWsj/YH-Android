@@ -9,7 +9,7 @@ import android.view.ViewGroup
  * Created by liuruilin on 2017/3/23.
  */
 
-class DashboardFragmentAdapter(fragmentManager: FragmentManager,val data:ArrayList<Fragment>) : FragmentPagerAdapter(fragmentManager) {
+class DashboardFragmentAdapter(fragmentManager: FragmentManager, val data: ArrayList<Fragment>) : FragmentPagerAdapter(fragmentManager) {
 
     override fun getCount(): Int = data.size
 
@@ -18,6 +18,6 @@ class DashboardFragmentAdapter(fragmentManager: FragmentManager,val data:ArrayLi
     }
 
     override fun getItem(position: Int): Fragment {
-         return data[position]
+        return data[position]
     }
 }

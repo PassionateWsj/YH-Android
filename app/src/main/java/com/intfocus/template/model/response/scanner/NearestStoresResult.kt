@@ -11,6 +11,6 @@ import com.intfocus.template.model.response.BaseResult
  * @desc
  * ****************************************************
  */
-class NearestStoresResult :BaseResult() {
+class NearestStoresResult : BaseResult() {
     var data: List<NearestStores>? = null
 }

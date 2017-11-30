@@ -9,11 +9,11 @@ import com.intfocus.template.base.BaseView
  * @describe
  */
 interface OptionsModuleContract {
-    interface View: BaseView<Presenter>{
+    interface View : BaseView<Presenter> {
         fun initModule(entity: OptionsEntity)
     }
 
-    interface Presenter: BasePresenter{
+    interface Presenter : BasePresenter {
         fun loadData(mParam: String)
         fun update(entity: OptionsEntity, key: String)
     }

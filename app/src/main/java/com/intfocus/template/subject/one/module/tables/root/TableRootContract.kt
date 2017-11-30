@@ -21,6 +21,6 @@ interface TableRootContract {
 
     interface Presenter : BasePresenter {
         // 加载数据
-        fun loadData(rootId: Int, index:Int)
+        fun loadData(rootId: Int, index: Int)
     }
 }

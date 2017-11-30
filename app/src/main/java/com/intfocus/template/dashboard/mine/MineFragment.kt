@@ -7,12 +7,14 @@ import android.support.v4.view.ViewPager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.intfocus.template.ConfigConstants
 import com.intfocus.template.R
 import com.intfocus.template.dashboard.mine.adapter.MinePageVPAdapter
 import com.intfocus.template.dashboard.mine.widget.AnnouncementWarningFragment
 import com.intfocus.template.dashboard.mine.widget.DataCollegeFragment
-import com.intfocus.template.dashboard.mine.widget.UserFragment
-import com.intfocus.template.ConfigConstants
+import com.intfocus.template.dashboard.mine.widget.user.UserFragment
+import com.intfocus.template.subject.one.UserImpl
+import com.intfocus.template.subject.one.UserPresenter
 import com.intfocus.template.util.Utils
 import kotlinx.android.synthetic.main.fragment_mine.*
 import java.util.*
@@ -23,9 +25,8 @@ class MineFragment : Fragment(), ViewPager.OnPageChangeListener {
     val titleList = ArrayList<String>()
     val FIRST_PAGE_INDEX: Int = 0
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_mine, container, false)
-    }
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
+            inflater.inflate(R.layout.fragment_mine, container, false)
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -41,7 +42,9 @@ class MineFragment : Fragment(), ViewPager.OnPageChangeListener {
         } else {
             ll_line.visibility = View.GONE
         }
-        fragmentList.add(UserFragment())
+        val itemFragment = UserFragment()
+        UserPresenter(UserImpl.getInstance(), itemFragment)
+        fragmentList.add(itemFragment)
         titleList.add("个人信息")
 
         mViewPagerAdapter = MinePageVPAdapter(childFragmentManager, fragmentList, titleList)

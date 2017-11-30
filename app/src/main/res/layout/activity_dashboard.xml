@@ -20,7 +20,7 @@
         <com.intfocus.template.ui.view.TabView
             android:id="@+id/tab_kpi"
             style="@style/ToolBarTab"
-            android:visibility="visible"
+            android:visibility="gone"
             app:active_src="@drawable/tab_overview_s"
             app:src="@drawable/tab_overview"
             app:text="@string/text_kpi"/>
@@ -28,7 +28,7 @@
         <com.intfocus.template.ui.view.TabView
             android:id="@+id/tab_report"
             style="@style/ToolBarTab"
-            android:visibility="visible"
+            android:visibility="gone"
             app:active_src="@drawable/tab_form_s"
             app:src="@drawable/tab_form"
             app:text="@string/text_report"/>
@@ -36,7 +36,7 @@
         <com.intfocus.template.ui.view.TabView
             android:id="@+id/tab_workbox"
             style="@style/ToolBarTab"
-            android:visibility="visible"
+            android:visibility="gone"
             app:active_src="@drawable/tab_special_s"
             app:src="@drawable/tab_special"
             app:text="@string/text_workbox"/>
@@ -44,7 +44,7 @@
         <com.intfocus.template.ui.view.TabView
             android:id="@+id/tab_mine"
             style="@style/ToolBarTab"
-            android:visibility="visible"
+            android:visibility="gone"
             app:active="false"
             app:active_src="@drawable/tab_my_s"
             app:src="@drawable/tab_my"

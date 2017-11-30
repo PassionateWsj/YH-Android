@@ -18,5 +18,5 @@ interface ModeModel {
         fun onDataNotAvailable(e: Throwable)
     }
 
-    fun getData(ctx: Context, groupId: String, reportId: String,callback: LoadDataCallback)
+    fun getData(ctx: Context, groupId: String, reportId: String, callback: LoadDataCallback)
 }

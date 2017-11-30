@@ -15,12 +15,12 @@ import com.intfocus.template.base.BaseView
  * ****************************************************
  */
 interface RootPageContract {
-    interface View: BaseView<Presenter>{
+    interface View : BaseView<Presenter> {
         // 展示数据
         fun insertModule(result: RootPageRequestResult)
     }
 
-    interface Presenter: BasePresenter {
+    interface Presenter : BasePresenter {
         // 加载数据
         fun loadData(mParam: String)
     }

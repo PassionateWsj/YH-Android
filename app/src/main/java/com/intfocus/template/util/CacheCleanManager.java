@@ -61,7 +61,8 @@ public class CacheCleanManager {
     }
 
     /**
-     *清除自定义路径下的文件，使用需小心，请不要误删。而且只支持目录下的文件删除
+     * 清除自定义路径下的文件，使用需小心，请不要误删。而且只支持目录下的文件删除
+     *
      * @param filePath
      */
     public static boolean cleanCustomCache(String filePath) {

@@ -112,13 +112,13 @@ public class RingChart extends View {
         mUsePaint = new Paint();
         mUsePaint.setAntiAlias(true);
         mUsePaint.setStyle(Paint.Style.FILL);
-        mUsePaint.setColor(ContextCompat.getColor(mContext,R.color.argb_font_94));
+        mUsePaint.setColor(ContextCompat.getColor(mContext, R.color.argb_font_94));
         mUsePaint.setTextSize(DisplayUtil.sp2px(mContext, 20));
 
         //圆环画笔设置
         mRingDefaultPaint = new Paint();
         mRingDefaultPaint.setAntiAlias(true);
-        mRingDefaultPaint.setColor(ContextCompat.getColor(mContext,R.color.default_ring_color));
+        mRingDefaultPaint.setColor(ContextCompat.getColor(mContext, R.color.default_ring_color));
         mRingDefaultPaint.setStyle(Paint.Style.STROKE);
         mRingDefaultPaint.setStrokeWidth(mStrokeWidth);
 
@@ -132,7 +132,7 @@ public class RingChart extends View {
         mTextPaint = new Paint();
         mTextPaint.setAntiAlias(true);
         mTextPaint.setStyle(Paint.Style.FILL);
-        mTextPaint.setColor(ContextCompat.getColor(mContext,R.color.argb_unitcolor));
+        mTextPaint.setColor(ContextCompat.getColor(mContext, R.color.argb_unitcolor));
         mTextPaint.setTextSize(DisplayUtil.sp2px(mContext, 36));
 
         mLinePaint = new Paint();

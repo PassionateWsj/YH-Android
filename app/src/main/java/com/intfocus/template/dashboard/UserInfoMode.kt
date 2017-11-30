@@ -3,23 +3,23 @@ package com.intfocus.template.dashboard
 import android.content.Context
 import android.graphics.Bitmap
 import com.google.gson.Gson
-import com.intfocus.template.dashboard.mine.bean.UserInfoRequest
 import com.intfocus.template.ConfigConstants
 import com.intfocus.template.constant.Params.USER_NUM
 import com.intfocus.template.constant.ToastColor
-import com.intfocus.template.model.response.BaseResult
-import com.intfocus.template.model.response.mine_page.UserInfoResult
 import com.intfocus.template.general.net.ApiException
 import com.intfocus.template.general.net.CodeHandledSubscriber
 import com.intfocus.template.general.net.RetrofitUtil
-import com.intfocus.template.util.*
+import com.intfocus.template.model.response.BaseResult
+import com.intfocus.template.util.ApiHelper
+import com.intfocus.template.util.FileUtil
+import com.intfocus.template.util.K
 import com.intfocus.template.util.K.K_USER_DEVICE_ID
 import com.intfocus.template.util.K.K_USER_ID
+import com.intfocus.template.util.ToastUtils
 import com.zbl.lib.baseframe.core.AbstractMode
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
-import org.greenrobot.eventbus.EventBus
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.File
@@ -37,21 +37,7 @@ class UserInfoMode(var ctx: Context) : AbstractMode() {
     var gson = Gson()
 
     override fun requestData() {
-        RetrofitUtil.getHttpService(ctx).getUserInfo(mUserSP.getString(USER_NUM, ""))
-                .compose(RetrofitUtil.CommonOptions<UserInfoResult>())
-                .subscribe(object : CodeHandledSubscriber<UserInfoResult>() {
-                    override fun onBusinessNext(data: UserInfoResult?) {
-                        val result1 = UserInfoRequest(true, 200)
-                        result1.userInfoBean = data!!.data
-                        EventBus.getDefault().post(result1)
-                    }
 
-                    override fun onError(apiException: ApiException?) {
-                    }
-
-                    override fun onCompleted() {
-                    }
-                })
     }
 
     fun uploadUserIcon(bitmap: Bitmap, imgPath: String) {

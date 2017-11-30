@@ -10,11 +10,12 @@ import android.view.ViewGroup
 import android.widget.RelativeLayout
 import android.widget.TextView
 import com.intfocus.template.R
-import com.intfocus.template.dashboard.kpi.bean.KpiGroupItem
-import com.intfocus.template.model.entity.DashboardItem
 import com.intfocus.template.constant.Colors
+import com.intfocus.template.dashboard.kpi.bean.KpiGroupItem
+import com.intfocus.template.listener.NoDoubleClickListener
+import com.intfocus.template.model.entity.DashboardItem
+import com.intfocus.template.util.PageLinkManage
 import com.intfocus.template.util.Utils
-import org.greenrobot.eventbus.EventBus
 
 
 /**
@@ -39,11 +40,11 @@ class OperationalWarningAdapter(val context: Context,
     override fun getItemCount(): Int = if (datas == null) 0 else datas!!.size
 
     override fun onBindViewHolder(holder: OperationalWarningHolder, position: Int) {
-        var itemData = datas!![position]
+        val itemData = datas!![position]
         holder.viewEmpty.visibility = if (0 == position) View.VISIBLE else View.GONE
         holder.rlNumberItem.layoutParams.width = ((Utils.getScreenWidth(context) - 20) / (2.5)).toInt()
         holder.tvNumberTitle.text = itemData.title
-        var number = itemData.data!!.high_light!!.number + ""
+        val number = itemData.data!!.high_light!!.number + ""
         val mTypeface = Typeface.createFromAsset(context.assets, "ALTGOT2N.TTF")
 
         if (!number.equals("null")) {
@@ -57,10 +58,12 @@ class OperationalWarningAdapter(val context: Context,
         holder.tvNumberSub.text = itemData.memo1
         holder.tvNumberMain.typeface = mTypeface
         holder.tvNnumberCompare.typeface = mTypeface
-        holder.rlNumberItem.setOnClickListener {
-            EventBus.getDefault().post(DashboardItem(itemData.obj_link!!, itemData.obj_title!!,
-                    itemData.obj_id!!, itemData.template_id!!, "1"))
-        }
+        holder.rlNumberItem.setOnClickListener(object : NoDoubleClickListener() {
+            override fun onNoDoubleClick(v: View?) {
+                PageLinkManage.pageLink(context, DashboardItem(itemData.obj_link!!, itemData.obj_title!!,
+                        itemData.obj_id!!, itemData.template_id!!, "1"))
+            }
+        })
     }
 
     fun formatNumber(number: String): String {

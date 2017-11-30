@@ -14,7 +14,7 @@ public class Report {
     /**
      * id
      */
-    @Id (autoincrement = true)
+    @Id(autoincrement = true)
     Long id;
 
     /**
@@ -50,7 +50,7 @@ public class Report {
 
     @Generated(hash = 265585219)
     public Report(Long id, String uuid, String name, int index, String page_title,
-            String type, String config) {
+                  String type, String config) {
         this.id = id;
         this.uuid = uuid;
         this.name = name;

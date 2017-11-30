@@ -11,7 +11,7 @@ import com.intfocus.template.R;
 import com.intfocus.template.subject.one.entity.SingleValue;
 import com.intfocus.template.subject.templateone.singlevalue.SingleValueContract;
 import com.intfocus.template.subject.templateone.singlevalue.SingleValueImpl;
-import com.intfocus.template.ui.BaseModeFragment;
+import com.intfocus.template.ui.BaseFragment;
 import com.intfocus.template.ui.view.RateCursor;
 
 import org.jetbrains.annotations.NotNull;
@@ -24,7 +24,7 @@ import java.text.DecimalFormat;
 /**
  * 单值组件
  */
-public class SingleValueFragment extends BaseModeFragment implements SingleValueContract.View {
+public class SingleValueFragment extends BaseFragment implements SingleValueContract.View {
     private static final String ARG_INDEX = "index";
     private static final String ARG_ROOT_ID = "rootId";
     private String mParam;
@@ -97,7 +97,6 @@ public class SingleValueFragment extends BaseModeFragment implements SingleValue
             case 0:
                 tvRate.setText(diffValue);
                 break;
-
             case 1:
                 tvRate.setText(diffRate);
                 break;
@@ -106,7 +105,6 @@ public class SingleValueFragment extends BaseModeFragment implements SingleValue
                 tvRate.setText(mainValue + "");
                 showCount = -1;
                 break;
-
             default:
                 tvRate.setText(mainValue + "");
                 break;

@@ -97,7 +97,7 @@ class TableImpl : TableModel {
                     }
 
                     override fun onError(e: Throwable?) {
-                    LogUtil.d(TAG, "TableRoot onError ::: " + e!!.message)
+                        LogUtil.d(TAG, "TableRoot onError ::: " + e!!.message)
                         callbackTableRoot.onDataNotAvailable(e)
                     }
 

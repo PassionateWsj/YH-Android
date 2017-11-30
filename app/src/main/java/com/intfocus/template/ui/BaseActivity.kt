@@ -37,7 +37,7 @@ open class BaseActivity : AppCompatActivity() {
     lateinit var mAppContext: Context
     lateinit var mUserSP: SharedPreferences
     lateinit var popupWindow: PopupWindow
-    lateinit var loadingDialog: Dialog
+    var loadingDialog: Dialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,22 +48,19 @@ open class BaseActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        if (supportActionBar != null) { supportActionBar!!.hide() }
+        if (supportActionBar != null) {
+            supportActionBar!!.hide()
+        }
     }
-
-    override fun onDestroy() {
-        super.onDestroy()
-    }
-
 
     protected fun showDialog(context: Context) {
         loadingDialog = LoadingUtils.createLoadingDialog(context, false)
-        loadingDialog.show()
+        loadingDialog!!.show()
     }
 
     protected fun hideLoading() {
-        if (loadingDialog != null && loadingDialog.isShowing()) {
-            loadingDialog.dismiss()
+        if (loadingDialog != null && loadingDialog!!.isShowing()) {
+            loadingDialog!!.dismiss()
         }
     }
 

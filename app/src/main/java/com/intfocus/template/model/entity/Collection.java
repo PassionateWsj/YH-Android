@@ -44,7 +44,7 @@ public class Collection {
 
     @Generated(hash = 1640627332)
     public Collection(Long id, String reportId, String uuid, String dJson,
-            int status, int imageStatus) {
+                      int status, int imageStatus) {
         this.id = id;
         this.reportId = reportId;
         this.uuid = uuid;

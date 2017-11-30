@@ -158,10 +158,10 @@ public class FileUtil {
     }
 
     /**
-     *  共享资源
-     *  1. assets资源
-     *  2. loading页面
-     *  3. 登录缓存页面
+     * 共享资源
+     * 1. assets资源
+     * 2. loading页面
+     * 3. 登录缓存页面
      */
     public static String sharedPath(Context context) {
         String pathName = FileUtil.basePath(context) + "/" + K.K_SHARED_DIR_NAME;
@@ -309,7 +309,7 @@ public class FileUtil {
             SharedPreferences mAssetsSP = mContext.getSharedPreferences("AssetsMD5", Context.MODE_PRIVATE);
             SharedPreferences.Editor mAssetsSPEdit = mAssetsSP.edit();
 
-            // InputStream zipStream = mContext.getApplicationContext().getAssets().open(zipName);
+            // InputStream zipStream = ctx.getApplicationContext().getAssets().open(zipName);
             String zipFilePath = String.format("%s/%s", sharedPath, zipFileName);
             String zipFolderPath = String.format("%s/%s", sharedPath, fileName);
             if (!(new File(zipFilePath)).exists()) {
@@ -340,7 +340,7 @@ public class FileUtil {
                     }
                 }
 
-                // zipStream = mContext.getApplicationContext().getAssets().open(zipName);
+                // zipStream = ctx.getApplicationContext().getAssets().open(zipName);
                 zipStream = new FileInputStream(zipFilePath);
                 FileUtil.unZip(zipStream, folderPath, true);
                 LogUtil.d("unZip", String.format("%s, %s", zipFileName, md5String));

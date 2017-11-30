@@ -9,7 +9,7 @@ import com.intfocus.template.base.BaseView
  * @describe
  */
 interface WebPageContract {
-    interface View: BaseView<Presenter> {
+    interface View : BaseView<Presenter> {
         fun show(path: String)
         fun showPDF(path: String)
         fun refresh()
@@ -22,7 +22,7 @@ interface WebPageContract {
         fun setAddressFilterText(text: String)
     }
 
-    interface Presenter: BasePresenter {
+    interface Presenter : BasePresenter {
         fun load(reportId: String, templateId: String, groupId: String, url: String)
     }
 }
