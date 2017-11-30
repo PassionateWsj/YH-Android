@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           xmlns:tools="http://schemas.android.com/tools"
-          package="com.intfocus.syp_template"
+          package="com.intfocus.template"
           android:hardwareAccelerated="false"
           android:largeHeap="true"
-          android:versionCode="1"
-          android:versionName="1.0.0">
+          android:versionCode="58"
+          android:versionName="1.6.08">
 
     <!-- 扫描条形码或二维码 -->
     <uses-permission android:name="android.permission.CAMERA"/>
@@ -37,7 +37,7 @@
     <uses-permission android:name="android.permission.READ_LOGS"/>
     <!-- 获取logcat日志 -->
     <application
-        android:name="com.intfocus.syp_template.SYPApplication"
+        android:name="com.intfocus.template.SYPApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -45,7 +45,7 @@
         tools:replace="android:icon,android:theme">
         <provider
             android:name="android.support.v4.content.FileProvider"
-            android:authorities="com.intfocus.syp_template.fileprovider"
+            android:authorities="com.intfocus.template.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
 
@@ -58,21 +58,21 @@
                 android:resource="@xml/provider_paths"/>
         </provider>
 
-        <service android:name=".service.OpenUDIDService">
+        <service android:name="com.intfocus.template.service.OpenUDIDService">
             <intent-filter>
                 <action android:name="org.openudid.GETUDID"/>
             </intent-filter>
         </service>
 
         <!-- 定位服务 -->
-        <service android:name="com.intfocus.syp_template.service.LocationService"/>
+        <service android:name="com.intfocus.template.service.LocationService"/>
         <!-- 高德地图 -->
         <service android:name="com.amap.api.location.APSService"/>
 
-        <service android:name="com.intfocus.syp_template.service.CollectionUploadService"/>
+        <service android:name="com.intfocus.template.service.CollectionUploadService"/>
 
         <activity
-            android:name="com.intfocus.syp_template.launcher.LauncherActivity"
+            android:name="com.intfocus.template.launcher.LauncherActivity"
             android:screenOrientation="portrait"
             android:theme="@style/LauncherTheme">
             <intent-filter>
@@ -86,70 +86,71 @@
 
         <!-- 模板三 -->
         <activity
-            android:name=".subject.three.MultiIndexActivity"
+            android:name="com.intfocus.template.subject.three.MultiIndexActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
 
         <!-- 问题反馈 -->
         <activity
-            android:name="com.intfocus.syp_template.dashboard.mine.activity.FeedbackActivity"
+            android:name="com.intfocus.template.dashboard.mine.activity.FeedbackActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar"/>
 
         <activity
-            android:name="com.intfocus.syp_template.subject.nine.CollectionActivity"
-            android:screenOrientation="portrait"></activity>
+            android:name="com.intfocus.template.subject.nine.CollectionActivity"
+            android:screenOrientation="portrait"
+            ></activity>
         <!-- 公告详情 -->
         <activity
-            android:name="com.intfocus.syp_template.dashboard.mine.activity.NoticeContentActivity"
+            android:name="com.intfocus.template.dashboard.mine.activity.NoticeContentActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
         <!-- 模板五 -->
         <!-- 忘记密码 -->
         <activity
-            android:name="com.intfocus.syp_template.login.ForgetPasswordActivity"
+            android:name="com.intfocus.template.login.ForgetPasswordActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
         <!-- 修改密码页 -->
         <activity
-            android:name="com.intfocus.syp_template.login.LoginActivity"
+            android:name="com.intfocus.template.login.LoginActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
         <!-- 修改密码页 -->
         <activity
-            android:name="com.intfocus.syp_template.dashboard.mine.activity.AlterPasswordActivity"
+            android:name="com.intfocus.template.dashboard.mine.activity.AlterPasswordActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
         <!-- 文章收藏页 -->
         <activity
-            android:name="com.intfocus.syp_template.dashboard.mine.activity.FavoriteArticleActivity"
+            android:name="com.intfocus.template.dashboard.mine.activity.FavoriteArticleActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
         <!-- 扫码页 -->
         <activity
-            android:name="com.intfocus.syp_template.scanner.BarCodeScannerActivity"
+            android:name="com.intfocus.template.scanner.BarCodeScannerActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar"
             android:windowSoftInputMode="adjustResize"/>
         <!-- 个人信息 -->
         <activity
-            android:name="com.intfocus.syp_template.dashboard.mine.activity.SettingActivity"
+            android:name="com.intfocus.template.dashboard.mine.activity.SettingActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme2"/>
         <!-- 个人信息页信息展示 -->
         <activity
-            android:name="com.intfocus.syp_template.dashboard.mine.activity.SettingListActivity"
+            android:name="com.intfocus.template.dashboard.mine.activity.SettingListActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
         <!-- 选项配置 -->
         <activity
-            android:name="com.intfocus.syp_template.dashboard.mine.activity.SettingPreferenceActivity"
+            android:name="com.intfocus.template.dashboard.mine.activity.SettingPreferenceActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
 
         <!-- 主页面 -->
         <activity
-            android:name="com.intfocus.syp_template.dashboard.DashboardActivity"
+            android:name="com.intfocus.template.dashboard.DashboardActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/AppDashboardTheme"/>
@@ -158,7 +159,7 @@
 
         <!-- 模板二/主题页面 -->
         <activity
-            android:name="com.intfocus.syp_template.subject.two.WebPageActivity"
+            android:name="com.intfocus.template.subject.two.WebPageActivity"
 
             android:configChanges="orientation|screenSize"
             android:screenOrientation="fullSensor"
@@ -166,64 +167,58 @@
 
         <!-- 原生模板二/主题页面 -->
         <activity
-            android:name="com.intfocus.syp_template.subject.one.NativeReportActivity"
+            android:name="com.intfocus.template.subject.one.NativeReportActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
 
         <!-- 原生模板二/表格页面 -->
         <activity
-            android:name="com.intfocus.syp_template.subject.one.module.tables.SubTableActivity"
+            android:name="com.intfocus.template.subject.one.module.tables.SubTableActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
         <!-- 评论页 -->
         <!-- 扫码结果页 -->
         <activity
-            android:name="com.intfocus.syp_template.scanner.ScannerResultActivity"
+            android:name="com.intfocus.template.scanner.ScannerResultActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
         <!-- 门店选择页 -->
         <activity
-            android:name="com.intfocus.syp_template.scanner.StoreSelectorActivity"
+            android:name="com.intfocus.template.scanner.StoreSelectorActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
         <!-- 锁屏密码设置 -->
         <activity
-            android:name="com.intfocus.syp_template.dashboard.mine.activity.InitPassCodeActivity"
+            android:name="com.intfocus.template.dashboard.mine.activity.InitPassCodeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
         <!-- 锁屏登录 -->
         <activity
-            android:name="com.intfocus.syp_template.launcher.ConfirmPassCodeActivity"
+            android:name="com.intfocus.template.launcher.ConfirmPassCodeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
         <!-- 更新日志 -->
-
-        <!--评论-->
-        <activity
-            android:name="com.intfocus.syp_template.subject.comment.CommentActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme"/>
         <!-- 开发者选项 -->
         <activity
-            android:name="com.intfocus.syp_template.general.wxapi.WXEntryActivity"
+            android:name="com.intfocus.template.general.wxapi.WXEntryActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
-        <activity android:name="com.intfocus.syp_template.dashboard.mine.activity.ShowListMsgActivity"/>
-        <activity android:name="com.intfocus.syp_template.dashboard.mine.InstituteContentActivity"/>
+        <activity android:name="com.intfocus.template.dashboard.mine.activity.ShowListMsgActivity"/>
+        <activity android:name="com.intfocus.template.dashboard.mine.InstituteContentActivity"/>
         <activity
-            android:name="com.intfocus.syp_template.dashboard.mine.activity.ShowPushMessageActivity"
+            android:name="com.intfocus.template.dashboard.mine.activity.ShowPushMessageActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar"/>
         <!-- 消息页 -->
         <activity
-            android:name="com.intfocus.syp_template.dashboard.mine.activity.PushMessageContentActivity"
+            android:name="com.intfocus.template.dashboard.mine.activity.PushMessageContentActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar"/>
         <!-- 引导页 -->
         <activity
-            android:name="com.intfocus.syp_template.launcher.GuideActivity"
+            android:name="com.intfocus.template.launcher.GuideActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar"/>
 

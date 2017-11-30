@@ -93,7 +93,4 @@
     <string name="report_copy">报表操作</string>
     <string name="screenLock">启用锁屏</string>
     <string name="clear_cache">清理缓存</string>
-
-    <string name="affirm">确认</string>
-
 </resources>
