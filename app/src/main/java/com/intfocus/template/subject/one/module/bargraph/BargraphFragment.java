@@ -7,19 +7,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
-import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.intfocus.template.R;
 import com.intfocus.template.subject.one.ModeImpl;
-import com.intfocus.template.subject.one.entity.BargraphComparator;
 import com.intfocus.template.subject.one.entity.Bargraph;
-import com.intfocus.template.ui.BaseModeFragment;
-import com.intfocus.template.util.PinyinUtil;
-import com.intfocus.template.util.ToastUtils;
+import com.intfocus.template.subject.one.entity.BargraphComparator;
+import com.intfocus.template.ui.BaseFragment;
 import com.intfocus.template.ui.view.NotScrollListView;
 import com.intfocus.template.ui.view.PlusMinusChart;
 import com.intfocus.template.ui.view.SortCheckBox;
+import com.intfocus.template.util.PinyinUtil;
+import com.intfocus.template.util.ToastUtils;
 
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
@@ -33,9 +32,10 @@ import java.util.LinkedList;
 /**
  * 正负图表模块
  */
-public class BargraphFragment extends BaseModeFragment implements AdapterView.OnItemClickListener, PlusMinusChart.PlusMinusOnItemClickListener {
+public class BargraphFragment extends BaseFragment implements AdapterView.OnItemClickListener, PlusMinusChart.PlusMinusOnItemClickListener {
     private static final String ARG_INDEX = "index";
     private static final String ARG_ROOT_ID = "rootId";
+
     private View rootView;
     private int index;
     private int rootId;
@@ -60,7 +60,6 @@ public class BargraphFragment extends BaseModeFragment implements AdapterView.On
     private BargraphNameComparator nameComparator;
     private BargraphDataComparator dataComparator;
     private BargraphComparator mSelectItem;
-    private Toast mToast;
 
     public static BargraphFragment newInstance(int rootId, int index) {
         BargraphFragment fragment = new BargraphFragment();
@@ -134,7 +133,6 @@ public class BargraphFragment extends BaseModeFragment implements AdapterView.On
     }
 
     private void bindData() {
-//        mLtData.clear();
         entityData = JSON.parseObject(mParam, Bargraph.class);
         String[] dataName = entityData.xAxis.data;
         ArrayList<Bargraph.Series.Data> dataValue = entityData.series.data;
@@ -144,7 +142,6 @@ public class BargraphFragment extends BaseModeFragment implements AdapterView.On
             int color = dataValue.get(i).color;
             mLtData.add(new BargraphComparator(name, value, color));
         }
-
 
         mCboxPercentage.setText(entityData.series.name);
         mCboxName.setText(entityData.xAxis.name);

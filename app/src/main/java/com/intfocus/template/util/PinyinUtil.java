@@ -7,7 +7,6 @@ import net.sourceforge.pinyin4j.format.HanyuPinyinToneType;
 import net.sourceforge.pinyin4j.format.HanyuPinyinVCharType;
 
 /**
- *
  * @author zbaoliang
  * @date 17-5-16
  */

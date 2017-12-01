@@ -9,11 +9,11 @@ import com.intfocus.template.base.BaseView
  * @describe
  */
 interface TextModuleContract {
-    interface View: BaseView<Presenter>{
+    interface View : BaseView<Presenter> {
         fun initModule(entity: TextEntity)
     }
 
-    interface Presenter: BasePresenter{
+    interface Presenter : BasePresenter {
         fun loadData(mParam: String)
         fun update(entity: TextEntity, key: String)
     }

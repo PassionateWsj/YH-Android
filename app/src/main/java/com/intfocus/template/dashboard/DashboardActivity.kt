@@ -13,33 +13,37 @@ import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
 import android.support.v4.view.ViewPager
 import android.view.View
+import android.widget.LinearLayout
 import com.google.gson.Gson
+import com.intfocus.template.ConfigConstants
 import com.intfocus.template.R
+import com.intfocus.template.constant.Params.ACTION
+import com.intfocus.template.constant.Params.STORE
+import com.intfocus.template.constant.Params.STORE_ID
 import com.intfocus.template.dashboard.adapter.DashboardFragmentAdapter
 import com.intfocus.template.dashboard.kpi.KpiFragment
 import com.intfocus.template.dashboard.mine.MineFragment
 import com.intfocus.template.dashboard.mine.bean.PushMessageBean
 import com.intfocus.template.dashboard.report.ReportFragment
 import com.intfocus.template.dashboard.workbox.WorkBoxFragment
-import com.intfocus.template.scanner.BarCodeScannerActivity
-import com.intfocus.template.model.entity.DashboardItem
-import com.intfocus.template.ConfigConstants
-import com.intfocus.template.constant.Params.ACTION
-import com.intfocus.template.constant.Params.STORE
-import com.intfocus.template.constant.Params.STORE_ID
-import com.intfocus.template.ui.BaseActivity
-import com.intfocus.template.model.response.scanner.StoreItem
-import com.intfocus.template.model.response.scanner.StoreListResult
-import com.intfocus.template.model.OrmDBHelper
 import com.intfocus.template.general.net.ApiException
 import com.intfocus.template.general.net.CodeHandledSubscriber
 import com.intfocus.template.general.net.RetrofitUtil
+import com.intfocus.template.model.OrmDBHelper
+import com.intfocus.template.model.entity.DashboardItem
+import com.intfocus.template.model.response.scanner.StoreItem
+import com.intfocus.template.model.response.scanner.StoreListResult
+import com.intfocus.template.scanner.BarCodeScannerActivity
+import com.intfocus.template.subject.one.ReportImpl
+import com.intfocus.template.subject.one.ReportPresenter
+import com.intfocus.template.subject.one.WorkBoxImpl
+import com.intfocus.template.subject.one.WorkBoxPresenter
+import com.intfocus.template.ui.BaseActivity
+import com.intfocus.template.ui.view.NoScrollViewPager
+import com.intfocus.template.ui.view.TabView
 import com.intfocus.template.util.ActionLogUtil
 import com.intfocus.template.util.PageLinkManage
 import com.intfocus.template.util.ToastUtils
-import com.intfocus.template.ui.view.NoScrollViewPager
-import com.intfocus.template.ui.view.TabView
-import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import org.json.JSONObject
@@ -48,12 +52,13 @@ import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
 import java.sql.SQLException
 
-class DashboardActivity : BaseActivity(), ViewPager.OnPageChangeListener{
+class DashboardActivity : BaseActivity(), ViewPager.OnPageChangeListener {
     private var mSharedPreferences: SharedPreferences? = null
     private val mTabView: ArrayList<TabView> = ArrayList()
     private val mPagerData = ArrayList<Fragment>()
     private var userID: Int = 0
     private var mViewPager: NoScrollViewPager? = null
+    private var mToolBar: LinearLayout? = null
     private var mTabKPI: TabView? = null
     private var mTabReport: TabView? = null
     private var mTabWorkBox: TabView? = null
@@ -64,7 +69,6 @@ class DashboardActivity : BaseActivity(), ViewPager.OnPageChangeListener{
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dashboard)
-        EventBus.getDefault().register(this)
         mGson = Gson()
         mSharedPreferences = getSharedPreferences("DashboardPreferences", Context.MODE_PRIVATE)
         mViewPager = findViewById(R.id.content_view)
@@ -84,25 +88,29 @@ class DashboardActivity : BaseActivity(), ViewPager.OnPageChangeListener{
      *
      */
     private fun initShow() {
-        initTabShowAndPagerData(mTabKPI!!, mTabView, KpiFragment(), mPagerData, ConfigConstants.KPI_SHOW)
-        initTabShowAndPagerData(mTabReport!!, mTabView, ReportFragment(), mPagerData, ConfigConstants.REPORT_SHOW)
-        initTabShowAndPagerData(mTabWorkBox!!, mTabView, WorkBoxFragment(), mPagerData, ConfigConstants.WORKBOX_SHOW)
-        initTabShowAndPagerData(mTabMessage!!, mTabView, MineFragment(), mPagerData, true)
-    }
-
-    private fun initTabShowAndPagerData(tab: TabView, tabs: ArrayList<TabView>, item: Fragment, pagerData: ArrayList<Fragment>, boolean: Boolean) {
-        tab.visibility = if (boolean) {
-            tabs.add(tab)
-            pagerData.add(item)
-            View.VISIBLE
-        } else {
-            View.GONE
+        var itemFragment: Fragment
+        if (ConfigConstants.KPI_SHOW) {
+            itemFragment = KpiFragment()
+            initTabShowAndPagerData(mTabKPI!!, mTabView, itemFragment, mPagerData)
+//                KpiPresenter(KpiImpl.getInstance(),itemFragment)
         }
+        if (ConfigConstants.REPORT_SHOW) {
+            itemFragment = ReportFragment()
+            initTabShowAndPagerData(mTabReport!!, mTabView, itemFragment, mPagerData)
+            ReportPresenter(ReportImpl.getInstance(), itemFragment)
+        }
+        if (ConfigConstants.WORKBOX_SHOW) {
+            itemFragment = WorkBoxFragment()
+            initTabShowAndPagerData(mTabWorkBox!!, mTabView, itemFragment, mPagerData)
+            WorkBoxPresenter(WorkBoxImpl.getInstance(), itemFragment)
+        }
+        initTabShowAndPagerData(mTabMessage!!, mTabView, MineFragment(), mPagerData)
     }
 
-    override fun onDestroy() {
-        EventBus.getDefault().unregister(this)
-        super.onDestroy()
+    private fun initTabShowAndPagerData(tab: TabView, tabs: ArrayList<TabView>, item: Fragment, pagerData: ArrayList<Fragment>) {
+        tabs.add(tab)
+        pagerData.add(item)
+        tab.visibility = View.VISIBLE
     }
 
     /**
@@ -204,6 +212,8 @@ class DashboardActivity : BaseActivity(), ViewPager.OnPageChangeListener{
     }
 
     private fun initTabView() {
+        mToolBar = findViewById(R.id.toolBar)
+
         mTabKPI = findViewById(R.id.tab_kpi)
         mTabReport = findViewById(R.id.tab_report)
         mTabWorkBox = findViewById(R.id.tab_workbox)
@@ -267,6 +277,7 @@ class DashboardActivity : BaseActivity(), ViewPager.OnPageChangeListener{
 
     private fun getStoreList() {
         val storeItemDao = OrmDBHelper.getInstance(this).storeItemDao
+        val mUserSP = getSharedPreferences("UserBean", Context.MODE_PRIVATE)
         RetrofitUtil.getHttpService(applicationContext).getStoreList(mUserSP.getString("user_num", "0"))
                 .compose(RetrofitUtil.CommonOptions<StoreListResult>())
                 .subscribe(object : CodeHandledSubscriber<StoreListResult>() {
@@ -301,9 +312,7 @@ class DashboardActivity : BaseActivity(), ViewPager.OnPageChangeListener{
                 })
     }
 
-    /**
-     * 图表点击事件统一处理方法
-     */
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onMessageEvent(items: DashboardItem?) {
         if (items != null) {

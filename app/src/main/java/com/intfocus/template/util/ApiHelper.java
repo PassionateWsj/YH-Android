@@ -28,7 +28,7 @@ import static com.intfocus.template.constant.Params.LAST_MODIFIED;
 public class ApiHelper {
 
     /**
-     *  获取报表 JSON 数据
+     * 获取报表 JSON 数据
      */
     public static boolean reportJsonData(Context context, String groupID, String templateID, String reportID) {
         String urlString = String.format(K.API_REPORT_JSON_ZIP, ConfigConstants.kBaseUrl, groupID, templateID, reportID);
@@ -119,9 +119,9 @@ public class ApiHelper {
 
     /**
      * 缓存文件中，清除指定链接的内容
-     *
-     *  链接
-     *  缓存头文件相对文件夹
+     * <p>
+     * 链接
+     * 缓存头文件相对文件夹
      */
     public static void clearResponseHeader(String urlKey) {
         String assetsPath = FileUtil.dirPath(globalContext, K.K_HTML_DIR_NAME);
@@ -146,7 +146,7 @@ public class ApiHelper {
     /**
      * 从缓存头文件中，获取指定链接的ETag/Last-Modified
      *
-     * @param urlKey     链接
+     * @param urlKey 链接
      */
     public static Map<String, String> checkResponseHeader(String urlKey) {
         String assetsPath = FileUtil.dirPath(globalContext, K.K_HTML_DIR_NAME);
@@ -180,8 +180,8 @@ public class ApiHelper {
     /**
      * 把服务器响应的ETag/Last-Modified存入本地
      *
-     * @param urlKey     链接
-     * @param response   服务器响应的ETag/Last-Modifiede
+     * @param urlKey   链接
+     * @param response 服务器响应的ETag/Last-Modifiede
      */
     public static void storeResponseHeader(String urlKey, Map<String, String> response) {
         String assetsPath = FileUtil.dirPath(globalContext, K.K_HTML_DIR_NAME);

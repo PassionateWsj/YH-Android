@@ -27,15 +27,14 @@ class WebPagePresenter(
             else -> {
                 if (url.toLowerCase().endsWith(".pdf")) {
                     mModel.getPdfFilePath(url, LoadDataCallBack())
-                }
-                else {
+                } else {
                     mView.show(url)
                 }
             }
         }
     }
 
-    inner class LoadDataCallBack: LoadDataCallback<String> {
+    inner class LoadDataCallBack : LoadDataCallback<String> {
         override fun onSuccess(path: String) {
             mView.show(path)
         }

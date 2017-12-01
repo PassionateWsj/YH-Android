@@ -6,16 +6,10 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.content.pm.ActivityInfo
-import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.widget.LinearLayout
-import android.widget.PopupWindow
 import com.github.barteksc.pdfviewer.listener.OnPageErrorListener
 import com.github.barteksc.pdfviewer.scroll.DefaultScrollHandle
 import com.intfocus.template.R
@@ -30,16 +24,12 @@ import com.intfocus.template.constant.Params.TEMPLATE_ID
 import com.intfocus.template.constant.ToastColor
 import com.intfocus.template.dashboard.mine.adapter.FilterMenuAdapter
 import com.intfocus.template.filter.FilterDialogFragment
-import com.intfocus.template.listener.UMSharedListener
 import com.intfocus.template.model.response.filter.MenuItem
 import com.intfocus.template.model.response.filter.MenuResult
 import com.intfocus.template.ui.BaseActivity
 import com.intfocus.template.ui.view.addressselector.FilterPopupWindow
 import com.intfocus.template.util.*
 import com.tencent.smtt.sdk.*
-import com.umeng.socialize.ShareAction
-import com.umeng.socialize.bean.SHARE_MEDIA
-import com.umeng.socialize.media.UMImage
 import com.zhihu.matisse.Matisse
 import com.zhihu.matisse.MimeType
 import com.zhihu.matisse.engine.impl.GlideEngine
@@ -233,7 +223,7 @@ class WebPageActivity : BaseActivity(), WebPageContract.View, OnPageErrorListene
                 } else {
                     rl_address_filter.visibility = View.GONE
                 }
-                if ( menuDatas.isNotEmpty()) {
+                if (menuDatas.isNotEmpty()) {
                     LogUtil.d("faster_select", menuDatas.size.toString())
                     filter_recycler_view.visibility = View.VISIBLE
                     view_line.visibility = View.VISIBLE
@@ -430,8 +420,8 @@ class WebPageActivity : BaseActivity(), WebPageContract.View, OnPageErrorListene
             else -> {
             }
         }
-        if (popupWindow.isShowing) {
-            popupWindow.dismiss()
+        if (popupWindow!!.isShowing) {
+            popupWindow!!.dismiss()
         }
     }
 

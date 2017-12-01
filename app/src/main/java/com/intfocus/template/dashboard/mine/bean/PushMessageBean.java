@@ -8,15 +8,16 @@ import java.io.Serializable;
 
 /**
  * ****************************************************
+ *
  * @author JamesWong
- * created on: 17/08/01 下午5:35
- * e-mail: PassionateWsj@outlook.com
- * name:
- * desc:主要有两个注解:
- * 1. DatabaseTable : 用于表名的设置。
- * 2. DatabaseField : 用于设置表中的字段
- * 注意,必须要有无参数的构造方法。。。
- * ****************************************************
+ *         created on: 17/08/01 下午5:35
+ *         e-mail: PassionateWsj@outlook.com
+ *         name:
+ *         desc:主要有两个注解:
+ *         1. DatabaseTable : 用于表名的设置。
+ *         2. DatabaseField : 用于设置表中的字段
+ *         注意,必须要有无参数的构造方法。。。
+ *         ****************************************************
  */
 @DatabaseTable(tableName = "push_message")
 public class PushMessageBean implements Serializable {

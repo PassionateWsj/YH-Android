@@ -9,9 +9,9 @@ import com.intfocus.template.subject.nine.entity.RootPageRequestResult
  * @describe
  */
 class RootPagePresenter(
-    private val mModel: RootPageModelImpl,
-    private val mView: RootPageContract.View
-): RootPageContract.Presenter {
+        private val mModel: RootPageModelImpl,
+        private val mView: RootPageContract.View
+) : RootPageContract.Presenter {
 
     init {
         mView.presenter = this

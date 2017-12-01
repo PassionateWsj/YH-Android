@@ -7,9 +7,10 @@ import android.view.ViewGroup
 import android.widget.*
 import com.bumptech.glide.Glide
 import com.intfocus.template.R
+import com.intfocus.template.listener.NoDoubleClickListener
 import com.intfocus.template.model.entity.DashboardItem
+import com.intfocus.template.util.PageLinkManage
 import com.zbl.lib.baseframe.utils.PhoneUtil
-import org.greenrobot.eventbus.EventBus
 
 /**
  * Created by liuruilin on 2017/7/28.
@@ -52,10 +53,12 @@ class WorkBoxAdapter(var ctx: Context, val datas: List<WorkBoxItem>?) : BaseAdap
         Glide.with(ctx)
                 .load(datas[position].icon_link)
                 .into(viewTag.mIcon)
-        viewTag.rlItem.setOnClickListener {
-            EventBus.getDefault().post(DashboardItem(datas[position].obj_link ?: "KotlinNullPointerException", datas[position].obj_title ?: "KotlinNullPointerException",
-                    datas[position].obj_id ?: "KotlinNullPointerException", datas[position].template_id ?: "-100", "3", datas[position].params_mapping ?: HashMap()))
-        }
+        viewTag.rlItem.setOnClickListener(object : NoDoubleClickListener() {
+            override fun onNoDoubleClick(v: View?) {
+                PageLinkManage.pageLink(ctx, DashboardItem(datas[position].obj_link ?: "KotlinNullPointerException", datas[position].obj_title ?: "KotlinNullPointerException",
+                        datas[position].obj_id ?: "KotlinNullPointerException", datas[position].template_id ?: "-100", "3", datas[position].params_mapping ?: HashMap()))
+            }
+        })
 
         return convertView
     }

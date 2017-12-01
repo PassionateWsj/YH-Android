@@ -10,8 +10,8 @@ class KpiMode(var ctx: Context) : AbstractMode() {
 //    lateinit var urlString: String
 //    var result: String? = null
 //    var messageUrlString = ""
-//    var mNoticeListSP = ctx.getSharedPreferences("KpiData", Context.MODE_PRIVATE)
-//    var mUserSP = ctx.getSharedPreferences("UserBean", Context.MODE_PRIVATE)
+//    var mNoticeListSP = mContext.getSharedPreferences("KpiData", Context.MODE_PRIVATE)
+//    var mUserSP = mContext.getSharedPreferences("UserBean", Context.MODE_PRIVATE)
 //    var gson = Gson()
 //
 //    private fun getUrl(): String {
@@ -31,8 +31,8 @@ class KpiMode(var ctx: Context) : AbstractMode() {
 //    lateinit var urlString: String
 //    var result: String? = null
 //    var messageUrlString = ""
-//    var mNoticeListSP = ctx.getSharedPreferences("KpiData", Context.MODE_PRIVATE)
-//    var mUserSP = ctx.getSharedPreferences("UserBean", Context.MODE_PRIVATE)
+//    var mNoticeListSP = mContext.getSharedPreferences("KpiData", Context.MODE_PRIVATE)
+//    var mUserSP = mContext.getSharedPreferences("UserBean", Context.MODE_PRIVATE)
 //    var gson = Gson()
 //
 //    private fun getUrl(): String {
@@ -50,7 +50,7 @@ class KpiMode(var ctx: Context) : AbstractMode() {
 //        Thread(Runnable {
 //            urlString = getUrl()
 //            if (!urlString.isEmpty()) {
-//                val response = HttpUtil.httpGet(ctx, urlString, HashMap<String, String>())
+//                val response = HttpUtil.httpGet(mContext, urlString, HashMap<String, String>())
 //                result = response["body"]
 //                if (StringUtil.isEmpty(result)) {
 //                    val result1 = KpiRequest(false, 400, "返回数据为空")
@@ -125,7 +125,7 @@ class KpiMode(var ctx: Context) : AbstractMode() {
 //        }
 //
 //        val gson = Gson()
-//        val response = HttpUtil.httpGet(ctx, messageUrlString, HashMap<String, String>())
+//        val response = HttpUtil.httpGet(mContext, messageUrlString, HashMap<String, String>())
 //
 //        message = if (response["code"].equals("200")) {
 //            val returnData = JsonParser().parse(response["body"]).asJsonObject
@@ -146,7 +146,7 @@ class KpiMode(var ctx: Context) : AbstractMode() {
 //        Thread(Runnable {
 //            messageUrlString = getMessageUrl()
 //            if (!messageUrlString.isEmpty()) {
-//                val response = HttpUtil.httpGet(ctx, messageUrlString, HashMap<String, String>())
+//                val response = HttpUtil.httpGet(mContext, messageUrlString, HashMap<String, String>())
 //                result = response["body"]
 //                if (StringUtil.isEmpty(result)) {
 //                    val result1 = KpiRequest(false, 400, "空数据")

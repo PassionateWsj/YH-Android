@@ -68,7 +68,7 @@ public class TabView extends LinearLayout {
     private void update() {
         if (mActive) {
             mImageView.setImageDrawable(mActiveDrawable);
-            mTextView.setTextColor(ContextCompat.getColor(getContext(),R.color.co1_syr));
+            mTextView.setTextColor(ContextCompat.getColor(getContext(), R.color.co1_syr));
         } else {
             mImageView.setImageDrawable(mDrawable);
             mTextView.setTextColor(Color.BLACK);

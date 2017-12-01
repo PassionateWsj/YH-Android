@@ -9,11 +9,11 @@ import com.intfocus.template.base.BaseView
  * @describe
  */
 interface ImageModuleContract {
-    interface View: BaseView<Presenter>{
+    interface View : BaseView<Presenter> {
         fun initModule(entity: ImageEntity)
     }
 
-    interface Presenter: BasePresenter{
+    interface Presenter : BasePresenter {
         fun loadData(mParam: String)
         fun update(imageEntity: ImageEntity, key: String)
     }

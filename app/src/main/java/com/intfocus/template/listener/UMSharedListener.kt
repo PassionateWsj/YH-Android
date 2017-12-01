@@ -9,7 +9,7 @@ import com.umeng.socialize.bean.SHARE_MEDIA
  * @data 2017/11/20
  * @describe
  */
-class UMSharedListener: UMShareListener {
+class UMSharedListener : UMShareListener {
     override fun onStart(platform: SHARE_MEDIA) {
         //分享开始的回调
     }

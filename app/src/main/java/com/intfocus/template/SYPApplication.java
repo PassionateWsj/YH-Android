@@ -63,6 +63,7 @@ public class SYPApplication extends Application {
     SharedPreferences mSettingSP;
     SharedPreferences mUserSP;
     PackageInfo packageInfo;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -109,7 +110,7 @@ public class SYPApplication extends Application {
             public void onCoreInitFinished() {
             }
         };
-        QbSdk.initX5Environment(getApplicationContext(),  cb);
+        QbSdk.initX5Environment(getApplicationContext(), cb);
 
         /*
          * Bugly 异常上报

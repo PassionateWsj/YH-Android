@@ -6,7 +6,6 @@ import android.os.Message;
 import com.tinkerpatch.sdk.TinkerPatch;
 
 /**
- *
  * @author liuruilin
  * @date 2017/9/21
  */

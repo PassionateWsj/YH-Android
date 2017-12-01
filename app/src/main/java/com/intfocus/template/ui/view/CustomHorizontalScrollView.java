@@ -5,7 +5,6 @@ import android.util.AttributeSet;
 import android.widget.HorizontalScrollView;
 
 /**
- *
  * @author CANC
  * @date 2017/4/19
  */

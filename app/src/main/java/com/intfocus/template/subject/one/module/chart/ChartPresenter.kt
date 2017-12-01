@@ -24,10 +24,11 @@ class ChartPresenter(
     }
 
     override fun loadData(rootId: Int, index: Int) {
-        mModel.getData(rootId, index, object : ChartModel.LoadDataCallback{
+        mModel.getData(rootId, index, object : ChartModel.LoadDataCallback {
             override fun onDataLoaded(data: Chart) {
                 mView.showData(data)
             }
+
             override fun onDataNotAvailable(e: Throwable) {
 
             }

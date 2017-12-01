@@ -17,8 +17,10 @@ import com.intfocus.template.dashboard.kpi.adapter.MyViewPagerAdapter
 import com.intfocus.template.dashboard.kpi.bean.KpiBean
 import com.intfocus.template.dashboard.kpi.bean.NoticeBoardRequest
 import com.intfocus.template.dashboard.mine.bean.InstituteDataBean
+import com.intfocus.template.listener.NoDoubleClickListener
 import com.intfocus.template.model.entity.DashboardItem
 import com.intfocus.template.ui.view.AutoScrollViewPager
+import com.intfocus.template.util.PageLinkManage
 import com.yonghui.homemetrics.utils.Utils
 import org.greenrobot.eventbus.EventBus
 import java.util.*
@@ -31,12 +33,12 @@ class KpiAdapter(val context: Context,
                  var listener: HomePageListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     //当前显示的公告位置
     var i = 0
-   private val UNKNOWN: Int = -1   //未知样式
-   private val VIEW_PAGER: Int = UNKNOWN + 1//轮播图
-   private val TEXT_SWITCHER: Int = VIEW_PAGER + 1//跳动文字
-   private val OPERATIONAL_WARNING: Int = TEXT_SWITCHER + 1//经营预警
-   private val BUSINESS_OVERVIEW: Int = OPERATIONAL_WARNING + 1//生意概况
-   private val HOME_BOTTOM: Int = BUSINESS_OVERVIEW + 1// Bottom
+    private val UNKNOWN: Int = -1   //未知样式
+    private val VIEW_PAGER: Int = UNKNOWN + 1//轮播图
+    private val TEXT_SWITCHER: Int = VIEW_PAGER + 1//跳动文字
+    private val OPERATIONAL_WARNING: Int = TEXT_SWITCHER + 1//经营预警
+    private val BUSINESS_OVERVIEW: Int = OPERATIONAL_WARNING + 1//生意概况
+    private val HOME_BOTTOM: Int = BUSINESS_OVERVIEW + 1// Bottom
 
     var inflater = LayoutInflater.from(context)
     fun setData(data: List<KpiBean>?) {
@@ -113,10 +115,12 @@ class KpiAdapter(val context: Context,
                         tvNumberOneUnit.text = "(" + themeItem.unit + ")"
                         tvNumberOneSubTitle.text = themeItem.memo1
                         tvNumberOneSub.text = themeItem.data!!.high_light!!.compare
-                        rlKpiNumberOne.setOnClickListener {
-                            EventBus.getDefault().post(DashboardItem(themeItem.obj_link!!, themeItem.obj_title!!,
-                                    themeItem.obj_id!!, themeItem.template_id!!, "1"))
-                        }
+                        rlKpiNumberOne.setOnClickListener(object :NoDoubleClickListener(){
+                            override fun onNoDoubleClick(v: View?) {
+                            PageLinkManage.pageLink(context, (DashboardItem(themeItem.obj_link!!, themeItem.obj_title!!,
+                                    themeItem.obj_id!!, themeItem.template_id!!, "1")))
+                            }
+                        })
                         views.add(contentView)
                     }
                     val myViewPagerAdapter = MyViewPagerAdapter(views, context)

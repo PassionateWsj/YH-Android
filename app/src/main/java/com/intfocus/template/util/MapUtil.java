@@ -9,12 +9,13 @@ import com.intfocus.template.ConfigConstants;
 
 /**
  * ****************************************************
+ *
  * @author jameswong
- * created on: 17/10/19 下午5:43
- * e-mail: PassionateWsj@outlook.com
- * name:
- * desc:
- * ****************************************************
+ *         created on: 17/10/19 下午5:43
+ *         e-mail: PassionateWsj@outlook.com
+ *         name:
+ *         desc:
+ *         ****************************************************
  */
 
 public class MapUtil {

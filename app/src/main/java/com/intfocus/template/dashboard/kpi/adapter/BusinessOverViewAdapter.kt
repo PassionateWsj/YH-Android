@@ -9,10 +9,11 @@ import android.view.ViewGroup
 import android.widget.RelativeLayout
 import android.widget.TextView
 import com.intfocus.template.R
-import com.intfocus.template.dashboard.kpi.bean.KpiGroupItem
-import com.intfocus.template.model.entity.DashboardItem
 import com.intfocus.template.constant.Colors
-import org.greenrobot.eventbus.EventBus
+import com.intfocus.template.dashboard.kpi.bean.KpiGroupItem
+import com.intfocus.template.listener.NoDoubleClickListener
+import com.intfocus.template.model.entity.DashboardItem
+import com.intfocus.template.util.PageLinkManage
 
 
 /**
@@ -57,10 +58,12 @@ class BusinessOverViewAdapter(val context: Context,
 
         holder.tvNumberSub.text = itemData.memo1
         holder.tvNumberCompareText.text = itemData.memo2
-        holder.rlBusinessOverview.setOnClickListener {
-            EventBus.getDefault().post(DashboardItem(itemData.obj_link!!, itemData.obj_title!!,
-                    itemData.obj_id!!, itemData.template_id!!, "1"))
-        }
+        holder.rlBusinessOverview.setOnClickListener(object : NoDoubleClickListener() {
+            override fun onNoDoubleClick(v: View?) {
+                PageLinkManage.pageLink(context, DashboardItem(itemData.obj_link!!, itemData.obj_title!!,
+                        itemData.obj_id!!, itemData.template_id!!, "1"))
+            }
+        })
     }
 
     fun formatNumber(number: String): String {

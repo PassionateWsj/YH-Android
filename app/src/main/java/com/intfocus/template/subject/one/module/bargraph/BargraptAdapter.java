@@ -32,7 +32,7 @@ public class BargraptAdapter extends BaseAdapter {
 
     public BargraptAdapter(Context ctx) {
         this.ctx = ctx;
-        herearrow = ContextCompat.getDrawable(ctx,R.drawable.icon_herearrow);
+        herearrow = ContextCompat.getDrawable(ctx, R.drawable.icon_herearrow);
         herearrow.setBounds(0, 0, herearrow.getMinimumWidth(),
                 herearrow.getMinimumHeight());
         percentDefaultColor = ContextCompat.getColor(ctx, R.color.co4_syr);

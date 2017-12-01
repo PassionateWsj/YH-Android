@@ -27,6 +27,7 @@ import org.xutils.x;
 
 /**
  * 基类界面
+ *
  * @author liuruilin
  */
 public abstract class BaseModeActivity extends AppCompatActivity {

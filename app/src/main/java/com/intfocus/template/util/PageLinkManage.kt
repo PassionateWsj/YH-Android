@@ -15,6 +15,7 @@ import com.intfocus.template.constant.Params.OBJECT_TITLE
 import com.intfocus.template.constant.Params.OBJECT_TYPE
 import com.intfocus.template.constant.Params.TEMPLATE_ID
 import com.intfocus.template.dashboard.DashboardActivity
+import com.intfocus.template.model.entity.DashboardItem
 import com.intfocus.template.scanner.BarCodeScannerActivity
 import com.intfocus.template.subject.nine.CollectionActivity
 import com.intfocus.template.subject.one.NativeReportActivity
@@ -46,13 +47,31 @@ object PageLinkManage {
 
     private var objectTypeName = arrayOf("生意概况", "报表", "工具箱")
 
-    fun pageLink(context: Context, objTitle: String, link: String) {
-        pageLink(context, objTitle, link, "-1", "-1", "-1")
+    /**
+     * 图表点击事件统一处理方法
+     */
+    fun pageLink(context: Context, items: DashboardItem?) {
+        if (items != null) {
+            val link = items.obj_link
+            val objTitle = items.obj_title
+            val objectId = items.obj_id
+            val templateId = items.template_id
+            val objectType = items.objectType
+            val paramsMappingBean = items.paramsMappingBean ?: HashMap()
+
+            PageLinkManage.pageLink(context, objTitle!!, link!!, objectId!!, templateId!!, objectType!!, paramsMappingBean)
+        } else {
+            ToastUtils.show(context, "没有指定链接")
+        }
     }
 
     /**
      * 页面跳转事件
      */
+    fun pageLink(context: Context, objTitle: String, link: String) {
+        pageLink(context, objTitle, link, "-1", "-1", "-1")
+    }
+
     fun pageLink(context: Context, objTitle: String, link: String, objectId: String, templateId: String, objectType: String) {
         pageLink(context, objTitle, link, objectId, templateId, objectType, HashMap())
     }
@@ -66,7 +85,7 @@ object PageLinkManage {
             val intent: Intent
 
             when (templateId) {
-                TEMPLATE_ONE,TEMPLATE_TEN -> {
+                TEMPLATE_ONE, TEMPLATE_TEN -> {
                     savePageLink(context, objTitle, link, objectId, templateId, objectType)
                     intent = Intent(context, NativeReportActivity::class.java)
                     intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
@@ -139,7 +158,7 @@ object PageLinkManage {
                     savePageLink(context, objTitle, urlString, objectId, templateId, objectType)
                     intent = Intent(context, BarCodeScannerActivity::class.java)
                     intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-                    intent.putExtra(LINK,urlString)
+                    intent.putExtra(LINK, urlString)
                     context.startActivity(intent)
                 }
                 else -> showTemplateErrorDialog(context)
@@ -151,7 +170,7 @@ object PageLinkManage {
         val logParams = JSONObject()
         if ("-1" == templateId && "-1" != objectType) {
             logParams.put(ACTION, "点击/" + objectTypeName[objectType.toInt() - 1] + "/链接")
-        } else if ("-1" != objectType){
+        } else if ("-1" != objectType) {
             logParams.put(ACTION, "点击/" + objectTypeName[objectType.toInt() - 1] + "/报表")
         }
 

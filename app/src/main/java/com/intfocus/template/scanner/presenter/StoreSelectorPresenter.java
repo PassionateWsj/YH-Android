@@ -11,12 +11,13 @@ import java.util.List;
 
 /**
  * ****************************************************
+ *
  * @author JamesWong
- * created on: 17/08/22 上午09:59
- * e-mail: PassionateWsj@outlook.com
- * name:
- * desc:
- * ****************************************************
+ *         created on: 17/08/22 上午09:59
+ *         e-mail: PassionateWsj@outlook.com
+ *         name:
+ *         desc:
+ *         ****************************************************
  */
 
 public class StoreSelectorPresenter {

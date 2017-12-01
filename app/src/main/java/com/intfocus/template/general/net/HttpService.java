@@ -333,6 +333,7 @@ public interface HttpService {
 
     /**
      * 同步获取报表JSON数据
+     *
      * @param reportId
      * @param templateId
      * @param groupId
@@ -346,6 +347,7 @@ public interface HttpService {
      * <p>
      * POST
      * /api/v1.1/acquisition/data
+     *
      * @return
      */
     @POST(K.API_COLLECTION_UPLOAD)

@@ -21,7 +21,7 @@ import java.io.File
  * @data 2017/11/3
  * @describe
  */
-class ImageDisplayAdapter(private val mContext: Context, private val listener: ImageItemClickListener, private val limit: Int): RecyclerView.Adapter<ImageDisplayAdapter.ImageDisplayHolder>() {
+class ImageDisplayAdapter(private val mContext: Context, private val listener: ImageItemClickListener, private val limit: Int) : RecyclerView.Adapter<ImageDisplayAdapter.ImageDisplayHolder>() {
     var mData = mutableListOf<Uri>()
 
     override fun getItemCount(): Int = mData.size + 1
@@ -60,7 +60,7 @@ class ImageDisplayAdapter(private val mContext: Context, private val listener: I
                             override fun onStart() {}
 
                         }).launch()    //启动压缩
-                }
+            }
         }
     }
 
@@ -79,7 +79,7 @@ class ImageDisplayAdapter(private val mContext: Context, private val listener: I
     private fun setAddImageDisplayView(holder: ImageDisplayHolder?) {
         holder!!.rlImageDisplayItem.visibility = View.VISIBLE
 
-        holder.ivImageAdd.setImageDrawable(ContextCompat.getDrawable(mContext,R.drawable.btn_addpic))
+        holder.ivImageAdd.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.btn_addpic))
         holder.ivImageDelete.visibility = View.GONE
         holder.ivImageAdd.setOnClickListener { listener.addImage(limit + 1 - itemCount) }
     }

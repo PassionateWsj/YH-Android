@@ -266,7 +266,7 @@ public class CustomCurveChart extends View implements ValueAnimator.AnimatorUpda
         // X轴坐标
         paint.setTextAlign(Paint.Align.CENTER);
         int xlength = xLabel.length;
-
+        xPoints.clear();
         for (int i = 0; i < xlength; i++) {
             float startX = xPoint + xScale / 2;
             startX += i * xScale;
@@ -538,12 +538,11 @@ public class CustomCurveChart extends View implements ValueAnimator.AnimatorUpda
         int size = xPoints.size();
         for (int i = 0; i < size; i++) {
             if (x > (xPoints.get(i) - xScale / 2) && x < (xPoints.get(i) + xScale / 2)) {
-
-                selectItem = i;
-                if (listener != null) {
+                if (selectItem != i && listener != null) {
+                    selectItem = i;
                     listener.onPointClick(selectItem);
+                    return true;
                 }
-                return true;
             }
         }
         return false;

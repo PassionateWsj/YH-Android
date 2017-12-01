@@ -5,24 +5,24 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
-import com.intfocus.template.R
-import com.intfocus.template.dashboard.mine.adapter.InstituteAdapter
-import com.intfocus.template.dashboard.mine.bean.InstituteDataBean
-import com.intfocus.template.ui.RefreshActivity
 import com.intfocus.template.ConfigConstants
+import com.intfocus.template.R
 import com.intfocus.template.constant.Params.BANNER_NAME
 import com.intfocus.template.constant.Params.LINK
 import com.intfocus.template.constant.Params.USER_NUM
 import com.intfocus.template.constant.ToastColor
-import com.intfocus.template.model.request.RequestFavourite
-import com.intfocus.template.model.response.BaseResult
-import com.intfocus.template.model.response.article.ArticleResult
+import com.intfocus.template.dashboard.mine.adapter.InstituteAdapter
+import com.intfocus.template.dashboard.mine.bean.InstituteDataBean
 import com.intfocus.template.general.net.ApiException
 import com.intfocus.template.general.net.CodeHandledSubscriber
 import com.intfocus.template.general.net.RetrofitUtil
-import com.intfocus.template.util.*
-import com.intfocus.template.ui.view.CommonPopupWindow
+import com.intfocus.template.model.request.RequestFavourite
+import com.intfocus.template.model.response.BaseResult
+import com.intfocus.template.model.response.article.ArticleResult
 import com.intfocus.template.subject.two.WebPageActivity
+import com.intfocus.template.ui.RefreshActivity
+import com.intfocus.template.ui.view.CommonPopupWindow
+import com.intfocus.template.util.*
 import com.lcodecore.tkrefreshlayout.footer.LoadingView
 import com.lcodecore.tkrefreshlayout.header.SinaRefreshView
 
@@ -72,12 +72,12 @@ class FavoriteArticleActivity : RefreshActivity(), InstituteAdapter.NoticeItemLi
             ToastUtils.show(mActivity, "请检查网络链接")
             return
         }
-        if (isShowDialog && (loadingDialog == null || !loadingDialog!!.isShowing)) {
+        if (isShowDialog && (null == loadingDialog || !loadingDialog!!.isShowing)) {
             showDialog(this)
         }
         queryMap.put("user_num", userNum)
         queryMap.put("page", page.toString())
-        queryMap.put("limit", pageSize.toString())
+        queryMap.put("limit", pageSize . toString ())
         RetrofitUtil.getHttpService(applicationContext).getMyFavouritedList(queryMap)
                 .compose(RetrofitUtil.CommonOptions<ArticleResult>())
                 .subscribe(object : CodeHandledSubscriber<ArticleResult>() {

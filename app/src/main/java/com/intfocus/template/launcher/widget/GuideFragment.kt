@@ -72,13 +72,13 @@ class GuideFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        ivGuideText.setImageDrawable(ContextCompat.getDrawable(context!!,imgPage[index]))
-        ivGuideScreenshot.setImageDrawable(ContextCompat.getDrawable(context!!,imgScreenshot[index]))
+        ivGuideText.setImageDrawable(ContextCompat.getDrawable(context!!, imgPage[index]))
+        ivGuideScreenshot.setImageDrawable(ContextCompat.getDrawable(context!!, imgScreenshot[index]))
         for (i in 0 until llGuidePage.childCount) {
             if (i == index) {
-                llGuidePage.getChildAt(i).background = ContextCompat.getDrawable(context!!,R.drawable.icon_paging1)
+                llGuidePage.getChildAt(i).background = ContextCompat.getDrawable(context!!, R.drawable.icon_paging1)
             } else {
-                llGuidePage.getChildAt(i).background = ContextCompat.getDrawable(context!!,R.drawable.icon_paging2)
+                llGuidePage.getChildAt(i).background = ContextCompat.getDrawable(context!!, R.drawable.icon_paging2)
             }
         }
         if (index == totalCount - 1) {

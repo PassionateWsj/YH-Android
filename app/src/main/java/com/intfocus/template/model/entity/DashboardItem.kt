@@ -9,7 +9,7 @@ class DashboardItem {
     var obj_id: String? = null
     var template_id: String? = null
     var objectType: String? = null
-    var paramsMappingBean: HashMap<String,String>? = null
+    var paramsMappingBean: HashMap<String, String>? = null
 
     constructor()
     constructor(obj_link: String, obj_title: String, obj_id: String, template_id: String, objectType: String) : this() {
@@ -20,7 +20,7 @@ class DashboardItem {
         this.objectType = objectType
     }
 
-    constructor(obj_link: String, obj_title: String, obj_id: String, template_id: String, objectType: String, paramsMappingBean: HashMap<String,String>) : this() {
+    constructor(obj_link: String, obj_title: String, obj_id: String, template_id: String, objectType: String, paramsMappingBean: HashMap<String, String>) : this() {
         this.obj_link = obj_link
         this.obj_title = obj_title
         this.obj_id = obj_id

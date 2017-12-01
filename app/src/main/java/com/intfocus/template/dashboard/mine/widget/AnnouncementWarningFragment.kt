@@ -36,7 +36,7 @@ class AnnouncementWarningFragment : RefreshFragment(), NoticeListAdapter.NoticeI
 
     private lateinit var userId: String
     private var datas: MutableList<Notice>? = null
-//    var id = ""
+    //    var id = ""
     private lateinit var adapter: NoticeListAdapter
     private lateinit var queryMap: MutableMap<String, String>
     /**

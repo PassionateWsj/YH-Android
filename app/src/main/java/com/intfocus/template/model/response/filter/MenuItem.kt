@@ -11,7 +11,7 @@ import java.util.*
 class MenuItem constructor(
         var id: String? = null,
         var name: String? = null
-): CityInterface,Serializable {
+) : CityInterface, Serializable {
 
     /**
      * type : single_choices

@@ -62,7 +62,7 @@ class SingleTextFragment : BaseModuleFragment(), TextModuleContract.View {
     }
 
     private fun initView() {
-        et_single_text.addTextChangedListener(object: TextWatcher{
+        et_single_text.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
@@ -82,7 +82,7 @@ class SingleTextFragment : BaseModuleFragment(), TextModuleContract.View {
     }
 
     private fun getElementResourceId(element: String): Int {
-        when(element) {
+        when (element) {
             "" -> return 0
         }
         return 0

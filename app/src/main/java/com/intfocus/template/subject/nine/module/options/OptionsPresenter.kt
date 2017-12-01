@@ -10,7 +10,7 @@ import com.intfocus.template.subject.nine.callback.LoadDataCallback
 class OptionsPresenter(
         private var mModel: OptionsModelImpl,
         private var mView: OptionsModuleContract.View
-): OptionsModuleContract.Presenter {
+) : OptionsModuleContract.Presenter {
     init {
         mView.presenter = this
     }

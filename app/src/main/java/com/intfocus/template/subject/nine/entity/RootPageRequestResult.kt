@@ -7,5 +7,5 @@ import java.util.*
  * @data 2017/11/1
  * @describe
  */
-class RootPageRequestResult(var isSuccress: Boolean,var stateCode: Int,var datas: ArrayList<Content>)
+class RootPageRequestResult(var isSuccress: Boolean, var stateCode: Int, var datas: ArrayList<Content>)
 
