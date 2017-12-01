@@ -10,7 +10,6 @@ import java.util.List;
 
 public class GsonCoverBean {
 
-
     /**
      * type : location
      * display : 纽约|一号店

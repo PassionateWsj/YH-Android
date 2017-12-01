@@ -77,6 +77,10 @@ object PageLinkManage {
     }
 
     fun pageLink(context: Context, objTitle: String, link: String, objectId: String, templateId: String, objectType: String, paramsMappingBean: HashMap<String, String>) {
+        pageLink(context, objTitle, link, objectId, templateId, objectType, paramsMappingBean, false)
+    }
+
+    fun pageLink(context: Context, objTitle: String, link: String, objectId: String, templateId: String, objectType: String, paramsMappingBean: HashMap<String, String>, fromPushMsg: Boolean) {
         try {
             val userSP = context.getSharedPreferences("UserBean", Context.MODE_PRIVATE)
             val groupID = userSP.getString(GROUP_ID, "0")
@@ -89,6 +93,9 @@ object PageLinkManage {
                     savePageLink(context, objTitle, link, objectId, templateId, objectType)
                     intent = Intent(context, NativeReportActivity::class.java)
                     intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+                    if (fromPushMsg) {
+                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                    }
                     intent.putExtra(GROUP_ID, groupID)
                     intent.putExtra(TEMPLATE_ID, templateId)
                     intent.putExtra(BANNER_NAME, objTitle)

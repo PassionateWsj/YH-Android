@@ -20,12 +20,8 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
-import com.intfocus.template.R
-import com.intfocus.template.dashboard.DashboardActivity
-import com.intfocus.template.login.bean.Device
-import com.intfocus.template.login.bean.DeviceRequest
-import com.intfocus.template.login.bean.NewUser
 import com.intfocus.template.ConfigConstants
+import com.intfocus.template.R
 import com.intfocus.template.constant.Params.ACTION
 import com.intfocus.template.constant.Params.DATA
 import com.intfocus.template.constant.Params.GROUP_ID
@@ -39,19 +35,22 @@ import com.intfocus.template.constant.Params.USER_NAME
 import com.intfocus.template.constant.Params.USER_NUM
 import com.intfocus.template.constant.Params.VERSION_CODE
 import com.intfocus.template.constant.ToastColor
-import com.intfocus.template.model.response.BaseResult
-import com.intfocus.template.model.response.login.RegisterResult
-import com.intfocus.template.listener.NoDoubleClickListener
+import com.intfocus.template.dashboard.DashboardActivity
 import com.intfocus.template.general.net.ApiException
 import com.intfocus.template.general.net.CodeHandledSubscriber
 import com.intfocus.template.general.net.RetrofitUtil
+import com.intfocus.template.listener.NoDoubleClickListener
+import com.intfocus.template.login.bean.Device
+import com.intfocus.template.login.bean.DeviceRequest
+import com.intfocus.template.login.bean.NewUser
+import com.intfocus.template.model.response.BaseResult
+import com.intfocus.template.model.response.login.RegisterResult
 import com.intfocus.template.util.*
-import com.intfocus.template.util.K.*
+import com.intfocus.template.util.K.K_CURRENT_UI_VERSION
 import com.pgyersdk.update.PgyUpdateManager
 import com.pgyersdk.update.UpdateManagerListener
 import com.tencent.smtt.sdk.WebView
 import kotlinx.android.synthetic.main.activity_login.*
-import com.intfocus.template.util.OpenUDIDManager
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.IOException
@@ -337,6 +336,13 @@ class LoginActivity : FragmentActivity() {
      * 登录按钮点击事件  cb_login_keep_pwd
      */
     fun actionSubmit(v: View) {
+//        val pushMsgList = DaoUtil.getPushMsgDao().queryBuilder().list()
+//        val pushMsg = pushMsgList[0]
+//        val paramsMappingBean = com.alibaba.fastjson.JSONObject.parseObject(pushMsg.params_mapping, object : TypeReference<HashMap<String, String>>() {
+//        })
+        PageLinkManage.pageLink(this, "第二集群生鲜销售概况", "/mobile/v2/group/%@/template/1/report/7",
+                "7","1" , "3", hashMapOf(), true)
+        return
         try {
             userNum = etUsername.text.toString()
             userPass = etPassword.text.toString()

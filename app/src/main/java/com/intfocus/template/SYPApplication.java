@@ -1,24 +1,27 @@
 package com.intfocus.template;
 
 import android.app.Application;
+import android.app.Notification;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.os.Bundle;
+import android.graphics.BitmapFactory;
 import android.support.multidex.MultiDex;
+import android.support.v4.app.NotificationCompat;
 
+import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.TypeReference;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
-import com.intfocus.template.dashboard.DashboardActivity;
 import com.intfocus.template.general.FetchPatchHandler;
 import com.intfocus.template.general.PriorityThreadPoolExecutor;
-import com.intfocus.template.login.LoginActivity;
 import com.intfocus.template.model.DaoUtil;
+import com.intfocus.template.model.entity.PushMsgBean;
 import com.intfocus.template.util.AppStatusTracker;
 import com.intfocus.template.util.K;
 import com.intfocus.template.util.LogUtil;
 import com.intfocus.template.util.OpenUDIDManager;
+import com.intfocus.template.util.PageLinkManage;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.tencent.smtt.sdk.QbSdk;
 import com.tencent.tinker.loader.app.ApplicationLike;
@@ -26,6 +29,7 @@ import com.tinkerpatch.sdk.TinkerPatch;
 import com.tinkerpatch.sdk.loader.TinkerPatchApplicationLike;
 import com.umeng.message.IUmengRegisterCallback;
 import com.umeng.message.PushAgent;
+import com.umeng.message.UmengMessageHandler;
 import com.umeng.message.UmengNotificationClickHandler;
 import com.umeng.message.entity.UMessage;
 import com.umeng.socialize.PlatformConfig;
@@ -33,6 +37,7 @@ import com.umeng.socialize.UMShareAPI;
 
 import org.xutils.x;
 
+import java.util.HashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.PriorityBlockingQueue;
 import java.util.concurrent.ThreadFactory;
@@ -41,7 +46,6 @@ import java.util.concurrent.TimeUnit;
 import static com.intfocus.template.constant.Params.IS_LOGIN;
 
 /**
- *
  * @author lijunjie
  * @date 16/1/15
  */
@@ -158,7 +162,58 @@ public class SYPApplication extends Application {
                 // 向服务器推送: 设备信息,
             }
         });
-        mPushAgent.setNotificationClickHandler(pushMessageHandler);
+        mPushAgent.setMessageHandler(new UmengMessageHandler() {
+            @Override
+            public Notification getNotification(Context context, UMessage uMessage) {
+                PushMsgBean pushMsg = com.alibaba.fastjson.JSONObject.parseObject(uMessage.custom, PushMsgBean.class);
+                pushMsg.setTicker(uMessage.ticker);
+                pushMsg.setTitle(uMessage.title);
+                pushMsg.setText(uMessage.text);
+                pushMsg.setNew_msg(true);
+                DaoUtil.INSTANCE.getPushMsgDao().insert(pushMsg);
+//
+//                Notification.Builder builder = new Notification.Builder(context);
+//                RemoteViews myNotificationView = new RemoteViews(context.getPackageName(),
+//                        R.layout.upush_notification);
+//                myNotificationView.setTextViewText(R.id.notification_title, uMessage.title);
+//                myNotificationView.setTextViewText(R.id.notification_text, uMessage.text);
+//                myNotificationView.setImageViewBitmap(R.mipmap.ic_launcher,
+//                        getLargeIcon(context, uMessage));
+//                myNotificationView.setImageViewResource(R.mipmap.ic_launcher,
+//                        getSmallIconId(context, uMessage));
+//                builder.setContent(myNotificationView)
+//                        .setSmallIcon(getSmallIconId(context, uMessage))
+//                        .setTicker(uMessage.ticker)
+//                        .setAutoCancel(true);
+
+                return showNotifications(context,uMessage);
+
+            }
+            /**
+             * 自定义通知布局
+             *
+             * @param context 上下文
+             * @param msg     消息体
+             */
+            private Notification showNotifications(Context context, UMessage msg) {
+//                NotificationManager mNotificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+                NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
+                builder.setContentTitle(msg.title)
+                        .setContentText(msg.text)
+                        .setTicker(msg.ticker)
+                        .setWhen(System.currentTimeMillis())
+                        .setSmallIcon(R.mipmap.ic_launcher)
+                        .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher))
+//                        .setColor(Color.parseColor("#41b5ea"))
+                        .setDefaults(Notification.DEFAULT_ALL)
+                        .setAutoCancel(true);
+
+//                mNotificationManager.notify(100, builder.build());
+                return builder.build();
+            }
+        });
+        mPushAgent.setNotificationClickHandler(notificationClickHandler);
+//        mPushAgent.setPushIntentServiceClass(UmengPushIntentService.class);
     }
 
     private void initXutils() {
@@ -166,25 +221,24 @@ public class SYPApplication extends Application {
         x.Ext.setDebug(BuildConfig.DEBUG);
     }
 
-    final UmengNotificationClickHandler pushMessageHandler = new UmengNotificationClickHandler() {
+    final UmengNotificationClickHandler notificationClickHandler = new UmengNotificationClickHandler() {
 
         @Override
         public void dealWithCustomAction(Context context, UMessage uMessage) {
             super.dealWithCustomAction(context, uMessage);
-
-            Intent intent = null;
+            PushMsgBean pushMsg = com.alibaba.fastjson.JSONObject.parseObject(uMessage.custom, PushMsgBean.class);
+            HashMap<String, String> paramsMappingBean = JSONObject.parseObject(pushMsg.getParams_mapping(), new TypeReference<HashMap<String, String>>() {
+            });
             boolean isLogin = getApplicationContext().getSharedPreferences("UserBean", MODE_PRIVATE).getBoolean(IS_LOGIN, false);
-            if (isLogin) {
-                intent = new Intent(appContext, DashboardActivity.class);
-            } else {
-                intent = new Intent(appContext, LoginActivity.class);
+            if (true) {
+                PageLinkManage.INSTANCE.pageLink(context, pushMsg.getObj_title(), pushMsg.getObj_link(), pushMsg.getObj_id(), pushMsg.getTemplate_id(), pushMsg.getObj_type(), paramsMappingBean,true);
             }
-            Bundle bundle = new Bundle();
-            bundle.putString("message", uMessage.custom);
-            bundle.putString("message_body_title", uMessage.title);
-            bundle.putString("message_body_text", uMessage.text);
-            intent.putExtra("msgData", bundle);
-            startActivity(intent);
+//            Bundle bundle = new Bundle();
+//            bundle.putString("message", uMessage.custom);
+//            bundle.putString("message_body_title", uMessage.title);
+//            bundle.putString("message_body_text", uMessage.text);
+//            intent.putExtra("msgData", bundle);
+//            startActivity(intent);
         }
     };
 
