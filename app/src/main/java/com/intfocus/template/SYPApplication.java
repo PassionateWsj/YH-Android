@@ -3,12 +3,14 @@ package com.intfocus.template;
 import android.app.Application;
 import android.app.Notification;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
 import android.support.multidex.MultiDex;
 import android.support.v4.app.NotificationCompat;
+import android.support.v7.app.AlertDialog;
 
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
@@ -162,7 +164,7 @@ public class SYPApplication extends Application {
         });
         mPushAgent.setMessageHandler(new UmengMessageHandler() {
             @Override
-            public Notification getNotification(Context context, UMessage uMessage) {
+            public Notification getNotification(final Context context, final UMessage uMessage) {
                 PushMsgBean pushMsg = com.alibaba.fastjson.JSONObject.parseObject(uMessage.custom, PushMsgBean.class);
                 pushMsg.setTicker(uMessage.ticker);
                 pushMsg.setBody_title(uMessage.title);
@@ -170,6 +172,22 @@ public class SYPApplication extends Application {
                 pushMsg.setNew_msg(true);
                 DaoUtil.INSTANCE.getPushMsgDao().insert(pushMsg);
 
+                new AlertDialog.Builder(context)
+                        .setTitle(uMessage.title)
+                        .setMessage(uMessage.text)
+                        .setPositiveButton("查看", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                pushMsgOnClick(context, uMessage);
+                            }
+                        })
+                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        })
+                        .show();
                 return showNotifications(context, uMessage);
 
             }
@@ -186,7 +204,7 @@ public class SYPApplication extends Application {
                         .setContentText(msg.text)
                         .setTicker(msg.ticker)
                         .setWhen(System.currentTimeMillis())
-                        .setSmallIcon(R.mipmap.ic_launcher)
+//                        .setSmallIcon(R.mipmap.ic_launcher)
                         .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher))
                         .setDefaults(Notification.DEFAULT_ALL)
                         .setAutoCancel(true);
@@ -207,30 +225,34 @@ public class SYPApplication extends Application {
         @Override
         public void dealWithCustomAction(Context context, UMessage uMessage) {
             super.dealWithCustomAction(context, uMessage);
-            PushMsgBean pushMsg = com.alibaba.fastjson.JSONObject.parseObject(uMessage.custom, PushMsgBean.class);
-            HashMap<String, String> paramsMappingBean = JSONObject.parseObject(pushMsg.getParams_mapping(), new TypeReference<HashMap<String, String>>() {
-            });
-            String templateId = "";
-            if (pushMsg.getTemplate_id() == null || "".equals(pushMsg.getTemplate_id())) {
-                String[] temp = pushMsg.getUrl().split("/");
-                for (int i = 0; i < temp.length; i++) {
-                    if ("template".equals(temp[i]) && i + 1 < temp.length) {
-                        templateId = temp[i + 1];
-                        break;
-                    }
+            pushMsgOnClick(context, uMessage);
+        }
+    };
+
+    private void pushMsgOnClick(Context context, UMessage uMessage) {
+        PushMsgBean pushMsg = JSONObject.parseObject(uMessage.custom, PushMsgBean.class);
+        HashMap<String, String> paramsMappingBean = JSONObject.parseObject(pushMsg.getParams_mapping(), new TypeReference<HashMap<String, String>>() {
+        });
+        String templateId = "";
+        if (pushMsg.getTemplate_id() == null || "".equals(pushMsg.getTemplate_id())) {
+            String[] temp = pushMsg.getUrl().split("/");
+            for (int i = 0; i < temp.length; i++) {
+                if ("template".equals(temp[i]) && i + 1 < temp.length) {
+                    templateId = temp[i + 1];
+                    break;
                 }
-            } else {
-                templateId = pushMsg.getTemplate_id();
             }
+        } else {
+            templateId = pushMsg.getTemplate_id();
+        }
 //            SharedPreferences userSP = context.getSharedPreferences("UserBean", Context.MODE_PRIVATE);
 //            String groupID = userSP.getString(GROUP_ID, "0");
 //            String userNum = userSP.getString(USER_NUM, "");
 //
 //            if () {
 //            }
-            PageLinkManage.INSTANCE.pageLink(context, pushMsg.getTitle(), pushMsg.getUrl(), pushMsg.getObj_id(), templateId,"2", paramsMappingBean, true);
-        }
-    };
+        PageLinkManage.INSTANCE.pageLink(context, pushMsg.getTitle(), pushMsg.getUrl(), pushMsg.getObj_id(), templateId, "4", paramsMappingBean, true);
+    }
 
     @Override
     protected void attachBaseContext(Context base) {

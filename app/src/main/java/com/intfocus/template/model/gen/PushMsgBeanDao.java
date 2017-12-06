@@ -29,14 +29,13 @@ public class PushMsgBeanDao extends AbstractDao<PushMsgBean, Long> {
         public final static Property Body_title = new Property(2, String.class, "body_title", false, "BODY_TITLE");
         public final static Property Text = new Property(3, String.class, "text", false, "TEXT");
         public final static Property Type = new Property(4, String.class, "type", false, "TYPE");
-        public final static Property Url = new Property(5, String.class, "url", false, "URL");
-        public final static Property Title = new Property(6, String.class, "title", false, "TITLE");
+        public final static Property Title = new Property(5, String.class, "title", false, "TITLE");
+        public final static Property Url = new Property(6, String.class, "url", false, "URL");
         public final static Property Obj_id = new Property(7, String.class, "obj_id", false, "OBJ_ID");
         public final static Property Template_id = new Property(8, String.class, "template_id", false, "TEMPLATE_ID");
-        public final static Property Obj_type = new Property(9, String.class, "obj_type", false, "OBJ_TYPE");
-        public final static Property Params_mapping = new Property(10, String.class, "params_mapping", false, "PARAMS_MAPPING");
-        public final static Property Debug_timestamp = new Property(11, String.class, "debug_timestamp", false, "DEBUG_TIMESTAMP");
-        public final static Property New_msg = new Property(12, boolean.class, "new_msg", false, "NEW_MSG");
+        public final static Property Params_mapping = new Property(9, String.class, "params_mapping", false, "PARAMS_MAPPING");
+        public final static Property Debug_timestamp = new Property(10, String.class, "debug_timestamp", false, "DEBUG_TIMESTAMP");
+        public final static Property New_msg = new Property(11, boolean.class, "new_msg", false, "NEW_MSG");
     }
 
 
@@ -57,14 +56,13 @@ public class PushMsgBeanDao extends AbstractDao<PushMsgBean, Long> {
                 "\"BODY_TITLE\" TEXT," + // 2: body_title
                 "\"TEXT\" TEXT," + // 3: text
                 "\"TYPE\" TEXT," + // 4: type
-                "\"URL\" TEXT," + // 5: url
-                "\"TITLE\" TEXT," + // 6: title
+                "\"TITLE\" TEXT," + // 5: title
+                "\"URL\" TEXT," + // 6: url
                 "\"OBJ_ID\" TEXT," + // 7: obj_id
                 "\"TEMPLATE_ID\" TEXT," + // 8: template_id
-                "\"OBJ_TYPE\" TEXT," + // 9: obj_type
-                "\"PARAMS_MAPPING\" TEXT," + // 10: params_mapping
-                "\"DEBUG_TIMESTAMP\" TEXT," + // 11: debug_timestamp
-                "\"NEW_MSG\" INTEGER NOT NULL );"); // 12: new_msg
+                "\"PARAMS_MAPPING\" TEXT," + // 9: params_mapping
+                "\"DEBUG_TIMESTAMP\" TEXT," + // 10: debug_timestamp
+                "\"NEW_MSG\" INTEGER NOT NULL );"); // 11: new_msg
     }
 
     /** Drops the underlying database table. */
@@ -102,14 +100,14 @@ public class PushMsgBeanDao extends AbstractDao<PushMsgBean, Long> {
             stmt.bindString(5, type);
         }
  
-        String url = entity.getUrl();
-        if (url != null) {
-            stmt.bindString(6, url);
-        }
- 
         String title = entity.getTitle();
         if (title != null) {
-            stmt.bindString(7, title);
+            stmt.bindString(6, title);
+        }
+ 
+        String url = entity.getUrl();
+        if (url != null) {
+            stmt.bindString(7, url);
         }
  
         String obj_id = entity.getObj_id();
@@ -122,21 +120,16 @@ public class PushMsgBeanDao extends AbstractDao<PushMsgBean, Long> {
             stmt.bindString(9, template_id);
         }
  
-        String obj_type = entity.getObj_type();
-        if (obj_type != null) {
-            stmt.bindString(10, obj_type);
-        }
- 
         String params_mapping = entity.getParams_mapping();
         if (params_mapping != null) {
-            stmt.bindString(11, params_mapping);
+            stmt.bindString(10, params_mapping);
         }
  
         String debug_timestamp = entity.getDebug_timestamp();
         if (debug_timestamp != null) {
-            stmt.bindString(12, debug_timestamp);
+            stmt.bindString(11, debug_timestamp);
         }
-        stmt.bindLong(13, entity.getNew_msg() ? 1L: 0L);
+        stmt.bindLong(12, entity.getNew_msg() ? 1L: 0L);
     }
 
     @Override
@@ -168,14 +161,14 @@ public class PushMsgBeanDao extends AbstractDao<PushMsgBean, Long> {
             stmt.bindString(5, type);
         }
  
-        String url = entity.getUrl();
-        if (url != null) {
-            stmt.bindString(6, url);
-        }
- 
         String title = entity.getTitle();
         if (title != null) {
-            stmt.bindString(7, title);
+            stmt.bindString(6, title);
+        }
+ 
+        String url = entity.getUrl();
+        if (url != null) {
+            stmt.bindString(7, url);
         }
  
         String obj_id = entity.getObj_id();
@@ -188,21 +181,16 @@ public class PushMsgBeanDao extends AbstractDao<PushMsgBean, Long> {
             stmt.bindString(9, template_id);
         }
  
-        String obj_type = entity.getObj_type();
-        if (obj_type != null) {
-            stmt.bindString(10, obj_type);
-        }
- 
         String params_mapping = entity.getParams_mapping();
         if (params_mapping != null) {
-            stmt.bindString(11, params_mapping);
+            stmt.bindString(10, params_mapping);
         }
  
         String debug_timestamp = entity.getDebug_timestamp();
         if (debug_timestamp != null) {
-            stmt.bindString(12, debug_timestamp);
+            stmt.bindString(11, debug_timestamp);
         }
-        stmt.bindLong(13, entity.getNew_msg() ? 1L: 0L);
+        stmt.bindLong(12, entity.getNew_msg() ? 1L: 0L);
     }
 
     @Override
@@ -218,14 +206,13 @@ public class PushMsgBeanDao extends AbstractDao<PushMsgBean, Long> {
             cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // body_title
             cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // text
             cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // type
-            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // url
-            cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // title
+            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // title
+            cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // url
             cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7), // obj_id
             cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8), // template_id
-            cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9), // obj_type
-            cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10), // params_mapping
-            cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11), // debug_timestamp
-            cursor.getShort(offset + 12) != 0 // new_msg
+            cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9), // params_mapping
+            cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10), // debug_timestamp
+            cursor.getShort(offset + 11) != 0 // new_msg
         );
         return entity;
     }
@@ -237,14 +224,13 @@ public class PushMsgBeanDao extends AbstractDao<PushMsgBean, Long> {
         entity.setBody_title(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
         entity.setText(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
         entity.setType(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
-        entity.setUrl(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
-        entity.setTitle(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
+        entity.setTitle(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
+        entity.setUrl(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
         entity.setObj_id(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
         entity.setTemplate_id(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
-        entity.setObj_type(cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9));
-        entity.setParams_mapping(cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10));
-        entity.setDebug_timestamp(cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11));
-        entity.setNew_msg(cursor.getShort(offset + 12) != 0);
+        entity.setParams_mapping(cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9));
+        entity.setDebug_timestamp(cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10));
+        entity.setNew_msg(cursor.getShort(offset + 11) != 0);
      }
     
     @Override

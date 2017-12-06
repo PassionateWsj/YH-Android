@@ -12,7 +12,10 @@ import com.intfocus.template.dashboard.mine.presenter.PushMessagePresenter
 import com.intfocus.template.dashboard.mine.view.PushMessageView
 import com.intfocus.template.model.entity.PushMsgBean
 import com.intfocus.template.model.entity.User
-import com.intfocus.template.util.*
+import com.intfocus.template.util.FileUtil
+import com.intfocus.template.util.K
+import com.intfocus.template.util.PageLinkManage
+import com.intfocus.template.util.ToastUtils
 import kotlinx.android.synthetic.main.activity_show_push_message.*
 import rx.Subscription
 import java.io.File
@@ -47,8 +50,6 @@ class ShowPushMessageActivity : AppCompatActivity(), PushMessageView, ShowPushMe
      */
     lateinit var presenter: PushMessagePresenter
 
-    private var objectTypeName = arrayOf("生意概况", "报表", "工具箱")
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_show_push_message)
@@ -73,10 +74,10 @@ class ShowPushMessageActivity : AppCompatActivity(), PushMessageView, ShowPushMe
         presenter.loadData()
 
         // RxBus接收到推送信息，处理数据列表更新
-        subscribe = RxBusUtil.getInstance().toObservable(String::class.java)
-                .subscribe { msg ->
-                    if ("UpDatePushMessage" == msg) presenter.loadData()
-                }
+//        subscribe = RxBusUtil.getInstance().toObservable(String::class.java)
+//                .subscribe {
+//                    if ("UpDatePushMessage" == it) presenter.loadData()
+//                }
     }
 
     private fun initAdapter() {
@@ -126,7 +127,7 @@ class ShowPushMessageActivity : AppCompatActivity(), PushMessageView, ShowPushMe
         } else {
             templateId = pushMsg.template_id
         }
-        PageLinkManage.pageLink(this, pushMsg.title, pushMsg.url, pushMsg.obj_id, templateId, "2", paramsMappingBean, false)
+        PageLinkManage.pageLink(this, pushMsg.title, pushMsg.url, pushMsg.obj_id, templateId, "4", paramsMappingBean, false)
 
     }
 
