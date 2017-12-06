@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="8dp">
+
+    <TextView
+        android:id="@+id/tv_drop_options_title"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:text="标题"
+        android:textColor="@android:color/black"
+        android:textSize="14sp"
+        android:textStyle="bold"/>
+
+    <RelativeLayout
+        android:id="@+id/rl_options_select"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_below="@id/tv_drop_options_title"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/background_item_fillet">
+
+        <TextView
+            android:id="@+id/tv_drop_options_value"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toLeftOf="@+id/iv_drop_options_sign"
+            android:gravity="center|left"
+            android:paddingLeft="5dp"
+            android:text="这是一段测试文字"
+            android:textColor="@color/black"
+            android:textSize="12sp"/>
+
+        <ImageView
+            android:id="@+id/iv_drop_options_sign"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/down"/>
+    </RelativeLayout>
+
+</RelativeLayout>

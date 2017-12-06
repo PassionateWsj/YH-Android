@@ -1,0 +1,107 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:layout_marginTop="@dimen/space_default"
+              android:background="@color/white"
+              android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/size_curve_target_padding"
+        android:paddingLeft="@dimen/size_padding"
+        android:paddingRight="@dimen/size_padding"
+        android:paddingTop="@dimen/size_curve_target_padding">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tv_chart_table_xlabel"
+                style="@style/tv_unit_chart_title"
+                android:text="W3"/>
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_default_medium"
+            android:gravity="bottom">
+
+            <TextView
+                android:id="@+id/tv_chart_table_target1"
+                style="@style/tv_unit_chart_x"
+                android:text=""/>
+
+            <TextView
+                android:id="@+id/tv_chart_table_target2"
+                style="@style/tv_unit_chart_x"
+                android:text=""/>
+
+            <TableRow style="@style/tv_unit_chart_x">
+
+                <TextView
+                    android:id="@+id/tv_chart_table_rate"
+                    style="@style/tv_unit_chart_x"
+                    android:layout_width="wrap_content"
+                    android:layout_weight="0"
+                    android:paddingRight="@dimen/space_default_small_s"
+                    android:text=""/>
+
+                <com.intfocus.template.ui.view.RateCursor
+                    android:id="@+id/img_RateCursor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""/>
+            </TableRow>
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_default_small_xs">
+
+            <TextView
+                android:id="@+id/tv_chart_table_target1name"
+                style="@style/tv_unit_chart_m"
+                android:paddingRight="20dp"
+                android:gravity="left"
+                android:text="666666"
+                android:textSize="12sp"/>
+
+            <TextView
+                android:id="@+id/tv_chart_table_target2name"
+                style="@style/tv_unit_chart_m"
+                android:paddingRight="20dp"
+                android:gravity="left"
+                android:text="666666"
+                android:textSize="12sp"/>
+
+            <TextView
+                android:id="@+id/tv_chart_table_target3name"
+                android:paddingRight="20dp"
+                style="@style/tv_unit_chart_m"
+                android:gravity="left"
+                android:text="666666"
+                android:textSize="12sp"/>
+        </TableRow>
+    </LinearLayout>
+
+    <include
+        layout="@layout/devider_h"
+        android:layout_width="match_parent"
+        android:layout_height="1px"/>
+
+    <LinearLayout
+        android:id="@+id/ll_mdrpUnit_curvechart"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="@dimen/size_curve_padding_bottom"
+        android:layout_marginLeft="@dimen/size_padding"
+        android:layout_marginRight="@dimen/size_padding"
+        android:layout_marginTop="@dimen/size_curve_margin"
+        android:orientation="vertical"/>
+</LinearLayout>

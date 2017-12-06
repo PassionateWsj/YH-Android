@@ -27,7 +27,6 @@ app/build
 
 # Generated files
 bin/
-gen/
 .idea/
 
 # Gradle files
@@ -52,4 +51,7 @@ proguard/
 .navigation/
 
 # Android Studio captures folder
-captures/
+/captures/
+appChangeTo.sh
+/diy-style/
+ConfigConstants.kt

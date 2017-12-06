@@ -1,0 +1,68 @@
+[
+  {
+    "is_show": 1,
+    "is_list": 1,
+    "is_filter": 0,
+    "key": "test_01",
+    "is_must": 1,
+    "config": {
+      "sub_title": "",
+      "hint": "问题简单描述",
+      "title": "问题反馈标题",
+      "element_type": "",
+      "value": ""
+    },
+    "type": "single_text"
+  },
+  {
+    "is_show": 1,
+    "is_list": 1,
+    "is_filter": 0,
+    "key": "test_02",
+    "is_must": 1,
+    "config": {
+      "sub_title": "选择你要反馈的问题类型",
+      "hint": "",
+      "title": "问题类型",
+      "options": [
+        "显示错误",
+        "数据错误",
+        "应用闪退"
+      ],
+      "value": "显示错误"
+    },
+    "type": "drop_options"
+  },
+  {
+    "is_show": 1,
+    "is_list": 0,
+    "is_filter": 0,
+    "key": "test_03",
+    "is_must": 1,
+    "config": {
+      "sub_title": "选择你要反馈的问题类型",
+      "hint": "请描述您遇到的问题(1-500字)",
+      "title": "问题修改及改进意见",
+      "value": ""
+    },
+    "type": "multi_text"
+  },
+  {
+    "is_show": 1,
+    "is_list": 0,
+    "is_filter": 0,
+    "key": "test_04",
+    "is_must": 1,
+    "data": {
+      "sub_title": "",
+      "hint": "",
+      "title": "页面截图(最多3张)",
+      "value": [
+        "",
+        ""
+      ],
+      "limit": 3
+    },
+    "type": "upload_images"
+  }
+]
