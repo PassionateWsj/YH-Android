@@ -1,6 +1,6 @@
 package com.intfocus.template.dashboard.mine.view;
 
-import com.intfocus.template.dashboard.mine.bean.PushMessageBean;
+import com.intfocus.template.model.entity.PushMsgBean;
 
 import java.util.List;
 
@@ -17,5 +17,5 @@ import java.util.List;
 public interface PushMessageView {
     void onResultFailure();
 
-    void onResultSuccess(List<PushMessageBean> data);
+    void onResultSuccess(List<PushMsgBean> data);
 }

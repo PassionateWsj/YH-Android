@@ -1,6 +1,5 @@
 package com.intfocus.template.dashboard.mine.widget.user
 
-//import org.xutils.image.ImageOptions
 import android.app.Activity.RESULT_CANCELED
 import android.content.Context
 import android.content.Intent
@@ -26,12 +25,6 @@ import com.bumptech.glide.request.target.BitmapImageViewTarget
 import com.google.gson.Gson
 import com.intfocus.template.ConfigConstants
 import com.intfocus.template.R
-import com.intfocus.template.constant.Params.ACTION
-import com.intfocus.template.constant.Params.BANNER_NAME
-import com.intfocus.template.constant.Params.LINK
-import com.intfocus.template.constant.Params.OBJECT_ID
-import com.intfocus.template.constant.Params.OBJECT_TYPE
-import com.intfocus.template.constant.Params.TEMPLATE_ID
 import com.intfocus.template.constant.Params.USER_NUM
 import com.intfocus.template.constant.ToastColor
 import com.intfocus.template.dashboard.mine.activity.*
@@ -42,7 +35,8 @@ import com.intfocus.template.login.LoginActivity
 import com.intfocus.template.model.response.login.RegisterResult
 import com.intfocus.template.model.response.mine_page.UserInfoResult
 import com.intfocus.template.subject.one.UserContract
-import com.intfocus.template.subject.two.WebPageActivity
+import com.intfocus.template.subject.one.UserImpl
+import com.intfocus.template.subject.one.UserPresenter
 import com.intfocus.template.ui.BaseFragment
 import com.intfocus.template.util.ActionLogUtil
 import com.intfocus.template.util.DisplayUtil
@@ -54,7 +48,6 @@ import kotlinx.android.synthetic.main.fragment_user.*
 import kotlinx.android.synthetic.main.item_mine_user_top.*
 import kotlinx.android.synthetic.main.items_single_value.*
 import kotlinx.android.synthetic.main.yh_custom_user.*
-import org.json.JSONObject
 import java.io.File
 
 /**
@@ -75,6 +68,11 @@ class UserFragment : BaseFragment(), UserContract.View {
     private val CODE_CAMERA_REQUEST = 0xa1
     private val CODE_RESULT_REQUEST = 0xa2
     private var rl_logout_confirm: RelativeLayout? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        UserPresenter(UserImpl.getInstance(), this)
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         mUserSP = ctx.getSharedPreferences("UserBean", Context.MODE_PRIVATE)
@@ -122,7 +120,7 @@ class UserFragment : BaseFragment(), UserContract.View {
                                 .override(DisplayUtil.dip2px(ctx, 60f), DisplayUtil.dip2px(ctx, 60f))
                                 .into(object : BitmapImageViewTarget(iv_user_icon) {
                                     override fun setResource(resource: Bitmap?) {
-                                        val circularBitmapDrawable = RoundedBitmapDrawableFactory.create(context!!.resources, resource)
+                                        val circularBitmapDrawable = RoundedBitmapDrawableFactory.create(ctx.resources, resource)
                                         circularBitmapDrawable.isCircular = true
                                         iv_user_icon.setImageDrawable(circularBitmapDrawable)
                                     }
@@ -135,7 +133,7 @@ class UserFragment : BaseFragment(), UserContract.View {
 
         iv_user_icon.setOnClickListener {
             if (ConfigConstants.HEAD_ICON_UPLOAD_SUPPORT) {
-                showIconSelectPopWindow(this.context!!)
+                showIconSelectPopWindow()
             }
         }
         rl_password_alter.setOnClickListener { startPassWordAlterActivity() }
@@ -143,7 +141,7 @@ class UserFragment : BaseFragment(), UserContract.View {
         rl_setting.setOnClickListener { startSettingActivity() }
         rl_favorite.setOnClickListener { startFavoriteActivity() }
         rl_message.setOnClickListener { startMessageActivity() }
-        rl_logout.setOnClickListener { showLogoutPopupWindow(this.context!!) }
+        rl_logout.setOnClickListener { showLogoutPopupWindow() }
         rl_user_location.setOnClickListener {
             if (ConfigConstants.USER_GROUP_CONTENT) {
                 startUserLocationPage()
@@ -193,7 +191,6 @@ class UserFragment : BaseFragment(), UserContract.View {
         tv_beyond_number.text = user.surpass_percentage.toString()
         tv_user_role.text = user.role_name
         tv_mine_user_group_value.text = user.group_name
-//            x.image().bind(iv_user_icon, user.gravatar, imageOptions)
         Glide.with(ctx)
                 .load(user.gravatar)
                 .asBitmap()
@@ -202,7 +199,7 @@ class UserFragment : BaseFragment(), UserContract.View {
                 .override(DisplayUtil.dip2px(ctx, 60f), DisplayUtil.dip2px(ctx, 60f))
                 .into(object : BitmapImageViewTarget(iv_user_icon) {
                     override fun setResource(resource: Bitmap?) {
-                        val circularBitmapDrawable = RoundedBitmapDrawableFactory.create(context!!.resources, resource)
+                        val circularBitmapDrawable = RoundedBitmapDrawableFactory.create(ctx.resources, resource)
                         circularBitmapDrawable.isCircular = true
                         iv_user_icon.setImageDrawable(circularBitmapDrawable)
                     }
@@ -211,7 +208,7 @@ class UserFragment : BaseFragment(), UserContract.View {
     }
 
     private fun startPassWordAlterActivity() {
-        val intent = Intent(context, AlterPasswordActivity::class.java)
+        val intent = Intent(ctx, AlterPasswordActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
         startActivity(intent)
 
@@ -252,7 +249,7 @@ class UserFragment : BaseFragment(), UserContract.View {
 
                     override fun onBusinessNext(data: RegisterResult) {
                         if (data.data!!.contains("http")) {
-                            PageLinkManage.pageLink(context!!, "归属部门", data.data!!)
+                            PageLinkManage.pageLink(ctx!!, "归属部门", data.data!!)
                         } else {
                             ToastUtils.show(ctx, data.data!!)
                         }
@@ -265,8 +262,8 @@ class UserFragment : BaseFragment(), UserContract.View {
     /**
      * 退出登录选择窗
      */
-    private fun showLogoutPopupWindow(mContext: Context) {
-        val contentView = LayoutInflater.from(mContext).inflate(R.layout.popup_logout, null)
+    private fun showLogoutPopupWindow() {
+        val contentView = LayoutInflater.from(ctx).inflate(R.layout.popup_logout, null)
         //设置弹出框的宽度和高度
         val popupWindow = PopupWindow(contentView,
                 ViewGroup.LayoutParams.MATCH_PARENT,
@@ -356,8 +353,8 @@ class UserFragment : BaseFragment(), UserContract.View {
     /**
      * 显示头像选择菜单
      */
-    private fun showIconSelectPopWindow(mContext: Context) {
-        val contentView = LayoutInflater.from(mContext).inflate(R.layout.popup_mine_icon_select, null)
+    private fun showIconSelectPopWindow() {
+        val contentView = LayoutInflater.from(ctx).inflate(R.layout.popup_mine_icon_select, null)
         //设置弹出框的宽度和高度
         val popupWindow = PopupWindow(contentView,
                 ViewGroup.LayoutParams.MATCH_PARENT,
@@ -374,7 +371,7 @@ class UserFragment : BaseFragment(), UserContract.View {
 
         contentView.findViewById<RelativeLayout>(R.id.rl_camera).setOnClickListener {
             // 打开相机
-            startActivityForResult(launchCamera(context), CODE_CAMERA_REQUEST)
+            startActivityForResult(launchCamera(ctx), CODE_CAMERA_REQUEST)
             popupWindow.dismiss()
         }
         contentView.findViewById<RelativeLayout>(R.id.rl_gallery).setOnClickListener {

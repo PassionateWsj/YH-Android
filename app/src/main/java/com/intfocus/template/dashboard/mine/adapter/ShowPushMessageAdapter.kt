@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.intfocus.template.R
-import com.intfocus.template.dashboard.mine.bean.PushMessageBean
+import com.intfocus.template.model.entity.PushMsgBean
 import com.zbl.lib.baseframe.utils.ToastUtil
 
 /**
@@ -24,14 +24,14 @@ class ShowPushMessageAdapter(val mContext: Context, val listener: OnPushMessageL
     /**
      * 推送消息 bean 集合
      */
-    var mData = mutableListOf<PushMessageBean>()
+    var mData = mutableListOf<PushMsgBean>()
 
     override fun onBindViewHolder(holder: MessageHolder?, position: Int) {
         // 加载数据
         if (mData.size > 0) {
 
-            holder!!.tvPushMsgTitle.text = mData[position].title
-            holder.tvPushMsgContent.text = mData[position].body_text
+            holder!!.tvPushMsgTitle.text = mData[position].body_title
+            holder.tvPushMsgContent.text = mData[position].text
             holder.tvPushMsgTime.text = mData[position].debug_timestamp.substring(0, 19)
 
             holder.llPushMsgItem.setOnClickListener {
@@ -47,7 +47,7 @@ class ShowPushMessageAdapter(val mContext: Context, val listener: OnPushMessageL
 
     override fun getItemCount(): Int = mData.size
 
-    fun setData(data: List<PushMessageBean>) {
+    fun setData(data: List<PushMsgBean>) {
         mData.clear()
         mData.addAll(data)
         notifyDataSetChanged()

@@ -52,7 +52,7 @@ class WebPageActivity : BaseActivity(), WebPageContract.View, OnPageErrorListene
     lateinit var groupId: String
     lateinit var url: String
     lateinit var objectType: String
-    private lateinit var webView: WebView
+    private var webView: WebView?=null
 
     /**
      * 图片上传接收参数
@@ -117,7 +117,7 @@ class WebPageActivity : BaseActivity(), WebPageContract.View, OnPageErrorListene
 
     override fun onDestroy() {
         super.onDestroy()
-        webView.destroy()
+        webView?.destroy()
     }
 
     override fun dismissActivity(v: View) {
@@ -168,31 +168,31 @@ class WebPageActivity : BaseActivity(), WebPageContract.View, OnPageErrorListene
         webView = WebView(this)
         browser.addView(webView)
 
-        val webSettings = webView.settings
+        val webSettings = webView?.settings
         // 允许 JS 执行
-        webSettings.javaScriptEnabled = true
-        webView.addJavascriptInterface(CustomJavaScriptsInterface(this), JAVASCRIPT_INTERFACE_NAME)
+        webSettings?.javaScriptEnabled = true
+        webView?.addJavascriptInterface(CustomJavaScriptsInterface(this), JAVASCRIPT_INTERFACE_NAME)
         // 缓存模式为无缓存
-        webSettings.cacheMode = WebSettings.LOAD_NO_CACHE
-        webSettings.domStorageEnabled = true
+        webSettings?.cacheMode = WebSettings.LOAD_NO_CACHE
+        webSettings?.domStorageEnabled = true
         // 允许访问文件
-        webSettings.allowFileAccess = true
+        webSettings?.allowFileAccess = true
         // 使用 WebView 推荐的窗口
-        webSettings.useWideViewPort = true
+        webSettings?.useWideViewPort = true
         // 设置网页自适应屏幕大小
-        webSettings.loadWithOverviewMode = true
+        webSettings?.loadWithOverviewMode = true
         // 显示网页滚动条
-        webView.isHorizontalScrollBarEnabled = false
+        webView?.isHorizontalScrollBarEnabled = false
         // 添加 javascript 接口
-        webView.addJavascriptInterface(null, null)
+        webView?.addJavascriptInterface(null, null)
         // 设置是否支持缩放
-        webSettings.setSupportZoom(false)
+        webSettings?.setSupportZoom(false)
         // 设置是否支持对网页进行长按操作
-        webView.setOnKeyListener { _, _, _ -> return@setOnKeyListener false }
+        webView?.setOnKeyListener { _, _, _ -> return@setOnKeyListener false }
         // 设置网页默认编码
-        webSettings.defaultTextEncodingName = "utf-8"
+        webSettings?.defaultTextEncodingName = "utf-8"
 
-        webView.webChromeClient = object : WebChromeClient() {
+        webView?.webChromeClient = object : WebChromeClient() {
             // For Android  > 4.1.1
             override fun openFileChooser(uploadMsg: ValueCallback<Uri>, acceptType: String?, capture: String?) {
                 uploadFile = uploadMsg
@@ -209,7 +209,7 @@ class WebPageActivity : BaseActivity(), WebPageContract.View, OnPageErrorListene
             }
         }
 
-        webView.webViewClient = object : WebViewClient() {
+        webView?.webViewClient = object : WebViewClient() {
             override fun shouldOverrideUrlLoading(p0: WebView?, p1: String?): Boolean {
                 p0!!.loadUrl(url)
                 return true
@@ -246,7 +246,7 @@ class WebPageActivity : BaseActivity(), WebPageContract.View, OnPageErrorListene
         if (url.toLowerCase().endsWith(".pdf")) {
             showPDF(url)
         }
-        webView.loadUrl(url)
+        webView?.loadUrl(url)
     }
 
     /**
@@ -305,7 +305,7 @@ class WebPageActivity : BaseActivity(), WebPageContract.View, OnPageErrorListene
     }
 
     override fun goBack() {
-        webView.goBack()
+        webView?.goBack()
     }
 
     private fun imageSelect() {

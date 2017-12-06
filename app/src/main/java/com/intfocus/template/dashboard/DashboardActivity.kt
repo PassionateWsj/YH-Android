@@ -17,7 +17,6 @@ import android.widget.LinearLayout
 import com.google.gson.Gson
 import com.intfocus.template.ConfigConstants
 import com.intfocus.template.R
-import com.intfocus.template.constant.Params.ACTION
 import com.intfocus.template.constant.Params.STORE
 import com.intfocus.template.constant.Params.STORE_ID
 import com.intfocus.template.dashboard.adapter.DashboardFragmentAdapter
@@ -34,10 +33,6 @@ import com.intfocus.template.model.entity.DashboardItem
 import com.intfocus.template.model.response.scanner.StoreItem
 import com.intfocus.template.model.response.scanner.StoreListResult
 import com.intfocus.template.scanner.BarCodeScannerActivity
-import com.intfocus.template.subject.one.ReportImpl
-import com.intfocus.template.subject.one.ReportPresenter
-import com.intfocus.template.subject.one.WorkBoxImpl
-import com.intfocus.template.subject.one.WorkBoxPresenter
 import com.intfocus.template.ui.BaseActivity
 import com.intfocus.template.ui.view.NoScrollViewPager
 import com.intfocus.template.ui.view.TabView
@@ -46,7 +41,6 @@ import com.intfocus.template.util.PageLinkManage
 import com.intfocus.template.util.ToastUtils
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import org.json.JSONObject
 import rx.Observable
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
@@ -97,12 +91,10 @@ class DashboardActivity : BaseActivity(), ViewPager.OnPageChangeListener {
         if (ConfigConstants.REPORT_SHOW) {
             itemFragment = ReportFragment()
             initTabShowAndPagerData(mTabReport!!, mTabView, itemFragment, mPagerData)
-            ReportPresenter(ReportImpl.getInstance(), itemFragment)
         }
         if (ConfigConstants.WORKBOX_SHOW) {
             itemFragment = WorkBoxFragment()
             initTabShowAndPagerData(mTabWorkBox!!, mTabView, itemFragment, mPagerData)
-            WorkBoxPresenter(WorkBoxImpl.getInstance(), itemFragment)
         }
         initTabShowAndPagerData(mTabMessage!!, mTabView, MineFragment(), mPagerData)
     }

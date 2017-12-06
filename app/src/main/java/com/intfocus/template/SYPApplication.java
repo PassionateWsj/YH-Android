@@ -43,8 +43,6 @@ import java.util.concurrent.PriorityBlockingQueue;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 
-import static com.intfocus.template.constant.Params.IS_LOGIN;
-
 /**
  * @author lijunjie
  * @date 16/1/15
@@ -167,28 +165,15 @@ public class SYPApplication extends Application {
             public Notification getNotification(Context context, UMessage uMessage) {
                 PushMsgBean pushMsg = com.alibaba.fastjson.JSONObject.parseObject(uMessage.custom, PushMsgBean.class);
                 pushMsg.setTicker(uMessage.ticker);
-                pushMsg.setTitle(uMessage.title);
+                pushMsg.setBody_title(uMessage.title);
                 pushMsg.setText(uMessage.text);
                 pushMsg.setNew_msg(true);
                 DaoUtil.INSTANCE.getPushMsgDao().insert(pushMsg);
-//
-//                Notification.Builder builder = new Notification.Builder(context);
-//                RemoteViews myNotificationView = new RemoteViews(context.getPackageName(),
-//                        R.layout.upush_notification);
-//                myNotificationView.setTextViewText(R.id.notification_title, uMessage.title);
-//                myNotificationView.setTextViewText(R.id.notification_text, uMessage.text);
-//                myNotificationView.setImageViewBitmap(R.mipmap.ic_launcher,
-//                        getLargeIcon(context, uMessage));
-//                myNotificationView.setImageViewResource(R.mipmap.ic_launcher,
-//                        getSmallIconId(context, uMessage));
-//                builder.setContent(myNotificationView)
-//                        .setSmallIcon(getSmallIconId(context, uMessage))
-//                        .setTicker(uMessage.ticker)
-//                        .setAutoCancel(true);
 
-                return showNotifications(context,uMessage);
+                return showNotifications(context, uMessage);
 
             }
+
             /**
              * 自定义通知布局
              *
@@ -196,7 +181,6 @@ public class SYPApplication extends Application {
              * @param msg     消息体
              */
             private Notification showNotifications(Context context, UMessage msg) {
-//                NotificationManager mNotificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
                 NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
                 builder.setContentTitle(msg.title)
                         .setContentText(msg.text)
@@ -204,16 +188,13 @@ public class SYPApplication extends Application {
                         .setWhen(System.currentTimeMillis())
                         .setSmallIcon(R.mipmap.ic_launcher)
                         .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher))
-//                        .setColor(Color.parseColor("#41b5ea"))
                         .setDefaults(Notification.DEFAULT_ALL)
                         .setAutoCancel(true);
 
-//                mNotificationManager.notify(100, builder.build());
                 return builder.build();
             }
         });
         mPushAgent.setNotificationClickHandler(notificationClickHandler);
-//        mPushAgent.setPushIntentServiceClass(UmengPushIntentService.class);
     }
 
     private void initXutils() {
@@ -229,16 +210,25 @@ public class SYPApplication extends Application {
             PushMsgBean pushMsg = com.alibaba.fastjson.JSONObject.parseObject(uMessage.custom, PushMsgBean.class);
             HashMap<String, String> paramsMappingBean = JSONObject.parseObject(pushMsg.getParams_mapping(), new TypeReference<HashMap<String, String>>() {
             });
-            boolean isLogin = getApplicationContext().getSharedPreferences("UserBean", MODE_PRIVATE).getBoolean(IS_LOGIN, false);
-            if (true) {
-                PageLinkManage.INSTANCE.pageLink(context, pushMsg.getObj_title(), pushMsg.getObj_link(), pushMsg.getObj_id(), pushMsg.getTemplate_id(), pushMsg.getObj_type(), paramsMappingBean,true);
+            String templateId = "";
+            if (pushMsg.getTemplate_id() == null || "".equals(pushMsg.getTemplate_id())) {
+                String[] temp = pushMsg.getUrl().split("/");
+                for (int i = 0; i < temp.length; i++) {
+                    if ("template".equals(temp[i]) && i + 1 < temp.length) {
+                        templateId = temp[i + 1];
+                        break;
+                    }
+                }
+            } else {
+                templateId = pushMsg.getTemplate_id();
             }
-//            Bundle bundle = new Bundle();
-//            bundle.putString("message", uMessage.custom);
-//            bundle.putString("message_body_title", uMessage.title);
-//            bundle.putString("message_body_text", uMessage.text);
-//            intent.putExtra("msgData", bundle);
-//            startActivity(intent);
+//            SharedPreferences userSP = context.getSharedPreferences("UserBean", Context.MODE_PRIVATE);
+//            String groupID = userSP.getString(GROUP_ID, "0");
+//            String userNum = userSP.getString(USER_NUM, "");
+//
+//            if () {
+//            }
+            PageLinkManage.INSTANCE.pageLink(context, pushMsg.getTitle(), pushMsg.getUrl(), pushMsg.getObj_id(), templateId,"2", paramsMappingBean, true);
         }
     };
 

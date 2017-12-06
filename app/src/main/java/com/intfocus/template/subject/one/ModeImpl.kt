@@ -89,7 +89,8 @@ class ModeImpl : ReportModelImpl() {
                 observable = Observable.just(uuid)
                         .subscribeOn(Schedulers.io())
                         .map {
-                            generatePageList(queryDateBase(it))
+                            pageTitleList = generatePageList(queryDateBase(it))
+                            pageTitleList
                         }
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(object : Subscriber<List<String>>() {

@@ -92,9 +92,10 @@ object PageLinkManage {
                 TEMPLATE_ONE, TEMPLATE_TEN -> {
                     savePageLink(context, objTitle, link, objectId, templateId, objectType)
                     intent = Intent(context, NativeReportActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-                    if (fromPushMsg) {
-                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                    intent.flags = if (fromPushMsg) {
+                        Intent.FLAG_ACTIVITY_NEW_TASK
+                    } else {
+                        Intent.FLAG_ACTIVITY_SINGLE_TOP
                     }
                     intent.putExtra(GROUP_ID, groupID)
                     intent.putExtra(TEMPLATE_ID, templateId)
@@ -107,6 +108,9 @@ object PageLinkManage {
                 TEMPLATE_TWO, TEMPLATE_FOUR -> {
                     savePageLink(context, objTitle, link, objectId, templateId, objectType)
                     intent = Intent(context, WebPageActivity::class.java)
+                    if (fromPushMsg) {
+                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                    }
                     intent.putExtra(GROUP_ID, groupID)
                     intent.putExtra(TEMPLATE_ID, templateId)
                     intent.putExtra(BANNER_NAME, objTitle)
@@ -118,7 +122,11 @@ object PageLinkManage {
                 TEMPLATE_THREE -> {
                     savePageLink(context, objTitle, link, objectId, templateId, objectType)
                     intent = Intent(context, MultiIndexActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+                    intent.flags = if (fromPushMsg) {
+                        Intent.FLAG_ACTIVITY_NEW_TASK
+                    } else {
+                        Intent.FLAG_ACTIVITY_SINGLE_TOP
+                    }
                     intent.putExtra(GROUP_ID, groupID)
                     intent.putExtra(TEMPLATE_ID, templateId)
                     intent.putExtra(BANNER_NAME, objTitle)
@@ -130,7 +138,11 @@ object PageLinkManage {
                 TEMPLATE_NINE -> {
                     savePageLink(context, objTitle, link, objectId, templateId, objectType)
                     intent = Intent(context, CollectionActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+                    intent.flags = if (fromPushMsg) {
+                        Intent.FLAG_ACTIVITY_NEW_TASK
+                    } else {
+                        Intent.FLAG_ACTIVITY_SINGLE_TOP
+                    }
                     intent.putExtra(GROUP_ID, groupID)
                     intent.putExtra(TEMPLATE_ID, templateId)
                     intent.putExtra(BANNER_NAME, objTitle)
@@ -146,6 +158,9 @@ object PageLinkManage {
                     }
                     savePageLink(context, objTitle, link, objectId, templateId, objectType)
                     intent = Intent(context, WebPageActivity::class.java)
+                    if (fromPushMsg) {
+                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                    }
                     intent.putExtra(GROUP_ID, groupID)
                     intent.putExtra(TEMPLATE_ID, templateId)
                     intent.putExtra(BANNER_NAME, objTitle)
@@ -157,14 +172,15 @@ object PageLinkManage {
                 SCANNER -> {
                     var urlString = link
                     for ((key, value) in paramsMappingBean) {
-//                        if (key == "user_num") {
-//                            continue
-//                        }
                         urlString = splitUrl(userSP, urlString, key, value)
                     }
                     savePageLink(context, objTitle, urlString, objectId, templateId, objectType)
                     intent = Intent(context, BarCodeScannerActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+                    intent.flags = if (fromPushMsg) {
+                        Intent.FLAG_ACTIVITY_NEW_TASK
+                    } else {
+                        Intent.FLAG_ACTIVITY_SINGLE_TOP
+                    }
                     intent.putExtra(LINK, urlString)
                     context.startActivity(intent)
                 }

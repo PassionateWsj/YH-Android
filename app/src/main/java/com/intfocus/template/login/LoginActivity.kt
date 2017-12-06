@@ -112,8 +112,8 @@ class LoginActivity : FragmentActivity() {
 
         loginWithLastPwd = mSettingSP!!.getBoolean("keep_pwd", false)
         // 显示记住用户名称
-        if ("" != mUserSP!!.getString("user_num", "")) {
-            etUsername.setText(mUserSP!!.getString("user_num", ""))
+        if ("" != mUserSP!!.getString(USER_NUM, "")) {
+            etUsername.setText(mUserSP!!.getString(USER_NUM, ""))
 //            loginWithLastUser = true
         }
         if (loginWithLastPwd) {
@@ -336,13 +336,6 @@ class LoginActivity : FragmentActivity() {
      * 登录按钮点击事件  cb_login_keep_pwd
      */
     fun actionSubmit(v: View) {
-//        val pushMsgList = DaoUtil.getPushMsgDao().queryBuilder().list()
-//        val pushMsg = pushMsgList[0]
-//        val paramsMappingBean = com.alibaba.fastjson.JSONObject.parseObject(pushMsg.params_mapping, object : TypeReference<HashMap<String, String>>() {
-//        })
-        PageLinkManage.pageLink(this, "第二集群生鲜销售概况", "/mobile/v2/group/%@/template/1/report/7",
-                "7","1" , "3", hashMapOf(), true)
-        return
         try {
             userNum = etUsername.text.toString()
             userPass = etPassword.text.toString()

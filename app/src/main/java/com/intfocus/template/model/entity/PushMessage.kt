@@ -10,13 +10,14 @@ package com.intfocus.template.model.entity
  * ****************************************************
  */
 class PushMessage {
-    /**{
+    /**
+     *{
      *  "msg_id":"ul42751150157385157100",
      *  "display_type":"notification",
      *  "random_min":0,
      *  "body":{
      *      "ticker":"消息中心(7851)",
-     *      "title":"消息中心(7851)",
+     *      "body_title":"消息中心(7851)",
      *      "text":"野竹分青霭，飞泉挂碧峰",
      *      "sound":"default",
      *      "play_sound":"true",
@@ -25,7 +26,7 @@ class PushMessage {
      *      "after_open":"go_custom",
      *      "custom":{
      *          "type":"report",
-     *          "title":"第二集群销售额",
+     *          "body_title":"第二集群销售额",
      *          "url":"/mobile/v2/group/%@/template/4/report/8",
      *          "obj_id":8,
      *          "obj_type":1,
