@@ -1,8 +1,8 @@
 package com.intfocus.template.model.entity;
 
 import org.greenrobot.greendao.annotation.Entity;
-import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.Generated;
+import org.greenrobot.greendao.annotation.Id;
 
 /**
  * ****************************************************
@@ -61,6 +61,7 @@ public class PushMsgBean {
 
     String ticker;
     String body_title;
+    String user_num;
     String text;
 
     String type;
@@ -73,14 +74,15 @@ public class PushMsgBean {
 
     boolean new_msg = true;
 
-    @Generated(hash = 1125977504)
-    public PushMsgBean(Long id, String ticker, String body_title, String text,
-            String type, String title, String url, String obj_id,
+    @Generated(hash = 1469926615)
+    public PushMsgBean(Long id, String ticker, String body_title, String user_num,
+            String text, String type, String title, String url, String obj_id,
             String template_id, String params_mapping, String debug_timestamp,
             boolean new_msg) {
         this.id = id;
         this.ticker = ticker;
         this.body_title = body_title;
+        this.user_num = user_num;
         this.text = text;
         this.type = type;
         this.title = title;
@@ -190,6 +192,14 @@ public class PushMsgBean {
 
     public void setNew_msg(boolean new_msg) {
         this.new_msg = new_msg;
+    }
+
+    public String getUser_num() {
+        return this.user_num;
+    }
+
+    public void setUser_num(String user_num) {
+        this.user_num = user_num;
     }
 
 

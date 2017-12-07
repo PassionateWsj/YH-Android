@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
+import com.alibaba.fastjson.TypeReference
 import com.intfocus.template.ConfigConstants
 import com.intfocus.template.constant.Params.ACTION
 import com.intfocus.template.constant.Params.BANNER_NAME
@@ -14,9 +15,11 @@ import com.intfocus.template.constant.Params.OBJECT_ID
 import com.intfocus.template.constant.Params.OBJECT_TITLE
 import com.intfocus.template.constant.Params.OBJECT_TYPE
 import com.intfocus.template.constant.Params.TEMPLATE_ID
+import com.intfocus.template.constant.Params.USER_NUM
 import com.intfocus.template.dashboard.DashboardActivity
 import com.intfocus.template.dashboard.mine.activity.ShowPushMessageActivity
 import com.intfocus.template.model.entity.DashboardItem
+import com.intfocus.template.model.entity.PushMsgBean
 import com.intfocus.template.scanner.BarCodeScannerActivity
 import com.intfocus.template.subject.nine.CollectionActivity
 import com.intfocus.template.subject.one.NativeReportActivity
@@ -67,6 +70,33 @@ object PageLinkManage {
         } else {
             ToastUtils.show(context, "没有指定链接")
         }
+    }
+
+    fun pageLink(context: Context, pushMsg: PushMsgBean) {
+        val paramsMappingBean = com.alibaba.fastjson.JSONObject.parseObject(pushMsg.params_mapping, object : TypeReference<java.util.HashMap<String, String>>() {
+        })
+        var templateId = ""
+        if (pushMsg.template_id == null || "" == pushMsg.template_id) {
+            val temp = pushMsg.url.split("/")
+            for (i in 0..temp.size) {
+                if ("template" == temp[i] && i + 1 < temp.size) {
+                    templateId = temp[i + 1]
+                    break
+                }
+            }
+        } else {
+            templateId = pushMsg.template_id
+        }
+
+        val userSP = context.getSharedPreferences("UserBean", Context.MODE_PRIVATE)
+        val userNum = userSP.getString(USER_NUM, "")
+
+        if (userNum != "") {
+            pageLink(context, pushMsg.title, pushMsg.url, pushMsg.obj_id, templateId, "4", paramsMappingBean, true)
+        } else {
+            ToastUtils.show(context, "请先登录")
+        }
+
     }
 
     /**
@@ -148,7 +178,7 @@ object PageLinkManage {
                     if (fromPushMsg) {
                         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
                     } else {
-                    savePageLink(context, objTitle, link, objectId, templateId, objectType)
+                        savePageLink(context, objTitle, link, objectId, templateId, objectType)
                     }
                     intent.putExtra(GROUP_ID, groupID)
                     intent.putExtra(TEMPLATE_ID, templateId)
@@ -164,7 +194,7 @@ object PageLinkManage {
                     intent.flags = if (fromPushMsg) {
                         Intent.FLAG_ACTIVITY_NEW_TASK
                     } else {
-                    savePageLink(context, objTitle, link, objectId, templateId, objectType)
+                        savePageLink(context, objTitle, link, objectId, templateId, objectType)
                         Intent.FLAG_ACTIVITY_SINGLE_TOP
                     }
                     intent.putExtra(GROUP_ID, groupID)
