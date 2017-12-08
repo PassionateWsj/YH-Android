@@ -87,7 +87,9 @@ object PageLinkManage {
         } else {
             templateId = pushMsg.template_id
         }
-
+        if (templateId=="") {
+            return
+        }
         val userSP = context.getSharedPreferences("UserBean", Context.MODE_PRIVATE)
         val userNum = userSP.getString(USER_NUM, "")
 
