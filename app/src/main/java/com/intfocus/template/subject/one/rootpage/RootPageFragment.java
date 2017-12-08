@@ -23,8 +23,6 @@ import com.intfocus.template.subject.one.module.tables.TableImpl;
 import com.intfocus.template.subject.one.module.tables.root.TableRootPresenter;
 import com.intfocus.template.subject.templateone.curvechart.ChartImpl;
 import com.intfocus.template.subject.templateone.curvechart.ChartPresenter;
-import com.intfocus.template.subject.templateone.rootpage.RootPageContract;
-import com.intfocus.template.subject.templateone.rootpage.RootPageImpl;
 import com.intfocus.template.subject.templateone.singlevalue.SingleValueImpl;
 import com.intfocus.template.subject.templateone.singlevalue.SingleValuePresenter;
 import com.intfocus.template.model.entity.Report;

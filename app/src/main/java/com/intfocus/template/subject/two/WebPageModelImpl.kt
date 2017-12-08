@@ -3,10 +3,11 @@ package com.intfocus.template.subject.two
 import android.util.Log
 import com.intfocus.template.SYPApplication.globalContext
 import com.intfocus.template.subject.model.ReportModelImpl
-import com.intfocus.template.subject.nine.callback.LoadDataCallback
+import com.intfocus.template.model.callback.LoadDataCallback
 import com.intfocus.template.ConfigConstants
 import com.intfocus.template.constant.Params.BODY
 import com.intfocus.template.constant.Params.CODE
+import com.intfocus.template.constant.Params.PATH
 import com.intfocus.template.util.*
 import com.intfocus.template.util.ApiHelper.deleteHeadersFile
 import rx.Observable
@@ -77,14 +78,17 @@ class WebPageModelImpl : ReportModelImpl() {
         observable = Observable.just(jsFileName)
                 .subscribeOn(Schedulers.io())
                 .map {
-                    val reportPath: String
+                    var reportPath: String
 
                     val htmlResponse = generateHtml()
                     reportPath = htmlResponse["path"] ?: ""
-                    if (reportPath.isNotEmpty()) {
+                    if (File(reportPath).exists()) {
                         if (check(jsUrl)) {
                             getData(callback)
                         }
+                    }
+                    else {
+                        reportPath = FileUtil.sharedPath(globalContext) + "/loading/400.html"
                     }
 
                     reportPath
@@ -192,6 +196,7 @@ class WebPageModelImpl : ReportModelImpl() {
         val statusCode = response[CODE] ?: "400"
         var htmlContent = response[BODY] ?: ""
         retMap.put(CODE, statusCode)
+        retMap.put(PATH, htmlPath)
 
         when (statusCode) {
             "200" -> {
@@ -202,10 +207,6 @@ class WebPageModelImpl : ReportModelImpl() {
                 htmlContent = htmlContent.replace("/stylesheets/", String.format("%s/stylesheets/", relativeAssetsPath))
                 htmlContent = htmlContent.replace("/images/", String.format("%s/images/", relativeAssetsPath))
                 FileUtil.writeFile(htmlPath, htmlContent)
-                retMap.put("path", htmlPath)
-            }
-            "304" -> {
-                retMap.put("path", htmlPath)
             }
             else -> {
             }

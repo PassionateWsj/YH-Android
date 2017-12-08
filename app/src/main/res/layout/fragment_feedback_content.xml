@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <TextView
+        android:id="@+id/tv_feedback_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/feedback_state"
+        android:textColor="@color/co3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <ImageView
+        android:id="@+id/iv_state_3"
+        android:layout_width="23dp"
+        android:layout_height="23dp"
+        android:layout_marginEnd="50dp"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_state_2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/state_feedback_false"/>
+
+    <ImageView
+        android:id="@+id/iv_state_2"
+        android:layout_width="23dp"
+        android:layout_height="23dp"
+        android:layout_marginTop="19dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_feedback_title"
+        app:srcCompat="@drawable/state_feedback_true"/>
+
+    <ImageView
+        android:id="@+id/iv_state_1"
+        android:layout_width="23dp"
+        android:layout_height="23dp"
+        android:layout_marginStart="50dp"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_state_2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/state_feedback_true"/>
+
+    <ImageView
+        android:id="@+id/imageView10"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_state_1"
+        app:layout_constraintEnd_toStartOf="@+id/iv_state_2"
+        app:layout_constraintStart_toEndOf="@+id/iv_state_1"
+        app:layout_constraintTop_toTopOf="@+id/iv_state_1"
+        app:srcCompat="@drawable/divider_blue"/>
+
+    <ImageView
+        android:id="@+id/imageView12"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_state_3"
+        app:layout_constraintEnd_toStartOf="@+id/iv_state_3"
+        app:layout_constraintStart_toEndOf="@+id/iv_state_2"
+        app:layout_constraintTop_toTopOf="@+id/iv_state_3"
+        app:srcCompat="@drawable/divider_blue"/>
+
+    <TextView
+        android:id="@+id/tv_state_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/feedback_state_1"
+        android:textColor="@color/co6"
+        app:layout_constraintBaseline_toBaselineOf="@+id/tv_state_2"
+        app:layout_constraintEnd_toStartOf="@+id/imageView10"
+        app:layout_constraintStart_toStartOf="@+id/iv_state_1"/>
+
+    <TextView
+        android:id="@+id/tv_state_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/feedback_state_2"
+        android:textColor="@color/co6"
+        app:layout_constraintEnd_toEndOf="@+id/iv_state_2"
+        app:layout_constraintStart_toStartOf="@+id/iv_state_2"
+        app:layout_constraintTop_toBottomOf="@+id/iv_state_2"/>
+
+    <TextView
+        android:id="@+id/tv_state_3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/feedback_state_3"
+        android:textColor="@color/co6"
+        app:layout_constraintBaseline_toBaselineOf="@+id/tv_state_2"
+        app:layout_constraintEnd_toEndOf="@+id/iv_state_3"
+        app:layout_constraintStart_toEndOf="@+id/imageView12"/>
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:background="@color/co4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_state_2"/>
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/feedback_idea"
+        android:textColor="@color/co3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/divider"/>
+
+    <TextView
+        android:id="@+id/tv_feedback_idea"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:textColor="@color/co6"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView2"/>
+
+    <View
+        android:id="@+id/divider2"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:background="@color/co4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_feedback_idea"/>
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/feedback_images"
+        android:textColor="@color/co3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/divider2"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_feedback_images"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="12dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView4"/>
+
+    <View
+        android:id="@+id/divider3"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:background="@color/co4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rv_feedback_images"/>
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/feedback_result"
+        android:textColor="@color/co3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/divider3"/>
+
+    <TextView
+        android:id="@+id/tv_feedback_result"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="12dp"
+        android:textColor="@color/co6"
+        android:text="@string/feedback_result_null"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView5"/>
+
+</android.support.constraint.ConstraintLayout>

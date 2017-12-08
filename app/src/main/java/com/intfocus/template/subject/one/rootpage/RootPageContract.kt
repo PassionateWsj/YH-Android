@@ -1,4 +1,4 @@
-package com.intfocus.template.subject.templateone.rootpage
+package com.intfocus.template.subject.one.rootpage
 
 import com.intfocus.template.base.BasePresenter
 import com.intfocus.template.base.BaseView

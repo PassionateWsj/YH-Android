@@ -92,14 +92,17 @@
 
         <!-- 问题反馈 -->
         <activity
-            android:name="com.intfocus.template.dashboard.mine.activity.FeedbackActivity"
+            android:name="com.intfocus.template.dashboard.feedback.FeedbackActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.NoActionBar"/>
+        <activity
+            android:name="com.intfocus.template.dashboard.feedback.FeedbackInputActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar"/>
 
         <activity
             android:name="com.intfocus.template.subject.nine.CollectionActivity"
-            android:screenOrientation="portrait"
-            ></activity>
+            android:screenOrientation="portrait"/>
         <!-- 公告详情 -->
         <activity
             android:name="com.intfocus.template.dashboard.mine.activity.NoticeContentActivity"

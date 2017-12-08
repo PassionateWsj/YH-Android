@@ -55,3 +55,4 @@ proguard/
 appChangeTo.sh
 /diy-style/
 ConfigConstants.kt
+!/归档.zip

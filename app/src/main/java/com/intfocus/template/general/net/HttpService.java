@@ -1,5 +1,7 @@
 package com.intfocus.template.general.net;
 
+import com.intfocus.template.model.response.mine_page.FeedbackContent;
+import com.intfocus.template.model.response.mine_page.FeedbackList;
 import com.intfocus.template.subject.nine.entity.CollectionRequestBody;
 import com.intfocus.template.login.bean.Device;
 import com.intfocus.template.login.bean.DeviceRequest;
@@ -404,7 +406,19 @@ public interface HttpService {
     @GET(K.K_NEAREST_STORES)
     Observable<NearestStoresResult> getNearestStores(@Query("limit") int limit, @Query("distance") double distance, @Query("location") String location);
 
-//    @GET(K.API_FEEDBACK_LIST)
-//    Observable<> getFeedbackList();
+    /**
+     * 获取用户反馈列表
+     * @param userNum
+     * @return
+     */
+    @GET(K.API_FEEDBACK_USER_LIST)
+    Observable<FeedbackList> getFeedbackList(@Query("user_num") String userNum);
 
+    /**
+     * 获取用户反馈详情
+     * @param id
+     * @return
+     */
+    @GET(K.API_FEEDBACK)
+    Observable<FeedbackContent> getFeedbackContent(@Query("id") int id);
 }

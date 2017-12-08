@@ -1,6 +1,6 @@
 package com.intfocus.template.subject.nine.root
 
-import com.intfocus.template.subject.nine.callback.LoadDataCallback
+import com.intfocus.template.model.callback.LoadDataCallback
 import org.jetbrains.annotations.NotNull
 
 /**

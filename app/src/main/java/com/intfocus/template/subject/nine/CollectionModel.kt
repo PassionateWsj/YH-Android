@@ -1,7 +1,7 @@
 package com.intfocus.template.subject.nine
 
 import android.content.Context
-import com.intfocus.template.subject.nine.callback.LoadDataCallback
+import com.intfocus.template.model.callback.LoadDataCallback
 
 /**
  * @author liuruilin

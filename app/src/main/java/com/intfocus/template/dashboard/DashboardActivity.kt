@@ -17,7 +17,6 @@ import android.widget.LinearLayout
 import com.google.gson.Gson
 import com.intfocus.template.ConfigConstants
 import com.intfocus.template.R
-import com.intfocus.template.constant.Params.ACTION
 import com.intfocus.template.constant.Params.STORE
 import com.intfocus.template.constant.Params.STORE_ID
 import com.intfocus.template.dashboard.adapter.DashboardFragmentAdapter
@@ -35,7 +34,7 @@ import com.intfocus.template.model.response.scanner.StoreItem
 import com.intfocus.template.model.response.scanner.StoreListResult
 import com.intfocus.template.scanner.BarCodeScannerActivity
 import com.intfocus.template.subject.one.ReportImpl
-import com.intfocus.template.subject.one.ReportPresenter
+import com.intfocus.template.dashboard.report.ReportPresenter
 import com.intfocus.template.subject.one.WorkBoxImpl
 import com.intfocus.template.subject.one.WorkBoxPresenter
 import com.intfocus.template.ui.BaseActivity
@@ -46,7 +45,6 @@ import com.intfocus.template.util.PageLinkManage
 import com.intfocus.template.util.ToastUtils
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import org.json.JSONObject
 import rx.Observable
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
@@ -225,9 +223,6 @@ class DashboardActivity : BaseActivity(), ViewPager.OnPageChangeListener {
         mTabMessage!!.setOnClickListener(mTabChangeListener)
     }
 
-    /**
-     * @param dashboardFragmentAdapter
-     */
     private fun initViewPaper() {
         mViewPager!!.adapter = DashboardFragmentAdapter(supportFragmentManager, mPagerData)
         mViewPager!!.offscreenPageLimit = mPagerData.size
@@ -311,7 +306,6 @@ class DashboardActivity : BaseActivity(), ViewPager.OnPageChangeListener {
                     }
                 })
     }
-
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onMessageEvent(items: DashboardItem?) {

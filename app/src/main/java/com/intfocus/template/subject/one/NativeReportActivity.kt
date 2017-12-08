@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentTransaction
-import android.util.Log
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
@@ -20,7 +19,7 @@ import com.intfocus.template.model.response.filter.MenuItem
 import com.intfocus.template.subject.one.entity.EventRefreshTableRect
 import com.intfocus.template.subject.one.entity.Filter
 import com.intfocus.template.subject.one.rootpage.RootPageFragment
-import com.intfocus.template.subject.templateone.rootpage.RootPageImpl
+import com.intfocus.template.subject.one.rootpage.RootPageImpl
 import com.intfocus.template.subject.templateone.rootpage.RootPagePresenter
 import com.intfocus.template.ui.BaseActivity
 import com.intfocus.template.ui.view.RootScrollView

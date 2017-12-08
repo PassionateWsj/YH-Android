@@ -191,11 +191,14 @@ class KpiFragment : RefreshFragment(), KpiAdapter.HomePageListener {
                     }
 
                     override fun onBusinessNext(data: HomeMsgResult?) {
-                        if (mKpiData == null) mKpiData = ArrayList()
+                        if (mKpiData == null) {
+                            mKpiData = ArrayList()
+                        }
 
                         mKpiData!!
                                 .filter { 1 == it.index }
                                 .forEach { it.data = data!!.data }
+
                         ListUtils.sort(mKpiData, true, "index")
                         mAdapter.setData(mKpiData)
 

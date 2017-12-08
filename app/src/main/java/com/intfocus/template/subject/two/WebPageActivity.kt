@@ -275,7 +275,7 @@ class WebPageActivity : BaseActivity(), WebPageContract.View, OnPageErrorListene
      */
     override fun refresh() {
         setLoadingVisibility(View.VISIBLE)
-        show(url)
+        presenter.load(reportId, templateId, groupId, url)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, intent: Intent) {

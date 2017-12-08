@@ -9,6 +9,7 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.multidex.MultiDex;
 
+import com.facebook.stetho.Stetho;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.intfocus.template.dashboard.DashboardActivity;
 import com.intfocus.template.general.FetchPatchHandler;
@@ -121,6 +122,11 @@ public class SYPApplication extends Application {
          * 友盟分享初始化
          */
         UMShareAPI.get(this);
+
+        /*
+         * Stetho 调试初始化
+         */
+        Stetho.initializeWithDefaults(this);
 
         /*
          * 配置微信 appKey

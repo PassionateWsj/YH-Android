@@ -162,7 +162,6 @@ class KpiAdapter(val context: Context,
                         }
 
                         override fun onPageScrollStateChanged(i: Int) {
-
                         }
                     })
                 }
@@ -201,6 +200,9 @@ class KpiAdapter(val context: Context,
                     holder.tvNotice.setOnClickListener {
                         EventBus.getDefault().post(NoticeBoardRequest(true))
                     }
+                }
+                else {
+                    holder.itemView.visibility = View.GONE
                 }
             }
             is OperationalWarningHolder -> {

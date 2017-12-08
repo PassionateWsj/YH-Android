@@ -1,15 +1,20 @@
 package com.intfocus.template.subject.one
 
+import android.database.Cursor
 import com.alibaba.fastjson.JSON
 import com.alibaba.fastjson.JSONReader
 import com.intfocus.template.ConfigConstants
+import com.intfocus.template.SYPApplication.globalContext
 import com.intfocus.template.model.DaoUtil
 import com.intfocus.template.model.entity.Report
 import com.intfocus.template.model.entity.ReportModule
+import com.intfocus.template.model.gen.DaoSession
 import com.intfocus.template.model.gen.ReportDao
 import com.intfocus.template.subject.model.ReportModelImpl
 import com.intfocus.template.subject.one.entity.Filter
+import com.intfocus.template.util.ApiHelper
 import com.intfocus.template.util.ApiHelper.clearResponseHeader
+import com.intfocus.template.util.FileUtil
 import com.intfocus.template.util.K
 import com.intfocus.template.util.LogUtil
 import com.zbl.lib.baseframe.utils.TimeUtil
@@ -18,6 +23,7 @@ import rx.Subscriber
 import rx.Subscription
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
+import java.io.File
 import java.io.StringReader
 
 /**
@@ -30,7 +36,8 @@ import java.io.StringReader
  * ****************************************************
  */
 class ModeImpl : ReportModelImpl() {
-    lateinit private var pageTitleList: List<String>
+    private val SQL_DISTINCT_PAGETITLE = "SELECT DISTINCT " + ReportDao.Properties.Page_title.columnName + " FROM " + ReportDao.TABLENAME
+    private var pageTitleList: MutableList<String> = arrayListOf()
     private var reportDao: ReportDao = DaoUtil.getReportDao()
     lateinit private var filterObject: Filter
     private var urlString: String = ""
@@ -79,6 +86,7 @@ class ModeImpl : ReportModelImpl() {
         uuid = reportId + templateId + groupId
         jsonFileName = String.format("group_%s_template_%s_report_%s.json", groupId, templateId, reportId)
         urlString = String.format(K.API_REPORT_JSON_ZIP, ConfigConstants.kBaseUrl, groupId, templateId, reportId)
+
         checkReportData(callback)
     }
 
@@ -89,7 +97,8 @@ class ModeImpl : ReportModelImpl() {
                 observable = Observable.just(uuid)
                         .subscribeOn(Schedulers.io())
                         .map {
-                            generatePageList(queryDateBase(it))
+                            queryFilter(uuid)
+                            generatePageList()
                         }
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(object : Subscriber<List<String>>() {
@@ -142,6 +151,7 @@ class ModeImpl : ReportModelImpl() {
                                 report.uuid = uuid
                                 report.name = filterObject.display
                                 report.type = "filter"
+                                report.page_title = "filter"
                                 report.config = JSON.toJSONString(filterObject)
                                 reportDao.insert(report)
                             }
@@ -167,8 +177,8 @@ class ModeImpl : ReportModelImpl() {
                     }
                     reader.endObject()
                     LogUtil.d(TAG, "analysisDataEndTime:" + TimeUtil.getNowTime())
-                    pageTitleList = generatePageList(queryDateBase(uuid))
-                    pageTitleList
+
+                    generatePageList()
                 }
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(object : Subscriber<List<String>>() {
@@ -190,28 +200,16 @@ class ModeImpl : ReportModelImpl() {
     }
 
     /**
-     * 查询该 uuid 对应的报表的所有数据
+     * 查询筛选条件
      * @uuid  报表唯一标识
-     * @return 单只报表所有数据
+     * @return 筛选实体类
      */
-    private fun queryDateBase(uuid: String): List<Report> {
+    private fun queryFilter(uuid: String) {
         val reportDao = DaoUtil.getReportDao()
         val filter = reportDao.queryBuilder()
                 .where(reportDao.queryBuilder()
                         .and(ReportDao.Properties.Uuid.eq(uuid), ReportDao.Properties.Type.eq("filter"))).unique()
-
         filterObject = JSON.parseObject(filter.config, Filter::class.java)
-
-        return if (null == filterObject.data) {
-            reportDao.queryBuilder()
-                    .where(ReportDao.Properties.Uuid.eq(uuid))
-                    .list() ?: mutableListOf()
-        } else {
-            reportDao.queryBuilder()
-                    .where(reportDao.queryBuilder()
-                            .and(ReportDao.Properties.Uuid.eq(uuid), ReportDao.Properties.Name.eq(filterObject.display)))
-                    .list() ?: mutableListOf()
-        }
     }
 
     /**
@@ -276,15 +274,32 @@ class ModeImpl : ReportModelImpl() {
     }
 
     /**
-     * 获取所有根页签, 并去重
+     * 根页签去重
      * @reports 当前报表所有数据
-     * @return 当前报表所有的根页签
+     * @return 去重后的根页签
      */
-    private fun generatePageList(reports: List<Report>): List<String> {
-        val pageSet = HashSet<String>()
-        reports
-                .filter { null != it.page_title }
-                .mapTo(pageSet) { it.page_title }
-        return pageSet.toList()
+    private fun generatePageList(): List<String> {
+        pageTitleList.clear()
+        var distinctPageTitle = SQL_DISTINCT_PAGETITLE
+
+        if (null != filterObject.data) {
+             distinctPageTitle = SQL_DISTINCT_PAGETITLE + " WHERE " + ReportDao.Properties.Name.columnName + " = \'" + filterObject.display + "\'"
+        }
+
+        var cursor = DaoUtil.getDaoSession()!!.database.rawQuery(distinctPageTitle, null)
+
+        try {
+            if (cursor.moveToFirst()) {
+                do {
+                    if ("filter" != cursor.getString(0)) {
+                        pageTitleList.add(cursor.getString(0))
+                    }
+                } while (cursor.moveToNext())
+            }
+        } finally {
+            cursor.close()
+        }
+
+        return pageTitleList
     }
 }
