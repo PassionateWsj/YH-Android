@@ -2,10 +2,10 @@ package com.intfocus.template.dashboard.mine.presenter;
 
 import android.content.Context;
 
-import com.intfocus.template.dashboard.mine.bean.PushMessageBean;
 import com.intfocus.template.dashboard.mine.model.OnPushMessageDataResultListener;
 import com.intfocus.template.dashboard.mine.model.PushMessageModelImpl;
 import com.intfocus.template.dashboard.mine.view.PushMessageView;
+import com.intfocus.template.model.entity.PushMsgBean;
 
 import java.util.List;
 
@@ -48,7 +48,7 @@ public class PushMessagePresenter {
     public void loadData() {
         mModel.loadData(mContext, new OnPushMessageDataResultListener() {
             @Override
-            public void onPushMessageDataResultSuccess(List<PushMessageBean> data) {
+            public void onPushMessageDataResultSuccess(List<PushMsgBean> data) {
                 mView.onResultSuccess(data);
             }
 

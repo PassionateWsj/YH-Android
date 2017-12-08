@@ -9,6 +9,8 @@ import com.intfocus.template.ConfigConstants
 import com.intfocus.template.R
 import com.intfocus.template.model.response.home.WorkBoxResult
 import com.intfocus.template.subject.one.WorkBoxContract
+import com.intfocus.template.subject.one.WorkBoxImpl
+import com.intfocus.template.subject.one.WorkBoxPresenter
 import com.intfocus.template.ui.BaseFragment
 import com.intfocus.template.util.HttpUtil
 import com.intfocus.template.util.ToastUtils
@@ -19,9 +21,16 @@ import kotlinx.android.synthetic.main.fragment_work_box.*
  */
 class WorkBoxFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener, WorkBoxContract.View {
 
-    override lateinit var presenter: WorkBoxContract.Presenter
     var rootView: View? = null
     var datas: List<WorkBoxItem>? = null
+
+    override lateinit var presenter: WorkBoxContract.Presenter
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        WorkBoxPresenter(WorkBoxImpl.getInstance(), this)
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
             inflater.inflate(R.layout.fragment_work_box, container, false)

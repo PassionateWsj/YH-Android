@@ -34,4 +34,6 @@ object DaoUtil {
     fun getCollectionDao(): CollectionDao = daoSession!!.collectionDao
 
     fun getReportDao(): ReportDao = daoSession!!.reportDao
+
+    fun getPushMsgDao(): PushMsgBeanDao = daoSession!!.pushMsgBeanDao
 }

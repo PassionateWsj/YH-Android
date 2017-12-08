@@ -13,8 +13,6 @@ import com.intfocus.template.dashboard.mine.adapter.MinePageVPAdapter
 import com.intfocus.template.dashboard.mine.widget.AnnouncementWarningFragment
 import com.intfocus.template.dashboard.mine.widget.DataCollegeFragment
 import com.intfocus.template.dashboard.mine.widget.user.UserFragment
-import com.intfocus.template.subject.one.UserImpl
-import com.intfocus.template.subject.one.UserPresenter
 import com.intfocus.template.util.Utils
 import kotlinx.android.synthetic.main.fragment_mine.*
 import java.util.*
@@ -43,7 +41,6 @@ class MineFragment : Fragment(), ViewPager.OnPageChangeListener {
             ll_line.visibility = View.GONE
         }
         val itemFragment = UserFragment()
-        UserPresenter(UserImpl.getInstance(), itemFragment)
         fragmentList.add(itemFragment)
         titleList.add("个人信息")
 

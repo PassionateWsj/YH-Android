@@ -14,6 +14,8 @@ import com.intfocus.template.dashboard.report.adapter.ReportsRightRVAdapter
 import com.intfocus.template.dashboard.report.mode.CategoryBean
 import com.intfocus.template.model.response.home.ReportListResult
 import com.intfocus.template.subject.one.ReportContract
+import com.intfocus.template.subject.one.ReportImpl
+import com.intfocus.template.subject.one.ReportPresenter
 import com.intfocus.template.ui.BaseFragment
 import com.intfocus.template.util.HttpUtil
 import com.intfocus.template.util.ToastUtils
@@ -30,6 +32,10 @@ class ReportFragment : BaseFragment(), ReportContract.View, ReportsLeftListAdapt
 
     override lateinit var presenter: ReportContract.Presenter
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        ReportPresenter(ReportImpl.getInstance(), this)
+    }
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
             inflater.inflate(R.layout.fragment_reports, container, false)
 
