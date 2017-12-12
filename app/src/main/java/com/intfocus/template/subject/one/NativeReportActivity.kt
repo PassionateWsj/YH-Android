@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentTransaction
-import android.util.Log
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
@@ -267,8 +266,8 @@ class NativeReportActivity : BaseActivity(), ModeContract.View, FilterDialogFrag
             R.id.ll_comment -> comment(this, reportId, objectType, bannerName)
             R.id.ll_refresh -> refresh()
         }
-        if (popupWindow!!.isShowing) {
-            popupWindow!!.dismiss()
+        if (popupWindow.isShowing) {
+            popupWindow.dismiss()
         }
     }
 
