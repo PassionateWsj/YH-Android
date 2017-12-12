@@ -14,9 +14,9 @@
 # LeakCanary
 -keep class org.eclipse.mat.** { *; }
 -keep class com.squareup.leakcanary.** { *; }
--libraryjars libs/pgyer_sdk_x.x.jar
--dontwarn com.pgyersdk.**
--keep class com.pgyersdk.** { *; }
+#-libraryjars libs/pgyer_sdk_x.x.jar
+#-dontwarn com.pgyersdk.**
+#-keep class com.pgyersdk.** { *; }
 
 # UMENG
 -dontwarn com.taobao.**
@@ -143,11 +143,11 @@
 }
 
 # for DexGuard only
--keepresourcexmlelements manifest/application/meta-data@value=GlideModule
+#-keepresourcexmlelements manifest/application/meta-data@value=GlideModule
 
 # Bugly
 -dontwarn com.tencent.bugly.**
 -keep public class com.tencent.bugly.**{*;}
 
 # fastJson
--keepattributesExceptions,InnerClasses,Signature,Deprecated,SourceFile,LineNumberTable,LocalVariable*Table,
+#-keepattributesExceptions,InnerClasses,Signature,Deprecated,SourceFile,LineNumberTable,LocalVariable*Table,
