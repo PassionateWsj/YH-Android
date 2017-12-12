@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">生意＋</string>
-    <string name="title_activity_main">生意＋</string>
+    <string name="app_name">生意＋模板</string>
+    <string name="title_activity_main">生意＋模板</string>
     <string name="image_error">错误</string>
     <string name="cansel">取消</string>
     <string name="passcode_lock">启用锁屏</string>
@@ -27,7 +27,7 @@
     <string name="login_slogan_text">融合共享，成于至善</string>
 
 
-    <string name="text_kpi">仪表盘</string>
+    <string name="text_kpi">生意概况</string>
     <string name="text_report">报表</string>
     <string name="text_workbox">工具箱</string>
     <string name="text_mine">我的</string>
@@ -79,6 +79,7 @@
         <item>公告（4）：第四集群九月数据己更新</item>
     </array>
 
+    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="notice_phone_not_match">如遇到手机号不匹配，请至OA办公系统-个人信息-我的信息中修改手机号码，隔天生效。</string>
     <string name="error_gif">x or y bound size should be at least %1$dpx and file size should be no more than %2$sM</string>
@@ -86,7 +87,7 @@
     <string name="clickToGetNearestLocalPosition">点击获取最近门店</string>
     <string name="input_barcode">手动输入条码</string>
     <string name="report_selector_hint">搜索门店名称或门店编号</string>
-    <string name="hint_login_user">账号</string>
+    <string name="hint_login_user">员工号</string>
     <string name="tip_attribution_department">归属部门</string>
     <string name="keep_pwd">记住密码</string>
     <string name="report_copy">报表操作</string>

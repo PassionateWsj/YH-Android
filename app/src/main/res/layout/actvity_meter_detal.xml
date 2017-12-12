@@ -74,7 +74,7 @@
 
         </LinearLayout>
 
-        <com.intfocus.shengyiplus.ui.view.RootScrollView
+        <com.intfocus.template.ui.view.RootScrollView
             android:id="@+id/rootScrollView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -108,7 +108,7 @@
                     android:layout_height="wrap_content"/>
 
             </LinearLayout>
-        </com.intfocus.shengyiplus.ui.view.RootScrollView>
+        </com.intfocus.template.ui.view.RootScrollView>
 
         <FrameLayout
             android:id="@+id/fl_mdetal_top_suspend_container"
