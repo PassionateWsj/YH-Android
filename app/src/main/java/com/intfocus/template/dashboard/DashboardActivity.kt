@@ -72,10 +72,10 @@ class DashboardActivity : BaseActivity(), ViewPager.OnPageChangeListener {
         initViewPaper()
         getStoreList()
 
-        val intent = intent
-        if (intent.hasExtra("msgData")) {
-            handlePushMessage(intent.getBundleExtra("msgData").getString("message"))
-        }
+//        val intent = intent
+//        if (intent.hasExtra("msgData")) {
+//            handlePushMessage(intent.getBundleExtra("msgData").getString("message"))
+//        }
     }
 
     /**

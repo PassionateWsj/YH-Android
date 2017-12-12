@@ -2,18 +2,18 @@ package com.intfocus.template.util
 
 import android.content.Context
 import com.daimajia.numberprogressbar.NumberProgressBar
-import com.intfocus.template.ConfigConstants
+import com.intfocus.template.BuildConfig
 import com.intfocus.template.constant.Params.ADVERTISEMENT
 import com.intfocus.template.constant.Params.FONTS
 import com.intfocus.template.constant.Params.ICONS
 import com.intfocus.template.constant.Params.IMAGES
 import com.intfocus.template.constant.Params.JAVASCRIPTS
 import com.intfocus.template.constant.Params.STYLE_SHEETS
-import com.intfocus.template.model.response.asset.AssetsResult
 import com.intfocus.template.general.net.ApiException
 import com.intfocus.template.general.net.CodeHandledSubscriber
 import com.intfocus.template.general.net.HttpService
 import com.intfocus.template.general.net.RetrofitUtil
+import com.intfocus.template.model.response.asset.AssetsResult
 import retrofit2.Retrofit
 import rx.Observable
 import rx.Observer
@@ -87,7 +87,7 @@ object AssetsUpDateUtil {
                                     if (!assetsMD5sMap[assetName + "_md5"].equals(mAssetsSP.getString(assetName + "_md5", ""))) {
                                         val fileUrl = K.K_DOWNLOAD_ASSETS_ZIP + "?api_token=d93c1a0dc03fe4ffad55a82febd1c94f&filename=" + assetName + ".zip"
                                         val response = Retrofit.Builder()
-                                                .baseUrl(ConfigConstants.kBaseUrl)
+                                                .baseUrl(BuildConfig.BASE_URL)
                                                 .build()
                                                 .create(HttpService::class.java).downloadFileWithDynamicUrlSync(fileUrl).execute()
                                         LogUtil.d(TAG, assetName + "下载完成")

@@ -7,13 +7,12 @@ import android.content.SharedPreferences
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.PopupWindow
-import com.intfocus.template.ConfigConstants
+import com.intfocus.template.BuildConfig
 import com.intfocus.template.R
 import com.intfocus.template.SYPApplication
 import com.intfocus.template.listener.UMSharedListener
@@ -98,7 +97,7 @@ open class BaseActivity : AppCompatActivity() {
      * 报表基础功能 -> 评论
      */
     fun comment(activity: Activity, objectId: String, objectType: String, objectTitle: String) {
-        val link = String.format(API_COMMENT_MOBILE_PATH, ConfigConstants.kBaseUrl, "v2", objectId, objectType)
+        val link = String.format(API_COMMENT_MOBILE_PATH, BuildConfig.BASE_URL, "v2", objectId, objectType)
         pageLink(activity, objectTitle, link, objectId, "-1", objectType)
     }
 

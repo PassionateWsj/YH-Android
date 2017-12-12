@@ -3,13 +3,13 @@ package com.intfocus.template.dashboard.mine.model
 import android.content.Context
 import android.content.SharedPreferences
 import com.google.gson.Gson
+import com.intfocus.template.BuildConfig
 import com.intfocus.template.dashboard.mine.bean.NoticeContentBean
 import com.intfocus.template.dashboard.mine.bean.NoticeContentRequest
-import com.intfocus.template.ConfigConstants
-import com.intfocus.template.model.response.mine_page.NoticeContentResult
 import com.intfocus.template.general.net.ApiException
 import com.intfocus.template.general.net.CodeHandledSubscriber
 import com.intfocus.template.general.net.RetrofitUtil
+import com.intfocus.template.model.response.mine_page.NoticeContentResult
 import com.intfocus.template.util.K
 import com.zbl.lib.baseframe.core.AbstractMode
 import org.greenrobot.eventbus.EventBus
@@ -28,7 +28,7 @@ class NoticeContentMode(var ctx: Context) : AbstractMode() {
     var id = ""
 
     fun getUrl(): String {
-        val url = ConfigConstants.kBaseUrl + "/api/v1/user/" + mUserSP.getString(K.K_USER_ID, "0") + "/notice/" + id
+        val url = BuildConfig.BASE_URL + "/api/v1/user/" + mUserSP.getString(K.K_USER_ID, "0") + "/notice/" + id
         return url
     }
 

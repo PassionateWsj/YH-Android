@@ -3,6 +3,7 @@ package com.intfocus.template.dashboard.mine
 import android.content.Context
 import android.os.Bundle
 import android.view.View
+import com.intfocus.template.BuildConfig
 import com.intfocus.template.R
 import com.intfocus.template.ConfigConstants
 import com.intfocus.template.ui.BaseActivity
@@ -25,7 +26,7 @@ class InstituteContentActivity : BaseActivity() {
         var intent = intent
         institute_id = intent.getStringExtra("id")
         tv_banner_title.text = "数据学院"
-        var link = String.format("%s/mobile/v2/user/%s/article/%s", ConfigConstants.kBaseUrl, mUserSP.getString(K.K_USER_ID, "0").toString(), institute_id)
+        var link = String.format("%s/mobile/v2/user/%s/article/%s", BuildConfig.BASE_URL, mUserSP.getString(K.K_USER_ID, "0").toString(), institute_id)
         mWebView.loadUrl(link)
     }
 

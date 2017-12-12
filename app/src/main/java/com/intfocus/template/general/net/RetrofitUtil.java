@@ -3,8 +3,8 @@ package com.intfocus.template.general.net;
 import android.annotation.SuppressLint;
 import android.content.Context;
 
+import com.intfocus.template.BuildConfig;
 import com.intfocus.template.SYPApplication;
-import com.intfocus.template.ConfigConstants;
 import com.intfocus.template.util.HttpUtil;
 
 import java.security.SecureRandom;
@@ -34,7 +34,7 @@ import rx.schedulers.Schedulers;
  */
 public class RetrofitUtil {
     private static final int DEFAULT_TIME_OUT = 2 * 1000;
-    private static final String DEFAULT_BASE_URL = ConfigConstants.kBaseUrl;
+    private static final String DEFAULT_BASE_URL = BuildConfig.BASE_URL;
     private HttpService httpService;
     private Context ctx;
 

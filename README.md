@@ -28,30 +28,18 @@
 	- 扫码页面 : BarCodeScannerActivity
 
 ### syp 模版配置说明
-1. [GitHub syp-template 分支](https://github.com/PassionateWsj/YH-Android/)
+1. [GitHub syp-template 分支](https://github.com/PassionateWsj/YH-Android/tree/syp-template)
 2. 项目包名修改
- 	- 文件夹重命名 : `../app/src/main/java/com/intfocus/{syp-template}`
- 	- 包名修改 : 
- 		- 文件 : `../app/src/main/AndroidManifest.xml`
- 		- 搜素关键字 : **package**
+ 	- 文件夹重命名 : `../app/build.gradle`
+ 	- 包名修改 :
+ 		- 搜素关键字 : **applicationId**
  		- 重命名 : `com.intfocus.{template}`
-	- 应用在系统中的包名修改
-		- 文件 : `../app/build.gradle`
-		- 搜素关键字 : **applicationId**
-		- 重命名 : `com.intfocus.{template}`
 3. App 名称配置
-	- 文件路径 : `..\app\src\main\res\values\strings.xml`
+	- 文件路径 : `..\app\src\{template}\res\values\strings.xml`
 	- 搜索 **app_name** 关键字
-	- 替换 `永辉生意人` 为所需 **app** 的名称
+	- 替换当前 app 名称为所需 app 的名称
 4. 功能配置
-	- 文件 ： `..\app\src\main\java\com\intfocus\{spy_template}\general\constant\{ConfigConstants.kt}`
-	- 文件列表
-		- 生意+ (默认) : `ConfigConstants.kt`
-		- 睿商 : `RSConfigConstants.kt`
-		- 数据通 : `SJTConfigConstants.kt`
-		- 永辉生意人 : `YHConfigConstants.kt`
-		- 永辉测试 : `YHTestConfigConstants.kt`
-		- 永辉开发 : `YHDevConfigConstants.kt`
+	- 文件 ： `..\app\src\{template}\java\com\intfocus\template\ConfigConstants.kt`
 	- 配置单（**末尾带 * 为默认设置**）
         1. 启动页更新资源开关
 

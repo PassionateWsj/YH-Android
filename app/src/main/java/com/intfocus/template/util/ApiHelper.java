@@ -3,7 +3,7 @@ package com.intfocus.template.util;
 import android.content.Context;
 import android.text.TextUtils;
 
-import com.intfocus.template.ConfigConstants;
+import com.intfocus.template.BuildConfig;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -31,7 +31,7 @@ public class ApiHelper {
      * 获取报表 JSON 数据
      */
     public static boolean reportJsonData(Context context, String groupID, String templateID, String reportID) {
-        String urlString = String.format(K.API_REPORT_JSON_ZIP, ConfigConstants.kBaseUrl, groupID, templateID, reportID);
+        String urlString = String.format(K.API_REPORT_JSON_ZIP, BuildConfig.BASE_URL, groupID, templateID, reportID);
         String assetsPath = FileUtil.sharedPath(context);
         Map<String, String> headers = ApiHelper.checkResponseHeader(urlString);
         String jsonFileName = String.format("group_%s_template_%s_report_%s.json", groupID, templateID, reportID);

@@ -2,7 +2,7 @@ package com.intfocus.template.subject.one
 
 import com.alibaba.fastjson.JSON
 import com.alibaba.fastjson.JSONReader
-import com.intfocus.template.ConfigConstants
+import com.intfocus.template.BuildConfig
 import com.intfocus.template.SYPApplication.globalContext
 import com.intfocus.template.model.DaoUtil
 import com.intfocus.template.model.entity.Report
@@ -82,7 +82,7 @@ class ModeImpl : ReportModelImpl() {
         this.groupId = groupId
         uuid = reportId + templateId + groupId
         jsonFileName = String.format("group_%s_template_%s_report_%s.json", groupId, templateId, reportId)
-        urlString = String.format(K.API_REPORT_JSON_ZIP, ConfigConstants.kBaseUrl, groupId, templateId, reportId)
+        urlString = String.format(K.API_REPORT_JSON_ZIP, BuildConfig.BASE_URL, groupId, templateId, reportId)
         checkReportData(callback)
     }
 

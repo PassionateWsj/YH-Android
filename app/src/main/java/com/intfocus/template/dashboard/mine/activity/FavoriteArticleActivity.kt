@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
+import com.intfocus.template.BuildConfig
 import com.intfocus.template.ConfigConstants
 import com.intfocus.template.R
 import com.intfocus.template.constant.Params.BANNER_NAME
@@ -148,7 +149,7 @@ class FavoriteArticleActivity : RefreshActivity(), InstituteAdapter.NoticeItemLi
     }
 
     override fun itemClick(instituteDataBean: InstituteDataBean) {
-        val link = String.format("%s/mobile/v2/user/%s/article/%s", ConfigConstants.kBaseUrl, mUserSP.getString(K.K_USER_ID, "0").toString(), instituteDataBean.acticleId.toString())
+        val link = String.format("%s/mobile/v2/user/%s/article/%s", BuildConfig.BASE_URL, mUserSP.getString(K.K_USER_ID, "0").toString(), instituteDataBean.acticleId.toString())
         PageLinkManage.pageLink(this, instituteDataBean.title!!, link)
     }
 

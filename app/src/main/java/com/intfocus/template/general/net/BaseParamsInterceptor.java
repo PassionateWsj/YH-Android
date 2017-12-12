@@ -3,7 +3,7 @@ package com.intfocus.template.general.net;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.intfocus.template.ConfigConstants;
+import com.intfocus.template.BuildConfig;
 import com.intfocus.template.util.K;
 import com.intfocus.template.util.LogUtil;
 import com.intfocus.template.util.Utils;
@@ -37,7 +37,7 @@ public class BaseParamsInterceptor implements Interceptor {
     public Response intercept(Chain chain) throws IOException {
         Request oriRequest = chain.request();
         //提取api_path
-        String apiPath = oriRequest.url().toString().replace(ConfigConstants.kBaseUrl, "");
+        String apiPath = oriRequest.url().toString().replace(BuildConfig.BASE_URL, "");
         if (apiPath.contains("?")) {
             apiPath = apiPath.substring(0, apiPath.indexOf("?"));
         }
