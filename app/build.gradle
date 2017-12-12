@@ -351,6 +351,6 @@ greendao {
 }
 
 static def releaseTime() {
-    return new Date().format("yyyy-MM-dd-HH-mm", TimeZone.getTimeZone("Asia/Shanghai"))
+    return new Date().format("yyyy-MM-dd_HH-mm", TimeZone.getTimeZone("Asia/Shanghai"))
 }
 
