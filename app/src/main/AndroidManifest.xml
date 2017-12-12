@@ -37,42 +37,40 @@
     <uses-permission android:name="android.permission.READ_LOGS"/>
     <!-- 获取logcat日志 -->
     <application
-        android:name="com.intfocus.template.SYPApplication"
+        android:name=".SYPApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme"
         tools:replace="android:icon,android:theme">
+
         <provider
             android:name="android.support.v4.content.FileProvider"
-            android:authorities="com.intfocus.template.fileprovider"
+            android:authorities="${APPLICATIONID}.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
 
-            <!-- 高德地图API - Key -->
-            <meta-data
-                android:name="com.amap.api.v2.apikey"
-                android:value="6b4d1faccb7efeb4650dd9bd49f2cd92"/>
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths"/>
+
         </provider>
 
-        <service android:name="com.intfocus.template.service.OpenUDIDService">
+        <service android:name=".service.OpenUDIDService">
             <intent-filter>
                 <action android:name="org.openudid.GETUDID"/>
             </intent-filter>
         </service>
 
         <!-- 定位服务 -->
-        <service android:name="com.intfocus.template.service.LocationService"/>
+        <service android:name=".service.LocationService"/>
         <!-- 高德地图 -->
         <service android:name="com.amap.api.location.APSService"/>
 
-        <service android:name="com.intfocus.template.service.CollectionUploadService"/>
+        <service android:name=".service.CollectionUploadService"/>
 
         <activity
-            android:name="com.intfocus.template.launcher.LauncherActivity"
+            android:name=".launcher.LauncherActivity"
             android:screenOrientation="portrait"
             android:theme="@style/LauncherTheme">
             <intent-filter>
@@ -86,80 +84,78 @@
 
         <!-- 模板三 -->
         <activity
-            android:name="com.intfocus.template.subject.three.MultiIndexActivity"
+            android:name=".subject.three.MultiIndexActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
 
         <!-- 问题反馈 -->
         <activity
-            android:name="com.intfocus.template.dashboard.mine.activity.FeedbackActivity"
+            android:name=".dashboard.mine.activity.FeedbackActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar"/>
 
         <activity
-            android:name="com.intfocus.template.subject.nine.CollectionActivity"
+            android:name=".subject.nine.CollectionActivity"
             android:screenOrientation="portrait"
             ></activity>
         <!-- 公告详情 -->
         <activity
-            android:name="com.intfocus.template.dashboard.mine.activity.NoticeContentActivity"
+            android:name=".dashboard.mine.activity.NoticeContentActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
         <!-- 模板五 -->
         <!-- 忘记密码 -->
         <activity
-            android:name="com.intfocus.template.login.ForgetPasswordActivity"
+            android:name=".login.ForgetPasswordActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
         <!-- 修改密码页 -->
         <activity
-            android:name="com.intfocus.template.login.LoginActivity"
+            android:name=".login.LoginActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
         <!-- 修改密码页 -->
         <activity
-            android:name="com.intfocus.template.dashboard.mine.activity.AlterPasswordActivity"
+            android:name=".dashboard.mine.activity.AlterPasswordActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
         <!-- 文章收藏页 -->
         <activity
-            android:name="com.intfocus.template.dashboard.mine.activity.FavoriteArticleActivity"
+            android:name=".dashboard.mine.activity.FavoriteArticleActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
         <!-- 扫码页 -->
         <activity
-            android:name="com.intfocus.template.scanner.BarCodeScannerActivity"
+            android:name=".scanner.BarCodeScannerActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar"
             android:windowSoftInputMode="adjustResize"/>
         <!-- 个人信息 -->
         <activity
-            android:name="com.intfocus.template.dashboard.mine.activity.SettingActivity"
+            android:name=".dashboard.mine.activity.SettingActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme2"/>
         <!-- 个人信息页信息展示 -->
         <activity
-            android:name="com.intfocus.template.dashboard.mine.activity.SettingListActivity"
+            android:name=".dashboard.mine.activity.SettingListActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
         <!-- 选项配置 -->
         <activity
-            android:name="com.intfocus.template.dashboard.mine.activity.SettingPreferenceActivity"
+            android:name=".dashboard.mine.activity.SettingPreferenceActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
 
         <!-- 主页面 -->
         <activity
-            android:name="com.intfocus.template.dashboard.DashboardActivity"
+            android:name=".dashboard.DashboardActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/AppDashboardTheme"/>
 
         <!-- 模板二/主题页面 -->
-
-        <!-- 模板二/主题页面 -->
         <activity
-            android:name="com.intfocus.template.subject.two.WebPageActivity"
+            android:name=".subject.two.WebPageActivity"
 
             android:configChanges="orientation|screenSize"
             android:screenOrientation="fullSensor"
@@ -167,73 +163,78 @@
 
         <!-- 原生模板二/主题页面 -->
         <activity
-            android:name="com.intfocus.template.subject.one.NativeReportActivity"
+            android:name=".subject.one.NativeReportActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
 
         <!-- 原生模板二/表格页面 -->
         <activity
-            android:name="com.intfocus.template.subject.one.module.tables.SubTableActivity"
+            android:name=".subject.one.module.tables.SubTableActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
         <!-- 评论页 -->
         <!-- 扫码结果页 -->
         <activity
-            android:name="com.intfocus.template.scanner.ScannerResultActivity"
+            android:name=".scanner.ScannerResultActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
         <!-- 门店选择页 -->
         <activity
-            android:name="com.intfocus.template.scanner.StoreSelectorActivity"
+            android:name=".scanner.StoreSelectorActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
         <!-- 锁屏密码设置 -->
         <activity
-            android:name="com.intfocus.template.dashboard.mine.activity.InitPassCodeActivity"
+            android:name=".dashboard.mine.activity.InitPassCodeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
         <!-- 锁屏登录 -->
         <activity
-            android:name="com.intfocus.template.launcher.ConfirmPassCodeActivity"
+            android:name=".launcher.ConfirmPassCodeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
         <!-- 更新日志 -->
         <!-- 开发者选项 -->
         <activity
-            android:name="com.intfocus.template.general.wxapi.WXEntryActivity"
+            android:name=".general.wxapi.WXEntryActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
-        <activity android:name="com.intfocus.template.dashboard.mine.activity.ShowListMsgActivity"/>
-        <activity android:name="com.intfocus.template.dashboard.mine.InstituteContentActivity"/>
+        <activity android:name=".dashboard.mine.activity.ShowListMsgActivity"/>
+        <activity android:name=".dashboard.mine.InstituteContentActivity"/>
         <activity
-            android:name="com.intfocus.template.dashboard.mine.activity.ShowPushMessageActivity"
+            android:name=".dashboard.mine.activity.ShowPushMessageActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar"/>
         <!-- 消息页 -->
         <activity
-            android:name="com.intfocus.template.dashboard.mine.activity.PushMessageContentActivity"
+            android:name=".dashboard.mine.activity.PushMessageContentActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar"/>
         <!-- 引导页 -->
         <activity
-            android:name="com.intfocus.template.launcher.GuideActivity"
+            android:name=".launcher.GuideActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar"/>
+
+        <!-- 高德地图API - Key -->
+        <meta-data
+            android:name="com.amap.api.v2.apikey"
+            android:value="${AMAP_KEY}"/>
 
         <!-- 蒲公英 必选 -->
         <meta-data
             android:name="PGYER_APPID"
-            android:value="0a1d27ec9681648cbf62a0e4fe5df54a"/>
+            android:value="${PGYER_APPID}"/>
 
         <!-- 友盟 必选 -->
         <meta-data
             android:name="UMENG_APPKEY"
-            android:value="5a0e4a1ff29d985d9700000e"/>
+            android:value="${UMENG_APPKEY}"/>
         <meta-data
             android:name="UMENG_MESSAGE_SECRET"
-            android:value="dd13baf9f168ffffce8d1c76af2e8941"/>
+            android:value="${UMENG_MESSAGE_SECRET}"/>
         <meta-data
             android:name="UMENG_CHANNEL"
             android:value="Umeng"/>

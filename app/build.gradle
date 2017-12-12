@@ -4,27 +4,19 @@ apply plugin: 'kotlin-android-extensions'
 apply from: 'tinkerpatch.gradle'
 apply plugin: 'org.greenrobot.greendao'
 
+
 android {
-    signingConfigs {
-    }
+
     compileSdkVersion 26
     buildToolsVersion '26.0.2'
     defaultConfig {
-        applicationId 'com.intfocus.template'
         minSdkVersion 19
         targetSdkVersion 26
         multiDexEnabled true
-        versionCode 58
-        versionName "1.6.08"
 
         ndk {
             // 设置支持的SO库架构
-            abiFilters 'armeabi-v7a','arm64-v8a'
-        }
-        javaCompileOptions {
-            annotationProcessorOptions {
-                includeCompileClasspath = true
-            }
+            abiFilters 'armeabi-v7a', 'arm64-v8a'
         }
         javaCompileOptions {
             annotationProcessorOptions {
@@ -33,29 +25,200 @@ android {
         }
     }
 
-    // 签名配置
     signingConfigs {
-        release {
-            try {
-                keyAlias 'yh'
-                keyPassword '123456'
-                storeFile file('/Users/liuruilin/AndroidProject/YH-Android/key-store/yh.jks')
-                storePassword '123456'
-            }
-            catch (ex) {
-                throw new Exception("You should define KEYSTORE_PASSWORD and KEY_PASSWORD in gradle.properties")
-            }
+        template {
+            keyAlias TEMPLATE_ALIAS
+            keyPassword TEMPLATE_KEY_PWD
+            storeFile file(TEMPLATE_STORE_FILE)
+            storePassword TEMPLATE_KEYSTORE_PWD
+            v1SigningEnabled true
+            v2SigningEnabled false
         }
+        shengyiplus {
+            keyAlias SHENGYIPLUS_ALIAS
+            keyPassword SHENGYIPLUS_KEY_PWD
+            storeFile file(SHENGYIPLUS_STORE_FILE)
+            storePassword SHENGYIPLUS_KEYSTORE_PWD
+            v1SigningEnabled true
+            v2SigningEnabled false
+        }
+        yhdev {
+            keyAlias YHDEV_ALIAS
+            keyPassword YHDEV_KEY_PWD
+            storeFile file(YHDEV_STORE_FILE)
+            storePassword YHDEV_KEYSTORE_PWD
+            v1SigningEnabled true
+            v2SigningEnabled false
+        }
+        yonghuitest {
+            keyAlias YONGHUITEST_ALIAS
+            keyPassword YONGHUITEST_KEY_PWD
+            storeFile file(YONGHUITEST_STORE_FILE)
+            storePassword YONGHUITEST_KEYSTORE_PWD
+            v1SigningEnabled true
+            v2SigningEnabled false
+        }
+        yh_android {
+            keyAlias YH_ANDROID_ALIAS
+            keyPassword YH_ANDROID_KEY_PWD
+            storeFile file(YH_ANDROID_STORE_FILE)
+            storePassword YH_ANDROID_KEYSTORE_PWD
+            v1SigningEnabled true
+            v2SigningEnabled false
+        }
+        hxtest {
+            keyAlias HXTEST_ALIAS
+            keyPassword HXTEST_KEY_PWD
+            storeFile file(HXTEST_STORE_FILE)
+            storePassword HXTEST_KEYSTORE_PWD
+            v1SigningEnabled true
+            v2SigningEnabled false
+        }
+        hx {
+            keyAlias HX_ALIAS
+            keyPassword HX_KEY_PWD
+            storeFile file(HX_STORE_FILE)
+            storePassword HX_KEYSTORE_PWD
+            v1SigningEnabled true
+            v2SigningEnabled false
+        }
+
     }
 
     buildTypes {
         release {
-            proguardFiles 'proguard-rules.pro' //getDefaultProguardFile('proguard-android.txt'),
-            signingConfig signingConfigs.release
+            minifyEnabled false
+            zipAlignEnabled true
         }
         debug {
-
+            signingConfig null
         }
+    }
+
+    flavorDimensions "APP"
+
+
+
+    productFlavors {
+        template {
+            applicationId 'com.intfocus.template'
+            versionCode 2
+            versionName "1.0.02"
+
+            buildConfigField "String", "BASE_URL", "\"http://shengyiplus.com\""
+            manifestPlaceholders = [AMAP_KEY            : "6b4d1faccb7efeb4650dd9bd49f2cd92",
+                                    PGYER_APPID         : "0a1d27ec9681648cbf62a0e4fe5df54a",
+                                    UMENG_APPKEY        : "5a0e4a1ff29d985d9700000e",
+                                    UMENG_MESSAGE_SECRET: "dd13baf9f168ffffce8d1c76af2e8941",
+                                    APPLICATIONID       : applicationId]
+
+            signingConfig signingConfigs.template
+        }
+        shengyiplus {
+            dimension "APP"
+
+            applicationId 'com.intfocus.shengyiplus'
+            versionCode 58
+            versionName "1.6.08"
+
+            buildConfigField "String", "BASE_URL", "\"http://shengyiplus.com\""
+            proguardFiles 'proguard-rules.pro' //getDefaultProguardFile('proguard-android.txt'),
+            manifestPlaceholders = [AMAP_KEY            : "00c191d8305d1a5a3e9a98e108f61c00",
+                                    PGYER_APPID         : "38e630134f0ca8098aeffe13d52ad5b6",
+                                    UMENG_APPKEY        : "5705c952e0f55a391a0011cc",
+                                    UMENG_MESSAGE_SECRET: "2e4260da6ddedf736b3e67aceb4c8893",
+                                    APPLICATIONID       : applicationId]
+
+            signingConfig signingConfigs.shengyiplus
+        }
+        yhdev {
+            dimension "APP"
+
+            applicationId 'com.intfocus.yhdev'
+            versionCode 10
+            versionName "1.0.30"
+
+            buildConfigField "String", "BASE_URL", "\"http://yonghui-dev.idata.mobi\""
+            manifestPlaceholders = [AMAP_KEY            : "1564d9ba8b7f2bf89cf4d6a63fa55238",
+                                    PGYER_APPID         : "d4eaa112b6713a256b1442dd9c078c2d",
+                                    UMENG_APPKEY        : "5993ec76310c931d82000bb6",
+                                    UMENG_MESSAGE_SECRET: "5db40171b505cc5f14373a9607b4aeb1",
+                                    APPLICATIONID       : applicationId]
+
+            signingConfig signingConfigs.yhdev
+        }
+        yonghuitest {
+            dimension "APP"
+
+            applicationId 'com.intfocus.yonghuitest'
+            versionCode 688
+            versionName "3.1.38"
+
+            buildConfigField "String", "BASE_URL", "\"http://yonghui-test.idata.mobi\""
+            manifestPlaceholders = [AMAP_KEY            : "a9de6a6686b42561f41ef209079fb708",
+                                    PGYER_APPID         : "a0fb26faac52207f08129f092274f8c6",
+                                    UMENG_APPKEY        : "57b5224467e58e3e9b001fc2",
+                                    UMENG_MESSAGE_SECRET: "58d8d622c94e9c63cb4eaf88d80ac657",
+                                    APPLICATIONID       : applicationId]
+
+            signingConfig signingConfigs.yonghuitest
+        }
+        yh_android {
+            dimension "APP"
+
+            applicationId 'com.intfocus.yh_android'
+            versionCode 548
+            versionName "2.2.28"
+
+            buildConfigField "String", "BASE_URL", "\"http://yonghui.idata.mobi\""
+            proguardFiles 'proguard-rules.pro' //getDefaultProguardFile('proguard-android.txt'),
+            manifestPlaceholders = [AMAP_KEY            : "8ca31ea2137dd24eb49a261bdd9ab844",
+                                    PGYER_APPID         : "c586f556015342bcf89f8300ccfbebc2",
+                                    UMENG_APPKEY        : "570f5750e0f55a54670017e1",
+                                    UMENG_MESSAGE_SECRET: "da55d55bd0b2a0bba722d541fe0454ac",
+                                    APPLICATIONID       : applicationId]
+
+            signingConfig signingConfigs.yh_android
+        }
+        hxtest {
+            dimension "APP"
+
+            applicationId 'com.intfocus.hxtest'
+            versionCode 208
+            versionName "2.0.8"
+
+            buildConfigField "String", "BASE_URL", "\"http://111.231.113.158:8080\""
+            manifestPlaceholders = [AMAP_KEY            : "1564d9ba8b7f2bf89cf4d6a63fa55238",
+                                    PGYER_APPID         : "9f194df720ec4ac7a145c4a1d0f7342f",
+                                    UMENG_APPKEY        : "5a0e9bbdb27b0a734f000139",
+                                    UMENG_MESSAGE_SECRET: "925ae161f0c9609df411285229d7845c",
+                                    APPLICATIONID       : applicationId]
+
+            signingConfig signingConfigs.hxtest
+        }
+        hx {
+            dimension "APP"
+
+            applicationId 'com.intfocus.hx'
+            versionCode 201
+            versionName "2.0.1"
+
+            buildConfigField "String", "BASE_URL", "\"http://api-ruishang.idata.mobi\""
+            manifestPlaceholders = [AMAP_KEY            : "1564d9ba8b7f2bf89cf4d6a63fa55238",
+                                    PGYER_APPID         : "e22d108e745505bc9968884b0d4cbcfd",
+                                    UMENG_APPKEY        : "5a0e9b5bf29d982e5200017c",
+                                    UMENG_MESSAGE_SECRET: "fcc29b1a152618dcd6d4ce983eb50e57",
+                                    APPLICATIONID       : applicationId]
+
+            signingConfig signingConfigs.hx
+        }
+    }
+
+    android.applicationVariants.all { variant ->
+        variant.outputs.all {
+            outputFileName = "${variant.flavorName}_v${variant.versionName}_${releaseTime()}.apk"
+        }
+
     }
 
     allprojects {
@@ -185,5 +348,9 @@ greendao {
     schemaVersion 1
     daoPackage 'com.intfocus.template.model.gen'
     targetGenDir 'src/main/java'
+}
+
+static def releaseTime() {
+    return new Date().format("yyyy-MM-dd-HH-mm", TimeZone.getTimeZone("Asia/Shanghai"))
 }
 
