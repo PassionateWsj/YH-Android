@@ -249,4 +249,5 @@
     <color name="warring_yellow">#F4BC45</color>
     <color name="warring_green">#6aa657</color>
 
+    <color name="half_transparent">#80000000</color>
 </resources>

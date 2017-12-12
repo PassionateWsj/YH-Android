@@ -51,7 +51,7 @@
                     android:paddingRight="@dimen/space_default_small_s"
                     android:text=""/>
 
-                <com.intfocus.template.ui.view.RateCursor
+                <com.intfocus.shengyiplus.ui.view.RateCursor
                     android:id="@+id/img_RateCursor"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

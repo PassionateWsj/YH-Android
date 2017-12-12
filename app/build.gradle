@@ -10,7 +10,7 @@ android {
     compileSdkVersion 26
     buildToolsVersion '26.0.2'
     defaultConfig {
-        applicationId 'com.intfocus.template'
+        applicationId 'com.intfocus.shengyiplus'
         minSdkVersion 19
         targetSdkVersion 26
         multiDexEnabled true
@@ -93,7 +93,7 @@ dependencies {
     implementation 'com.google.guava:guava:23.5-android'
 
     // Kotlin
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
     // Json 解析
     implementation 'com.google.code.gson:gson:2.8.1'
@@ -187,7 +187,7 @@ dependencies {
 
 greendao {
     schemaVersion 1
-    daoPackage 'com.intfocus.template.model.gen'
+    daoPackage 'com.intfocus.shengyiplus.model.gen'
     targetGenDir 'src/main/java'
 }
 

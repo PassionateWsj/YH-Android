@@ -17,7 +17,7 @@
             android:layout_width="108dp"
             android:layout_weight="0"
             android:layout_height="wrap_content"
-            android:textSize="11sp"
+            android:textSize="14sp"
             android:ellipsize="end"
             android:maxLines="2"
             android:paddingLeft="@dimen/space_default"
@@ -34,7 +34,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <com.intfocus.template.ui.view.TableHorizontalScrollView
+            <com.intfocus.shengyiplus.ui.view.TableHorizontalScrollView
                 android:id="@+id/thscroll_unit_table_header"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -45,7 +45,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="horizontal"/>
-            </com.intfocus.template.ui.view.TableHorizontalScrollView>
+            </com.intfocus.shengyiplus.ui.view.TableHorizontalScrollView>
         </LinearLayout>
     </LinearLayout>
 </FrameLayout>
