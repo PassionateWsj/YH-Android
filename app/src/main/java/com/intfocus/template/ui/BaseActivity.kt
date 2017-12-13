@@ -104,7 +104,7 @@ open class BaseActivity : AppCompatActivity() {
     /**
      * 报表基础功能 -> 分享
      */
-    fun share(activity: Activity, url: String) {
+    open fun share(activity: Activity, url: String) {
         if (url.toLowerCase().endsWith(".pdf")) {
             ToastUtils.show(activity, "暂不支持 PDF 分享")
             return

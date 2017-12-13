@@ -13,7 +13,6 @@ import android.view.View
 import com.github.barteksc.pdfviewer.listener.OnPageErrorListener
 import com.github.barteksc.pdfviewer.scroll.DefaultScrollHandle
 import com.intfocus.template.BuildConfig
-import com.intfocus.template.ConfigConstants
 import com.intfocus.template.R
 import com.intfocus.template.SYPApplication
 import com.intfocus.template.SYPApplication.globalContext

@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.View
 import com.intfocus.template.BuildConfig
 import com.intfocus.template.R
-import com.intfocus.template.ConfigConstants
 import com.intfocus.template.ui.BaseActivity
 import com.intfocus.template.util.K
 import com.tencent.smtt.sdk.WebSettings

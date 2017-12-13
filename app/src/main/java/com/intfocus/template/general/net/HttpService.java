@@ -361,7 +361,6 @@ public interface HttpService {
      * POST
      * /api/v1.1/user/reset_password
      *
-     * @param userNum
      * @param mobile
      * @return
      */

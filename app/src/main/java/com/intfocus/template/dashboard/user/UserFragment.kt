@@ -28,7 +28,10 @@ import com.intfocus.template.R
 import com.intfocus.template.constant.Params.USER_NUM
 import com.intfocus.template.constant.ToastColor
 import com.intfocus.template.dashboard.feedback.FeedbackActivity
-import com.intfocus.template.dashboard.mine.activity.*
+import com.intfocus.template.dashboard.mine.activity.AlterPasswordActivity
+import com.intfocus.template.dashboard.mine.activity.FavoriteArticleActivity
+import com.intfocus.template.dashboard.mine.activity.SettingActivity
+import com.intfocus.template.dashboard.mine.activity.ShowPushMessageActivity
 import com.intfocus.template.general.net.ApiException
 import com.intfocus.template.general.net.CodeHandledSubscriber
 import com.intfocus.template.general.net.RetrofitUtil
@@ -152,7 +155,10 @@ class UserFragment : BaseFragment(), UserContract.View {
 
     private fun initShow() {
         setViewVisible(ll_single_value, ConfigConstants.USER_CUSTOM)
-        setViewVisible(ll_yh_custom_user, ConfigConstants.USER_CUSTOM)
+//        setViewVisible(ll_yh_custom_user, ConfigConstants.USER_CUSTOM)
+        setViewVisible(rl_favorite, ConfigConstants.USER_CUSTOM)
+        setViewVisible(rl_message, ConfigConstants.USER_CUSTOM)
+        setViewVisible(rl_password_alter, ConfigConstants.USER_CUSTOM)
         setViewVisible(iv_mine_user_group_arrow, ConfigConstants.USER_GROUP_CONTENT)
     }
 

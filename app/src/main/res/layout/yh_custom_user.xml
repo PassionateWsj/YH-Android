@@ -83,7 +83,7 @@
             android:id="@+id/tv_mine_user_setting"
             style="@style/tv_mine_user_list_left"
             android:layout_toRightOf="@+id/iv_mine_user_setting"
-            android:text="设置"/>
+            android:text="@string/app_setting"/>
 
         <ImageView
             android:layout_width="5dp"

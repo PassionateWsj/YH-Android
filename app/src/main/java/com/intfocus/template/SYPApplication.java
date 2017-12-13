@@ -8,8 +8,8 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.support.multidex.MultiDex;
 
-import com.facebook.stetho.Stetho;
 import com.alibaba.fastjson.JSONObject;
+import com.facebook.stetho.Stetho;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.intfocus.template.general.FetchPatchHandler;
 import com.intfocus.template.general.PriorityThreadPoolExecutor;
@@ -40,6 +40,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.PriorityBlockingQueue;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
+
 
 /**
  * @author lijunjie

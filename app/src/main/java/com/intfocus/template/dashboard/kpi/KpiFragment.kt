@@ -7,12 +7,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import com.intfocus.template.ConfigConstants
 import com.intfocus.template.R
 import com.intfocus.template.dashboard.kpi.bean.KpiBean
 import com.intfocus.template.dashboard.mine.adapter.KpiAdapter
 import com.intfocus.template.dashboard.mine.bean.InstituteDataBean
 import com.intfocus.template.ui.RefreshFragment
-import com.intfocus.template.ConfigConstants
 import com.intfocus.template.constant.Params.GROUP_ID
 import com.intfocus.template.constant.Params.ROLD_ID
 import com.intfocus.template.constant.Params.USER_NUM

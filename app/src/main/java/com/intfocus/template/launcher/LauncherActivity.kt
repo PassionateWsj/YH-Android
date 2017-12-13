@@ -19,10 +19,10 @@ import android.view.WindowManager
 import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
 import android.widget.Toast
-import com.intfocus.template.R
-import com.intfocus.template.login.LoginActivity
 import com.intfocus.template.ConfigConstants
+import com.intfocus.template.R
 import com.intfocus.template.listener.NoDoubleClickListener
+import com.intfocus.template.login.LoginActivity
 import com.intfocus.template.util.AssetsUpDateUtil
 import com.intfocus.template.util.HttpUtil
 import com.intfocus.template.util.LogUtil

@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">生意＋模板</string>
-    <string name="title_activity_main">生意＋模板</string>
     <string name="image_error">错误</string>
     <string name="cansel">取消</string>
     <string name="passcode_lock">启用锁屏</string>
@@ -27,7 +25,6 @@
     <string name="login_slogan_text">融合共享，成于至善</string>
 
 
-    <string name="text_kpi">生意概况</string>
     <string name="text_report">报表</string>
     <string name="text_workbox">工具箱</string>
     <string name="text_mine">我的</string>
@@ -103,4 +100,6 @@
     <string name="feedback_images">页面截图:</string>
     <string name="feedback_result">处理结果:</string>
     <string name="feedback_result_null">还没有处理结果呢, 请您耐心等待哟~</string>
+
+    <string name="app_setting">应用设置</string>
 </resources>

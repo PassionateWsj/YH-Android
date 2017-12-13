@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import com.intfocus.template.BuildConfig
-import com.intfocus.template.ConfigConstants
 import com.intfocus.template.R
 import com.intfocus.template.constant.Params.BANNER_NAME
 import com.intfocus.template.constant.Params.LINK

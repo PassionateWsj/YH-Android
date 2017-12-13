@@ -77,15 +77,12 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-
-        <!-- 登录 -->
-
         <!-- 模板三 -->
         <activity
             android:name=".subject.three.MultiIndexActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
-
+        <!-- 模板九 -->
         <activity
             android:name=".subject.nine.CollectionActivity"
             android:screenOrientation="portrait"
@@ -102,7 +99,7 @@
             android:name=".login.ForgetPasswordActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
-        <!-- 修改密码页 -->
+        <!-- 登录 -->
         <activity
             android:name=".login.LoginActivity"
             android:screenOrientation="portrait"
@@ -128,6 +125,15 @@
             android:name=".dashboard.mine.activity.SettingActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme2"/>
+        <!-- 问题反馈 -->
+        <activity
+            android:name=".dashboard.feedback.FeedbackActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.NoActionBar"/>
+        <activity
+            android:name=".dashboard.feedback.FeedbackInputActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.NoActionBar"/>
         <!-- 个人信息页信息展示 -->
         <activity
             android:name=".dashboard.mine.activity.SettingListActivity"

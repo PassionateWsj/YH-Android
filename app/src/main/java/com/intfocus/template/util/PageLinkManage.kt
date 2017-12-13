@@ -17,6 +17,7 @@ import com.intfocus.template.constant.Params.OBJECT_TYPE
 import com.intfocus.template.constant.Params.TEMPLATE_ID
 import com.intfocus.template.constant.Params.USER_NUM
 import com.intfocus.template.dashboard.DashboardActivity
+import com.intfocus.template.dashboard.feedback.FeedbackActivity
 import com.intfocus.template.dashboard.mine.activity.ShowPushMessageActivity
 import com.intfocus.template.model.entity.DashboardItem
 import com.intfocus.template.model.entity.PushMsgBean
@@ -272,7 +273,7 @@ object PageLinkManage {
                 }
                 FEEDBACK -> {
                     mClickTemplateName = "问题反馈"
-                    intent = Intent(context, CollectionActivity::class.java)
+                    intent = Intent(context, FeedbackActivity::class.java)
                     intent.flags = if (fromPushMsg) {
                         Intent.FLAG_ACTIVITY_NEW_TASK
                     } else {
