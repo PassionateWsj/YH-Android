@@ -3,12 +3,11 @@ package com.intfocus.template.util
 import android.app.ProgressDialog
 import android.content.Context
 import android.os.Environment
-import android.view.View
 import com.intfocus.template.constant.ToastColor
+import com.intfocus.template.subject.two.CleanCacheCallback
 import rx.Observable
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
-
 import java.io.File
 
 /**
@@ -23,6 +22,10 @@ object CacheCleanManager {
      * 清理缓存
      */
     fun clearAppUserCache(context: Context) {
+        clearAppUserCache(context, null)
+    }
+
+    fun clearAppUserCache(context: Context, listener: CleanCacheCallback?) {
         val mProgressDialog = ProgressDialog.show(context, "稍等", "正在清理缓存...")
         if (!HttpUtil.isConnected(context)) {
             mProgressDialog.dismiss()
@@ -52,11 +55,13 @@ object CacheCleanManager {
                             override fun onResultSuccess() {
                                 AssetsUpDateUtil.checkAssetsUpdate(context, object : OnCheckAssetsUpdateResultListener {
                                     override fun onResultSuccess() {
+                                        listener?.onCleanCacheSuccess()
                                         ToastUtils.show(context, "清除缓存成功", ToastColor.SUCCESS)
                                         mProgressDialog.dismiss()
                                     }
 
                                     override fun onFailure(errorMsg: Throwable) {
+                                        listener?.onCleanCacheFailure()
                                         AssetsUpDateUtil.unSubscribe()
                                         ToastUtils.show(context, "清除缓存失败，请重试")
                                         mProgressDialog.dismiss()
@@ -65,17 +70,17 @@ object CacheCleanManager {
                             }
 
                             override fun onFailure(errorMsg: Throwable) {
+                                listener?.onCleanCacheFailure()
                                 mProgressDialog.dismiss()
                                 ToastUtils.show(context, "清除缓存失败，请检查网络")
                             }
                         })
                     } else {
+                        listener?.onCleanCacheFailure()
                         mProgressDialog.dismiss()
                         ToastUtils.show(context, "清除缓存失败，请检查网络")
                     }
                 }
-
-
     }
 
     /**

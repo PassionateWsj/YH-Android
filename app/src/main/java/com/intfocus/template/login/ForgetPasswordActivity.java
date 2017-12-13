@@ -14,19 +14,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.intfocus.template.R;
-import com.intfocus.template.ui.BaseActivity;
-import com.intfocus.template.constant.ToastColor;
-import com.intfocus.template.model.response.BaseResult;
-import com.intfocus.template.listener.NoDoubleClickListener;
 import com.intfocus.template.general.net.ApiException;
 import com.intfocus.template.general.net.CodeHandledSubscriber;
 import com.intfocus.template.general.net.RetrofitUtil;
+import com.intfocus.template.listener.NoDoubleClickListener;
+import com.intfocus.template.model.response.BaseResult;
+import com.intfocus.template.ui.BaseActivity;
 import com.intfocus.template.util.ActionLogUtil;
 import com.intfocus.template.util.ToastUtils;
-
-import org.json.JSONObject;
-
-import static com.intfocus.template.constant.Params.ACTION;
 
 public class ForgetPasswordActivity extends BaseActivity {
 
@@ -91,7 +86,7 @@ public class ForgetPasswordActivity extends BaseActivity {
      */
     public void startPost(String mobile) {
         mRequestDialog = ProgressDialog.show(this, "稍等", "正在重置密码...");
-        RetrofitUtil.getHttpService(getApplicationContext()).resetPwd(mobile)
+        RetrofitUtil.getHttpService(getApplicationContext()).resetPwd(mobile,"mobile",mobile)
                 .compose(new RetrofitUtil.CommonOptions<BaseResult>())
                 .subscribe(new CodeHandledSubscriber<BaseResult>() {
                     @Override

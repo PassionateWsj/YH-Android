@@ -157,7 +157,7 @@ public class K implements Serializable {
     /**
      * 重置密码
      */
-    public final static String K_NEW_RESET_PWD = "/api/v1.1/user/reset_password";
+    public final static String K_NEW_RESET_PWD = "/api/v1.1/custom/user/reset_password";
     /**
      * 发表评论
      */

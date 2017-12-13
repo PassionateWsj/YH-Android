@@ -365,7 +365,7 @@ public interface HttpService {
      * @return
      */
     @POST(K.K_NEW_RESET_PWD)
-    Observable<BaseResult> resetPwd(@Query("mobile") String mobile);
+    Observable<BaseResult> resetPwd(@Query("mobile") String mobile,@Query("type") String type,@Query("value") String value);
 
     /**
      * 用户信息

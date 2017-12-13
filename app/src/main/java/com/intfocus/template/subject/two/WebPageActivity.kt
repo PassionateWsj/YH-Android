@@ -12,10 +12,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import com.github.barteksc.pdfviewer.listener.OnPageErrorListener
 import com.github.barteksc.pdfviewer.scroll.DefaultScrollHandle
-import com.intfocus.template.BuildConfig
 import com.intfocus.template.R
-import com.intfocus.template.SYPApplication
-import com.intfocus.template.SYPApplication.globalContext
 import com.intfocus.template.constant.Params
 import com.intfocus.template.constant.Params.BANNER_NAME
 import com.intfocus.template.constant.Params.GROUP_ID
@@ -46,7 +43,10 @@ import java.io.File
  * @data 2017/11/15
  * @describe
  */
-class WebPageActivity : BaseActivity(), WebPageContract.View, OnPageErrorListener, FilterMenuAdapter.FilterMenuListener, FilterPopupWindow.MenuLisenter, FilterDialogFragment.FilterListener {
+class WebPageActivity : BaseActivity(), WebPageContract.View, OnPageErrorListener,
+        FilterMenuAdapter.FilterMenuListener, FilterPopupWindow.MenuLisenter,
+        FilterDialogFragment.FilterListener, CleanCacheCallback {
+
     private val REQUEST_CODE_CHOOSE = 1
     private var errorCount: Int = 0
     override lateinit var presenter: WebPageContract.Presenter
@@ -308,7 +308,14 @@ class WebPageActivity : BaseActivity(), WebPageContract.View, OnPageErrorListene
      */
     override fun refresh() {
         setLoadingVisibility(View.VISIBLE)
+        CacheCleanManager.clearAppUserCache(this, this)
+    }
+
+    override fun onCleanCacheSuccess() {
         presenter.load(reportId, templateId, groupId, url)
+    }
+
+    override fun onCleanCacheFailure() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, intent: Intent) {

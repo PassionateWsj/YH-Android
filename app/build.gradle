@@ -146,8 +146,8 @@ android {
             dimension "APP"
 
             applicationId 'com.intfocus.yonghuitest'
-            versionCode 688
-            versionName "3.1.38"
+            versionCode 690
+            versionName "3.1.40"
 
             buildConfigField "String", "BASE_URL", YONGHUITEST_BASE_URL
             manifestPlaceholders = [AMAP_KEY            : YONGHUITEST_AMAP_KEY,
