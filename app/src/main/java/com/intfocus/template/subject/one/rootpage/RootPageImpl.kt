@@ -1,7 +1,8 @@
-package com.intfocus.template.subject.templateone.rootpage
+package com.intfocus.template.subject.one.rootpage
 
 import com.intfocus.template.subject.one.ModeImpl
 import com.intfocus.template.model.entity.Report
+import com.intfocus.template.subject.templateone.rootpage.RootPageModel
 import com.intfocus.template.util.LogUtil
 import com.zbl.lib.baseframe.utils.TimeUtil
 import rx.Observable

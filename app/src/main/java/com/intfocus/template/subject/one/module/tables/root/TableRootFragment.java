@@ -139,7 +139,7 @@ public class TableRootFragment extends BaseFragment implements TableTitleAdapter
 
             switchFragment(0);
         } else {
-            ToastUtil.showToast(ctx, "数据实体为空");
+            ToastUtil.showToast(getCtx(), "数据实体为空");
         }
     }
 

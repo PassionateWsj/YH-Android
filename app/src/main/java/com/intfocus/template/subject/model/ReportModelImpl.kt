@@ -63,9 +63,11 @@ open class ReportModelImpl : ReportModel {
             connection.connect()
             response.put(CODE, String.format("%d", connection.responseCode))
             val map = connection.headerFields
+
             for ((key, value) in map) {
                 response.put(key, value[0])
             }
+
             LogUtil.d("DownloadZIP", String.format("%d - %s - %s", connection.responseCode, url, response.toString()))
             // expect HTTP 200 OK, so we don't mistakenly save error report
             // instead of the file

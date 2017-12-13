@@ -19,7 +19,7 @@ import com.intfocus.template.model.response.filter.MenuItem
 import com.intfocus.template.subject.one.entity.EventRefreshTableRect
 import com.intfocus.template.subject.one.entity.Filter
 import com.intfocus.template.subject.one.rootpage.RootPageFragment
-import com.intfocus.template.subject.templateone.rootpage.RootPageImpl
+import com.intfocus.template.subject.one.rootpage.RootPageImpl
 import com.intfocus.template.subject.templateone.rootpage.RootPagePresenter
 import com.intfocus.template.ui.BaseActivity
 import com.intfocus.template.ui.view.RootScrollView
@@ -77,7 +77,9 @@ class NativeReportActivity : BaseActivity(), ModeContract.View, FilterDialogFrag
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContentView(R.layout.actvity_meter_detal)
+
         showDialog(this)
         mFragmentManager = supportFragmentManager
         mTlTitleContainer = findViewById(R.id.rl_mdetal_title_container)

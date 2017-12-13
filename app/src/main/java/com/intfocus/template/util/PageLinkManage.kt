@@ -298,6 +298,7 @@ object PageLinkManage {
         logParams.put(OBJECT_TITLE, objTitle)
         logParams.put(OBJECT_ID, objectId)
         logParams.put(LINK, link)
+        logParams.put(OBJECT_TYPE, objectType)
         ActionLogUtil.actionLog(logParams)
     }
 

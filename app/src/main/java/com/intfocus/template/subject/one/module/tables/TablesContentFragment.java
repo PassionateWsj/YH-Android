@@ -348,7 +348,7 @@ public class TablesContentFragment extends Fragment implements SortCheckBox.Sort
             rowDataSize = rowDatas.size();
             for (int j = 0; j < rowDataSize; j++) {
                 TextView textView = new TextView(ctx);
-                textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 11);
+                textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
                 textView.setText(rowDatas.get(j));
                 if (i != 0) {
                     try {
@@ -383,7 +383,7 @@ public class TablesContentFragment extends Fragment implements SortCheckBox.Sort
             box.setDrawingCacheEnabled(true);
             box.setText(header[i + 1]);
             box.setBoxWidth(DisplayUtil.dip2px(ctx, mColumnMaxWidths.get(i)));
-            box.setTextSize(DisplayUtil.dip2px(getContext(), 11));
+            box.setTextSize(DisplayUtil.dip2px(getContext(), 14));
             box.setTag(i + 1);
             box.setOnClickListener(listener);
             box.setOnSortViewSizeListener(this);
@@ -439,7 +439,7 @@ public class TablesContentFragment extends Fragment implements SortCheckBox.Sort
         tableValue = new TableValueView(ctx);
         tableValue.setItemHeight(itemHeight);
         tableValue.setHeaderLengths(al_HeaderLenght);
-        tableValue.setTextSize(DisplayUtil.dip2px(getContext(), 10));
+        tableValue.setTextSize(DisplayUtil.dip2px(getContext(), 13));
         tableValue.setTableValues(lables);
         tableValue.setDividerColor(dividerColor);
         tableValue.setTextColor(textColor);

@@ -1,6 +1,6 @@
 package com.intfocus.template.subject.nine.module.options
 
-import com.intfocus.template.subject.nine.callback.LoadDataCallback
+import com.intfocus.template.model.callback.LoadDataCallback
 
 /**
  * @author liuruilin

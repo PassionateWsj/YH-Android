@@ -28,9 +28,17 @@ import java.io.File
  */
 class CollectionUploadService : IntentService("collection_upload") {
     private lateinit var collectionDao: CollectionDao
+
+    /*
+     * 采集数据列表
+     */
     private lateinit var collectionList: List<Collection>
     private lateinit var collection: Collection
     private lateinit var sourceDao: SourceDao
+
+    /*
+     * 当前采集报表的唯一标识
+     */
     private lateinit var uuid: String
     private lateinit var reportId: String
 
@@ -52,10 +60,17 @@ class CollectionUploadService : IntentService("collection_upload") {
                 }
     }
 
+    /**
+     * 上传图片
+     */
     private fun uploadImage() {
         var sourceQb = sourceDao.queryBuilder()
         var sourceList = sourceQb.where(sourceQb.and(SourceDao.Properties.Type.eq(UPLOAD_IMAGES), SourceDao.Properties.Uuid.eq(uuid))).list()
 
+
+        /*
+         * 如果采集数据中不包含图片, 直接生成 D_JSON
+         */
         if (sourceList.size < 1) {
             collection.imageStatus = 1
             collectionDao.update(collection)
@@ -116,6 +131,10 @@ class CollectionUploadService : IntentService("collection_upload") {
         generateDJson()
     }
 
+
+    /**
+     * 生成需要上传给服务的 D_JSON (采集结果)
+     */
     private fun generateDJson() {
         var moduleList = sourceDao.queryBuilder().where(SourceDao.Properties.Uuid.eq(uuid)).list()
         var dJson = JSONObject()
@@ -127,6 +146,9 @@ class CollectionUploadService : IntentService("collection_upload") {
         uploadDJSon(Gson().toJson(dJson))
     }
 
+    /**
+     * 上传 D_JSON 至服务器
+     */
     private fun uploadDJSon(dJson: String) {
         var collectionRequestBody = CollectionRequestBody()
         var data = CollectionRequestBody.Data()

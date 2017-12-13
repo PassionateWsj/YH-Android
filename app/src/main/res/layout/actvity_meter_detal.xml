@@ -1,113 +1,122 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+<com.jakewharton.scalpel.ScalpelFrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scalpel"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <include layout="@layout/item_action_bar"></include>
-
-    <LinearLayout
-        android:id="@+id/ll_filter"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/rl_action_bar"
-        android:orientation="vertical"
-        android:visibility="gone">
+        android:layout_height="wrap_content">
 
-        <View
+        <include layout="@layout/item_action_bar"></include>
+
+        <LinearLayout
+            android:id="@+id/ll_filter"
             android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="@color/co9_syr"/>
-
-        <RelativeLayout
-            android:id="@+id/rl_address_filter"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:background="@color/white"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/tv_location_address"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_toLeftOf="@+id/tv_address_filter"
-                android:drawablePadding="15dp"
-                android:ellipsize="end"
-                android:gravity="center_vertical"
-                android:hint=""
-                android:maxLines="1"
-                android:paddingLeft="@dimen/space_default_large_xxs"
-                android:textColor="@color/co15_syr"
-                android:textColorHint="@color/co4_syr"
-                android:textSize="14sp"/>
-
-            <TextView
-                android:id="@+id/tv_address_filter"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_alignParentRight="true"
-                android:drawablePadding="6dp"
-                android:drawableRight="@drawable/pop_screen_gray"
-                android:gravity="center_vertical"
-                android:paddingRight="@dimen/space_default_large_xxs"
-                android:text="@string/text_shaixuan"
-                android:textColor="@color/co6_syr"
-                android:textSize="15sp"/>
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rl_action_bar"
+            android:orientation="vertical"
+            android:visibility="gone">
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
-                android:layout_alignParentBottom="true"
                 android:background="@color/co9_syr"/>
-        </RelativeLayout>
 
-        <View
-            android:id="@+id/view_line"
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="@color/co9_syr"/>
-
-
-    </LinearLayout>
-
-    <com.intfocus.template.ui.view.RootScrollView
-        android:id="@+id/rootScrollView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/ll_filter"
-        android:scrollbars="none">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <HorizontalScrollView
-                android:id="@+id/hs_page_btn"
+            <RelativeLayout
+                android:id="@+id/rl_address_filter"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/size_default_medium"
-                android:background="@color/co10_syr"
-                android:paddingRight="@dimen/space_default_large_xxs"
-                android:paddingLeft="@dimen/space_default_large_xxs"
-                android:scrollbars="none">
+                android:layout_height="40dp"
+                android:background="@color/white"
+                android:orientation="horizontal">
 
-                <RelativeLayout
-                    android:id="@+id/rl_mdetal_title_container"
+                <TextView
+                    android:id="@+id/tv_location_address"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:gravity="center"/>
-            </HorizontalScrollView>
+                    android:layout_toLeftOf="@+id/tv_address_filter"
+                    android:drawablePadding="15dp"
+                    android:ellipsize="end"
+                    android:gravity="center_vertical"
+                    android:hint=""
+                    android:maxLines="1"
+                    android:paddingLeft="@dimen/space_default_large_xxs"
+                    android:textColor="@color/co15_syr"
+                    android:textColorHint="@color/co4_syr"
+                    android:textSize="14sp"/>
 
-            <FrameLayout
-                android:id="@+id/fl_mdetal_cont_container"
+                <TextView
+                    android:id="@+id/tv_address_filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:drawablePadding="6dp"
+                    android:drawableRight="@drawable/pop_screen_gray"
+                    android:gravity="center_vertical"
+                    android:paddingRight="@dimen/space_default_large_xxs"
+                    android:text="@string/text_shaixuan"
+                    android:textColor="@color/co6_syr"
+                    android:textSize="15sp"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/co9_syr"/>
+            </RelativeLayout>
+
+            <View
+                android:id="@+id/view_line"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="0.5dp"
+                android:background="@color/co9_syr"/>
+
 
         </LinearLayout>
-    </com.intfocus.template.ui.view.RootScrollView>
 
-    <FrameLayout
-        android:id="@+id/fl_mdetal_top_suspend_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/ll_filter"/>
+        <com.intfocus.template.ui.view.RootScrollView
+            android:id="@+id/rootScrollView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/ll_filter"
+            android:scrollbars="none">
 
-</RelativeLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <HorizontalScrollView
+                    android:id="@+id/hs_page_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/size_default_medium"
+                    android:background="@color/co10_syr"
+                    android:paddingLeft="@dimen/space_default_large_xxs"
+                    android:paddingRight="@dimen/space_default_large_xxs"
+                    android:scrollbars="none">
+
+                    <RelativeLayout
+                        android:id="@+id/rl_mdetal_title_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"/>
+                </HorizontalScrollView>
+
+                <FrameLayout
+                    android:id="@+id/fl_mdetal_cont_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+        </com.intfocus.template.ui.view.RootScrollView>
+
+        <FrameLayout
+            android:id="@+id/fl_mdetal_top_suspend_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ll_filter"/>
+    </RelativeLayout>
+
+</com.jakewharton.scalpel.ScalpelFrameLayout>
+
+

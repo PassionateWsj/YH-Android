@@ -12,7 +12,11 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import com.github.barteksc.pdfviewer.listener.OnPageErrorListener
 import com.github.barteksc.pdfviewer.scroll.DefaultScrollHandle
+import com.intfocus.template.BuildConfig
+import com.intfocus.template.ConfigConstants
 import com.intfocus.template.R
+import com.intfocus.template.SYPApplication
+import com.intfocus.template.SYPApplication.globalContext
 import com.intfocus.template.constant.Params
 import com.intfocus.template.constant.Params.BANNER_NAME
 import com.intfocus.template.constant.Params.GROUP_ID
@@ -45,6 +49,7 @@ import java.io.File
  */
 class WebPageActivity : BaseActivity(), WebPageContract.View, OnPageErrorListener, FilterMenuAdapter.FilterMenuListener, FilterPopupWindow.MenuLisenter, FilterDialogFragment.FilterListener {
     private val REQUEST_CODE_CHOOSE = 1
+    private var errorCount: Int = 0
     override lateinit var presenter: WebPageContract.Presenter
     lateinit var bannerName: String
     lateinit var reportId: String
@@ -52,7 +57,7 @@ class WebPageActivity : BaseActivity(), WebPageContract.View, OnPageErrorListene
     lateinit var groupId: String
     lateinit var url: String
     lateinit var objectType: String
-    private var webView: WebView?=null
+    private var webView: WebView? = null
 
     /**
      * 图片上传接收参数
@@ -250,6 +255,35 @@ class WebPageActivity : BaseActivity(), WebPageContract.View, OnPageErrorListene
     }
 
     /**
+     * 错误页面
+     */
+    override fun showError(errorPagePath: String) {
+        errorCount += 1
+        when (errorCount) {
+            1, 2 -> {
+                ApiHelper.deleteHeadersFile()
+                webView?.loadUrl(errorPagePath)
+            }
+            3 -> {
+                AlertDialog.Builder(this)
+                        .setTitle("提示")
+                        .setMessage("报表多次加载错误, 是否清理缓存后继续加载?")
+                        .setPositiveButton("确定") { _, _ ->
+                            CacheCleanManager.clearAppUserCache(this)
+                            errorCount = 0
+                        }
+                        .setNegativeButton("下一次") { dialog, _ ->
+                            errorCount = 2
+                            dialog.dismiss()
+                        }
+                        .setCancelable(false)
+                        .show()
+                webView?.loadUrl(errorPagePath)
+            }
+        }
+    }
+
+    /**
      * 渲染 PDF 文件
      */
     override fun showPDF(path: String) {
@@ -275,7 +309,7 @@ class WebPageActivity : BaseActivity(), WebPageContract.View, OnPageErrorListene
      */
     override fun refresh() {
         setLoadingVisibility(View.VISIBLE)
-        show(url)
+        presenter.load(reportId, templateId, groupId, url)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, intent: Intent) {

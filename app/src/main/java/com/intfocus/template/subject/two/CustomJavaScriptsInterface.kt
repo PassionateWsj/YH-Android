@@ -6,6 +6,7 @@ import android.text.TextUtils
 import android.view.View
 import android.webkit.JavascriptInterface
 import com.google.gson.Gson
+import com.intfocus.template.SYPApplication
 import com.intfocus.template.SYPApplication.globalContext
 import com.intfocus.template.constant.Params.ACTION
 import com.intfocus.template.constant.Params.OBJECT_ID
@@ -34,11 +35,15 @@ import java.io.File
 class CustomJavaScriptsInterface constructor(
         var mView: WebPageActivity
 ) {
+
     /**
-     * javascript 异常时通知原生代码，或提交服务器，或 popup 提示用户
+     * javascript 异常时通知原生代码，提交服务器
      */
     @JavascriptInterface
     fun jsException(ex: String) {
+        var errorPagePath = FileUtil.sharedPath(SYPApplication.globalContext) + "/loading/400.html"
+        mView.showError("file://" + errorPagePath)
+
         /*
          * 用户行为记录, 单独异常处理，不可影响用户体验
          */

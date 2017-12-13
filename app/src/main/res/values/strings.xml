@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name">生意＋模板</string>
+    <string name="title_activity_main">生意＋模板</string>
     <string name="image_error">错误</string>
     <string name="cansel">取消</string>
     <string name="passcode_lock">启用锁屏</string>
@@ -91,4 +93,14 @@
     <string name="report_copy">报表操作</string>
     <string name="screenLock">启用锁屏</string>
     <string name="clear_cache">清理缓存</string>
+
+    <string name="activity_feedback">问题反馈</string>
+    <string name="feedback_state">处理状态:</string>
+    <string name="feedback_state_1">已提交</string>
+    <string name="feedback_state_2">处理中</string>
+    <string name="feedback_state_3">已解决</string>
+    <string name="feedback_idea">问题修改及改进意见:</string>
+    <string name="feedback_images">页面截图:</string>
+    <string name="feedback_result">处理结果:</string>
+    <string name="feedback_result_null">还没有处理结果呢, 请您耐心等待哟~</string>
 </resources>

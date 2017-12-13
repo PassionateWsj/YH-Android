@@ -49,7 +49,6 @@ public class ForgetPasswordActivity extends BaseActivity {
      */
     private void initView() {
         mBackBtn = (ImageButton) findViewById(R.id.ibtn_find_pwd_back);
-        mEtEmployeeId = (EditText) findViewById(R.id.et_find_pwd_employee_id);
         mEtEmployeePhoneNum = (EditText) findViewById(R.id.et_find_pwd_employee_phone_num);
         mBtnSubmit = (TextView) findViewById(R.id.tv_btn_find_pwd_submit);
     }
@@ -72,14 +71,11 @@ public class ForgetPasswordActivity extends BaseActivity {
                 if (imm != null) {
                     imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(), 0);
                 }
-                String userNum = mEtEmployeeId.getText().toString();
                 String mobile = mEtEmployeePhoneNum.getText().toString();
-                if (userNum == null && "".equals(userNum)) {
-                    ToastUtils.INSTANCE.show(ForgetPasswordActivity.this, "员工号无效");
-                } else if (mobile.length() == 11) {
+                if (mobile.length() == 11) {
 
                     // 发起 post 请求
-                    startPost(userNum, mobile);
+                    startPost(mobile);
 
                     ActionLogUtil.actionLog("重置密码");
                 } else {
@@ -91,31 +87,27 @@ public class ForgetPasswordActivity extends BaseActivity {
 
     /**
      * 发起 post 请求
-     *
-     * @param userNum
      * @param mobile
      */
-    public void startPost(String userNum, String mobile) {
+    public void startPost(String mobile) {
         mRequestDialog = ProgressDialog.show(this, "稍等", "正在重置密码...");
-        RetrofitUtil.getHttpService(getApplicationContext()).resetPwd(userNum, mobile)
+        RetrofitUtil.getHttpService(getApplicationContext()).resetPwd(mobile)
                 .compose(new RetrofitUtil.CommonOptions<BaseResult>())
                 .subscribe(new CodeHandledSubscriber<BaseResult>() {
                     @Override
                     public void onError(ApiException apiException) {
                         mRequestDialog.dismiss();
                         showErrorMsg(apiException.getDisplayMessage());
-//                        mBtnSubmit.setClickable(true);
                     }
 
                     @Override
                     public void onBusinessNext(BaseResult data) {
-                        ToastUtils.INSTANCE.show(ForgetPasswordActivity.this, data.getMessage(), ToastColor.SUCCESS);
+                        showErrorMsg(data.getMessage());
                     }
 
                     @Override
                     public void onCompleted() {
                         mRequestDialog.dismiss();
-//                        mBtnSubmit.setClickable(true);
                     }
                 });
 

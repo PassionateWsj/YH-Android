@@ -97,7 +97,7 @@ public class BargraphFragment extends BaseFragment implements AdapterView.OnItem
         nameComparator = new BargraphNameComparator();
         dataComparator = new BargraphDataComparator();
 
-        adapter = new BargraptAdapter(ctx);
+        adapter = new BargraptAdapter(getCtx());
         lv.setAdapter(adapter);
         lv.setFocusable(false);
         lv.setOnItemClickListener(this);
@@ -148,9 +148,9 @@ public class BargraphFragment extends BaseFragment implements AdapterView.OnItem
         adapter.updateData(mLtData);
 
         //设置图表数据
-        pmChart = new PlusMinusChart(ctx);
+        pmChart = new PlusMinusChart(getCtx());
         pmChart.setDrawingCacheEnabled(true);
-        pmChart.setDefauteolor(ContextCompat.getColor(ctx, R.color.co9));
+        pmChart.setDefauteolor(ContextCompat.getColor(getCtx(), R.color.co9));
         pmChart.setDataValues(mLtData);
         pmChart.setPointClickListener(this);
         mFlContainer.addView(pmChart);
@@ -171,7 +171,7 @@ public class BargraphFragment extends BaseFragment implements AdapterView.OnItem
         mSelectItem = mLtData.get(index);
         adapter.setSelectItem(index);
         String xValue = entityData.xAxis.data[index];
-        ToastUtils.INSTANCE.showDefault(ctx, xValue);
+        ToastUtils.INSTANCE.showDefault(getCtx(), xValue);
     }
 
     class BargraphNameComparator implements Comparator<BargraphComparator> {

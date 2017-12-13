@@ -3,9 +3,7 @@
           xmlns:tools="http://schemas.android.com/tools"
           package="com.intfocus.template"
           android:hardwareAccelerated="false"
-          android:largeHeap="true"
-          android:versionCode="58"
-          android:versionName="1.6.08">
+          android:largeHeap="true">
 
     <!-- 扫描条形码或二维码 -->
     <uses-permission android:name="android.permission.CAMERA"/>
@@ -88,16 +86,11 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
 
-        <!-- 问题反馈 -->
-        <activity
-            android:name=".dashboard.mine.activity.FeedbackActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.NoActionBar"/>
-
         <activity
             android:name=".subject.nine.CollectionActivity"
             android:screenOrientation="portrait"
-            ></activity>
+            android:theme="@style/Theme.AppCompat.NoActionBar"/>
+
         <!-- 公告详情 -->
         <activity
             android:name=".dashboard.mine.activity.NoticeContentActivity"
@@ -156,7 +149,6 @@
         <!-- 模板二/主题页面 -->
         <activity
             android:name=".subject.two.WebPageActivity"
-
             android:configChanges="orientation|screenSize"
             android:screenOrientation="fullSensor"
             android:theme="@style/AppTheme"/>
@@ -193,8 +185,6 @@
             android:name=".launcher.ConfirmPassCodeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
-        <!-- 更新日志 -->
-        <!-- 开发者选项 -->
         <activity
             android:name=".general.wxapi.WXEntryActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"

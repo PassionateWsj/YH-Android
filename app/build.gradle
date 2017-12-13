@@ -4,9 +4,7 @@ apply plugin: 'kotlin-android-extensions'
 apply from: 'tinkerpatch.gradle'
 apply plugin: 'org.greenrobot.greendao'
 
-
 android {
-
     compileSdkVersion 26
     buildToolsVersion '26.0.2'
     defaultConfig {
@@ -114,7 +112,7 @@ android {
         shengyiplus {
             dimension "APP"
 
-            applicationId 'com.intfocus.shengyiplus'
+            applicationId 'com.intfocus.template'
             versionCode 58
             versionName "1.6.08"
 
@@ -253,7 +251,7 @@ dependencies {
     implementation 'com.google.guava:guava:23.5-android'
 
     // Kotlin
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
     // Json 解析
     implementation 'com.google.code.gson:gson:2.8.1'
@@ -339,6 +337,10 @@ dependencies {
 
     // 事件
     implementation 'org.greenrobot:eventbus:3.0.0'
+
+    //stetho 调试
+    implementation 'com.facebook.stetho:stetho:1.5.0'
+    implementation 'com.facebook.stetho:stetho-okhttp3:1.5.0'
 }
 
 greendao {

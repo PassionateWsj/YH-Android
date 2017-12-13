@@ -11,7 +11,7 @@ import com.intfocus.template.general.net.RetrofitUtil
 import com.intfocus.template.model.DaoUtil
 import com.intfocus.template.service.CollectionUploadService
 import com.intfocus.template.util.*
-import com.intfocus.template.subject.nine.callback.LoadDataCallback
+import com.intfocus.template.model.callback.LoadDataCallback
 import com.intfocus.template.subject.nine.entity.CollectionEntity
 import com.intfocus.template.subject.nine.entity.Content
 import rx.Observable

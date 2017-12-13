@@ -11,7 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.intfocus.template.R
 import com.intfocus.template.SYPApplication
-import com.intfocus.template.dashboard.mine.activity.FeedbackActivity
+import com.intfocus.template.dashboard.feedback.FeedbackInputActivity
 import com.intfocus.template.util.GifSizeFilter
 import com.intfocus.template.util.ImageUtil
 import com.intfocus.template.ui.BaseModuleFragment
@@ -98,7 +98,7 @@ class ImageFragment : BaseModuleFragment(), ImageModuleContract.View, ImageDispl
                 .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
                 .thumbnailScale(0.85f)
                 .imageEngine(GlideEngine())
-                .forResult(FeedbackActivity.REQUEST_CODE_CHOOSE)
+                .forResult(FeedbackInputActivity.REQUEST_CODE_CHOOSE)
     }
 
     override fun deleteImage(pos: Int) {

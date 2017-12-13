@@ -73,6 +73,13 @@ public class ApiHelper {
         return true;
     }
 
+    public static void clearUserSpace() {
+        String userSpace = FileUtil.userspace(globalContext);
+        if ((new File(userSpace)).exists()) {
+            CacheCleanManager.INSTANCE.deleteDirectory(userSpace);
+        }
+    }
+
     public static void deleteHeadersFile() {
         String assetsPath = FileUtil.dirPath(globalContext, K.K_HTML_DIR_NAME);
         String headersFilePath = String.format("%s/%s", assetsPath, K.K_CACHED_HEADER_CONFIG_FILE_NAME);

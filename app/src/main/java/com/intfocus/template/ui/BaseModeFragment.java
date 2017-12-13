@@ -11,7 +11,6 @@ import com.zbl.lib.baseframe.core.Subject;
  * @author liuruilin
  * @date 2017/5/8
  */
-
 public abstract class BaseModeFragment<Target extends Subject> extends AbstractFragment<Target> {
     public Activity act;
     public Context ctx;

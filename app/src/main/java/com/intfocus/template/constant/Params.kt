@@ -63,6 +63,7 @@ object Params {
     const val IS_LOGIN = "is_login"
 
     const val CODE = "code"
+    const val PATH = "path"
     const val BODY = "body"
     const val ETAG = "ETag"
     const val LAST_MODIFIED = "Last-Modified"

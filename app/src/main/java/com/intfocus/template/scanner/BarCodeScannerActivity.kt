@@ -181,7 +181,6 @@ class BarCodeScannerActivity : AppCompatActivity(), QRCodeView.Delegate, View.On
         cbInputBarcodeLight = view!!.findViewById(R.id.cb_input_barcode_light)
     }
 
-
     private fun initShow() {
         if (ConfigConstants.SCAN_BY_PHOTO_ALBUM) {
             tv_barcode_gallery.visibility = View.VISIBLE

@@ -70,9 +70,9 @@ object VersionUtil {
                             .setMessage(if (message.isEmpty()) "无升级简介" else message)
                             .setPositiveButton(
                                     "确定"
-                            ) { dialog, which -> UpdateManagerListener.startDownloadTask(activity, appBean.downloadURL) }
+                            ) { _, _ -> UpdateManagerListener.startDownloadTask(activity, appBean.downloadURL) }
                             .setNegativeButton("下一次"
-                            ) { dialog, which -> dialog.dismiss() }
+                            ) { dialog, _ -> dialog.dismiss() }
                             .setCancelable(false)
                             .show()
 

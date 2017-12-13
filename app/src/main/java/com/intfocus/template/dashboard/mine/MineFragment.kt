@@ -12,7 +12,7 @@ import com.intfocus.template.R
 import com.intfocus.template.dashboard.mine.adapter.MinePageVPAdapter
 import com.intfocus.template.dashboard.mine.widget.AnnouncementWarningFragment
 import com.intfocus.template.dashboard.mine.widget.DataCollegeFragment
-import com.intfocus.template.dashboard.mine.widget.user.UserFragment
+import com.intfocus.template.dashboard.user.UserFragment
 import com.intfocus.template.util.Utils
 import kotlinx.android.synthetic.main.fragment_mine.*
 import java.util.*

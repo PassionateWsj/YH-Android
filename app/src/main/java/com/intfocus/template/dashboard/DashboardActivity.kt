@@ -217,9 +217,6 @@ class DashboardActivity : BaseActivity(), ViewPager.OnPageChangeListener {
         mTabMessage!!.setOnClickListener(mTabChangeListener)
     }
 
-    /**
-     * @param dashboardFragmentAdapter
-     */
     private fun initViewPaper() {
         mViewPager!!.adapter = DashboardFragmentAdapter(supportFragmentManager, mPagerData)
         mViewPager!!.offscreenPageLimit = mPagerData.size
@@ -303,7 +300,6 @@ class DashboardActivity : BaseActivity(), ViewPager.OnPageChangeListener {
                     }
                 })
     }
-
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onMessageEvent(items: DashboardItem?) {

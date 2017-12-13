@@ -5,6 +5,7 @@ import android.content.Context;
 
 import com.intfocus.template.BuildConfig;
 import com.intfocus.template.SYPApplication;
+import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.intfocus.template.util.HttpUtil;
 
 import java.security.SecureRandom;
@@ -30,7 +31,9 @@ import rx.functions.Action0;
 import rx.schedulers.Schedulers;
 
 /**
- * Created by admin on 2016/6/28.
+ *
+ * @author admin
+ * @date 2016/6/28
  */
 public class RetrofitUtil {
     private static final int DEFAULT_TIME_OUT = 2 * 1000;
@@ -78,6 +81,7 @@ public class RetrofitUtil {
         clientBuilder.addInterceptor(new HttpStateInterceptor());
         clientBuilder.addInterceptor(new BaseParamsInterceptor(ctx));
         clientBuilder.addInterceptor(new NetworkInterceptor());
+        clientBuilder.addNetworkInterceptor(new StethoInterceptor());
         clientBuilder.connectTimeout(DEFAULT_TIME_OUT, TimeUnit.SECONDS);
         return clientBuilder;
     }

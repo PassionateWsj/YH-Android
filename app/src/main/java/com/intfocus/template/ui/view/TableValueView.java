@@ -18,7 +18,9 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 /**
- * Created by zbaoliang on 17-5-21.
+ *
+ * @author zbaoliang
+ * @date 17-5-21
  */
 public class TableValueView extends View {
 
@@ -27,7 +29,7 @@ public class TableValueView extends View {
     private int[] colors = Colors.INSTANCE.getColorsRGY();
 
     public int dividerHeight = 1;
-    public int textSize = 14;
+    public int textSize = 16;
     public int textColor = 0x73737373;
     public int dividerColor = 0x73737373;
 
