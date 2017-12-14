@@ -3,27 +3,32 @@ package com.intfocus.template.dashboard.kpi
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.support.v4.content.ContextCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.LinearLayout
 import com.intfocus.template.ConfigConstants
 import com.intfocus.template.R
-import com.intfocus.template.dashboard.kpi.bean.KpiBean
-import com.intfocus.template.dashboard.mine.adapter.KpiAdapter
-import com.intfocus.template.dashboard.mine.bean.InstituteDataBean
-import com.intfocus.template.ui.RefreshFragment
 import com.intfocus.template.constant.Params.GROUP_ID
 import com.intfocus.template.constant.Params.ROLD_ID
 import com.intfocus.template.constant.Params.USER_NUM
-import com.intfocus.template.model.response.home.HomeMsgResult
-import com.intfocus.template.model.response.home.KpiResult
+import com.intfocus.template.dashboard.kpi.bean.KpiBean
+import com.intfocus.template.dashboard.mine.adapter.KpiAdapter
+import com.intfocus.template.dashboard.mine.bean.InstituteDataBean
 import com.intfocus.template.general.net.ApiException
 import com.intfocus.template.general.net.CodeHandledSubscriber
 import com.intfocus.template.general.net.RetrofitUtil
-import com.intfocus.template.util.*
-import com.intfocus.template.ui.view.DefaultRefreshView
+import com.intfocus.template.model.response.home.HomeMsgResult
+import com.intfocus.template.model.response.home.KpiResult
+import com.intfocus.template.ui.RefreshFragment
 import com.intfocus.template.ui.view.CustomLinearLayoutManager
+import com.intfocus.template.ui.view.DefaultRefreshView
+import com.intfocus.template.util.ErrorUtils
+import com.intfocus.template.util.HttpUtil
+import com.intfocus.template.util.ListUtils
+import com.intfocus.template.util.ToastUtils
 import kotlinx.android.synthetic.main.fragment_kpi.*
 import org.xutils.x
 
@@ -40,6 +45,12 @@ class KpiFragment : RefreshFragment(), KpiAdapter.HomePageListener {
     private lateinit var groupId: String
     private lateinit var queryMap: MutableMap<String, String>
     lateinit var ctx: Context
+    private var hasBanner = false
+
+    override fun onAttach(context: Context) {
+        ctx = context
+        super.onAttach(context)
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         mView = inflater.inflate(R.layout.fragment_kpi, container, false)
@@ -126,6 +137,7 @@ class KpiFragment : RefreshFragment(), KpiAdapter.HomePageListener {
                         if (datas != null) {
                             for (KpiResultData in datas) {
                                 if ("top_data" == KpiResultData.group_name) {
+                                    hasBanner = true
                                     val homeBean = KpiBean()
                                     homeBean.group_name = "轮播图"
                                     homeBean.index = 0
@@ -187,6 +199,7 @@ class KpiFragment : RefreshFragment(), KpiAdapter.HomePageListener {
 
                     override fun onError(apiException: ApiException?) {
                         finishRequest()
+                        resetTitleView()
                         ToastUtils.show(mActivity, apiException!!.displayMessage)
                     }
 
@@ -202,6 +215,8 @@ class KpiFragment : RefreshFragment(), KpiAdapter.HomePageListener {
                         ListUtils.sort(mKpiData, true, "index")
                         mAdapter.setData(mKpiData)
 
+                        resetTitleView()
+
                         isEmpty = mKpiData == null || mKpiData!!.size == 0
                         ErrorUtils.viewProcessing(refreshLayout, llError, llRetry, "无更多文章了", tvErrorMsg, ivError,
                                 isEmpty!!, true, R.drawable.pic_3, {
@@ -209,6 +224,21 @@ class KpiFragment : RefreshFragment(), KpiAdapter.HomePageListener {
                         })
                     }
                 })
+    }
+
+    private fun resetTitleView() {
+        val layoutParam = FrameLayout.LayoutParams(ll_kpi_content.layoutParams)
+        if (hasBanner) {
+            layoutParam.topMargin = 0
+            rl_action_bar.setBackgroundColor(ContextCompat.getColor(ctx, R.color.transparent))
+            tv_banner_title.setTextColor(ContextCompat.getColor(ctx, R.color.co10_syr))
+        } else {
+            layoutParam.topMargin = 44
+            rl_action_bar.setBackgroundColor(ContextCompat.getColor(ctx, R.color.co10_syr))
+            tv_banner_title.setTextColor(ContextCompat.getColor(ctx, R.color.color6))
+        }
+        ll_kpi_content.layoutParams = layoutParam
+
     }
 
     fun finishRequest() {
