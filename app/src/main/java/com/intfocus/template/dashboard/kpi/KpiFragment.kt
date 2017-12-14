@@ -232,10 +232,12 @@ class KpiFragment : RefreshFragment(), KpiAdapter.HomePageListener {
             layoutParam.topMargin = 0
             rl_action_bar.setBackgroundColor(ContextCompat.getColor(ctx, R.color.transparent))
             tv_banner_title.setTextColor(ContextCompat.getColor(ctx, R.color.co10_syr))
+            bannerSetting.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.nav_scan))
         } else {
             layoutParam.topMargin = 44
             rl_action_bar.setBackgroundColor(ContextCompat.getColor(ctx, R.color.co10_syr))
             tv_banner_title.setTextColor(ContextCompat.getColor(ctx, R.color.color6))
+            bannerSetting.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.nav_scanback))
         }
         ll_kpi_content.layoutParams = layoutParam
 
