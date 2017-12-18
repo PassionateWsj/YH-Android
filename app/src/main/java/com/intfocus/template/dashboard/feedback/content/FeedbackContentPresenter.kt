@@ -1,6 +1,5 @@
 package com.intfocus.template.dashboard.feedback.content
 
-import android.view.View
 import com.intfocus.template.dashboard.feedback.FeedbackModelImpl
 import com.intfocus.template.model.callback.LoadDataCallback
 import com.intfocus.template.model.response.mine_page.FeedbackContent

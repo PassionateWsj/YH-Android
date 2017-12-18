@@ -11,7 +11,7 @@ class KpiMode(var ctx: Context) : AbstractMode() {
 //    var result: String? = null
 //    var messageUrlString = ""
 //    var mNoticeListSP = mContext.getSharedPreferences("KpiData", Context.MODE_PRIVATE)
-//    var mUserSP = mContext.getSharedPreferences("UserBean", Context.MODE_PRIVATE)
+//    var mUserSP = mContext.getSharedPreferences(USER_BEAN, Context.MODE_PRIVATE)
 //    var gson = Gson()
 //
 //    private fun getUrl(): String {
@@ -32,7 +32,7 @@ class KpiMode(var ctx: Context) : AbstractMode() {
 //    var result: String? = null
 //    var messageUrlString = ""
 //    var mNoticeListSP = mContext.getSharedPreferences("KpiData", Context.MODE_PRIVATE)
-//    var mUserSP = mContext.getSharedPreferences("UserBean", Context.MODE_PRIVATE)
+//    var mUserSP = mContext.getSharedPreferences(USER_BEAN, Context.MODE_PRIVATE)
 //    var gson = Gson()
 //
 //    private fun getUrl(): String {

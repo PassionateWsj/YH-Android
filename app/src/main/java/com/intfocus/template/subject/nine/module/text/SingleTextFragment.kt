@@ -7,9 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.intfocus.template.R
-import com.intfocus.template.ui.BaseModuleFragment
 import com.intfocus.template.constant.Params
 import com.intfocus.template.constant.Params.ARG_PARAM
+import com.intfocus.template.ui.BaseModuleFragment
 import kotlinx.android.synthetic.main.module_single_text.*
 
 /**

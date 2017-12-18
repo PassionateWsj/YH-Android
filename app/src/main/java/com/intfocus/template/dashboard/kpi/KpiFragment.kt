@@ -13,6 +13,7 @@ import com.intfocus.template.ConfigConstants
 import com.intfocus.template.R
 import com.intfocus.template.constant.Params.GROUP_ID
 import com.intfocus.template.constant.Params.ROLD_ID
+import com.intfocus.template.constant.Params.USER_BEAN
 import com.intfocus.template.constant.Params.USER_NUM
 import com.intfocus.template.dashboard.kpi.bean.KpiBean
 import com.intfocus.template.dashboard.mine.adapter.KpiAdapter
@@ -56,7 +57,7 @@ class KpiFragment : RefreshFragment(), KpiAdapter.HomePageListener {
         mView = inflater.inflate(R.layout.fragment_kpi, container, false)
         x.view().inject(this, mView)
         setRefreshLayout()
-        mUserSP = mActivity.getSharedPreferences("UserBean", Context.MODE_PRIVATE)
+        mUserSP = mActivity.getSharedPreferences(USER_BEAN, Context.MODE_PRIVATE)
         userId = mUserSP.getString(USER_NUM, "")
         roleId = mUserSP.getString(ROLD_ID, "0")
         groupId = mUserSP.getString(GROUP_ID, "0")

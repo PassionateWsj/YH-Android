@@ -19,6 +19,7 @@ import com.intfocus.template.ConfigConstants
 import com.intfocus.template.R
 import com.intfocus.template.constant.Params.STORE
 import com.intfocus.template.constant.Params.STORE_ID
+import com.intfocus.template.constant.Params.USER_BEAN
 import com.intfocus.template.dashboard.adapter.DashboardFragmentAdapter
 import com.intfocus.template.dashboard.kpi.KpiFragment
 import com.intfocus.template.dashboard.mine.MineFragment
@@ -266,7 +267,7 @@ class DashboardActivity : BaseActivity(), ViewPager.OnPageChangeListener {
 
     private fun getStoreList() {
         val storeItemDao = OrmDBHelper.getInstance(this).storeItemDao
-        val mUserSP = getSharedPreferences("UserBean", Context.MODE_PRIVATE)
+        val mUserSP = getSharedPreferences(USER_BEAN, Context.MODE_PRIVATE)
         RetrofitUtil.getHttpService(applicationContext).getStoreList(mUserSP.getString("user_num", "0"))
                 .compose(RetrofitUtil.CommonOptions<StoreListResult>())
                 .subscribe(object : CodeHandledSubscriber<StoreListResult>() {

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <RelativeLayout
         android:id="@+id/rl_action_bar"
@@ -11,7 +11,7 @@
 
         <ImageView
             style="@style/BackStyle"
-            android:onClick="back" />
+            android:onClick="back"/>
 
         <TextView
             android:id="@+id/tv_collection_title"
@@ -22,17 +22,33 @@
     <com.intfocus.template.ui.view.RootScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/btn__submit"
+        android:layout_above="@+id/btn_submit"
         android:layout_below="@+id/rl_action_bar"
-        android:layout_marginTop="10dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
         android:scrollbars="none">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
+
+            <HorizontalScrollView
+                android:id="@+id/hs_page_btn"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/size_default_medium"
+                android:background="@color/co10_syr"
+                android:paddingLeft="@dimen/space_default_large_xxs"
+                android:paddingRight="@dimen/space_default_large_xxs"
+                android:scrollbars="none">
+
+                <RelativeLayout
+                    android:id="@+id/rl_mdetal_title_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"/>
+            </HorizontalScrollView>
 
             <FrameLayout
                 android:id="@+id/fl_mdetal_cont_container"
@@ -45,15 +61,15 @@
         android:id="@+id/view_shadow"
         android:layout_width="match_parent"
         android:layout_height="8dp"
-        android:layout_above="@+id/btn__submit"
+        android:layout_above="@+id/btn_submit"
         android:background="@drawable/pic_shadow"/>
 
     <TextView
-        android:id="@+id/btn__submit"
+        android:id="@+id/btn_submit"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="@android:color/white"
         android:layout_alignParentBottom="true"
+        android:background="@android:color/white"
         android:gravity="center"
         android:text="提交"
         android:textColor="@android:color/black"

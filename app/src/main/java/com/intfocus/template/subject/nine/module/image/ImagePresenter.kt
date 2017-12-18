@@ -1,7 +1,7 @@
 package com.intfocus.template.subject.nine.module.image
 
-import com.intfocus.template.util.Utils
 import com.intfocus.template.model.callback.LoadDataCallback
+import com.intfocus.template.util.Utils
 
 /**
  * @author liuruilin

@@ -7,6 +7,7 @@ import com.google.gson.Gson
 import com.intfocus.template.BuildConfig
 import com.intfocus.template.SYPApplication.globalContext
 import com.intfocus.template.constant.Module.UPLOAD_IMAGES
+import com.intfocus.template.constant.Params.USER_BEAN
 import com.intfocus.template.general.net.RetrofitUtil
 import com.intfocus.template.model.DaoUtil
 import com.intfocus.template.model.entity.Collection
@@ -64,8 +65,8 @@ class CollectionUploadService : IntentService("collection_upload") {
      * 上传图片
      */
     private fun uploadImage() {
-        var sourceQb = sourceDao.queryBuilder()
-        var sourceList = sourceQb.where(sourceQb.and(SourceDao.Properties.Type.eq(UPLOAD_IMAGES), SourceDao.Properties.Uuid.eq(uuid))).list()
+        val sourceQb = sourceDao.queryBuilder()
+        val sourceList = sourceQb.where(sourceQb.and(SourceDao.Properties.Type.eq(UPLOAD_IMAGES), SourceDao.Properties.Uuid.eq(uuid))).list()
 
 
         /*
@@ -80,7 +81,7 @@ class CollectionUploadService : IntentService("collection_upload") {
         }
 
         for (source in sourceList) {
-            var fileList: MutableList<File> = arrayListOf()
+            val fileList: MutableList<File> = arrayListOf()
 
             if (source.value.isEmpty()) {
                 collection.imageStatus = 1
@@ -101,9 +102,9 @@ class CollectionUploadService : IntentService("collection_upload") {
 
             if (!fileList.isEmpty()) {
                 for ((i, file) in fileList.withIndex()) {
-                    if (null != file.isFile) {
+//                    if (null != file.isFile) {
                         requestBody.addFormDataPart("image" + i, file.name, RequestBody.create(MediaType.parse("image/*"), file))
-                    }
+//                    }
                 }
             }
 
@@ -112,14 +113,14 @@ class CollectionUploadService : IntentService("collection_upload") {
                     .post(requestBody.build())
                     .build()
 
-            var result = mOkHttpClient.newCall(request).execute()
+            val result = mOkHttpClient.newCall(request).execute()
 
             if (!result.isSuccessful) {
                 return
             }
 
-            var responseData = result.body()!!.string()
-            var valueArray = JSONObject(responseData)["data"] as JSONArray
+            val responseData = result.body()!!.string()
+            val valueArray = JSONObject(responseData)["data"] as JSONArray
 
             source.value = Gson().toJson(valueArray)
             sourceDao.update(source)
@@ -136,8 +137,8 @@ class CollectionUploadService : IntentService("collection_upload") {
      * 生成需要上传给服务的 D_JSON (采集结果)
      */
     private fun generateDJson() {
-        var moduleList = sourceDao.queryBuilder().where(SourceDao.Properties.Uuid.eq(uuid)).list()
-        var dJson = JSONObject()
+        val moduleList = sourceDao.queryBuilder().where(SourceDao.Properties.Uuid.eq(uuid)).list()
+        val dJson = JSONObject()
 
         for (module in moduleList) {
             dJson.put(module.key, module.value)
@@ -150,16 +151,16 @@ class CollectionUploadService : IntentService("collection_upload") {
      * 上传 D_JSON 至服务器
      */
     private fun uploadDJSon(dJson: String) {
-        var collectionRequestBody = CollectionRequestBody()
-        var data = CollectionRequestBody.Data()
+        val collectionRequestBody = CollectionRequestBody()
+        val data = CollectionRequestBody.Data()
 
-        data.user_num = globalContext.getSharedPreferences("UserBean", Context.MODE_PRIVATE).getString("user_num", "")
+        data.user_num = globalContext.getSharedPreferences(USER_BEAN, Context.MODE_PRIVATE).getString("user_num", "")
         data.report_id = reportId
         data.content = dJson
 
         collectionRequestBody.data = data
 
-        var result = RetrofitUtil.getHttpService(globalContext).submitCollection(collectionRequestBody).execute()
+        val result = RetrofitUtil.getHttpService(globalContext).submitCollection(collectionRequestBody).execute()
 
         if (result.isSuccessful) {
             collection.status = 1

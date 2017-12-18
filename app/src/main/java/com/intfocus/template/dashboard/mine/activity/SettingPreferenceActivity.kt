@@ -1,6 +1,5 @@
 package com.intfocus.template.dashboard.mine.activity
 
-import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -9,12 +8,8 @@ import android.view.View
 import android.widget.CompoundButton
 import com.intfocus.template.R
 import com.intfocus.template.ui.BaseActivity
-import com.intfocus.template.constant.ToastColor
-import com.intfocus.template.util.*
+import com.intfocus.template.util.CacheCleanManager
 import kotlinx.android.synthetic.main.activity_setting_preference.*
-import rx.Observable
-import rx.android.schedulers.AndroidSchedulers
-import rx.schedulers.Schedulers
 
 /**
  * Created by liuruilin on 2017/3/28.

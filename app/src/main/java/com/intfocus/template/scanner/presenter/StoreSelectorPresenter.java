@@ -2,10 +2,10 @@ package com.intfocus.template.scanner.presenter;
 
 import android.content.Context;
 
+import com.intfocus.template.model.response.scanner.StoreItem;
 import com.intfocus.template.scanner.model.OnStoreSelectorResultListener;
 import com.intfocus.template.scanner.model.StoreSelectorImpl;
 import com.intfocus.template.scanner.view.StoreSelectorView;
-import com.intfocus.template.model.response.scanner.StoreItem;
 
 import java.util.List;
 

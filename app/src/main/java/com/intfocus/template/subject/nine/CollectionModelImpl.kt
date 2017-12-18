@@ -5,20 +5,20 @@ import android.content.Intent
 import android.util.Log
 import com.alibaba.fastjson.JSONReader
 import com.intfocus.template.SYPApplication.globalContext
-import com.intfocus.template.model.entity.Collection
-import com.intfocus.template.model.entity.Source
 import com.intfocus.template.general.net.RetrofitUtil
 import com.intfocus.template.model.DaoUtil
-import com.intfocus.template.service.CollectionUploadService
-import com.intfocus.template.util.*
 import com.intfocus.template.model.callback.LoadDataCallback
+import com.intfocus.template.model.entity.Collection
+import com.intfocus.template.model.entity.Source
+import com.intfocus.template.service.CollectionUploadService
 import com.intfocus.template.subject.nine.entity.CollectionEntity
 import com.intfocus.template.subject.nine.entity.Content
+import com.intfocus.template.util.LogUtil
 import rx.Observable
 import rx.Subscriber
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
-import java.io.*
+import java.io.StringReader
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -55,8 +55,8 @@ class CollectionModelImpl : CollectionModel<CollectionEntity> {
         @JvmStatic
         fun insertData(entityList: ArrayList<Content>) {
             for (entity in entityList) {
-                var sourceDao = DaoUtil.getSourceDao()
-                var sourceDb = Source()
+                val sourceDao = DaoUtil.getSourceDao()
+                val sourceDb = Source()
                 sourceDb.id = null
                 sourceDb.reportId = reportId
                 sourceDb.uuid = uuid
@@ -72,7 +72,7 @@ class CollectionModelImpl : CollectionModel<CollectionEntity> {
                 sourceDao.insert(sourceDb)
             }
 
-            var collectionDb = Collection()
+            val collectionDb = Collection()
             collectionDb.id = null
             collectionDb.reportId = reportId
             collectionDb.uuid = uuid
@@ -89,8 +89,9 @@ class CollectionModelImpl : CollectionModel<CollectionEntity> {
         Observable.just("")
                 .subscribeOn(Schedulers.io())
                 .map {
-                    val response = RetrofitUtil.getHttpService(globalContext).getJsonReportData(reportId, templateID, groupId).execute()
+                    val response = RetrofitUtil.getHttpService(globalContext).getJsonReportData("json", reportId, templateID, groupId).execute()
                     var responseString = response.body()!!.string()
+//                    val responseString = LoadAssetsJsonUtil.getAssetsJsonData("collection1.json")
                     val stringReader = StringReader(responseString)
                     val reader = JSONReader(stringReader)
                     reader.startObject()
@@ -155,7 +156,7 @@ class CollectionModelImpl : CollectionModel<CollectionEntity> {
     }
 
     override fun upload(ctx: Context) {
-        var intent = Intent(ctx, CollectionUploadService::class.java)
+        val intent = Intent(ctx, CollectionUploadService::class.java)
         ctx.startService(intent)
     }
 }

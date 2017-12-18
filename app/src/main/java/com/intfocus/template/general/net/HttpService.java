@@ -1,8 +1,5 @@
 package com.intfocus.template.general.net;
 
-import com.intfocus.template.model.response.mine_page.FeedbackContent;
-import com.intfocus.template.model.response.mine_page.FeedbackList;
-import com.intfocus.template.subject.nine.entity.CollectionRequestBody;
 import com.intfocus.template.login.bean.Device;
 import com.intfocus.template.login.bean.DeviceRequest;
 import com.intfocus.template.login.bean.NewUser;
@@ -17,11 +14,14 @@ import com.intfocus.template.model.response.home.KpiResult;
 import com.intfocus.template.model.response.home.ReportListResult;
 import com.intfocus.template.model.response.home.WorkBoxResult;
 import com.intfocus.template.model.response.login.RegisterResult;
+import com.intfocus.template.model.response.mine_page.FeedbackContent;
+import com.intfocus.template.model.response.mine_page.FeedbackList;
 import com.intfocus.template.model.response.mine_page.NoticeContentResult;
 import com.intfocus.template.model.response.mine_page.UserInfoResult;
 import com.intfocus.template.model.response.notice.NoticesResult;
 import com.intfocus.template.model.response.scanner.NearestStoresResult;
 import com.intfocus.template.model.response.scanner.StoreListResult;
+import com.intfocus.template.subject.nine.entity.CollectionRequestBody;
 import com.intfocus.template.util.K;
 
 import java.util.Map;
@@ -342,7 +342,7 @@ public interface HttpService {
      * @return
      */
     @GET(K.K_REPORT_JSON_DATA)
-    Call<ResponseBody> getJsonReportData(@Query("report_id") String reportId, @Query("template_id") String templateId, @Query("group_id") String groupId);
+    Call<ResponseBody> getJsonReportData(@Query("disposition") String disposition,@Query("report_id") String reportId, @Query("template_id") String templateId, @Query("group_id") String groupId);
 
     /**
      * 上传采集信息

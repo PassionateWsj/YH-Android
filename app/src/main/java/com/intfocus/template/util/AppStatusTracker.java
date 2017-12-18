@@ -10,6 +10,7 @@ import android.os.Bundle;
 import com.intfocus.template.login.LoginActivity;
 
 import static com.intfocus.template.constant.Params.IS_LOGIN;
+import static com.intfocus.template.constant.Params.USER_BEAN;
 
 /**
  * ****************************************************
@@ -53,7 +54,7 @@ public class AppStatusTracker implements Application.ActivityLifecycleCallbacks 
 
 
     private AppStatusTracker(Application application) {
-        mUserSP = application.getSharedPreferences("UserBean", Context.MODE_PRIVATE);
+        mUserSP = application.getSharedPreferences(USER_BEAN, Context.MODE_PRIVATE);
         mUserSPEdit = mUserSP.edit();
         this.application = application;
         application.registerActivityLifecycleCallbacks(this);

@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.TextView
 import com.intfocus.template.R
-import java.util.ArrayList
+import java.util.*
 
 /**
  * @author liuruilin

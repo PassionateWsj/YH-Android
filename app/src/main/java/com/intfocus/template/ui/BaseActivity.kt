@@ -15,6 +15,7 @@ import android.widget.PopupWindow
 import com.intfocus.template.BuildConfig
 import com.intfocus.template.R
 import com.intfocus.template.SYPApplication
+import com.intfocus.template.constant.Params.USER_BEAN
 import com.intfocus.template.listener.UMSharedListener
 import com.intfocus.template.util.ActionLogUtil
 import com.intfocus.template.util.ImageUtil
@@ -42,7 +43,7 @@ open class BaseActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         mApp = application as SYPApplication
         mAppContext = mApp.applicationContext
-        mUserSP = getSharedPreferences("UserBean", Context.MODE_PRIVATE)
+        mUserSP = getSharedPreferences(USER_BEAN, Context.MODE_PRIVATE)
     }
 
     override fun onResume() {

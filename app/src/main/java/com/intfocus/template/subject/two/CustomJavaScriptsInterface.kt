@@ -12,6 +12,9 @@ import com.intfocus.template.constant.Params.ACTION
 import com.intfocus.template.constant.Params.OBJECT_ID
 import com.intfocus.template.constant.Params.OBJECT_TITLE
 import com.intfocus.template.constant.Params.OBJECT_TYPE
+import com.intfocus.template.constant.Params.USER_BEAN
+import com.intfocus.template.constant.Params.USER_ID
+import com.intfocus.template.constant.Params.USER_LOCATION
 import com.intfocus.template.constant.Params.USER_NUM
 import com.intfocus.template.constant.ToastColor
 import com.intfocus.template.general.net.ApiException
@@ -104,7 +107,14 @@ class CustomJavaScriptsInterface constructor(
      * @return location
      */
     @JavascriptInterface
-    fun getLocation(): String = globalContext.getSharedPreferences("UserBean", Context.MODE_PRIVATE).getString("location", "0,0")
+    fun getLocation(): String = globalContext.getSharedPreferences(USER_BEAN, Context.MODE_PRIVATE).getString(USER_LOCATION, "0,0")
+
+    /**
+     * 获取 user_id
+     * @return location
+     */
+    @JavascriptInterface
+    fun getUserId(): String = globalContext.getSharedPreferences(USER_BEAN, Context.MODE_PRIVATE).getString(USER_ID, "0")
 
     @JavascriptInterface
     fun goBack(info: String) {
@@ -214,7 +224,7 @@ class CustomJavaScriptsInterface constructor(
     @JavascriptInterface
     fun writeComment(content: String) {
         val commentBody = CommentBody()
-        commentBody.user_num = globalContext.getSharedPreferences("UserBean", Context.MODE_PRIVATE).getString(USER_NUM, "0")
+        commentBody.user_num = globalContext.getSharedPreferences(USER_BEAN, Context.MODE_PRIVATE).getString(USER_NUM, "0")
         commentBody.content = content
         commentBody.object_type = mView.objectType
         commentBody.object_id = mView.reportId

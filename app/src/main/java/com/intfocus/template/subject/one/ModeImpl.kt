@@ -11,6 +11,7 @@ import com.intfocus.template.subject.model.ReportModelImpl
 import com.intfocus.template.subject.one.entity.Filter
 import com.intfocus.template.util.ApiHelper.clearResponseHeader
 import com.intfocus.template.util.K
+import com.intfocus.template.util.LoadAssetsJsonUtil
 import com.intfocus.template.util.LogUtil
 import rx.Observable
 import rx.Subscriber
@@ -125,7 +126,7 @@ class ModeImpl : ReportModelImpl() {
 //            throw Throwable("获取数据失败")
 //        }
 
-      response = getAssetsJsonData("template1_06.json")
+      response = LoadAssetsJsonUtil.getAssetsJsonData("template1_06.json")
 
         val stringReader = StringReader(response)
         val reader = JSONReader(stringReader)

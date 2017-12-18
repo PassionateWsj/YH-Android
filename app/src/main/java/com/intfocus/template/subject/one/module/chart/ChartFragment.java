@@ -16,9 +16,9 @@ import com.intfocus.template.subject.one.entity.Chart;
 import com.intfocus.template.subject.one.entity.Series;
 import com.intfocus.template.subject.templateone.curvechart.ChartContract;
 import com.intfocus.template.subject.templateone.curvechart.ChartImpl;
-import com.intfocus.template.util.LogUtil;
 import com.intfocus.template.ui.view.CustomCurveChart;
 import com.intfocus.template.ui.view.RateCursor;
+import com.intfocus.template.util.LogUtil;
 import com.zbl.lib.baseframe.utils.StringUtil;
 
 import org.jetbrains.annotations.NotNull;

@@ -6,7 +6,6 @@ import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,18 +14,18 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.intfocus.template.R;
+import com.intfocus.template.model.entity.Report;
 import com.intfocus.template.subject.one.module.banner.BannerFragment;
-import com.intfocus.template.subject.one.module.chart.ChartFragment;
 import com.intfocus.template.subject.one.module.bargraph.BargraphFragment;
+import com.intfocus.template.subject.one.module.chart.ChartFragment;
 import com.intfocus.template.subject.one.module.singlevalue.SingleValueFragment;
-import com.intfocus.template.subject.one.module.tables.root.TableRootFragment;
 import com.intfocus.template.subject.one.module.tables.TableImpl;
+import com.intfocus.template.subject.one.module.tables.root.TableRootFragment;
 import com.intfocus.template.subject.one.module.tables.root.TableRootPresenter;
 import com.intfocus.template.subject.templateone.curvechart.ChartImpl;
 import com.intfocus.template.subject.templateone.curvechart.ChartPresenter;
 import com.intfocus.template.subject.templateone.singlevalue.SingleValueImpl;
 import com.intfocus.template.subject.templateone.singlevalue.SingleValuePresenter;
-import com.intfocus.template.model.entity.Report;
 import com.intfocus.template.util.LogUtil;
 import com.zzhoujay.richtext.RichText;
 
@@ -39,13 +38,9 @@ import java.util.List;
 import java.util.Random;
 
 import rx.Observable;
-import rx.Observer;
-import rx.Scheduler;
-import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
-import rx.schedulers.Schedulers;
 
 
 /**

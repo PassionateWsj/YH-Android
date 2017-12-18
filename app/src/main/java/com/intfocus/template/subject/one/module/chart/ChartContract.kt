@@ -1,8 +1,8 @@
 package com.intfocus.template.subject.templateone.curvechart
 
-import com.intfocus.template.subject.one.entity.Chart
 import com.intfocus.template.base.BasePresenter
 import com.intfocus.template.base.BaseView
+import com.intfocus.template.subject.one.entity.Chart
 
 /**
  * ****************************************************

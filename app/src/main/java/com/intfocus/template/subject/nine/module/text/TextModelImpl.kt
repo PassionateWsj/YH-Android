@@ -1,10 +1,10 @@
 package com.intfocus.template.subject.nine.module.text
 
 import com.alibaba.fastjson.JSONObject
-import com.intfocus.template.model.gen.SourceDao
 import com.intfocus.template.model.DaoUtil
-import com.intfocus.template.subject.nine.CollectionModelImpl
 import com.intfocus.template.model.callback.LoadDataCallback
+import com.intfocus.template.model.gen.SourceDao
+import com.intfocus.template.subject.nine.CollectionModelImpl
 import com.intfocus.template.subject.nine.module.ModuleModel
 
 /**
@@ -36,14 +36,14 @@ class TextModelImpl : ModuleModel<TextEntity> {
     }
 
     override fun analyseData(params: String, callback: LoadDataCallback<TextEntity>) {
-        var data = JSONObject.parseObject(params, TextEntity::class.java)
+        val data = JSONObject.parseObject(params, TextEntity::class.java)
         callback.onSuccess(data)
     }
 
     override fun insertDb(value: String, key: String) {
-        var sourceDao = DaoUtil.getDaoSession()!!.sourceDao
-        var collectionQb = sourceDao.queryBuilder()
-        var collection = collectionQb.where(collectionQb.and(SourceDao.Properties.Key.eq(key), SourceDao.Properties.Uuid.eq(CollectionModelImpl.uuid))).unique()
+        val sourceDao = DaoUtil.getDaoSession()!!.sourceDao
+        val collectionQb = sourceDao.queryBuilder()
+        val collection = collectionQb.where(collectionQb.and(SourceDao.Properties.Key.eq(key), SourceDao.Properties.Uuid.eq(CollectionModelImpl.uuid))).unique()
         if (null != collection) {
             collection.value = value
             sourceDao.update(collection)

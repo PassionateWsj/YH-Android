@@ -2,18 +2,13 @@ package com.intfocus.template.dashboard.feedback.list
 
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.intfocus.template.R
 import com.intfocus.template.dashboard.feedback.FeedbackInputActivity
 import com.intfocus.template.dashboard.feedback.FeedbackModelImpl
-import com.intfocus.template.dashboard.feedback.content.FeedbackContentFragment
-import com.intfocus.template.dashboard.feedback.content.FeedbackContentPresenter
 import com.intfocus.template.model.response.mine_page.FeedbackList
 import com.intfocus.template.ui.BaseFragment
 import com.intfocus.template.ui.view.RecyclerItemDecoration
@@ -65,7 +60,7 @@ class FeedbackListFragment : BaseFragment(), FeedbackListContract.View {
         if (rv_feedback_list.itemDecorationCount == 0) {
             rv_feedback_list.addItemDecoration(RecyclerItemDecoration(this.context))
         }
-        btn__submit.setOnClickListener { startFeedbackInput() }
+        btn_submit.setOnClickListener { startFeedbackInput() }
     }
 
     override fun showList(data: FeedbackList) {

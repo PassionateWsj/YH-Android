@@ -11,12 +11,12 @@ import android.view.View
 import android.view.ViewGroup
 import com.intfocus.template.R
 import com.intfocus.template.SYPApplication
-import com.intfocus.template.dashboard.feedback.FeedbackInputActivity
-import com.intfocus.template.util.GifSizeFilter
-import com.intfocus.template.util.ImageUtil
-import com.intfocus.template.ui.BaseModuleFragment
 import com.intfocus.template.constant.Params
 import com.intfocus.template.constant.Params.REQUEST_CODE_CHOOSE
+import com.intfocus.template.dashboard.feedback.FeedbackInputActivity
+import com.intfocus.template.ui.BaseModuleFragment
+import com.intfocus.template.util.GifSizeFilter
+import com.intfocus.template.util.ImageUtil
 import com.zhihu.matisse.Matisse
 import com.zhihu.matisse.MimeType
 import com.zhihu.matisse.engine.impl.GlideEngine

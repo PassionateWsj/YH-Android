@@ -13,21 +13,19 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.CheckBox
 import android.widget.EditText
 import com.intfocus.template.R
-import com.intfocus.template.constant.Params.ACTION
 import com.intfocus.template.constant.Params.PASSWORD
 import com.intfocus.template.constant.Params.USER_NUM
-import com.intfocus.template.login.LoginActivity
-import com.intfocus.template.ui.BaseActivity
-import com.intfocus.template.model.response.BaseResult
-import com.intfocus.template.listener.NoDoubleClickListener
 import com.intfocus.template.general.net.ApiException
 import com.intfocus.template.general.net.CodeHandledSubscriber
 import com.intfocus.template.general.net.RetrofitUtil
+import com.intfocus.template.listener.NoDoubleClickListener
+import com.intfocus.template.login.LoginActivity
+import com.intfocus.template.model.response.BaseResult
+import com.intfocus.template.ui.BaseActivity
 import com.intfocus.template.util.ActionLogUtil
 import com.intfocus.template.util.ToastUtils
 import com.intfocus.template.util.URLs
 import kotlinx.android.synthetic.main.activity_password_alter.*
-import org.json.JSONObject
 import java.util.regex.Pattern
 
 /**

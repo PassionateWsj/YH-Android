@@ -8,8 +8,8 @@ import android.view.ViewGroup
 import android.widget.ListView
 import android.widget.TextView
 import com.intfocus.template.R
-import com.intfocus.template.ui.BaseModuleFragment
 import com.intfocus.template.constant.Params
+import com.intfocus.template.ui.BaseModuleFragment
 import kotlinx.android.synthetic.main.module_drop_options.*
 
 /**

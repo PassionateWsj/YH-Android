@@ -23,10 +23,8 @@ import com.intfocus.template.util.FileUtil;
 import com.intfocus.template.util.K;
 import com.intfocus.template.util.LogUtil;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import static com.intfocus.template.constant.Params.ACTION;
 import static com.intfocus.template.constant.Params.GESTURE_PASSWORD;
 
 /**

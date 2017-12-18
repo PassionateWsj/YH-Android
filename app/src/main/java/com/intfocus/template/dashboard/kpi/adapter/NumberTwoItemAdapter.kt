@@ -9,8 +9,8 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.intfocus.template.R
-import com.intfocus.template.dashboard.kpi.bean.KpiGroupItem
 import com.intfocus.template.constant.Colors
+import com.intfocus.template.dashboard.kpi.bean.KpiGroupItem
 import org.greenrobot.eventbus.EventBus
 
 /**

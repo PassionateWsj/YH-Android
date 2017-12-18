@@ -28,9 +28,13 @@ import com.intfocus.template.constant.Params.GROUP_ID
 import com.intfocus.template.constant.Params.GROUP_NAME
 import com.intfocus.template.constant.Params.IS_LOGIN
 import com.intfocus.template.constant.Params.OBJECT_TITLE
+import com.intfocus.template.constant.Params.PUSH_MESSAGE
 import com.intfocus.template.constant.Params.ROLD_ID
 import com.intfocus.template.constant.Params.ROLD_NAME
+import com.intfocus.template.constant.Params.SETTING_PREFERENCE
+import com.intfocus.template.constant.Params.USER_BEAN
 import com.intfocus.template.constant.Params.USER_ID
+import com.intfocus.template.constant.Params.USER_LOCATION
 import com.intfocus.template.constant.Params.USER_NAME
 import com.intfocus.template.constant.Params.USER_NUM
 import com.intfocus.template.constant.Params.VERSION_CODE
@@ -47,6 +51,7 @@ import com.intfocus.template.model.response.BaseResult
 import com.intfocus.template.model.response.login.RegisterResult
 import com.intfocus.template.util.*
 import com.intfocus.template.util.K.K_CURRENT_UI_VERSION
+import com.intfocus.template.util.K.K_PUSH_DEVICE_TOKEN
 import com.pgyersdk.update.PgyUpdateManager
 import com.pgyersdk.update.UpdateManagerListener
 import com.tencent.smtt.sdk.WebView
@@ -92,9 +97,9 @@ class LoginActivity : FragmentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        mUserSP = getSharedPreferences("UserBean", Context.MODE_PRIVATE)
-        mPushSP = getSharedPreferences("PushMessage", Context.MODE_PRIVATE)
-        mSettingSP = getSharedPreferences("SettingPreference", Context.MODE_PRIVATE)
+        mUserSP = getSharedPreferences(USER_BEAN, Context.MODE_PRIVATE)
+        mPushSP = getSharedPreferences(PUSH_MESSAGE, Context.MODE_PRIVATE)
+        mSettingSP = getSharedPreferences(SETTING_PREFERENCE, Context.MODE_PRIVATE)
         mSettingSPEdit = mSettingSP!!.edit()
         mUserSPEdit = mUserSP!!.edit()
 
@@ -149,8 +154,8 @@ class LoginActivity : FragmentActivity() {
                 val sb = StringBuffer()
                 //errCode等于0代表定位成功，其他的为定位失败，具体的可以参照官网定位错误码说明
                 if (location.errorCode == 0) {
-                    val mUserSP = ctx!!.getSharedPreferences("UserBean", Context.MODE_PRIVATE)
-                    mUserSP.edit().putString("location",
+                    val mUserSP = ctx!!.getSharedPreferences(USER_BEAN, Context.MODE_PRIVATE)
+                    mUserSP.edit().putString(USER_LOCATION,
                             String.format("%.6f", location.longitude) + ","
                                     + String.format("%.6f", location.latitude)).apply()
 
@@ -501,7 +506,7 @@ class LoginActivity : FragmentActivity() {
                         mUserSPEdit!!.putBoolean("device_state", data.mResult!!.device_state)
                         mUserSPEdit!!.putString("user_device_id", data.mResult!!.user_device_id.toString()).apply()
 
-                        RetrofitUtil.getHttpService(ctx).putPushToken(data.mResult!!.device_uuid, mPushSP!!.getString("push_token", ""))
+                        RetrofitUtil.getHttpService(ctx).putPushToken(data.mResult!!.device_uuid, mPushSP!!.getString(K_PUSH_DEVICE_TOKEN, ""))
                                 .compose(RetrofitUtil.CommonOptions())
                                 .subscribe(object : CodeHandledSubscriber<BaseResult>() {
                                     override fun onError(apiException: ApiException) {}

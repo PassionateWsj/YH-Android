@@ -21,6 +21,7 @@ import android.view.animation.Animation
 import android.widget.Toast
 import com.intfocus.template.ConfigConstants
 import com.intfocus.template.R
+import com.intfocus.template.constant.Params.USER_BEAN
 import com.intfocus.template.listener.NoDoubleClickListener
 import com.intfocus.template.login.LoginActivity
 import com.intfocus.template.util.AssetsUpDateUtil
@@ -139,7 +140,7 @@ class LauncherActivity : Activity(), Animation.AnimationListener {
      */
     private fun initData() {
         mSettingSP = getSharedPreferences("SettingPreference", Context.MODE_PRIVATE)
-        mUserSP = getSharedPreferences("UserBean", Context.MODE_PRIVATE)
+        mUserSP = getSharedPreferences(USER_BEAN, Context.MODE_PRIVATE)
         try {
             packageInfo = packageManager.getPackageInfo(packageName, 0)
         } catch (e: PackageManager.NameNotFoundException) {

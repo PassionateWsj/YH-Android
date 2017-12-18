@@ -3,11 +3,11 @@ package com.intfocus.template.subject.two
 import android.util.Log
 import com.intfocus.template.BuildConfig
 import com.intfocus.template.SYPApplication.globalContext
-import com.intfocus.template.subject.model.ReportModelImpl
-import com.intfocus.template.model.callback.LoadDataCallback
 import com.intfocus.template.constant.Params.BODY
 import com.intfocus.template.constant.Params.CODE
 import com.intfocus.template.constant.Params.PATH
+import com.intfocus.template.model.callback.LoadDataCallback
+import com.intfocus.template.subject.model.ReportModelImpl
 import com.intfocus.template.util.*
 import com.intfocus.template.util.ApiHelper.deleteHeadersFile
 import rx.Observable

@@ -209,7 +209,7 @@ public class K implements Serializable {
     /**
      * 报表 Json 数据
      */
-    public final static String K_REPORT_JSON_DATA = "/api/v1.1/report/data?disposition=json";
+    public final static String K_REPORT_JSON_DATA = "/api/v1.1/report/data";
 
     /**
      * 上传设备

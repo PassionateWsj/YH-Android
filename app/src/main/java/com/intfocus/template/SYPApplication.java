@@ -41,6 +41,8 @@ import java.util.concurrent.PriorityBlockingQueue;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 
+import static com.intfocus.template.constant.Params.USER_BEAN;
+
 
 /**
  * @author lijunjie
@@ -87,7 +89,7 @@ public class SYPApplication extends Application {
         appContext = getApplicationContext();
         globalContext = getApplicationContext();
         mSettingSP = getSharedPreferences("SettingPreference", Context.MODE_PRIVATE);
-        mUserSP = getSharedPreferences("UserBean", Context.MODE_PRIVATE);
+        mUserSP = getSharedPreferences(USER_BEAN, Context.MODE_PRIVATE);
         try {
             packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
             if (mSettingSP.getInt("Version", 0) != packageInfo.versionCode) {

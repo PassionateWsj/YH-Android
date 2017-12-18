@@ -1,11 +1,11 @@
 package com.intfocus.template.subject.nine.root
 
 import com.alibaba.fastjson.JSONReader
-import com.intfocus.template.subject.nine.CollectionModelImpl.Companion.insertData
+import com.intfocus.template.constant.StateParams.STATE_CODE_SUCCESS
 import com.intfocus.template.model.callback.LoadDataCallback
+import com.intfocus.template.subject.nine.CollectionModelImpl.Companion.insertData
 import com.intfocus.template.subject.nine.entity.Content
 import com.intfocus.template.subject.nine.entity.RootPageRequestResult
-import com.intfocus.template.constant.StateParams.STATE_CODE_SUCCESS
 import com.intfocus.template.util.LogUtil
 import rx.Observable
 import rx.Observer

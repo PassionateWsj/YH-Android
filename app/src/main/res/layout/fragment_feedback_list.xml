@@ -8,10 +8,10 @@
         android:id="@+id/rv_feedback_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/btn__submit"/>
+        android:layout_above="@+id/btn_submit"/>
 
     <Button
-        android:id="@+id/btn__submit"
+        android:id="@+id/btn_submit"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_alignParentBottom="true"

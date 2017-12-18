@@ -24,12 +24,10 @@ import com.intfocus.template.util.K;
 import com.intfocus.template.util.LogUtil;
 import com.intfocus.template.util.ToastUtils;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
 
-import static com.intfocus.template.constant.Params.ACTION;
 import static com.intfocus.template.constant.Params.GESTURE_PASSWORD;
 import static com.intfocus.template.constant.Params.USE_GESTURE_PASSWORD;
 

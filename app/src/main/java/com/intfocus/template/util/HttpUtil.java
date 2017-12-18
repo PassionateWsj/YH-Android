@@ -36,6 +36,7 @@ import static com.intfocus.template.constant.Params.BODY;
 import static com.intfocus.template.constant.Params.CODE;
 import static com.intfocus.template.constant.Params.ETAG;
 import static com.intfocus.template.constant.Params.LAST_MODIFIED;
+import static com.intfocus.template.constant.Params.USER_BEAN;
 
 /**
  * @author lijunjie
@@ -58,7 +59,7 @@ public class HttpUtil {
      */
     public static Map<String, String> httpGet(Context ctx, String urlString, Map<String, String> headers) {
         LogUtil.d("GET", urlString);
-        SharedPreferences mUserSP = ctx.getSharedPreferences("UserBean", Context.MODE_PRIVATE);
+        SharedPreferences mUserSP = ctx.getSharedPreferences(USER_BEAN, Context.MODE_PRIVATE);
         String userNum = mUserSP.getString("user_num", "0");
         String userDeviceId = mUserSP.getString("user_device_id", "0");
         String appVision = mUserSP.getString("app_version", "0");

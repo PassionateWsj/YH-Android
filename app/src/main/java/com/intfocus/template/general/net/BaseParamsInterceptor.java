@@ -15,6 +15,8 @@ import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
 
+import static com.intfocus.template.constant.Params.USER_BEAN;
+
 /**
  * Created by CANC on 2017/8/10.
  * 用于统一添加请求参数
@@ -25,7 +27,7 @@ public class BaseParamsInterceptor implements Interceptor {
     private SharedPreferences mUserSP;
 
     public BaseParamsInterceptor(Context ctx) {
-        mUserSP = ctx.getSharedPreferences("UserBean", Context.MODE_PRIVATE);
+        mUserSP = ctx.getSharedPreferences(USER_BEAN, Context.MODE_PRIVATE);
     }
 
     /**

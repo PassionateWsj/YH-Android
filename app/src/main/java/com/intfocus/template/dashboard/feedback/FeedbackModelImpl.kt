@@ -1,8 +1,8 @@
 package com.intfocus.template.dashboard.feedback
 
 import android.content.Context
-import android.util.Log
 import com.intfocus.template.SYPApplication.globalContext
+import com.intfocus.template.constant.Params.USER_BEAN
 import com.intfocus.template.constant.Params.USER_NUM
 import com.intfocus.template.general.net.ApiException
 import com.intfocus.template.general.net.CodeHandledSubscriber
@@ -18,7 +18,7 @@ import rx.Subscription
  * @describe 问题反馈 Model 实现类
  */
 class FeedbackModelImpl: FeedbackModel{
-    private var mUserSP = globalContext.getSharedPreferences("UserBean", Context.MODE_PRIVATE)
+    private var mUserSP = globalContext.getSharedPreferences(USER_BEAN, Context.MODE_PRIVATE)
 
     companion object {
         private val TAG = "FeedbackModelImpl"

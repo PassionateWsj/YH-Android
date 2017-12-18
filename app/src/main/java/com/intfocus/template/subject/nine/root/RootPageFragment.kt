@@ -10,11 +10,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import com.intfocus.template.R
-import com.intfocus.template.ui.BaseModuleFragment
-import com.intfocus.template.subject.nine.entity.RootPageRequestResult
 import com.intfocus.template.constant.Params.ARG_PARAM
 import com.intfocus.template.constant.Params.SU_ROOT_ID
-import com.intfocus.template.util.LogUtil
+import com.intfocus.template.subject.nine.entity.RootPageRequestResult
 import com.intfocus.template.subject.nine.module.image.ImageFragment
 import com.intfocus.template.subject.nine.module.image.ImageModelImpl
 import com.intfocus.template.subject.nine.module.image.ImagePresenter
@@ -25,6 +23,8 @@ import com.intfocus.template.subject.nine.module.text.MultiTextFragment
 import com.intfocus.template.subject.nine.module.text.SingleTextFragment
 import com.intfocus.template.subject.nine.module.text.TextModelImpl
 import com.intfocus.template.subject.nine.module.text.TextPresenter
+import com.intfocus.template.ui.BaseModuleFragment
+import com.intfocus.template.util.LogUtil
 import kotlinx.android.synthetic.main.fragment_root.*
 import java.util.*
 

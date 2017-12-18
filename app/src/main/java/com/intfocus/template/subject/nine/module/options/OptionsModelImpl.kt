@@ -1,10 +1,10 @@
 package com.intfocus.template.subject.nine.module.options
 
 import com.alibaba.fastjson.JSONObject
-import com.intfocus.template.model.gen.SourceDao
 import com.intfocus.template.model.DaoUtil
-import com.intfocus.template.subject.nine.CollectionModelImpl
 import com.intfocus.template.model.callback.LoadDataCallback
+import com.intfocus.template.model.gen.SourceDao
+import com.intfocus.template.subject.nine.CollectionModelImpl
 import com.intfocus.template.subject.nine.module.ModuleModel
 
 /**

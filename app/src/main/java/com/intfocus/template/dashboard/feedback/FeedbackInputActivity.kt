@@ -11,6 +11,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.text.TextUtils
 import android.view.View
 import com.intfocus.template.R
+import com.intfocus.template.constant.Params.USER_BEAN
 import com.intfocus.template.constant.Params.USER_NUM
 import com.intfocus.template.dashboard.mine.adapter.FeedbackPageScreenshotAdapter
 import com.intfocus.template.dashboard.mine.bean.IssueCommitInfo
@@ -62,7 +63,7 @@ class FeedbackInputActivity : AbstractActivity<IssueMode>(), View.OnClickListene
 
     private fun initData() {
         EventBus.getDefault().register(this)
-        mUserSP = getSharedPreferences("UserBean", Context.MODE_PRIVATE)
+        mUserSP = getSharedPreferences(USER_BEAN, Context.MODE_PRIVATE)
 
     }
 

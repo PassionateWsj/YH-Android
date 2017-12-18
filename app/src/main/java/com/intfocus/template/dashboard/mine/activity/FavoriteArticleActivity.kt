@@ -1,14 +1,12 @@
 package com.intfocus.template.dashboard.mine.activity
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import com.intfocus.template.BuildConfig
 import com.intfocus.template.R
-import com.intfocus.template.constant.Params.BANNER_NAME
-import com.intfocus.template.constant.Params.LINK
+import com.intfocus.template.constant.Params.USER_BEAN
 import com.intfocus.template.constant.Params.USER_NUM
 import com.intfocus.template.constant.ToastColor
 import com.intfocus.template.dashboard.mine.adapter.InstituteAdapter
@@ -19,7 +17,6 @@ import com.intfocus.template.general.net.RetrofitUtil
 import com.intfocus.template.model.request.RequestFavourite
 import com.intfocus.template.model.response.BaseResult
 import com.intfocus.template.model.response.article.ArticleResult
-import com.intfocus.template.subject.two.WebPageActivity
 import com.intfocus.template.ui.RefreshActivity
 import com.intfocus.template.ui.view.CommonPopupWindow
 import com.intfocus.template.util.*
@@ -38,7 +35,7 @@ class FavoriteArticleActivity : RefreshActivity(), InstituteAdapter.NoticeItemLi
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_favorite)
         setRefreshLayout()
-        userNum = mActivity.getSharedPreferences("UserBean", Context.MODE_PRIVATE).getString(USER_NUM, "")
+        userNum = mActivity.getSharedPreferences(USER_BEAN, Context.MODE_PRIVATE).getString(USER_NUM, "")
         init()
     }
 

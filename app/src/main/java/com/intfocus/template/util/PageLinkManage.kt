@@ -15,6 +15,7 @@ import com.intfocus.template.constant.Params.OBJECT_ID
 import com.intfocus.template.constant.Params.OBJECT_TITLE
 import com.intfocus.template.constant.Params.OBJECT_TYPE
 import com.intfocus.template.constant.Params.TEMPLATE_ID
+import com.intfocus.template.constant.Params.USER_BEAN
 import com.intfocus.template.constant.Params.USER_NUM
 import com.intfocus.template.dashboard.DashboardActivity
 import com.intfocus.template.dashboard.feedback.FeedbackActivity
@@ -91,7 +92,7 @@ object PageLinkManage {
         if (templateId=="") {
             return
         }
-        val userSP = context.getSharedPreferences("UserBean", Context.MODE_PRIVATE)
+        val userSP = context.getSharedPreferences(USER_BEAN, Context.MODE_PRIVATE)
         val userNum = userSP.getString(USER_NUM, "")
 
         if (userNum != "") {
@@ -119,7 +120,7 @@ object PageLinkManage {
 
     fun pageLink(context: Context, objTitle: String, link: String, objectId: String, templateId: String, objectType: String, paramsMappingBean: HashMap<String, String>, fromPushMsg: Boolean) {
         try {
-            val userSP = context.getSharedPreferences("UserBean", Context.MODE_PRIVATE)
+            val userSP = context.getSharedPreferences(USER_BEAN, Context.MODE_PRIVATE)
             val groupID = userSP.getString(GROUP_ID, "0")
 
             val urlString: String

@@ -11,6 +11,7 @@ import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import com.intfocus.template.BuildConfig
 import com.intfocus.template.R
+import com.intfocus.template.constant.Params.USER_BEAN
 import com.intfocus.template.constant.Params.USER_NUM
 import com.intfocus.template.constant.ToastColor
 import com.intfocus.template.dashboard.mine.adapter.InstituteAdapter
@@ -48,7 +49,7 @@ class DataCollegeFragment : RefreshFragment(), InstituteAdapter.NoticeItemListen
         x.view().inject(this, mView)
         setRefreshLayout()
         initView()
-        mUserSP = mActivity.getSharedPreferences("UserBean", Context.MODE_PRIVATE)
+        mUserSP = mActivity.getSharedPreferences(USER_BEAN, Context.MODE_PRIVATE)
         userNum = mUserSP.getString(USER_NUM, "")
         getData(true)
         return mView

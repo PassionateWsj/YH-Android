@@ -9,6 +9,7 @@ import java.util.*
  * @describe
  */
 class CollectionEntity : Serializable {
+    var reportId: String? = null
     var name: String? = null
     var data: ArrayList<PageData>? = null
 

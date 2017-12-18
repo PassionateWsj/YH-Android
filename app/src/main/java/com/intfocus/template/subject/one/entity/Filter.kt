@@ -1,7 +1,7 @@
 package com.intfocus.template.subject.one.entity
 
 import com.intfocus.template.model.response.filter.MenuItem
-import java.util.ArrayList
+import java.util.*
 
 /**
  * @author liuruilin

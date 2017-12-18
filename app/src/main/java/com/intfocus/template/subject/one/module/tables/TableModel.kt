@@ -1,7 +1,7 @@
 package com.intfocus.template.subject.one.module.tables
 
-import com.intfocus.template.subject.one.entity.Tables
 import com.intfocus.template.subject.one.entity.MDetailRootPageRequestResult
+import com.intfocus.template.subject.one.entity.Tables
 import org.jetbrains.annotations.NotNull
 
 /**

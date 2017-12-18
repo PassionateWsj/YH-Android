@@ -3,10 +3,11 @@ package com.intfocus.template.dashboard.report.mode
 import android.content.Context
 import com.intfocus.template.constant.Params.GROUP_ID
 import com.intfocus.template.constant.Params.ROLD_ID
-import com.intfocus.template.model.response.home.ReportListResult
+import com.intfocus.template.constant.Params.USER_BEAN
 import com.intfocus.template.general.net.ApiException
 import com.intfocus.template.general.net.CodeHandledSubscriber
 import com.intfocus.template.general.net.RetrofitUtil
+import com.intfocus.template.model.response.home.ReportListResult
 import com.zbl.lib.baseframe.core.AbstractMode
 import org.greenrobot.eventbus.EventBus
 
@@ -15,7 +16,7 @@ import org.greenrobot.eventbus.EventBus
  * Created by liuruilin on 2017/6/15.
  */
 class ReportsListMode(var ctx: Context) : AbstractMode() {
-    var mUserSP = ctx.getSharedPreferences("UserBean", Context.MODE_PRIVATE)
+    var mUserSP = ctx.getSharedPreferences(USER_BEAN, Context.MODE_PRIVATE)
 
     override fun requestData() {
         RetrofitUtil.getHttpService(ctx).getReportList(mUserSP.getString(GROUP_ID, "0"), mUserSP.getString(ROLD_ID, "0"))

@@ -25,6 +25,7 @@ import com.bumptech.glide.request.target.BitmapImageViewTarget
 import com.google.gson.Gson
 import com.intfocus.template.ConfigConstants
 import com.intfocus.template.R
+import com.intfocus.template.constant.Params.USER_BEAN
 import com.intfocus.template.constant.Params.USER_NUM
 import com.intfocus.template.constant.ToastColor
 import com.intfocus.template.dashboard.feedback.FeedbackActivity
@@ -79,7 +80,7 @@ class UserFragment : BaseFragment(), UserContract.View {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        mUserSP = ctx.getSharedPreferences("UserBean", Context.MODE_PRIVATE)
+        mUserSP = ctx.getSharedPreferences(USER_BEAN, Context.MODE_PRIVATE)
         if (rootView == null) {
             rootView = inflater.inflate(R.layout.fragment_user, container, false)
             presenter.loadData(ctx)
@@ -103,7 +104,7 @@ class UserFragment : BaseFragment(), UserContract.View {
     }
 
     fun initView() {
-        userNum = activity!!.getSharedPreferences("UserBean", Context.MODE_PRIVATE).getString(USER_NUM, "")
+        userNum = activity!!.getSharedPreferences(USER_BEAN, Context.MODE_PRIVATE).getString(USER_NUM, "")
         RetrofitUtil.getHttpService(ctx).getUserInfo(userNum)
                 .compose(RetrofitUtil.CommonOptions<UserInfoResult>())
                 .subscribe(object : CodeHandledSubscriber<UserInfoResult>() {

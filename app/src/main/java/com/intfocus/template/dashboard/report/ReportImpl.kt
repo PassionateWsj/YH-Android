@@ -2,6 +2,7 @@ package com.intfocus.template.subject.one
 
 import android.content.Context
 import com.intfocus.template.constant.Params
+import com.intfocus.template.constant.Params.USER_BEAN
 import com.intfocus.template.general.net.ApiException
 import com.intfocus.template.general.net.CodeHandledSubscriber
 import com.intfocus.template.general.net.RetrofitUtil
@@ -52,7 +53,7 @@ class ReportImpl : ReportModel {
     }
 
     override fun getData(ctx: Context, callBack: ReportModel.LoadDataCallback) {
-        val mUserSP = ctx.getSharedPreferences("UserBean", Context.MODE_PRIVATE)
+        val mUserSP = ctx.getSharedPreferences(USER_BEAN, Context.MODE_PRIVATE)
 
         RetrofitUtil.getHttpService(ctx).getReportList(mUserSP.getString(Params.GROUP_ID, "0"), mUserSP.getString(Params.ROLD_ID, "0"))
                 .compose(RetrofitUtil.CommonOptions<ReportListResult>())

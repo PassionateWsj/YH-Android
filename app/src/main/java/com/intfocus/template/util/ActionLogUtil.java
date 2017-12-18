@@ -17,6 +17,7 @@ import static android.content.Context.MODE_PRIVATE;
 import static com.intfocus.template.SYPApplication.globalContext;
 import static com.intfocus.template.SYPApplication.priorityThreadPool;
 import static com.intfocus.template.constant.Params.ACTION;
+import static com.intfocus.template.constant.Params.USER_BEAN;
 import static com.intfocus.template.constant.Params.USER_ID;
 import static com.intfocus.template.constant.Params.USER_NAME;
 import static com.intfocus.template.constant.Params.USER_NUM;
@@ -80,7 +81,7 @@ public class ActionLogUtil {
             @Override
             public void doSth() {
                 try {
-                    SharedPreferences mUserSP = globalContext.getApplicationContext().getSharedPreferences("UserBean", MODE_PRIVATE);
+                    SharedPreferences mUserSP = globalContext.getApplicationContext().getSharedPreferences(USER_BEAN, MODE_PRIVATE);
 
                     param.put(USER_ID, mUserSP.getString(USER_ID, ""));
                     param.put(USER_NUM, mUserSP.getString(USER_NUM, ""));
@@ -120,7 +121,7 @@ public class ActionLogUtil {
             @Override
             public void doSth() {
                 try {
-                    SharedPreferences mUserSP = globalContext.getApplicationContext().getSharedPreferences("UserBean", MODE_PRIVATE);
+                    SharedPreferences mUserSP = globalContext.getApplicationContext().getSharedPreferences(USER_BEAN, MODE_PRIVATE);
 
                     PackageInfo packageInfo = globalContext.getPackageManager().getPackageInfo(globalContext.getPackageName(), 0);
                     param.put(K_APP_VERSION, String.format("a%s", packageInfo.versionName));

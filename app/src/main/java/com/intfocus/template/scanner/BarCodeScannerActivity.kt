@@ -277,7 +277,7 @@ class BarCodeScannerActivity : AppCompatActivity(), QRCodeView.Delegate, View.On
     }
 
     private fun goToUrl(result: String, codeType: String, type: String) {
-//        val mUserSP = getSharedPreferences("UserBean", Context.MODE_PRIVATE)
+//        val mUserSP = getSharedPreferences(USER_BEAN, Context.MODE_PRIVATE)
         when {
             type.contains("ruishang") -> {
                 var urlString = intent.getStringExtra(LINK)

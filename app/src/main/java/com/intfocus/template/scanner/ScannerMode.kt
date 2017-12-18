@@ -3,6 +3,7 @@ package com.intfocus.template.scanner
 import android.content.Context
 import com.google.gson.Gson
 import com.intfocus.template.BuildConfig
+import com.intfocus.template.constant.Params.USER_BEAN
 import com.intfocus.template.util.FileUtil
 import com.intfocus.template.util.HttpUtil
 import com.intfocus.template.util.K
@@ -24,7 +25,7 @@ import java.util.*
  */
 class ScannerMode(var ctx: Context) : AbstractMode() {
     var result: String? = null
-    var mUserSP = ctx.getSharedPreferences("UserBean", Context.MODE_PRIVATE)
+    var mUserSP = ctx.getSharedPreferences(USER_BEAN, Context.MODE_PRIVATE)
     var gson = Gson()
     var jsUrl = ""
     var htmlUrl = ""

@@ -5,6 +5,7 @@ import android.content.Context
 import android.graphics.Bitmap
 import com.intfocus.template.ConfigConstants
 import com.intfocus.template.constant.Params
+import com.intfocus.template.constant.Params.USER_BEAN
 import com.intfocus.template.general.net.ApiException
 import com.intfocus.template.general.net.CodeHandledSubscriber
 import com.intfocus.template.general.net.RetrofitUtil
@@ -67,7 +68,7 @@ class UserImpl : UserModel {
     }
 
     override fun getData(ctx: Context, callBack: UserModel.LoadDataCallback) {
-        val mUserSP = ctx.getSharedPreferences("UserBean", Context.MODE_PRIVATE)
+        val mUserSP = ctx.getSharedPreferences(USER_BEAN, Context.MODE_PRIVATE)
         RetrofitUtil.getHttpService(ctx).getUserInfo(mUserSP.getString(Params.USER_NUM, ""))
                 .compose(RetrofitUtil.CommonOptions<UserInfoResult>())
                 .subscribe(object : CodeHandledSubscriber<UserInfoResult>() {
@@ -86,7 +87,7 @@ class UserImpl : UserModel {
 
     @SuppressLint("SimpleDateFormat")
     override fun uploadUserIcon(ctx: Context, bitmap: Bitmap, imgPath: String, callBack: UserModel.ShowMsgCallback) {
-        val mUserSP = ctx.getSharedPreferences("UserBean", Context.MODE_PRIVATE)
+        val mUserSP = ctx.getSharedPreferences(USER_BEAN, Context.MODE_PRIVATE)
         val format = SimpleDateFormat("yyyyMMddHHmmss")
         val date = Date(System.currentTimeMillis())
         File(imgPath).delete()
@@ -112,7 +113,7 @@ class UserImpl : UserModel {
     }
 
     override fun logout(ctx: Context, callBack: UserModel.LogoutCallback) {
-        val mUserSP = ctx.getSharedPreferences("UserBean", Context.MODE_PRIVATE)
+        val mUserSP = ctx.getSharedPreferences(USER_BEAN, Context.MODE_PRIVATE)
         // 判断有无网络
         if (!UtilityImpl.isNetworkConnected(ctx)) {
             callBack.logoutFailure("未连接网络, 无法退出")

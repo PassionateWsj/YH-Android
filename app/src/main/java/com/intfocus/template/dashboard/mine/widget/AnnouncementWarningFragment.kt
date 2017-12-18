@@ -10,22 +10,24 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.intfocus.template.R
-import com.intfocus.template.constant.Params.ACTION
+import com.intfocus.template.constant.Params.USER_BEAN
 import com.intfocus.template.constant.Params.USER_NUM
 import com.intfocus.template.dashboard.mine.activity.NoticeContentActivity
 import com.intfocus.template.dashboard.mine.adapter.NoticeListAdapter
 import com.intfocus.template.dashboard.mine.adapter.NoticeMenuAdapter
 import com.intfocus.template.dashboard.mine.bean.NoticeMenuBean
-import com.intfocus.template.ui.RefreshFragment
-import com.intfocus.template.model.response.notice.Notice
-import com.intfocus.template.model.response.notice.NoticesResult
 import com.intfocus.template.general.net.ApiException
 import com.intfocus.template.general.net.CodeHandledSubscriber
 import com.intfocus.template.general.net.RetrofitUtil
-import com.intfocus.template.util.*
+import com.intfocus.template.model.response.notice.Notice
+import com.intfocus.template.model.response.notice.NoticesResult
+import com.intfocus.template.ui.RefreshFragment
+import com.intfocus.template.util.ActionLogUtil
+import com.intfocus.template.util.ErrorUtils
+import com.intfocus.template.util.HttpUtil
+import com.intfocus.template.util.ToastUtils
 import com.lcodecore.tkrefreshlayout.footer.LoadingView
 import com.lcodecore.tkrefreshlayout.header.SinaRefreshView
-import org.json.JSONObject
 import org.xutils.x
 
 /**
@@ -51,7 +53,7 @@ class AnnouncementWarningFragment : RefreshFragment(), NoticeListAdapter.NoticeI
         mView = inflater.inflate(R.layout.fragment_notice, container, false)
         x.view().inject(this, mView)
         setRefreshLayout()
-        userId = mActivity.getSharedPreferences("UserBean", Context.MODE_PRIVATE).getString(USER_NUM, "")
+        userId = mActivity.getSharedPreferences(USER_BEAN, Context.MODE_PRIVATE).getString(USER_NUM, "")
         initView()
         getData(true)
         return mView

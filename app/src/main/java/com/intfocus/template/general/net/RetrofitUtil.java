@@ -3,9 +3,9 @@ package com.intfocus.template.general.net;
 import android.annotation.SuppressLint;
 import android.content.Context;
 
+import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.intfocus.template.BuildConfig;
 import com.intfocus.template.SYPApplication;
-import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.intfocus.template.util.HttpUtil;
 
 import java.security.SecureRandom;

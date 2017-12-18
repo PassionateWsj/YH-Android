@@ -6,6 +6,12 @@ package com.intfocus.template.constant
  * @describe
  */
 object Params {
+
+    // SharedPreferences
+    const val USER_BEAN = "UserBean"
+    const val PUSH_MESSAGE = "PushMessage"
+    const val SETTING_PREFERENCE = "SettingPreference"
+
     const val SU_ROOT_ID = "suRootID"
     const val ARG_PARAM = "param"
     const val KEY = "key"
@@ -57,6 +63,7 @@ object Params {
     const val GROUP_NAME = "group_name"
     const val STORE = "store"
     const val STORE_ID = "store_ids"
+    const val USER_LOCATION = "location"
 
     const val USE_GESTURE_PASSWORD = "use_gesture_password"
     const val GESTURE_PASSWORD = "gesture_password"

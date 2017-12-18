@@ -1,10 +1,10 @@
 package com.intfocus.template.subject.nine.module.image
 
 import com.alibaba.fastjson.JSONObject
-import com.intfocus.template.model.gen.SourceDao
 import com.intfocus.template.model.DaoUtil
-import com.intfocus.template.subject.nine.CollectionModelImpl.Companion.uuid
 import com.intfocus.template.model.callback.LoadDataCallback
+import com.intfocus.template.model.gen.SourceDao
+import com.intfocus.template.subject.nine.CollectionModelImpl.Companion.uuid
 import com.intfocus.template.subject.nine.module.ModuleModel
 
 /**

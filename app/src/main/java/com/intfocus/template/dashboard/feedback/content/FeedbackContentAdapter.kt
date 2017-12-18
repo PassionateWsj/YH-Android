@@ -9,7 +9,6 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import com.bumptech.glide.Glide
 import com.intfocus.template.R
-import com.intfocus.template.model.response.mine_page.FeedbackList
 
 /**
  * @author liuruilin

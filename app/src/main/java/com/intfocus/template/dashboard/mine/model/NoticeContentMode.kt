@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import com.google.gson.Gson
 import com.intfocus.template.BuildConfig
+import com.intfocus.template.constant.Params.USER_BEAN
 import com.intfocus.template.dashboard.mine.bean.NoticeContentBean
 import com.intfocus.template.dashboard.mine.bean.NoticeContentRequest
 import com.intfocus.template.general.net.ApiException
@@ -23,7 +24,7 @@ class NoticeContentMode(var ctx: Context) : AbstractMode() {
     lateinit var urlString: String
     var result: String? = null
     val mNoticeContentSP: SharedPreferences = ctx.getSharedPreferences("NoticeContent", Context.MODE_PRIVATE)
-    var mUserSP = ctx.getSharedPreferences("UserBean", Context.MODE_PRIVATE)
+    var mUserSP = ctx.getSharedPreferences(USER_BEAN, Context.MODE_PRIVATE)
     var gson = Gson()
     var id = ""
 
