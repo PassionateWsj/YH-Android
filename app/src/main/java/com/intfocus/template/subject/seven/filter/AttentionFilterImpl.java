@@ -1,4 +1,4 @@
-package com.intfocus.template.scanner.model;
+package com.intfocus.template.subject.seven.filter;
 
 import android.content.Context;
 
@@ -18,16 +18,16 @@ import rx.schedulers.Schedulers;
  * ****************************************************
  *
  * @author JamesWong
- * created on: 17/08/22 上午10:00
- * e-mail: PassionateWsj@outlook.com
- * name:
- * desc:
- * ****************************************************
+ *         created on: 17/08/22 上午10:00
+ *         e-mail: PassionateWsj@outlook.com
+ *         name:
+ *         desc:
+ *         ****************************************************
  */
 
-public class StoreSelectorImpl implements StoreSelectorModel {
+public class AttentionFilterImpl implements AttentionFilterModel {
     @Override
-    public void loadData(Context mContext, final String keyWord, final OnStoreSelectorResultListener listener) {
+    public void loadData(Context mContext, final String keyWord, final OnAttentionFilterResultListener listener) {
 
         try {
             final Dao<StoreItem, Long> storeItemDao = OrmDBHelper.getInstance(mContext).getStoreItemDao();

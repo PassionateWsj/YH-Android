@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/rl_action_bar"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:background="@color/co10_syr">
+
+        <ImageView
+            android:id="@+id/iv_banner_back"
+            style="@style/BannerBackButton"
+            android:onClick="dismissActivity"/>
+
+        <ImageView
+            android:id="@+id/iv_attention"
+            style="@style/BannerRightButton"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="6dp"
+            android:onClick="menuOnClicked"
+            android:src="@drawable/attention"/>
+
+        <ImageView
+            android:id="@+id/iv_attention_filter"
+            style="@style/BannerRightButton"
+            android:layout_alignParentRight="false"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="6dp"
+            android:layout_toLeftOf="@id/iv_attention"
+            android:onClick="menuOnClicked"
+            android:src="@drawable/pop_screen_gray"/>
+
+        <TextView
+            android:id="@+id/tv_banner_title"
+            style="@style/BannerTitle"
+            android:layout_width="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_toLeftOf="@+id/iv_attention_filter"
+            android:layout_toRightOf="@id/iv_banner_back"
+            android:text="主题名称主题名称主题名称"
+            android:textAlignment="center"/>
+
+    </RelativeLayout>
+
+    <ScrollView
+        android:id="@+id/sl_my_attention"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/rl_action_bar"
+        android:background="@color/co8_syr">
+
+        <LinearLayout
+            android:id="@+id/ll_my_attention_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_my_attention_update_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="25dp"
+                android:layout_marginTop="15dp"
+                android:textSize="12sp"
+                android:text="2017/05/27 13:24"
+                android:textColor="@color/black_51_51_51"
+                android:visibility="visible"/>
+        </LinearLayout>
+    </ScrollView>
+
+    <FrameLayout
+        android:id="@+id/fl_my_attention_no_data_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/rl_action_bar"
+        android:background="@color/co8_syr"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="暂无关注数据，请筛选门店后进行单品关注"
+            android:textColor="@color/black_51_51_51"/>
+    </FrameLayout>
+</RelativeLayout>
