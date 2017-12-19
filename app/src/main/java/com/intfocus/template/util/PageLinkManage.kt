@@ -125,6 +125,8 @@ object PageLinkManage {
             val userSP = context.getSharedPreferences(USER_BEAN, Context.MODE_PRIVATE)
             val groupID = userSP.getString(GROUP_ID, "0")
             userSP.edit().putString(TIME_STAMP, "" + System.currentTimeMillis()).commit()
+            //更新本地定位信息
+            MapUtil.getInstance(context).updateSPLocation()
 
             var urlString: String
             val intent: Intent
@@ -367,4 +369,5 @@ object PageLinkManage {
         val splitString = if (urlString.contains("?")) "&" else "?"
         return String.format("%s%s%s", urlString, splitString, params)
     }
+
 }

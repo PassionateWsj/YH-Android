@@ -113,8 +113,8 @@ android {
             dimension "APP"
 
             applicationId 'com.intfocus.shengyiplus'
-            versionCode 60
-            versionName "1.6.10"
+            versionCode 62
+            versionName "1.6.12"
 
             buildConfigField "String", "BASE_URL", SHENGYIPLUS_BASE_URL
             proguardFiles 'proguard-rules.pro' //getDefaultProguardFile('proguard-android.txt'),

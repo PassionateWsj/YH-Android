@@ -105,8 +105,9 @@ class LoginActivity : FragmentActivity() {
 
         ctx = this
 
-        //设置定位监听
-        getLocation()
+        //设置定位
+        MapUtil.getInstance(this).updateSPLocation()
+
         assetsPath = FileUtil.dirPath(ctx, K.K_HTML_DIR_NAME)
         sharedPath = FileUtil.sharedPath(ctx)
 
@@ -142,38 +143,6 @@ class LoginActivity : FragmentActivity() {
             ll_unable_login.visibility = View.VISIBLE
         } else {
             ll_unable_login.visibility = View.GONE
-        }
-    }
-
-    /**
-     * 设置定位回调监听
-     */
-    private fun getLocation() {
-        MapUtil.getInstance(this).getAMapLocation { location ->
-            if (null != location) {
-                val sb = StringBuffer()
-                //errCode等于0代表定位成功，其他的为定位失败，具体的可以参照官网定位错误码说明
-                if (location.errorCode == 0) {
-                    val mUserSP = ctx!!.getSharedPreferences(USER_BEAN, Context.MODE_PRIVATE)
-                    mUserSP.edit().putString(USER_LOCATION,
-                            String.format("%.6f", location.longitude) + ","
-                                    + String.format("%.6f", location.latitude)).apply()
-
-                    sb.append("经    度    : " + location.longitude + "\n")
-                    sb.append("纬    度    : " + location.latitude + "\n")
-                } else {
-                    //定位失败
-                    sb.append("错误码:" + location.errorCode + "\n")
-                    sb.append("错误信息:" + location.errorInfo + "\n")
-                    sb.append("错误描述:" + location.locationDetail + "\n")
-                }
-
-                //解析定位结果
-                val result = sb.toString()
-                LogUtil.d("testlog", result)
-            } else {
-                LogUtil.d("testlog", "定位失败，loc is null")
-            }
         }
     }
 
@@ -369,7 +338,7 @@ class LoginActivity : FragmentActivity() {
                 URLs.MD5(userPass)
             }
             // 登录验证
-            RetrofitUtil.getHttpService(ctx).userLogin(userNum, loginPwd, mUserSP!!.getString("location", "0,0"))
+            RetrofitUtil.getHttpService(ctx).userLogin(userNum, loginPwd, mUserSP!!.getString(USER_LOCATION, "0,0"))
                     .compose(RetrofitUtil.CommonOptions())
                     .subscribe(object : CodeHandledSubscriber<NewUser>() {
 
