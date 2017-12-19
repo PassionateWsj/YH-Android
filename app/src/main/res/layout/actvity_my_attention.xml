@@ -25,35 +25,89 @@
             android:onClick="menuOnClicked"
             android:src="@drawable/attention"/>
 
-        <ImageView
-            android:id="@+id/iv_attention_filter"
-            style="@style/BannerRightButton"
-            android:layout_alignParentRight="false"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="6dp"
-            android:layout_toLeftOf="@id/iv_attention"
-            android:onClick="menuOnClicked"
-            android:src="@drawable/pop_screen_gray"/>
-
         <TextView
             android:id="@+id/tv_banner_title"
             style="@style/BannerTitle"
             android:layout_width="match_parent"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:layout_toLeftOf="@+id/iv_attention_filter"
+            android:layout_toLeftOf="@+id/iv_attention"
             android:layout_toRightOf="@id/iv_banner_back"
             android:text="主题名称主题名称主题名称"
             android:textAlignment="center"/>
 
     </RelativeLayout>
 
+    <LinearLayout
+        android:id="@+id/ll_filter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rl_action_bar"
+        android:orientation="vertical"
+        android:visibility="visible">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/co9_syr"/>
+
+        <RelativeLayout
+            android:id="@+id/rl_address_filter"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@color/white"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_location_address"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_toLeftOf="@+id/tv_address_filter"
+                android:drawablePadding="15dp"
+                android:ellipsize="end"
+                android:gravity="center_vertical"
+                android:hint=""
+                android:maxLines="1"
+                android:paddingLeft="@dimen/space_default_large_xxs"
+                android:textColor="@color/co15_syr"
+                android:textColorHint="@color/co4_syr"
+                android:textSize="14sp"/>
+
+            <TextView
+                android:id="@+id/tv_address_filter"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:drawablePadding="6dp"
+                android:drawableRight="@drawable/pop_screen_gray"
+                android:gravity="center_vertical"
+                android:onClick="menuOnClicked"
+                android:paddingRight="@dimen/space_default_large_xxs"
+                android:text="@string/text_shaixuan"
+                android:textColor="@color/co6_syr"
+                android:textSize="15sp"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_alignParentBottom="true"
+                android:background="@color/co9_syr"/>
+        </RelativeLayout>
+
+        <View
+            android:id="@+id/view_line"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/co9_syr"/>
+    </LinearLayout>
+
     <ScrollView
         android:id="@+id/sl_my_attention"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/rl_action_bar"
-        android:background="@color/co8_syr">
+        android:layout_below="@id/ll_filter"
+        android:background="@color/co8_syr"
+        android:scrollbars="none">
 
         <LinearLayout
             android:id="@+id/ll_my_attention_container"
@@ -69,11 +123,12 @@
                 android:layout_marginLeft="25dp"
                 android:layout_marginRight="25dp"
                 android:layout_marginTop="15dp"
-                android:textSize="12sp"
                 android:text="2017/05/27 13:24"
                 android:textColor="@color/black_51_51_51"
+                android:textSize="12sp"
                 android:visibility="visible"/>
         </LinearLayout>
+
     </ScrollView>
 
     <FrameLayout

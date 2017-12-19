@@ -1,6 +1,7 @@
 package com.intfocus.template.subject.seven
 
 import com.intfocus.template.model.response.attention.Test2
+import com.intfocus.template.subject.one.entity.Filter
 
 /**
  * ****************************************************
@@ -26,8 +27,8 @@ class MyAttentionPresenter(
 
     override fun loadData(user_num: String) {
         mModel.getData(user_num,object :MyAttentionModel.LoadDataCallback{
-            override fun onDataLoaded(data: Test2) {
-                mView.onUpdateData(data)
+            override fun onDataLoaded(data: Test2,filter: Filter) {
+                mView.onUpdateData(data,filter)
             }
 
             override fun onDataNotAvailable(e: Throwable) {

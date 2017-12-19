@@ -1,14 +1,13 @@
-package com.intfocus.template.subject.seven.indicatorgroup
+package com.intfocus.template.subject.seven.indicatorlist
 
 import android.os.Bundle
-import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.intfocus.template.R
-import com.intfocus.template.subject.one.entity.SingleValue
+import com.intfocus.template.model.response.attention.Test2
 import com.intfocus.template.ui.BaseFragment
-import kotlinx.android.synthetic.main.fragment_indicator_group.*
+import kotlinx.android.synthetic.main.fragment_indicator_list.*
 
 /**
  * ****************************************************
@@ -19,13 +18,13 @@ import kotlinx.android.synthetic.main.fragment_indicator_group.*
  * desc:
  * ****************************************************
  */
-class IndicatorGroupFragment : BaseFragment() {
+class IndicatorListFragment : BaseFragment() {
 
-    var mData: List<SingleValue> = ArrayList()
+    var mData: List<Test2.DataBeanXX.AttentionedDataBean> = ArrayList()
 
-    fun newInstance(data: ArrayList<SingleValue>): IndicatorGroupFragment {
+    fun newInstance(data: ArrayList<Test2.DataBeanXX.AttentionedDataBean>): IndicatorListFragment {
         val args = Bundle()
-        val fragment = IndicatorGroupFragment()
+        val fragment = IndicatorListFragment()
         args.putSerializable("data", data)
         fragment.arguments = args
         return fragment
@@ -33,15 +32,16 @@ class IndicatorGroupFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mData = arguments?.get("data") as ArrayList<SingleValue>
+        mData = arguments?.get("data") as ArrayList<Test2.DataBeanXX.AttentionedDataBean>
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
-            inflater.inflate(R.layout.fragment_indicator_group, container,false)
+            inflater.inflate(R.layout.fragment_indicator_list, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        rv_indicator_group.layoutManager = LinearLayoutManager(ctx, LinearLayoutManager.HORIZONTAL, false)
-        rv_indicator_group.adapter = IndicatorGroupAdapter(ctx, mData)
+        elv_indicator_list.setAdapter(IndicatorListAdapter(ctx, mData))
+//        rv_indicator_list.layoutManager = LinearLayoutManager(ctx, LinearLayoutManager.HORIZONTAL, false)
+//        rv_indicator_list.adapter = IndicatorListAdapter(ctx, mData)
     }
 }

@@ -1,5 +1,8 @@
 package com.intfocus.template.model.response.attention;
 
+import com.intfocus.template.subject.one.entity.Filter;
+import com.intfocus.template.subject.one.entity.SingleValue;
+
 import java.util.List;
 
 /**
@@ -16,12 +19,12 @@ public class Test2 {
     /**
      * code : 200
      * message : success
-     * data : {"updated_at":"1513574854","main_data_id":"9555","main_data_name":"高淳悦达广场店","main_attention_data":[{"title":"差异","value":"+34,253","rate":"62.5%","colorIndex":"2"},{"title":"新增商品数","value":"99","rate":"-0.5%","colorIndex":"1"},{"title":"缺货商品数","value":"102","rate":"10%","colorIndex":"3"},{"title":"负毛利商品数量","value":"78","rate":"9.7%","colorIndex":"0"}],"attentioned_data":[{"attention_item_id":"00134567","attention_item_name":"车厘子","attention_item_data":[{"title":"差异","value":"+34,253","rate":"62.5%","colorIndex":"2"},{"title":"新增商品数","value":"99","rate":"-0.5%","colorIndex":"1"},{"title":"缺货商品数","value":"102","rate":"10%","colorIndex":"3"},{"title":"负毛利商品数量","value":"78","rate":"9.7%","colorIndex":"0"}]},{"attention_item_id":"00534567","attention_item_name":"车厘6子","attention_item_data":[{"title":"差异","value":"+51,253","rate":"32.5%","colorIndex":"2"},{"title":"新增商品数","value":"79","rate":"-1.5%","colorIndex":"3"},{"title":"缺货商品数","value":"102","rate":"20%","colorIndex":"0"},{"title":"负毛利商品数量","value":"48","rate":"19.7%","colorIndex":"1"}]}],"attention_list":[{"attention_item_id":"00134567","attention_item_name":"车厘子"},{"attention_item_id":"00133467","attention_item_name":"车厘子1"},{"attention_item_id":"61134567","attention_item_name":"车1234厘子"},{"attention_item_id":"00132467","attention_item_name":"车厘子3"},{"attention_item_id":"00642567","attention_item_name":"车厘子4"},{"attention_item_id":"00534567","attention_item_name":"车厘6子"},{"attention_item_id":"02434567","attention_item_name":"车7厘子"},{"attention_item_id":"00564567","attention_item_name":"车2厘子"}]}
+     * data : {"updated_at":"1513574854","main_data_id":"34562345","main_data_name":"河北一号店","main_attention_data":[{"state":{"color":"2"},"main_data":{"name":"差异","data":34253,"format":"int","percentage":1},"sub_data":{"name":"对比数据","data":30253,"format":"int","percentage":1}},{"state":{"color":"1"},"main_data":{"name":"新增商品数","data":99,"format":"int","percentage":1},"sub_data":{"name":"对比数据","data":80,"format":"int","percentage":1}},{"state":{"color":"3"},"main_data":{"name":"缺货商品数","data":102,"format":"int","percentage":1},"sub_data":{"name":"对比数据","data":90,"format":"int","percentage":1}},{"state":{"color":"1"},"main_data":{"name":"负毛利商品数量","data":78,"format":"int","percentage":1},"sub_data":{"name":"对比数据","data":73,"format":"int","percentage":1}}],"attentioned_data":[{"attention_item_id":"00134567","attention_item_name":"车厘子","attention_item_data":[{"state":{"color":"5"},"main_data":{"name":"差异","data":34253,"format":"int","percentage":1},"sub_data":{"name":"对比数据","data":30253,"format":"int","percentage":1}},{"state":{"color":"4"},"main_data":{"name":"新增商品数","data":99,"format":"int","percentage":1},"sub_data":{"name":"对比数据","data":80,"format":"int","percentage":1}},{"state":{"color":"0"},"main_data":{"name":"缺货商品数","data":102,"format":"int","percentage":1},"sub_data":{"name":"对比数据","data":90,"format":"int","percentage":1}},{"state":{"color":"1"},"main_data":{"name":"负毛利商品数量","data":78,"format":"int","percentage":1},"sub_data":{"name":"对比数据","data":73,"format":"int","percentage":1}}]},{"attention_item_id":"00534567","attention_item_name":"车厘6子","attention_item_data":[{"state":{"color":"5"},"main_data":{"name":"差异","data":34253,"format":"int","percentage":1},"sub_data":{"name":"对比数据","data":30253,"format":"int","percentage":1}},{"state":{"color":"2"},"main_data":{"name":"新增商品数","data":99,"format":"int","percentage":1},"sub_data":{"name":"对比数据","data":80,"format":"int","percentage":1}},{"state":{"color":"1"},"main_data":{"name":"缺货商品数","data":102,"format":"int","percentage":1},"sub_data":{"name":"对比数据","data":90,"format":"int","percentage":1}},{"state":{"color":"4"},"main_data":{"name":"负毛利商品数量","data":78,"format":"int","percentage":1},"sub_data":{"name":"对比数据","data":73,"format":"int","percentage":1}}]}],"attention_list":[{"attention_item_id":"00134567","attention_item_name":"车厘子"},{"attention_item_id":"00133467","attention_item_name":"车厘子1"},{"attention_item_id":"61134567","attention_item_name":"车1234厘子"},{"attention_item_id":"00132467","attention_item_name":"车厘子3"},{"attention_item_id":"00642567","attention_item_name":"车厘子4"},{"attention_item_id":"00534567","attention_item_name":"车厘6子"},{"attention_item_id":"02434567","attention_item_name":"车7厘子"},{"attention_item_id":"00564567","attention_item_name":"车2厘子"}],"filter":{"display":"河北||一号店","data":[{"id":"3456","name":"河北","data":[{"id":"34562345","name":"一号店","data":[]},{"id":"34563567","name":"二号店","data":[]}]}]}}
      */
 
     private int code;
     private String message;
-    private DataBean data;
+    private DataBeanXX data;
 
     public int getCode() {
         return code;
@@ -39,28 +42,30 @@ public class Test2 {
         this.message = message;
     }
 
-    public DataBean getData() {
+    public DataBeanXX getData() {
         return data;
     }
 
-    public void setData(DataBean data) {
+    public void setData(DataBeanXX data) {
         this.data = data;
     }
 
-    public static class DataBean {
+    public static class DataBeanXX {
         /**
          * updated_at : 1513574854
-         * main_data_id : 9555
-         * main_data_name : 高淳悦达广场店
-         * main_attention_data : [{"title":"差异","value":"+34,253","rate":"62.5%","colorIndex":"2"},{"title":"新增商品数","value":"99","rate":"-0.5%","colorIndex":"1"},{"title":"缺货商品数","value":"102","rate":"10%","colorIndex":"3"},{"title":"负毛利商品数量","value":"78","rate":"9.7%","colorIndex":"0"}]
-         * attentioned_data : [{"attention_item_id":"00134567","attention_item_name":"车厘子","attention_item_data":[{"title":"差异","value":"+34,253","rate":"62.5%","colorIndex":"2"},{"title":"新增商品数","value":"99","rate":"-0.5%","colorIndex":"1"},{"title":"缺货商品数","value":"102","rate":"10%","colorIndex":"3"},{"title":"负毛利商品数量","value":"78","rate":"9.7%","colorIndex":"0"}]},{"attention_item_id":"00534567","attention_item_name":"车厘6子","attention_item_data":[{"title":"差异","value":"+51,253","rate":"32.5%","colorIndex":"2"},{"title":"新增商品数","value":"79","rate":"-1.5%","colorIndex":"3"},{"title":"缺货商品数","value":"102","rate":"20%","colorIndex":"0"},{"title":"负毛利商品数量","value":"48","rate":"19.7%","colorIndex":"1"}]}]
+         * main_data_id : 34562345
+         * main_data_name : 河北一号店
+         * main_attention_data : [{"state":{"color":"2"},"main_data":{"name":"差异","data":34253,"format":"int","percentage":1},"sub_data":{"name":"对比数据","data":30253,"format":"int","percentage":1}},{"state":{"color":"1"},"main_data":{"name":"新增商品数","data":99,"format":"int","percentage":1},"sub_data":{"name":"对比数据","data":80,"format":"int","percentage":1}},{"state":{"color":"3"},"main_data":{"name":"缺货商品数","data":102,"format":"int","percentage":1},"sub_data":{"name":"对比数据","data":90,"format":"int","percentage":1}},{"state":{"color":"1"},"main_data":{"name":"负毛利商品数量","data":78,"format":"int","percentage":1},"sub_data":{"name":"对比数据","data":73,"format":"int","percentage":1}}]
+         * attentioned_data : [{"attention_item_id":"00134567","attention_item_name":"车厘子","attention_item_data":[{"state":{"color":"5"},"main_data":{"name":"差异","data":34253,"format":"int","percentage":1},"sub_data":{"name":"对比数据","data":30253,"format":"int","percentage":1}},{"state":{"color":"4"},"main_data":{"name":"新增商品数","data":99,"format":"int","percentage":1},"sub_data":{"name":"对比数据","data":80,"format":"int","percentage":1}},{"state":{"color":"0"},"main_data":{"name":"缺货商品数","data":102,"format":"int","percentage":1},"sub_data":{"name":"对比数据","data":90,"format":"int","percentage":1}},{"state":{"color":"1"},"main_data":{"name":"负毛利商品数量","data":78,"format":"int","percentage":1},"sub_data":{"name":"对比数据","data":73,"format":"int","percentage":1}}]},{"attention_item_id":"00534567","attention_item_name":"车厘6子","attention_item_data":[{"state":{"color":"5"},"main_data":{"name":"差异","data":34253,"format":"int","percentage":1},"sub_data":{"name":"对比数据","data":30253,"format":"int","percentage":1}},{"state":{"color":"2"},"main_data":{"name":"新增商品数","data":99,"format":"int","percentage":1},"sub_data":{"name":"对比数据","data":80,"format":"int","percentage":1}},{"state":{"color":"1"},"main_data":{"name":"缺货商品数","data":102,"format":"int","percentage":1},"sub_data":{"name":"对比数据","data":90,"format":"int","percentage":1}},{"state":{"color":"4"},"main_data":{"name":"负毛利商品数量","data":78,"format":"int","percentage":1},"sub_data":{"name":"对比数据","data":73,"format":"int","percentage":1}}]}]
          * attention_list : [{"attention_item_id":"00134567","attention_item_name":"车厘子"},{"attention_item_id":"00133467","attention_item_name":"车厘子1"},{"attention_item_id":"61134567","attention_item_name":"车1234厘子"},{"attention_item_id":"00132467","attention_item_name":"车厘子3"},{"attention_item_id":"00642567","attention_item_name":"车厘子4"},{"attention_item_id":"00534567","attention_item_name":"车厘6子"},{"attention_item_id":"02434567","attention_item_name":"车7厘子"},{"attention_item_id":"00564567","attention_item_name":"车2厘子"}]
+         * filter : {"display":"河北||一号店","data":[{"id":"3456","name":"河北","data":[{"id":"34562345","name":"一号店","data":[]},{"id":"34563567","name":"二号店","data":[]}]}]}
          */
 
         private String updated_at;
         private String main_data_id;
         private String main_data_name;
-        private List<MainAttentionDataBean> main_attention_data;
+        private Filter filter;
+        private List<SingleValue> main_attention_data;
         private List<AttentionedDataBean> attentioned_data;
         private List<AttentionListBean> attention_list;
 
@@ -88,12 +93,20 @@ public class Test2 {
             this.main_data_name = main_data_name;
         }
 
-        public List<MainAttentionDataBean> getMain_attention_data() {
+        public List<SingleValue> getMain_attention_data() {
             return main_attention_data;
         }
 
-        public void setMain_attention_data(List<MainAttentionDataBean> main_attention_data) {
+        public void setMain_attention_data(List<SingleValue> main_attention_data) {
             this.main_attention_data = main_attention_data;
+        }
+
+        public Filter getFilter() {
+            return filter;
+        }
+
+        public void setFilter(Filter filter) {
+            this.filter = filter;
         }
 
         public List<AttentionedDataBean> getAttentioned_data() {
@@ -112,62 +125,17 @@ public class Test2 {
             this.attention_list = attention_list;
         }
 
-        public static class MainAttentionDataBean {
-            /**
-             * title : 差异
-             * value : +34,253
-             * rate : 62.5%
-             * colorIndex : 2
-             */
-
-            private String title;
-            private String value;
-            private String rate;
-            private String colorIndex;
-
-            public String getTitle() {
-                return title;
-            }
-
-            public void setTitle(String title) {
-                this.title = title;
-            }
-
-            public String getValue() {
-                return value;
-            }
-
-            public void setValue(String value) {
-                this.value = value;
-            }
-
-            public String getRate() {
-                return rate;
-            }
-
-            public void setRate(String rate) {
-                this.rate = rate;
-            }
-
-            public String getColorIndex() {
-                return colorIndex;
-            }
-
-            public void setColorIndex(String colorIndex) {
-                this.colorIndex = colorIndex;
-            }
-        }
 
         public static class AttentionedDataBean {
             /**
              * attention_item_id : 00134567
              * attention_item_name : 车厘子
-             * attention_item_data : [{"title":"差异","value":"+34,253","rate":"62.5%","colorIndex":"2"},{"title":"新增商品数","value":"99","rate":"-0.5%","colorIndex":"1"},{"title":"缺货商品数","value":"102","rate":"10%","colorIndex":"3"},{"title":"负毛利商品数量","value":"78","rate":"9.7%","colorIndex":"0"}]
+             * attention_item_data : [{"state":{"color":"5"},"main_data":{"name":"差异","data":34253,"format":"int","percentage":1},"sub_data":{"name":"对比数据","data":30253,"format":"int","percentage":1}},{"state":{"color":"4"},"main_data":{"name":"新增商品数","data":99,"format":"int","percentage":1},"sub_data":{"name":"对比数据","data":80,"format":"int","percentage":1}},{"state":{"color":"0"},"main_data":{"name":"缺货商品数","data":102,"format":"int","percentage":1},"sub_data":{"name":"对比数据","data":90,"format":"int","percentage":1}},{"state":{"color":"1"},"main_data":{"name":"负毛利商品数量","data":78,"format":"int","percentage":1},"sub_data":{"name":"对比数据","data":73,"format":"int","percentage":1}}]
              */
 
             private String attention_item_id;
             private String attention_item_name;
-            private List<AttentionItemDataBean> attention_item_data;
+            private List<SingleValue> attention_item_data;
 
             public String getAttention_item_id() {
                 return attention_item_id;
@@ -185,58 +153,12 @@ public class Test2 {
                 this.attention_item_name = attention_item_name;
             }
 
-            public List<AttentionItemDataBean> getAttention_item_data() {
+            public List<SingleValue> getAttention_item_data() {
                 return attention_item_data;
             }
 
-            public void setAttention_item_data(List<AttentionItemDataBean> attention_item_data) {
+            public void setAttention_item_data(List<SingleValue> attention_item_data) {
                 this.attention_item_data = attention_item_data;
-            }
-
-            public static class AttentionItemDataBean {
-                /**
-                 * title : 差异
-                 * value : +34,253
-                 * rate : 62.5%
-                 * colorIndex : 2
-                 */
-
-                private String title;
-                private String value;
-                private String rate;
-                private String colorIndex;
-
-                public String getTitle() {
-                    return title;
-                }
-
-                public void setTitle(String title) {
-                    this.title = title;
-                }
-
-                public String getValue() {
-                    return value;
-                }
-
-                public void setValue(String value) {
-                    this.value = value;
-                }
-
-                public String getRate() {
-                    return rate;
-                }
-
-                public void setRate(String rate) {
-                    this.rate = rate;
-                }
-
-                public String getColorIndex() {
-                    return colorIndex;
-                }
-
-                public void setColorIndex(String colorIndex) {
-                    this.colorIndex = colorIndex;
-                }
             }
         }
 

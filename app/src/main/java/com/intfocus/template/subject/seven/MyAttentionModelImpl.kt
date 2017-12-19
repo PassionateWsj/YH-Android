@@ -51,6 +51,6 @@ class MyAttentionModelImpl : MyAttentionModel {
     override fun getData(user_num: String,callback: MyAttentionModel.LoadDataCallback) {
         val assetsJsonData = LoadAssetsJsonUtil.getAssetsJsonData("template7_main_attention_data.json")
         val data = JSON.parseObject(assetsJsonData, Test2::class.java)
-        callback.onDataLoaded(data)
+        callback.onDataLoaded(data,data.data.filter)
     }
 }

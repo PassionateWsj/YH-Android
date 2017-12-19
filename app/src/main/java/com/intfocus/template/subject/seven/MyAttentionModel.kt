@@ -1,6 +1,7 @@
 package com.intfocus.template.subject.seven
 
 import com.intfocus.template.model.response.attention.Test2
+import com.intfocus.template.subject.one.entity.Filter
 
 /**
  * ****************************************************
@@ -13,7 +14,7 @@ import com.intfocus.template.model.response.attention.Test2
  */
 interface MyAttentionModel {
     interface LoadDataCallback {
-        fun onDataLoaded(data: Test2)
+        fun onDataLoaded(data: Test2,filter: Filter)
         fun onDataNotAvailable(e: Throwable)
     }
     fun getData(user_num: String,callback: LoadDataCallback)

@@ -64,6 +64,7 @@ object Params {
     const val STORE = "store"
     const val STORE_ID = "store_ids"
     const val USER_LOCATION = "location"
+    const val TIME_STAMP = "timestamp"
 
     const val USE_GESTURE_PASSWORD = "use_gesture_password"
     const val GESTURE_PASSWORD = "gesture_password"

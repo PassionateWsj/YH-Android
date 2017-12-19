@@ -91,7 +91,13 @@
         <activity
             android:name=".subject.seven.MyAttentionActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.NoActionBar"/>
+            android:theme="@style/Theme.AppCompat.NoActionBar">
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN"/>-->
+
+                <!--<category android:name="android.intent.category.LAUNCHER"/>-->
+            <!--</intent-filter>-->
+        </activity>
         <activity
             android:name=".subject.seven.attention.AttentionActivity"
             android:screenOrientation="portrait"

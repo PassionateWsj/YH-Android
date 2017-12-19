@@ -15,6 +15,7 @@ import com.intfocus.template.constant.Params.OBJECT_ID
 import com.intfocus.template.constant.Params.OBJECT_TITLE
 import com.intfocus.template.constant.Params.OBJECT_TYPE
 import com.intfocus.template.constant.Params.TEMPLATE_ID
+import com.intfocus.template.constant.Params.TIME_STAMP
 import com.intfocus.template.constant.Params.USER_BEAN
 import com.intfocus.template.constant.Params.USER_NUM
 import com.intfocus.template.dashboard.DashboardActivity
@@ -25,7 +26,6 @@ import com.intfocus.template.model.entity.PushMsgBean
 import com.intfocus.template.scanner.BarCodeScannerActivity
 import com.intfocus.template.subject.nine.CollectionActivity
 import com.intfocus.template.subject.one.NativeReportActivity
-import com.intfocus.template.subject.seven.MyAttentionActivity
 import com.intfocus.template.subject.three.MultiIndexActivity
 import com.intfocus.template.subject.two.WebPageActivity
 import org.json.JSONException
@@ -91,7 +91,7 @@ object PageLinkManage {
         } else {
             templateId = pushMsg.template_id
         }
-        if (templateId=="") {
+        if (templateId == "") {
             return
         }
         val userSP = context.getSharedPreferences(USER_BEAN, Context.MODE_PRIVATE)
@@ -124,29 +124,30 @@ object PageLinkManage {
         try {
             val userSP = context.getSharedPreferences(USER_BEAN, Context.MODE_PRIVATE)
             val groupID = userSP.getString(GROUP_ID, "0")
+            userSP.edit().putString(TIME_STAMP, "" + System.currentTimeMillis()).commit()
 
-            val urlString: String
+            var urlString: String
             val intent: Intent
 
             when (templateId) {
-                TEMPLATE_TWO -> {
-//                TEMPLATE_SEVEN -> {
-                    mClickTemplateName = "模板七"
-                    intent = Intent(context, MyAttentionActivity::class.java)
-                    intent.flags = if (fromPushMsg) {
-                        Intent.FLAG_ACTIVITY_NEW_TASK
-                    } else {
-                        savePageLink(context, objTitle, link, objectId, templateId, objectType)
-                        Intent.FLAG_ACTIVITY_SINGLE_TOP
-                    }
-                    intent.putExtra(GROUP_ID, groupID)
-                    intent.putExtra(TEMPLATE_ID, templateId)
-                    intent.putExtra(BANNER_NAME, objTitle)
-                    intent.putExtra(LINK, link)
-                    intent.putExtra(OBJECT_ID, objectId)
-                    intent.putExtra(OBJECT_TYPE, objectType)
-                    context.startActivity(intent)
-                }
+//                TEMPLATE_TWO -> {
+////                TEMPLATE_SEVEN -> {
+//                    mClickTemplateName = "模板七"
+//                    intent = Intent(context, MyAttentionActivity::class.java)
+//                    intent.flags = if (fromPushMsg) {
+//                        Intent.FLAG_ACTIVITY_NEW_TASK
+//                    } else {
+//                        savePageLink(context, objTitle, link, objectId, templateId, objectType)
+//                        Intent.FLAG_ACTIVITY_SINGLE_TOP
+//                    }
+//                    intent.putExtra(GROUP_ID, groupID)
+//                    intent.putExtra(TEMPLATE_ID, templateId)
+//                    intent.putExtra(BANNER_NAME, objTitle)
+//                    intent.putExtra(LINK, link)
+//                    intent.putExtra(OBJECT_ID, objectId)
+//                    intent.putExtra(OBJECT_TYPE, objectType)
+//                    context.startActivity(intent)
+//                }
                 TEMPLATE_ONE -> {
                     mClickTemplateName = "模板一"
                     savePageLink(context, objTitle, link, objectId, templateId, objectType)
@@ -248,11 +249,11 @@ object PageLinkManage {
                 }
                 EXTERNAL_LINK, TEMPLATE_SIX -> {
                     mClickTemplateName = "外部链接"
-                    var urlString = link
+                     urlString = link
                     for ((key, value) in paramsMappingBean) {
                         urlString = splitUrl(userSP, urlString, key, value)
                     }
-                    savePageLink(context, objTitle, link, objectId, templateId, objectType)
+                    savePageLink(context, objTitle, urlString, objectId, templateId, objectType)
                     intent = Intent(context, WebPageActivity::class.java)
                     if (fromPushMsg) {
                         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
@@ -260,14 +261,14 @@ object PageLinkManage {
                     intent.putExtra(GROUP_ID, groupID)
                     intent.putExtra(TEMPLATE_ID, templateId)
                     intent.putExtra(BANNER_NAME, objTitle)
-                    intent.putExtra(LINK, link)
+                    intent.putExtra(LINK, urlString)
                     intent.putExtra(OBJECT_ID, objectId)
                     intent.putExtra(OBJECT_TYPE, objectType)
                     context.startActivity(intent)
                 }
                 SCANNER -> {
                     mClickTemplateName = "扫一扫"
-                    var urlString = link
+                    urlString = link
                     for ((key, value) in paramsMappingBean) {
                         urlString = splitUrl(userSP, urlString, key, value)
                     }

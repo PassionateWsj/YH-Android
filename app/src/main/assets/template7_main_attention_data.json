@@ -3,32 +3,76 @@
   "message":"success",
   "data":{
     "updated_at":"1513574854",
-    "main_data_id": "9555",
-    "main_data_name": "高淳悦达广场店",
+    "main_data_id": "34562345",
+    "main_data_name": "河北一号店",
     "main_attention_data":[
       {
-        "title":"差异",
-        "value":"+34,253",
-        "rate":"62.5%",
-        "colorIndex":"2"
+        "state": {
+          "color": "2"
+        },
+        "main_data": {
+          "name": "差异",
+          "data": 3421231,
+          "format": "int",
+          "percentage": 1
+        },
+        "sub_data": {
+          "name": "对比数据",
+          "data": 3021231232,
+          "format": "int",
+          "percentage": 1
+        }
       },
       {
-        "title":"新增商品数",
-        "value":"99",
-        "rate":"-0.5%",
-        "colorIndex":"1"
+        "state": {
+          "color": "1"
+        },
+        "main_data": {
+          "name": "新增商品数",
+          "data": 99,
+          "format": "int",
+          "percentage": 1
+        },
+        "sub_data": {
+          "name": "对比数据",
+          "data": 80,
+          "format": "int",
+          "percentage": 1
+        }
       },
       {
-        "title":"缺货商品数",
-        "value":"102",
-        "rate":"10%",
-        "colorIndex":"3"
+        "state": {
+          "color": "3"
+        },
+        "main_data": {
+          "name": "缺货商品数",
+          "data": 102,
+          "format": "int",
+          "percentage": 1
+        },
+        "sub_data": {
+          "name": "对比数据",
+          "data": 90,
+          "format": "int",
+          "percentage": 1
+        }
       },
       {
-        "title":"负毛利商品数量",
-        "value":"78",
-        "rate":"9.7%",
-        "colorIndex":"0"
+        "state": {
+          "color": "1"
+        },
+        "main_data": {
+          "name": "负毛利商品数量",
+          "data": 78,
+          "format": "int",
+          "percentage": 1
+        },
+        "sub_data": {
+          "name": "对比数据",
+          "data": 73,
+          "format": "int",
+          "percentage": 1
+        }
       }
     ],
     "attentioned_data":[
@@ -37,28 +81,72 @@
         "attention_item_name":"车厘子",
         "attention_item_data":[
           {
-            "title":"差异",
-            "value":"+34,253",
-            "rate":"62.5%",
-            "colorIndex":"2"
+            "state": {
+              "color": "5"
+            },
+            "main_data": {
+              "name": "差异",
+              "data": 34253,
+              "format": "int",
+              "percentage": 1
+            },
+            "sub_data": {
+              "name": "对比数据",
+              "data": 30253,
+              "format": "int",
+              "percentage": 1
+            }
           },
           {
-            "title":"新增商品数",
-            "value":"99",
-            "rate":"-0.5%",
-            "colorIndex":"1"
+            "state": {
+              "color": "4"
+            },
+            "main_data": {
+              "name": "新增商品数",
+              "data": 99,
+              "format": "int",
+              "percentage": 1
+            },
+            "sub_data": {
+              "name": "对比数据",
+              "data": 80,
+              "format": "int",
+              "percentage": 1
+            }
           },
           {
-            "title":"缺货商品数",
-            "value":"102",
-            "rate":"10%",
-            "colorIndex":"3"
+            "state": {
+              "color": "0"
+            },
+            "main_data": {
+              "name": "缺货商品数",
+              "data": 102,
+              "format": "int",
+              "percentage": 1
+            },
+            "sub_data": {
+              "name": "对比数据",
+              "data": 90,
+              "format": "int",
+              "percentage": 1
+            }
           },
           {
-            "title":"负毛利商品数量",
-            "value":"78",
-            "rate":"9.7%",
-            "colorIndex":"0"
+            "state": {
+              "color": "1"
+            },
+            "main_data": {
+              "name": "负毛利商品数量",
+              "data": 78,
+              "format": "int",
+              "percentage": 1
+            },
+            "sub_data": {
+              "name": "对比数据",
+              "data": 73,
+              "format": "int",
+              "percentage": 1
+            }
           }
         ]
       },
@@ -67,28 +155,72 @@
         "attention_item_name":"车厘6子",
         "attention_item_data":[
           {
-            "title":"差异",
-            "value":"+51,253",
-            "rate":"32.5%",
-            "colorIndex":"2"
+            "state": {
+              "color": "5"
+            },
+            "main_data": {
+              "name": "差异",
+              "data": 34253,
+              "format": "int",
+              "percentage": 1
+            },
+            "sub_data": {
+              "name": "对比数据",
+              "data": 30253,
+              "format": "int",
+              "percentage": 1
+            }
           },
           {
-            "title":"新增商品数",
-            "value":"79",
-            "rate":"-1.5%",
-            "colorIndex":"3"
+            "state": {
+              "color": "2"
+            },
+            "main_data": {
+              "name": "新增商品数",
+              "data": 99,
+              "format": "int",
+              "percentage": 1
+            },
+            "sub_data": {
+              "name": "对比数据",
+              "data": 80,
+              "format": "int",
+              "percentage": 1
+            }
           },
           {
-            "title":"缺货商品数",
-            "value":"102",
-            "rate":"20%",
-            "colorIndex":"0"
+            "state": {
+              "color": "1"
+            },
+            "main_data": {
+              "name": "缺货商品数",
+              "data": 102,
+              "format": "int",
+              "percentage": 1
+            },
+            "sub_data": {
+              "name": "对比数据",
+              "data": 90,
+              "format": "int",
+              "percentage": 1
+            }
           },
           {
-            "title":"负毛利商品数量",
-            "value":"48",
-            "rate":"19.7%",
-            "colorIndex":"1"
+            "state": {
+              "color": "4"
+            },
+            "main_data": {
+              "name": "负毛利商品数量",
+              "data": 78,
+              "format": "int",
+              "percentage": 1
+            },
+            "sub_data": {
+              "name": "对比数据",
+              "data": 73,
+              "format": "int",
+              "percentage": 1
+            }
           }
         ]
       }
@@ -126,7 +258,27 @@
         "attention_item_id":"00564567",
         "attention_item_name":"车2厘子"
       }
-    ]
-
+    ],
+    "filter": {
+      "display": "河北||一号店",
+      "data": [
+        {
+          "id": "3456",
+          "name": "河北",
+          "data": [
+            {
+              "id": "34562345",
+              "name": "一号店",
+              "data": []
+            },
+            {
+              "id": "34563567",
+              "name": "二号店",
+              "data": []
+            }
+          ]
+        }
+      ]
+    }
   }
 }

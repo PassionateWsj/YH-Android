@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/co10_syr">
+
+    <RelativeLayout
+        android:id="@+id/ll_indicator_list"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:paddingBottom="5dp"
+        android:paddingEnd="22.5dp"
+        android:paddingStart="22.5dp"
+        android:paddingTop="5dp">
+
+        <TextView
+            android:id="@+id/tv_indicator_list_single_value_title"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:gravity="center"
+            android:text="差异"/>
+
+        <TextView
+            android:id="@+id/tv_indicator_list_title"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toLeftOf="@id/tv_indicator_list_single_value_title"
+            android:gravity="center_vertical"
+            android:text="我关注的单品"
+            android:textColor="#324408"
+            android:textSize="20sp"/>
+
+    </RelativeLayout>
+
+    <ExpandableListView
+        android:id="@+id/elv_indicator_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ll_indicator_list"/>
+    <!--<android.support.v7.widget.RecyclerView-->
+    <!--android:id="@+id/rv_indicator_list"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_below="@id/ll_indicator_list"/>-->
+</RelativeLayout>
