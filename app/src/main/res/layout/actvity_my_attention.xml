@@ -127,6 +127,7 @@
                 android:textColor="@color/black_51_51_51"
                 android:textSize="12sp"
                 android:visibility="visible"/>
+
         </LinearLayout>
 
     </ScrollView>

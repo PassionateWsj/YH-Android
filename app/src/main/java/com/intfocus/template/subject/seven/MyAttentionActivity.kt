@@ -33,7 +33,6 @@ import java.util.*
  */
 class MyAttentionActivity : BaseActivity(), MyAttentionContract.View, FilterDialogFragment.FilterListener {
 
-
     companion object {
         val REQUEST_CODE_CHOOSE = 0
     }
@@ -63,7 +62,7 @@ class MyAttentionActivity : BaseActivity(), MyAttentionContract.View, FilterDial
             }
             tv_banner_title.text = data.data.main_data_name
             tv_my_attention_update_time.text = TimeUtils.getStrTime(data.data.updated_at)
-//            ll_my_attention_container.addView()
+
             val indicatorGroupFragment: Fragment = IndicatorGroupFragment().newInstance(data.data.main_attention_data as ArrayList<SingleValue>)
             addItemView(indicatorGroupFragment, ll_my_attention_container)
 

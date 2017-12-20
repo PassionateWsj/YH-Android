@@ -3,7 +3,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="50dp"
-    android:background="@color/co10_syr">
+    android:background="@color/co10_syr"
+    android:paddingEnd="25dp"
+    android:paddingStart="25dp">
 
     <LinearLayout
         android:id="@+id/ll_item_indicator_list_group_container"

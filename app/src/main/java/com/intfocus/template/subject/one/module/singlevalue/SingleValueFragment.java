@@ -117,7 +117,7 @@ public class SingleValueFragment extends BaseFragment implements SingleValueCont
     public void showData(@NotNull SingleValue data) {
         coCursor = getResources().getIntArray(R.array.co_cursor);
         DecimalFormat df = new DecimalFormat("###,###.##");
-        int state = data.state.color;
+        int state = data.state.color % coCursor.length;
         int color = coCursor[state];
 
         tvD1name.setText(data.main_data.name);
@@ -142,7 +142,7 @@ public class SingleValueFragment extends BaseFragment implements SingleValueCont
         } else {
             isPlus = !(rate < -0.1f);
         }
-        rateCursor.setCursorState(state, isPlus);
+        rateCursor.setCursorState(data.state.color, isPlus);
         rateCursor.setDrawingCacheEnabled(true);
     }
 

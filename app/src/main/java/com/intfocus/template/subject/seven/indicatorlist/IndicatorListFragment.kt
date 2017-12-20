@@ -9,6 +9,8 @@ import com.intfocus.template.model.response.attention.Test2
 import com.intfocus.template.ui.BaseFragment
 import kotlinx.android.synthetic.main.fragment_indicator_list.*
 
+
+
 /**
  * ****************************************************
  * author jameswong
@@ -40,8 +42,13 @@ class IndicatorListFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        elv_indicator_list.setAdapter(IndicatorListAdapter(ctx, mData))
-//        rv_indicator_list.layoutManager = LinearLayoutManager(ctx, LinearLayoutManager.HORIZONTAL, false)
-//        rv_indicator_list.adapter = IndicatorListAdapter(ctx, mData)
+        val indicatorListAdapter = IndicatorListAdapter(ctx, this, mData)
+        elv_indicator_list.setAdapter(indicatorListAdapter)
+        elv_indicator_list.setOnGroupExpandListener{ pos->
+            (0 until indicatorListAdapter.groupCount)
+                    .filter { pos != it }
+                    .forEach { elv_indicator_list.collapseGroup(it) }
+        }
     }
+
 }

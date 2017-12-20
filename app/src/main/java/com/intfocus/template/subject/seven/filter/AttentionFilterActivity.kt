@@ -24,7 +24,7 @@ import kotlinx.android.synthetic.main.activity_store_selector.*
  * desc:
  * ****************************************************
  */
-class AttentionFilterActivity :BaseActivity(),AttentionFilterView{
+class AttentionFilterActivity : BaseActivity(), AttentionFilterView {
 
     companion object {
         val RESULT_CODE_CHOOSE = 2
@@ -35,7 +35,7 @@ class AttentionFilterActivity :BaseActivity(),AttentionFilterView{
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_store_selector)
+        setContentView(R.layout.activity_attention_list)
 
         initAdapter()
         initData()
@@ -100,6 +100,10 @@ class AttentionFilterActivity :BaseActivity(),AttentionFilterView{
      * 获取数据失败
      */
     override fun onResultFailure(e: Throwable?) {
+
+    }
+
+    fun onCLick(view: View) {
 
     }
 

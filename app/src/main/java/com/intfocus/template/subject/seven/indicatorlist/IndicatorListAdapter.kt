@@ -1,21 +1,17 @@
 package com.intfocus.template.subject.seven.indicatorlist
 
 import android.content.Context
-import android.support.design.widget.AppBarLayout
 import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentTransaction
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseExpandableListAdapter
-import android.widget.FrameLayout
-import android.widget.LinearLayout
 import android.widget.TextView
 import com.intfocus.template.R
 import com.intfocus.template.model.response.attention.Test2
-import com.intfocus.template.subject.one.entity.SingleValue
-import com.intfocus.template.subject.seven.indicatorgroup.IndicatorGroupFragment
-import java.util.*
+import com.intfocus.template.subject.seven.indicatorgroup.IndicatorGroupAdapter
 
 
 /**
@@ -27,13 +23,13 @@ import java.util.*
  * desc:
  * ****************************************************
  */
-class IndicatorListAdapter(val mCtx: Context, val data: List<Test2.DataBeanXX.AttentionedDataBean>) : BaseExpandableListAdapter() {
+class IndicatorListAdapter(private val mCtx: Context, val fragment: Fragment, val data: List<Test2.DataBeanXX.AttentionedDataBean>) : BaseExpandableListAdapter() {
 
-    val coCursor = mCtx.resources.getIntArray(R.array.co_cursor)
+    private val coCursor = mCtx.resources.getIntArray(R.array.co_cursor)!!
 
     override fun isChildSelectable(groupPosition: Int, childPosition: Int): Boolean = false
 
-    override fun hasStableIds(): Boolean = true
+    override fun hasStableIds(): Boolean = false
 
     override fun getGroupId(groupPosition: Int): Long = groupPosition.toLong()
 
@@ -77,27 +73,13 @@ class IndicatorListAdapter(val mCtx: Context, val data: List<Test2.DataBeanXX.At
         } else {
             view = LayoutInflater.from(mCtx).inflate(R.layout.item_indicator_list_child, parent, false)
             childHolder = IndicatorChildHolder()
-            childHolder.llContainer = view!!.findViewById(R.id.ll_item_indicator_list_child_container) as LinearLayout
+            childHolder.rvIndicatorGroup = view!!.findViewById(R.id.rv_indicator_group) as RecyclerView
             view.tag = childHolder
         }
 
-        addItemView(IndicatorGroupFragment().newInstance(data[groupPosition].attention_item_data as ArrayList<SingleValue>), childHolder.llContainer!!)
-        return View.inflate(mCtx, R.layout.item_indicator_list_child, parent)
-    }
-
-    private fun addItemView(fragment: Fragment, viewGroup: ViewGroup) {
-        val layout = FrameLayout(mCtx)
-        val params = AppBarLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-        params.scrollFlags = AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL or AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS
-        layout.layoutParams = params
-        val id = Random().nextInt(Integer.MAX_VALUE)
-        layout.id = id
-        viewGroup.addView(layout)
-        val ft = fragment.childFragmentManager.beginTransaction()
-        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-        ft.replace(layout.id, fragment)
-        ft.commitNow()
+        childHolder.rvIndicatorGroup!!.layoutManager = LinearLayoutManager(mCtx, LinearLayoutManager.HORIZONTAL, false)
+        childHolder.rvIndicatorGroup!!.adapter = IndicatorGroupAdapter(mCtx, data[groupPosition].attention_item_data)
+        return view
     }
 
     fun setData() {
@@ -112,6 +94,6 @@ class IndicatorListAdapter(val mCtx: Context, val data: List<Test2.DataBeanXX.At
     }
 
     class IndicatorChildHolder {
-        var llContainer: LinearLayout? = null
+        var rvIndicatorGroup: RecyclerView? = null
     }
 }

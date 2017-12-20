@@ -7,7 +7,6 @@ import android.support.v4.content.ContextCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
 import android.widget.LinearLayout
 import com.intfocus.template.ConfigConstants
 import com.intfocus.template.R
@@ -26,10 +25,7 @@ import com.intfocus.template.model.response.home.KpiResult
 import com.intfocus.template.ui.RefreshFragment
 import com.intfocus.template.ui.view.CustomLinearLayoutManager
 import com.intfocus.template.ui.view.DefaultRefreshView
-import com.intfocus.template.util.ErrorUtils
-import com.intfocus.template.util.HttpUtil
-import com.intfocus.template.util.ListUtils
-import com.intfocus.template.util.ToastUtils
+import com.intfocus.template.util.*
 import kotlinx.android.synthetic.main.fragment_kpi.*
 import org.xutils.x
 
@@ -228,20 +224,16 @@ class KpiFragment : RefreshFragment(), KpiAdapter.HomePageListener {
     }
 
     private fun resetTitleView() {
-        val layoutParam = FrameLayout.LayoutParams(ll_kpi_content.layoutParams)
         if (hasBanner) {
-            layoutParam.topMargin = 0
             rl_action_bar.setBackgroundColor(ContextCompat.getColor(ctx, R.color.transparent))
             tv_banner_title.setTextColor(ContextCompat.getColor(ctx, R.color.co10_syr))
             bannerSetting.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.nav_scan))
         } else {
-            layoutParam.topMargin = 44
+            ll_kpi_content.setPadding(0,DisplayUtil.dip2px(context,44f),0,0)
             rl_action_bar.setBackgroundColor(ContextCompat.getColor(ctx, R.color.co10_syr))
             tv_banner_title.setTextColor(ContextCompat.getColor(ctx, R.color.color6))
             bannerSetting.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.nav_scanback))
         }
-        ll_kpi_content.layoutParams = layoutParam
-
     }
 
     fun finishRequest() {

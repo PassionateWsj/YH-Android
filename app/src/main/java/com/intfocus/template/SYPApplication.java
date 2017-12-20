@@ -118,7 +118,7 @@ public class SYPApplication extends Application {
         /*
          * Bugly 异常上报
          */
-        CrashReport.initCrashReport(getApplicationContext(), ConfigConstants.BUGLY_APP_ID, BuildConfig.DEBUG);
+        CrashReport.initCrashReport(getApplicationContext(), BuildConfig.BUGLY_APP_ID, BuildConfig.DEBUG);
 
         /*
          * 友盟分享初始化
@@ -133,7 +133,7 @@ public class SYPApplication extends Application {
         /*
          * 配置微信 appKey
          */
-        PlatformConfig.setWeixin(ConfigConstants.kWXAppId, ConfigConstants.kWXAppSecret);
+        PlatformConfig.setWeixin(BuildConfig.WX_APP_ID, BuildConfig.WX_APP_Secret);
 
         /*
          * 初始化数据库

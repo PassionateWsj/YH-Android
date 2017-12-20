@@ -7,7 +7,7 @@ import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
-import com.intfocus.template.ConfigConstants;
+import com.intfocus.template.BuildConfig;
 import com.intfocus.template.constant.Params;
 
 import static com.intfocus.template.constant.Params.USER_BEAN;
@@ -46,7 +46,7 @@ public class MapUtil {
         mCtx = ctx;
         //初始化client
         locationClient = new AMapLocationClient(mCtx);
-        AMapLocationClient.setApiKey(ConfigConstants.GAODE_MAP_APP_KEY);
+        AMapLocationClient.setApiKey(BuildConfig.AMAP_KEY);
         AMapLocationClientOption locationOption = getDefaultOption();
         //设置定位参数
         locationClient.setLocationOption(locationOption);

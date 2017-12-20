@@ -101,10 +101,19 @@ android {
             versionName "1.0.02"
 
             buildConfigField "String", "BASE_URL", TEMPLATE_BASE_URL
+            buildConfigField "String", "PGYER_URL", TEMPLATE_PGYER_URL
+            buildConfigField "String", "AMAP_KEY", "\"" + TEMPLATE_AMAP_KEY + "\""
+            buildConfigField "String", "BUGLY_APP_ID", "\"" + TEMPLATE_BUGLY_APP_ID + "\""
+            buildConfigField "String", "WX_APP_ID", "\"" + TEMPLATE_WX_APP_ID + "\""
+            buildConfigField "String", "WX_APP_Secret", "\"" + TEMPLATE_WX_APP_Secret + "\""
             manifestPlaceholders = [AMAP_KEY            : TEMPLATE_AMAP_KEY,
                                     PGYER_APPID         : TEMPLATE_PGYER_APPID,
+                                    PGYER_URL           : TEMPLATE_PGYER_URL,
                                     UMENG_APPKEY        : TEMPLATE_UMENG_APPKEY,
                                     UMENG_MESSAGE_SECRET: TEMPLATE_UMENG_MESSAGE_SECRET,
+                                    BUGLY_APP_ID        : TEMPLATE_BUGLY_APP_ID,
+                                    WX_APP_ID           : TEMPLATE_WX_APP_ID,
+                                    WX_APP_Secret       : TEMPLATE_WX_APP_Secret,
                                     APPLICATIONID       : applicationId]
 
             signingConfig signingConfigs.template
@@ -117,11 +126,20 @@ android {
             versionName "1.6.12"
 
             buildConfigField "String", "BASE_URL", SHENGYIPLUS_BASE_URL
+            buildConfigField "String", "PGYER_URL", SHENGYIPLUS_PGYER_URL
+            buildConfigField "String", "AMAP_KEY", "\"" + SHENGYIPLUS_AMAP_KEY + "\""
+            buildConfigField "String", "BUGLY_APP_ID", "\"" + SHENGYIPLUS_BUGLY_APP_ID + "\""
+            buildConfigField "String", "WX_APP_ID", "\"" + SHENGYIPLUS_WX_APP_ID + "\""
+            buildConfigField "String", "WX_APP_Secret", "\"" + SHENGYIPLUS_WX_APP_Secret + "\""
             proguardFiles 'proguard-rules.pro' //getDefaultProguardFile('proguard-android.txt'),
             manifestPlaceholders = [AMAP_KEY            : SHENGYIPLUS_AMAP_KEY,
                                     PGYER_APPID         : SHENGYIPLUS_PGYER_APPID,
+                                    PGYER_URL           : SHENGYIPLUS_PGYER_URL,
                                     UMENG_APPKEY        : SHENGYIPLUS_UMENG_APPKEY,
                                     UMENG_MESSAGE_SECRET: SHENGYIPLUS_UMENG_MESSAGE_SECRET,
+                                    BUGLY_APP_ID        : SHENGYIPLUS_BUGLY_APP_ID,
+                                    WX_APP_ID           : SHENGYIPLUS_WX_APP_ID,
+                                    WX_APP_Secret       : SHENGYIPLUS_WX_APP_Secret,
                                     APPLICATIONID       : applicationId]
 
             signingConfig signingConfigs.shengyiplus
@@ -134,10 +152,19 @@ android {
             versionName "1.0.30"
 
             buildConfigField "String", "BASE_URL", YHDEV_BASE_URL
+            buildConfigField "String", "PGYER_URL", YHDEV_PGYER_URL
+            buildConfigField "String", "AMAP_KEY", "\"" + YHDEV_AMAP_KEY + "\""
+            buildConfigField "String", "BUGLY_APP_ID", "\"" + YHDEV_BUGLY_APP_ID + "\""
+            buildConfigField "String", "WX_APP_ID", "\"" + YHDEV_WX_APP_ID + "\""
+            buildConfigField "String", "WX_APP_Secret", "\"" + YHDEV_WX_APP_Secret + "\""
             manifestPlaceholders = [AMAP_KEY            : YHDEV_AMAP_KEY,
                                     PGYER_APPID         : YHDEV_PGYER_APPID,
+                                    PGYER_URL           : YHDEV_PGYER_URL,
                                     UMENG_APPKEY        : YHDEV_UMENG_APPKEY,
                                     UMENG_MESSAGE_SECRET: YHDEV_UMENG_MESSAGE_SECRET,
+                                    BUGLY_APP_ID        : YHDEV_BUGLY_APP_ID,
+                                    WX_APP_ID           : YHDEV_WX_APP_ID,
+                                    WX_APP_Secret       : YHDEV_WX_APP_Secret,
                                     APPLICATIONID       : applicationId]
 
             signingConfig signingConfigs.yhdev
@@ -150,10 +177,19 @@ android {
             versionName "3.1.40"
 
             buildConfigField "String", "BASE_URL", YONGHUITEST_BASE_URL
+            buildConfigField "String", "PGYER_URL", YONGHUITEST_PGYER_URL
+            buildConfigField "String", "AMAP_KEY", "\"" + YONGHUITEST_AMAP_KEY + "\""
+            buildConfigField "String", "BUGLY_APP_ID", "\"" + YONGHUITEST_BUGLY_APP_ID + "\""
+            buildConfigField "String", "WX_APP_ID", "\"" + YONGHUITEST_WX_APP_ID + "\""
+            buildConfigField "String", "WX_APP_Secret", "\"" + YONGHUITEST_WX_APP_Secret + "\""
             manifestPlaceholders = [AMAP_KEY            : YONGHUITEST_AMAP_KEY,
                                     PGYER_APPID         : YONGHUITEST_PGYER_APPID,
+                                    PGYER_URL           : YONGHUITEST_PGYER_URL,
                                     UMENG_APPKEY        : YONGHUITEST_UMENG_APPKEY,
                                     UMENG_MESSAGE_SECRET: YONGHUITEST_UMENG_MESSAGE_SECRET,
+                                    BUGLY_APP_ID        : YONGHUITEST_BUGLY_APP_ID,
+                                    WX_APP_ID           : YONGHUITEST_WX_APP_ID,
+                                    WX_APP_Secret       : YONGHUITEST_WX_APP_Secret,
                                     APPLICATIONID       : applicationId]
 
             signingConfig signingConfigs.yonghuitest
@@ -166,11 +202,20 @@ android {
             versionName "2.2.28"
 
             buildConfigField "String", "BASE_URL", YH_ANDROID_BASE_URL
+            buildConfigField "String", "PGYER_URL", YH_PGYER_URL
+            buildConfigField "String", "AMAP_KEY", "\"" + YH_ANDROID_AMAP_KEY + "\""
+            buildConfigField "String", "BUGLY_APP_ID", "\"" + YH_BUGLY_APP_ID + "\""
+            buildConfigField "String", "WX_APP_ID", "\"" + YH_WX_APP_ID + "\""
+            buildConfigField "String", "WX_APP_Secret", "\"" + YH_WX_APP_Secret + "\""
             proguardFiles 'proguard-rules.pro' //getDefaultProguardFile('proguard-android.txt'),
             manifestPlaceholders = [AMAP_KEY            : YH_ANDROID_AMAP_KEY,
                                     PGYER_APPID         : YH_ANDROID_PGYER_APPID,
+                                    PGYER_URL           : YH_PGYER_URL,
                                     UMENG_APPKEY        : YH_ANDROID_UMENG_APPKEY,
                                     UMENG_MESSAGE_SECRET: YH_ANDROID_UMENG_MESSAGE_SECRET,
+                                    BUGLY_APP_ID        : YH_BUGLY_APP_ID,
+                                    WX_APP_ID           : YH_WX_APP_ID,
+                                    WX_APP_Secret       : YH_WX_APP_Secret,
                                     APPLICATIONID       : applicationId]
 
             signingConfig signingConfigs.yh_android
@@ -183,10 +228,19 @@ android {
             versionName "2.0.8"
 
             buildConfigField "String", "BASE_URL", HXTEST_BASE_URL
+            buildConfigField "String", "PGYER_URL", HXTEST_PGYER_URL
+            buildConfigField "String", "AMAP_KEY", "\"" + HXTEST_AMAP_KEY + "\""
+            buildConfigField "String", "BUGLY_APP_ID", "\"" + HXTEST_BUGLY_APP_ID + "\""
+            buildConfigField "String", "WX_APP_ID", "\"" + HXTEST_WX_APP_ID + "\""
+            buildConfigField "String", "WX_APP_Secret", "\"" + HXTEST_WX_APP_Secret + "\""
             manifestPlaceholders = [AMAP_KEY            : HXTEST_AMAP_KEY,
                                     PGYER_APPID         : HXTEST_PGYER_APPID,
+                                    PGYER_URL           : HXTEST_PGYER_URL,
                                     UMENG_APPKEY        : HXTEST_UMENG_APPKEY,
                                     UMENG_MESSAGE_SECRET: HXTEST_UMENG_MESSAGE_SECRET,
+                                    BUGLY_APP_ID        : HXTEST_BUGLY_APP_ID,
+                                    WX_APP_ID           : HXTEST_WX_APP_ID,
+                                    WX_APP_Secret       : HXTEST_WX_APP_Secret,
                                     APPLICATIONID       : applicationId]
 
             signingConfig signingConfigs.hxtest
@@ -199,10 +253,19 @@ android {
             versionName "2.0.1"
 
             buildConfigField "String", "BASE_URL", HX_BASE_URL
+            buildConfigField "String", "PGYER_URL", HX_PGYER_URL
+            buildConfigField "String", "AMAP_KEY", "\"" + HX_AMAP_KEY + "\""
+            buildConfigField "String", "BUGLY_APP_ID", "\"" + HX_BUGLY_APP_ID + "\""
+            buildConfigField "String", "WX_APP_ID", "\"" + HX_WX_APP_ID + "\""
+            buildConfigField "String", "WX_APP_Secret", "\"" + HX_WX_APP_Secret + "\""
             manifestPlaceholders = [AMAP_KEY            : HX_AMAP_KEY,
                                     PGYER_APPID         : HX_PGYER_APPID,
+                                    PGYER_URL           : HX_PGYER_URL,
                                     UMENG_APPKEY        : HX_UMENG_APPKEY,
                                     UMENG_MESSAGE_SECRET: HX_UMENG_MESSAGE_SECRET,
+                                    BUGLY_APP_ID        : HX_BUGLY_APP_ID,
+                                    WX_APP_ID           : HX_WX_APP_ID,
+                                    WX_APP_Secret       : HX_WX_APP_Secret,
                                     APPLICATIONID       : applicationId]
 
             signingConfig signingConfigs.hx
