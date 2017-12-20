@@ -370,10 +370,12 @@ class LoginActivity : FragmentActivity() {
                          * @param data 返回的数据
                          */
                         override fun onBusinessNext(data: NewUser) {
+                            if (!loginWithLastPwd) {
+                                mUserSPEdit!!.putString("password", URLs.MD5(userPass))
+                            }
                             when {
-                                cb_login_keep_pwd.isChecked && !loginWithLastPwd -> {
+                                cb_login_keep_pwd.isChecked  -> {
                                     mSettingSPEdit!!.putBoolean("keep_pwd", true).apply()
-                                    mUserSPEdit!!.putString("password", URLs.MD5(userPass))
                                 }
                                 !cb_login_keep_pwd.isChecked -> {
                                     mSettingSPEdit!!.putBoolean("keep_pwd", false).apply()
