@@ -33,7 +33,7 @@ class IndicatorGroupFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mData = arguments?.get("data") as ArrayList<SingleValue>
+        mData = arguments?.getSerializable("data") as ArrayList<SingleValue>
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =

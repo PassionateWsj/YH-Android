@@ -24,7 +24,7 @@ import java.util.*
 
 /**
  * ****************************************************
- * author jameswong
+ * @author jameswong
  * created on: 17/12/18 上午11:14
  * e-mail: PassionateWsj@outlook.com
  * name:
@@ -109,7 +109,6 @@ class MyAttentionActivity : BaseActivity(), MyAttentionContract.View, FilterDial
         } else {
             ll_filter.visibility = View.VISIBLE
             tv_location_address.text = filterDisplay
-//            tv_address_filter.setOnClickListener { showDialogFragment() }
         }
     }
 
@@ -132,7 +131,7 @@ class MyAttentionActivity : BaseActivity(), MyAttentionContract.View, FilterDial
      * 筛选回调
      */
     override fun complete(menuItems: ArrayList<MenuItem>) {
-        TODO("updateData") //To change body of created functions use File | Settings | File Templates.
+
     }
 
     /**

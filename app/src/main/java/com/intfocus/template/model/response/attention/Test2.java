@@ -3,6 +3,7 @@ package com.intfocus.template.model.response.attention;
 import com.intfocus.template.subject.one.entity.Filter;
 import com.intfocus.template.subject.one.entity.SingleValue;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -14,7 +15,7 @@ import java.util.List;
  * desc:
  * ****************************************************
  */
-public class Test2 {
+public class Test2 implements Serializable {
 
     /**
      * code : 200
@@ -50,7 +51,7 @@ public class Test2 {
         this.data = data;
     }
 
-    public static class DataBeanXX {
+    public static class DataBeanXX implements Serializable {
         /**
          * updated_at : 1513574854
          * main_data_id : 34562345
@@ -126,7 +127,7 @@ public class Test2 {
         }
 
 
-        public static class AttentionedDataBean {
+        public static class AttentionedDataBean implements Serializable {
             /**
              * attention_item_id : 00134567
              * attention_item_name : 车厘子
@@ -162,7 +163,7 @@ public class Test2 {
             }
         }
 
-        public static class AttentionListBean {
+        public static class AttentionListBean implements Serializable {
             /**
              * attention_item_id : 00134567
              * attention_item_name : 车厘子

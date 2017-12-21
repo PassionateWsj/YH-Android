@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:autofit="http://schemas.android.com/apk/res-auto"
     android:layout_width="100dp"
     android:layout_height="100dp"
     android:id="@+id/rl_item_indicator_group_container"
@@ -17,7 +18,7 @@
         android:textColor="@color/black_51_51_51"
         android:textSize="12sp"/>
 
-    <TextView
+    <com.intfocus.template.ui.view.autofittextview.AutofitTextView
         android:id="@+id/tv_item_indicator_group_main_data"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -28,7 +29,9 @@
         android:maxLines="1"
         android:text="99"
         android:textColor="@color/black"
-        android:textSize="36sp"/>
+        android:textSize="36sp"
+        android:singleLine="true"
+        autofit:minTextSize="8sp"/>
 
 
     <TextView
@@ -42,7 +45,7 @@
         android:textColor="@color/black_51_51_51"
         android:textSize="10sp"/>
 
-    <TextView
+    <com.intfocus.template.ui.view.autofittextview.AutofitTextView
         android:id="@+id/tv_item_indicator_group_sub_data"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -52,7 +55,8 @@
         android:text="-123"
         android:maxLines="1"
         android:textColor="@color/black_51_51_51"
-        android:textSize="10sp"/>
+        android:textSize="10sp"
+        autofit:minTextSize="6sp"/>
 
     <com.intfocus.template.ui.view.RateCursor
         android:id="@+id/img_item_indicator_group_ratiocursor"

@@ -101,36 +101,43 @@
             android:background="@color/co9_syr"/>
     </LinearLayout>
 
-    <ScrollView
-        android:id="@+id/sl_my_attention"
+    <android.support.v4.widget.SwipeRefreshLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/ll_filter"
-        android:background="@color/co8_syr"
-        android:scrollbars="none">
+        android:layout_below="@id/ll_filter">
 
-        <LinearLayout
-            android:id="@+id/ll_my_attention_container"
+        <ScrollView
+            android:id="@+id/sl_my_attention"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="match_parent"
+            android:background="@color/co8_syr"
+            android:scrollbars="none">
 
-            <TextView
-                android:id="@+id/tv_my_attention_update_time"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/ll_my_attention_container"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="15dp"
-                android:layout_marginLeft="25dp"
-                android:layout_marginRight="25dp"
-                android:layout_marginTop="15dp"
-                android:text="2017/05/27 13:24"
-                android:textColor="@color/black_51_51_51"
-                android:textSize="12sp"
-                android:visibility="visible"/>
+                android:orientation="vertical">
 
-        </LinearLayout>
+                <TextView
+                    android:id="@+id/tv_my_attention_update_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="15dp"
+                    android:layout_marginLeft="25dp"
+                    android:layout_marginRight="25dp"
+                    android:layout_marginTop="15dp"
+                    android:text="2017/05/27 13:24"
+                    android:textColor="@color/black_51_51_51"
+                    android:textSize="12sp"
+                    android:visibility="visible"/>
 
-    </ScrollView>
+            </LinearLayout>
+
+        </ScrollView>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
 
     <FrameLayout
         android:id="@+id/fl_my_attention_no_data_container"
@@ -146,5 +153,7 @@
             android:layout_gravity="center"
             android:text="暂无关注数据，请筛选门店后进行单品关注"
             android:textColor="@color/black_51_51_51"/>
+
     </FrameLayout>
+
 </RelativeLayout>

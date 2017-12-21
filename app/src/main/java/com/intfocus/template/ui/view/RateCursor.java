@@ -51,12 +51,11 @@ public class RateCursor extends android.support.v7.widget.AppCompatImageView {
     }
 
     public void setCursorState(int state, boolean isAnim) {
-        if (state < 0 || state >= sources.length) {
+        if (state < 0) {
             setImageResource(0);
-            return;
+        } else {
+            setImageResource(sources[state % sources.length]);
         }
-
-        setImageResource(sources[state]);
 
         if (currAnim != isAnim) {
             if (isAnim) {

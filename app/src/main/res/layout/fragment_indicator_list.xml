@@ -2,20 +2,18 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:orientation="vertical"
     android:layout_height="wrap_content"
-    android:layout_marginTop="5dp"
     android:layout_marginBottom="5dp"
-    android:background="@color/co10_syr">
+    android:layout_marginTop="5dp"
+    android:background="@color/co10_syr"
+    android:orientation="vertical">
 
     <RelativeLayout
         android:id="@+id/ll_indicator_list"
         android:layout_width="match_parent"
         android:layout_height="45dp"
-        android:paddingBottom="5dp"
-        android:paddingEnd="22.5dp"
-        android:paddingStart="22.5dp"
-        android:paddingTop="5dp">
+        android:paddingVertical="5dp"
+        android:paddingHorizontal="22.5dp">
 
         <TextView
             android:id="@+id/tv_indicator_list_single_value_title"
@@ -23,7 +21,9 @@
             android:layout_height="match_parent"
             android:layout_alignParentEnd="true"
             android:gravity="center"
-            android:text="差异"/>
+            android:text="差异"
+            android:textColor="#666666"
+            android:textSize="14sp"/>
 
         <TextView
             android:id="@+id/tv_indicator_list_title"

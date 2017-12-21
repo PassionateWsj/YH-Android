@@ -35,7 +35,7 @@
         },
         "sub_data": {
           "name": "对比数据",
-          "data": 80,
+          "data": 2345,
           "format": "int",
           "percentage": 1
         }
@@ -52,7 +52,7 @@
         },
         "sub_data": {
           "name": "对比数据",
-          "data": 90,
+          "data": 6784,
           "format": "int",
           "percentage": 1
         }
@@ -63,13 +63,13 @@
         },
         "main_data": {
           "name": "负毛利商品数量",
-          "data": 78,
+          "data": 4567,
           "format": "int",
           "percentage": 1
         },
         "sub_data": {
           "name": "对比数据",
-          "data": 73,
+          "data": 34,
           "format": "int",
           "percentage": 1
         }
@@ -82,17 +82,17 @@
         "attention_item_data":[
           {
             "state": {
-              "color": "5"
+              "color": "2"
             },
             "main_data": {
               "name": "差异",
-              "data": 34253,
+              "data": 343,
               "format": "int",
               "percentage": 1
             },
             "sub_data": {
               "name": "对比数据",
-              "data": 30253,
+              "data": 2345,
               "format": "int",
               "percentage": 1
             }
@@ -103,7 +103,7 @@
             },
             "main_data": {
               "name": "新增商品数",
-              "data": 99,
+              "data": 923459,
               "format": "int",
               "percentage": 1
             },
@@ -116,11 +116,11 @@
           },
           {
             "state": {
-              "color": "1"
+              "color": "5"
             },
             "main_data": {
               "name": "缺货商品数",
-              "data": 23452353,
+              "data": 2345,
               "format": "int",
               "percentage": 1
             },
@@ -133,28 +133,28 @@
           },
           {
             "state": {
-              "color": "5"
+              "color": "3"
             },
             "main_data": {
               "name": "差异",
-              "data": 34253,
+              "data": 34253453,
               "format": "int",
               "percentage": 1
             },
             "sub_data": {
               "name": "对比数据",
-              "data": 30253,
+              "data": 26265,
               "format": "int",
               "percentage": 1
             }
           },
           {
             "state": {
-              "color": "2"
+              "color": "56"
             },
             "main_data": {
               "name": "新增商品数",
-              "data": 99,
+              "data": 3465,
               "format": "int",
               "percentage": 1
             },
@@ -167,11 +167,11 @@
           },
           {
             "state": {
-              "color": "1"
+              "color": "0"
             },
             "main_data": {
               "name": "缺货商品数",
-              "data": 23452353,
+              "data": 2345,
               "format": "int",
               "percentage": 1
             },
@@ -184,28 +184,28 @@
           },
           {
             "state": {
-              "color": "5"
+              "color": "23"
             },
             "main_data": {
               "name": "差异",
-              "data": 34253,
+              "data": 2345,
               "format": "int",
               "percentage": 1
             },
             "sub_data": {
               "name": "对比数据",
-              "data": 30253,
+              "data": 6534642,
               "format": "int",
               "percentage": 1
             }
           },
           {
             "state": {
-              "color": "2"
+              "color": "2345"
             },
             "main_data": {
               "name": "新增商品数",
-              "data": 99,
+              "data": 6754,
               "format": "int",
               "percentage": 1
             },
@@ -218,11 +218,11 @@
           },
           {
             "state": {
-              "color": "1"
+              "color": "34"
             },
             "main_data": {
               "name": "缺货商品数",
-              "data": 23452353,
+              "data": 2354,
               "format": "int",
               "percentage": 1
             },
@@ -235,7 +235,7 @@
           },
           {
             "state": {
-              "color": "4"
+              "color": "2"
             },
             "main_data": {
               "name": "负毛利商品数量",
@@ -258,28 +258,28 @@
         "attention_item_data":[
           {
             "state": {
-              "color": "5"
+              "color": "34"
             },
             "main_data": {
               "name": "差异",
-              "data": 34253,
+              "data": 6345,
               "format": "int",
               "percentage": 1
             },
             "sub_data": {
               "name": "对比数据",
-              "data": 30253,
+              "data": 32452345,
               "format": "int",
               "percentage": 1
             }
           },
           {
             "state": {
-              "color": "2"
+              "color": "345"
             },
             "main_data": {
               "name": "新增商品数",
-              "data": 99,
+              "data": 234,
               "format": "int",
               "percentage": 1
             },
@@ -292,11 +292,11 @@
           },
           {
             "state": {
-              "color": "1"
+              "color": "56"
             },
             "main_data": {
               "name": "缺货商品数",
-              "data": 23452353,
+              "data": 5634,
               "format": "int",
               "percentage": 1
             },
@@ -309,28 +309,28 @@
           },
           {
             "state": {
-              "color": "5"
+              "color": "23"
             },
             "main_data": {
               "name": "差异",
-              "data": 34253,
+              "data": 5678867,
               "format": "int",
               "percentage": 1
             },
             "sub_data": {
               "name": "对比数据",
-              "data": 30253,
+              "data": 315234,
               "format": "int",
               "percentage": 1
             }
           },
           {
             "state": {
-              "color": "2"
+              "color": "24"
             },
             "main_data": {
               "name": "新增商品数",
-              "data": 99,
+              "data": 67,
               "format": "int",
               "percentage": 1
             },
@@ -343,11 +343,11 @@
           },
           {
             "state": {
-              "color": "1"
+              "color": "234"
             },
             "main_data": {
               "name": "缺货商品数",
-              "data": 23452353,
+              "data": 4678,
               "format": "int",
               "percentage": 1
             },
@@ -360,17 +360,91 @@
           },
           {
             "state": {
-              "color": "5"
+              "color": "234"
             },
             "main_data": {
               "name": "差异",
-              "data": 34253,
+              "data": 3455,
               "format": "int",
               "percentage": 1
             },
             "sub_data": {
               "name": "对比数据",
-              "data": 30253,
+              "data": 234523,
+              "format": "int",
+              "percentage": 1
+            }
+          },
+          {
+            "state": {
+              "color": "2345"
+            },
+            "main_data": {
+              "name": "新增商品数",
+              "data": 234,
+              "format": "int",
+              "percentage": 1
+            },
+            "sub_data": {
+              "name": "对比数据",
+              "data": 80,
+              "format": "int",
+              "percentage": 1
+            }
+          },
+          {
+            "state": {
+              "color": "2345"
+            },
+            "main_data": {
+              "name": "缺货商品数",
+              "data": 235,
+              "format": "int",
+              "percentage": 1
+            },
+            "sub_data": {
+              "name": "对比数据",
+              "data": 90,
+              "format": "int",
+              "percentage": 1
+            }
+          },
+          {
+            "state": {
+              "color": "456"
+            },
+            "main_data": {
+              "name": "负毛利商品数量",
+              "data": 78,
+              "format": "int",
+              "percentage": 1
+            },
+            "sub_data": {
+              "name": "对比数据",
+              "data": 73,
+              "format": "int",
+              "percentage": 1
+            }
+          }
+        ]
+      },
+      {
+        "attention_item_id":"00134567",
+        "attention_item_name":"车厘子",
+        "attention_item_data":[
+          {
+            "state": {
+              "color": "456"
+            },
+            "main_data": {
+              "name": "差异",
+              "data": 3352,
+              "format": "int",
+              "percentage": 1
+            },
+            "sub_data": {
+              "name": "对比数据",
+              "data": 2123,
               "format": "int",
               "percentage": 1
             }
@@ -381,7 +455,7 @@
             },
             "main_data": {
               "name": "新增商品数",
-              "data": 99,
+              "data": 567567,
               "format": "int",
               "percentage": 1
             },
@@ -398,7 +472,109 @@
             },
             "main_data": {
               "name": "缺货商品数",
-              "data": 23452353,
+              "data": 8645,
+              "format": "int",
+              "percentage": 1
+            },
+            "sub_data": {
+              "name": "对比数据",
+              "data": 90,
+              "format": "int",
+              "percentage": 1
+            }
+          },
+          {
+            "state": {
+              "color": "2345"
+            },
+            "main_data": {
+              "name": "差异",
+              "data": 55,
+              "format": "int",
+              "percentage": 1
+            },
+            "sub_data": {
+              "name": "对比数据",
+              "data": 45,
+              "format": "int",
+              "percentage": 1
+            }
+          },
+          {
+            "state": {
+              "color": "2"
+            },
+            "main_data": {
+              "name": "新增商品数",
+              "data": 234,
+              "format": "int",
+              "percentage": 1
+            },
+            "sub_data": {
+              "name": "对比数据",
+              "data": 80,
+              "format": "int",
+              "percentage": 1
+            }
+          },
+          {
+            "state": {
+              "color": "1"
+            },
+            "main_data": {
+              "name": "缺货商品数",
+              "data": 235,
+              "format": "int",
+              "percentage": 1
+            },
+            "sub_data": {
+              "name": "对比数据",
+              "data": 90,
+              "format": "int",
+              "percentage": 1
+            }
+          },
+          {
+            "state": {
+              "color": "2345"
+            },
+            "main_data": {
+              "name": "差异",
+              "data": 2345,
+              "format": "int",
+              "percentage": 1
+            },
+            "sub_data": {
+              "name": "对比数据",
+              "data": 34657,
+              "format": "int",
+              "percentage": 1
+            }
+          },
+          {
+            "state": {
+              "color": "2"
+            },
+            "main_data": {
+              "name": "新增商品数",
+              "data": 756345,
+              "format": "int",
+              "percentage": 1
+            },
+            "sub_data": {
+              "name": "对比数据",
+              "data": 80,
+              "format": "int",
+              "percentage": 1
+            }
+          },
+          {
+            "state": {
+              "color": "1"
+            },
+            "main_data": {
+              "name": "缺货商品数",
+              "data": 4867,
               "format": "int",
               "percentage": 1
             },
@@ -434,17 +610,17 @@
         "attention_item_data":[
           {
             "state": {
-              "color": "5"
+              "color": "4567"
             },
             "main_data": {
               "name": "差异",
-              "data": 34253,
+              "data": 5678,
               "format": "int",
               "percentage": 1
             },
             "sub_data": {
               "name": "对比数据",
-              "data": 30253,
+              "data": 1345,
               "format": "int",
               "percentage": 1
             }
@@ -455,7 +631,7 @@
             },
             "main_data": {
               "name": "新增商品数",
-              "data": 99,
+              "data": 756,
               "format": "int",
               "percentage": 1
             },
@@ -472,7 +648,7 @@
             },
             "main_data": {
               "name": "缺货商品数",
-              "data": 23452353,
+              "data": 23456,
               "format": "int",
               "percentage": 1
             },
@@ -485,17 +661,17 @@
           },
           {
             "state": {
-              "color": "5"
+              "color": "3456"
             },
             "main_data": {
               "name": "差异",
-              "data": 34253,
+              "data": 736,
               "format": "int",
               "percentage": 1
             },
             "sub_data": {
               "name": "对比数据",
-              "data": 30253,
+              "data": 34567,
               "format": "int",
               "percentage": 1
             }
@@ -506,7 +682,7 @@
             },
             "main_data": {
               "name": "新增商品数",
-              "data": 99,
+              "data": 234,
               "format": "int",
               "percentage": 1
             },
@@ -523,7 +699,7 @@
             },
             "main_data": {
               "name": "缺货商品数",
-              "data": 23452353,
+              "data": 846,
               "format": "int",
               "percentage": 1
             },
@@ -536,17 +712,17 @@
           },
           {
             "state": {
-              "color": "5"
+              "color": "3"
             },
             "main_data": {
               "name": "差异",
-              "data": 34253,
+              "data": 23457,
               "format": "int",
               "percentage": 1
             },
             "sub_data": {
               "name": "对比数据",
-              "data": 30253,
+              "data": 234,
               "format": "int",
               "percentage": 1
             }
@@ -557,7 +733,7 @@
             },
             "main_data": {
               "name": "新增商品数",
-              "data": 99,
+              "data": 756,
               "format": "int",
               "percentage": 1
             },
@@ -574,183 +750,7 @@
             },
             "main_data": {
               "name": "缺货商品数",
-              "data": 23452353,
-              "format": "int",
-              "percentage": 1
-            },
-            "sub_data": {
-              "name": "对比数据",
-              "data": 90,
-              "format": "int",
-              "percentage": 1
-            }
-          },
-          {
-            "state": {
-              "color": "4"
-            },
-            "main_data": {
-              "name": "负毛利商品数量",
-              "data": 78,
-              "format": "int",
-              "percentage": 1
-            },
-            "sub_data": {
-              "name": "对比数据",
-              "data": 73,
-              "format": "int",
-              "percentage": 1
-            }
-          }
-        ]
-      },
-      {
-        "attention_item_id":"00134567",
-        "attention_item_name":"车厘子",
-        "attention_item_data":[
-          {
-            "state": {
-              "color": "5"
-            },
-            "main_data": {
-              "name": "差异",
-              "data": 34253,
-              "format": "int",
-              "percentage": 1
-            },
-            "sub_data": {
-              "name": "对比数据",
-              "data": 30253,
-              "format": "int",
-              "percentage": 1
-            }
-          },
-          {
-            "state": {
-              "color": "2"
-            },
-            "main_data": {
-              "name": "新增商品数",
-              "data": 99,
-              "format": "int",
-              "percentage": 1
-            },
-            "sub_data": {
-              "name": "对比数据",
-              "data": 80,
-              "format": "int",
-              "percentage": 1
-            }
-          },
-          {
-            "state": {
-              "color": "1"
-            },
-            "main_data": {
-              "name": "缺货商品数",
-              "data": 23452353,
-              "format": "int",
-              "percentage": 1
-            },
-            "sub_data": {
-              "name": "对比数据",
-              "data": 90,
-              "format": "int",
-              "percentage": 1
-            }
-          },
-          {
-            "state": {
-              "color": "5"
-            },
-            "main_data": {
-              "name": "差异",
-              "data": 34253,
-              "format": "int",
-              "percentage": 1
-            },
-            "sub_data": {
-              "name": "对比数据",
-              "data": 30253,
-              "format": "int",
-              "percentage": 1
-            }
-          },
-          {
-            "state": {
-              "color": "2"
-            },
-            "main_data": {
-              "name": "新增商品数",
-              "data": 99,
-              "format": "int",
-              "percentage": 1
-            },
-            "sub_data": {
-              "name": "对比数据",
-              "data": 80,
-              "format": "int",
-              "percentage": 1
-            }
-          },
-          {
-            "state": {
-              "color": "1"
-            },
-            "main_data": {
-              "name": "缺货商品数",
-              "data": 23452353,
-              "format": "int",
-              "percentage": 1
-            },
-            "sub_data": {
-              "name": "对比数据",
-              "data": 90,
-              "format": "int",
-              "percentage": 1
-            }
-          },
-          {
-            "state": {
-              "color": "5"
-            },
-            "main_data": {
-              "name": "差异",
-              "data": 34253,
-              "format": "int",
-              "percentage": 1
-            },
-            "sub_data": {
-              "name": "对比数据",
-              "data": 30253,
-              "format": "int",
-              "percentage": 1
-            }
-          },
-          {
-            "state": {
-              "color": "2"
-            },
-            "main_data": {
-              "name": "新增商品数",
-              "data": 99,
-              "format": "int",
-              "percentage": 1
-            },
-            "sub_data": {
-              "name": "对比数据",
-              "data": 80,
-              "format": "int",
-              "percentage": 1
-            }
-          },
-          {
-            "state": {
-              "color": "1"
-            },
-            "main_data": {
-              "name": "缺货商品数",
-              "data": 23452353,
+              "data": 6234,
               "format": "int",
               "percentage": 1
             },
@@ -786,28 +786,28 @@
         "attention_item_data":[
           {
             "state": {
-              "color": "5"
+              "color": "45"
             },
             "main_data": {
               "name": "差异",
-              "data": 34253,
+              "data": 45678,
               "format": "int",
               "percentage": 1
             },
             "sub_data": {
               "name": "对比数据",
-              "data": 30253,
+              "data": 4567,
               "format": "int",
               "percentage": 1
             }
           },
           {
             "state": {
-              "color": "2"
+              "color": "45"
             },
             "main_data": {
               "name": "新增商品数",
-              "data": 99,
+              "data": 2345,
               "format": "int",
               "percentage": 1
             },
@@ -820,11 +820,11 @@
           },
           {
             "state": {
-              "color": "1"
+              "color": "45"
             },
             "main_data": {
               "name": "缺货商品数",
-              "data": 23452353,
+              "data": 8675,
               "format": "int",
               "percentage": 1
             },
@@ -837,28 +837,28 @@
           },
           {
             "state": {
-              "color": "5"
+              "color": "45"
             },
             "main_data": {
               "name": "差异",
-              "data": 34253,
+              "data": 2345,
               "format": "int",
               "percentage": 1
             },
             "sub_data": {
               "name": "对比数据",
-              "data": 30253,
+              "data": 34,
               "format": "int",
               "percentage": 1
             }
           },
           {
             "state": {
-              "color": "2"
+              "color": "3"
             },
             "main_data": {
               "name": "新增商品数",
-              "data": 99,
+              "data": 567,
               "format": "int",
               "percentage": 1
             },
@@ -871,11 +871,11 @@
           },
           {
             "state": {
-              "color": "1"
+              "color": "345"
             },
             "main_data": {
               "name": "缺货商品数",
-              "data": 23452353,
+              "data": 2645,
               "format": "int",
               "percentage": 1
             },
@@ -888,28 +888,28 @@
           },
           {
             "state": {
-              "color": "5"
+              "color": "456"
             },
             "main_data": {
               "name": "差异",
-              "data": 34253,
+              "data": 4567,
               "format": "int",
               "percentage": 1
             },
             "sub_data": {
               "name": "对比数据",
-              "data": 30253,
+              "data": 567,
               "format": "int",
               "percentage": 1
             }
           },
           {
             "state": {
-              "color": "2"
+              "color": "345"
             },
             "main_data": {
               "name": "新增商品数",
-              "data": 99,
+              "data": 345,
               "format": "int",
               "percentage": 1
             },
@@ -922,11 +922,11 @@
           },
           {
             "state": {
-              "color": "1"
+              "color": "345"
             },
             "main_data": {
               "name": "缺货商品数",
-              "data": 23452353,
+              "data": 48,
               "format": "int",
               "percentage": 1
             },
@@ -939,7 +939,7 @@
           },
           {
             "state": {
-              "color": "4"
+              "color": "3456"
             },
             "main_data": {
               "name": "负毛利商品数量",
@@ -962,28 +962,28 @@
         "attention_item_data":[
           {
             "state": {
-              "color": "5"
+              "color": "3456"
             },
             "main_data": {
               "name": "差异",
-              "data": 34253,
+              "data": 2345,
               "format": "int",
               "percentage": 1
             },
             "sub_data": {
               "name": "对比数据",
-              "data": 30253,
+              "data": 234,
               "format": "int",
               "percentage": 1
             }
           },
           {
             "state": {
-              "color": "2"
+              "color": "3456"
             },
             "main_data": {
               "name": "新增商品数",
-              "data": 99,
+              "data": 7,
               "format": "int",
               "percentage": 1
             },
@@ -1000,7 +1000,7 @@
             },
             "main_data": {
               "name": "缺货商品数",
-              "data": 23452353,
+              "data": 2346,
               "format": "int",
               "percentage": 1
             },
@@ -1013,28 +1013,28 @@
           },
           {
             "state": {
-              "color": "5"
+              "color": "3456"
             },
             "main_data": {
               "name": "差异",
-              "data": 34253,
+              "data": 8467,
               "format": "int",
               "percentage": 1
             },
             "sub_data": {
               "name": "对比数据",
-              "data": 30253,
+              "data": 456,
               "format": "int",
               "percentage": 1
             }
           },
           {
             "state": {
-              "color": "2"
+              "color": "3456"
             },
             "main_data": {
               "name": "新增商品数",
-              "data": 99,
+              "data": 23,
               "format": "int",
               "percentage": 1
             },
@@ -1051,7 +1051,7 @@
             },
             "main_data": {
               "name": "缺货商品数",
-              "data": 23452353,
+              "data": 485,
               "format": "int",
               "percentage": 1
             },
@@ -1064,28 +1064,28 @@
           },
           {
             "state": {
-              "color": "5"
+              "color": "3456"
             },
             "main_data": {
               "name": "差异",
-              "data": 34253,
+              "data": 23452345,
               "format": "int",
               "percentage": 1
             },
             "sub_data": {
               "name": "对比数据",
-              "data": 30253,
+              "data": 2345,
               "format": "int",
               "percentage": 1
             }
           },
           {
             "state": {
-              "color": "2"
+              "color": "3456"
             },
             "main_data": {
               "name": "新增商品数",
-              "data": 99,
+              "data": 756,
               "format": "int",
               "percentage": 1
             },
@@ -1098,11 +1098,11 @@
           },
           {
             "state": {
-              "color": "1"
+              "color": "3"
             },
             "main_data": {
               "name": "缺货商品数",
-              "data": 23452353,
+              "data": 243,
               "format": "int",
               "percentage": 1
             },
@@ -1115,7 +1115,7 @@
           },
           {
             "state": {
-              "color": "4"
+              "color": "234"
             },
             "main_data": {
               "name": "负毛利商品数量",
@@ -1138,28 +1138,28 @@
         "attention_item_data":[
           {
             "state": {
-              "color": "5"
+              "color": "645"
             },
             "main_data": {
               "name": "差异",
-              "data": 34253,
+              "data": 564756,
               "format": "int",
               "percentage": 1
             },
             "sub_data": {
               "name": "对比数据",
-              "data": 30253,
+              "data": 3465,
               "format": "int",
               "percentage": 1
             }
           },
           {
             "state": {
-              "color": "2"
+              "color": "34"
             },
             "main_data": {
               "name": "新增商品数",
-              "data": 99,
+              "data": 345,
               "format": "int",
               "percentage": 1
             },
@@ -1172,11 +1172,11 @@
           },
           {
             "state": {
-              "color": "1"
+              "color": "26"
             },
             "main_data": {
               "name": "缺货商品数",
-              "data": 23452353,
+              "data": 37,
               "format": "int",
               "percentage": 1
             },
@@ -1189,28 +1189,28 @@
           },
           {
             "state": {
-              "color": "5"
+              "color": "567"
             },
             "main_data": {
               "name": "差异",
-              "data": 34253,
+              "data": 235435,
               "format": "int",
               "percentage": 1
             },
             "sub_data": {
               "name": "对比数据",
-              "data": 30253,
+              "data": 1235,
               "format": "int",
               "percentage": 1
             }
           },
           {
             "state": {
-              "color": "2"
+              "color": "36"
             },
             "main_data": {
               "name": "新增商品数",
-              "data": 99,
+              "data": 567,
               "format": "int",
               "percentage": 1
             },
@@ -1223,11 +1223,11 @@
           },
           {
             "state": {
-              "color": "1"
+              "color": "67"
             },
             "main_data": {
               "name": "缺货商品数",
-              "data": 23452353,
+              "data": 345,
               "format": "int",
               "percentage": 1
             },
@@ -1240,28 +1240,28 @@
           },
           {
             "state": {
-              "color": "5"
+              "color": "47"
             },
             "main_data": {
               "name": "差异",
-              "data": 34253,
+              "data": 4567,
               "format": "int",
               "percentage": 1
             },
             "sub_data": {
               "name": "对比数据",
-              "data": 30253,
+              "data": 3456,
               "format": "int",
               "percentage": 1
             }
           },
           {
             "state": {
-              "color": "2"
+              "color": "36"
             },
             "main_data": {
               "name": "新增商品数",
-              "data": 99,
+              "data": 2463576,
               "format": "int",
               "percentage": 1
             },
@@ -1274,11 +1274,11 @@
           },
           {
             "state": {
-              "color": "1"
+              "color": "73"
             },
             "main_data": {
               "name": "缺货商品数",
-              "data": 23452353,
+              "data": 4865345,
               "format": "int",
               "percentage": 1
             },
@@ -1291,7 +1291,7 @@
           },
           {
             "state": {
-              "color": "4"
+              "color": "437"
             },
             "main_data": {
               "name": "负毛利商品数量",

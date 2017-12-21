@@ -200,6 +200,11 @@
         <item>#ff34ab53</item>
     </array>
 
+    <color name="co_cursor_red">#ffea4335</color>
+    <color name="co_cursor_yellow">#fffbbc05</color>
+    <color name="co_cursor_green">#ff34ab53</color>
+
+
     <!-- 生意人3.1 -->
     <!-- 主题蓝色 -->
     <color name="co1_syr">#00a4e9</color>

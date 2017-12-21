@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
 import com.alibaba.fastjson.TypeReference
+import com.intfocus.template.BuildConfig
 import com.intfocus.template.ConfigConstants
 import com.intfocus.template.constant.Params.ACTION
 import com.intfocus.template.constant.Params.BANNER_NAME
@@ -26,6 +27,7 @@ import com.intfocus.template.model.entity.PushMsgBean
 import com.intfocus.template.scanner.BarCodeScannerActivity
 import com.intfocus.template.subject.nine.CollectionActivity
 import com.intfocus.template.subject.one.NativeReportActivity
+import com.intfocus.template.subject.seven.MyAttentionActivity
 import com.intfocus.template.subject.three.MultiIndexActivity
 import com.intfocus.template.subject.two.WebPageActivity
 import org.json.JSONException
@@ -132,24 +134,24 @@ object PageLinkManage {
             val intent: Intent
 
             when (templateId) {
-//                TEMPLATE_TWO -> {
-////                TEMPLATE_SEVEN -> {
-//                    mClickTemplateName = "模板七"
-//                    intent = Intent(context, MyAttentionActivity::class.java)
-//                    intent.flags = if (fromPushMsg) {
-//                        Intent.FLAG_ACTIVITY_NEW_TASK
-//                    } else {
-//                        savePageLink(context, objTitle, link, objectId, templateId, objectType)
-//                        Intent.FLAG_ACTIVITY_SINGLE_TOP
-//                    }
-//                    intent.putExtra(GROUP_ID, groupID)
-//                    intent.putExtra(TEMPLATE_ID, templateId)
-//                    intent.putExtra(BANNER_NAME, objTitle)
-//                    intent.putExtra(LINK, link)
-//                    intent.putExtra(OBJECT_ID, objectId)
-//                    intent.putExtra(OBJECT_TYPE, objectType)
-//                    context.startActivity(intent)
-//                }
+                TEMPLATE_TWO -> {
+//                TEMPLATE_SEVEN -> {
+                    mClickTemplateName = "模板七"
+                    intent = Intent(context, MyAttentionActivity::class.java)
+                    intent.flags = if (fromPushMsg) {
+                        Intent.FLAG_ACTIVITY_NEW_TASK
+                    } else {
+                        savePageLink(context, objTitle, link, objectId, templateId, objectType)
+                        Intent.FLAG_ACTIVITY_SINGLE_TOP
+                    }
+                    intent.putExtra(GROUP_ID, groupID)
+                    intent.putExtra(TEMPLATE_ID, templateId)
+                    intent.putExtra(BANNER_NAME, objTitle)
+                    intent.putExtra(LINK, link)
+                    intent.putExtra(OBJECT_ID, objectId)
+                    intent.putExtra(OBJECT_TYPE, objectType)
+                    context.startActivity(intent)
+                }
                 TEMPLATE_ONE -> {
                     mClickTemplateName = "模板一"
                     savePageLink(context, objTitle, link, objectId, templateId, objectType)
@@ -251,7 +253,7 @@ object PageLinkManage {
                 }
                 EXTERNAL_LINK, TEMPLATE_SIX -> {
                     mClickTemplateName = "外部链接"
-                     urlString = link
+                    urlString = link
                     for ((key, value) in paramsMappingBean) {
                         urlString = splitUrl(userSP, urlString, key, value)
                     }
@@ -332,7 +334,7 @@ object PageLinkManage {
         builder.setTitle("温馨提示")
                 .setMessage("当前版本暂不支持该模板, 请升级应用后查看")
                 .setPositiveButton("前去升级") { _, _ ->
-                    val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(ConfigConstants.kPgyerUrl))
+                    val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(BuildConfig.BASE_URL))
                     context.startActivity(browserIntent)
                 }
                 .setNegativeButton("稍后升级") { _, _ ->
