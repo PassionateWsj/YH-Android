@@ -49,16 +49,22 @@ class AttentionListItemAdapter(private val mContext: Context, private val listen
         }
 
         holder.cbItemAttentionListCheck.isChecked = items!![position].isAttentioned
-        holder.cbItemAttentionListCheck.text = if (items!![position].isAttentioned) {
-            "取消关注"
-        } else {
-            "+ 关注"
+        holder.cbItemAttentionListCheck.setOnCheckedChangeListener { _, isChecked ->
+            holder.cbItemAttentionListCheck.text = getText(isChecked)
         }
+        holder.cbItemAttentionListCheck.text = getText(items!![position].isAttentioned)
         holder.cbItemAttentionListCheck.setOnClickListener {
             listener.itemClick(position)
         }
         return convertView
     }
+
+    fun getText(isChecked: Boolean): String = if (isChecked) {
+        "取消关注"
+    } else {
+        "+ 关注"
+    }
+
 
     fun setData(data: List<AttentionItem>) {
         if (items == null) {
