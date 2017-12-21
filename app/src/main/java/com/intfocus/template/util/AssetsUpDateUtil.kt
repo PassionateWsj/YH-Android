@@ -48,11 +48,11 @@ object AssetsUpDateUtil {
                 .compose(RetrofitUtil.CommonOptions<AssetsResult>())
                 .subscribe(object : CodeHandledSubscriber<AssetsResult>() {
                     override fun onError(apiException: ApiException?) {
-
+                        LogUtil.d(this@AssetsUpDateUtil, "获取静态资源 MD5 错误 ::: " + apiException?.message)
                     }
 
                     override fun onCompleted() {
-
+                        LogUtil.d(this@AssetsUpDateUtil, "获取静态资源 MD5 完成")
                     }
 
                     override fun onBusinessNext(data: AssetsResult?) {
@@ -80,8 +80,8 @@ object AssetsUpDateUtil {
                                 // 转到 io 线程
                                 .subscribeOn(Schedulers.io())
                                 .map { assetName ->
-                                    LogUtil.d(TAG, assetName + " 新" + "MD5:::" + assetsMD5sMap[assetName + "_md5"])
-                                    LogUtil.d(TAG, assetName + " 旧" + "MD5:::" + mAssetsSP.getString(assetName + "_md5", ""))
+                                    LogUtil.d(this@AssetsUpDateUtil, assetName + " 新" + "MD5:::" + assetsMD5sMap[assetName + "_md5"])
+                                    LogUtil.d(this@AssetsUpDateUtil, assetName + " 旧" + "MD5:::" + mAssetsSP.getString(assetName + "_md5", ""))
                                     // 判断更新的 MD5 值是否与本地存储的 MD5 值相等
                                     // 不相等：下载最新 zip
                                     if (!assetsMD5sMap[assetName + "_md5"].equals(mAssetsSP.getString(assetName + "_md5", ""))) {
@@ -98,7 +98,7 @@ object AssetsUpDateUtil {
                                                 // 解压 zip
                                                 val isUnZipSuccess = FileUtil.unZipAssets(ctx, assetName)
                                                 if (isUnZipSuccess) {
-                                                    LogUtil.d(TAG, assetName + "解压完成")
+                                                    LogUtil.d(this@AssetsUpDateUtil, assetName + "解压完成")
                                                     return@map mAssetsSPEdit.putString(assetName + "_md5", assetsMD5sMap[assetName + "_md5"]).commit()
                                                 }
                                             }
@@ -106,19 +106,19 @@ object AssetsUpDateUtil {
                                     } else {
                                         return@map true
                                     }
-                                    LogUtil.d(TAG, assetName + ":::更新失败")
+                                    LogUtil.d(this@AssetsUpDateUtil, assetName + ":::更新失败")
                                     return@map false
                                 }
                                 // 回到 UI 线程
                                 .observeOn(AndroidSchedulers.mainThread())
                                 .subscribe(object : Observer<Boolean> {
                                     override fun onError(errorMsg: Throwable?) {
-                                        LogUtil.d(TAG, "onError:::" + errorMsg!!.message)
+                                        LogUtil.d(this@AssetsUpDateUtil, "RxJava 异步更新静态资源错误 :::" + errorMsg!!.message)
                                         listener.onFailure(errorMsg)
                                     }
 
                                     override fun onCompleted() {
-//                                        LogUtil.d(TAG, "unzip:onCompleted:::" + Thread.currentThread().name)
+                                        LogUtil.d(this@AssetsUpDateUtil, "RxJava 异步更新静态资源完成 :::" + Thread.currentThread().name)
                                         if (progressBar != null) {
                                             progressBar.progress += 10
                                         }
@@ -126,7 +126,7 @@ object AssetsUpDateUtil {
                                     }
 
                                     override fun onNext(isCheckSuccess: Boolean?) {
-                                        LogUtil.d(TAG, "onNext")
+                                        LogUtil.d(this@AssetsUpDateUtil, "onNext")
                                         if (!isCheckSuccess!!) {
                                             this.onError(kotlin.Throwable("资源更新失败"))
                                         } else {
@@ -140,13 +140,6 @@ object AssetsUpDateUtil {
                 })
     }
 
-    /**
-     * 取消订阅
-     */
-    fun unSubscribe() {
-        if (observable != null && !observable!!.isUnsubscribed)
-            observable!!.unsubscribe()
-    }
 
     fun checkFirstSetup(ctx: Context, listener: OnCheckAssetsUpdateResultListener) {
         // 判断目标目录是否存在
@@ -168,13 +161,19 @@ object AssetsUpDateUtil {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(object : Observer<Boolean> {
                     override fun onError(p0: Throwable?) {
+                        LogUtil.d(this@AssetsUpDateUtil, " assets 和 loading 第一次解压 zip 并存储 md5 错误 ::: ${p0?.message}")
+                        p0?.let { listener.onFailure(p0) }
                     }
 
                     override fun onNext(p0: Boolean?) {
+                        if (p0 == null || !p0) {
+                            LogUtil.d(this@AssetsUpDateUtil, " assets 和 loading 第一次解压 zip 并存储 md5 错误 ::: 存储 SP 失败")
+                        }
                     }
 
                     override fun onCompleted() {
                         listener.onResultSuccess()
+                        LogUtil.d(this@AssetsUpDateUtil, " assets 和 loading 第一次解压 zip 并存储 md5 完成 ::: ${Thread.currentThread().name}")
                     }
 
                 })
@@ -183,6 +182,14 @@ object AssetsUpDateUtil {
     private fun makeSureFolderExist(ctx: Context, folderName: String) {
         val cachedPath = String.format("%s/%s", FileUtil.basePath(ctx), folderName)
         FileUtil.makeSureFolderExist(cachedPath)
+    }
+
+    /**
+     * 取消订阅
+     */
+    fun unSubscribe() {
+        if (observable != null && !observable!!.isUnsubscribed)
+            observable!!.unsubscribe()
     }
 }
 

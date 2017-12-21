@@ -4,7 +4,7 @@
                 android:id="@+id/ll_store_selector_container"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                tools:context=".subject.seven.filter.AttentionFilterActivity">
+                tools:context=".subject.seven.attention.AttentionActivity">
 
     <RelativeLayout
         android:id="@+id/actionBar"
@@ -30,9 +30,9 @@
             android:layout_centerVertical="true"
             android:layout_margin="6dp"
             android:background="@drawable/bg_radius_sold"
+            android:onClick="onCLick"
             android:paddingBottom="3dp"
             android:paddingEnd="10dp"
-            android:onClick="onCLick"
             android:paddingStart="10dp"
             android:paddingTop="3dp"
             android:scaleType="center"
@@ -47,11 +47,11 @@
             android:layout_margin="6dp"
             android:layout_toLeftOf="@id/tv_attention_list_attention_btn"
             android:background="@drawable/bg_radius_sold"
+            android:onClick="onCLick"
             android:paddingBottom="3dp"
             android:paddingEnd="10dp"
             android:paddingStart="10dp"
             android:paddingTop="3dp"
-            android:onClick="onCLick"
             android:scaleType="center"
             android:text="已关注"
             android:textSize="12sp"/>
@@ -64,7 +64,7 @@
         android:layout_below="@+id/actionBar">
 
         <RelativeLayout
-            android:id="@+id/llStoreSearchView"
+            android:id="@+id/rl_attention_list_input_container"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_marginBottom="10dp"
@@ -86,7 +86,7 @@
                 android:src="@drawable/barcode_scan"/>
 
             <EditText
-                android:id="@+id/storeSearchView"
+                android:id="@+id/ed_attention_list_search"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_toLeftOf="@id/iv_attention_list_scan"
@@ -97,28 +97,11 @@
         </RelativeLayout>
 
         <LinearLayout
-            android:id="@+id/store_list_head"
+            android:id="@+id/ll_attention_list_head"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/llStoreSearchView"
+            android:layout_below="@id/rl_attention_list_input_container"
             android:orientation="vertical">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/lightgray"
-                android:padding="5dp"
-                android:text="已选项"
-                android:textSize="14sp"/>
-
-            <TextView
-                android:id="@+id/store_item_select"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:onClick="onCLick"
-                android:padding="12dp"
-                android:textSize="18sp"/>
 
             <TextView
                 android:layout_width="match_parent"
@@ -130,10 +113,10 @@
         </LinearLayout>
 
         <ListView
-            android:id="@+id/listStores"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_below="@id/store_list_head">
+            android:id="@+id/lv_attention_list_item"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/ll_attention_list_head">
         </ListView>
     </RelativeLayout>
 

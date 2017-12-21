@@ -37,5 +37,7 @@ object DaoUtil {
 
     fun getPushMsgDao(): PushMsgBeanDao = daoSession!!.pushMsgBeanDao
 
+    fun getAttentionItemDao(): AttentionItemDao = daoSession!!.attentionItemDao
+
 //    fun getAttentionFilterDao(): AttentionFilterDao = daoSession!!.pushMsgBeanDao
 }

@@ -62,7 +62,12 @@ class BarCodeScannerActivity : AppCompatActivity(), QRCodeView.Delegate, View.On
     companion object {
         val TAG = "hjjzz"
         val REQUEST_CODE_CHOOSE = 1
+        val RESULT_CALLBACK = 101
+        val RESULT_TO_URL = 102
+        val BEHAVIOR_CODE = "behavior_code"
     }
+
+    private var behaviorCode = 0
 
     /**
      * 是否开启闪光灯
@@ -117,14 +122,9 @@ class BarCodeScannerActivity : AppCompatActivity(), QRCodeView.Delegate, View.On
         initScanner()
     }
 
-    private fun initScanner() {
-
-        zbarview_barcode_scanner.setDelegate(this)
-        zbarview_barcode_scanner.startSpot()
-
-    }
-
     private fun initData() {
+        behaviorCode = intent.getIntExtra(BEHAVIOR_CODE, 0)
+
         tv_barcode_local_position.visibility = if (ConfigConstants.SCAN_LOCATION) {
             tv_barcode_local_position.text = "正在定位"
             getLocation()
@@ -132,6 +132,15 @@ class BarCodeScannerActivity : AppCompatActivity(), QRCodeView.Delegate, View.On
         } else {
             View.GONE
         }
+
+
+    }
+
+    private fun initScanner() {
+
+        zbarview_barcode_scanner.setDelegate(this)
+        zbarview_barcode_scanner.startSpot()
+
     }
 
 
@@ -314,10 +323,6 @@ class BarCodeScannerActivity : AppCompatActivity(), QRCodeView.Delegate, View.On
         }
     }
 
-    override fun onBackPressed() {
-        super.onBackPressed()
-    }
-
     override fun onScanQRCodeOpenCameraError() {
         ToastUtils.show(this@BarCodeScannerActivity, "扫描失败，请重新扫描")
         zbarview_barcode_scanner.postDelayed({ zbarview_barcode_scanner.startSpot() }, 2000)
@@ -346,7 +351,14 @@ class BarCodeScannerActivity : AppCompatActivity(), QRCodeView.Delegate, View.On
                 "qrcode"
             }
         }
-        goToUrl(result, codeType, ConfigConstants.kAppCode)
+        when (behaviorCode) {
+            RESULT_TO_URL -> {
+                goToUrl(result, codeType, ConfigConstants.kAppCode)
+            }
+            RESULT_CALLBACK -> {
+
+            }
+        }
 //        val intent = Intent(this, ScannerResultActivity::class.java)
 //        intent.putExtra(URLs.kCodeInfo, result)
 //        intent.putExtra(URLs.kCodeType, codeType)

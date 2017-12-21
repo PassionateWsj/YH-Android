@@ -1,5 +1,7 @@
 package com.intfocus.template.subject.seven.attention
 
+import com.intfocus.template.model.response.attention.AttentionItem
+
 /**
  * ****************************************************
  * author jameswong
@@ -11,8 +13,14 @@ package com.intfocus.template.subject.seven.attention
  */
 interface AttentionModel {
     interface LoadDataCallback {
-        fun onDataLoaded()
+        fun onDataLoaded(dataList:List<AttentionItem>)
         fun onDataNotAvailable(e: Throwable)
     }
-    fun getData()
+    interface ConcernCallback {
+        fun onConcernResult(isConcernSuccess:Boolean)
+    }
+
+    fun getData(keyWord: String,callback: LoadDataCallback)
+    fun concernOrCancelConcern(attentionItemId:String, attentionItemName:String, callback: ConcernCallback)
+//    fun cancelConcern(attentionItemId:String, attentionItemName:String,callback: ConcernCallback)
 }

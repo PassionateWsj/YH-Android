@@ -68,7 +68,7 @@ public class Test2 implements Serializable {
         private Filter filter;
         private List<SingleValue> main_attention_data;
         private List<AttentionedDataBean> attentioned_data;
-        private List<AttentionListBean> attention_list;
+        private List<AttentionItem> attention_list;
 
         public String getUpdated_at() {
             return updated_at;
@@ -118,14 +118,13 @@ public class Test2 implements Serializable {
             this.attentioned_data = attentioned_data;
         }
 
-        public List<AttentionListBean> getAttention_list() {
+        public List<AttentionItem> getAttention_list() {
             return attention_list;
         }
 
-        public void setAttention_list(List<AttentionListBean> attention_list) {
+        public void setAttention_list(List<AttentionItem> attention_list) {
             this.attention_list = attention_list;
         }
-
 
         public static class AttentionedDataBean implements Serializable {
             /**

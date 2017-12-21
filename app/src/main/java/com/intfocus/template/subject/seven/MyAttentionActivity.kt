@@ -15,6 +15,7 @@ import com.intfocus.template.model.response.filter.MenuItem
 import com.intfocus.template.scanner.StoreSelectorActivity
 import com.intfocus.template.subject.one.entity.Filter
 import com.intfocus.template.subject.one.entity.SingleValue
+import com.intfocus.template.subject.seven.attention.AttentionActivity
 import com.intfocus.template.subject.seven.indicatorgroup.IndicatorGroupFragment
 import com.intfocus.template.subject.seven.indicatorlist.IndicatorListFragment
 import com.intfocus.template.ui.BaseActivity
@@ -90,7 +91,7 @@ class MyAttentionActivity : BaseActivity(), MyAttentionContract.View, FilterDial
     fun menuOnClicked(view: View) {
         when (view.id) {
             R.id.iv_attention -> {
-
+                startActivity(Intent(this, AttentionActivity::class.java))
             }
             R.id.tv_address_filter -> {
                 showDialogFragment()

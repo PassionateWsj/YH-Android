@@ -86,12 +86,12 @@
         <activity
             android:name=".subject.nine.CollectionActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.NoActionBar"/>
+            android:theme="@style/AppTheme"/>
         <!-- 模板七 -->
         <activity
             android:name=".subject.seven.MyAttentionActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.NoActionBar">
+            android:theme="@style/AppTheme">
             <!--<intent-filter>-->
                 <!--<action android:name="android.intent.action.MAIN"/>-->
 
@@ -101,7 +101,7 @@
         <activity
             android:name=".subject.seven.attention.AttentionActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.NoActionBar"/>
+            android:theme="@style/AppTheme"/>
         <!-- 公告详情 -->
         <activity
             android:name=".dashboard.mine.activity.NoticeContentActivity"

@@ -2,6 +2,7 @@ package com.intfocus.template.subject.seven.attention
 
 import com.intfocus.template.base.BasePresenter
 import com.intfocus.template.base.BaseView
+import com.intfocus.template.model.response.attention.AttentionItem
 
 /**
  * ****************************************************
@@ -14,12 +15,27 @@ import com.intfocus.template.base.BaseView
  */
 interface AttentionContract {
     interface View : BaseView<Presenter> {
-        // 检查数据是否有更新
-        fun onUpdataData()
+        /**
+         * 读取搜索结果失败
+         *
+         * @param e 失败信息
+         */
+        fun onResultFailure(e: Throwable)
+
+        /**
+         * 读取搜索结果成功
+         *
+         * @param data 关键字
+         */
+        fun onResultSuccess(data: List<AttentionItem>)
+
+        fun concernOrCancelConcernResult(isConcernSuccess: Boolean)
 
     }
 
     interface Presenter : BasePresenter {
-        fun loadData()
+        fun loadAllData()
+        fun loadData(keyWord: String)
+        fun concernOrCancelConcern(attentionItemId:String, attentionItemName:String)
     }
 }

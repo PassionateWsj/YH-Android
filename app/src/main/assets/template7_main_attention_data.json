@@ -3,6 +3,27 @@
   "message":"success",
   "data":{
     "updated_at":"1513574854",
+    "filter": {
+      "display": "河北||一号店",
+      "data": [
+        {
+          "id": "3456",
+          "name": "河北",
+          "data": [
+            {
+              "id": "34562345",
+              "name": "一号店",
+              "data": []
+            },
+            {
+              "id": "34563567",
+              "name": "二号店",
+              "data": []
+            }
+          ]
+        }
+      ]
+    },
     "main_data_id": "34562345",
     "main_data_name": "河北一号店",
     "main_attention_data":[
@@ -77,7 +98,7 @@
     ],
     "attentioned_data":[
       {
-        "attention_item_id":"00134567",
+        "attention_item_id":"12341234",
         "attention_item_name":"车厘子",
         "attention_item_data":[
           {
@@ -429,8 +450,8 @@
         ]
       },
       {
-        "attention_item_id":"00134567",
-        "attention_item_name":"车厘子",
+        "attention_item_id":"645323564",
+        "attention_item_name":"车厘子3",
         "attention_item_data":[
           {
             "state": {
@@ -605,8 +626,8 @@
         ]
       },
       {
-        "attention_item_id":"00134567",
-        "attention_item_name":"车厘子",
+        "attention_item_id":"02434567",
+        "attention_item_name":"车7厘子",
         "attention_item_data":[
           {
             "state": {
@@ -781,8 +802,8 @@
         ]
       },
       {
-        "attention_item_id":"00134567",
-        "attention_item_name":"车厘子",
+        "attention_item_id":"23455632",
+        "attention_item_name":"车厘子1",
         "attention_item_data":[
           {
             "state": {
@@ -957,8 +978,8 @@
         ]
       },
       {
-        "attention_item_id":"00134567",
-        "attention_item_name":"车厘子",
+        "attention_item_id":"25346536",
+        "attention_item_name":"车1234厘子",
         "attention_item_data":[
           {
             "state": {
@@ -1133,8 +1154,8 @@
         ]
       },
       {
-        "attention_item_id":"00134567",
-        "attention_item_name":"车厘子",
+        "attention_item_id":"34125324",
+        "attention_item_name":"车厘6子",
         "attention_item_data":[
           {
             "state": {
@@ -1339,114 +1360,93 @@
         "attention_item_name":"车7厘子"
       },
       {
-        "attention_item_id":"00134567",
+        "attention_item_id":"12341345",
         "attention_item_name":"车厘子"
       },
       {
-        "attention_item_id":"00133467",
+        "attention_item_id":"23455632",
         "attention_item_name":"车厘子1"
       },
       {
-        "attention_item_id":"61134567",
+        "attention_item_id":"25346536",
         "attention_item_name":"车1234厘子"
       },
       {
-        "attention_item_id":"00132467",
+        "attention_item_id":"23452345",
         "attention_item_name":"车厘子3"
       },
       {
-        "attention_item_id":"00642567",
+        "attention_item_id":"12343522",
         "attention_item_name":"车厘子4"
       },
       {
-        "attention_item_id":"00534567",
+        "attention_item_id":"34125324",
         "attention_item_name":"车厘6子"
       },
       {
-        "attention_item_id":"02434567",
+        "attention_item_id":"123415623",
         "attention_item_name":"车7厘子"
       },
       {
-        "attention_item_id":"00134567",
+        "attention_item_id":"12341234",
         "attention_item_name":"车厘子"
       },
       {
-        "attention_item_id":"00133467",
+        "attention_item_id":"23452363",
         "attention_item_name":"车厘子1"
       },
       {
-        "attention_item_id":"61134567",
+        "attention_item_id":"23452356",
         "attention_item_name":"车1234厘子"
       },
       {
-        "attention_item_id":"00132467",
+        "attention_item_id":"645323564",
         "attention_item_name":"车厘子3"
       },
       {
-        "attention_item_id":"00642567",
+        "attention_item_id":"12345643",
         "attention_item_name":"车厘子4"
       },
       {
-        "attention_item_id":"00534567",
+        "attention_item_id":"234532456",
         "attention_item_name":"车厘6子"
       },
       {
-        "attention_item_id":"02434567",
+        "attention_item_id":"345623422",
         "attention_item_name":"车7厘子"
       },
       {
-        "attention_item_id":"00134567",
+        "attention_item_id":"23451234",
         "attention_item_name":"车厘子"
       },
       {
-        "attention_item_id":"00133467",
+        "attention_item_id":"23452363",
         "attention_item_name":"车厘子1"
       },
       {
-        "attention_item_id":"61134567",
+        "attention_item_id":"67534236",
         "attention_item_name":"车1234厘子"
       },
       {
-        "attention_item_id":"00132467",
+        "attention_item_id":"74563678",
         "attention_item_name":"车厘子3"
       },
       {
-        "attention_item_id":"00642567",
+        "attention_item_id":"45672353",
         "attention_item_name":"车厘子4"
       },
       {
-        "attention_item_id":"00534567",
+        "attention_item_id":"45634562",
         "attention_item_name":"车厘6子"
       },
       {
-        "attention_item_id":"02434567",
+        "attention_item_id":"4562325234",
         "attention_item_name":"车7厘子"
       },
       {
         "attention_item_id":"00564567",
         "attention_item_name":"车2厘子"
       }
-    ],
-    "filter": {
-      "display": "河北||一号店",
-      "data": [
-        {
-          "id": "3456",
-          "name": "河北",
-          "data": [
-            {
-              "id": "34562345",
-              "name": "一号店",
-              "data": []
-            },
-            {
-              "id": "34563567",
-              "name": "二号店",
-              "data": []
-            }
-          ]
-        }
-      ]
-    }
+    ]
   }
 }
