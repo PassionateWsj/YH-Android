@@ -133,8 +133,8 @@ public class TableRootFragment extends BaseFragment implements TableTitleAdapter
 
     private void bindData(MDetailRootPageRequestResult entity) {
         this.entity = entity;
-        if (entity != null && entity.datas != null) {
-            datas = entity.datas;
+        if (entity != null && entity.getDatas() != null) {
+            datas = entity.getDatas();
             adapter.setData(datas);
 
             switchFragment(0);
@@ -167,7 +167,7 @@ public class TableRootFragment extends BaseFragment implements TableTitleAdapter
 
         if (toFragment == null) {
             toFragment = TablesContentFragment.newInstance(suRootID, index);
-            TempSubData.setData(index, entity.datas.get(checkId).getTable());
+            TempSubData.setData(index, entity.getDatas().get(checkId).getTable());
             new TableContentPresenter(TableImpl.getInstance(), (TablesContentFragment) toFragment);
         }
 

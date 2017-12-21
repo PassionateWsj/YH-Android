@@ -197,7 +197,7 @@ public class TablesContentFragment extends Fragment implements SortCheckBox.Sort
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void measureLocation(EventRefreshTableRect event) {
         final int surootID = suRootID;
-        if (event.eventTag == surootID && !isHidden()) {
+        if (event.getEventTag() == surootID && !isHidden()) {
             Rect rect = new Rect();
             Point globalOffset = new Point();
             rootView.getGlobalVisibleRect(rect, globalOffset);

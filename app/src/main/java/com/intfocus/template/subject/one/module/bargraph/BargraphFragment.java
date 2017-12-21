@@ -134,17 +134,17 @@ public class BargraphFragment extends BaseFragment implements AdapterView.OnItem
 
     private void bindData() {
         entityData = JSON.parseObject(mParam, Bargraph.class);
-        String[] dataName = entityData.xAxis.data;
-        ArrayList<Bargraph.Series.Data> dataValue = entityData.series.data;
+        String[] dataName = entityData.getxAxis().getData();
+        ArrayList<Bargraph.Series.Data> dataValue = entityData.getSeries().getData();
         for (int i = 0; i < dataName.length; i++) {
             String name = dataName[i];
-            String value = dataValue.get(i).value;
-            int color = dataValue.get(i).color;
+            String value = dataValue.get(i).getValue();
+            int color = dataValue.get(i).getColor();
             mLtData.add(new BargraphComparator(name, value, color));
         }
 
-        mCboxPercentage.setText(entityData.series.name);
-        mCboxName.setText(entityData.xAxis.name);
+        mCboxPercentage.setText(entityData.getSeries().getName());
+        mCboxName.setText(entityData.getxAxis().getName());
         adapter.updateData(mLtData);
 
         //设置图表数据
@@ -170,7 +170,7 @@ public class BargraphFragment extends BaseFragment implements AdapterView.OnItem
     private void itemClick(int index) {
         mSelectItem = mLtData.get(index);
         adapter.setSelectItem(index);
-        String xValue = entityData.xAxis.data[index];
+        String xValue = entityData.getxAxis().getData()[index];
         ToastUtils.INSTANCE.showDefault(getCtx(), xValue);
     }
 
@@ -178,8 +178,8 @@ public class BargraphFragment extends BaseFragment implements AdapterView.OnItem
 
         @Override
         public int compare(BargraphComparator o1, BargraphComparator o2) {
-            String str1 = PinyinUtil.getPingYin(o1.name);
-            String str2 = PinyinUtil.getPingYin(o2.name);
+            String str1 = PinyinUtil.getPingYin(o1.getName());
+            String str2 = PinyinUtil.getPingYin(o2.getName());
             return str1.compareTo(str2);
         }
     }
