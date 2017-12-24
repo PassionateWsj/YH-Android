@@ -53,13 +53,13 @@ class AttentionModelImpl : AttentionModel {
         }
     }
 
-    override fun getData(keyWord: String, callback: AttentionModel.LoadDataCallback) {
+    override fun getData(keyWord: String, concerned: Boolean, callback: AttentionModel.LoadDataCallback) {
         val queryBuilder = mDao.queryBuilder()
         observable = Observable.just(keyWord)
                 .subscribeOn(Schedulers.io())
                 .map {
-                    queryBuilder.where(queryBuilder.or(AttentionItemDao.Properties.Attention_item_id.like("%$keyWord%"),
-                            AttentionItemDao.Properties.Attention_item_name.like("%$keyWord%"))).list()
+                    queryBuilder.where(queryBuilder.and(AttentionItemDao.Properties.IsAttentioned.eq(concerned),queryBuilder.or(AttentionItemDao.Properties.Attention_item_id.like("%$keyWord%"),
+                            AttentionItemDao.Properties.Attention_item_name.like("%$keyWord%")))).list()
                 }
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
@@ -88,8 +88,4 @@ class AttentionModelImpl : AttentionModel {
                     callback.onConcernResult(it.isAttentioned)
                 }
     }
-//
-//    override fun cancelConcern(attentionItemId: String, attentionItemName: String, callback: AttentionModel.ConcernCallback) {
-//
-//    }
 }

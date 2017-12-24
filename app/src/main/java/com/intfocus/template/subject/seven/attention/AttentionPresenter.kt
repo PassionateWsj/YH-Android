@@ -24,12 +24,12 @@ class AttentionPresenter(
 
     }
 
-    override fun loadAllData() {
-        loadData("")
+    override fun loadData(concerned: Boolean) {
+        loadData("", concerned)
     }
 
-    override fun loadData(keyWord: String) {
-        mModel.getData(keyWord, object : AttentionModel.LoadDataCallback {
+    override fun loadData(keyWord: String, concerned: Boolean) {
+        mModel.getData(keyWord, concerned, object : AttentionModel.LoadDataCallback {
             override fun onDataLoaded(dataList: List<AttentionItem>) {
                 mView.onResultSuccess(dataList)
             }
@@ -47,4 +47,5 @@ class AttentionPresenter(
             }
         })
     }
+
 }

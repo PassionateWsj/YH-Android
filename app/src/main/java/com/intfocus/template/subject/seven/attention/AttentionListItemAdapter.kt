@@ -86,9 +86,9 @@ class AttentionListItemAdapter(private val mContext: Context, private val listen
     fun getSelectItem(pos: Int): AttentionItem = items!![pos]
 
     class AttentionItemListHolder(convertView: View) {
-        val cbItemAttentionListCheck: CheckBox = convertView.findViewById(R.id.cb_item_attention_list_check) as CheckBox
-        val tvItemAttentionListName: TextView = convertView.findViewById(R.id.tv_item_attention_list_name) as TextView
-        val tvItemAttentionListId: TextView = convertView.findViewById(R.id.tv_item_attention_list_id) as TextView
+        val cbItemAttentionListCheck: CheckBox = convertView.findViewById(R.id.cb_item_attention_list_check)
+        val tvItemAttentionListName: TextView = convertView.findViewById(R.id.tv_item_attention_list_name)
+        val tvItemAttentionListId: TextView = convertView.findViewById(R.id.tv_item_attention_list_id)
 
     }
 }

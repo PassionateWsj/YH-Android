@@ -62,12 +62,12 @@ class BarCodeScannerActivity : AppCompatActivity(), QRCodeView.Delegate, View.On
     companion object {
         val TAG = "hjjzz"
         val REQUEST_CODE_CHOOSE = 1
+        val RESULT_CODE_SCAN = 200
         val RESULT_CALLBACK = 101
         val RESULT_TO_URL = 102
-        val BEHAVIOR_CODE = "behavior_code"
+        val INTENT_FOR_RESULT = "intent_for_result"
+//        val BEHAVIOR_CODE = "behavior_code"
     }
-
-    private var behaviorCode = 0
 
     /**
      * 是否开启闪光灯
@@ -109,6 +109,10 @@ class BarCodeScannerActivity : AppCompatActivity(), QRCodeView.Delegate, View.On
      * 是否开启定位权限
      */
     private var openPositioningPermissionsFilter = false
+    /**
+     * 扫码结果是否返回
+     */
+    private var intentForResult = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -123,7 +127,7 @@ class BarCodeScannerActivity : AppCompatActivity(), QRCodeView.Delegate, View.On
     }
 
     private fun initData() {
-        behaviorCode = intent.getIntExtra(BEHAVIOR_CODE, 0)
+        intentForResult = intent.getBooleanExtra(INTENT_FOR_RESULT, true)
 
         tv_barcode_local_position.visibility = if (ConfigConstants.SCAN_LOCATION) {
             tv_barcode_local_position.text = "正在定位"
@@ -265,7 +269,7 @@ class BarCodeScannerActivity : AppCompatActivity(), QRCodeView.Delegate, View.On
 //            isLightOn = false
             isStartActivity = true
 //            checkLightStatus(isLightOn, view!!.tv_input_barcode_light, view!!.cb_input_barcode_light)
-            goToUrl(trim, "input", ConfigConstants.kAppCode)
+            dealWithResultCode(trim, "input", ConfigConstants.kAppCode)
 
         }
 
@@ -285,7 +289,7 @@ class BarCodeScannerActivity : AppCompatActivity(), QRCodeView.Delegate, View.On
         }
     }
 
-    private fun goToUrl(result: String, codeType: String, type: String) {
+    private fun dealWithResultCode(result: String, codeType: String, type: String) {
 //        val mUserSP = getSharedPreferences(USER_BEAN, Context.MODE_PRIVATE)
         when {
             type.contains("ruishang") -> {
@@ -297,10 +301,18 @@ class BarCodeScannerActivity : AppCompatActivity(), QRCodeView.Delegate, View.On
                 PageLinkManage.pageLink(this, "核销奖券", urlString)
             }
             else -> {
-                val intent = Intent(this, ScannerResultActivity::class.java)
-                intent.putExtra(CODE_INFO, result)
-                intent.putExtra(CODE_TYPE, codeType)
-                startActivity(intent)
+                if (intentForResult) {
+                    val intent = Intent()
+                    intent.putExtra(CODE_INFO, result)
+                    intent.putExtra(CODE_TYPE, codeType)
+                    setResult(RESULT_CODE_SCAN, intent)
+                    finish()
+                } else {
+                    val intent = Intent(this, ScannerResultActivity::class.java)
+                    intent.putExtra(CODE_INFO, result)
+                    intent.putExtra(CODE_TYPE, codeType)
+                    startActivity(intent)
+                }
             }
         }
         popupWindow!!.dismiss()
@@ -351,19 +363,7 @@ class BarCodeScannerActivity : AppCompatActivity(), QRCodeView.Delegate, View.On
                 "qrcode"
             }
         }
-        when (behaviorCode) {
-            RESULT_TO_URL -> {
-                goToUrl(result, codeType, ConfigConstants.kAppCode)
-            }
-            RESULT_CALLBACK -> {
-
-            }
-        }
-//        val intent = Intent(this, ScannerResultActivity::class.java)
-//        intent.putExtra(URLs.kCodeInfo, result)
-//        intent.putExtra(URLs.kCodeType, codeType)
-//        startActivity(intent)
-//        finish()
+        dealWithResultCode(result, codeType, ConfigConstants.kAppCode)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

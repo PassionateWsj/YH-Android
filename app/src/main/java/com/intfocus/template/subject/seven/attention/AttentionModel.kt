@@ -13,14 +13,15 @@ import com.intfocus.template.model.response.attention.AttentionItem
  */
 interface AttentionModel {
     interface LoadDataCallback {
-        fun onDataLoaded(dataList:List<AttentionItem>)
+        fun onDataLoaded(dataList: List<AttentionItem>)
         fun onDataNotAvailable(e: Throwable)
     }
+
     interface ConcernCallback {
-        fun onConcernResult(isConcernSuccess:Boolean)
+        fun onConcernResult(isConcernSuccess: Boolean)
     }
 
-    fun getData(keyWord: String,callback: LoadDataCallback)
-    fun concernOrCancelConcern(attentionItemId:String, attentionItemName:String, callback: ConcernCallback)
+    fun getData(keyWord: String, concerned: Boolean, callback: LoadDataCallback)
+    fun concernOrCancelConcern(attentionItemId: String, attentionItemName: String, callback: ConcernCallback)
 //    fun cancelConcern(attentionItemId:String, attentionItemName:String,callback: ConcernCallback)
 }

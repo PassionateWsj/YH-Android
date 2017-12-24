@@ -43,7 +43,7 @@ import org.json.JSONObject
  * ****************************************************
  */
 object PageLinkManage {
-    private val PUSHMSGLIST = "-4"
+    private val PUSH_MESSAGE_LIST = "-4"
     private val FEEDBACK = "-3"
     private val SCANNER = "-2"
     private val EXTERNAL_LINK = "-1"
@@ -283,10 +283,11 @@ object PageLinkManage {
                     } else {
                         Intent.FLAG_ACTIVITY_SINGLE_TOP
                     }
+                    intent.putExtra(BarCodeScannerActivity.INTENT_FOR_RESULT, false)
                     intent.putExtra(LINK, urlString)
                     context.startActivity(intent)
                 }
-                PUSHMSGLIST -> {
+                PUSH_MESSAGE_LIST -> {
                     mClickTemplateName = "消息列表"
                     intent = Intent(context, ShowPushMessageActivity::class.java)
                     intent.flags = if (fromPushMsg) {

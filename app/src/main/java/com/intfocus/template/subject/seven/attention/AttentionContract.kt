@@ -34,8 +34,8 @@ interface AttentionContract {
     }
 
     interface Presenter : BasePresenter {
-        fun loadAllData()
-        fun loadData(keyWord: String)
-        fun concernOrCancelConcern(attentionItemId:String, attentionItemName:String)
+        fun loadData(concerned: Boolean)
+        fun loadData(keyWord: String, concerned: Boolean)
+        fun concernOrCancelConcern(attentionItemId: String, attentionItemName: String)
     }
 }

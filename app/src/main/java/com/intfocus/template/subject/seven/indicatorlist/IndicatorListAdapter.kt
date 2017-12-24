@@ -12,6 +12,7 @@ import android.widget.BaseExpandableListAdapter
 import android.widget.TextView
 import com.intfocus.template.R
 import com.intfocus.template.model.response.attention.Test2
+import com.intfocus.template.subject.one.entity.SingleValue
 import com.intfocus.template.subject.seven.indicatorgroup.IndicatorGroupAdapter
 import com.intfocus.template.subject.seven.listener.EventRefreshIndicatorListItemData
 import com.intfocus.template.subject.seven.listener.IndicatorListItemDataUpdateListener
@@ -55,7 +56,7 @@ class IndicatorListAdapter(private val mCtx: Context, val fragment: Fragment, va
     override fun getGroupCount(): Int = data.size
 
 
-    override fun getGroup(groupPosition: Int): Any = data[groupPosition]
+    override fun getGroup(groupPosition: Int): Test2.DataBeanXX.AttentionedDataBean = data[groupPosition]
 
     override fun getGroupView(groupPosition: Int, isExpanded: Boolean, convertView: View?, parent: ViewGroup?): View {
         var view: View? = null
@@ -71,35 +72,39 @@ class IndicatorListAdapter(private val mCtx: Context, val fragment: Fragment, va
             groupHolder.tvValue = view.findViewById(R.id.tv_item_indicator_list_group_value)
             view.tag = groupHolder
         }
-        groupHolder.tvName!!.text = data[groupPosition].attention_item_name
-        groupHolder.tvId!!.text = data[groupPosition].attention_item_id
+        getGroup(groupPosition).attention_item_name?.let { groupHolder.tvName?.text = it }
+        getGroup(groupPosition).attention_item_id?.let { groupHolder.tvId?.text = it }
         RxBusUtil.getInstance().toObservable(EventRefreshIndicatorListItemData::class.java)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { event ->
                     LogUtil.d(this@IndicatorListAdapter, "groupPosition ::: " + groupPosition)
                     LogUtil.d(this@IndicatorListAdapter, "event.childPosition ::: " + event.childPosition)
-                    currentItemDataIndex = event.childPosition
                     firstUpdateData = false
-                    groupHolder.tvValue!!.text = data[groupPosition].attention_item_data[event.childPosition].main_data.data
-                    groupHolder.tvValue!!.setTextColor(coCursor[data[groupPosition].attention_item_data[event.childPosition].state.color % coCursor.size])
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        groupHolder.tvValue!!.background = mCtx.getDrawable(bgList[data[groupPosition].attention_item_data[event.childPosition].state.color % coCursor.size])
-                    } else {
-                        groupHolder.tvValue!!.background = mCtx.resources.getDrawable(bgList[data[groupPosition].attention_item_data[event.childPosition].state.color % coCursor.size])
+                    getChild(groupPosition,0)[event.childPosition].let {
+                        groupHolder.tvValue?.text = it.main_data.data
+                        groupHolder.tvValue?.setTextColor(coCursor[it.state.color % coCursor.size])
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                            groupHolder.tvValue?.background = mCtx.getDrawable(bgList[it.state.color % coCursor.size])
+                        } else {
+                            groupHolder.tvValue?.background = mCtx.resources.getDrawable(bgList[it.state.color % coCursor.size])
+                        }
+                        currentItemDataIndex = event.childPosition
                     }
+
                 }
 //        if (firstUpdateData) {
-        groupHolder.tvValue!!.text = data[groupPosition].attention_item_data[currentItemDataIndex].main_data.data
-        groupHolder.tvValue!!.setTextColor(coCursor[data[groupPosition].attention_item_data[currentItemDataIndex].state.color % coCursor.size])
+        val itemData = getChild(groupPosition,0)[currentItemDataIndex]
+        groupHolder.tvValue?.text = itemData.main_data.data
+        groupHolder.tvValue?.setTextColor(coCursor[itemData.state.color % coCursor.size])
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            groupHolder.tvValue!!.background = mCtx.getDrawable(bgList[data[groupPosition].attention_item_data[currentItemDataIndex].state.color % coCursor.size])
+            groupHolder.tvValue?.background = mCtx.getDrawable(bgList[itemData.state.color % coCursor.size])
         } else {
-            groupHolder.tvValue!!.background = mCtx.resources.getDrawable(bgList[data[groupPosition].attention_item_data[currentItemDataIndex].state.color % coCursor.size])
+            groupHolder.tvValue?.background = mCtx.resources.getDrawable(bgList[itemData.state.color % coCursor.size])
         }
-        groupHolder.tvValue!!.setOnClickListener {
+        groupHolder.tvValue?.setOnClickListener {
             currentItemDataIndex += 1
-            RxBusUtil.getInstance().post(EventRefreshIndicatorListItemData(currentItemDataIndex % data[groupPosition].attention_item_data.size))
+            RxBusUtil.getInstance().post(EventRefreshIndicatorListItemData(currentItemDataIndex % getChild(groupPosition,0).size))
         }
 //        }
         return view
@@ -107,7 +112,7 @@ class IndicatorListAdapter(private val mCtx: Context, val fragment: Fragment, va
 
     override fun getChildrenCount(groupPosition: Int): Int = 1
 
-    override fun getChild(groupPosition: Int, childPosition: Int): Any = data[groupPosition].attention_item_data
+    override fun getChild(groupPosition: Int, childPosition: Int): List<SingleValue> = getGroup(groupPosition).attention_item_data
 
     override fun getChildId(groupPosition: Int, childPosition: Int): Long = childPosition.toLong()
 
@@ -126,7 +131,7 @@ class IndicatorListAdapter(private val mCtx: Context, val fragment: Fragment, va
         }
 
         childHolder.rvIndicatorGroup!!.layoutManager = LinearLayoutManager(mCtx, LinearLayoutManager.HORIZONTAL, false)
-        childHolder.rvIndicatorGroup!!.adapter = IndicatorGroupAdapter(mCtx, data[groupPosition].attention_item_data, CODE_EVENT_REFRESH_INDICATOR_LIST_ITEM_DATA)
+        childHolder.rvIndicatorGroup!!.adapter = IndicatorGroupAdapter(mCtx, getChild(groupPosition,0), CODE_EVENT_REFRESH_INDICATOR_LIST_ITEM_DATA)
         return view
     }
 
