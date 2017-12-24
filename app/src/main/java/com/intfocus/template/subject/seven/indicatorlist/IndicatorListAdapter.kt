@@ -66,9 +66,9 @@ class IndicatorListAdapter(private val mCtx: Context, val fragment: Fragment, va
         } else {
             view = LayoutInflater.from(mCtx).inflate(R.layout.item_indicator_list_group, parent, false)
             groupHolder = IndicatorGroupHolder()
-            groupHolder.tvName = view!!.findViewById(R.id.tv_item_indicator_list_group_name) as TextView
-            groupHolder.tvId = view.findViewById(R.id.tv_item_indicator_list_group_id) as TextView
-            groupHolder.tvValue = view.findViewById(R.id.tv_item_indicator_list_group_value) as AutofitTextView
+            groupHolder.tvName = view!!.findViewById(R.id.tv_item_indicator_list_group_name)
+            groupHolder.tvId = view.findViewById(R.id.tv_item_indicator_list_group_id)
+            groupHolder.tvValue = view.findViewById(R.id.tv_item_indicator_list_group_value)
             view.tag = groupHolder
         }
         groupHolder.tvName!!.text = data[groupPosition].attention_item_name
@@ -90,13 +90,17 @@ class IndicatorListAdapter(private val mCtx: Context, val fragment: Fragment, va
                     }
                 }
 //        if (firstUpdateData) {
-            groupHolder.tvValue!!.text = data[groupPosition].attention_item_data[currentItemDataIndex].main_data.data
-            groupHolder.tvValue!!.setTextColor(coCursor[data[groupPosition].attention_item_data[currentItemDataIndex].state.color % coCursor.size])
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                groupHolder.tvValue!!.background = mCtx.getDrawable(bgList[data[groupPosition].attention_item_data[currentItemDataIndex].state.color % coCursor.size])
-            } else {
-                groupHolder.tvValue!!.background = mCtx.resources.getDrawable(bgList[data[groupPosition].attention_item_data[currentItemDataIndex].state.color % coCursor.size])
-            }
+        groupHolder.tvValue!!.text = data[groupPosition].attention_item_data[currentItemDataIndex].main_data.data
+        groupHolder.tvValue!!.setTextColor(coCursor[data[groupPosition].attention_item_data[currentItemDataIndex].state.color % coCursor.size])
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            groupHolder.tvValue!!.background = mCtx.getDrawable(bgList[data[groupPosition].attention_item_data[currentItemDataIndex].state.color % coCursor.size])
+        } else {
+            groupHolder.tvValue!!.background = mCtx.resources.getDrawable(bgList[data[groupPosition].attention_item_data[currentItemDataIndex].state.color % coCursor.size])
+        }
+        groupHolder.tvValue!!.setOnClickListener {
+            currentItemDataIndex += 1
+            RxBusUtil.getInstance().post(EventRefreshIndicatorListItemData(currentItemDataIndex % data[groupPosition].attention_item_data.size))
+        }
 //        }
         return view
     }
@@ -116,7 +120,7 @@ class IndicatorListAdapter(private val mCtx: Context, val fragment: Fragment, va
         } else {
             view = LayoutInflater.from(mCtx).inflate(R.layout.item_indicator_list_child, parent, false)
             childHolder = IndicatorChildHolder()
-            childHolder.rvIndicatorGroup = view!!.findViewById(R.id.rv_indicator_group) as RecyclerView
+            childHolder.rvIndicatorGroup = view!!.findViewById(R.id.rv_indicator_group)
             view.tag = childHolder
             childHolder.rvIndicatorGroup!!.isFocusable = false
         }

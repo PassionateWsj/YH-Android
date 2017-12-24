@@ -47,11 +47,12 @@ class IndicatorListFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         val indicatorListAdapter = IndicatorListAdapter(ctx, this, mData)
         elv_indicator_list.setAdapter(indicatorListAdapter)
-        elv_indicator_list.setOnGroupExpandListener{ pos->
+        elv_indicator_list.setOnGroupExpandListener { pos ->
             (0 until indicatorListAdapter.groupCount)
                     .filter { pos != it }
                     .forEach { elv_indicator_list.collapseGroup(it) }
         }
+        elv_indicator_list.setGroupIndicator(null)
         RxBusUtil.getInstance().toObservable(EventRefreshIndicatorListItemData::class.java)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
