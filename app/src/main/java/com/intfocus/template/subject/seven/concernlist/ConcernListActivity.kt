@@ -1,4 +1,4 @@
-package com.intfocus.template.subject.seven.attention
+package com.intfocus.template.subject.seven.concernlist
 
 import android.content.Context
 import android.content.Intent
@@ -14,7 +14,7 @@ import com.intfocus.template.constant.Params
 import com.intfocus.template.constant.ToastColor
 import com.intfocus.template.model.response.attention.AttentionItem
 import com.intfocus.template.scanner.BarCodeScannerActivity
-import com.intfocus.template.subject.seven.listener.AttentionListItemClickListener
+import com.intfocus.template.subject.seven.listener.ConcernListItemClickListener
 import com.intfocus.template.ui.BaseActivity
 import com.intfocus.template.util.ToastUtils
 import kotlinx.android.synthetic.main.activity_attention_list.*
@@ -24,24 +24,25 @@ import kotlinx.android.synthetic.main.activity_attention_list.*
  * author jameswong
  * created on: 17/12/18 上午11:14
  * e-mail: PassionateWsj@outlook.com
- * name:
- * desc:
+ * name: 关注列表
+ * desc: 关注/取消关注功能
  * ****************************************************
  */
-class AttentionActivity : BaseActivity(), AttentionContract.View, AttentionListItemClickListener {
+class ConcernListActivity : BaseActivity(), ConcernListContract.View, ConcernListItemClickListener {
 
     companion object {
         val REQUEST_CODE = 2
+        val RESPONSE_CODE = 201
     }
 
-    override lateinit var presenter: AttentionContract.Presenter
-    private lateinit var mItemAdapter: AttentionListItemAdapter
+    override lateinit var presenter: ConcernListContract.Presenter
+    private lateinit var mItemAdapter: ConcernListItemAdapter
     var loadConcernedData: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_attention_list)
-        presenter = AttentionPresenter(AttentionModelImpl.getInstance(), this)
+        presenter = ConcernListPresenter(ConcernListModelImpl.getInstance(), this)
 
         initAdapter()
         initData()
@@ -49,7 +50,7 @@ class AttentionActivity : BaseActivity(), AttentionContract.View, AttentionListI
     }
 
     private fun initAdapter() {
-        mItemAdapter = AttentionListItemAdapter(this, this)
+        mItemAdapter = ConcernListItemAdapter(this, this)
         lv_attention_list_item.adapter = mItemAdapter
     }
 
@@ -140,6 +141,7 @@ class AttentionActivity : BaseActivity(), AttentionContract.View, AttentionListI
      */
     fun backPress(v: View) {
         hideKeyboard()
+        setResult(RESPONSE_CODE)
         finish()
     }
 

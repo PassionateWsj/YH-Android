@@ -1,4 +1,4 @@
-package com.intfocus.template.subject.seven.attention
+package com.intfocus.template.subject.seven.concernlist
 
 import com.intfocus.template.base.BasePresenter
 import com.intfocus.template.base.BaseView
@@ -13,7 +13,7 @@ import com.intfocus.template.model.response.attention.AttentionItem
  * desc:
  * ****************************************************
  */
-interface AttentionContract {
+interface ConcernListContract {
     interface View : BaseView<Presenter> {
         /**
          * 读取搜索结果失败

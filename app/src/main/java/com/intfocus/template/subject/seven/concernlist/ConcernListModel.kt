@@ -1,4 +1,4 @@
-package com.intfocus.template.subject.seven.attention
+package com.intfocus.template.subject.seven.concernlist
 
 import com.intfocus.template.model.response.attention.AttentionItem
 
@@ -11,7 +11,7 @@ import com.intfocus.template.model.response.attention.AttentionItem
  * desc:
  * ****************************************************
  */
-interface AttentionModel {
+interface ConcernListModel {
     interface LoadDataCallback {
         fun onDataLoaded(dataList: List<AttentionItem>)
         fun onDataNotAvailable(e: Throwable)

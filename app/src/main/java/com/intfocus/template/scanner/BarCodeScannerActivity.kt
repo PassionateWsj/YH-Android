@@ -66,7 +66,6 @@ class BarCodeScannerActivity : AppCompatActivity(), QRCodeView.Delegate, View.On
         val RESULT_CALLBACK = 101
         val RESULT_TO_URL = 102
         val INTENT_FOR_RESULT = "intent_for_result"
-//        val BEHAVIOR_CODE = "behavior_code"
     }
 
     /**
@@ -136,17 +135,12 @@ class BarCodeScannerActivity : AppCompatActivity(), QRCodeView.Delegate, View.On
         } else {
             View.GONE
         }
-
-
     }
 
     private fun initScanner() {
-
         zbarview_barcode_scanner.setDelegate(this)
         zbarview_barcode_scanner.startSpot()
-
     }
-
 
     override fun onStart() {
         super.onStart()
@@ -264,11 +258,7 @@ class BarCodeScannerActivity : AppCompatActivity(), QRCodeView.Delegate, View.On
                 ToastUtils.show(this, "请输入条码")
                 return@setOnClickListener
             }
-
-//            zbarview_barcode_scanner.closeFlashlight()
-//            isLightOn = false
             isStartActivity = true
-//            checkLightStatus(isLightOn, view!!.tv_input_barcode_light, view!!.cb_input_barcode_light)
             dealWithResultCode(trim, "input", ConfigConstants.kAppCode)
 
         }
@@ -280,8 +270,6 @@ class BarCodeScannerActivity : AppCompatActivity(), QRCodeView.Delegate, View.On
         }
         popupWindow!!.setOnDismissListener {
             if (!isStartActivity) {
-//                finish()
-//            } else {
                 checkLightStatus(isLightOn, tvBarcodeLight!!, cbBarcodeLight!!)
                 zbarview_barcode_scanner.showScanRect()
                 zbarview_barcode_scanner.startSpot()

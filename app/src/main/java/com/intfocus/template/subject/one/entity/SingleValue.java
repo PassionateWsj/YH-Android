@@ -8,9 +8,11 @@ import java.io.Serializable;
 
 public class SingleValue implements Serializable {
 
-    private State state;
-    private MainData main_data;
-    private MainData sub_data;
+    private boolean real_time = false;
+    private String real_time_api;
+    private State state = new State();
+    private MainData main_data = new MainData();
+    private MainData sub_data = new MainData();
 
     public State getState() {
         return state;
@@ -36,8 +38,24 @@ public class SingleValue implements Serializable {
         this.sub_data = sub_data;
     }
 
+    public boolean isReal_time() {
+        return real_time;
+    }
+
+    public void setReal_time(boolean real_time) {
+        this.real_time = real_time;
+    }
+
+    public String getReal_time_api() {
+        return real_time_api;
+    }
+
+    public void setReal_time_api(String real_time_api) {
+        this.real_time_api = real_time_api;
+    }
+
     public class State implements Serializable {
-        private int color;
+        private int color = 0;
 
         public int getColor() {
             return color;
@@ -49,10 +67,10 @@ public class SingleValue implements Serializable {
     }
 
     public class MainData implements Serializable {
-        private String name;
-        private String data;
-        private String format;
-        private String percentage;
+        private String name = "";
+        private String data = "0.0";
+        private String format = "";
+        private String percentage = "";
 
         public String getName() {
             return name;

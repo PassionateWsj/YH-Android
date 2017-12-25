@@ -56,6 +56,12 @@ public class BannerFragment extends BaseFragment {
         fragment.setArguments(args);
         return fragment;
     }
+    public static BannerFragment newInstance() {
+        BannerFragment fragment = new BannerFragment();
+        Bundle args = new Bundle();
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

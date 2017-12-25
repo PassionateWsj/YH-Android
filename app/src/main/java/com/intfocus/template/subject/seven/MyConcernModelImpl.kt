@@ -16,25 +16,25 @@ import rx.schedulers.Schedulers
  * author jameswong
  * created on: 17/12/18 上午11:28
  * e-mail: PassionateWsj@outlook.com
- * name:
+ * name: 模板七 数据处理类
  * desc:
  * ****************************************************
  */
-class MyAttentionModelImpl : MyAttentionModel {
+class MyConcernModelImpl : MyConcernModel {
 
     private val mDao = DaoUtil.getAttentionItemDao()
 
     companion object {
-        private val TAG = "MyAttentionModelImpl"
-        private var INSTANCE: MyAttentionModelImpl? = null
+        private val TAG = "MyConcernModelImpl"
+        private var INSTANCE: MyConcernModelImpl? = null
         private var observable: Subscription? = null
 
         /**
          * Returns the single instance of this class, creating it if necessary.
          */
         @JvmStatic
-        fun getInstance(): MyAttentionModelImpl {
-            return INSTANCE ?: MyAttentionModelImpl()
+        fun getInstance(): MyConcernModelImpl {
+            return INSTANCE ?: MyConcernModelImpl()
                     .apply { INSTANCE = this }
         }
 
@@ -56,7 +56,7 @@ class MyAttentionModelImpl : MyAttentionModel {
         }
     }
 
-    override fun getData(user_num: String, callback: MyAttentionModel.LoadDataCallback) {
+    override fun getData(userNum: String, filterId: String, callback: MyConcernModel.LoadDataCallback) {
         val assetsJsonData = LoadAssetsJsonUtil.getAssetsJsonData("template7_main_attention_data.json")
         val data = JSON.parseObject(assetsJsonData, Test2::class.java)
         observable = Observable.just(data.data)
@@ -68,7 +68,7 @@ class MyAttentionModelImpl : MyAttentionModel {
                 }
                 .subscribe(object : Observer<Test2.DataBeanXX.AttentionedDataBean> {
                     override fun onError(e: Throwable?) {
-                        LogUtil.d(this@MyAttentionModelImpl, "数据库处理错误 ::: " + e?.message)
+                        LogUtil.d(this@MyConcernModelImpl, "数据库处理错误 ::: " + e?.message)
                     }
 
                     override fun onNext(it: Test2.DataBeanXX.AttentionedDataBean?) {
@@ -80,7 +80,7 @@ class MyAttentionModelImpl : MyAttentionModel {
                     }
 
                     override fun onCompleted() {
-                        LogUtil.d(this@MyAttentionModelImpl, "数据库处理完成")
+                        LogUtil.d(this@MyConcernModelImpl, "数据库处理完成")
                     }
                 })
         callback.onDataLoaded(data, data.data.filter)

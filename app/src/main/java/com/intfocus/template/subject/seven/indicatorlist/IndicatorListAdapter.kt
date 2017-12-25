@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseExpandableListAdapter
 import android.widget.TextView
+import com.alibaba.fastjson.JSON
 import com.intfocus.template.R
 import com.intfocus.template.model.response.attention.Test2
 import com.intfocus.template.subject.one.entity.SingleValue
@@ -17,10 +18,14 @@ import com.intfocus.template.subject.seven.indicatorgroup.IndicatorGroupAdapter
 import com.intfocus.template.subject.seven.listener.EventRefreshIndicatorListItemData
 import com.intfocus.template.subject.seven.listener.IndicatorListItemDataUpdateListener
 import com.intfocus.template.ui.view.autofittextview.AutofitTextView
+import com.intfocus.template.util.LoadAssetsJsonUtil
 import com.intfocus.template.util.LogUtil
+import com.intfocus.template.util.OKHttpUtils
 import com.intfocus.template.util.RxBusUtil
+import okhttp3.Call
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
+import java.io.IOException
 
 
 /**
@@ -28,7 +33,7 @@ import rx.schedulers.Schedulers
  * @author jameswong
  * created on: 17/12/18 下午5:35
  * e-mail: PassionateWsj@outlook.com
- * name:
+ * name: 模板七 - 关注 - 详情信息列表适配器
  * desc:
  * ****************************************************
  */
@@ -36,6 +41,8 @@ class IndicatorListAdapter(private val mCtx: Context, val fragment: Fragment, va
     companion object {
         val CODE_EVENT_REFRESH_INDICATOR_LIST_ITEM_DATA = 1
     }
+
+    val testApi = "https://api.douban.com/v2/book/search?q=%E7%BC%96%E7%A8%8B%E8%89%BA%E6%9C%AF"
 
     private val coCursor = mCtx.resources.getIntArray(R.array.co_cursor)!!
     private val bgList = mutableListOf(
@@ -81,20 +88,50 @@ class IndicatorListAdapter(private val mCtx: Context, val fragment: Fragment, va
                     LogUtil.d(this@IndicatorListAdapter, "groupPosition ::: " + groupPosition)
                     LogUtil.d(this@IndicatorListAdapter, "event.childPosition ::: " + event.childPosition)
                     firstUpdateData = false
-                    getChild(groupPosition,0)[event.childPosition].let {
-                        groupHolder.tvValue?.text = it.main_data.data
-                        groupHolder.tvValue?.setTextColor(coCursor[it.state.color % coCursor.size])
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                            groupHolder.tvValue?.background = mCtx.getDrawable(bgList[it.state.color % coCursor.size])
-                        } else {
-                            groupHolder.tvValue?.background = mCtx.resources.getDrawable(bgList[it.state.color % coCursor.size])
-                        }
-                        currentItemDataIndex = event.childPosition
-                    }
 
+                    val data = getChild(groupPosition, 0)[event.childPosition]
+                    if (data.isReal_time) {
+//            data.real_time_api?.let {
+                        testApi.let {
+                            OKHttpUtils.newInstance().getAsyncData(it, object : OKHttpUtils.OnReusltListener {
+                                override fun onFailure(call: Call?, e: IOException?) {
+
+                                }
+
+                                override fun onSuccess(call: Call?, response: String?) {
+                                    val itemData = JSON.parseObject(LoadAssetsJsonUtil.getAssetsJsonData(data.real_time_api), SingleValue::class.java)
+                                    data.main_data = itemData.main_data
+                                    data.sub_data = itemData.sub_data
+                                    data.state = itemData.state
+                                    data.isReal_time = false
+                                    data.let {
+                                        groupHolder.tvValue?.text = it.main_data.data
+                                        groupHolder.tvValue?.setTextColor(coCursor[it.state.color % coCursor.size])
+                                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                            groupHolder.tvValue?.background = mCtx.getDrawable(bgList[it.state.color % coCursor.size])
+                                        } else {
+                                            groupHolder.tvValue?.background = mCtx.resources.getDrawable(bgList[it.state.color % coCursor.size])
+                                        }
+                                        currentItemDataIndex = event.childPosition
+                                    }
+                                }
+                            })
+                        }
+                    } else {
+                        data.let {
+                            groupHolder.tvValue?.text = it.main_data.data
+                            groupHolder.tvValue?.setTextColor(coCursor[it.state.color % coCursor.size])
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                groupHolder.tvValue?.background = mCtx.getDrawable(bgList[it.state.color % coCursor.size])
+                            } else {
+                                groupHolder.tvValue?.background = mCtx.resources.getDrawable(bgList[it.state.color % coCursor.size])
+                            }
+                            currentItemDataIndex = event.childPosition
+                        }
+                    }
                 }
 //        if (firstUpdateData) {
-        val itemData = getChild(groupPosition,0)[currentItemDataIndex]
+        val itemData = getChild(groupPosition, 0)[currentItemDataIndex]
         groupHolder.tvValue?.text = itemData.main_data.data
         groupHolder.tvValue?.setTextColor(coCursor[itemData.state.color % coCursor.size])
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -104,7 +141,7 @@ class IndicatorListAdapter(private val mCtx: Context, val fragment: Fragment, va
         }
         groupHolder.tvValue?.setOnClickListener {
             currentItemDataIndex += 1
-            RxBusUtil.getInstance().post(EventRefreshIndicatorListItemData(currentItemDataIndex % getChild(groupPosition,0).size))
+            RxBusUtil.getInstance().post(EventRefreshIndicatorListItemData(currentItemDataIndex % getChild(groupPosition, 0).size))
         }
 //        }
         return view
@@ -131,7 +168,7 @@ class IndicatorListAdapter(private val mCtx: Context, val fragment: Fragment, va
         }
 
         childHolder.rvIndicatorGroup!!.layoutManager = LinearLayoutManager(mCtx, LinearLayoutManager.HORIZONTAL, false)
-        childHolder.rvIndicatorGroup!!.adapter = IndicatorGroupAdapter(mCtx, getChild(groupPosition,0), CODE_EVENT_REFRESH_INDICATOR_LIST_ITEM_DATA)
+        childHolder.rvIndicatorGroup!!.adapter = IndicatorGroupAdapter(mCtx, getChild(groupPosition, 0), CODE_EVENT_REFRESH_INDICATOR_LIST_ITEM_DATA)
         return view
     }
 

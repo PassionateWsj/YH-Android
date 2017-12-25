@@ -89,7 +89,7 @@
             android:theme="@style/AppTheme"/>
         <!-- 模板七 -->
         <activity
-            android:name=".subject.seven.MyAttentionActivity"
+            android:name=".subject.seven.MyConcernActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme">
             <!--<intent-filter>-->
@@ -99,7 +99,7 @@
             <!--</intent-filter>-->
         </activity>
         <activity
-            android:name=".subject.seven.attention.AttentionActivity"
+            android:name=".subject.seven.concernlist.ConcernListActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
         <!-- 公告详情 -->

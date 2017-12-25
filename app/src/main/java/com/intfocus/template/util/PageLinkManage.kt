@@ -27,7 +27,7 @@ import com.intfocus.template.model.entity.PushMsgBean
 import com.intfocus.template.scanner.BarCodeScannerActivity
 import com.intfocus.template.subject.nine.CollectionActivity
 import com.intfocus.template.subject.one.NativeReportActivity
-import com.intfocus.template.subject.seven.MyAttentionActivity
+import com.intfocus.template.subject.seven.MyConcernActivity
 import com.intfocus.template.subject.three.MultiIndexActivity
 import com.intfocus.template.subject.two.WebPageActivity
 import org.json.JSONException
@@ -137,7 +137,7 @@ object PageLinkManage {
                 TEMPLATE_TWO -> {
 //                TEMPLATE_SEVEN -> {
                     mClickTemplateName = "模板七"
-                    intent = Intent(context, MyAttentionActivity::class.java)
+                    intent = Intent(context, MyConcernActivity::class.java)
                     intent.flags = if (fromPushMsg) {
                         Intent.FLAG_ACTIVITY_NEW_TASK
                     } else {

@@ -1,4 +1,4 @@
-package com.intfocus.template.subject.seven.attention
+package com.intfocus.template.subject.seven.concernlist
 
 import com.intfocus.template.model.response.attention.AttentionItem
 
@@ -11,10 +11,10 @@ import com.intfocus.template.model.response.attention.AttentionItem
  * desc:
  * ****************************************************
  */
-class AttentionPresenter(
-        private val mModel: AttentionModelImpl,
-        private val mView: AttentionContract.View
-) : AttentionContract.Presenter {
+class ConcernListPresenter(
+        private val mModel: ConcernListModelImpl,
+        private val mView: ConcernListContract.View
+) : ConcernListContract.Presenter {
 
     init {
         mView.presenter = this
@@ -29,7 +29,7 @@ class AttentionPresenter(
     }
 
     override fun loadData(keyWord: String, concerned: Boolean) {
-        mModel.getData(keyWord, concerned, object : AttentionModel.LoadDataCallback {
+        mModel.getData(keyWord, concerned, object : ConcernListModel.LoadDataCallback {
             override fun onDataLoaded(dataList: List<AttentionItem>) {
                 mView.onResultSuccess(dataList)
             }
@@ -41,7 +41,7 @@ class AttentionPresenter(
     }
 
     override fun concernOrCancelConcern(attentionItemId: String, attentionItemName: String) {
-        mModel.concernOrCancelConcern(attentionItemId, attentionItemName, object : AttentionModel.ConcernCallback {
+        mModel.concernOrCancelConcern(attentionItemId, attentionItemName, object : ConcernListModel.ConcernCallback {
             override fun onConcernResult(isConcernSuccess: Boolean) {
                 mView.concernOrCancelConcernResult(isConcernSuccess)
             }

@@ -1,4 +1,4 @@
-package com.intfocus.template.subject.seven.attention
+package com.intfocus.template.subject.seven.concernlist
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -10,7 +10,7 @@ import android.widget.CheckBox
 import android.widget.TextView
 import com.intfocus.template.R
 import com.intfocus.template.model.response.attention.AttentionItem
-import com.intfocus.template.subject.seven.listener.AttentionListItemClickListener
+import com.intfocus.template.subject.seven.listener.ConcernListItemClickListener
 import java.util.*
 
 /**
@@ -23,7 +23,7 @@ import java.util.*
  * ****************************************************
  */
 
-class AttentionListItemAdapter(private val mContext: Context, private val listener: AttentionListItemClickListener) : BaseAdapter() {
+class ConcernListItemAdapter(private val mContext: Context, private val listener: ConcernListItemClickListener) : BaseAdapter() {
     private var items: MutableList<AttentionItem>? = null
 
     override fun getCount(): Int = if (items == null) 0 else items!!.size

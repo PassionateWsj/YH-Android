@@ -9,6 +9,6 @@ package com.intfocus.template.subject.seven.listener
  * desc:
  * ****************************************************
  */
-interface AttentionListItemClickListener {
+interface ConcernListItemClickListener {
     fun itemClick(pos: Int)
 }

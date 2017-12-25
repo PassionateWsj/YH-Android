@@ -5,7 +5,7 @@
                 android:layout_width="match_parent"
                 android:onClick="onClick"
                 android:layout_height="match_parent"
-                tools:context=".subject.seven.attention.AttentionActivity">
+                tools:context=".subject.seven.concernlist.ConcernListActivity">
 
     <RelativeLayout
         android:id="@+id/actionBar"

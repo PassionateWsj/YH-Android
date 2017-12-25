@@ -15,7 +15,7 @@ import kotlinx.android.synthetic.main.fragment_indicator_group.*
  * author jameswong
  * created on: 17/12/18 下午5:23
  * e-mail: PassionateWsj@outlook.com
- * name:
+ * name: 横向滑动单值组件页面
  * desc:
  * ****************************************************
  */

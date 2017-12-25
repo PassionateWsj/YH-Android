@@ -9,16 +9,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import com.intfocus.template.R
+import com.intfocus.template.constant.Params.USER_NUM
 import com.intfocus.template.filter.FilterDialogFragment
 import com.intfocus.template.model.response.attention.Test2
 import com.intfocus.template.model.response.filter.MenuItem
-import com.intfocus.template.scanner.StoreSelectorActivity
+import com.intfocus.template.subject.one.ModeImpl
 import com.intfocus.template.subject.one.entity.Filter
 import com.intfocus.template.subject.one.entity.SingleValue
-import com.intfocus.template.subject.seven.attention.AttentionActivity
+import com.intfocus.template.subject.seven.concernlist.ConcernListActivity
 import com.intfocus.template.subject.seven.indicatorgroup.IndicatorGroupFragment
 import com.intfocus.template.subject.seven.indicatorlist.IndicatorListFragment
 import com.intfocus.template.ui.BaseActivity
+import com.intfocus.template.util.LogUtil
 import com.intfocus.template.util.TimeUtils
 import kotlinx.android.synthetic.main.actvity_my_attention.*
 import java.util.*
@@ -28,32 +30,38 @@ import java.util.*
  * @author jameswong
  * created on: 17/12/18 上午11:14
  * e-mail: PassionateWsj@outlook.com
- * name:
- * desc:
+ * name: 模板七
+ * desc: 我的关注，提供筛选和关注功能
  * ****************************************************
  */
-class MyAttentionActivity : BaseActivity(), MyAttentionContract.View, FilterDialogFragment.FilterListener {
+class MyConcernActivity : BaseActivity(), MyConcernContract.View, FilterDialogFragment.FilterListener {
 
     companion object {
-        val REQUEST_CODE_CHOOSE = 0
+        val REQUEST_CODE = 2
     }
 
+    lateinit var mUserNum: String
     private var filterDisplay: String = ""
+    private var currentFilterId: String = ""
     /**
      * 地址选择
      */
     private var filterDataList: ArrayList<MenuItem> = arrayListOf()
 
-    override lateinit var presenter: MyAttentionContract.Presenter
+    override lateinit var presenter: MyConcernContract.Presenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.actvity_my_attention)
+        MyConcernPresenter(ModeImpl.getInstance(), this)
+        initData()
 
-        MyAttentionPresenter(MyAttentionModelImpl.getInstance(), this)
-        presenter.loadData("12341234123")
+    }
 
+    fun initData() {
+        mUserNum = mUserSP.getString(USER_NUM, "")
+        presenter.loadData(mUserNum)
     }
 
     override fun onUpdateData(data: Test2, filter: Filter) {
@@ -91,7 +99,7 @@ class MyAttentionActivity : BaseActivity(), MyAttentionContract.View, FilterDial
     fun menuOnClicked(view: View) {
         when (view.id) {
             R.id.iv_attention -> {
-                startActivity(Intent(this, AttentionActivity::class.java))
+                startActivityForResult(Intent(this, ConcernListActivity::class.java),REQUEST_CODE)
             }
             R.id.tv_address_filter -> {
                 showDialogFragment()
@@ -103,6 +111,7 @@ class MyAttentionActivity : BaseActivity(), MyAttentionContract.View, FilterDial
      * 初始化筛选框
      */
     private fun initFilter(filter: Filter) {
+        filter.data?.let { it[0].id?.let { currentFilterId = it } }
         this.filterDataList = filter.data!!
         this.filterDisplay = filter.display!!
         if (filterDataList.isEmpty()) {
@@ -132,7 +141,21 @@ class MyAttentionActivity : BaseActivity(), MyAttentionContract.View, FilterDial
      * 筛选回调
      */
     override fun complete(menuItems: ArrayList<MenuItem>) {
-
+        var addStr = ""
+        val size = menuItems.size
+        for (i in 0 until size) {
+            addStr += menuItems[i].name!! + "||"
+        }
+        addStr = addStr.substring(0, addStr.length - 2)
+        tv_location_address.text = addStr
+        menuItems[menuItems.size - 1].id?.let {
+            currentFilterId = it
+            ll_my_attention_container.removeAllViews()
+            presenter.loadData(mUserNum, currentFilterId)
+        }
+        LogUtil.d(this, "Filter FullName ::: " + addStr)
+        LogUtil.d(this, "Filter ItemName ::: " + menuItems[menuItems.size - 1].name)
+        LogUtil.d(this, "Filter id ::: " + menuItems[menuItems.size - 1].id)
     }
 
     /**
@@ -140,8 +163,8 @@ class MyAttentionActivity : BaseActivity(), MyAttentionContract.View, FilterDial
      */
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_CODE_CHOOSE && resultCode == StoreSelectorActivity.RESULT_CODE_CHOOSE) {
-
+        if (requestCode == REQUEST_CODE && resultCode == ConcernListActivity.RESPONSE_CODE) {
+            presenter.loadData(mUserNum,currentFilterId)
         }
     }
 }

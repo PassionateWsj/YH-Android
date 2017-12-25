@@ -12,7 +12,7 @@
         android:id="@+id/ll_item_indicator_list_group_container"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:gravity="center"
+        android:gravity="center_vertical"
         android:orientation="vertical">
 
         <TextView

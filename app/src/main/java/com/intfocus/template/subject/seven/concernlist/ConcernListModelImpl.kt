@@ -1,4 +1,4 @@
-package com.intfocus.template.subject.seven.attention
+package com.intfocus.template.subject.seven.concernlist
 
 import com.intfocus.template.model.DaoUtil
 import com.intfocus.template.model.gen.AttentionItemDao
@@ -17,21 +17,21 @@ import rx.schedulers.Schedulers
  * desc:
  * ****************************************************
  */
-class AttentionModelImpl : AttentionModel {
+class ConcernListModelImpl : ConcernListModel {
 
     private val mDao = DaoUtil.getAttentionItemDao()
 
     companion object {
-        private val TAG = "AttentionModelImpl"
-        private var INSTANCE: AttentionModelImpl? = null
+        private val TAG = "ConcernListModelImpl"
+        private var INSTANCE: ConcernListModelImpl? = null
         private var observable: Subscription? = null
 
         /**
          * Returns the single instance of this class, creating it if necessary.
          */
         @JvmStatic
-        fun getInstance(): AttentionModelImpl {
-            return INSTANCE ?: AttentionModelImpl()
+        fun getInstance(): ConcernListModelImpl {
+            return INSTANCE ?: ConcernListModelImpl()
                     .apply { INSTANCE = this }
         }
 
@@ -53,7 +53,7 @@ class AttentionModelImpl : AttentionModel {
         }
     }
 
-    override fun getData(keyWord: String, concerned: Boolean, callback: AttentionModel.LoadDataCallback) {
+    override fun getData(keyWord: String, concerned: Boolean, callback: ConcernListModel.LoadDataCallback) {
         val queryBuilder = mDao.queryBuilder()
         observable = Observable.just(keyWord)
                 .subscribeOn(Schedulers.io())
@@ -64,16 +64,16 @@ class AttentionModelImpl : AttentionModel {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
                     if (it.isNotEmpty()) {
-                        LogUtil.d(this@AttentionModelImpl, "数据库处理成功,获取数据条数 ::: " + it.size)
+                        LogUtil.d(this@ConcernListModelImpl, "数据库处理成功,获取数据条数 ::: " + it.size)
                         callback.onDataLoaded(it)
                     } else {
                         callback.onDataNotAvailable(Throwable("未查询到数据"))
-                        LogUtil.d(this@AttentionModelImpl, "数据库处理错误,获取数据条数为 空")
+                        LogUtil.d(this@ConcernListModelImpl, "数据库处理错误,获取数据条数为 空")
                     }
                 }
     }
 
-    override fun concernOrCancelConcern(attentionItemId: String, attentionItemName: String, callback: AttentionModel.ConcernCallback) {
+    override fun concernOrCancelConcern(attentionItemId: String, attentionItemName: String, callback: ConcernListModel.ConcernCallback) {
         val queryBuilder = mDao.queryBuilder()
         observable = Observable.just(listOf(attentionItemId, attentionItemName))
                 .subscribeOn(Schedulers.io())

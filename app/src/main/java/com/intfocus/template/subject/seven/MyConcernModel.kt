@@ -12,10 +12,10 @@ import com.intfocus.template.subject.one.entity.Filter
  * desc:
  * ****************************************************
  */
-interface MyAttentionModel {
+interface MyConcernModel {
     interface LoadDataCallback {
         fun onDataLoaded(data: Test2,filter: Filter)
         fun onDataNotAvailable(e: Throwable)
     }
-    fun getData(user_num: String,callback: LoadDataCallback)
+    fun getData(userNum: String,filterId: String, callback: LoadDataCallback)
 }

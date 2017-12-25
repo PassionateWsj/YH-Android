@@ -4,14 +4,22 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.alibaba.fastjson.JSON
 import com.intfocus.template.R
 import com.intfocus.template.model.response.attention.Test2
+import com.intfocus.template.subject.one.entity.SingleValue
 import com.intfocus.template.subject.seven.listener.EventRefreshIndicatorListItemData
 import com.intfocus.template.ui.BaseFragment
+import com.intfocus.template.util.LoadAssetsJsonUtil
+import com.intfocus.template.util.LogUtil
+import com.intfocus.template.util.OKHttpUtils
 import com.intfocus.template.util.RxBusUtil
 import kotlinx.android.synthetic.main.fragment_indicator_list.*
+import okhttp3.Call
+import rx.Subscriber
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
+import java.io.IOException
 
 
 /**
@@ -19,13 +27,14 @@ import rx.schedulers.Schedulers
  * author jameswong
  * created on: 17/12/18 下午5:23
  * e-mail: PassionateWsj@outlook.com
- * name:
- * desc:
+ * name: 关注详情列表
+ * desc: 关注单品 可拓展详情信息列表
  * ****************************************************
  */
 class IndicatorListFragment : BaseFragment() {
 
     var mData: List<Test2.DataBeanXX.AttentionedDataBean> = ArrayList()
+    val testApi = "https://api.douban.com/v2/book/search?q=%E7%BC%96%E7%A8%8B%E8%89%BA%E6%9C%AF"
 
     fun newInstance(data: ArrayList<Test2.DataBeanXX.AttentionedDataBean>): IndicatorListFragment {
         val args = Bundle()
@@ -56,9 +65,43 @@ class IndicatorListFragment : BaseFragment() {
         RxBusUtil.getInstance().toObservable(EventRefreshIndicatorListItemData::class.java)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { event ->
-                    tv_indicator_list_single_value_title.text = mData[0].attention_item_data[event.childPosition].main_data.name
-                }
+                .subscribe(object : Subscriber<EventRefreshIndicatorListItemData>() {
+                    override fun onCompleted() {
+                    }
+
+                    override fun onNext(event: EventRefreshIndicatorListItemData?) {
+                        event?.let {
+                            val data = mData[0].attention_item_data[it.childPosition]
+                            if (data.isReal_time) {
+//            data.real_time_api?.let {
+                                testApi.let {
+                                    OKHttpUtils.newInstance().getAsyncData(it, object : OKHttpUtils.OnReusltListener {
+                                        override fun onFailure(call: Call?, e: IOException?) {
+
+                                        }
+
+                                        override fun onSuccess(call: Call?, response: String?) {
+                                            val itemData = JSON.parseObject(LoadAssetsJsonUtil.getAssetsJsonData(data.real_time_api), SingleValue::class.java)
+                                            data.main_data = itemData.main_data
+                                            data.sub_data = itemData.sub_data
+                                            data.state = itemData.state
+                                            data.isReal_time = false
+                                            tv_indicator_list_single_value_title.text = data.main_data.name
+                                        }
+                                    })
+                                }
+                            } else {
+                                tv_indicator_list_single_value_title.text = data.main_data.name
+                            }
+                        }
+                    }
+
+                    override fun onError(e: Throwable?) {
+                        e?.let {
+                            LogUtil.d(this@IndicatorListFragment, it.message)
+                        }
+                    }
+                })
     }
 
 }
