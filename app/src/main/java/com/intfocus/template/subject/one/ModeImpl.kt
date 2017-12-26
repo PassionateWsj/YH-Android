@@ -130,7 +130,7 @@ class ModeImpl : ReportModelImpl() {
             throw Throwable("获取数据失败")
         }
 
-//      response = LoadAssetsJsonUtil.getAssetsJsonData("template1_06.json")
+//      response = LoadAssetsJsonUtil.getAssetsJsonData("template7.json")
 
         val stringReader = StringReader(response)
         val reader = JSONReader(stringReader)
@@ -262,7 +262,7 @@ class ModeImpl : ReportModelImpl() {
             distinctPageTitle = sqlDistinctPageTitle + " WHERE " + ReportDao.Properties.Name.columnName + " = \'" + filterObject.display + "\'"
         }
 
-        var cursor = DaoUtil.getDaoSession()!!.database.rawQuery(distinctPageTitle, null)
+        val cursor = DaoUtil.getDaoSession()!!.database.rawQuery(distinctPageTitle, null)
 
         try {
             if (cursor.moveToFirst()) {

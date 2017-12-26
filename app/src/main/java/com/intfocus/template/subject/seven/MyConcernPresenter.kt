@@ -43,9 +43,9 @@ class MyConcernPresenter(
     }
 
     override fun loadData(ctx: Context, groupId: String, templateId: String, reportId: String) {
-        mModel.getData(reportId,templateId,groupId,object :ModeModel.LoadDataCallback{
+        mModel.getData(reportId, templateId, groupId, object : ModeModel.LoadDataCallback {
             override fun onDataLoaded(reports: List<String>, filter: Filter) {
-
+                mView.onUpdateData(filter)
             }
 
             override fun onDataNotAvailable(e: Throwable) {

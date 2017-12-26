@@ -9,19 +9,20 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import com.intfocus.template.R
+import com.intfocus.template.constant.Params.BANNER_NAME
+import com.intfocus.template.constant.Params.GROUP_ID
+import com.intfocus.template.constant.Params.OBJECT_ID
+import com.intfocus.template.constant.Params.OBJECT_TYPE
+import com.intfocus.template.constant.Params.TEMPLATE_ID
 import com.intfocus.template.constant.Params.USER_NUM
 import com.intfocus.template.filter.FilterDialogFragment
-import com.intfocus.template.model.response.attention.Test2
 import com.intfocus.template.model.response.filter.MenuItem
+import com.intfocus.template.subject.nine.CollectionModelImpl.Companion.uuid
 import com.intfocus.template.subject.one.ModeImpl
 import com.intfocus.template.subject.one.entity.Filter
-import com.intfocus.template.subject.one.entity.SingleValue
 import com.intfocus.template.subject.seven.concernlist.ConcernListActivity
-import com.intfocus.template.subject.seven.indicatorgroup.IndicatorGroupFragment
-import com.intfocus.template.subject.seven.indicatorlist.IndicatorListFragment
 import com.intfocus.template.ui.BaseActivity
 import com.intfocus.template.util.LogUtil
-import com.intfocus.template.util.TimeUtils
 import kotlinx.android.synthetic.main.actvity_my_attention.*
 import java.util.*
 
@@ -38,11 +39,18 @@ class MyConcernActivity : BaseActivity(), MyConcernContract.View, FilterDialogFr
 
     companion object {
         val REQUEST_CODE = 2
+        val FRAGMENT_TAG = "filterFragment"
     }
 
-    lateinit var mUserNum: String
+    private lateinit var mUserNum: String
     private var filterDisplay: String = ""
     private var currentFilterId: String = ""
+    lateinit var groupId: String
+    lateinit var reportId: String
+    lateinit var objectType: String
+    lateinit var bannerName: String
+    lateinit var templateId: String
+
     /**
      * 地址选择
      */
@@ -56,30 +64,48 @@ class MyConcernActivity : BaseActivity(), MyConcernContract.View, FilterDialogFr
         setContentView(R.layout.actvity_my_attention)
         MyConcernPresenter(ModeImpl.getInstance(), this)
         initData()
-
+        initView()
     }
+
 
     fun initData() {
         mUserNum = mUserSP.getString(USER_NUM, "")
-        presenter.loadData(mUserNum)
+
+        val intent = intent
+        groupId = intent.getStringExtra(GROUP_ID)
+        reportId = intent.getStringExtra(OBJECT_ID)
+        objectType = intent.getStringExtra(OBJECT_TYPE)
+        bannerName = intent.getStringExtra(BANNER_NAME)
+        templateId = intent.getStringExtra(TEMPLATE_ID)
+
+        uuid = reportId + templateId + groupId
+
+        presenter.loadData(this,groupId,templateId, reportId)
     }
 
-    override fun onUpdateData(data: Test2, filter: Filter) {
-        if (data.data.main_attention_data.isNotEmpty()) {
-            if (null != filter.data) {
-                initFilter(filter)
-            }
-            tv_banner_title.text = data.data.main_data_name
-            tv_my_attention_update_time.text = TimeUtils.getStrTime(data.data.updated_at)
-
-            val indicatorGroupFragment: Fragment = IndicatorGroupFragment().newInstance(data.data.main_attention_data as ArrayList<SingleValue>)
-            addItemView(indicatorGroupFragment, ll_my_attention_container)
-
-            val indicatorListFragment: Fragment = IndicatorListFragment().newInstance(data.data.attentioned_data as ArrayList<Test2.DataBeanXX.AttentionedDataBean>)
-            addItemView(indicatorListFragment, ll_my_attention_container)
-
-        }
+    private fun initView() {
+        tv_banner_title.text = bannerName
     }
+
+    override fun onUpdateData(filter: Filter) {
+//        presenter.
+    }
+//    override fun onUpdateData(data: Test2, filter: Filter) {
+//        if (data.data.main_attention_data.isNotEmpty()) {
+//            if (null != filter.data) {
+//                initFilter(filter)
+//            }
+//            tv_banner_title.text = data.data.main_data_name
+//            tv_my_attention_update_time.text = TimeUtils.getStrTime(data.data.updated_at)
+//
+//            val indicatorGroupFragment: Fragment = IndicatorGroupFragment().newInstance(data.data.main_attention_data as ArrayList<SingleValue>)
+//            addItemView(indicatorGroupFragment, ll_my_attention_container)
+//
+//            val indicatorListFragment: Fragment = IndicatorListFragment().newInstance(data.data.attentioned_data as ArrayList<Test2.DataBeanXX.AttentionedDataBean>)
+//            addItemView(indicatorListFragment, ll_my_attention_container)
+//
+//        }
+//    }
 
     private fun addItemView(fragment: Fragment, viewGroup: ViewGroup) {
         val layout = FrameLayout(this)
@@ -99,7 +125,7 @@ class MyConcernActivity : BaseActivity(), MyConcernContract.View, FilterDialogFr
     fun menuOnClicked(view: View) {
         when (view.id) {
             R.id.iv_attention -> {
-                startActivityForResult(Intent(this, ConcernListActivity::class.java),REQUEST_CODE)
+                startActivityForResult(Intent(this, ConcernListActivity::class.java), REQUEST_CODE)
             }
             R.id.tv_address_filter -> {
                 showDialogFragment()
@@ -127,14 +153,14 @@ class MyConcernActivity : BaseActivity(), MyConcernContract.View, FilterDialogFr
      */
     private fun showDialogFragment() {
         val mFragTransaction = supportFragmentManager.beginTransaction()
-        val fragment = supportFragmentManager.findFragmentByTag("filterFragment")
+        val fragment = supportFragmentManager.findFragmentByTag(FRAGMENT_TAG)
         if (fragment != null) {
             //为了不重复显示dialog，在显示对话框之前移除正在显示的对话框
             mFragTransaction.remove(fragment)
         }
         val dialogFragment = FilterDialogFragment.newInstance(filterDataList)
         //显示一个Fragment并且给该Fragment添加一个Tag，可通过findFragmentByTag找到该Fragment
-        dialogFragment!!.show(mFragTransaction, "filterFragment")
+        dialogFragment!!.show(mFragTransaction, FRAGMENT_TAG)
     }
 
     /**
@@ -164,7 +190,7 @@ class MyConcernActivity : BaseActivity(), MyConcernContract.View, FilterDialogFr
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_CODE && resultCode == ConcernListActivity.RESPONSE_CODE) {
-            presenter.loadData(mUserNum,currentFilterId)
+            presenter.loadData(mUserNum, currentFilterId)
         }
     }
 }
