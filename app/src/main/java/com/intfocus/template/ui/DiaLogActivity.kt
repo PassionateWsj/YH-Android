@@ -34,14 +34,21 @@ class DiaLogActivity : Activity() {
         val selfDialog = SelfDialog(this)
         selfDialog.setTitle("收到通知")
         selfDialog.setMessage(pushMsg.body_title)
-        selfDialog.setYesOnclickListener("查看") {
-            PageLinkManage.pageLink(this, pushMsg)
-            selfDialog.dismiss()
-            this.finish()
-        }
-        selfDialog.setNoOnclickListener("取消") {
-            selfDialog.dismiss()
-            this.finish()
+        if (pushMsg.template_id != null && pushMsg.template_id != "") {
+            selfDialog.setYesOnclickListener("查看") {
+                PageLinkManage.pageLink(this, pushMsg)
+                selfDialog.dismiss()
+                this.finish()
+            }
+            selfDialog.setNoOnclickListener("取消") {
+                selfDialog.dismiss()
+                this.finish()
+            }
+        } else {
+            selfDialog.setYesOnclickListener("知道了"){
+                selfDialog.dismiss()
+                this.finish()
+            }
         }
         selfDialog.show()
     }

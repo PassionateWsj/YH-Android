@@ -75,6 +75,7 @@ public class ChartFragment extends Fragment implements CustomCurveChart.PointCli
     int[] coGroup;
     int[] coCursor;
     private List<String> chartType;
+    private List<String> chartLegend;
     private CustomCurveChart chart;
     private int YCOORDINATEVALENUM;
     private ChartContract.Presenter mPresenter;
@@ -149,7 +150,7 @@ public class ChartFragment extends Fragment implements CustomCurveChart.PointCli
     @Override
     public void onPointClick(int index) {
         String xlabel = xLabel[index];
-        String name1 = curveChartEntity.getLegend()[0];
+        String name1 = chartLegend.get(0);
         Float[] values1 = seriesLables.get(0);
         Float target1 = 0f;
         if (values1.length > index) {
@@ -168,7 +169,7 @@ public class ChartFragment extends Fragment implements CustomCurveChart.PointCli
         }
 
         if (seriesLables.size() > 1) {
-            String name2 = curveChartEntity.getLegend()[1];
+            String name2 = chartLegend.get(1);
             Float[] values2 = seriesLables.get(1);
             Float target2 = 0f;
 
@@ -230,7 +231,8 @@ public class ChartFragment extends Fragment implements CustomCurveChart.PointCli
                 chart.setBarSelectColor(baseColor);
                 mTvTarget3Name.setText("变化率");
             } else if (seriesLables.size() > 2) {
-                String name3 = curveChartEntity.getLegend()[2];
+//                String name3 = curveChartEntity.getLegend()[2];
+                String name3 = chartLegend.get(2);
                 Float[] values3 = seriesLables.get(2);
                 Float target3 = 0f;
                 if (values3.length > index) {
@@ -268,7 +270,13 @@ public class ChartFragment extends Fragment implements CustomCurveChart.PointCli
     @Override
     public void showData(@NotNull Chart result) {
         this.curveChartEntity = result;
-        xLabel = result.getxAxis();
+        if (!result.getSeries().isEmpty()&&result.getSeries().size()>3) {
+            List<Chart.SeriesEntity> seriesData = new ArrayList<>();
+            seriesData.addAll(result.getSeries().subList(0,3));
+            curveChartEntity.getSeries().clear();
+            curveChartEntity.getSeries().addAll(seriesData);
+        }
+        xLabel = curveChartEntity.getxAxis();
         yLabel = new String[5];
         int yMaxValue;
         int yMinValue;
@@ -276,11 +284,12 @@ public class ChartFragment extends Fragment implements CustomCurveChart.PointCli
         seriesLables = new ArrayList<>();
         ArrayList<Float> seriesA = new ArrayList<>();
         chartType = new ArrayList<>();
-
-        ArrayList<Chart.SeriesEntity> arrays = result.getSeries();
+        chartLegend = new ArrayList<>();
+        ArrayList<Chart.SeriesEntity> arrays = curveChartEntity.getSeries();
         for (Chart.SeriesEntity array : arrays) {
             String datas = array.getData();
             chartType.add(array.getType());
+            chartLegend.add(array.getName());
             if (datas.contains("{")) {
                 ArrayList<Series> list = (ArrayList<Series>) JSON.parseArray(datas, Series.class);
                 color = new int[list.size()];

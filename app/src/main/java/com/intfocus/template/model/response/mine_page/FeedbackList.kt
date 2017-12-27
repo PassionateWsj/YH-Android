@@ -22,9 +22,9 @@ class FeedbackList: BaseResult() {
     var page_size: Int = 0
     var total_page: Int = 0
     @SerializedName("data")
-    var data: List<Data>? = null
+    var data: List<FeedbackListItemData>? = null
     
-    class Data {
+    class FeedbackListItemData {
         /**
          * id : 210
          * title : 生意人问题反馈

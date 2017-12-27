@@ -130,7 +130,14 @@ public class SelfDialog extends Dialog {
         no = (Button) findViewById(R.id.no);
         titleTv = (TextView) findViewById(R.id.title);
         messageTv = (TextView) findViewById(R.id.message);
+        if (noOnclickListener != null) {
+            no.setVisibility(View.VISIBLE);
+        } else {
+            no.setVisibility(View.GONE);
+        }
+
     }
+
 
     /**
      * 从外界Activity为Dialog设置标题

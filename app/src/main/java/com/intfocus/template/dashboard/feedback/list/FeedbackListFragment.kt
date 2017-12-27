@@ -12,6 +12,7 @@ import com.intfocus.template.dashboard.feedback.FeedbackModelImpl
 import com.intfocus.template.model.response.mine_page.FeedbackList
 import com.intfocus.template.ui.BaseFragment
 import com.intfocus.template.ui.view.RecyclerItemDecoration
+import com.intfocus.template.util.ToastUtils
 import kotlinx.android.synthetic.main.fragment_feedback_list.*
 
 /**
@@ -25,17 +26,17 @@ class FeedbackListFragment : BaseFragment(), FeedbackListContract.View {
     private var rootView: View? = null
 
     private var mLayoutManager: LinearLayoutManager? = null
-    private var feedbackListAdapter: FeedbackListAdapter? = null
+    lateinit var feedbackListAdapter: FeedbackListAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        if (rootView == null) {
-            rootView = inflater.inflate(R.layout.fragment_feedback_list, container, false)
-            feedbackListAdapter = FeedbackListAdapter(this.context)
-            mLayoutManager = LinearLayoutManager(this.context)
-            mLayoutManager!!.orientation = LinearLayoutManager.VERTICAL
-        }
+//        if (rootView == null) {
+        rootView = inflater.inflate(R.layout.fragment_feedback_list, container, false)
+        feedbackListAdapter = FeedbackListAdapter(ctx)
+        mLayoutManager = LinearLayoutManager(ctx)
+        mLayoutManager!!.orientation = LinearLayoutManager.VERTICAL
+//        }
 
-        showDialog(this.context)
+        showDialog(ctx)
         return rootView
     }
 
@@ -52,29 +53,38 @@ class FeedbackListFragment : BaseFragment(), FeedbackListContract.View {
             presenter = FeedbackListPresenter(FeedbackModelImpl.getInstance(), this)
             presenter.getList()
         }
+//        srl_feedback_list.isRefreshing = true
     }
 
     fun initView() {
         rv_feedback_list.layoutManager = mLayoutManager
         rv_feedback_list.adapter = feedbackListAdapter
         if (rv_feedback_list.itemDecorationCount == 0) {
-            rv_feedback_list.addItemDecoration(RecyclerItemDecoration(this.context))
+            rv_feedback_list.addItemDecoration(RecyclerItemDecoration(ctx))
         }
         btn_submit.setOnClickListener { startFeedbackInput() }
+        srl_feedback_list.setColorSchemeResources(R.color.co1_syr)
+        srl_feedback_list.setOnRefreshListener {
+            presenter.getList()
+        }
     }
 
     override fun showList(data: FeedbackList) {
+        srl_feedback_list.isRefreshing = false
         hideLoading()
-        feedbackListAdapter!!.setData(data)
+        data.data?.let {
+            feedbackListAdapter.setData(it)
+        }
     }
 
     private fun startFeedbackInput() {
-        var intent = Intent(this.context, FeedbackInputActivity::class.java)
+        val intent = Intent(ctx, FeedbackInputActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
         startActivity(intent)
     }
 
     override fun showNullPage() {
-
+        srl_feedback_list.isRefreshing = false
+        ToastUtils.show(ctx, "暂无数据")
     }
 }

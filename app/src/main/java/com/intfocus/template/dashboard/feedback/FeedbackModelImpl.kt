@@ -57,13 +57,18 @@ class FeedbackModelImpl: FeedbackModel{
                 .compose(RetrofitUtil.CommonOptions<FeedbackList>())
                 .subscribe(object : CodeHandledSubscriber<FeedbackList>() {
                     override fun onError(apiException: ApiException?) {
+                        apiException?.let {
+                            callback.onError(it)
+                        }
                     }
 
                     override fun onCompleted() {
                     }
 
                     override fun onBusinessNext(data: FeedbackList?) {
-                        callback.onSuccess(data!!)
+                        data?.let {
+                            callback.onSuccess(it)
+                        }
                     }
                 })
     }

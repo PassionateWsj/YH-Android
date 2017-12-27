@@ -9,14 +9,9 @@ import com.intfocus.template.model.response.mine_page.FeedbackList
  * @data 2017/12/5
  * @describe
  */
-class FeedbackListPresenter : FeedbackListContract.Presenter {
-    private var mModel: FeedbackModelImpl
-    private var mView: FeedbackListContract.View
-
-    constructor(model: FeedbackModelImpl, view: FeedbackListContract.View) {
-        this.mView = view
-        this.mModel = model
-    }
+class FeedbackListPresenter(model: FeedbackModelImpl, view: FeedbackListContract.View) : FeedbackListContract.Presenter {
+    private var mModel: FeedbackModelImpl = model
+    private var mView: FeedbackListContract.View = view
 
     override fun start() {}
 
