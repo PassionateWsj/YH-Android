@@ -1,5 +1,6 @@
 package com.intfocus.template.subject.two
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.ClipboardManager
@@ -168,6 +169,7 @@ class WebPageActivity : BaseActivity(), WebPageContract.View, OnPageErrorListene
         }
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
     private fun initWebView() {
         webView = WebView(this)
         browser.addView(webView)
@@ -175,7 +177,15 @@ class WebPageActivity : BaseActivity(), WebPageContract.View, OnPageErrorListene
         val webSettings = webView?.settings
         // 允许 JS 执行
         webSettings?.javaScriptEnabled = true
-        webView?.addJavascriptInterface(CustomJavaScriptsInterface(this), JAVASCRIPT_INTERFACE_NAME)
+        webView?.setDownloadListener { url, userAgent, contentDisposition, mimetype, contentLength ->
+            LogUtil.d(this, "url="+url)
+            LogUtil.d(this, "userAgent="+userAgent)
+            LogUtil.d(this, "contentDisposition="+contentDisposition)
+            LogUtil.d(this, "mimetype="+mimetype)
+            LogUtil.d(this, "contentLength="+contentLength)
+            val uri = Uri.parse(url)
+            startActivity(Intent(Intent.ACTION_VIEW, uri))
+        }
         // 缓存模式为无缓存
         webSettings?.cacheMode = WebSettings.LOAD_NO_CACHE
         webSettings?.domStorageEnabled = true
@@ -188,7 +198,7 @@ class WebPageActivity : BaseActivity(), WebPageContract.View, OnPageErrorListene
         // 显示网页滚动条
         webView?.isHorizontalScrollBarEnabled = false
         // 添加 javascript 接口
-        webView?.addJavascriptInterface(null, null)
+        webView?.addJavascriptInterface(CustomJavaScriptsInterface(this), JAVASCRIPT_INTERFACE_NAME)
         // 设置是否支持缩放
         webSettings?.setSupportZoom(false)
         // 设置是否支持对网页进行长按操作
@@ -215,7 +225,7 @@ class WebPageActivity : BaseActivity(), WebPageContract.View, OnPageErrorListene
 
         webView?.webViewClient = object : WebViewClient() {
             override fun shouldOverrideUrlLoading(p0: WebView?, p1: String?): Boolean {
-                p0!!.loadUrl(url)
+                p0!!.loadUrl(p1)
                 return true
             }
 
@@ -239,6 +249,7 @@ class WebPageActivity : BaseActivity(), WebPageContract.View, OnPageErrorListene
                 setLoadingVisibility(View.GONE)
             }
         }
+
     }
 
 
