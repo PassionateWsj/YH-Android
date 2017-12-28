@@ -94,6 +94,7 @@ public class CustomCurveChart extends View implements ValueAnimator.AnimatorUpda
     private List<String> mChartStyle;
 
     private int[] orderColors;
+    private int[] xAxesColors;
 
     /**
      * 动画
@@ -199,6 +200,7 @@ public class CustomCurveChart extends View implements ValueAnimator.AnimatorUpda
         paint_circle.setStrokeCap(Paint.Cap.ROUND);
 
         orderColors = getResources().getIntArray(R.array.co_order);
+        xAxesColors = getResources().getIntArray(R.array.co_cursor);
         blackColor = ContextCompat.getColor(getContext(), R.color.co3);
     }
 
@@ -272,11 +274,15 @@ public class CustomCurveChart extends View implements ValueAnimator.AnimatorUpda
             startX += i * xScale;
 
             int color;
-            if (mChartStyle.contains(ChartStyle.LINE)) {
-                if (colorList == null || i > colorList.length - 1) {
-                    color = defaultColor;
+            if (mChartStyle.contains(ChartStyle.LINE) && dataList.size() > 1) {
+                if (selectItem == i) {
+                    if (colorList == null || i > colorList.length - 1) {
+                        color = blackColor;
+                    } else {
+                        color = xAxesColors[colorList[i] % xAxesColors.length];
+                    }
                 } else {
-                    color = getRelativeColor(colorList[i]);
+                    color = defaultColor;
                 }
             } else {
                 if (selectItem == i) {
