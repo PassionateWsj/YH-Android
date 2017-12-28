@@ -3,6 +3,7 @@ package com.intfocus.template.subject.seven
 import android.content.Context
 import com.intfocus.template.base.BasePresenter
 import com.intfocus.template.base.BaseView
+import com.intfocus.template.model.entity.Report
 import com.intfocus.template.subject.one.entity.Filter
 
 /**
@@ -17,7 +18,8 @@ import com.intfocus.template.subject.one.entity.Filter
 interface MyConcernContract {
     interface View : BaseView<Presenter> {
         // 检查数据是否有更新
-        fun onUpdateData(filter: Filter)
+        fun initFilterView(filter: Filter)
+        fun generateReportItemView(reports: List<Report>)
     }
 
     interface Presenter : BasePresenter {

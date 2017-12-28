@@ -274,7 +274,8 @@ public class CustomCurveChart extends View implements ValueAnimator.AnimatorUpda
             startX += i * xScale;
 
             int color;
-            if (mChartStyle.contains(ChartStyle.LINE) && dataList.size() > 1) {
+//            if (mChartStyle.contains(ChartStyle.LINE) && dataList.size() > 1) {
+            if ( dataList.size() == 2) {
                 if (selectItem == i) {
                     if (colorList == null || i > colorList.length - 1) {
                         color = blackColor;

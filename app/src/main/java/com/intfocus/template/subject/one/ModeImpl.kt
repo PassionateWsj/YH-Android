@@ -3,24 +3,21 @@ package com.intfocus.template.subject.one
 import com.alibaba.fastjson.JSON
 import com.alibaba.fastjson.JSONReader
 import com.intfocus.template.BuildConfig
-import com.intfocus.template.SYPApplication.globalContext
 import com.intfocus.template.model.DaoUtil
 import com.intfocus.template.model.entity.Report
 import com.intfocus.template.model.entity.ReportModule
 import com.intfocus.template.model.gen.ReportDao
 import com.intfocus.template.subject.model.ReportModelImpl
 import com.intfocus.template.subject.one.entity.Filter
-import com.intfocus.template.util.ApiHelper
 import com.intfocus.template.util.ApiHelper.clearResponseHeader
-import com.intfocus.template.util.FileUtil
 import com.intfocus.template.util.K
+import com.intfocus.template.util.LoadAssetsJsonUtil
 import com.intfocus.template.util.LogUtil
 import rx.Observable
 import rx.Subscriber
 import rx.Subscription
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
-import java.io.File
 import java.io.StringReader
 
 /**
@@ -42,6 +39,8 @@ class ModeImpl : ReportModelImpl() {
     private var groupId: String = ""
     private var templateId: String = ""
     private var reportId: String = ""
+
+    private var count = 0
 
     companion object {
         private val TAG = "ModeImpl"
@@ -92,7 +91,11 @@ class ModeImpl : ReportModelImpl() {
                 .subscribeOn(Schedulers.io())
                 .map {
                     when {
-                        check(urlString) -> analysisData()
+                        count % 2 == 0 -> {
+//                        check(urlString) -> {
+                            count++
+                            analysisData()
+                        }
                         available(uuid) -> {
                             queryFilter(uuid)
                             generatePageList()
@@ -122,15 +125,15 @@ class ModeImpl : ReportModelImpl() {
         LogUtil.d(TAG, "ModeImpl 报表数据开始转为对象")
         delete(uuid)
         val response: String?
-        val jsonFilePath = FileUtil.dirPath(globalContext, K.K_CACHED_DIR_NAME, jsonFileName)
-        val dataState = ApiHelper.reportJsonData(globalContext, groupId, templateId, reportId)
-        if (dataState || File(jsonFilePath).exists()) {
-            response = FileUtil.readFile(jsonFilePath)
-        } else {
-            throw Throwable("获取数据失败")
-        }
+//        val jsonFilePath = FileUtil.dirPath(globalContext, K.K_CACHED_DIR_NAME, jsonFileName)
+//        val dataState = ApiHelper.reportJsonData(globalContext, groupId, templateId, reportId)
+//        if (dataState || File(jsonFilePath).exists()) {
+//            response = FileUtil.readFile(jsonFilePath)
+//        } else {
+//            throw Throwable("获取数据失败")
+//        }
 
-//      response = LoadAssetsJsonUtil.getAssetsJsonData("template7.json")
+        response = LoadAssetsJsonUtil.getAssetsJsonData("template1_06_ios.json")
 
         val stringReader = StringReader(response)
         val reader = JSONReader(stringReader)
@@ -193,7 +196,7 @@ class ModeImpl : ReportModelImpl() {
      * @pageId 页面id
      * @return pageId 对应页面的所有报表组件
      */
-    fun queryPageData(pageId: Int): List<Report> {
+    fun queryPageData(uuid: String, pageId: Int): List<Report> {
         val reportDao = DaoUtil.getReportDao()
         return if (null == filterObject.data) {
             reportDao.queryBuilder()

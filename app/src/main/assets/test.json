@@ -1,158 +1,24 @@
 {
-  "code":200,
-  "message":"success",
-  "data":{
-    "updated_at":"1513574854",
-    "filter": {
-      "display": "河北||二号店",
-      "data": [
-        {
-          "id": "3456",
-          "name": "河北",
-          "data": [
-            {
-              "id": "34562345",
-              "name": "一号店",
-              "data": []
-            },
-            {
-              "id": "34563567",
-              "name": "二号店",
-              "data": []
-            }
-          ]
-        }
-      ]
-    },
-    "main_data_id": "34562345",
-    "main_data_name": "河北一号店",
-    "main_attention_data":[
-      {
-        "state": {
-          "color": "0"
-        },
-        "main_data": {
-          "name": "差异",
-          "data": 3421231,
-          "format": "int",
-          "percentage": 1
-        },
-        "sub_data": {
-          "name": "对比数据",
-          "data": 3021231232,
-          "format": "int",
-          "percentage": 1
-        }
-      },
-      {
-        "state": {
-          "color": "1"
-        },
-        "main_data": {
-          "name": "新增商品数",
-          "data": 99,
-          "format": "int",
-          "percentage": 1
-        },
-        "sub_data": {
-          "name": "对比数据",
-          "data": 2345,
-          "format": "int",
-          "percentage": 1
-        }
-      }
-    ],
-    "attentioned_data":[
-      {
-        "attention_item_id":"12341234",
-        "attention_item_name":"车厘子",
-        "attention_item_data":[
-          {
-            "state": {
-              "color": "2"
-            },
-            "main_data": {
-              "name": "差异",
-              "data": 343,
-              "format": "int",
-              "percentage": 1
-            },
-            "sub_data": {
-              "name": "对比数据",
-              "data": 2345,
-              "format": "int",
-              "percentage": 1
-            }
-          },
-          {
-            "state": {
-              "color": "2"
-            },
-            "main_data": {
-              "name": "新增商品数",
-              "data": 923459,
-              "format": "int",
-              "percentage": 1
-            },
-            "sub_data": {
-              "name": "对比数据",
-              "data": 80,
-              "format": "int",
-              "percentage": 1
-            }
-          }
-        ]
-      },
-      {
-        "attention_item_id":"00534567",
-        "attention_item_name":"车厘6子",
-        "attention_item_data":[
-          {
-            "state": {
-              "color": "34"
-            },
-            "main_data": {
-              "name": "差异",
-              "data": 6345,
-              "format": "int",
-              "percentage": 1
-            },
-            "sub_data": {
-              "name": "对比数据",
-              "data": 32452345,
-              "format": "int",
-              "percentage": 1
-            }
-          },
-          {
-            "state": {
-              "color": "345"
-            },
-            "main_data": {
-              "name": "新增商品数",
-              "data": 234,
-              "format": "int",
-              "percentage": 1
-            },
-            "sub_data": {
-              "name": "对比数据",
-              "data": 80,
-              "format": "int",
-              "percentage": 1
-            }
-          }
-        ]
-      }
-    ],
-    "attention_list":[
-      {
-        "attention_item_id":"00134567",
-        "attention_item_name":"车厘子"
-      },
-      {
-        "attention_item_id":"00133467",
-        "attention_item_name":"车厘子1"
-      }
-    ]
-  }
+"id":1004,
+"name":"超级管家下载",
+"report_title":"超级管家下载",
+"category":"1",
+"group_name":"超级管家",
+"link_path":"http://bms.microc.cn/shopguide/app_downloadYh.jhtml",
+"template_id":"-1",
+"obj_id":"1004",
+"obj_title":"超级管家下载",
+"obj_link":"http://bms.microc.cn/shopguide/app_downloadYh.jhtml",
+"publicly":false,
+"icon":"icon-超级管家.png",
+"icon_link":"http://yonghui.idata.mobi/images/icon-超级管家.png",
+"group_id":1004,
+"health_value":0,
+"group_order":null,
+"item_order":null,
+"option_user_num":"user_num:user_num",
+"params_mapping":{
+"user_num":"user_num"
+},
+"created_at":"2017-12-27T10:17:13.000+08:00"
 }

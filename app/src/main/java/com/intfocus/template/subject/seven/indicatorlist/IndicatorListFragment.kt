@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.alibaba.fastjson.JSON
 import com.intfocus.template.R
+import com.intfocus.template.model.response.attention.ConcernedListData
 import com.intfocus.template.model.response.attention.Test2
 import com.intfocus.template.subject.one.entity.SingleValue
 import com.intfocus.template.subject.seven.listener.EventRefreshIndicatorListItemData
@@ -31,29 +32,43 @@ import java.io.IOException
  * desc: 关注单品 可拓展详情信息列表
  * ****************************************************
  */
-class IndicatorListFragment : BaseFragment() {
+class IndicatorListFragment : BaseFragment(), IndicatorListContract.View {
+    override lateinit var presenter: IndicatorListContract.Presenter
+
+    companion object {
+        val CONFIG_JSON_DATA = "data"
+    }
 
     var mData: List<Test2.DataBeanXX.AttentionedDataBean> = ArrayList()
     val testApi = "https://api.douban.com/v2/book/search?q=%E7%BC%96%E7%A8%8B%E8%89%BA%E6%9C%AF"
 
-    fun newInstance(data: ArrayList<Test2.DataBeanXX.AttentionedDataBean>): IndicatorListFragment {
-        val args = Bundle()
+    fun newInstance(): IndicatorListFragment {
+//        val args = Bundle()
         val fragment = IndicatorListFragment()
-        args.putSerializable("data", data)
-        fragment.arguments = args
+//        args.putString(CONFIG_JSON_DATA, data)
+//        fragment.arguments = args
+        IndicatorListPresenter(IndicatorListModelImpl.getInstance(), fragment)
         return fragment
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mData = arguments?.getSerializable("data") as ArrayList<Test2.DataBeanXX.AttentionedDataBean>
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
-            inflater.inflate(R.layout.fragment_indicator_list, container, false)
+    override fun showConcernedListData(data: ConcernedListData) {
+
+    }
+
+    override fun updateConcernedListTitle(title: String) {
+
+    }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? = inflater.inflate(R.layout.fragment_indicator_list, container, false)
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        presenter.loadConcernedList()
         val indicatorListAdapter = IndicatorListAdapter(ctx, this, mData)
         elv_indicator_list.setAdapter(indicatorListAdapter)
         elv_indicator_list.setOnGroupExpandListener { pos ->
@@ -67,6 +82,7 @@ class IndicatorListFragment : BaseFragment() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(object : Subscriber<EventRefreshIndicatorListItemData>() {
                     override fun onCompleted() {
+
                     }
 
                     override fun onNext(event: EventRefreshIndicatorListItemData?) {

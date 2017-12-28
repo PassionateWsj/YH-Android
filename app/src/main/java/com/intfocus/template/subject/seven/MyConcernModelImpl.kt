@@ -1,14 +1,21 @@
 package com.intfocus.template.subject.seven
 
+import android.content.Context
 import com.alibaba.fastjson.JSON
 import com.intfocus.template.model.DaoUtil
+import com.intfocus.template.model.entity.Report
 import com.intfocus.template.model.gen.AttentionItemDao
 import com.intfocus.template.model.response.attention.Test2
+import com.intfocus.template.subject.one.ModeImpl
+import com.intfocus.template.subject.one.ModeModel
+import com.intfocus.template.subject.one.entity.Filter
 import com.intfocus.template.util.LoadAssetsJsonUtil
 import com.intfocus.template.util.LogUtil
+import com.zbl.lib.baseframe.utils.TimeUtil
 import rx.Observable
 import rx.Observer
 import rx.Subscription
+import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
 
 /**
@@ -23,6 +30,11 @@ import rx.schedulers.Schedulers
 class MyConcernModelImpl : MyConcernModel {
 
     private val mDao = DaoUtil.getAttentionItemDao()
+
+    /**
+     * 默认只有一个页签
+     */
+    private val pageId = 0
 
     companion object {
         private val TAG = "MyConcernModelImpl"
@@ -84,5 +96,45 @@ class MyConcernModelImpl : MyConcernModel {
                     }
                 })
         callback.onDataLoaded(data, data.data.filter)
+    }
+
+    override fun getData(ctx: Context, groupId: String, templateId: String, reportId: String, callback: MyConcernModel.LoadReportsDataCallback) {
+        ModeImpl.getInstance().getData(reportId, templateId, groupId, object : ModeModel.LoadDataCallback {
+            override fun onDataLoaded(reports: List<String>, filter: Filter) {
+                callback.onFilterDataLoaded(filter)
+                getData(reportId + templateId + groupId, pageId, callback)
+            }
+
+            override fun onDataNotAvailable(e: Throwable) {
+            }
+        })
+    }
+
+    fun getData(uuid: String, pageId: Int, callback: MyConcernModel.LoadReportsDataCallback) {
+        LogUtil.d(TAG, "StartAnalysisTime:" + TimeUtil.getNowTime())
+        observable = Observable.just("")
+                .subscribeOn(Schedulers.io())
+                .map {
+                    ModeImpl.getInstance().queryPageData(uuid, pageId)
+                }
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(object : Observer<List<Report>> {
+                    override fun onError(e: Throwable?) {
+                        e?.let {
+                            callback.onDataNotAvailable(it)
+                        }
+                    }
+
+                    override fun onNext(t: List<Report>?) {
+                        t?.let {
+                            callback.onReportsDataLoaded(it)
+                        }
+                    }
+
+                    override fun onCompleted() {
+                        LogUtil.d(TAG, "EndAnalysisTime:" + TimeUtil.getNowTime())
+                    }
+
+                })
     }
 }

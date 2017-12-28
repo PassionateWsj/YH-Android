@@ -16,14 +16,21 @@ import com.intfocus.template.constant.Params.OBJECT_TYPE
 import com.intfocus.template.constant.Params.TEMPLATE_ID
 import com.intfocus.template.constant.Params.USER_NUM
 import com.intfocus.template.filter.FilterDialogFragment
+import com.intfocus.template.model.entity.Report
 import com.intfocus.template.model.response.filter.MenuItem
 import com.intfocus.template.subject.nine.CollectionModelImpl.Companion.uuid
-import com.intfocus.template.subject.one.ModeImpl
 import com.intfocus.template.subject.one.entity.Filter
+import com.intfocus.template.subject.one.module.banner.BannerFragment
 import com.intfocus.template.subject.seven.concernlist.ConcernListActivity
+import com.intfocus.template.subject.seven.indicatorgroup.IndicatorGroupFragment
+import com.intfocus.template.subject.seven.indicatorlist.IndicatorListFragment
+import com.intfocus.template.subject.seven.indicatorlist.IndicatorListModelImpl
+import com.intfocus.template.subject.seven.indicatorlist.IndicatorListPresenter
 import com.intfocus.template.ui.BaseActivity
 import com.intfocus.template.util.LogUtil
 import kotlinx.android.synthetic.main.actvity_my_attention.*
+import rx.Observable
+import rx.android.schedulers.AndroidSchedulers
 import java.util.*
 
 /**
@@ -62,7 +69,7 @@ class MyConcernActivity : BaseActivity(), MyConcernContract.View, FilterDialogFr
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.actvity_my_attention)
-        MyConcernPresenter(ModeImpl.getInstance(), this)
+        MyConcernPresenter(MyConcernModelImpl.getInstance(), this)
         initData()
         initView()
     }
@@ -80,34 +87,45 @@ class MyConcernActivity : BaseActivity(), MyConcernContract.View, FilterDialogFr
 
         uuid = reportId + templateId + groupId
 
-        presenter.loadData(this,groupId,templateId, reportId)
+        presenter.loadData(this, groupId, templateId, reportId)
     }
 
     private fun initView() {
         tv_banner_title.text = bannerName
     }
 
-    override fun onUpdateData(filter: Filter) {
-//        presenter.
+    override fun initFilterView(filter: Filter) {
+        if (null != filter.data) {
+            initFilter(filter)
+        }
     }
-//    override fun onUpdateData(data: Test2, filter: Filter) {
-//        if (data.data.main_attention_data.isNotEmpty()) {
-//            if (null != filter.data) {
-//                initFilter(filter)
-//            }
-//            tv_banner_title.text = data.data.main_data_name
-//            tv_my_attention_update_time.text = TimeUtils.getStrTime(data.data.updated_at)
-//
-//            val indicatorGroupFragment: Fragment = IndicatorGroupFragment().newInstance(data.data.main_attention_data as ArrayList<SingleValue>)
-//            addItemView(indicatorGroupFragment, ll_my_attention_container)
-//
-//            val indicatorListFragment: Fragment = IndicatorListFragment().newInstance(data.data.attentioned_data as ArrayList<Test2.DataBeanXX.AttentionedDataBean>)
-//            addItemView(indicatorListFragment, ll_my_attention_container)
-//
-//        }
-//    }
 
-    private fun addItemView(fragment: Fragment, viewGroup: ViewGroup) {
+    override fun generateReportItemView(reports: List<Report>) {
+
+        Observable.from(reports)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe {
+                    when (it.type) {
+                        //标题栏
+                        "banner" -> {
+                            addItemView(BannerFragment.newInstance(0, it.index))
+                        }
+                        // 横向滑动单值组件列表
+                        "concern_group"->{
+                            addItemView(IndicatorGroupFragment().newInstance(it.config))
+                        }
+                        // 可拓展的关注单品列表，拓展内容为 横向滑动单值组件列表
+                        "concern_list"->{
+                            val indicatorListFragment = IndicatorListFragment().newInstance()
+                            addItemView(indicatorListFragment)
+                            IndicatorListPresenter(IndicatorListModelImpl.getInstance(),indicatorListFragment)
+                        }
+                    }
+                }
+
+    }
+
+    private fun addItemView(fragment: Fragment) {
         val layout = FrameLayout(this)
         val params = AppBarLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
@@ -115,7 +133,7 @@ class MyConcernActivity : BaseActivity(), MyConcernContract.View, FilterDialogFr
         layout.layoutParams = params
         val id = Random().nextInt(Integer.MAX_VALUE)
         layout.id = id
-        viewGroup.addView(layout)
+        ll_my_attention_container.addView(layout)
         val ft = supportFragmentManager.beginTransaction()
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
         ft.replace(layout.id, fragment)

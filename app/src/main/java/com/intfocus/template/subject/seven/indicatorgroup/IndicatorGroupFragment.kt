@@ -5,6 +5,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.alibaba.fastjson.JSON
 import com.intfocus.template.R
 import com.intfocus.template.subject.one.entity.SingleValue
 import com.intfocus.template.ui.BaseFragment
@@ -21,19 +22,23 @@ import kotlinx.android.synthetic.main.fragment_indicator_group.*
  */
 class IndicatorGroupFragment : BaseFragment() {
 
-    var mData: List<SingleValue> = ArrayList()
+    private var mData: List<SingleValue>? = null
 
-    fun newInstance(data: ArrayList<SingleValue>): IndicatorGroupFragment {
+    fun newInstance(data: String): IndicatorGroupFragment {
         val args = Bundle()
         val fragment = IndicatorGroupFragment()
-        args.putSerializable("data", data)
+        args.putString("data", data)
         fragment.arguments = args
         return fragment
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mData = arguments?.getSerializable("data") as ArrayList<SingleValue>
+        mData = JSON.parseArray(JSON
+                .parseObject(arguments?.getString("data"))
+                .getJSONArray("main_concern_data")
+                .toJSONString()
+                , SingleValue::class.java)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
@@ -42,6 +47,8 @@ class IndicatorGroupFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         rv_indicator_group.layoutManager = LinearLayoutManager(ctx, LinearLayoutManager.HORIZONTAL, false)
-        rv_indicator_group.adapter = IndicatorGroupAdapter(ctx, mData)
+        mData?.let {
+            rv_indicator_group.adapter = IndicatorGroupAdapter(ctx, it)
+        }
     }
 }
