@@ -229,15 +229,13 @@ public class SortCheckBox extends View {
         switch (event.getAction()) {
             case MotionEvent.ACTION_UP:
                 if (x + getLeft() < getRight() && y + getTop() < getBottom()) {
-                    if (ischecked) {
-                        ischecked = false;
-                    } else {
-                        ischecked = true;
-                    }
+                    ischecked = !ischecked;
 
                     setChecked(ischecked);
                 }
                 break;
+                default:
+                    break;
         }
         return true;
     }

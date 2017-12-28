@@ -131,6 +131,8 @@ public class TableValueView extends View {
                     JSONObject rowData = new JSONObject(tabRowValues[n + 1]);
                     if (!"-1".equals(rowData.getString("color"))) {
                         textPaint.setColor(colors[Integer.parseInt(rowData.getString("color"))]);
+                    } else {
+                        textPaint.setColor(textColor);
                     }
                     String value = formatValue(rowData.getString("value"));
                     canvas.drawText(value, x, y, textPaint);
