@@ -42,15 +42,28 @@ public class Collection {
      */
     int imageStatus;
 
-    @Generated(hash = 1640627332)
+    /**
+     * 创建时间
+     */
+    String local_created_at;
+
+    /**
+     * 更新时间
+     */
+    String local_updated_at;
+
+    @Generated(hash = 306408633)
     public Collection(Long id, String reportId, String uuid, String dJson,
-                      int status, int imageStatus) {
+            int status, int imageStatus, String local_created_at,
+            String local_updated_at) {
         this.id = id;
         this.reportId = reportId;
         this.uuid = uuid;
         this.dJson = dJson;
         this.status = status;
         this.imageStatus = imageStatus;
+        this.local_created_at = local_created_at;
+        this.local_updated_at = local_updated_at;
     }
 
     @Generated(hash = 1149123052)
@@ -103,5 +116,21 @@ public class Collection {
 
     public void setImageStatus(int imageStatus) {
         this.imageStatus = imageStatus;
+    }
+
+    public String getLocal_created_at() {
+        return this.local_created_at;
+    }
+
+    public void setLocal_created_at(String local_created_at) {
+        this.local_created_at = local_created_at;
+    }
+
+    public String getLocal_updated_at() {
+        return this.local_updated_at;
+    }
+
+    public void setLocal_updated_at(String local_updated_at) {
+        this.local_updated_at = local_updated_at;
     }
 }

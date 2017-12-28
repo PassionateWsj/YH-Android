@@ -25,14 +25,14 @@ class CollectionPresenter(
     override fun start() {
     }
 
-    override fun loadData(reportId: String, templateId: String, groupId: String) {
-        mModel.getData(reportId, templateId, groupId, object : LoadDataCallback<CollectionEntity> {
+    override fun loadData(ctx: Context,reportId: String, templateId: String, groupId: String) {
+        mModel.getData(ctx,reportId, templateId, groupId, object : LoadDataCallback<CollectionEntity> {
             override fun onSuccess(data: CollectionEntity) {
                 mView.initRootView(data)
             }
 
             override fun onError(e: Throwable) {
-                LogUtil.d("testlog", e.toString())
+                LogUtil.d(this@CollectionPresenter, e.toString())
             }
 
             override fun onComplete() {

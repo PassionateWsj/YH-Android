@@ -8,6 +8,7 @@ import com.intfocus.template.BuildConfig
 import com.intfocus.template.SYPApplication.globalContext
 import com.intfocus.template.constant.Module.UPLOAD_IMAGES
 import com.intfocus.template.constant.Params.USER_BEAN
+import com.intfocus.template.constant.Params.USER_NUM
 import com.intfocus.template.general.net.RetrofitUtil
 import com.intfocus.template.model.DaoUtil
 import com.intfocus.template.model.entity.Collection
@@ -29,34 +30,19 @@ import java.io.File
  */
 class CollectionUploadService : IntentService("collection_upload") {
     private lateinit var collectionDao: CollectionDao
-
-    /*
-     * 采集数据列表
-     */
-    private lateinit var collectionList: List<Collection>
-    private lateinit var collection: Collection
     private lateinit var sourceDao: SourceDao
-
-    /*
-     * 当前采集报表的唯一标识
-     */
-    private lateinit var uuid: String
-    private lateinit var reportId: String
 
     override fun onHandleIntent(p0: Intent?) {
         collectionDao = DaoUtil.getCollectionDao()
-        collectionList = collectionDao.loadAll()
+        val collectionList = collectionDao.loadAll()
         sourceDao = DaoUtil.getSourceDao()
         collectionList
                 .filter { 1 != it.status }
                 .forEach {
-                    collection = it
-                    uuid = it.uuid
-                    reportId = it.reportId
                     if (1 != it.imageStatus) {
-                        uploadImage()
+                        uploadImage(it)
                     } else {
-                        generateDJson()
+                        generateDJson(it)
                     }
                 }
     }
@@ -64,19 +50,19 @@ class CollectionUploadService : IntentService("collection_upload") {
     /**
      * 上传图片
      */
-    private fun uploadImage() {
+    private fun uploadImage(collection: Collection) {
+        val uuid = collection.uuid
+        val reportId = collection.reportId
         val sourceQb = sourceDao.queryBuilder()
         val sourceList = sourceQb.where(sourceQb.and(SourceDao.Properties.Type.eq(UPLOAD_IMAGES), SourceDao.Properties.Uuid.eq(uuid))).list()
 
 
-        /*
-         * 如果采集数据中不包含图片, 直接生成 D_JSON
-         */
+        // 如果采集数据中不包含图片, 直接生成 D_JSON
         if (sourceList.size < 1) {
             collection.imageStatus = 1
             collectionDao.update(collection)
 
-            generateDJson()
+            generateDJson(collection)
             return
         }
 
@@ -87,7 +73,7 @@ class CollectionUploadService : IntentService("collection_upload") {
                 collection.imageStatus = 1
                 collectionDao.update(collection)
 
-                generateDJson()
+                generateDJson(collection)
                 return
             }
 
@@ -103,7 +89,7 @@ class CollectionUploadService : IntentService("collection_upload") {
             if (!fileList.isEmpty()) {
                 for ((i, file) in fileList.withIndex()) {
 //                    if (null != file.isFile) {
-                        requestBody.addFormDataPart("image" + i, file.name, RequestBody.create(MediaType.parse("image/*"), file))
+                    requestBody.addFormDataPart("image" + i, file.name, RequestBody.create(MediaType.parse("image/*"), file))
 //                    }
                 }
             }
@@ -129,33 +115,33 @@ class CollectionUploadService : IntentService("collection_upload") {
         collection.imageStatus = 1
         collectionDao.update(collection)
 
-        generateDJson()
+        generateDJson(collection)
     }
 
 
     /**
      * 生成需要上传给服务的 D_JSON (采集结果)
      */
-    private fun generateDJson() {
-        val moduleList = sourceDao.queryBuilder().where(SourceDao.Properties.Uuid.eq(uuid)).list()
+    private fun generateDJson(collection: Collection) {
+        val moduleList = sourceDao.queryBuilder().where(SourceDao.Properties.Uuid.eq(collection.uuid)).list()
         val dJson = JSONObject()
 
         for (module in moduleList) {
             dJson.put(module.key, module.value)
         }
 
-        uploadDJSon(Gson().toJson(dJson))
+        uploadDJSon(Gson().toJson(dJson), collection)
     }
 
     /**
      * 上传 D_JSON 至服务器
      */
-    private fun uploadDJSon(dJson: String) {
+    private fun uploadDJSon(dJson: String, collection: Collection) {
         val collectionRequestBody = CollectionRequestBody()
         val data = CollectionRequestBody.Data()
 
-        data.user_num = globalContext.getSharedPreferences(USER_BEAN, Context.MODE_PRIVATE).getString("user_num", "")
-        data.report_id = reportId
+        data.user_num = getSharedPreferences(USER_BEAN, Context.MODE_PRIVATE).getString(USER_NUM, "")
+        data.report_id = collection.reportId
         data.content = dJson
 
         collectionRequestBody.data = data

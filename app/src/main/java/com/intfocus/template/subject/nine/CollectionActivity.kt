@@ -18,8 +18,6 @@ import com.intfocus.template.constant.Params.OBJECT_ID
 import com.intfocus.template.constant.Params.TEMPLATE_ID
 import com.intfocus.template.subject.nine.entity.CollectionEntity
 import com.intfocus.template.subject.nine.root.RootPageFragment
-import com.intfocus.template.subject.nine.root.RootPageModelImpl
-import com.intfocus.template.subject.nine.root.RootPagePresenter
 import com.intfocus.template.ui.BaseModuleFragment
 import com.intfocus.template.util.DisplayUtil
 import com.intfocus.template.util.PageLinkManage
@@ -75,7 +73,7 @@ class CollectionActivity : AppCompatActivity(), CollectionContract.View {
             presenter.submit(this)
             onBackPressed()
         }
-        presenter.loadData(reportId, templateId, groupId)
+        presenter.loadData(this, reportId, templateId, groupId)
     }
 
     fun back(v: View) {
@@ -94,8 +92,8 @@ class CollectionActivity : AppCompatActivity(), CollectionContract.View {
 
     override fun initRootView(entity: CollectionEntity) {
         this.mEntity = entity
-        val pageDataArrayList = entity.data
-        if (pageDataArrayList == null || pageDataArrayList.size == 0) {
+        val pageDataArrayList = entity.content
+        if (pageDataArrayList == null || pageDataArrayList.isEmpty()) {
             return
         }
 
@@ -125,7 +123,7 @@ class CollectionActivity : AppCompatActivity(), CollectionContract.View {
                 rbtn.setTextSize(TypedValue.COMPLEX_UNIT_PX, resources.getDimension(R.dimen.font_medium))
                 val colorStateList = resources.getColorStateList(R.color.color_mdetal_act_rbtn)
                 rbtn.setTextColor(colorStateList)
-                rbtn.text = pageDataArrayList[i].title
+                rbtn.text = pageDataArrayList[i].name
                 radioGroup!!.addView(rbtn, paramsRb)
                 rbtn.setOnCheckedChangeListener { buttonView, isChecked ->
                     if (isChecked) {
@@ -163,10 +161,10 @@ class CollectionActivity : AppCompatActivity(), CollectionContract.View {
         if (supportFragmentManager.findFragmentByTag(currentFtName) != null) {
             mToFragment = supportFragmentManager.findFragmentByTag(currentFtName) as BaseModuleFragment
         } else {
-            val pageDataArrayList = mEntity!!.data
-            if (pageDataArrayList != null && pageDataArrayList.size > 0) {
-                mToFragment = RootPageFragment.newInstance(checkId, pageDataArrayList[checkId].content!!)
-                RootPagePresenter(RootPageModelImpl.getInstance(), mToFragment as RootPageFragment)
+            val pageDataArrayList = mEntity!!.content
+            if (pageDataArrayList != null && pageDataArrayList.isNotEmpty()) {
+                mToFragment = RootPageFragment.newInstance(checkId, pageDataArrayList[checkId].parts!!)
+//                RootPagePresenter(RootPageModelImpl.getInstance(), mToFragment as RootPageFragment)
             }
         }
 

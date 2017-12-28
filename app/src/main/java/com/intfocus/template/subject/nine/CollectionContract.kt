@@ -16,7 +16,7 @@ interface CollectionContract {
     }
 
     interface Presenter : BasePresenter {
-        fun loadData(reportId: String, templateId: String, groupId: String)
+        fun loadData(ctx: Context,reportId: String, templateId: String, groupId: String)
         fun submit(ctx: Context)
     }
 }

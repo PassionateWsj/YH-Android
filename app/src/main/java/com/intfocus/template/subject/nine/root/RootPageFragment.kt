@@ -3,7 +3,6 @@ package com.intfocus.template.subject.nine.root
 import android.os.Bundle
 import android.support.design.widget.AppBarLayout
 import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentTransaction
 import android.view.LayoutInflater
 import android.view.View
@@ -12,7 +11,7 @@ import android.widget.FrameLayout
 import com.intfocus.template.R
 import com.intfocus.template.constant.Params.ARG_PARAM
 import com.intfocus.template.constant.Params.SU_ROOT_ID
-import com.intfocus.template.subject.nine.entity.RootPageRequestResult
+import com.intfocus.template.subject.nine.entity.Content
 import com.intfocus.template.subject.nine.module.image.ImageFragment
 import com.intfocus.template.subject.nine.module.image.ImageModelImpl
 import com.intfocus.template.subject.nine.module.image.ImagePresenter
@@ -33,26 +32,23 @@ import java.util.*
  * @data 2017/11/1
  * @describe
  */
-class RootPageFragment : BaseModuleFragment(), RootPageContract.View {
+class RootPageFragment : BaseModuleFragment() {
     private val TAG = "root_page"
 
     /** 最上层跟跟标签ID */
     private var suRootID: Int = 0
 
     /** 单个页签的数据 */
-    private lateinit var mParam: String
+    private lateinit var mParam: ArrayList<Content>
 
     private var rootView: View? = null
-    private var fm: FragmentManager? = null
-
-    override lateinit var presenter: RootPageContract.Presenter
 
     companion object {
-        fun newInstance(suRootID: Int, param: String): RootPageFragment {
+        fun newInstance(suRootID: Int, parts: ArrayList<Content>): RootPageFragment {
             val fragment = RootPageFragment()
             val args = Bundle()
             args.putInt(SU_ROOT_ID, suRootID)
-            args.putString(ARG_PARAM, param)
+            args.putSerializable(ARG_PARAM, parts)
             fragment.arguments = args
             return fragment
         }
@@ -62,32 +58,29 @@ class RootPageFragment : BaseModuleFragment(), RootPageContract.View {
         super.onCreate(savedInstanceState)
         if (arguments != null) {
             suRootID = arguments!!.getInt(SU_ROOT_ID)
-            mParam = arguments!!.getString(ARG_PARAM)
+            mParam = arguments!!.getSerializable(ARG_PARAM) as ArrayList<Content>
         }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        fm = fragmentManager
         if (rootView == null) {
             rootView = inflater.inflate(R.layout.fragment_root, container, false)
-            presenter.loadData(mParam)
         }
         return rootView
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        RootPageModelImpl.destroyInstance()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        generateModule()
     }
-
     /**
      * 插入组件模块
      */
-    override fun insertModule(result: RootPageRequestResult) {
+    private fun generateModule() {
         val random = Random()
-        for (i in 0 until result.datas.size) {
+        for (i in 0 until mParam.size) {
             var fragment: Fragment? = null
-            val entity = result.datas[i]
+            val entity = mParam[i]
             when (entity.type) {
                 "single_text" -> {
                     fragment = SingleTextFragment.newInstance(entity.config, entity.key)
@@ -121,7 +114,7 @@ class RootPageFragment : BaseModuleFragment(), RootPageContract.View {
                 val id = random.nextInt(Integer.MAX_VALUE)
                 layout.id = id
                 ll_root_container.addView(layout)
-                val ft = fm!!.beginTransaction()
+                val ft = childFragmentManager.beginTransaction()
                 ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                 ft.replace(layout.id, fragment)
                 ft.commitNow()

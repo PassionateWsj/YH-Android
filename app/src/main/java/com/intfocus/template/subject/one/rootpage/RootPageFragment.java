@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -57,8 +56,6 @@ public class RootPageFragment extends Fragment implements RootPageContract.View 
 
     private View rootView;
 
-    private FragmentManager fm;
-
     @ViewInject(R.id.ll_mdrp_container)
     private LinearLayout llMdrpContainer;
 
@@ -97,7 +94,6 @@ public class RootPageFragment extends Fragment implements RootPageContract.View 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        fm = getFragmentManager();
         if (rootView == null) {
             rootView = inflater.inflate(R.layout.fragment_mdetal, container, false);
             x.view().inject(this, rootView);
@@ -171,7 +167,7 @@ public class RootPageFragment extends Fragment implements RootPageContract.View 
                             int id = random.nextInt(Integer.MAX_VALUE);
                             layout.setId(id);
                             llMdrpContainer.addView(layout);
-                            FragmentTransaction ft = fm.beginTransaction();
+                            FragmentTransaction ft = getChildFragmentManager().beginTransaction();
                             ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
                             ft.replace(layout.getId(), fragment);
                             ft.commitNow();
