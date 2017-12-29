@@ -350,7 +350,7 @@ public interface HttpService {
      * POST
      * /api/v1.1/acquisition/data
      *
-     * @return
+     * @param collectionRequestBody
      */
     @POST(K.API_COLLECTION_UPLOAD)
     Call<BaseResult> submitCollection(@Body CollectionRequestBody collectionRequestBody);
@@ -362,6 +362,8 @@ public interface HttpService {
      * /api/v1.1/user/reset_password
      *
      * @param mobile
+     * @param type
+     * @param value
      * @return
      */
     @POST(K.K_NEW_RESET_PWD)

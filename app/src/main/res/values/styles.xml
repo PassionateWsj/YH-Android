@@ -47,7 +47,9 @@
         <!-- 隐藏状态栏 -->
         <item name="android:windowFullscreen">true</item>
         <!-- 将 Activity 的 Theme 设置成透明 -->
-        <item name="android:windowIsTranslucent">true</item>
+        <!--<item name="android:windowIsTranslucent">true</item>-->
+        <!-- 无预加载视图 -->
+        <item name="android:windowDisablePreview">true</item>
     </style>
 
     <!-- GuidePage theme. -->

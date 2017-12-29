@@ -138,8 +138,8 @@ object PageLinkManage {
             val intent: Intent
 
             when (templateId) {
-                TEMPLATE_TWO -> {
-//                TEMPLATE_SEVEN -> {
+//                TEMPLATE_TWO -> {
+                TEMPLATE_SEVEN -> {
                     mClickTemplateName = "模板七"
                     intent = Intent(context, MyConcernActivity::class.java)
                     intent.flags = if (fromPushMsg!!) {

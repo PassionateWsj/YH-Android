@@ -45,29 +45,43 @@ public class Collection {
     /**
      * 创建时间
      */
-    String local_created_at;
-
+    Long created_at;
     /**
      * 更新时间
      */
-    String local_updated_at;
+    Long updated_at;
 
-    @Generated(hash = 306408633)
-    public Collection(Long id, String reportId, String uuid, String dJson,
-            int status, int imageStatus, String local_created_at,
-            String local_updated_at) {
+    String h1;
+
+    String h2;
+
+    String h3;
+
+    String h4;
+
+    String h5;
+
+    @Generated(hash = 1149123052)
+    public Collection() {
+    }
+
+    @Generated(hash = 1239032216)
+    public Collection(Long id, String reportId, String uuid, String dJson, int status,
+            int imageStatus, Long created_at, Long updated_at, String h1, String h2,
+            String h3, String h4, String h5) {
         this.id = id;
         this.reportId = reportId;
         this.uuid = uuid;
         this.dJson = dJson;
         this.status = status;
         this.imageStatus = imageStatus;
-        this.local_created_at = local_created_at;
-        this.local_updated_at = local_updated_at;
-    }
-
-    @Generated(hash = 1149123052)
-    public Collection() {
+        this.created_at = created_at;
+        this.updated_at = updated_at;
+        this.h1 = h1;
+        this.h2 = h2;
+        this.h3 = h3;
+        this.h4 = h4;
+        this.h5 = h5;
     }
 
     public Long getId() {
@@ -118,19 +132,59 @@ public class Collection {
         this.imageStatus = imageStatus;
     }
 
-    public String getLocal_created_at() {
-        return this.local_created_at;
+    public String getH1() {
+        return this.h1;
     }
 
-    public void setLocal_created_at(String local_created_at) {
-        this.local_created_at = local_created_at;
+    public void setH1(String h1) {
+        this.h1 = h1;
     }
 
-    public String getLocal_updated_at() {
-        return this.local_updated_at;
+    public String getH2() {
+        return this.h2;
     }
 
-    public void setLocal_updated_at(String local_updated_at) {
-        this.local_updated_at = local_updated_at;
+    public void setH2(String h2) {
+        this.h2 = h2;
+    }
+
+    public String getH3() {
+        return this.h3;
+    }
+
+    public void setH3(String h3) {
+        this.h3 = h3;
+    }
+
+    public String getH4() {
+        return this.h4;
+    }
+
+    public void setH4(String h4) {
+        this.h4 = h4;
+    }
+
+    public String getH5() {
+        return this.h5;
+    }
+
+    public void setH5(String h5) {
+        this.h5 = h5;
+    }
+
+    public Long getCreated_at() {
+        return this.created_at;
+    }
+
+    public void setCreated_at(Long created_at) {
+        this.created_at = created_at;
+    }
+
+    public Long getUpdated_at() {
+        return this.updated_at;
+    }
+
+    public void setUpdated_at(Long updated_at) {
+        this.updated_at = updated_at;
     }
 }

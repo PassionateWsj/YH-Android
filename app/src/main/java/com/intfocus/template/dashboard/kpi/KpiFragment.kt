@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import com.intfocus.template.BuildConfig
 import com.intfocus.template.ConfigConstants
 import com.intfocus.template.R
 import com.intfocus.template.constant.Params.GROUP_ID
@@ -25,9 +26,13 @@ import com.intfocus.template.model.response.home.KpiResult
 import com.intfocus.template.ui.RefreshFragment
 import com.intfocus.template.ui.view.CustomLinearLayoutManager
 import com.intfocus.template.ui.view.DefaultRefreshView
-import com.intfocus.template.util.*
+import com.intfocus.template.util.DisplayUtil
+import com.intfocus.template.util.ErrorUtils
+import com.intfocus.template.util.HttpUtil
+import com.intfocus.template.util.ToastUtils
 import kotlinx.android.synthetic.main.fragment_kpi.*
 import org.xutils.x
+import java.util.*
 
 /**
  * Created by CANC on 2017/7/27.
@@ -131,46 +136,52 @@ class KpiFragment : RefreshFragment(), KpiAdapter.HomePageListener {
 
                         mKpiData!!.clear()
                         val datas = data.data
+//                        val result = LoadAssetsJsonUtil.getAssetsJsonData("kpi_test.json")
+//                        val datas = JSON.parseObject(result, KpiResult::class.java).data
+
+                        var topBean: KpiBean? = null
                         if (datas != null) {
-                            for (KpiResultData in datas) {
-                                if ("top_data" == KpiResultData.group_name) {
+                            for (kpiResultData in datas) {
+                                if ("top_data" == kpiResultData.group_name) {
                                     hasBanner = true
-                                    val homeBean = KpiBean()
-                                    homeBean.group_name = "轮播图"
-                                    homeBean.index = 0
-                                    homeBean.data = KpiResultData.data
-                                    mKpiData!!.add(homeBean)
+                                    topBean = KpiBean()
+                                    topBean.group_name = "轮播图"
+                                    topBean.index = 0
+                                    topBean.data = kpiResultData.data
+//                                    mKpiData!!.add(homeBean)
                                 }
 
-                                if ("number2" == KpiResultData.data!![0].dashboard_type) {
+                                if ("number2" == kpiResultData.data!![0].dashboard_type) {
                                     val homeBean = KpiBean()
-                                    homeBean.group_name = KpiResultData.group_name
+                                    homeBean.group_name = kpiResultData.group_name
                                     homeBean.index = 2
-                                    homeBean.data = KpiResultData.data
+                                    homeBean.data = kpiResultData.data
                                     mKpiData!!.add(homeBean)
                                 }
 
-                                if ("number3" == KpiResultData.data!![0].dashboard_type) {
+                                if ("number3" == kpiResultData.data!![0].dashboard_type) {
                                     val homeBean = KpiBean()
-                                    homeBean.group_name = KpiResultData.group_name
+                                    homeBean.group_name = kpiResultData.group_name
                                     homeBean.index = 3
-                                    homeBean.data = KpiResultData.data
+                                    homeBean.data = kpiResultData.data
                                     mKpiData!!.add(homeBean)
                                 }
                             }
                         }
-
-                        val homeBean = KpiBean()
-                        homeBean.group_name = "滚动文字"
-                        homeBean.index = 1
-                        mKpiData!!.add(homeBean)
+                        if (BuildConfig.BASE_URL.contains("yonghui")) {
+                            val homeBean = KpiBean()
+                            homeBean.group_name = "滚动文字"
+                            homeBean.index = 1
+                            mKpiData!!.add(0,homeBean)
+                        }
 
                         val homeBean1 = KpiBean()
                         homeBean1.group_name = "底部信息"
                         homeBean1.index = 4
                         mKpiData!!.add(homeBean1)
-                        ListUtils.sort(mKpiData, true, "index")
-
+                        topBean?.let { mKpiData!!.add(0, it) }
+//                        ListUtils.sort(mKpiData, true, "index")
+//mKpiData.add(0,)
                         getHomeMsg()
                     }
                 })
@@ -209,7 +220,7 @@ class KpiFragment : RefreshFragment(), KpiAdapter.HomePageListener {
                                 .filter { 1 == it.index }
                                 .forEach { it.data = data!!.data }
 
-                        ListUtils.sort(mKpiData, true, "index")
+//                        ListUtils.sort(mKpiData, true, "index")
                         mAdapter.setData(mKpiData)
 
                         resetTitleView()
@@ -229,7 +240,7 @@ class KpiFragment : RefreshFragment(), KpiAdapter.HomePageListener {
             tv_banner_title.setTextColor(ContextCompat.getColor(ctx, R.color.co10_syr))
             bannerSetting.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.nav_scan))
         } else {
-            ll_kpi_content.setPadding(0,DisplayUtil.dip2px(context,44f),0,0)
+            ll_kpi_content.setPadding(0, DisplayUtil.dip2px(context, 44f), 0, 0)
             rl_action_bar.setBackgroundColor(ContextCompat.getColor(ctx, R.color.co10_syr))
             tv_banner_title.setTextColor(ContextCompat.getColor(ctx, R.color.color6))
             bannerSetting.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.nav_scanback))

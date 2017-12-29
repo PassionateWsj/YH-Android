@@ -31,8 +31,10 @@
     <uses-permission android:name="android.permission.GET_TASKS"/> <!-- 得到当前运行的activity名字 -->
     <!-- 5.0 及以上系统不可使用 -->
 
+
     <!-- 可选 -->
     <uses-permission android:name="android.permission.READ_LOGS"/>
+
     <!-- 获取logcat日志 -->
     <application
         android:name=".SYPApplication"
@@ -41,17 +43,14 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme"
         tools:replace="android:icon,android:theme">
-
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="${APPLICATIONID}.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
-
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths"/>
-
         </provider>
 
         <service android:name=".service.OpenUDIDService">
@@ -64,7 +63,6 @@
         <service android:name=".service.LocationService"/>
         <!-- 高德地图 -->
         <service android:name="com.amap.api.location.APSService"/>
-
         <service android:name=".service.CollectionUploadService"/>
 
         <activity
@@ -86,6 +84,9 @@
         <activity
             android:name=".subject.nine.CollectionActivity"
             android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"/>
+        <activity
+            android:name=".subject.nine.collectionlist.CollectionListActivity"
             android:theme="@style/AppTheme"/>
         <!-- 模板七 -->
         <activity
@@ -247,6 +248,7 @@
         <activity
             android:name=".ui.DiaLogActivity"
             android:theme="@style/myTransparent"/>
+
     </application>
 
 </manifest>

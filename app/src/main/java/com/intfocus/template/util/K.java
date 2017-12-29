@@ -85,9 +85,14 @@ public class K implements Serializable {
      * 加密所需api key
      */
     public final static String ANDROID_API_KEY = "578905f6e0c4189caa344ee4b1e460e5";
-
-    public final static String API_COLLECTION_UPLOAD = "/api/v1.1/acquisition/data"; //提交采集数据
-    public final static String API_IMAGE_UPLOAD = "/api/v1.1/upload/images"; //上传图片
+    /**
+     * 提交采集数据
+     */
+    public final static String API_COLLECTION_UPLOAD = "/api/v1.1/acquisition/data";
+    /**
+     * 上传图片
+     */
+    public final static String API_IMAGE_UPLOAD = "/api/v1.1/upload/images";
 
 
     /**

@@ -1,0 +1,327 @@
+{
+  "code": 200,
+  "message": "获取数据列表成功",
+  "data": [
+    {
+      "group_name": "经营预警",
+      "dashboard_type": "todo",
+      "index": 3,
+      "data": [
+        {
+          "id": "67",
+          "title": "个单量异常实时预警(门店)",
+          "dashboard_type": "number2",
+          "report_title": "个单量异常实时预警(门店)",
+          "target_url": "/mobile/v2/group/%@/template/2/report/67",
+          "template_id": "2",
+          "source_type": "",
+          "obj_id": "67",
+          "obj_title": "个单量异常实时预警(门店)",
+          "obj_link": "/mobile/v2/group/%@/template/2/report/67",
+          "unit": "毛利额/元",
+          "memo1": "",
+          "memo2": "",
+          "data": {
+            "high_light": {
+              "percentage": false,
+              "number": "",
+              "compare": "",
+              "arrow": 0
+            },
+            "chart_data": []
+          },
+          "group_name": "经营预警",
+          "is_stick": false,
+          "option_user_num": "user_num",
+          "params_mapping": {
+            "user_num": "user_num"
+          },
+          "reailtime_options": ""
+        },
+        {
+          "id": "68",
+          "title": "生鲜负毛利实时预警(门店)",
+          "dashboard_type": "number2",
+          "report_title": "生鲜负毛利实时预警(门店)",
+          "target_url": "/mobile/v2/group/%@/template/2/report/68",
+          "template_id": "2",
+          "source_type": "local",
+          "obj_id": "68",
+          "obj_title": "生鲜负毛利实时预警(门店)",
+          "obj_link": "/mobile/v2/group/%@/template/2/report/68",
+          "unit": "毛利额/万元",
+          "memo1": "当前 192 支负毛利商品",
+          "memo2": "",
+          "data": {
+            "high_light": {
+              "percentage": false,
+              "number": "-0.5",
+              "compare": "",
+              "arrow": 3
+            },
+            "chart_data": []
+          },
+          "group_name": "经营预警",
+          "is_stick": false,
+          "option_user_num": "user_num",
+          "params_mapping": {
+            "user_num": "user_num"
+          },
+          "reailtime_options": {
+            "source_type": "local",
+            "options": {}
+          }
+        },
+        {
+          "id": "70",
+          "title": "生鲜定价毛利异常实时预警",
+          "dashboard_type": "number2",
+          "report_title": "生鲜定价毛利异常实时预警(门店)",
+          "target_url": "/mobile/v2/group/%@/template/2/report/70",
+          "template_id": "2",
+          "source_type": "local",
+          "obj_id": "70",
+          "obj_title": "生鲜定价毛利异常实时预警(门店)",
+          "obj_link": "/mobile/v2/group/%@/template/2/report/70",
+          "unit": "销售额/万元",
+          "memo1": "当前 898 支定价过高商品",
+          "memo2": "",
+          "data": {
+            "high_light": {
+              "percentage": false,
+              "number": "5.0",
+              "compare": "",
+              "arrow": 3
+            },
+            "chart_data": []
+          },
+          "group_name": "经营预警",
+          "is_stick": false,
+          "option_user_num": "user_num",
+          "params_mapping": {
+            "user_num": "user_num"
+          },
+          "reailtime_options": {
+            "source_type": "local",
+            "options": {}
+          }
+        }
+      ]
+    },
+    {
+      "group_name": "生意概况",
+      "dashboard_type": "todo",
+      "index": 1,
+      "data": [
+        {
+          "id": "1",
+          "title": "二集群销售额",
+          "dashboard_type": "number3",
+          "report_title": "区域销售概况",
+          "target_url": "/mobile/v2/group/%@/template/2/report/63",
+          "template_id": "2",
+          "source_type": "local",
+          "obj_id": "63",
+          "obj_title": "区域销售概况",
+          "obj_link": "/mobile/v2/group/%@/template/2/report/63",
+          "unit": "亿元",
+          "memo1": "昨日销售额",
+          "memo2": "月累计销售额",
+          "data": {
+            "high_light": {
+              "percentage": false,
+              "number": "1.04",
+              "compare": "10.23",
+              "arrow": 2
+            },
+            "chart_data": []
+          },
+          "group_name": "生意概况",
+          "is_stick": false,
+          "option_user_num": "user_num",
+          "params_mapping": {
+            "user_num": "user_num"
+          },
+          "reailtime_options": {
+            "source_type": "local",
+            "options": {}
+          }
+        },
+        {
+          "id": "2",
+          "title": "二集群毛利额",
+          "dashboard_type": "number3",
+          "report_title": "区域销售概况",
+          "target_url": "/mobile/v2/group/%@/template/2/report/63",
+          "template_id": "2",
+          "source_type": "local",
+          "obj_id": "63",
+          "obj_title": "区域销售概况",
+          "obj_link": "/mobile/v2/group/%@/template/2/report/63",
+          "unit": "亿元",
+          "memo1": "昨日毛利额",
+          "memo2": "月累计毛利额",
+          "data": {
+            "high_light": {
+              "percentage": false,
+              "number": "0.17",
+              "compare": "1.65",
+              "arrow": 2
+            },
+            "chart_data": []
+          },
+          "group_name": "生意概况",
+          "is_stick": false,
+          "option_user_num": "user_num",
+          "params_mapping": {
+            "user_num": "user_num"
+          },
+          "reailtime_options": {
+            "source_type": "local",
+            "options": {}
+          }
+        },
+        {
+          "id": "3",
+          "title": "二集群客流",
+          "dashboard_type": "number3",
+          "report_title": "区域销售概况",
+          "target_url": "/mobile/v2/group/%@/template/2/report/63",
+          "template_id": "2",
+          "source_type": "local",
+          "obj_id": "63",
+          "obj_title": "区域销售概况",
+          "obj_link": "/mobile/v2/group/%@/template/2/report/63",
+          "unit": "万次",
+          "memo1": "昨日客流",
+          "memo2": "月累计客流",
+          "data": {
+            "high_light": {
+              "percentage": false,
+              "number": "149.4",
+              "compare": "1,599.0",
+              "arrow": 2
+            },
+            "chart_data": []
+          },
+          "group_name": "生意概况",
+          "is_stick": false,
+          "option_user_num": "user_num",
+          "params_mapping": {
+            "user_num": "user_num"
+          },
+          "reailtime_options": {
+            "source_type": "local",
+            "options": {}
+          }
+        }
+      ]
+    },
+    {
+      "group_name": "经营预警",
+      "dashboard_type": "todo",
+      "index": 3,
+      "data": [
+        {
+          "id": "67",
+          "title": "个单量异常实时预警(门店)",
+          "dashboard_type": "number2",
+          "report_title": "个单量异常实时预警(门店)",
+          "target_url": "/mobile/v2/group/%@/template/2/report/67",
+          "template_id": "2",
+          "source_type": "",
+          "obj_id": "67",
+          "obj_title": "个单量异常实时预警(门店)",
+          "obj_link": "/mobile/v2/group/%@/template/2/report/67",
+          "unit": "毛利额/元",
+          "memo1": "",
+          "memo2": "",
+          "data": {
+            "high_light": {
+              "percentage": false,
+              "number": "",
+              "compare": "",
+              "arrow": 0
+            },
+            "chart_data": []
+          },
+          "group_name": "经营预警",
+          "is_stick": false,
+          "option_user_num": "user_num",
+          "params_mapping": {
+            "user_num": "user_num"
+          },
+          "reailtime_options": ""
+        },
+        {
+          "id": "68",
+          "title": "生鲜负毛利实时预警(门店)",
+          "dashboard_type": "number2",
+          "report_title": "生鲜负毛利实时预警(门店)",
+          "target_url": "/mobile/v2/group/%@/template/2/report/68",
+          "template_id": "2",
+          "source_type": "local",
+          "obj_id": "68",
+          "obj_title": "生鲜负毛利实时预警(门店)",
+          "obj_link": "/mobile/v2/group/%@/template/2/report/68",
+          "unit": "毛利额/万元",
+          "memo1": "当前 192 支负毛利商品",
+          "memo2": "",
+          "data": {
+            "high_light": {
+              "percentage": false,
+              "number": "-0.5",
+              "compare": "",
+              "arrow": 3
+            },
+            "chart_data": []
+          },
+          "group_name": "经营预警",
+          "is_stick": false,
+          "option_user_num": "user_num",
+          "params_mapping": {
+            "user_num": "user_num"
+          },
+          "reailtime_options": {
+            "source_type": "local",
+            "options": {}
+          }
+        },
+        {
+          "id": "70",
+          "title": "生鲜定价毛利异常实时预警",
+          "dashboard_type": "number2",
+          "report_title": "生鲜定价毛利异常实时预警(门店)",
+          "target_url": "/mobile/v2/group/%@/template/2/report/70",
+          "template_id": "2",
+          "source_type": "local",
+          "obj_id": "70",
+          "obj_title": "生鲜定价毛利异常实时预警(门店)",
+          "obj_link": "/mobile/v2/group/%@/template/2/report/70",
+          "unit": "销售额/万元",
+          "memo1": "当前 898 支定价过高商品",
+          "memo2": "",
+          "data": {
+            "high_light": {
+              "percentage": false,
+              "number": "5.0",
+              "compare": "",
+              "arrow": 3
+            },
+            "chart_data": []
+          },
+          "group_name": "经营预警",
+          "is_stick": false,
+          "option_user_num": "user_num",
+          "params_mapping": {
+            "user_num": "user_num"
+          },
+          "reailtime_options": {
+            "source_type": "local",
+            "options": {}
+          }
+        }
+      ]
+    }
+  ]
+}

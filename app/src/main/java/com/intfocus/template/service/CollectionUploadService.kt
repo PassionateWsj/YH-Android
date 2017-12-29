@@ -37,7 +37,7 @@ class CollectionUploadService : IntentService("collection_upload") {
         val collectionList = collectionDao.loadAll()
         sourceDao = DaoUtil.getSourceDao()
         collectionList
-                .filter { 1 != it.status }
+                .filter { 0 == it.status }
                 .forEach {
                     if (1 != it.imageStatus) {
                         uploadImage(it)
@@ -87,10 +87,10 @@ class CollectionUploadService : IntentService("collection_upload") {
                     .addFormDataPart("module_name", reportId)
 
             if (!fileList.isEmpty()) {
-                for ((i, file) in fileList.withIndex()) {
-//                    if (null != file.isFile) {
-                    requestBody.addFormDataPart("image" + i, file.name, RequestBody.create(MediaType.parse("image/*"), file))
-//                    }
+                fileList.forEachIndexed { index, itemFile ->
+                    if (itemFile.exists()) {
+                        requestBody.addFormDataPart("image" + index, itemFile.name, RequestBody.create(MediaType.parse("image/*"), itemFile))
+                    }
                 }
             }
 
@@ -117,7 +117,6 @@ class CollectionUploadService : IntentService("collection_upload") {
 
         generateDJson(collection)
     }
-
 
     /**
      * 生成需要上传给服务的 D_JSON (采集结果)

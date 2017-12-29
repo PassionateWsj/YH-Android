@@ -3,7 +3,7 @@
   "title": "问题反馈",
   "content": [
     {
-      "name": "App",
+      "name": "",
       "parts": [
         {
           "type": "single_text",
@@ -24,7 +24,7 @@
           "type": "drop_options",
           "key": "test_02",
           "is_show": 1,
-          "is_list": 1,
+          "is_list": 2,
           "is_filter": 0,
           "is_must": 1,
           "config": {
@@ -44,7 +44,7 @@
           "type": "multi_text",
           "key": "test_03",
           "is_show": 1,
-          "is_list": 0,
+          "is_list": 3,
           "is_filter": 0,
           "is_must": 1,
           "config": {
@@ -59,7 +59,7 @@
           "type": "upload_images",
           "key": "test_04",
           "is_show": 1,
-          "is_list": 0,
+          "is_list": 4,
           "is_filter": 0,
           "is_must": 1,
           "config": {
@@ -77,7 +77,7 @@
           "type": "submit",
           "key": "test_05",
           "is_show": 1,
-          "is_list": 0,
+          "is_list": 5,
           "is_filter": 0,
           "is_must": 1,
           "config": {
@@ -91,6 +91,6 @@
     }
   ],
   "description": "",
-  "created_at": "2017-11-01T00:14:57.000+08:00",
-  "updated_at": "2017-11-06T18:24:42.000+08:00"
+  "created_at": 1513574854,
+  "updated_at": 1513574854
 }

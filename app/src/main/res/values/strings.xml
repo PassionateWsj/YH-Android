@@ -105,4 +105,6 @@
     <string name="app_setting">应用设置</string>
     <string name="text_input_hint">请输入</string>
     <string name="loading_text">正在加载数据..</string>
+    <string name="status_item_collection_list_draft">草稿</string>
+    <string name="title_item_collection_list">问题反馈</string>
 </resources>

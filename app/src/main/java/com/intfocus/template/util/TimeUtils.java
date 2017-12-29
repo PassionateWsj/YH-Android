@@ -37,6 +37,7 @@ public class TimeUtils {
 
     /**
      * 获取当前时间戳
+     *
      * @return
      */
     public static long getSystemCurrentTimeMillis() {
@@ -239,15 +240,16 @@ public class TimeUtils {
         String[] jj = null;
         kk = st1.split(":");
         jj = st2.split(":");
-        if (Integer.parseInt(kk[0]) < Integer.parseInt(jj[0]))
+        if (Integer.parseInt(kk[0]) < Integer.parseInt(jj[0])) {
             return "0";
-        else {
+        } else {
             double y = Double.parseDouble(kk[0]) + Double.parseDouble(kk[1]) / 60;
             double u = Double.parseDouble(jj[0]) + Double.parseDouble(jj[1]) / 60;
-            if ((y - u) > 0)
+            if ((y - u) > 0) {
                 return y - u + "";
-            else
+            } else {
                 return "0";
+            }
         }
     }
 
@@ -316,15 +318,17 @@ public class TimeUtils {
         GregorianCalendar gc = (GregorianCalendar) Calendar.getInstance();
         gc.setTime(d);
         int year = gc.get(Calendar.YEAR);
-        if ((year % 400) == 0)
+        if ((year % 400) == 0) {
             return true;
-        else if ((year % 4) == 0) {
-            if ((year % 100) == 0)
+        } else if ((year % 4) == 0) {
+            if ((year % 100) == 0) {
                 return false;
-            else
+            } else {
                 return true;
-        } else
+            }
+        } else {
             return false;
+        }
     }
 
     /**
@@ -374,8 +378,9 @@ public class TimeUtils {
     public static String getSeqWeek() {
         Calendar c = Calendar.getInstance(Locale.CHINA);
         String week = Integer.toString(c.get(Calendar.WEEK_OF_YEAR));
-        if (week.length() == 1)
+        if (week.length() == 1) {
             week = "0" + week;
+        }
         String year = Integer.toString(c.get(Calendar.YEAR));
         return year + week;
     }
@@ -392,20 +397,38 @@ public class TimeUtils {
         Date dd = TimeUtils.strToDate(sdate);
         Calendar c = Calendar.getInstance();
         c.setTime(dd);
-        if (num.equals("1")) // 返回星期一所在的日期
-            c.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
-        else if (num.equals("2")) // 返回星期二所在的日期
-            c.set(Calendar.DAY_OF_WEEK, Calendar.TUESDAY);
-        else if (num.equals("3")) // 返回星期三所在的日期
-            c.set(Calendar.DAY_OF_WEEK, Calendar.WEDNESDAY);
-        else if (num.equals("4")) // 返回星期四所在的日期
-            c.set(Calendar.DAY_OF_WEEK, Calendar.THURSDAY);
-        else if (num.equals("5")) // 返回星期五所在的日期
-            c.set(Calendar.DAY_OF_WEEK, Calendar.FRIDAY);
-        else if (num.equals("6")) // 返回星期六所在的日期
-            c.set(Calendar.DAY_OF_WEEK, Calendar.SATURDAY);
-        else if (num.equals("0")) // 返回星期日所在的日期
-            c.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
+        switch (num) {
+            case "1":
+                // 返回星期一所在的日期
+                c.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+                break;
+            case "2":
+                // 返回星期二所在的日期
+                c.set(Calendar.DAY_OF_WEEK, Calendar.TUESDAY);
+                break;
+            case "3":
+                // 返回星期三所在的日期
+                c.set(Calendar.DAY_OF_WEEK, Calendar.WEDNESDAY);
+                break;
+            case "4":
+                // 返回星期四所在的日期
+                c.set(Calendar.DAY_OF_WEEK, Calendar.THURSDAY);
+                break;
+            case "5":
+                // 返回星期五所在的日期
+                c.set(Calendar.DAY_OF_WEEK, Calendar.FRIDAY);
+                break;
+            case "6":
+                // 返回星期六所在的日期
+                c.set(Calendar.DAY_OF_WEEK, Calendar.SATURDAY);
+                break;
+            case "0":
+                // 返回星期日所在的日期
+                c.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
+                break;
+            default:
+                break;
+        }
         return new SimpleDateFormat("yyyy-MM-dd").format(c.getTime());
     }
 
@@ -455,10 +478,12 @@ public class TimeUtils {
      * @return
      */
     public static long getDays(String date1, String date2) {
-        if (date1 == null || date1.equals(""))
+        if (date1 == null || date1.equals("")) {
             return 0;
-        if (date2 == null || date2.equals(""))
+        }
+        if (date2 == null || date2.equals("")) {
             return 0;
+        }
         // 转换为标准时间
         SimpleDateFormat myFormatter = new SimpleDateFormat("yyyy-MM-dd");
         Date date = null;
@@ -509,25 +534,33 @@ public class TimeUtils {
 
     /**
      * 根据时间戳获取---几小时/几天前---字符串
+     *
      * @param timeStr
      * @return
      */
     public static String getStandardDate(String timeStr) {
+        return getStandardDate(Long.parseLong(timeStr));
+    }
 
+    public static String getStandardDate(Long timeMillis) {
         StringBuffer sb = new StringBuffer();
 
-        long t = Long.parseLong(timeStr);
-        long time = System.currentTimeMillis() - (t * 1000);
-        long mill = (long) Math.ceil(time / 1000);//秒前
+        long time = System.currentTimeMillis() - (timeMillis * 1000);
+        //秒前
+        long mill = (long) Math.ceil(time / 1000);
+        // 分钟前
+        long minute = (long) Math.ceil(time / 60 / 1000.0f);
+        // 小时
+        long hour = (long) Math.ceil(time / 60 / 60 / 1000.0f);
+        // 天前
+        long day = (long) Math.ceil(time / 24 / 60 / 60 / 1000.0f);
 
-        long minute = (long) Math.ceil(time / 60 / 1000.0f);// 分钟前
-
-        long hour = (long) Math.ceil(time / 60 / 60 / 1000.0f);// 小时
-
-        long day = (long) Math.ceil(time / 24 / 60 / 60 / 1000.0f);// 天前
-
-        if (day - 1 > 0) {
-            sb.append(day + "天");
+        if (day - 1 > 2) {
+            return getStrTime("" + timeMillis);
+        } else if (day - 1 == 2) {
+            sb.append("前天");
+        } else if (day - 1 == 1) {
+            sb.append(day + "昨天");
         } else if (hour - 1 > 0) {
             if (hour >= 24) {
                 sb.append("1天");
@@ -554,4 +587,5 @@ public class TimeUtils {
         }
         return sb.toString();
     }
+
 }

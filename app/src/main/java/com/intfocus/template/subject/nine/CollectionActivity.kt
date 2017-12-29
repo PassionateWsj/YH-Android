@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentTransaction
-import android.support.v7.app.AppCompatActivity
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
@@ -18,6 +17,7 @@ import com.intfocus.template.constant.Params.OBJECT_ID
 import com.intfocus.template.constant.Params.TEMPLATE_ID
 import com.intfocus.template.subject.nine.entity.CollectionEntity
 import com.intfocus.template.subject.nine.root.RootPageFragment
+import com.intfocus.template.ui.BaseActivity
 import com.intfocus.template.ui.BaseModuleFragment
 import com.intfocus.template.util.DisplayUtil
 import com.intfocus.template.util.PageLinkManage
@@ -28,7 +28,7 @@ import kotlinx.android.synthetic.main.activity_collection.*
  * @data 2017/10/31
  * @describe 信息采集模板
  */
-class CollectionActivity : AppCompatActivity(), CollectionContract.View {
+class CollectionActivity : BaseActivity(), CollectionContract.View {
     var lastCheckId: Int = 0
     private var currentFtName: String? = null
     private val fragmentTag = "android:switcher:"
@@ -73,6 +73,7 @@ class CollectionActivity : AppCompatActivity(), CollectionContract.View {
             presenter.submit(this)
             onBackPressed()
         }
+        showDialog(this)
         presenter.loadData(this, reportId, templateId, groupId)
     }
 
@@ -91,6 +92,7 @@ class CollectionActivity : AppCompatActivity(), CollectionContract.View {
     }
 
     override fun initRootView(entity: CollectionEntity) {
+        hideLoading()
         this.mEntity = entity
         val pageDataArrayList = entity.content
         if (pageDataArrayList == null || pageDataArrayList.isEmpty()) {

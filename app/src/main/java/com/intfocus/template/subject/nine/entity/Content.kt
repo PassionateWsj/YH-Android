@@ -1,5 +1,6 @@
 package com.intfocus.template.subject.nine.entity
 
+import com.alibaba.fastjson.annotation.JSONField
 import java.io.Serializable
 
 /**
@@ -20,23 +21,15 @@ class Content : Serializable {
      */
     var type: String? = null
     var key: String? = null
-    var is_show: Int? = null
-    var is_list: Int? = null
-    var is_filter: Int? = null
-    var is_must: Int? = null
+    @JSONField(name="is_show")
+    var show: Int? = 0
+    @JSONField(name="is_list")
+    var list: Int? = 0
+    @JSONField(name="is_filter")
+    var filter: Int? = 0
+    @JSONField(name="is_must")
+    var must: Int? = 0
     var config: String? = null
     var value: String? = null
 
-//    override fun toString(): String {
-//        val contentJson = JSONObject()
-//        contentJson.put("type", type)
-//        contentJson.put("key", key)
-//        contentJson.put("is_show", is_show)
-//        contentJson.put("is_list", is_list)
-//        contentJson.put("is_filter", is_filter)
-//        contentJson.put("is_must", is_must)
-//        contentJson.put("config", config)
-//        contentJson.put("value", value)
-//        return contentJson.toString()
-//    }
 }

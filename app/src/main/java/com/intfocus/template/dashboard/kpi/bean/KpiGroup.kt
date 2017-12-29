@@ -7,5 +7,6 @@ import java.io.Serializable
  */
 class KpiGroup : Serializable {
     var group_name: String? = null
+    var index: Int? = null
     var data: List<KpiGroupItem>? = null
 }

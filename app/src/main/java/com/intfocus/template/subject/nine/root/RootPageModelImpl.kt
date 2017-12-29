@@ -75,13 +75,13 @@ class RootPageModelImpl : RootPageModel<RootPageRequestResult> {
 
                                 "key" -> entity.key = reader.readObject().toString()
 
-                                "is_show" -> entity.is_show = reader.readInteger()
+                                "is_show" -> entity.show = reader.readInteger()
 
-                                "is_list" -> entity.is_list = reader.readInteger()
+                                "is_list" -> entity.list = reader.readInteger()
 
-                                "is_filter" -> entity.is_filter = reader.readInteger()
+                                "is_filter" -> entity.filter = reader.readInteger()
 
-                                "is_must" -> entity.is_must = reader.readInteger()
+                                "is_must" -> entity.must = reader.readInteger()
 
                                 "config" -> entity.config = reader.readObject().toString()
 

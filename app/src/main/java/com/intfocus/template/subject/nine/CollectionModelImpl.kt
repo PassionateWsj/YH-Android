@@ -3,7 +3,6 @@ package com.intfocus.template.subject.nine
 import android.content.Context
 import android.content.Intent
 import com.alibaba.fastjson.JSON
-import com.intfocus.template.general.net.RetrofitUtil
 import com.intfocus.template.model.DaoUtil
 import com.intfocus.template.model.callback.LoadDataCallback
 import com.intfocus.template.model.entity.Collection
@@ -11,6 +10,8 @@ import com.intfocus.template.model.entity.Source
 import com.intfocus.template.service.CollectionUploadService
 import com.intfocus.template.subject.nine.entity.CollectionEntity
 import com.intfocus.template.subject.nine.entity.Content
+import com.intfocus.template.util.LoadAssetsJsonUtil
+import com.intfocus.template.util.LogUtil
 import rx.Observable
 import rx.Subscriber
 import rx.android.schedulers.AndroidSchedulers
@@ -23,6 +24,8 @@ import java.util.*
  * @describe
  */
 class CollectionModelImpl : CollectionModel<CollectionEntity> {
+    val mCollectionDao = DaoUtil.getCollectionDao()
+
     companion object {
         lateinit var uuid: String
         private val TAG = CollectionModelImpl::class.java.simpleName
@@ -54,9 +57,14 @@ class CollectionModelImpl : CollectionModel<CollectionEntity> {
         Observable.just("")
                 .subscribeOn(Schedulers.io())
                 .map {
-                    val response = RetrofitUtil.getHttpService(ctx).getJsonReportData("json", reportId, templateID, groupId).execute()
-                    val responseString = response.body()!!.string()
-                    JSON.parseObject(responseString, CollectionEntity::class.java)
+                    //                    val response = RetrofitUtil.getHttpService(ctx).getJsonReportData("json", reportId, templateID, groupId).execute()
+//                    val responseString = response.body()!!.string()
+
+                    val responseString = LoadAssetsJsonUtil.getAssetsJsonData("collection1.json")
+
+                    val entity = JSON.parseObject(responseString, CollectionEntity::class.java)
+                    LogUtil.d(this@CollectionModelImpl, responseString)
+                    entity
                 }
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(object : Subscriber<CollectionEntity>() {
@@ -90,13 +98,13 @@ class CollectionModelImpl : CollectionModel<CollectionEntity> {
             entity.type?.let {
                 sourceDb.type = it
             }
-            entity.is_list?.let {
+            entity.list?.let {
                 sourceDb.isList = it
             }
-            entity.is_show?.let {
+            entity.show?.let {
                 sourceDb.isShow = it
             }
-            entity.is_filter?.let {
+            entity.filter?.let {
                 sourceDb.isFilter = it
             }
             sourceDb.config = entity.config ?: ""
@@ -107,14 +115,19 @@ class CollectionModelImpl : CollectionModel<CollectionEntity> {
         }
 
         val collectionDb = Collection()
-//            collectionDb.id = null
         collectionDb.reportId = reportId
         collectionDb.uuid = uuid
         collectionDb.dJson = ""
-        collectionDb.status = 0
+        collectionDb.status = -1
         collectionDb.imageStatus = 0
+        val currentTime = System.currentTimeMillis()
+        collectionDb.created_at = currentTime
+        collectionDb.updated_at = currentTime
+        mCollectionDao.insert(collectionDb)
+    }
 
-        DaoUtil.getCollectionDao().insert(collectionDb)
+    fun updateModifyTime() {
+        mCollectionDao.queryBuilder().unique()
     }
 
     override fun upload(ctx: Context) {
