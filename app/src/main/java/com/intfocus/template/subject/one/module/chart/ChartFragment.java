@@ -270,9 +270,9 @@ public class ChartFragment extends Fragment implements CustomCurveChart.PointCli
     @Override
     public void showData(@NotNull Chart result) {
         this.curveChartEntity = result;
-        if (!result.getSeries().isEmpty()&&result.getSeries().size()>3) {
+        if (!result.getSeries().isEmpty() && result.getSeries().size() > 3) {
             List<Chart.SeriesEntity> seriesData = new ArrayList<>();
-            seriesData.addAll(result.getSeries().subList(0,3));
+            seriesData.addAll(result.getSeries().subList(0, 3));
             curveChartEntity.getSeries().clear();
             curveChartEntity.getSeries().addAll(seriesData);
         }
@@ -293,8 +293,11 @@ public class ChartFragment extends Fragment implements CustomCurveChart.PointCli
             if (datas.contains("{")) {
                 ArrayList<Series> list = (ArrayList<Series>) JSON.parseArray(datas, Series.class);
                 color = new int[list.size()];
-                Float[] lables = new Float[list.size()];
                 int dataSize = list.size();
+                if (dataSize > xLabel.length) {
+                    dataSize = xLabel.length;
+                }
+                Float[] lables = new Float[dataSize];
                 for (int i = 0; i < dataSize; i++) {
                     Series seriesEntity = list.get(i);
                     color[i] = seriesEntity.getColor();
@@ -307,6 +310,9 @@ public class ChartFragment extends Fragment implements CustomCurveChart.PointCli
                 datas = datas.trim().substring(1, datas.length() - 1).trim();
                 String[] topW = datas.trim().split(",");
                 int dataLength = topW.length;
+                if (dataLength > xLabel.length) {
+                    dataLength = xLabel.length;
+                }
                 Float[] lables = new Float[dataLength];
                 for (int i = 0; i < dataLength; i++) {
                     String strValue = topW[i].trim();
@@ -321,7 +327,6 @@ public class ChartFragment extends Fragment implements CustomCurveChart.PointCli
                 seriesLables.add(lables);
             }
         }
-
         Collections.sort(seriesA);
         yMaxValue = seriesA.get(seriesA.size() - 1).intValue();
         yMinValue = seriesA.get(0).intValue();
