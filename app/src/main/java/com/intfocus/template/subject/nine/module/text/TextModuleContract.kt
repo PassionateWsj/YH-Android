@@ -15,6 +15,6 @@ interface TextModuleContract {
 
     interface Presenter : BasePresenter {
         fun loadData(mParam: String)
-        fun update(entity: TextEntity, key: String)
+        fun update(entity: TextEntity, key: String, listItemType: Int)
     }
 }

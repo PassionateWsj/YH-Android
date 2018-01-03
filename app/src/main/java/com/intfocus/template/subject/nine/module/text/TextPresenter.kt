@@ -32,7 +32,7 @@ class TextPresenter(
         })
     }
 
-    override fun update(entity: TextEntity, key: String) {
-        mModel.insertDb(entity.value, key)
+    override fun update(entity: TextEntity, key: String, listItemType: Int) {
+        mModel.insertDb(entity.value, key, listItemType)
     }
 }

@@ -35,17 +35,20 @@ class OptionsModelImpl : ModuleModel<OptionsEntity> {
     }
 
     override fun analyseData(params: String, callback: LoadDataCallback<OptionsEntity>) {
-        var data = JSONObject.parseObject(params, OptionsEntity::class.java)
+        val data = JSONObject.parseObject(params, OptionsEntity::class.java)
         callback.onSuccess(data)
     }
 
-    override fun insertDb(value: String, key: String) {
-        var sourceDao = DaoUtil.getDaoSession()!!.sourceDao
-        var collectionQb = sourceDao.queryBuilder()
-        var collection = collectionQb.where(collectionQb.and(SourceDao.Properties.Key.eq(key), SourceDao.Properties.Uuid.eq(CollectionModelImpl.uuid))).unique()
+    override fun insertDb(value: String, key: String, listItemType: Int) {
+        val sourceDao = DaoUtil.getDaoSession()!!.sourceDao
+        val collectionQb = sourceDao.queryBuilder()
+        val collection = collectionQb.where(collectionQb.and(SourceDao.Properties.Key.eq(key), SourceDao.Properties.Uuid.eq(CollectionModelImpl.uuid))).unique()
         if (null != collection) {
             collection.value = value
             sourceDao.update(collection)
+            if (listItemType != 0) {
+                CollectionModelImpl.getInstance().updateCollectionData(listItemType, value)
+            }
         }
     }
 }

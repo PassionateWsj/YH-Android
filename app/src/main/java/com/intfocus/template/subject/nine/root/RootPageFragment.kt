@@ -73,6 +73,7 @@ class RootPageFragment : BaseModuleFragment() {
         super.onViewCreated(view, savedInstanceState)
         generateModule()
     }
+
     /**
      * 插入组件模块
      */
@@ -83,22 +84,22 @@ class RootPageFragment : BaseModuleFragment() {
             val entity = mParam[i]
             when (entity.type) {
                 "single_text" -> {
-                    fragment = SingleTextFragment.newInstance(entity.config, entity.key)
+                    fragment = SingleTextFragment.newInstance(entity.config, entity.key, entity.list ?: 0)
                     TextPresenter(TextModelImpl.getInstance(), fragment)
                 }
 
                 "multi_text" -> {
-                    fragment = MultiTextFragment.newInstance(entity.config, entity.key)
+                    fragment = MultiTextFragment.newInstance(entity.config, entity.key, entity.list ?: 0)
                     TextPresenter(TextModelImpl.getInstance(), fragment)
                 }
 
                 "drop_options" -> {
-                    fragment = DropOptionsFragment.newInstance(entity.config, entity.key)
+                    fragment = DropOptionsFragment.newInstance(entity.config, entity.key, entity.list ?: 0)
                     OptionsPresenter(OptionsModelImpl.getInstance(), fragment)
                 }
 
                 "upload_images" -> {
-                    fragment = ImageFragment.newInstance(entity.config, entity.key)
+                    fragment = ImageFragment.newInstance(entity.config, entity.key, entity.list ?: 0)
                     ImagePresenter(ImageModelImpl.getInstance(), fragment)
                 }
 

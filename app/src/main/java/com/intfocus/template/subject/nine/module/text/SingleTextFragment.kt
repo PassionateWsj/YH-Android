@@ -18,18 +18,25 @@ import kotlinx.android.synthetic.main.module_single_text.*
  * @describe
  */
 class SingleTextFragment : BaseModuleFragment(), TextModuleContract.View {
+
     private var rootView: View? = null
     private lateinit var datas: TextEntity
-    private lateinit var param: String
-    private lateinit var key: String
+    private var param: String? = null
+    private var key: String? = null
+    private var listItemType: Int = 0
     override lateinit var presenter: TextModuleContract.Presenter
 
     companion object {
-        fun newInstance(param: String?, key: String?): SingleTextFragment {
+
+        private val LIST_ITEM_TYPE = "list_item_type"
+
+        fun newInstance(param: String?, key: String?, listItemType: Int): SingleTextFragment {
             val fragment = SingleTextFragment()
             val args = Bundle()
             args.putString(ARG_PARAM, param)
             args.putString(Params.KEY, key)
+            args.putString(Params.KEY, key)
+            args.putInt(LIST_ITEM_TYPE, listItemType)
             fragment.arguments = args
             return fragment
         }
@@ -40,6 +47,7 @@ class SingleTextFragment : BaseModuleFragment(), TextModuleContract.View {
         if (arguments != null) {
             param = arguments!!.getString(ARG_PARAM)
             key = arguments!!.getString(Params.KEY)
+            listItemType = arguments!!.getInt(LIST_ITEM_TYPE)
         }
     }
 
@@ -52,7 +60,7 @@ class SingleTextFragment : BaseModuleFragment(), TextModuleContract.View {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        presenter.loadData(param)
+        param?.let { presenter.loadData(it) }
         initView()
     }
 
@@ -69,7 +77,7 @@ class SingleTextFragment : BaseModuleFragment(), TextModuleContract.View {
 
             override fun afterTextChanged(p0: Editable?) {
                 datas.value = p0.toString()
-                presenter.update(datas, key)
+                key?.let { presenter.update(datas, it,listItemType) }
             }
         })
     }

@@ -40,13 +40,16 @@ class TextModelImpl : ModuleModel<TextEntity> {
         callback.onSuccess(data)
     }
 
-    override fun insertDb(value: String, key: String) {
+    override fun insertDb(value: String, key: String, listItemType: Int) {
         val sourceDao = DaoUtil.getDaoSession()!!.sourceDao
-        val collectionQb = sourceDao.queryBuilder()
-        val collection = collectionQb.where(collectionQb.and(SourceDao.Properties.Key.eq(key), SourceDao.Properties.Uuid.eq(CollectionModelImpl.uuid))).unique()
-        if (null != collection) {
-            collection.value = value
-            sourceDao.update(collection)
+        val sourceQb = sourceDao.queryBuilder()
+        val sourceItem = sourceQb.where(sourceQb.and(SourceDao.Properties.Key.eq(key), SourceDao.Properties.Uuid.eq(CollectionModelImpl.uuid))).unique()
+        if (null != sourceItem) {
+            sourceItem.value = value
+            sourceDao.update(sourceItem)
+            if (listItemType != 0) {
+                CollectionModelImpl.getInstance().updateCollectionData(listItemType, value)
+            }
         }
     }
 }

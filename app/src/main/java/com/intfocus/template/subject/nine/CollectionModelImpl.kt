@@ -7,6 +7,7 @@ import com.intfocus.template.model.DaoUtil
 import com.intfocus.template.model.callback.LoadDataCallback
 import com.intfocus.template.model.entity.Collection
 import com.intfocus.template.model.entity.Source
+import com.intfocus.template.model.gen.CollectionDao
 import com.intfocus.template.service.CollectionUploadService
 import com.intfocus.template.subject.nine.entity.CollectionEntity
 import com.intfocus.template.subject.nine.entity.Content
@@ -57,7 +58,7 @@ class CollectionModelImpl : CollectionModel<CollectionEntity> {
         Observable.just("")
                 .subscribeOn(Schedulers.io())
                 .map {
-                    //                    val response = RetrofitUtil.getHttpService(ctx).getJsonReportData("json", reportId, templateID, groupId).execute()
+//                    val response = RetrofitUtil.getHttpService(ctx).getJsonReportData("json", reportId, templateID, groupId).execute()
 //                    val responseString = response.body()!!.string()
 
                     val responseString = LoadAssetsJsonUtil.getAssetsJsonData("collection1.json")
@@ -124,6 +125,28 @@ class CollectionModelImpl : CollectionModel<CollectionEntity> {
         collectionDb.created_at = currentTime
         collectionDb.updated_at = currentTime
         mCollectionDao.insert(collectionDb)
+    }
+
+    fun updateCollectionData(index: Int, data: String) {
+        val collectionItem = mCollectionDao.queryBuilder().where(CollectionDao.Properties.Uuid.eq(uuid)).unique()
+        when (index) {
+            1 -> {
+                collectionItem.h1 = data
+            }
+            2 -> {
+                collectionItem.h2 = data
+            }
+            3 -> {
+                collectionItem.h3 = data
+            }
+            4 -> {
+                collectionItem.h4 = data
+            }
+            5 -> {
+                collectionItem.h5 = data
+            }
+        }
+        mCollectionDao.update(collectionItem)
     }
 
     fun updateModifyTime() {

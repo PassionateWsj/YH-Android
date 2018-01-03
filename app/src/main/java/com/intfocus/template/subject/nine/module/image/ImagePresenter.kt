@@ -19,8 +19,8 @@ class ImagePresenter(
     override fun start() {
     }
 
-    override fun update(imageEntity: ImageEntity, key: String) {
-        mModel.insertDb(Utils.listToString(imageEntity.value), key)
+    override fun update(imageEntity: ImageEntity, key: String, listItemType: Int) {
+        mModel.insertDb(Utils.listToString(imageEntity.value), key,listItemType)
     }
 
     override fun loadData(mParam: String) {

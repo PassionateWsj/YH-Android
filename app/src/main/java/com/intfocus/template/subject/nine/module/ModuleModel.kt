@@ -7,7 +7,7 @@ import com.intfocus.template.model.callback.LoadDataCallback
  * @data 2017/11/2
  * @describe
  */
-interface ModuleModel<T> {
+interface ModuleModel<out T> {
     fun analyseData(params: String, callback: LoadDataCallback<T>)
-    fun insertDb(value: String, key: String)
+    fun insertDb(value: String, key: String,listItemType:Int)
 }

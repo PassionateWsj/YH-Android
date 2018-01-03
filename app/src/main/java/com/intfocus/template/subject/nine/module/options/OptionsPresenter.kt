@@ -18,8 +18,8 @@ class OptionsPresenter(
     override fun start() {
     }
 
-    override fun update(entity: OptionsEntity, key: String) {
-        mModel.insertDb(entity.value, key)
+    override fun update(entity: OptionsEntity, key: String, listItemType: Int) {
+        mModel.insertDb(entity.value, key,listItemType)
     }
 
     override fun loadData(mParam: String) {
