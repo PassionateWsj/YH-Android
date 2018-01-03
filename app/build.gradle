@@ -409,6 +409,9 @@ dependencies {
     // JakeWharton大神的Scalpel
     implementation 'com.jakewharton.scalpel:scalpel:1.1.2'
 //    implementation 'com.squareup.okhttp3:okhttp:3.8.1'
+
+    implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.30'
+    implementation 'com.github.anzaizai:EasySwipeMenuLayout:1.1.2'
 }
 
 greendao {

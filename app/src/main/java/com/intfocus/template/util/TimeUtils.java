@@ -545,7 +545,7 @@ public class TimeUtils {
     public static String getStandardDate(Long timeMillis) {
         StringBuffer sb = new StringBuffer();
 
-        long time = System.currentTimeMillis() - (timeMillis * 1000);
+        long time = System.currentTimeMillis() - timeMillis;
         //秒前
         long mill = (long) Math.ceil(time / 1000);
         // 分钟前
@@ -556,7 +556,7 @@ public class TimeUtils {
         long day = (long) Math.ceil(time / 24 / 60 / 60 / 1000.0f);
 
         if (day - 1 > 2) {
-            return getStrTime("" + timeMillis);
+            return getStrTime("" + timeMillis / 1000);
         } else if (day - 1 == 2) {
             sb.append("前天");
         } else if (day - 1 == 1) {
