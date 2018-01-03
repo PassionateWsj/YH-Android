@@ -181,7 +181,7 @@ class KpiFragment : RefreshFragment(), KpiAdapter.HomePageListener {
                         mKpiData!!.add(homeBean1)
                         topBean?.let { mKpiData!!.add(0, it) }
 //                        ListUtils.sort(mKpiData, true, "index")
-//mKpiData.add(0,)
+//                        mKpiData.add(0,)
                         getHomeMsg()
                     }
                 })

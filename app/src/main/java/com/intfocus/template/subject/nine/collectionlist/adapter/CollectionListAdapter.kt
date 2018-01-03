@@ -1,11 +1,8 @@
 package com.intfocus.template.subject.nine.collectionlist.adapter
 
-import android.content.Context
-import android.support.v7.widget.RecyclerView
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.TextView
+import android.widget.Toast
+import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.BaseViewHolder
 import com.intfocus.template.R
 import com.intfocus.template.model.entity.Collection
 import com.intfocus.template.util.TimeUtils
@@ -19,49 +16,29 @@ import com.intfocus.template.util.TimeUtils
  * desc:
  * ****************************************************
  */
-class CollectionListAdapter(private val mCtx: Context) : RecyclerView.Adapter<CollectionListAdapter.ViewHolder>() {
-
-    private val mData: MutableList<Collection> = mutableListOf()
-
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ViewHolder =
-            ViewHolder(LayoutInflater.from(mCtx).inflate(R.layout.item_collection_list, parent, false))
-
-    override fun onBindViewHolder(holder: ViewHolder?, position: Int) {
-            holder?.let {
-                val itemData = mData[position]
-                holder.tv_item_collection_list_status.text = when {
-                    itemData.status == 1 -> ""
-                    itemData.status == 0 -> "上传中"
-                    else -> "草稿"
-                }
-                itemData.h1?.let {
-                    holder.tv_item_collection_list_title.text = it
-                }
-                itemData.h2?.let {
-                    holder.tv_item_collection_list_content.text = it
-                }
-                itemData.h3?.let {
-                    holder.tv_item_collection_list_title_label.text = it
-                }
-                itemData.updated_at?.let {
-                    holder.tv_item_collection_list_time.text = TimeUtils.getStandardDate(it)
-                }
+class CollectionListAdapter : BaseQuickAdapter<Collection, BaseViewHolder>(R.layout.item_collection_list) {
+    override fun convert(helper: BaseViewHolder, item: Collection) {
+        val status = when {
+            item.status == 1 -> ""
+            item.status == 0 -> "上传中"
+            else -> "草稿"
         }
-    }
-
-    override fun getItemCount(): Int =  mData.size
-
-    fun setData(data: List<Collection>) {
-        mData.clear()
-        mData.addAll(data)
-        notifyDataSetChanged()
-    }
-
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val tv_item_collection_list_status: TextView = itemView.findViewById(R.id.tv_item_collection_list_status)
-        val tv_item_collection_list_title_label: TextView = itemView.findViewById(R.id.tv_item_collection_list_title_label)
-        val tv_item_collection_list_title: TextView = itemView.findViewById(R.id.tv_item_collection_list_title)
-        val tv_item_collection_list_time: TextView = itemView.findViewById(R.id.tv_item_collection_list_time)
-        val tv_item_collection_list_content: TextView = itemView.findViewById(R.id.tv_item_collection_list_content)
+        helper.setText(R.id.tv_item_collection_list_status, status)
+                .setText(R.id.tv_item_collection_list_title, item.h1 ?: "")
+                .setText(R.id.tv_item_collection_list_content, item.h2 ?: "")
+                .setText(R.id.tv_item_collection_list_title_label, item.h3 ?: "")
+                .setGone(R.id.right_menu_sync, item.status != 1)
+                .setOnClickListener(R.id.rl_item_collection_list_container, { view ->
+                    Toast.makeText(mContext, "onItemClick" + data.indexOf(item), Toast.LENGTH_SHORT).show()
+                })
+                .setOnClickListener(R.id.right_menu_delete, { view ->
+                    remove(data.indexOf(item))
+                })
+                .setOnClickListener(R.id.right_menu_sync, { view ->
+                    Toast.makeText(mContext, "onItemClick" + data.indexOf(item), Toast.LENGTH_SHORT).show()
+                })
+        item.updated_at?.let {
+            helper.setText(R.id.tv_item_collection_list_time, TimeUtils.getStandardDate(it))
+        }
     }
 }

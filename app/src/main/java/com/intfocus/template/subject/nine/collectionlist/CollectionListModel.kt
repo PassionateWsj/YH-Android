@@ -1,6 +1,5 @@
 package com.intfocus.template.subject.nine.collectionlist
 
-import android.content.Context
 import com.intfocus.template.model.callback.LoadDataCallback
 
 /**
@@ -13,6 +12,6 @@ import com.intfocus.template.model.callback.LoadDataCallback
  * ****************************************************
  */
 interface CollectionListModel<out T> {
-    fun getData(ctx: Context, callback: LoadDataCallback<T>)
-    fun upload(ctx: Context)
+    fun getData( keyWord: String, callback: LoadDataCallback<T>)
+    fun upload()
 }

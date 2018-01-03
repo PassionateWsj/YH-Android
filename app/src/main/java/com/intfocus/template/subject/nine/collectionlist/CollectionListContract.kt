@@ -1,6 +1,5 @@
 package com.intfocus.template.subject.nine.collectionlist
 
-import android.content.Context
 import com.intfocus.template.base.BasePresenter
 import com.intfocus.template.base.BaseView
 import com.intfocus.template.model.entity.Collection
@@ -16,6 +15,7 @@ interface CollectionListContract {
     }
 
     interface Presenter : BasePresenter {
-        fun loadData(ctx: Context)
+        fun loadData()
+        fun loadData(key:String)
     }
 }

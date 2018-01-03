@@ -1,9 +1,9 @@
 package com.intfocus.template.subject.nine.collectionlist
 
-import android.content.Context
 import com.intfocus.template.model.DaoUtil
 import com.intfocus.template.model.callback.LoadDataCallback
 import com.intfocus.template.model.entity.Collection
+import com.intfocus.template.model.gen.CollectionDao
 import rx.Observable
 import rx.Subscriber
 import rx.Subscription
@@ -53,11 +53,18 @@ class CollectionListModelImpl : CollectionListModel<List<Collection>> {
         }
     }
 
-    override fun getData(ctx: Context, callback: LoadDataCallback<List<Collection>>) {
+    override fun getData(keyWord: String, callback: LoadDataCallback<List<Collection>>) {
+        val mDao = DaoUtil.getCollectionDao()
+        val queryBuilder = mDao.queryBuilder()
         observable = Observable.just("")
                 .subscribeOn(Schedulers.io())
                 .map {
-                    DaoUtil.getCollectionDao().queryBuilder().list()
+                    queryBuilder.where(
+                            queryBuilder.or(CollectionDao.Properties.H1.like("%$keyWord%"),
+                                    CollectionDao.Properties.H2.like("%$keyWord%"),
+                                    CollectionDao.Properties.H3.like("%$keyWord%")))
+                            .orderDesc(CollectionDao.Properties.Updated_at)
+                            .list()
                 }
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(object : Subscriber<List<Collection>>() {
@@ -76,6 +83,6 @@ class CollectionListModelImpl : CollectionListModel<List<Collection>> {
                 )
     }
 
-    override fun upload(ctx: Context) {
+    override fun upload() {
     }
 }

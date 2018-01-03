@@ -1,6 +1,5 @@
 package com.intfocus.template.subject.nine.collectionlist
 
-import android.content.Context
 import com.intfocus.template.model.callback.LoadDataCallback
 import com.intfocus.template.model.entity.Collection
 
@@ -23,8 +22,11 @@ class CollectionListPresenter(
     override fun start() {
     }
 
-    override fun loadData(ctx: Context) {
-        mModel.getData(ctx,object :LoadDataCallback<List<Collection>>{
+    override fun loadData() {
+        loadData("")
+    }
+    override fun loadData(keyWord:String) {
+        mModel.getData(keyWord,object :LoadDataCallback<List<Collection>>{
             override fun onSuccess(data: List<Collection>) {
                 mView.updateData(data)
             }
@@ -37,4 +39,5 @@ class CollectionListPresenter(
             }
         })
     }
+
 }
