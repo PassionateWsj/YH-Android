@@ -18,7 +18,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 /**
- *
  * @author zbaoliang
  * @date 17-5-21
  */
@@ -97,7 +96,7 @@ public class TableValueView extends View {
         for (Integer headerLength : headerLenghts) {
             totalWidth += headerLength;
         }
-        setMeasuredDimension(totalWidth, tableValues.size() * itemHeight);
+        setMeasuredDimension(totalWidth, tableValues.size() * (itemHeight + 1));
     }
 
     @Override
@@ -183,11 +182,6 @@ public class TableValueView extends View {
             float width = upxPointLs + headerLenghts.get(i);
 
             float centerPwidth;
-//            float currValue = (float) (headerLenghts.get(i) / 2);
-//            if (i == 0)
-//                centerPwidth = currValue;
-//            else
-//                centerPwidth = width - currValue;
             centerPwidth = width - DisplayUtil.dip2px(getContext(), 10);
             XAxesCenterPoint.put(i, centerPwidth);
 
@@ -196,11 +190,9 @@ public class TableValueView extends View {
 
         //TODO 计算文本对应的Y轴中心点
         int nlSize = tableValues.size();
-        float itemHeight2 = (float) (itemHeight / 2);
+        float centerPHeight = -(float) (itemHeight / 2);
         for (int i = 0; i < nlSize; i++) {
-            float height;
-            height = itemHeight * (i + 1);
-            float centerPHeight = height - itemHeight2;
+            centerPHeight += itemHeight + 1f;
             YAxesCenterPoint.put(i, centerPHeight);
         }
     }
