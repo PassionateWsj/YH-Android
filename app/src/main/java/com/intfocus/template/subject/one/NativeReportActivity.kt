@@ -1,6 +1,7 @@
 package com.intfocus.template.subject.one
 
 import android.app.Activity
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
@@ -9,6 +10,7 @@ import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.*
+import com.intfocus.template.BuildConfig
 import com.intfocus.template.R
 import com.intfocus.template.constant.Params.BANNER_NAME
 import com.intfocus.template.constant.Params.GROUP_ID
@@ -86,7 +88,9 @@ class NativeReportActivity : BaseActivity(), ModeContract.View, FilterDialogFrag
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        if ("template" == BuildConfig.FLAVOR) {
+            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+        }
         setContentView(R.layout.actvity_meter_detal)
 
         showDialog(this)
@@ -100,8 +104,8 @@ class NativeReportActivity : BaseActivity(), ModeContract.View, FilterDialogFrag
     }
 
     override fun onBackPressed() {
-        PageLinkManage.pageBackIntent(this)
         ModeImpl.destroyInstance()
+        PageLinkManage.pageBackIntent(this)
         finish()
     }
 
@@ -172,7 +176,7 @@ class NativeReportActivity : BaseActivity(), ModeContract.View, FilterDialogFrag
                     rbtn.isChecked = true
                 }
             }
-        } else if (dataSize == 1) {
+        } else {
             hs_page_btn.visibility = View.GONE
             mTlTitleContainer!!.visibility = View.GONE
             switchFragment(0)
@@ -210,6 +214,8 @@ class NativeReportActivity : BaseActivity(), ModeContract.View, FilterDialogFrag
      * 筛选完成回调
      */
     override fun complete(data: ArrayList<MenuItem>) {
+        EventBus.getDefault().post(EventRefreshTableRect(lastCheckId))
+
         var addStr = ""
         val size = data.size
         for (i in 0 until size) {

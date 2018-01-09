@@ -64,7 +64,7 @@ public class SortCheckBox extends View {
     private SortViewSizeListener sizeListener;
 
     public void setText(String text) {
-        this.text = text;
+        this.text = text.replace("<br/>","\n");
     }
 
     public void setBoxWidth(int w) {

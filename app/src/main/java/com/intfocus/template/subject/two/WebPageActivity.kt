@@ -10,6 +10,7 @@ import android.content.pm.ActivityInfo
 import android.net.Uri
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
+import android.view.KeyEvent
 import android.view.View
 import com.github.barteksc.pdfviewer.listener.OnPageErrorListener
 import com.github.barteksc.pdfviewer.scroll.DefaultScrollHandle
@@ -57,7 +58,7 @@ class WebPageActivity : BaseActivity(), WebPageContract.View, OnPageErrorListene
     lateinit var groupId: String
     lateinit var url: String
     lateinit var objectType: String
-    private var webView: WebView? = null
+    private var mWebView: WebView? = null
 
     /**
      * 图片上传接收参数
@@ -122,7 +123,7 @@ class WebPageActivity : BaseActivity(), WebPageContract.View, OnPageErrorListene
 
     override fun onDestroy() {
         super.onDestroy()
-        webView?.destroy()
+        mWebView?.destroy()
     }
 
     override fun dismissActivity(v: View) {
@@ -171,18 +172,18 @@ class WebPageActivity : BaseActivity(), WebPageContract.View, OnPageErrorListene
 
     @SuppressLint("SetJavaScriptEnabled")
     private fun initWebView() {
-        webView = WebView(this)
-        browser.addView(webView)
+        mWebView = WebView(this)
+        browser.addView(mWebView)
 
-        val webSettings = webView?.settings
+        val webSettings = mWebView?.settings
         // 允许 JS 执行
         webSettings?.javaScriptEnabled = true
-        webView?.setDownloadListener { url, userAgent, contentDisposition, mimetype, contentLength ->
-            LogUtil.d(this, "url="+url)
-            LogUtil.d(this, "userAgent="+userAgent)
-            LogUtil.d(this, "contentDisposition="+contentDisposition)
-            LogUtil.d(this, "mimetype="+mimetype)
-            LogUtil.d(this, "contentLength="+contentLength)
+        mWebView?.setDownloadListener { url, userAgent, contentDisposition, mimetype, contentLength ->
+            LogUtil.d(this, "url=" + url)
+            LogUtil.d(this, "userAgent=" + userAgent)
+            LogUtil.d(this, "contentDisposition=" + contentDisposition)
+            LogUtil.d(this, "mimetype=" + mimetype)
+            LogUtil.d(this, "contentLength=" + contentLength)
             val uri = Uri.parse(url)
             startActivity(Intent(Intent.ACTION_VIEW, uri))
         }
@@ -196,17 +197,17 @@ class WebPageActivity : BaseActivity(), WebPageContract.View, OnPageErrorListene
         // 设置网页自适应屏幕大小
         webSettings?.loadWithOverviewMode = true
         // 显示网页滚动条
-        webView?.isHorizontalScrollBarEnabled = false
+        mWebView?.isHorizontalScrollBarEnabled = false
         // 添加 javascript 接口
-        webView?.addJavascriptInterface(CustomJavaScriptsInterface(this), JAVASCRIPT_INTERFACE_NAME)
+        mWebView?.addJavascriptInterface(CustomJavaScriptsInterface(this), JAVASCRIPT_INTERFACE_NAME)
         // 设置是否支持缩放
         webSettings?.setSupportZoom(false)
         // 设置是否支持对网页进行长按操作
-        webView?.setOnKeyListener { _, _, _ -> return@setOnKeyListener false }
+        mWebView?.setOnKeyListener { _, _, _ -> return@setOnKeyListener false }
         // 设置网页默认编码
         webSettings?.defaultTextEncodingName = "utf-8"
 
-        webView?.webChromeClient = object : WebChromeClient() {
+        mWebView?.webChromeClient = object : WebChromeClient() {
             // For Android  > 4.1.1
             override fun openFileChooser(uploadMsg: ValueCallback<Uri>, acceptType: String?, capture: String?) {
                 uploadFile = uploadMsg
@@ -223,7 +224,7 @@ class WebPageActivity : BaseActivity(), WebPageContract.View, OnPageErrorListene
             }
         }
 
-        webView?.webViewClient = object : WebViewClient() {
+        mWebView?.webViewClient = object : WebViewClient() {
             override fun shouldOverrideUrlLoading(p0: WebView?, p1: String?): Boolean {
                 p0!!.loadUrl(p1)
                 return true
@@ -261,7 +262,7 @@ class WebPageActivity : BaseActivity(), WebPageContract.View, OnPageErrorListene
         if (url.toLowerCase().endsWith(".pdf")) {
             showPDF(url)
         }
-        webView?.loadUrl(url)
+        mWebView?.loadUrl(url)
     }
 
     /**
@@ -272,7 +273,7 @@ class WebPageActivity : BaseActivity(), WebPageContract.View, OnPageErrorListene
         when (errorCount) {
             1, 2 -> {
                 ApiHelper.deleteHeadersFile()
-                webView?.loadUrl(errorPagePath)
+                mWebView?.loadUrl(errorPagePath)
             }
             3 -> {
                 AlertDialog.Builder(this)
@@ -288,7 +289,7 @@ class WebPageActivity : BaseActivity(), WebPageContract.View, OnPageErrorListene
                         }
                         .setCancelable(false)
                         .show()
-                webView?.loadUrl(errorPagePath)
+                mWebView?.loadUrl(errorPagePath)
             }
         }
     }
@@ -356,7 +357,7 @@ class WebPageActivity : BaseActivity(), WebPageContract.View, OnPageErrorListene
     }
 
     override fun goBack() {
-        webView?.goBack()
+        mWebView?.goBack()
     }
 
     private fun imageSelect() {
@@ -471,8 +472,8 @@ class WebPageActivity : BaseActivity(), WebPageContract.View, OnPageErrorListene
             else -> {
             }
         }
-        if (popupWindow!!.isShowing) {
-            popupWindow!!.dismiss()
+        if (popupWindow.isShowing) {
+            popupWindow.dismiss()
         }
     }
 
@@ -483,5 +484,20 @@ class WebPageActivity : BaseActivity(), WebPageContract.View, OnPageErrorListene
         val clipboardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
         clipboardManager.text = url
         ToastUtils.show(this, "链接已拷贝", ToastColor.SUCCESS)
+    }
+
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+        when (keyCode) {
+            KeyEvent.KEYCODE_BACK -> {
+                mWebView?.let {
+                    if (it.canGoBack()) {
+                        it.goBack()
+                    } else {
+                        onBackPressed()
+                    }
+                }
+            }
+        }
+        return super.onKeyDown(keyCode, event)
     }
 }

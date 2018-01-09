@@ -4,6 +4,7 @@
     android:id="@+id/ll_work_box_item"
     android:layout_width="120dp"
     android:layout_height="120dp"
+    android:focusable="true"
     android:background="@drawable/gv_divider_bg">
 
     <LinearLayout

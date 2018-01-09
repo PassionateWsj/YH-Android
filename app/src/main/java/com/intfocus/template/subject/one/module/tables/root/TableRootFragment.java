@@ -111,8 +111,8 @@ public class TableRootFragment extends BaseFragment implements TableTitleAdapter
     private void init() {
         mPresenter.loadData(suRootID, index);
         datas = new ArrayList<>();
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-        adapter = new TableTitleAdapter(getContext(), datas, this);
+        recyclerView.setLayoutManager(new LinearLayoutManager(ctx, LinearLayoutManager.HORIZONTAL, false));
+        adapter = new TableTitleAdapter(ctx, datas, this);
         recyclerView.setAdapter(adapter);
     }
 
@@ -135,7 +135,10 @@ public class TableRootFragment extends BaseFragment implements TableTitleAdapter
         this.entity = entity;
         if (entity != null && entity.getDatas() != null) {
             datas = entity.getDatas();
-            adapter.setData(datas);
+            if (datas.size() > 0 && "".equals(datas.get(0).getTitle())) {
+                recyclerView.setVisibility(View.GONE);
+            }
+//            adapter.setData(datas);
 
             switchFragment(0);
         } else {
@@ -172,7 +175,7 @@ public class TableRootFragment extends BaseFragment implements TableTitleAdapter
         }
 
         FragmentTransaction ft = fm.beginTransaction();
-        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        ft.setTransition(FragmentTransaction.TRANSIT_NONE);
 
         // 选中的页面 添加加载过
         if (!toFragment.isAdded()) {

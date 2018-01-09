@@ -1,5 +1,6 @@
 package com.intfocus.template.subject.one
 
+import android.util.Log
 import com.alibaba.fastjson.JSON
 import com.alibaba.fastjson.JSONReader
 import com.intfocus.template.BuildConfig
@@ -67,6 +68,9 @@ class ModeImpl : ReportModelImpl() {
         @JvmStatic
         fun destroyInstance() {
             unSubscribe()
+            observable?.let {
+                Log.d(TAG, "取消订阅 ::: " + it.isUnsubscribed)
+            }
             INSTANCE = null
         }
 
@@ -86,6 +90,7 @@ class ModeImpl : ReportModelImpl() {
         jsonFileName = String.format("group_%s_template_%s_report_%s.json", groupId, templateId, reportId)
         urlString = String.format(K.API_REPORT_JSON_ZIP, BuildConfig.BASE_URL, groupId, templateId, reportId)
 
+        LogUtil.d(this@ModeImpl, "报表 url ::: " + urlString)
         checkReportData(callback)
     }
 
@@ -94,16 +99,19 @@ class ModeImpl : ReportModelImpl() {
                 .subscribeOn(Schedulers.io())
                 .map {
                     when {
-//                        count % 2 == 0 -> {
                         check(urlString) -> {
-                            count++
+                            LogUtil.d(this@ModeImpl, "网络数据")
                             analysisData()
                         }
                         available(uuid) -> {
+                            LogUtil.d(this@ModeImpl, "本地数据")
                             queryFilter(uuid)
                             generatePageList()
                         }
-                        else -> analysisData()
+                        else -> {
+                            LogUtil.d(this@ModeImpl, "报表数据有缓存，数据库无数据")
+                            analysisData()
+                        }
                     }
                 }
                 .observeOn(AndroidSchedulers.mainThread())
@@ -136,40 +144,45 @@ class ModeImpl : ReportModelImpl() {
             throw Throwable("获取数据失败")
         }
 
-//        response = LoadAssetsJsonUtil.getAssetsJsonData("template1_06_ios.json")
+//        response = LoadAssetsJsonUtil.getAssetsJsonData("group_165_template_1_report_31.json")
 
         val stringReader = StringReader(response)
         val reader = JSONReader(stringReader)
 
         reader.startObject()
+        var report: Report
+        val reportDataList = mutableListOf<Report>()
         while (reader.hasNext()) {
             val configKey = reader.readString()
             when (configKey) {
                 "filter" -> {
                     filterObject = JSON.parseObject(reader.readObject().toString(), Filter::class.java)
-                    val report = Report()
+                    report = Report()
                     report.id = null
                     report.uuid = uuid
                     report.name = filterObject.display
+                    report.index = 0
                     report.type = "filter"
                     report.page_title = "filter"
                     report.config = JSON.toJSONString(filterObject)
-                    reportDao.insert(report)
+                    reportDataList.add(report)
+//                    reportDao.insert(report)
                 }
                 "parts" -> {
                     reader.startArray()
                     var i = 0
                     while (reader.hasNext()) {
                         val partsItem = JSON.parseObject(reader.readObject().toString(), ReportModule::class.java)
-                        val report = Report()
+                        report = Report()
                         report.id = null
                         report.uuid = uuid
                         report.name = partsItem.name ?: "name"
                         report.page_title = partsItem.page_title ?: "page_title"
-                        report.index = i
+                        report.index = partsItem.control_index ?: i
                         report.type = partsItem.type ?: "unknown_type"
                         report.config = partsItem.config ?: "null_config"
-                        reportDao.insert(report)
+//                        reportDao.insert(report)
+                        reportDataList.add(report)
                         i++
                     }
                     reader.endArray()
@@ -177,6 +190,7 @@ class ModeImpl : ReportModelImpl() {
             }
         }
         reader.endObject()
+        reportDao.insertInTx(reportDataList)
         LogUtil.d(TAG, "ModeImpl 报表数据解析完成")
         return generatePageList()
     }
@@ -248,11 +262,13 @@ class ModeImpl : ReportModelImpl() {
                 .where(reportDao.queryBuilder()
                         .and(ReportDao.Properties.Uuid.eq(uuid), ReportDao.Properties.Type.eq("filter"))).unique()
 
-        filter.name = display
-        filter.config = JSON.toJSONString(filterObject)
+        filter?.name = display
+        filter?.config = JSON.toJSONString(filterObject)
 
-        reportDao.update(filter)
-        checkReportData(callback)
+        filter?.let {
+            reportDao.update(it)
+            checkReportData(callback)
+        }
     }
 
     /**
@@ -262,26 +278,28 @@ class ModeImpl : ReportModelImpl() {
      */
     private fun generatePageList(): List<String> {
         pageTitleList.clear()
+
         var distinctPageTitle = sqlDistinctPageTitle
 
         if (null != filterObject.data) {
-            distinctPageTitle = sqlDistinctPageTitle + " WHERE " + ReportDao.Properties.Name.columnName + " = \'" + filterObject.display + "\'"
+            distinctPageTitle = sqlDistinctPageTitle + " WHERE " + ReportDao.Properties.Name.columnName + " = \'" + filterObject.display + "\' AND " + ReportDao.Properties.Uuid.columnName + " = \'" + uuid + "\'"
         }
 
         val cursor = DaoUtil.getDaoSession()!!.database.rawQuery(distinctPageTitle, null)
 
-        try {
-            if (cursor.moveToFirst()) {
+        cursor.use {
+            if (it.moveToFirst()) {
                 do {
-                    if ("filter" != cursor.getString(0)) {
-                        pageTitleList.add(cursor.getString(0))
+                    val pageTitle = it.getString(0)
+                    if (pageTitle != null && "" != pageTitle && "filter" != pageTitle) {
+                        pageTitleList.add(pageTitle)
                     }
-                } while (cursor.moveToNext())
+                } while (it.moveToNext())
             }
-        } finally {
-            cursor.close()
         }
-
+        if (pageTitleList.size == 0) {
+            pageTitleList.add("")
+        }
         return pageTitleList
     }
 }

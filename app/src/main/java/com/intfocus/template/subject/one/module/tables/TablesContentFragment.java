@@ -1,12 +1,11 @@
 package com.intfocus.template.subject.one.module.tables;
 
 import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.util.ArrayMap;
@@ -28,6 +27,7 @@ import com.intfocus.template.subject.one.NativeReportActivity;
 import com.intfocus.template.subject.one.entity.EventRefreshTableRect;
 import com.intfocus.template.subject.one.entity.Tables;
 import com.intfocus.template.subject.one.module.tables.adapter.TableNameAdapter;
+import com.intfocus.template.ui.BaseFragment;
 import com.intfocus.template.ui.view.NotScrollListView;
 import com.intfocus.template.ui.view.SortCheckBox;
 import com.intfocus.template.ui.view.TableHorizontalScrollView;
@@ -55,12 +55,10 @@ import java.util.Comparator;
 /**
  * 模板一表格内容页面
  */
-public class TablesContentFragment extends Fragment implements SortCheckBox.SortViewSizeListener, AdapterView.OnItemClickListener, TableContentContract.View {
+public class TablesContentFragment extends BaseFragment implements SortCheckBox.SortViewSizeListener, AdapterView.OnItemClickListener, TableContentContract.View {
     private static final String ARG_PARAM = "param";
     private static final String SU_ROOT_ID = "suRootID";
     private static final String TABLE_ROOT_INDEX = "tableRootIndex";
-
-    private Context ctx;
 
     private Tables mParam;
     private Dialog loadingDialog;
@@ -135,6 +133,7 @@ public class TablesContentFragment extends Fragment implements SortCheckBox.Sort
     private LinearLayout mLlFilter;
     private int mNativeReportActionBarHight;
     private int mNativeReportLlFilterHight;
+    private ViewGroup mViewGroup;
 
     @Override
     public TableContentContract.Presenter getPresenter() {
@@ -163,7 +162,6 @@ public class TablesContentFragment extends Fragment implements SortCheckBox.Sort
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ctx = this.getContext();
         EventBus.getDefault().register(this);
         if (getArguments() != null) {
             suRootID = getArguments().getInt(SU_ROOT_ID);
@@ -189,50 +187,15 @@ public class TablesContentFragment extends Fragment implements SortCheckBox.Sort
         EventBus.getDefault().unregister(this);
     }
 
-    /**
-     * 模板一 最外层 ScrollView 滚动监听回调 -- 显示/隐藏 悬浮标题栏
-     *
-     * @param event
-     */
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void measureLocation(EventRefreshTableRect event) {
-        final int surootID = suRootID;
-        if (event.getEventTag() == surootID && !isHidden()) {
-            Rect rect = new Rect();
-            Point globalOffset = new Point();
-            rootView.getGlobalVisibleRect(rect, globalOffset);
-            synchronized (this) {
-                if (fl_tableTitle_container.getChildCount() != 0) {
-                    if (getActivity() instanceof NativeReportActivity) {
-                        boolean showSuspendTableTitle = globalOffset.y <= offsetTop && rect.bottom - DisplayUtil.dip2px(getActivity(), 46) > offsetTop;
-                        if (showSuspendTableTitle) {
-                            fl_tableTitle_container.removeView(suspensionView);
-                            ((NativeReportActivity) getActivity()).getSuspendContainer().addView(suspensionView);
-                        }
-                    }
-                } else {
-                    if (getActivity() instanceof NativeReportActivity) {
-                        int viewCont = ((NativeReportActivity) getActivity()).getSuspendContainer().getChildCount();
-                        boolean removeSuspendTableTitle = globalOffset.y > offsetTop || rect.bottom - DisplayUtil.dip2px(getActivity(), 46) < offsetTop && viewCont != 0;
-                        if (removeSuspendTableTitle) {
-                            ((NativeReportActivity) getActivity()).getSuspendContainer().removeView(suspensionView);
-                            fl_tableTitle_container.addView(suspensionView);
-                        }
-                    }
-                }
-            }
-        }
-    }
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        fm = getFragmentManager();
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        fm = getChildFragmentManager();
         if (rootView == null) {
+            mViewGroup = container;
             rootView = inflater.inflate(R.layout.modulartwo_unittablescontfragment, container, false);
             x.view().inject(this, rootView);
             nslistView_LineName.setFocusable(false);
-
-            suspensionView = LayoutInflater.from(ctx).inflate(R.layout.item_suspension, null);
+            suspensionView = inflater.inflate(R.layout.item_suspension, container,false);
             fl_tableTitle_container.addView(suspensionView);
             tv_header = suspensionView.findViewById(R.id.tv_unit_table_header);
             thscroll_header = suspensionView.findViewById(R.id.thscroll_unit_table_header);
@@ -315,7 +278,7 @@ public class TablesContentFragment extends Fragment implements SortCheckBox.Sort
             return;
         }
 
-        tv_header.setText(header[0]);
+        tv_header.setText(header[0].replace("<br/>","\n"));
         headerSize = header.length - 1;
         LayoutInflater inflater = LayoutInflater.from(ctx);
         SortViewClickListener listener = new SortViewClickListener();
@@ -343,20 +306,22 @@ public class TablesContentFragment extends Fragment implements SortCheckBox.Sort
         //初始化每列最大宽度
         int lineDataSize = lineData.size();
         int rowDataSize;
+        TextView textView ;
         for (int i = 0; i < lineDataSize; i++) {
             ArrayList<String> rowDatas = lineData.get(i);
             rowDataSize = rowDatas.size();
             for (int j = 0; j < rowDataSize; j++) {
-                TextView textView = new TextView(ctx);
+                 textView = new TextView(ctx);
                 textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
-                textView.setText(rowDatas.get(j));
                 if (i != 0) {
                     try {
-                        textView.setText(new JSONObject(rowDatas.get(j)).getString("value"));
+                        textView.setText(new JSONObject(rowDatas.get(j)).getString("value").replace("<br/>","\n"));
                     } catch (JSONException e) {
                         textView.setText("00000");
                         e.printStackTrace();
                     }
+                } else {
+                    textView.setText(rowDatas.get(j).replace("<br/>","\n"));
                 }
 
                 textView.setGravity(Gravity.CENTER);
@@ -379,11 +344,11 @@ public class TablesContentFragment extends Fragment implements SortCheckBox.Sort
 
         // 遍历表头数据, 添加到 al_SortView
         for (int i = 0; i < headerSize; i++) {
-            SortCheckBox box = (SortCheckBox) inflater.inflate(R.layout.item_table_sortcheckbox, null);
+            SortCheckBox box = (SortCheckBox) inflater.inflate(R.layout.item_table_sortcheckbox, mViewGroup,false);
             box.setDrawingCacheEnabled(true);
             box.setText(header[i + 1]);
             box.setBoxWidth(DisplayUtil.dip2px(ctx, mColumnMaxWidths.get(i)));
-            box.setTextSize(DisplayUtil.dip2px(getContext(), 14));
+            box.setTextSize(DisplayUtil.dip2px(ctx, 14));
             box.setTag(i + 1);
             box.setOnClickListener(listener);
             box.setOnSortViewSizeListener(this);
@@ -434,12 +399,12 @@ public class TablesContentFragment extends Fragment implements SortCheckBox.Sort
         }
 
         int itemHeight = getResources().getDimensionPixelSize(R.dimen.size_default);
-        int dividerColor = ContextCompat.getColor(getContext(), R.color.co9);
-        int textColor = ContextCompat.getColor(getContext(), R.color.co6_syr);
+        int dividerColor = ContextCompat.getColor(ctx, R.color.co9);
+        int textColor = ContextCompat.getColor(ctx, R.color.co6_syr);
         tableValue = new TableValueView(ctx);
         tableValue.setItemHeight(itemHeight);
         tableValue.setHeaderLengths(al_HeaderLenght);
-        tableValue.setTextSize(DisplayUtil.dip2px(getContext(), 13));
+        tableValue.setTextSize(DisplayUtil.dip2px(ctx, 13));
         tableValue.setTableValues(lables);
         tableValue.setDividerColor(dividerColor);
         tableValue.setTextColor(textColor);
@@ -451,12 +416,46 @@ public class TablesContentFragment extends Fragment implements SortCheckBox.Sort
         Tables modularTwoUnitTableEntitySubData = dataEntity.getData().get(position).getSub_data();
         boolean subDataNull = modularTwoUnitTableEntitySubData == null || (modularTwoUnitTableEntitySubData.getData() == null && modularTwoUnitTableEntitySubData.getHead() == null);
         if (subDataNull) {
-            ToastUtils.INSTANCE.showDefault(getActivity(), JSON.parseObject(dataEntity.getData().get(position).getMain_data()[0]).getString("value"));
+            ToastUtils.INSTANCE.showDefault(ctx, JSON.parseObject(dataEntity.getData().get(position).getMain_data()[0]).getString("value"));
             return;
         }
         startSubTable(position);
     }
 
+    /**
+     * 模板一 最外层 ScrollView 滚动监听回调 -- 显示/隐藏 悬浮标题栏
+     *
+     * @param event
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void measureLocation(EventRefreshTableRect event) {
+        final int surootID = suRootID;
+        if (event.getEventTag() == surootID && !isHidden()) {
+            Rect rect = new Rect();
+            Point globalOffset = new Point();
+            rootView.getGlobalVisibleRect(rect, globalOffset);
+            synchronized (this) {
+                if (fl_tableTitle_container.getChildCount() != 0) {
+                    if (getActivity() instanceof NativeReportActivity) {
+                        boolean showSuspendTableTitle = globalOffset.y <= offsetTop && rect.bottom - DisplayUtil.dip2px(getActivity(), 46) > offsetTop;
+                        if (showSuspendTableTitle) {
+                            fl_tableTitle_container.removeView(suspensionView);
+                            ((NativeReportActivity) getActivity()).getSuspendContainer().addView(suspensionView);
+                        }
+                    }
+                } else {
+                    if (getActivity() instanceof NativeReportActivity) {
+                        int viewCont = ((NativeReportActivity) getActivity()).getSuspendContainer().getChildCount();
+                        boolean removeSuspendTableTitle = globalOffset.y > offsetTop || rect.bottom - DisplayUtil.dip2px(getActivity(), 46) < offsetTop && viewCont != 0;
+                        if (removeSuspendTableTitle) {
+                            ((NativeReportActivity) getActivity()).getSuspendContainer().removeView(suspensionView);
+                            fl_tableTitle_container.addView(suspensionView);
+                        }
+                    }
+                }
+            }
+        }
+    }
     class SortViewClickListener implements View.OnClickListener {
 
         @Override

@@ -168,7 +168,7 @@ public class RootPageFragment extends Fragment implements RootPageContract.View 
                             layout.setId(id);
                             llMdrpContainer.addView(layout);
                             FragmentTransaction ft = getChildFragmentManager().beginTransaction();
-                            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+                            ft.setTransition(FragmentTransaction.TRANSIT_NONE);
                             ft.replace(layout.getId(), fragment);
                             ft.commitNow();
                         }

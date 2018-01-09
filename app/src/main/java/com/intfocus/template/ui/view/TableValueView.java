@@ -115,7 +115,7 @@ public class TableValueView extends View {
             canvas.drawColor(Color.WHITE);
             int nlSize = tableValues.size();
             float endX = getWidth();
-            for (int i = 0; i < nlSize; i++) {
+            for (int i = 1; i < nlSize; i++) {
                 float startY = itemHeight * (i + dividerHeight / 2) + (i + dividerHeight / 2);
                 canvas.drawLine(0, startY, endX, startY, dividerPaint);
             }
