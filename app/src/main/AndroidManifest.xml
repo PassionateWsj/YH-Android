@@ -5,6 +5,7 @@
           android:hardwareAccelerated="false"
           android:largeHeap="true">
 
+    <uses-feature android:name="android.hardware.type.television" android:required="${TELEVISION}" />
     <!-- 扫描条形码或二维码 -->
     <uses-permission android:name="android.permission.CAMERA"/>
 
@@ -30,7 +31,6 @@
     <uses-permission android:name="android.permission.RECORD_AUDIO"/> <!-- 允许程序录制音频 -->
     <uses-permission android:name="android.permission.GET_TASKS"/> <!-- 得到当前运行的activity名字 -->
     <!-- 5.0 及以上系统不可使用 -->
-
 
     <!-- 可选 -->
     <uses-permission android:name="android.permission.READ_LOGS"/>
@@ -66,12 +66,11 @@
         <service android:name=".service.CollectionUploadService"/>
 
         <activity
-            android:name=".launcher.LauncherActivity"
-            android:screenOrientation="portrait"
+            android:name=".launcher.SplashActivity"
+            android:screenOrientation="${SCREEN_ORIENTATION}"
             android:theme="@style/LauncherTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
-
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
@@ -112,7 +111,7 @@
         <!-- 登录 -->
         <activity
             android:name=".login.LoginActivity"
-            android:screenOrientation="portrait"
+            android:screenOrientation="${SCREEN_ORIENTATION}"
             android:theme="@style/AppTheme"/>
         <!-- 修改密码页 -->
         <activity
@@ -248,7 +247,10 @@
         <activity
             android:name=".ui.DiaLogActivity"
             android:theme="@style/myTransparent"/>
-
+        <activity
+            android:name=".testtemplateone.TestActivity"
+            android:theme="@style/AppTheme">
+        </activity>
     </application>
 
 </manifest>

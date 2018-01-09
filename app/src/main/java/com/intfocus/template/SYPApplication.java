@@ -11,7 +11,6 @@ import android.support.multidex.MultiDex;
 import com.alibaba.fastjson.JSONObject;
 import com.facebook.stetho.Stetho;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
-import com.intfocus.template.general.FetchPatchHandler;
 import com.intfocus.template.general.PriorityThreadPoolExecutor;
 import com.intfocus.template.model.DaoUtil;
 import com.intfocus.template.model.entity.PushMsgBean;
@@ -23,9 +22,6 @@ import com.intfocus.template.util.OpenUDIDManager;
 import com.intfocus.template.util.PageLinkManage;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.tencent.smtt.sdk.QbSdk;
-import com.tencent.tinker.loader.app.ApplicationLike;
-import com.tinkerpatch.sdk.TinkerPatch;
-import com.tinkerpatch.sdk.loader.TinkerPatchApplicationLike;
 import com.umeng.message.IUmengRegisterCallback;
 import com.umeng.message.PushAgent;
 import com.umeng.message.UmengMessageHandler;
@@ -61,7 +57,6 @@ public class SYPApplication extends Application {
             new PriorityBlockingQueue<Runnable>(10),
             priorityThreadFactory);
 
-    private Context appContext;
     public static Context globalContext;
     SharedPreferences mSettingSP;
     SharedPreferences mUserSP;
@@ -71,22 +66,21 @@ public class SYPApplication extends Application {
     public void onCreate() {
         super.onCreate();
         AppStatusTracker.init(this);
-        if (BuildConfig.TINKER_ENABLE) {
-            // 我们可以从这里获得Tinker加载过程的信息
-            ApplicationLike tinkerApplicationLike = TinkerPatchApplicationLike.getTinkerPatchApplicationLike();
+//        if (BuildConfig.TINKER_ENABLE) {
+//            // 我们可以从这里获得Tinker加载过程的信息
+//            ApplicationLike tinkerApplicationLike = TinkerPatchApplicationLike.getTinkerPatchApplicationLike();
+//
+//            // 初始化TinkerPatch SDK, 更多配置可参照API章节中的,初始化SDK
+//            TinkerPatch.init(tinkerApplicationLike)
+//                    .reflectPatchLibrary()
+//                    .setPatchRollbackOnScreenOff(true)
+//                    .setPatchRestartOnSrceenOff(true);
+//
+//            // 每隔1个小时去访问后台时候有更新,通过handler实现轮训的效果
+//            new FetchPatchHandler().fetchPatchWithInterval(1);
+//            LogUtil.d("TAG", "tinker init");
+//        }
 
-            // 初始化TinkerPatch SDK, 更多配置可参照API章节中的,初始化SDK
-            TinkerPatch.init(tinkerApplicationLike)
-                    .reflectPatchLibrary()
-                    .setPatchRollbackOnScreenOff(true)
-                    .setPatchRestartOnSrceenOff(true);
-
-            // 每隔1个小时去访问后台时候有更新,通过handler实现轮训的效果
-            new FetchPatchHandler().fetchPatchWithInterval(1);
-            LogUtil.d("TAG", "tinker init");
-        }
-
-        appContext = getApplicationContext();
         globalContext = getApplicationContext();
         mSettingSP = getSharedPreferences("SettingPreference", Context.MODE_PRIVATE);
         mUserSP = getSharedPreferences(USER_BEAN, Context.MODE_PRIVATE);
@@ -158,7 +152,7 @@ public class SYPApplication extends Application {
                 SharedPreferences mPushSP = getSharedPreferences("PushMessage", MODE_PRIVATE);
                 SharedPreferences.Editor mPushSPEdit = mPushSP.edit();
 
-                mPushSPEdit.putString(K.K_PUSH_DEVICE_TOKEN, deviceToken).commit();
+                mPushSPEdit.putString(K.K_PUSH_DEVICE_TOKEN, deviceToken).apply();
             }
 
             @Override

@@ -33,7 +33,7 @@ import kotlinx.android.synthetic.main.toast.*
 import java.util.*
 
 
-class LauncherActivity : Activity(), Animation.AnimationListener {
+class SplashActivity : Activity(), Animation.AnimationListener {
     val ctx = this
     private val permissionsArray = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_PHONE_STATE, Manifest.permission.CAMERA, Manifest.permission.ACCESS_FINE_LOCATION)
     private val CODE_AUTHORITY_REQUEST = 0
@@ -51,7 +51,6 @@ class LauncherActivity : Activity(), Animation.AnimationListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
         requestWindowFeature(Window.FEATURE_NO_TITLE)
         setContentView(R.layout.activity_splash)
@@ -239,6 +238,7 @@ class LauncherActivity : Activity(), Animation.AnimationListener {
                     Intent(this, GuideActivity::class.java)
                 } else {
                     Intent(this, LoginActivity::class.java)
+//                    Intent(this, TestActivity::class.java)
                 }
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK and Intent.FLAG_ACTIVITY_SINGLE_TOP)
                 this.startActivity(intent)
@@ -248,6 +248,7 @@ class LauncherActivity : Activity(), Animation.AnimationListener {
             else -> {
 
                 intent = Intent(this, LoginActivity::class.java)
+//                intent = Intent(this, TestActivity::class.java)
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK and Intent.FLAG_ACTIVITY_SINGLE_TOP)
                 this.startActivity(intent)
 

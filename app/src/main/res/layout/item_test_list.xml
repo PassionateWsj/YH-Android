@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:layout_marginHorizontal="6dp"
+    android:layout_marginVertical="3dp"
+    app:cardElevation="5dp">
+
+    <RelativeLayout
+        android:id="@+id/test_container"
+        android:layout_width="match_parent"
+        android:padding="10dp"
+        android:layout_height="match_parent"
+        android:background="@drawable/recycler_bg">
+
+        <TextView
+            android:id="@+id/tv_test_report_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="5dp"
+            android:text="33"
+            android:textColor="@color/co6_syr"
+            android:textSize="15sp"/>
+
+        <TextView
+            android:id="@+id/tv_test_report_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toStartOf="@id/tv_test_report_id"
+            android:text="title"
+            android:textColor="@color/co6_syr"
+            android:textSize="18sp"/>
+
+    </RelativeLayout>
+</android.support.v7.widget.CardView>
