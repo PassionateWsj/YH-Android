@@ -258,6 +258,7 @@ object PageLinkManage {
                 EXTERNAL_LINK, TEMPLATE_SIX -> {
                     mClickTemplateName = "外部链接"
                     urlString = link!!
+//                    urlString = "https://datav.aliyun.com/share/31ae546cd064046699a979b24607a9d5"
                     for ((key, value) in paramsMappingBean!!) {
                         urlString = splitUrl(userSP, urlString, key, value)
                     }
