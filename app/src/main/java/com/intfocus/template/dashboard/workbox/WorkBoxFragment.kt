@@ -1,5 +1,6 @@
 package com.intfocus.template.dashboard.workbox
 
+import android.content.res.Configuration
 import android.os.Bundle
 import android.support.v4.widget.SwipeRefreshLayout
 import android.view.LayoutInflater
@@ -39,7 +40,17 @@ class WorkBoxFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener, Wo
         super.onActivityCreated(savedInstanceState)
         presenter.loadData(ctx)
         initSwipeLayout()
+        initView()
         initShow()
+    }
+
+    private fun initView() {
+        gv_work_box.requestFocus()
+        gv_work_box.numColumns = if (ctx.resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            ConfigConstants.WORK_BOX_NUM_COLUMNS_LAND
+        } else {
+            ConfigConstants.WORK_BOX_NUM_COLUMNS_PORT
+        }
     }
 
     private fun initShow() {

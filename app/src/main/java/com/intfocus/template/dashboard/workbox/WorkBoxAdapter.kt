@@ -1,11 +1,14 @@
 package com.intfocus.template.dashboard.workbox
 
 import android.content.Context
+import android.content.res.Configuration
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import com.bumptech.glide.Glide
+import com.intfocus.template.ConfigConstants
 import com.intfocus.template.R
 import com.intfocus.template.listener.NoDoubleClickListener
 import com.intfocus.template.model.entity.DashboardItem
@@ -17,7 +20,12 @@ import com.zbl.lib.baseframe.utils.PhoneUtil
  */
 class WorkBoxAdapter(var ctx: Context, val datas: List<WorkBoxItem>?) : BaseAdapter() {
     var mInflater: LayoutInflater = LayoutInflater.from(ctx)
-    var laryoutParams = AbsListView.LayoutParams(PhoneUtil.getScreenWidth(ctx) / 3, PhoneUtil.getScreenWidth(ctx) / 3)
+    var itemCount = if (ctx.resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+        ConfigConstants.WORK_BOX_NUM_COLUMNS_LAND
+    } else {
+        ConfigConstants.WORK_BOX_NUM_COLUMNS_PORT
+    }
+    var laryoutParams = AbsListView.LayoutParams(PhoneUtil.getScreenWidth(ctx) / itemCount, PhoneUtil.getScreenWidth(ctx) / itemCount)
 
     override fun getCount(): Int = datas!!.size
 
@@ -41,8 +49,8 @@ class WorkBoxAdapter(var ctx: Context, val datas: List<WorkBoxItem>?) : BaseAdap
             if (convertView.layoutParams == null)
                 convertView.layoutParams = laryoutParams
             else
-                convertView.layoutParams.height = PhoneUtil.getScreenWidth(ctx) / 3
-            convertView.layoutParams.width = PhoneUtil.getScreenWidth(ctx) / 3
+                convertView.layoutParams.height = PhoneUtil.getScreenWidth(ctx) / itemCount
+            convertView.layoutParams.width = PhoneUtil.getScreenWidth(ctx) / itemCount
 
         } else {
             viewTag = convertView.tag as WorkBoxAdapter.ItemViewTag
@@ -59,6 +67,18 @@ class WorkBoxAdapter(var ctx: Context, val datas: List<WorkBoxItem>?) : BaseAdap
                         datas[position].obj_id ?: "KotlinNullPointerException", datas[position].template_id ?: "-100", "3", datas[position].params_mapping ?: HashMap()))
             }
         })
+        viewTag.rlItem.setOnKeyListener { _, keyCode, _ ->
+            when (keyCode) {
+                KeyEvent.KEYCODE_DPAD_CENTER, KeyEvent.KEYCODE_ENTER -> {
+                    PageLinkManage.pageLink(ctx, DashboardItem(datas[position].obj_link ?: "KotlinNullPointerException", datas[position].obj_title ?: "KotlinNullPointerException",
+                            datas[position].obj_id ?: "KotlinNullPointerException", datas[position].template_id ?: "-100", "3", datas[position].params_mapping ?: HashMap()))
+                    true
+                }
+                else -> {
+                    false
+                }
+            }
+        }
 
         return convertView
     }
