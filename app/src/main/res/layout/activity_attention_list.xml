@@ -9,6 +9,7 @@
 
     <RelativeLayout
         android:id="@+id/actionBar"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:background="@color/actionBar">
@@ -72,7 +73,7 @@
             android:layout_height="40dp"
             android:layout_marginBottom="10dp"
             android:layout_marginEnd="15dp"
-            android:visibility="visible"
+            android:visibility="gone"
             android:layout_marginStart="15dp"
             android:layout_marginTop="10dp"
             android:background="@drawable/bg_radius_sold">

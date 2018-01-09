@@ -60,7 +60,7 @@
         </service>
 
         <!-- 定位服务 -->
-        <service android:name=".service.LocationService"/>
+        <!--<service android:name=".service.LocationService"/>-->
         <!-- 高德地图 -->
         <service android:name="com.amap.api.location.APSService"/>
         <service android:name=".service.CollectionUploadService"/>
@@ -82,20 +82,21 @@
         <!-- 模板九 -->
         <activity
             android:name=".subject.nine.CollectionActivity"
-            android:screenOrientation="portrait"
+            android:screenOrientation="${SCREEN_ORIENTATION}"
             android:theme="@style/AppTheme"/>
         <activity
             android:name=".subject.nine.collectionlist.CollectionListActivity"
+            android:screenOrientation="${SCREEN_ORIENTATION}"
             android:theme="@style/AppTheme"/>
         <!-- 模板七 -->
         <activity
             android:name=".subject.seven.MyConcernActivity"
-            android:screenOrientation="portrait"
+            android:screenOrientation="${SCREEN_ORIENTATION}"
             android:theme="@style/AppTheme">
         </activity>
         <activity
             android:name=".subject.seven.concernlist.ConcernListActivity"
-            android:screenOrientation="portrait"
+            android:screenOrientation="${SCREEN_ORIENTATION}"
             android:theme="@style/AppTheme"/>
         <!-- 公告详情 -->
         <activity
@@ -106,7 +107,7 @@
         <!-- 忘记密码 -->
         <activity
             android:name=".login.ForgetPasswordActivity"
-            android:screenOrientation="portrait"
+            android:screenOrientation="${SCREEN_ORIENTATION}"
             android:theme="@style/AppTheme"/>
         <!-- 登录 -->
         <activity
@@ -132,7 +133,7 @@
         <!-- 个人信息 -->
         <activity
             android:name=".dashboard.mine.activity.SettingActivity"
-            android:screenOrientation="portrait"
+            android:screenOrientation="${SCREEN_ORIENTATION}"
             android:theme="@style/AppTheme2"/>
         <!-- 问题反馈 -->
         <activity
@@ -146,19 +147,19 @@
         <!-- 个人信息页信息展示 -->
         <activity
             android:name=".dashboard.mine.activity.SettingListActivity"
-            android:screenOrientation="portrait"
+            android:screenOrientation="${SCREEN_ORIENTATION}"
             android:theme="@style/AppTheme"/>
         <!-- 选项配置 -->
         <activity
             android:name=".dashboard.mine.activity.SettingPreferenceActivity"
-            android:screenOrientation="portrait"
+            android:screenOrientation="${SCREEN_ORIENTATION}"
             android:theme="@style/AppTheme"/>
 
         <!-- 主页面 -->
         <activity
             android:name=".dashboard.DashboardActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait"
+            android:screenOrientation="${SCREEN_ORIENTATION}"
             android:theme="@style/AppDashboardTheme"/>
 
         <!-- 模板二/主题页面 -->
@@ -168,16 +169,16 @@
             android:screenOrientation="fullSensor"
             android:theme="@style/AppTheme"/>
 
-        <!-- 原生模板二/主题页面 -->
+        <!-- 原生模板一/主题页面 -->
         <activity
             android:name=".subject.one.NativeReportActivity"
-            android:screenOrientation="portrait"
+            android:screenOrientation="${SCREEN_ORIENTATION}"
             android:theme="@style/AppTheme"/>
 
-        <!-- 原生模板二/表格页面 -->
+        <!-- 原生模板一/表格页面 -->
         <activity
             android:name=".subject.one.module.tables.SubTableActivity"
-            android:screenOrientation="portrait"
+            android:screenOrientation="${SCREEN_ORIENTATION}"
             android:theme="@style/AppTheme"/>
         <!-- 评论页 -->
         <!-- 扫码结果页 -->

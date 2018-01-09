@@ -14,7 +14,7 @@ android {
 
         ndk {
             // 设置支持的SO库架构
-            abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86'
+            abiFilters 'armeabi-v7a', 'armeabi', 'x86',"mips"
         }
         javaCompileOptions {
             annotationProcessorOptions {
@@ -411,8 +411,8 @@ dependencies {
     implementation "org.greenrobot:greendao:$rootProject.greenDAO_version"
     implementation 'com.j256.ormlite:ormlite-android:5.0'
 
-    // 腾讯 TBS 浏览器
-    implementation files('libs/tbs_sdk_3.5.jar')
+//    // 腾讯 TBS 浏览器
+//    implementation files('libs/tbs_sdk_3.5.jar')
 
     // 事件
     implementation 'org.greenrobot:eventbus:3.0.0'

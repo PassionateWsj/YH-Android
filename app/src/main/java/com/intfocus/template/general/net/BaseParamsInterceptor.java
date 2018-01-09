@@ -50,6 +50,7 @@ public class BaseParamsInterceptor implements Interceptor {
         String userNum = mUserSP.getString("user_num", "0");
         String userDeviceId = mUserSP.getString("user_device_id", "0");
         String appVision = mUserSP.getString("app_version", "0");
+//        String company = mUserSP.getString("company", "syp");
 
         //把api_token添加进url中
         HttpUrl.Builder authorizedUrlBuilder = oriRequest.url()
@@ -57,6 +58,7 @@ public class BaseParamsInterceptor implements Interceptor {
                 .scheme(oriRequest.url().scheme())
                 .host(oriRequest.url().host())
                 .addQueryParameter(K.API_TOKEN, apiToken)
+//                .addQueryParameter("company", company)
                 .addQueryParameter("_user_num", userNum)
                 .addQueryParameter("_user_device_id", userDeviceId)
                 .addQueryParameter("_app_version", appVision);

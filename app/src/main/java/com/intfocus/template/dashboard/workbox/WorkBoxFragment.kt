@@ -6,6 +6,7 @@ import android.support.v4.widget.SwipeRefreshLayout
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.intfocus.template.BuildConfig
 import com.intfocus.template.ConfigConstants
 import com.intfocus.template.R
 import com.intfocus.template.model.response.home.WorkBoxResult
@@ -14,6 +15,7 @@ import com.intfocus.template.subject.one.WorkBoxImpl
 import com.intfocus.template.subject.one.WorkBoxPresenter
 import com.intfocus.template.ui.BaseFragment
 import com.intfocus.template.util.HttpUtil
+import com.intfocus.template.util.LogUtil
 import com.intfocus.template.util.ToastUtils
 import kotlinx.android.synthetic.main.fragment_work_box.*
 
@@ -45,7 +47,8 @@ class WorkBoxFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener, Wo
     }
 
     private fun initView() {
-        gv_work_box.requestFocus()
+        LogUtil.d(this, "GridView requestFocus : " + gv_work_box.requestFocus())
+//        gv_work_box.requestFocus()
         gv_work_box.numColumns = if (ctx.resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             ConfigConstants.WORK_BOX_NUM_COLUMNS_LAND
         } else {
@@ -80,8 +83,19 @@ class WorkBoxFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener, Wo
 
 
     override fun dataLoaded(data: WorkBoxResult) {
-        datas = data.data
-        gv_work_box.adapter = WorkBoxAdapter(ctx, datas)
+//        datas = data.data
+        val dataList = ArrayList<WorkBoxItem>()
+        dataList.addAll(data.data!!)
+        if (BuildConfig.FLAVOR == "template") {
+            val item = WorkBoxItem()
+            item.name = "阿里云数据可视化"
+            item.obj_title = "阿里云数据可视化"
+            item.template_id = "-1"
+            item.obj_link = "https://datav.aliyun.com/share/31ae546cd064046699a979b24607a9d5"
+            dataList.add(item)
+        }
+        gv_work_box.adapter = WorkBoxAdapter(ctx, dataList)
+        LogUtil.d(this, "gv_work_box hasFocus :" + gv_work_box.hasFocus())
         swipe_container.isRefreshing = false
     }
 }

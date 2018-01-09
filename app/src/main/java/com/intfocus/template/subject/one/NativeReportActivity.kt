@@ -1,7 +1,6 @@
 package com.intfocus.template.subject.one
 
 import android.app.Activity
-import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
@@ -10,7 +9,6 @@ import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.*
-import com.intfocus.template.BuildConfig
 import com.intfocus.template.R
 import com.intfocus.template.constant.Params.BANNER_NAME
 import com.intfocus.template.constant.Params.GROUP_ID
@@ -88,9 +86,9 @@ class NativeReportActivity : BaseActivity(), ModeContract.View, FilterDialogFrag
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if ("template" == BuildConfig.FLAVOR) {
-            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
-        }
+//        if ("template" == BuildConfig.FLAVOR) {
+//            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+//        }
         setContentView(R.layout.actvity_meter_detal)
 
         showDialog(this)

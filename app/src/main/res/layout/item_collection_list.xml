@@ -46,6 +46,8 @@
                 android:layout_toEndOf="@id/tv_item_collection_list_title_label"
                 android:layout_toStartOf="@id/tv_item_collection_list_status"
                 android:text="暂无标题"
+                android:maxLines="1"
+                android:ellipsize="end"
                 android:textColor="@color/black"
                 android:textSize="16sp"/>
 

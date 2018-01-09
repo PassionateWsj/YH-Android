@@ -33,58 +33,62 @@ class MineFragment : Fragment(), ViewPager.OnPageChangeListener {
 
     fun initViewPager() {
         if (!ConfigConstants.ONLY_USER_SHOW) {
+            actionBar.visibility = View.GONE
             fragmentList.add(AnnouncementWarningFragment())
             fragmentList.add(DataCollegeFragment())
             titleList.add("公告预警")
             titleList.add("数据学院")
-        } else {
-            ll_line.visibility = View.GONE
-        }
-        val itemFragment = UserFragment()
-        fragmentList.add(itemFragment)
-        titleList.add("个人信息")
 
-        mViewPagerAdapter = MinePageVPAdapter(childFragmentManager, fragmentList, titleList)
-        mViewPagerAdapter.switchTo(FIRST_PAGE_INDEX)
+            val itemFragment = UserFragment()
+            fragmentList.add(itemFragment)
+            titleList.add("个人信息")
 
-        vp_message.adapter = mViewPagerAdapter
-        vp_message.addOnPageChangeListener(this)
-        vp_message.currentItem = 0
-        vp_message.offscreenPageLimit = 2
-        tab_layout.setSelectedTabIndicatorColor(ContextCompat.getColor(activity!!, R.color.color11))
-        tab_layout.setTabTextColors(ContextCompat.getColor(activity!!, R.color.color4), ContextCompat.getColor(activity!!, R.color.color6))
-        tab_layout.setBackgroundColor(ContextCompat.getColor(activity!!, R.color.color10))
-        tab_layout.setupWithViewPager(vp_message)
-        tab_layout.post({ Utils.setIndicator(tab_layout, 25, 25) })
-        vp_message.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
-            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+            mViewPagerAdapter = MinePageVPAdapter(childFragmentManager, fragmentList, titleList)
+            mViewPagerAdapter.switchTo(FIRST_PAGE_INDEX)
 
-            }
+            vp_message.adapter = mViewPagerAdapter
+            vp_message.addOnPageChangeListener(this)
+            vp_message.currentItem = 0
+            vp_message.offscreenPageLimit = 2
+            tab_layout.setSelectedTabIndicatorColor(ContextCompat.getColor(activity!!, R.color.color11))
+            tab_layout.setTabTextColors(ContextCompat.getColor(activity!!, R.color.color4), ContextCompat.getColor(activity!!, R.color.color6))
+            tab_layout.setBackgroundColor(ContextCompat.getColor(activity!!, R.color.color10))
+            tab_layout.setupWithViewPager(vp_message)
+            tab_layout.post({ Utils.setIndicator(tab_layout, 25, 25) })
+            vp_message.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+                override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
 
-            override fun onPageSelected(position: Int) {
-                when (position) {
-                    0 -> {
-                        line_orange.visibility = View.VISIBLE
-                        line_green.visibility = View.INVISIBLE
-                        line_blue.visibility = View.INVISIBLE
-                    }
-                    1 -> {
-                        line_orange.visibility = View.INVISIBLE
-                        line_green.visibility = View.VISIBLE
-                        line_blue.visibility = View.INVISIBLE
-                    }
-                    else -> {
-                        line_orange.visibility = View.INVISIBLE
-                        line_green.visibility = View.INVISIBLE
-                        line_blue.visibility = View.VISIBLE
+                }
+
+                override fun onPageSelected(position: Int) {
+                    when (position) {
+                        0 -> {
+                            line_orange.visibility = View.VISIBLE
+                            line_green.visibility = View.INVISIBLE
+                            line_blue.visibility = View.INVISIBLE
+                        }
+                        1 -> {
+                            line_orange.visibility = View.INVISIBLE
+                            line_green.visibility = View.VISIBLE
+                            line_blue.visibility = View.INVISIBLE
+                        }
+                        else -> {
+                            line_orange.visibility = View.INVISIBLE
+                            line_green.visibility = View.INVISIBLE
+                            line_blue.visibility = View.VISIBLE
+                        }
                     }
                 }
-            }
 
-            override fun onPageScrollStateChanged(state: Int) {
+                override fun onPageScrollStateChanged(state: Int) {
 
-            }
-        })
+                }
+            })
+        } else {
+            actionBar.visibility = View.VISIBLE
+            val itemFragment = UserFragment()
+            childFragmentManager.beginTransaction().add(R.id.rl_fragment_mine_container,itemFragment).commit()
+        }
     }
 
     //重写ViewPager页面切换的处理方法

@@ -8,7 +8,6 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.view.animation.LinearInterpolator
-import com.chad.library.adapter.base.BaseQuickAdapter
 import com.intfocus.template.R
 import com.intfocus.template.listener.NoDoubleClickListener
 import com.intfocus.template.model.entity.Collection
@@ -112,7 +111,7 @@ class CollectionListActivity : BaseActivity(), CollectionListContract.View {
         mAdapter = CollectionListAdapter()
         mAdapter.openLoadAnimation()
         // 默认提供5种方法（渐显、缩放、从下到上，从左到右、从右到左）
-        mAdapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_LEFT)
+//        mAdapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_LEFT)
         rv_collection_list.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         rv_collection_list.adapter = mAdapter
     }

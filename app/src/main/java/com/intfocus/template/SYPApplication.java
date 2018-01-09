@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.support.multidex.MultiDex;
+import android.util.Log;
 
 import com.alibaba.fastjson.JSONObject;
 import com.facebook.stetho.Stetho;
@@ -17,7 +18,6 @@ import com.intfocus.template.model.entity.PushMsgBean;
 import com.intfocus.template.ui.DiaLogActivity;
 import com.intfocus.template.util.AppStatusTracker;
 import com.intfocus.template.util.K;
-import com.intfocus.template.util.LogUtil;
 import com.intfocus.template.util.OpenUDIDManager;
 import com.intfocus.template.util.PageLinkManage;
 import com.tencent.bugly.crashreport.CrashReport;
@@ -65,6 +65,7 @@ public class SYPApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        MultiDex.install(this);
         AppStatusTracker.init(this);
 //        if (BuildConfig.TINKER_ENABLE) {
 //            // 我们可以从这里获得Tinker加载过程的信息
@@ -100,7 +101,7 @@ public class SYPApplication extends Application {
             @Override
             public void onViewInitFinished(boolean b) {
                 //x5內核初始化完成的回调，为true表示x5内核加载成功，否则表示x5内核加载失败，会自动切换到系统内核。
-                LogUtil.d("x5_app", " onViewInitFinished is " + b);
+                Log.d("x5_app", " onViewInitFinished is " + b);
             }
 
             @Override

@@ -9,6 +9,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
+import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.FragmentActivity
@@ -95,8 +96,10 @@ class LoginActivity : FragmentActivity() {
 
     @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
+//        if ("template" == BuildConfig.FLAVOR) {
+//            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+//        }
         super.onCreate(savedInstanceState)
-
         mUserSP = getSharedPreferences(USER_BEAN, Context.MODE_PRIVATE)
         mPushSP = getSharedPreferences(PUSH_MESSAGE, Context.MODE_PRIVATE)
         mSettingSP = getSharedPreferences(SETTING_PREFERENCE, Context.MODE_PRIVATE)
@@ -115,8 +118,9 @@ class LoginActivity : FragmentActivity() {
         checkPgyerVersionUpgrade(this@LoginActivity, false)
 
         initShow()
-
+        LogUtil.d("LoginActivity:1", "onCreate()")
         loginWithLastPwd = mSettingSP!!.getBoolean("keep_pwd", false)
+        LogUtil.d("LoginActivity:1", "loginWithLastPwd ::: " + loginWithLastPwd)
         // 显示记住用户名称
         if ("" != mUserSP!!.getString(USER_NUM, "")) {
             etUsername.setText(mUserSP!!.getString(USER_NUM, ""))
@@ -126,6 +130,13 @@ class LoginActivity : FragmentActivity() {
             etPassword!!.setText("1234567890")
             cb_login_keep_pwd.isChecked = true
 //            ll_etPassword_clear.visibility = View.GONE
+            if (ConfigConstants.LOGIN_WITH_LAST_USER ) {
+                mProgressDialog = ProgressDialog.show(this@LoginActivity, "稍等", "验证用户信息...")
+                mProgressDialog?.show()
+                userNum = mUserSP!!.getString(USER_NUM, "")
+                userLogin(mUserSP!!.getString("password", ""))
+                return
+            }
         }
         // 初始化监听
         initListener()
@@ -200,6 +211,7 @@ class LoginActivity : FragmentActivity() {
                 ll_etPassword_clear.visibility = View.GONE
                 cb_login_keep_pwd.isChecked = false
                 loginWithLastPwd = false
+                LogUtil.d("LoginActivity:1", "用户名输入框 文本变化监听 loginWithLastPwd ::: " + loginWithLastPwd)
 //                }
                 if (s.toString().isNotEmpty()) {
                     ll_etUsername_clear.visibility = View.VISIBLE
@@ -233,6 +245,7 @@ class LoginActivity : FragmentActivity() {
 //                if ( ) {
 //                }
                 loginWithLastPwd = false
+                LogUtil.d("LoginActivity:1", "密码输入框 文本变化监听 loginWithLastPwd ::: " + loginWithLastPwd)
             }
 
             override fun afterTextChanged(s: Editable) {
@@ -338,106 +351,113 @@ class LoginActivity : FragmentActivity() {
                 URLs.MD5(userPass)
             }
             // 登录验证
-            RetrofitUtil.getHttpService(ctx).userLogin(userNum, loginPwd, mUserSP!!.getString(USER_LOCATION, "0,0"))
-                    .compose(RetrofitUtil.CommonOptions())
-                    .subscribe(object : CodeHandledSubscriber<NewUser>() {
-
-                        override fun onCompleted() {
-
-                        }
-
-                        /**
-                         * 登录请求失败
-                         * @param apiException
-                         */
-                        override fun onError(apiException: ApiException) {
-                            mProgressDialog!!.dismiss()
-                            try {
-                                logParams = JSONObject()
-                                logParams.put(ACTION, "unlogin")
-                                logParams.put(USER_NAME, userNum + "|;|" + userPass)
-                                logParams.put(OBJECT_TITLE, apiException.displayMessage)
-                                ActionLogUtil.actionLoginLog(logParams)
-                            } catch (e: Exception) {
-                                e.printStackTrace()
-                            }
-
-                            ToastUtils.show(this@LoginActivity, apiException.displayMessage)
-                        }
-
-                        /**
-                         * 登录成功
-                         * @param data 返回的数据
-                         */
-                        override fun onBusinessNext(data: NewUser) {
-                            if (!loginWithLastPwd) {
-                                mUserSPEdit!!.putString("password", URLs.MD5(userPass))
-                            }
-                            when {
-                                cb_login_keep_pwd.isChecked  -> {
-                                    mSettingSPEdit!!.putBoolean("keep_pwd", true).apply()
-                                }
-                                !cb_login_keep_pwd.isChecked -> {
-                                    mSettingSPEdit!!.putBoolean("keep_pwd", false).apply()
-                                }
-                            }
-
-                            upLoadDevice() //上传设备信息
-
-                            mUserSPEdit!!.putBoolean(IS_LOGIN, true)
-                            mUserSPEdit!!.putString(USER_NAME, data.data!!.user_name)
-                            mUserSPEdit!!.putString(GROUP_ID, data.data!!.group_id)
-                            mUserSPEdit!!.putString(ROLD_ID, data.data!!.role_id)
-                            mUserSPEdit!!.putString(USER_ID, data.data!!.user_id)
-                            mUserSPEdit!!.putString(ROLD_NAME, data.data!!.role_name)
-                            mUserSPEdit!!.putString(GROUP_NAME, data.data!!.group_name)
-                            mUserSPEdit!!.putString(USER_NUM, data.data!!.user_num)
-                            mUserSPEdit!!.putString(K_CURRENT_UI_VERSION, "v2")
-                            mUserSPEdit!!.apply()
-
-                            // 判断是否包含推送信息，如果包含 登录成功直接跳转推送信息指定页面
-                            if (intent.hasExtra("msgData")) {
-                                val msgData = intent.getBundleExtra("msgData")
-                                val intent = Intent(this@LoginActivity, DashboardActivity::class.java)
-//                                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-                                intent.putExtra("msgData", msgData)
-                                this@LoginActivity.startActivity(intent)
-                            } else {
-                                // 检测用户空间，版本是否升级版本是否升级
-                                FileUtil.checkVersionUpgrade(ctx, assetsPath, sharedPath)
-                                // 在报表页面结束应用，再次登录时是否自动跳转上次报表页面
-                                if (ConfigConstants.REVIEW_LAST_PAGE) {
-                                    val pageLinkManagerSP = this@LoginActivity.getSharedPreferences("PageLinkManager", Context.MODE_PRIVATE)
-                                    val pageSaved = pageLinkManagerSP.getBoolean("pageSaved", false)
-                                    if (pageSaved) {
-                                        val objTitle = pageLinkManagerSP.getString("objTitle", "")
-                                        val link = pageLinkManagerSP.getString("link", "")
-                                        val objectId = pageLinkManagerSP.getString("objectId", "")
-                                        val templateId = pageLinkManagerSP.getString("templateId", "")
-                                        val objectType = pageLinkManagerSP.getString("objectType", "")
-                                        PageLinkManage.pageLink(this@LoginActivity, objTitle, link, objectId, templateId, objectType)
-                                    } else {
-                                        // 跳转至主界面
-                                        this@LoginActivity.startActivity(Intent(this@LoginActivity, DashboardActivity::class.java))
-                                    }
-                                } else {
-                                    // 跳转至主界面
-                                    this@LoginActivity.startActivity(Intent(this@LoginActivity, DashboardActivity::class.java))
-                                }
-                            }
-
-                            ActionLogUtil.actionLog("登录")
-
-                            mProgressDialog!!.dismiss()
-                            finish()
-                        }
-                    })
+            userLogin(loginPwd)
         } catch (e: Exception) {
             e.printStackTrace()
             mProgressDialog!!.dismiss()
             ToastUtils.show(this, e.localizedMessage)
         }
 
+    }
+
+    /**
+     * 登录验证
+     */
+    private fun userLogin(loginPwd: String?) {
+        RetrofitUtil.getHttpService(ctx).userLogin(userNum, loginPwd, mUserSP!!.getString(USER_LOCATION, "0,0"))
+                .compose(RetrofitUtil.CommonOptions())
+                .subscribe(object : CodeHandledSubscriber<NewUser>() {
+
+                    override fun onCompleted() {
+
+                    }
+
+                    /**
+                     * 登录请求失败
+                     * @param apiException
+                     */
+                    override fun onError(apiException: ApiException) {
+                        mProgressDialog!!.dismiss()
+                        try {
+                            logParams = JSONObject()
+                            logParams.put(ACTION, "unlogin")
+                            logParams.put(USER_NAME, userNum + "|;|" + userPass)
+                            logParams.put(OBJECT_TITLE, apiException.displayMessage)
+                            ActionLogUtil.actionLoginLog(logParams)
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+
+                        ToastUtils.show(this@LoginActivity, apiException.displayMessage)
+                    }
+
+                    /**
+                     * 登录成功
+                     * @param data 返回的数据
+                     */
+                    override fun onBusinessNext(data: NewUser) {
+                        if (!loginWithLastPwd) {
+                            mUserSPEdit!!.putString("password", URLs.MD5(userPass))
+                        }
+                        when {
+                            cb_login_keep_pwd.isChecked -> {
+                                mSettingSPEdit!!.putBoolean("keep_pwd", true).apply()
+                            }
+                            !cb_login_keep_pwd.isChecked -> {
+                                mSettingSPEdit!!.putBoolean("keep_pwd", false).apply()
+                            }
+                        }
+
+                        upLoadDevice() //上传设备信息
+
+                        mUserSPEdit!!.putBoolean(IS_LOGIN, true)
+                        mUserSPEdit!!.putString(USER_NAME, data.data!!.user_name)
+                        mUserSPEdit!!.putString(GROUP_ID, data.data!!.group_id)
+                        mUserSPEdit!!.putString(ROLD_ID, data.data!!.role_id)
+                        mUserSPEdit!!.putString(USER_ID, data.data!!.user_id)
+                        mUserSPEdit!!.putString(ROLD_NAME, data.data!!.role_name)
+                        mUserSPEdit!!.putString(GROUP_NAME, data.data!!.group_name)
+                        mUserSPEdit!!.putString(USER_NUM, data.data!!.user_num)
+                        mUserSPEdit!!.putString(K_CURRENT_UI_VERSION, "v2")
+                        mUserSPEdit!!.apply()
+
+                        // 判断是否包含推送信息，如果包含 登录成功直接跳转推送信息指定页面
+                        if (intent.hasExtra("msgData")) {
+                            val msgData = intent.getBundleExtra("msgData")
+                            val intent = Intent(this@LoginActivity, DashboardActivity::class.java)
+                            //                                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+                            intent.putExtra("msgData", msgData)
+                            this@LoginActivity.startActivity(intent)
+                        } else {
+                            // 检测用户空间，版本是否升级版本是否升级
+                            FileUtil.checkVersionUpgrade(ctx, assetsPath, sharedPath)
+                            // 在报表页面结束应用，再次登录时是否自动跳转上次报表页面
+                            if (ConfigConstants.REVIEW_LAST_PAGE) {
+                                val pageLinkManagerSP = this@LoginActivity.getSharedPreferences("PageLinkManager", Context.MODE_PRIVATE)
+                                val pageSaved = pageLinkManagerSP.getBoolean("pageSaved", false)
+                                if (pageSaved) {
+                                    val objTitle = pageLinkManagerSP.getString("objTitle", "")
+                                    val link = pageLinkManagerSP.getString("link", "")
+                                    val objectId = pageLinkManagerSP.getString("objectId", "")
+                                    val templateId = pageLinkManagerSP.getString("templateId", "")
+                                    val objectType = pageLinkManagerSP.getString("objectType", "")
+                                    PageLinkManage.pageLink(this@LoginActivity, objTitle, link, objectId, templateId, objectType)
+                                } else {
+                                    // 跳转至主界面
+                                    this@LoginActivity.startActivity(Intent(this@LoginActivity, DashboardActivity::class.java))
+                                }
+                            } else {
+                                // 跳转至主界面
+                                this@LoginActivity.startActivity(Intent(this@LoginActivity, DashboardActivity::class.java))
+                            }
+                        }
+
+                        ActionLogUtil.actionLog("登录")
+
+                        mProgressDialog!!.dismiss()
+                        finish()
+                    }
+                })
     }
 
     private fun uploadDeviceInformation(packageInfo: PackageInfo) {
@@ -570,5 +590,9 @@ class LoginActivity : FragmentActivity() {
 
             override fun onNoUpdateAvailable() {}
         })
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration?) {
+        super.onConfigurationChanged(newConfig)
     }
 }

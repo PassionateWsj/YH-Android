@@ -2,6 +2,7 @@ package com.intfocus.template.util;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
@@ -107,11 +108,16 @@ public class MapUtil {
 
                     //解析定位结果
                     String result = sb.toString();
-                    LogUtil.d("testlog", result);
+                    Log.d("testlog", result);
                 } else {
-                    LogUtil.d("testlog", "定位失败，loc is null");
+                    Log.d("testlog", "定位失败，loc is null");
                 }
             }
         });
+    }
+    public  void onDestroy() {
+        if (locationClient != null) {
+            locationClient.stopLocation();
+        }
     }
 }

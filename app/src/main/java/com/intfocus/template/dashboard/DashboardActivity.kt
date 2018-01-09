@@ -12,9 +12,11 @@ import android.provider.Settings
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
 import android.support.v4.view.ViewPager
+import android.view.KeyEvent
 import android.view.View
 import android.widget.LinearLayout
 import com.google.gson.Gson
+import com.intfocus.template.BuildConfig
 import com.intfocus.template.ConfigConstants
 import com.intfocus.template.R
 import com.intfocus.template.constant.Params.STORE
@@ -40,6 +42,7 @@ import com.intfocus.template.ui.view.TabView
 import com.intfocus.template.util.ActionLogUtil
 import com.intfocus.template.util.PageLinkManage
 import com.intfocus.template.util.ToastUtils
+import kotlinx.android.synthetic.main.activity_dashboard.*
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import rx.Observable
@@ -63,6 +66,10 @@ class DashboardActivity : BaseActivity(), ViewPager.OnPageChangeListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+//        if ("template" == BuildConfig.FLAVOR) {
+//            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+//        }
+
         setContentView(R.layout.activity_dashboard)
         mGson = Gson()
         mSharedPreferences = getSharedPreferences("DashboardPreferences", Context.MODE_PRIVATE)
@@ -73,10 +80,6 @@ class DashboardActivity : BaseActivity(), ViewPager.OnPageChangeListener {
         initViewPaper()
         getStoreList()
 
-//        val intent = intent
-//        if (intent.hasExtra("msgData")) {
-//            handlePushMessage(intent.getBundleExtra("msgData").getString("message"))
-//        }
     }
 
     /**
@@ -97,7 +100,13 @@ class DashboardActivity : BaseActivity(), ViewPager.OnPageChangeListener {
             itemFragment = WorkBoxFragment()
             initTabShowAndPagerData(mTabWorkBox!!, mTabView, itemFragment, mPagerData)
         }
-        initTabShowAndPagerData(mTabMessage!!, mTabView, MineFragment(), mPagerData)
+
+        if ("template" == BuildConfig.FLAVOR) {
+            view_shadow.visibility = View.GONE
+            toolBar.visibility = View.GONE
+        } else {
+            initTabShowAndPagerData(mTabMessage!!, mTabView, MineFragment(), mPagerData)
+        }
     }
 
     private fun initTabShowAndPagerData(tab: TabView, tabs: ArrayList<TabView>, item: Fragment, pagerData: ArrayList<Fragment>) {
@@ -128,23 +137,6 @@ class DashboardActivity : BaseActivity(), ViewPager.OnPageChangeListener {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { }
 
-        // RxBus通知消息界面 ShowPushMessageActivity 更新数据
-//        RxBusUtil.getInstance().post("UpDatePushMessage")
-//        when (pushMessage.type) {
-//            "report" -> pageLink(pushMessage.title + "", pushMessage.url, pushMessage.obj_id.toString(), "-1", pushMessage.obj_type.toString())
-//            "analyse" -> {
-//                mViewPager!!.currentItem = PAGE_REPORTS
-//                mTabView[mViewPager!!.currentItem].setActive(true)
-//            }
-//            "app" -> {
-//                mViewPager!!.currentItem = PAGE_REPORTS
-//                mTabView[mViewPager!!.currentItem].setActive(true)
-//            }
-//            "message" -> {
-//                mViewPager!!.currentItem = PAGE_MINE
-//                mTabView[mViewPager!!.currentItem].setActive(true)
-//            }
-//        }
     }
 
     override fun onBackPressed() {
@@ -316,5 +308,9 @@ class DashboardActivity : BaseActivity(), ViewPager.OnPageChangeListener {
         } else {
             ToastUtils.show(this, "没有指定链接")
         }
+    }
+
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+        return super.onKeyDown(keyCode, event)
     }
 }

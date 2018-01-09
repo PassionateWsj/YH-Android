@@ -14,6 +14,7 @@ import android.view.KeyEvent
 import android.view.View
 import com.github.barteksc.pdfviewer.listener.OnPageErrorListener
 import com.github.barteksc.pdfviewer.scroll.DefaultScrollHandle
+import com.intfocus.template.BuildConfig
 import com.intfocus.template.R
 import com.intfocus.template.constant.Params
 import com.intfocus.template.constant.Params.BANNER_NAME
@@ -87,6 +88,11 @@ class WebPageActivity : BaseActivity(), WebPageContract.View, OnPageErrorListene
         WebPagePresenter(WebPageModelImpl.getInstance(), this)
 
         presenter.load(reportId, templateId, groupId, url)
+
+        if (BuildConfig.FLAVOR == "template") {
+            rl_action_bar.post{ setBannerVisibility(View.GONE) }
+            ll_filter.post{ ll_filter.visibility = View.GONE }
+        }
     }
 
     override fun setBannerTitle(title: String) {
