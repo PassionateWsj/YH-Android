@@ -142,37 +142,49 @@ class KpiFragment : RefreshFragment(), KpiAdapter.HomePageListener {
                         var topBean: KpiBean? = null
                         if (datas != null) {
                             for (kpiResultData in datas) {
-                                if ("top_data" == kpiResultData.group_name) {
-                                    hasBanner = true
-                                    topBean = KpiBean()
-                                    topBean.group_name = "轮播图"
-                                    topBean.index = 0
-                                    topBean.data = kpiResultData.data
-//                                    mKpiData!!.add(homeBean)
-                                }
+                                when (kpiResultData.dashboard_type) {
+                                    "number1" -> {
+                                        hasBanner = true
+                                        topBean = KpiBean()
+                                        topBean.group_name = "轮播图"
+                                        topBean.index = 0
+                                        topBean.data = kpiResultData.data
+                                    }
+                                    "number2" -> {
+                                        val homeBean = KpiBean()
+                                        homeBean.group_name = kpiResultData.group_name
+                                        homeBean.index = 2
+                                        homeBean.data = kpiResultData.data
+                                        mKpiData!!.add(homeBean)
 
-                                if ("number2" == kpiResultData.data!![0].dashboard_type) {
-                                    val homeBean = KpiBean()
-                                    homeBean.group_name = kpiResultData.group_name
-                                    homeBean.index = 2
-                                    homeBean.data = kpiResultData.data
-                                    mKpiData!!.add(homeBean)
+                                    }
+                                    "number3" -> {
+                                        val homeBean = KpiBean()
+                                        homeBean.group_name = kpiResultData.group_name
+                                        homeBean.index = 3
+                                        homeBean.data = kpiResultData.data
+                                        mKpiData!!.add(homeBean)
+                                    }
                                 }
-
-                                if ("number3" == kpiResultData.data!![0].dashboard_type) {
-                                    val homeBean = KpiBean()
-                                    homeBean.group_name = kpiResultData.group_name
-                                    homeBean.index = 3
-                                    homeBean.data = kpiResultData.data
-                                    mKpiData!!.add(homeBean)
-                                }
+//                                if ("top_data" == kpiResultData.group_name) {
+////                                    mKpiData!!.add(homeBean)
+//                                }
+//
+//                                if ("number2" == kpiResultData.data!![0].dashboard_type) {
+//                                }
+//
+//                                if ("number3" == kpiResultData.data!![0].dashboard_type) {
+//                                }
                             }
                         }
-                        if (BuildConfig.BASE_URL.contains("yonghui")) {
+                        if ("yonghuitest" == BuildConfig.FLAVOR ||
+                                "yh_android" == BuildConfig.FLAVOR ||
+                                "yhdev" == BuildConfig.FLAVOR ||
+                                "shengyiplus" == BuildConfig.FLAVOR) {
                             val homeBean = KpiBean()
                             homeBean.group_name = "滚动文字"
                             homeBean.index = 1
-                            mKpiData!!.add(0,homeBean)
+                            mKpiData!!.add(0, homeBean)
                         }
 
                         val homeBean1 = KpiBean()
