@@ -100,11 +100,34 @@ class UserFragment : BaseFragment(), UserContract.View {
 
     override fun onResume() {
         super.onResume()
-        refreshData()
+        if (ConfigConstants.USER_CUSTOM) {
+            refreshData()
+        }
     }
 
     fun initView() {
         userNum = activity!!.getSharedPreferences(USER_BEAN, Context.MODE_PRIVATE).getString(USER_NUM, "")
+        requestUserData()
+
+        iv_user_icon.setOnClickListener {
+            if (ConfigConstants.HEAD_ICON_UPLOAD_SUPPORT) {
+                showIconSelectPopWindow()
+            }
+        }
+        rl_password_alter.setOnClickListener { startPassWordAlterActivity() }
+        rl_issue.setOnClickListener { startIssueActivity() }
+        rl_setting.setOnClickListener { startSettingActivity() }
+        rl_favorite.setOnClickListener { startFavoriteActivity() }
+        rl_message.setOnClickListener { startMessageActivity() }
+        rl_logout.setOnClickListener { showLogoutPopupWindow() }
+        rl_user_location.setOnClickListener {
+            if (ConfigConstants.USER_GROUP_CONTENT) {
+                startUserLocationPage()
+            }
+        }
+    }
+
+    private fun requestUserData() {
         RetrofitUtil.getHttpService(ctx).getUserInfo(userNum)
                 .compose(RetrofitUtil.CommonOptions<UserInfoResult>())
                 .subscribe(object : CodeHandledSubscriber<UserInfoResult>() {
@@ -135,23 +158,6 @@ class UserFragment : BaseFragment(), UserContract.View {
                     override fun onCompleted() {
                     }
                 })
-
-        iv_user_icon.setOnClickListener {
-            if (ConfigConstants.HEAD_ICON_UPLOAD_SUPPORT) {
-                showIconSelectPopWindow()
-            }
-        }
-        rl_password_alter.setOnClickListener { startPassWordAlterActivity() }
-        rl_issue.setOnClickListener { startIssueActivity() }
-        rl_setting.setOnClickListener { startSettingActivity() }
-        rl_favorite.setOnClickListener { startFavoriteActivity() }
-        rl_message.setOnClickListener { startMessageActivity() }
-        rl_logout.setOnClickListener { showLogoutPopupWindow() }
-        rl_user_location.setOnClickListener {
-            if (ConfigConstants.USER_GROUP_CONTENT) {
-                startUserLocationPage()
-            }
-        }
     }
 
     private fun initShow() {
@@ -352,9 +358,11 @@ class UserFragment : BaseFragment(), UserContract.View {
                 }
                 startActivityForResult(cropIntent, CODE_RESULT_REQUEST)
             }
-            else -> if (data != null) {
-                setImageToHeadView()
+            else -> {
             }
+        }
+        if (data != null) {
+            setImageToHeadView()
         }
         super.onActivityResult(requestCode, resultCode, data)
     }

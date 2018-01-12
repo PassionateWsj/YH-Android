@@ -60,6 +60,13 @@ class WebPageActivity : BaseActivity(), WebPageContract.View, OnPageErrorListene
     lateinit var url: String
     lateinit var objectType: String
     private var mWebView: WebView? = null
+    private var mOverrideKeyCodes = intArrayOf(
+            KeyEvent.KEYCODE_DPAD_CENTER,
+            KeyEvent.KEYCODE_DPAD_UP,
+            KeyEvent.KEYCODE_DPAD_LEFT,
+            KeyEvent.KEYCODE_DPAD_DOWN,
+            KeyEvent.KEYCODE_DPAD_RIGHT
+    )
 
     /**
      * 图片上传接收参数
@@ -90,8 +97,8 @@ class WebPageActivity : BaseActivity(), WebPageContract.View, OnPageErrorListene
         presenter.load(reportId, templateId, groupId, url)
 
         if (BuildConfig.FLAVOR == "template") {
-            rl_action_bar.post{ setBannerVisibility(View.GONE) }
-            ll_filter.post{ ll_filter.visibility = View.GONE }
+            rl_action_bar.post { setBannerVisibility(View.GONE) }
+            ll_filter.post { ll_filter.visibility = View.GONE }
         }
     }
 
@@ -213,6 +220,12 @@ class WebPageActivity : BaseActivity(), WebPageContract.View, OnPageErrorListene
         // 设置网页默认编码
         webSettings?.defaultTextEncodingName = "utf-8"
 
+        // 变更 UserAgent
+        if (BuildConfig.FLAVOR == "template") {
+            val userAgentWithNewChromeVersion = Regex("Chrome/[0-9.]*\\s+").replace(webSettings?.userAgentString!!, "Chrome/63.0.3239.132 ")
+            LogUtil.d(this, "UserAgent ::: $userAgentWithNewChromeVersion ")
+            webSettings.setUserAgent(userAgentWithNewChromeVersion.replace("MQQBrowser/6.2 TBS/043805 ", "").replace("Version/4.0 ","").replace("; wv",""))
+        }
         mWebView?.webChromeClient = object : WebChromeClient() {
             // For Android  > 4.1.1
             override fun openFileChooser(uploadMsg: ValueCallback<Uri>, acceptType: String?, capture: String?) {
@@ -237,6 +250,7 @@ class WebPageActivity : BaseActivity(), WebPageContract.View, OnPageErrorListene
             }
 
             override fun onPageFinished(view: WebView, url: String) {
+
                 //是否有筛选数据，有就显示出来
                 if (locationDataList.isNotEmpty()) {
                     rl_address_filter.visibility = View.VISIBLE
@@ -258,7 +272,6 @@ class WebPageActivity : BaseActivity(), WebPageContract.View, OnPageErrorListene
         }
 
     }
-
 
     /**
      * 渲染报表
@@ -326,9 +339,16 @@ class WebPageActivity : BaseActivity(), WebPageContract.View, OnPageErrorListene
      */
     override fun refresh() {
         setLoadingVisibility(View.VISIBLE)
-        CacheCleanManager.clearAppUserCache(this, this)
+        show(url)
     }
 
+    /**
+     * 刷新
+     */
+    fun refreshWithClearCache() {
+        setLoadingVisibility(View.VISIBLE)
+        CacheCleanManager.clearAppUserCache(this, this)
+    }
     override fun onCleanCacheSuccess() {
         presenter.load(reportId, templateId, groupId, url)
     }
@@ -474,7 +494,7 @@ class WebPageActivity : BaseActivity(), WebPageContract.View, OnPageErrorListene
             R.id.ll_share -> share(this, url)
             R.id.ll_comment -> comment(this, reportId, objectType, bannerName)
             R.id.ll_copylink -> actionCopyLink()
-            R.id.ll_refresh -> refresh()
+            R.id.ll_refresh -> refreshWithClearCache()
             else -> {
             }
         }
@@ -506,4 +526,44 @@ class WebPageActivity : BaseActivity(), WebPageContract.View, OnPageErrorListene
         }
         return super.onKeyDown(keyCode, event)
     }
+
+    /**
+     * Given a key code, this method will pass it into the web view to handle
+     * accordingly
+     *
+     * @param keycode Native Android KeyCode
+     */
+    fun handleKeyInjection(keycode: Int) {
+
+        val jsSend = ("javascript:androidKeyHandler.handleUri('nativewebsample://KEY_EVENT;"
+                + keycode + ";');")
+        loadJavascriptAction(jsSend)
+    }
+
+    private fun loadJavascriptAction(jsSend: String) {
+        mWebView?.loadUrl(jsSend)
+    }
+
+    private fun addAndroidKeyHandler() {
+        val androidKeyHandler = LoadAssetsJsonUtil.getAssetsJsonData("androidKeyHandler.js")
+        mWebView?.loadUrl("javascript:(function(){$androidKeyHandler})()")
+    }
+
+//    override fun dispatchKeyEvent(event: KeyEvent): Boolean {
+//        if (event.keyCode == KeyEvent.KEYCODE_R) {
+//            refresh()
+//        }
+//
+//        val eventKeyCode = event.keyCode
+//        for (i in 0 until mOverrideKeyCodes.size) {
+//            if (eventKeyCode == mOverrideKeyCodes[i]) {
+//                if (event.action == KeyEvent.ACTION_UP) {
+//                    handleKeyInjection(eventKeyCode)
+//                }
+//                return true
+//            }
+//        }
+//
+//        return super.dispatchKeyEvent(event)
+//    }
 }

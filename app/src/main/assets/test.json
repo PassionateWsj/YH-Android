@@ -1,24 +1,207 @@
-{
-"id":1004,
-"name":"超级管家下载",
-"report_title":"超级管家下载",
-"category":"1",
-"group_name":"超级管家",
-"link_path":"http://bms.microc.cn/shopguide/app_downloadYh.jhtml",
-"template_id":"-1",
-"obj_id":"1004",
-"obj_title":"超级管家下载",
-"obj_link":"http://bms.microc.cn/shopguide/app_downloadYh.jhtml",
-"publicly":false,
-"icon":"icon-超级管家.png",
-"icon_link":"http://yonghui.idata.mobi/images/icon-超级管家.png",
-"group_id":1004,
-"health_value":0,
-"group_order":null,
-"item_order":null,
-"option_user_num":"user_num:user_num",
-"params_mapping":{
-"user_num":"user_num"
-},
-"created_at":"2017-12-27T10:17:13.000+08:00"
-}
+[
+  {
+    "title": "",
+    "parts": [
+      {
+        "type": "banner",
+        "config": {
+          "title": "赛马概况",
+          "table_name": "report_data_9904_banner",
+          "identifier": "banner",
+          "date": {
+            "column_name": "period"
+          },
+          "info": "<br/>1. 展示本区域各门店的同赛马群门店的数据（点击某门店展示该门店同赛马群的门店）<br/>2.同比、环比数据都为月至今累计的同比和环比<br/>",
+          "subtitle": []
+        },
+        "id": "83102132",
+        "name": "123"
+      },
+      {
+        "type": "tables",
+        "config": [
+          {
+            "name": "",
+            "table_name": "report_data_9904_main",
+            "identifier": "grid1",
+            "table1": [
+              {
+                "head_name": "自身ID",
+                "column_name": "dim2"
+              },
+              {
+                "head_name": "父ID",
+                "column_name": "dim3"
+              },
+              {
+                "head_name": "门店",
+                "column_name": "dim1"
+              },
+              {
+                "head_name": "昨日<br/>销售(万)",
+                "column_name": "mea_float1",
+                "precision": 2,
+                "percentage": 0
+              },
+              {
+                "head_name": "昨日<br/>毛利(万)",
+                "column_name": "mea_float2",
+                "precision": 2,
+                "percentage": 0
+              },
+              {
+                "head_name": "昨日<br/>客流",
+                "column_name": "mea_float3",
+                "precision": 2,
+                "percentage": 0
+              },
+              {
+                "head_name": "本月<br/>销售(万)",
+                "column_name": "mea_float4",
+                "precision": 2,
+                "percentage": 0
+              },
+              {
+                "head_name": "本月<br/>毛利(万)",
+                "column_name": "mea_float5",
+                "precision": 2,
+                "percentage": 0
+              },
+              {
+                "head_name": "本月<br/>客流",
+                "column_name": "mea_float6",
+                "precision": 2,
+                "percentage": 0
+              },
+              {
+                "head_name": "销售<br/>同比",
+                "column_name": "mea_float7",
+                "precision": 2,
+                "percentage": 1
+              },
+              {
+                "head_name": "毛利<br/>同比",
+                "column_name": "mea_float8",
+                "precision": 2,
+                "percentage": 1
+              },
+              {
+                "head_name": "客流<br/>同比",
+                "column_name": "mea_float9",
+                "precision": 2,
+                "percentage": 1
+              },
+              {
+                "head_name": "销售<br/>环比",
+                "column_name": "mea_float10",
+                "precision": 2,
+                "percentage": 1
+              },
+              {
+                "head_name": "毛利<br/>环比",
+                "column_name": "mea_float11",
+                "precision": 2,
+                "percentage": 1
+              },
+              {
+                "head_name": "客流<br/>环比",
+                "column_name": "mea_float12",
+                "precision": 2,
+                "percentage": 1
+              }
+            ],
+            "table2": [
+              {
+                "head_name": "自身ID",
+                "column_name": "dim2"
+              },
+              {
+                "head_name": "父ID",
+                "column_name": "dim3"
+              },
+              {
+                "head_name": "同赛马<br/>群门店",
+                "column_name": "dim1"
+              },
+              {
+                "head_name": "昨日<br/>销售(万)",
+                "column_name": "mea_float1",
+                "precision": 2,
+                "percentage": 0
+              },
+              {
+                "head_name": "昨日<br/>毛利(万)",
+                "column_name": "mea_float2",
+                "precision": 2,
+                "percentage": 0
+              },
+              {
+                "head_name": "昨日<br/>客流",
+                "column_name": "mea_float3",
+                "precision": 2,
+                "percentage": 0
+              },
+              {
+                "head_name": "本月<br/>销售(万)",
+                "column_name": "mea_float4",
+                "precision": 2,
+                "percentage": 0
+              },
+              {
+                "head_name": "本月<br/>毛利(万)",
+                "column_name": "mea_float5",
+                "precision": 2,
+                "percentage": 0
+              },
+              {
+                "head_name": "本月<br/>客流(万)",
+                "column_name": "mea_float6",
+                "precision": 2,
+                "percentage": 0
+              },
+              {
+                "head_name": "销售<br/>同比",
+                "column_name": "mea_float7",
+                "precision": 2,
+                "percentage": 1
+              },
+              {
+                "head_name": "毛利<br/>同比",
+                "column_name": "mea_float8",
+                "precision": 2,
+                "percentage": 1
+              },
+              {
+                "head_name": "客流<br/>同比",
+                "column_name": "mea_float9",
+                "precision": 2,
+                "percentage": 1
+              },
+              {
+                "head_name": "销售<br/>环比",
+                "column_name": "mea_float10",
+                "precision": 2,
+                "percentage": 1
+              },
+              {
+                "head_name": "毛利<br/>环比",
+                "column_name": "mea_float11",
+                "precision": 2,
+                "percentage": 1
+              },
+              {
+                "head_name": "客流<br/>环比",
+                "column_name": "mea_float12",
+                "precision": 2,
+                "percentage": 1
+              }
+            ],
+            "table3": []
+          }
+        ],
+        "id": "66432756",
+        "name": "321"
+      }
+    ]
+  }
+]

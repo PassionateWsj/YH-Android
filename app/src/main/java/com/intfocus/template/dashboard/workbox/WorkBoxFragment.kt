@@ -6,7 +6,6 @@ import android.support.v4.widget.SwipeRefreshLayout
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.intfocus.template.BuildConfig
 import com.intfocus.template.ConfigConstants
 import com.intfocus.template.R
 import com.intfocus.template.model.response.home.WorkBoxResult
@@ -83,19 +82,25 @@ class WorkBoxFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener, Wo
 
 
     override fun dataLoaded(data: WorkBoxResult) {
-//        datas = data.data
-        val dataList = ArrayList<WorkBoxItem>()
-        dataList.addAll(data.data!!)
-        if (BuildConfig.FLAVOR == "template") {
-            val item = WorkBoxItem()
-            item.name = "阿里云数据可视化"
-            item.obj_title = "阿里云数据可视化"
-            item.template_id = "-1"
-            item.obj_link = "https://datav.aliyun.com/share/31ae546cd064046699a979b24607a9d5"
-            dataList.add(item)
-        }
-        gv_work_box.adapter = WorkBoxAdapter(ctx, dataList)
-        LogUtil.d(this, "gv_work_box hasFocus :" + gv_work_box.hasFocus())
+        datas = data.data
+//        val dataList = ArrayList<WorkBoxItem>()
+//        dataList.addAll(data.data!!)
+//        if (BuildConfig.FLAVOR == "template") {
+//            val item = WorkBoxItem()
+//            item.name = "阿里云数据可视化"
+//            item.obj_title = "阿里云数据可视化"
+//            item.template_id = "-1"
+//            item.obj_link = "https://datav.aliyun.com/share/31ae546cd064046699a979b24607a9d5"
+//            dataList.add(item)
+//            val item2 = WorkBoxItem()
+//            item2.name = "浏览器版本信息"
+//            item2.obj_title = "浏览器版本信息"
+//            item2.template_id = "-1"
+//            item2.obj_link = "https://faisalman.github.io/ua-parser-js/"
+//            dataList.add(item2)
+//        }
+        gv_work_box.adapter = WorkBoxAdapter(ctx, datas)
+//        LogUtil.d(this, "gv_work_box hasFocus :" + gv_work_box.hasFocus())
         swipe_container.isRefreshing = false
     }
 }

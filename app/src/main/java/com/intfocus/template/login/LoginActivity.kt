@@ -96,9 +96,6 @@ class LoginActivity : FragmentActivity() {
 
     @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
-//        if ("template" == BuildConfig.FLAVOR) {
-//            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
-//        }
         super.onCreate(savedInstanceState)
         mUserSP = getSharedPreferences(USER_BEAN, Context.MODE_PRIVATE)
         mPushSP = getSharedPreferences(PUSH_MESSAGE, Context.MODE_PRIVATE)

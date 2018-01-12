@@ -238,7 +238,6 @@ class SplashActivity : Activity(), Animation.AnimationListener {
                     Intent(this, GuideActivity::class.java)
                 } else {
                     Intent(this, LoginActivity::class.java)
-//                    Intent(this, TestActivity::class.java)
                 }
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK and Intent.FLAG_ACTIVITY_SINGLE_TOP)
                 this.startActivity(intent)
@@ -248,7 +247,6 @@ class SplashActivity : Activity(), Animation.AnimationListener {
             else -> {
 
                 intent = Intent(this, LoginActivity::class.java)
-//                intent = Intent(this, TestActivity::class.java)
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK and Intent.FLAG_ACTIVITY_SINGLE_TOP)
                 this.startActivity(intent)
 
