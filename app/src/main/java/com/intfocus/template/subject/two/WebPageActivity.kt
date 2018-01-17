@@ -12,6 +12,7 @@ import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.view.KeyEvent
 import android.view.View
+import android.view.WindowManager
 import com.github.barteksc.pdfviewer.listener.OnPageErrorListener
 import com.github.barteksc.pdfviewer.scroll.DefaultScrollHandle
 import com.intfocus.template.BuildConfig
@@ -90,13 +91,17 @@ class WebPageActivity : BaseActivity(), WebPageContract.View, OnPageErrorListene
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        if ("template" == BuildConfig.FLAVOR || "baozhentv" == BuildConfig.FLAVOR) {
+            window.setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        }
+
         setContentView(R.layout.activity_subject)
         init()
         WebPagePresenter(WebPageModelImpl.getInstance(), this)
 
         presenter.load(reportId, templateId, groupId, url)
 
-        if (BuildConfig.FLAVOR == "template") {
+        if ("template" == BuildConfig.FLAVOR || "baozhentv" == BuildConfig.FLAVOR) {
             rl_action_bar.post { setBannerVisibility(View.GONE) }
             ll_filter.post { ll_filter.visibility = View.GONE }
         }
@@ -221,10 +226,10 @@ class WebPageActivity : BaseActivity(), WebPageContract.View, OnPageErrorListene
         webSettings?.defaultTextEncodingName = "utf-8"
 
         // 变更 UserAgent
-        if (BuildConfig.FLAVOR == "template") {
+        if ("template" == BuildConfig.FLAVOR || "baozhentv" == BuildConfig.FLAVOR) {
             val userAgentWithNewChromeVersion = Regex("Chrome/[0-9.]*\\s+").replace(webSettings?.userAgentString!!, "Chrome/63.0.3239.132 ")
             LogUtil.d(this, "UserAgent ::: $userAgentWithNewChromeVersion ")
-            webSettings.setUserAgent(userAgentWithNewChromeVersion.replace("MQQBrowser/6.2 TBS/043805 ", "").replace("Version/4.0 ","").replace("; wv",""))
+            webSettings.setUserAgent(userAgentWithNewChromeVersion.replace("MQQBrowser/6.2 TBS/043805 ", "").replace("Version/4.0 ", "").replace("; wv", ""))
         }
         mWebView?.webChromeClient = object : WebChromeClient() {
             // For Android  > 4.1.1
@@ -349,6 +354,7 @@ class WebPageActivity : BaseActivity(), WebPageContract.View, OnPageErrorListene
         setLoadingVisibility(View.VISIBLE)
         CacheCleanManager.clearAppUserCache(this, this)
     }
+
     override fun onCleanCacheSuccess() {
         presenter.load(reportId, templateId, groupId, url)
     }
@@ -515,12 +521,18 @@ class WebPageActivity : BaseActivity(), WebPageContract.View, OnPageErrorListene
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
         when (keyCode) {
             KeyEvent.KEYCODE_BACK -> {
-                mWebView?.let {
-                    if (it.canGoBack()) {
-                        it.goBack()
-                    } else {
-                        onBackPressed()
-                    }
+//                mWebView?.let {
+//                    return if (it.canGoBack()) {
+//                        it.goBack()
+//                        true
+//                    } else {
+//                        onBackPressed()
+//                        super.onKeyDown(keyCode, event)
+//                    }
+//                }
+                if (mWebView != null && mWebView!!.canGoBack()) {
+                    mWebView?.goBack()
+                    return true
                 }
             }
         }
@@ -534,8 +546,7 @@ class WebPageActivity : BaseActivity(), WebPageContract.View, OnPageErrorListene
      * @param keycode Native Android KeyCode
      */
     fun handleKeyInjection(keycode: Int) {
-
-        val jsSend = ("javascript:androidKeyHandler.handleUri('nativewebsample://KEY_EVENT;"
+        val jsSend = ("javascript:mAKHandler.handleUri('nativewebsample://KEY_EVENT;"
                 + keycode + ";');")
         loadJavascriptAction(jsSend)
     }
@@ -549,21 +560,31 @@ class WebPageActivity : BaseActivity(), WebPageContract.View, OnPageErrorListene
         mWebView?.loadUrl("javascript:(function(){$androidKeyHandler})()")
     }
 
-//    override fun dispatchKeyEvent(event: KeyEvent): Boolean {
-//        if (event.keyCode == KeyEvent.KEYCODE_R) {
-//            refresh()
-//        }
-//
-//        val eventKeyCode = event.keyCode
-//        for (i in 0 until mOverrideKeyCodes.size) {
-//            if (eventKeyCode == mOverrideKeyCodes[i]) {
-//                if (event.action == KeyEvent.ACTION_UP) {
-//                    handleKeyInjection(eventKeyCode)
-//                }
-//                return true
-//            }
-//        }
-//
-//        return super.dispatchKeyEvent(event)
-//    }
+    override fun onContentChanged() {
+        super.onContentChanged()
+        if (requestedOrientation == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
+            rl_action_bar.post { setBannerVisibility(View.GONE) }
+            ll_filter.post { ll_filter.visibility = View.GONE }
+        } else {
+            rl_action_bar.post { setBannerVisibility(View.VISIBLE) }
+            ll_filter.post { ll_filter.visibility = View.VISIBLE }
+        }
+    }
+    override fun dispatchKeyEvent(event: KeyEvent): Boolean {
+        if (event.keyCode == KeyEvent.KEYCODE_R) {
+            refresh()
+        }
+
+        val eventKeyCode = event.keyCode
+        for (i in 0 until mOverrideKeyCodes.size) {
+            if (eventKeyCode == mOverrideKeyCodes[i]) {
+                if (event.action == KeyEvent.ACTION_UP) {
+                    handleKeyInjection(eventKeyCode)
+                }
+                return true
+            }
+        }
+
+        return super.dispatchKeyEvent(event)
+    }
 }

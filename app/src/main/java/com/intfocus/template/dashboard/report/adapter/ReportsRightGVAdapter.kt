@@ -47,6 +47,8 @@ class ReportsRightGVAdapter(var ctx: Context, var datas: List<GroupDataBean>?) :
 //        x.image().bind(viewTag.mIcon, datas!![position].icon_link)
         Glide.with(ctx)
                 .load(datas!![position].icon_link)
+                .placeholder(R.drawable.default_icon)
+                .error(R.drawable.default_icon)
                 .into(viewTag.mIcon)
 
         viewTag.llItem.setOnClickListener(object : NoDoubleClickListener() {

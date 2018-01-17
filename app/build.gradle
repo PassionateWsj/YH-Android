@@ -80,6 +80,22 @@ android {
             v1SigningEnabled true
             v2SigningEnabled false
         }
+        baozhen {
+            keyAlias BZ_ALIAS
+            keyPassword BZ_KEY_PWD
+            storeFile file(BZ_STORE_FILE)
+            storePassword BZ_KEYSTORE_PWD
+            v1SigningEnabled true
+            v2SigningEnabled true
+        }
+        baozhentv {
+            keyAlias BZTV_ALIAS
+            keyPassword BZTV_KEY_PWD
+            storeFile file(BZTV_STORE_FILE)
+            storePassword BZTV_KEYSTORE_PWD
+            v1SigningEnabled true
+            v2SigningEnabled true
+        }
     }
 
     buildTypes {
@@ -179,8 +195,8 @@ android {
             dimension "APP"
 
             applicationId 'com.intfocus.yonghuitest'
-            versionCode 692
-            versionName "3.1.42"
+            versionCode 694
+            versionName "3.1.44"
 
             buildConfigField "String", "BASE_URL", YONGHUITEST_BASE_URL
             buildConfigField "String", "PGYER_URL", YONGHUITEST_PGYER_URL
@@ -265,7 +281,6 @@ android {
             versionName "2.0.1"
 
             buildConfigField "String", "BASE_URL", HX_BASE_URL
-            buildConfigField "String", "TELEVISION", "false"
             buildConfigField "String", "PGYER_URL", HX_PGYER_URL
             buildConfigField "String", "AMAP_KEY", "\"" + HX_AMAP_KEY + "\""
             buildConfigField "String", "BUGLY_APP_ID", "\"" + HX_BUGLY_APP_ID + "\""
@@ -285,6 +300,61 @@ android {
 
             signingConfig signingConfigs.hx
         }
+        baozhen {
+            dimension "APP"
+
+            applicationId 'com.intfocus.shenzhenpoly'
+            versionCode 1
+            versionName "1.0.0"
+
+            buildConfigField "String", "BASE_URL", BZ_BASE_URL
+            buildConfigField "String", "PGYER_URL", BZ_PGYER_URL
+            buildConfigField "String", "AMAP_KEY", "\"" + BZ_AMAP_KEY + "\""
+            buildConfigField "String", "BUGLY_APP_ID", "\"" + BZ_BUGLY_APP_ID + "\""
+            buildConfigField "String", "WX_APP_ID", "\"" + BZ_WX_APP_ID + "\""
+            buildConfigField "String", "WX_APP_Secret", "\"" + BZ_WX_APP_Secret + "\""
+            manifestPlaceholders = [AMAP_KEY            : BZ_AMAP_KEY,
+                                    PGYER_APPID         : BZ_PGYER_APPID,
+                                    PGYER_URL           : BZ_PGYER_URL,
+                                    UMENG_APPKEY        : BZ_UMENG_APPKEY,
+                                    UMENG_MESSAGE_SECRET: BZ_UMENG_MESSAGE_SECRET,
+                                    BUGLY_APP_ID        : BZ_BUGLY_APP_ID,
+                                    WX_APP_ID           : BZ_WX_APP_ID,
+                                    WX_APP_Secret       : BZ_WX_APP_Secret,
+                                    TELEVISION          : 'false',
+                                    SCREEN_ORIENTATION  : "portrait",
+                                    APPLICATIONID       : applicationId]
+
+            signingConfig signingConfigs.baozhen
+        }
+        baozhentv {
+            dimension "APP"
+
+            applicationId 'com.intfocus.shenzhenpolytv'
+            versionCode 1
+            versionName "1.0.0"
+
+            buildConfigField "String", "BASE_URL", BZTV_BASE_URL
+            buildConfigField "String", "PGYER_URL", BZTV_PGYER_URL
+            buildConfigField "String", "AMAP_KEY", "\"" + BZTV_AMAP_KEY + "\""
+            buildConfigField "String", "BUGLY_APP_ID", "\"" + BZTV_BUGLY_APP_ID + "\""
+            buildConfigField "String", "WX_APP_ID", "\"" + BZTV_WX_APP_ID + "\""
+            buildConfigField "String", "WX_APP_Secret", "\"" + BZTV_WX_APP_Secret + "\""
+            manifestPlaceholders = [AMAP_KEY            : BZTV_AMAP_KEY,
+                                    PGYER_APPID         : BZTV_PGYER_APPID,
+                                    PGYER_URL           : BZTV_PGYER_URL,
+                                    UMENG_APPKEY        : BZTV_UMENG_APPKEY,
+                                    UMENG_MESSAGE_SECRET: BZTV_UMENG_MESSAGE_SECRET,
+                                    BUGLY_APP_ID        : BZTV_BUGLY_APP_ID,
+                                    WX_APP_ID           : BZTV_WX_APP_ID,
+                                    WX_APP_Secret       : BZTV_WX_APP_Secret,
+                                    TELEVISION          : "true",
+                                    SCREEN_ORIENTATION  : "landscape",
+                                    APPLICATIONID       : applicationId]
+
+            signingConfig signingConfigs.baozhentv
+        }
+
     }
 
     android.applicationVariants.all { variant ->

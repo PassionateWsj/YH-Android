@@ -31,7 +31,6 @@ import rx.functions.Action0;
 import rx.schedulers.Schedulers;
 
 /**
- *
  * @author admin
  * @date 2016/6/28
  */
@@ -40,6 +39,26 @@ public class RetrofitUtil {
     private static final String DEFAULT_BASE_URL = BuildConfig.BASE_URL;
     private HttpService httpService;
     private Context ctx;
+    private ChangeableBaseUrlInterceptor changeableBaseUrlInterceptor;
+
+    private static RetrofitUtil mInstance = null;
+
+    /**
+     * 双重校验锁单例模式
+     *
+     * @param context
+     * @return
+     */
+    public static synchronized RetrofitUtil getInstance(Context context) {
+        if (mInstance == null) {
+            synchronized (RetrofitUtil.class) {
+                if (mInstance == null) {
+                    mInstance = new RetrofitUtil(context);
+                }
+            }
+        }
+        return mInstance;
+    }
 
     private RetrofitUtil(Context ctx) {
         this.ctx = ctx;
@@ -60,9 +79,9 @@ public class RetrofitUtil {
         return getInstance(ctx).httpService;
     }
 
-    public static RetrofitUtil getInstance(Context ctx) {
-        return RetrofitHolder.retrofitUtil(ctx);
-    }
+//    public static RetrofitUtil getInstance(Context ctx) {
+//        return RetrofitHolder.retrofitUtil(ctx);
+//    }
 
     public OkHttpClient.Builder getClientBuilder() {
         OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder();
@@ -81,9 +100,17 @@ public class RetrofitUtil {
         clientBuilder.addInterceptor(new HttpStateInterceptor());
         clientBuilder.addInterceptor(new BaseParamsInterceptor(ctx));
         clientBuilder.addInterceptor(new NetworkInterceptor());
+        clientBuilder.addInterceptor(getChangeableBaseUrlInterceptor());
         clientBuilder.addNetworkInterceptor(new StethoInterceptor());
         clientBuilder.connectTimeout(DEFAULT_TIME_OUT, TimeUnit.SECONDS);
         return clientBuilder;
+    }
+
+    public ChangeableBaseUrlInterceptor getChangeableBaseUrlInterceptor() {
+        if (changeableBaseUrlInterceptor == null) {
+            changeableBaseUrlInterceptor = new ChangeableBaseUrlInterceptor();
+        }
+        return changeableBaseUrlInterceptor;
     }
 
     private static class RetrofitHolder {

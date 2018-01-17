@@ -86,9 +86,6 @@ class NativeReportActivity : BaseActivity(), ModeContract.View, FilterDialogFrag
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        if ("template" == BuildConfig.FLAVOR) {
-//            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
-//        }
         setContentView(R.layout.actvity_meter_detal)
 
         showDialog(this)

@@ -5,6 +5,7 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.app.ProgressDialog
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageInfo
@@ -21,6 +22,7 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import com.google.gson.Gson
 import com.intfocus.template.ConfigConstants
 import com.intfocus.template.R
 import com.intfocus.template.constant.Params.ACTION
@@ -50,6 +52,7 @@ import com.intfocus.template.login.bean.DeviceRequest
 import com.intfocus.template.login.bean.NewUser
 import com.intfocus.template.model.response.BaseResult
 import com.intfocus.template.model.response.login.RegisterResult
+import com.intfocus.template.model.response.login.SaaSCustomResult
 import com.intfocus.template.util.*
 import com.intfocus.template.util.K.K_CURRENT_UI_VERSION
 import com.intfocus.template.util.K.K_PUSH_DEVICE_TOKEN
@@ -57,6 +60,7 @@ import com.pgyersdk.update.PgyUpdateManager
 import com.pgyersdk.update.UpdateManagerListener
 import com.tencent.smtt.sdk.WebView
 import kotlinx.android.synthetic.main.activity_login.*
+import okhttp3.Call
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.IOException
@@ -127,7 +131,7 @@ class LoginActivity : FragmentActivity() {
             etPassword!!.setText("1234567890")
             cb_login_keep_pwd.isChecked = true
 //            ll_etPassword_clear.visibility = View.GONE
-            if (ConfigConstants.LOGIN_WITH_LAST_USER ) {
+            if (ConfigConstants.LOGIN_WITH_LAST_USER) {
                 mProgressDialog = ProgressDialog.show(this@LoginActivity, "稍等", "验证用户信息...")
                 mProgressDialog?.show()
                 userNum = mUserSP!!.getString(USER_NUM, "")
@@ -332,8 +336,9 @@ class LoginActivity : FragmentActivity() {
             }
 
             hideKeyboard()
-            mProgressDialog = ProgressDialog.show(this@LoginActivity, "稍等", "验证用户信息...")
-
+            if (!ConfigConstants.SAAS_VERIFY_BEFORE_LOGIN) {
+                mProgressDialog = ProgressDialog.show(this@LoginActivity, "稍等", "验证用户信息...")
+            }
             val packageInfo = packageManager.getPackageInfo(packageName, 0)
 
             // 上传设备信息
@@ -347,11 +352,60 @@ class LoginActivity : FragmentActivity() {
             } else {
                 URLs.MD5(userPass)
             }
+
+            // SaaS验证
+            if (ConfigConstants.SAAS_VERIFY_BEFORE_LOGIN) {
+                OKHttpUtils.newInstance().getAsyncData(
+                        String.format("http://47.96.170.148:8081/" +
+                                "saas-api/api/portal/custom?" +
+                                "repCode=REP_000000&dateSourceCode=DATA_000000&user_num=%s&password=%s&platform=app", userNum, loginPwd), object : OKHttpUtils.OnReusltListener {
+                    override fun onFailure(call: Call?, e: IOException?) {
+
+                    }
+
+                    override fun onSuccess(call: Call?, response: String?) {
+                        val data = Gson().fromJson(response, SaaSCustomResult::class.java)
+
+                        if (data.data.size == 1 && data.data[0].app_ip != null && data.data[0].app_ip != "") {
+                            mProgressDialog = ProgressDialog.show(this@LoginActivity, "稍等", "验证用户信息...")
+
+                            data.data[0].app_ip?.let { RetrofitUtil.getInstance(this@LoginActivity).changeableBaseUrlInterceptor.setHost(it) }
+                            userLogin(loginPwd)
+                        } else {
+                            val items = arrayOfNulls<String>(data.data.size)
+                            data?.let {
+                                it.data.forEachIndexed { index, saaSCustomItem ->
+                                    items[index] = saaSCustomItem.app_name
+                                }
+                            }
+                            AlertDialog.Builder(this@LoginActivity)
+                                    //设置标题
+                                    .setTitle("请选择")
+                                    //设置图标
+                                    .setIcon(R.drawable.app)
+                                    .setItems(items, DialogInterface.OnClickListener { dialog, which ->
+                                        if (data.data[which].app_ip != null && data.data[which].app_ip != "") {
+                                            mProgressDialog = ProgressDialog.show(this@LoginActivity, "稍等", "验证用户信息...")
+
+                                            data.data[which].app_ip?.let { RetrofitUtil.getInstance(this@LoginActivity).changeableBaseUrlInterceptor.setHost(it) }
+                                            userLogin(loginPwd)
+                                        }
+                                    })
+                                    .create()
+                                    .show()
+                        }
+                    }
+                })
+            }
             // 登录验证
-            userLogin(loginPwd)
+            if (!ConfigConstants.SAAS_VERIFY_BEFORE_LOGIN) {
+                userLogin(loginPwd)
+            }
         } catch (e: Exception) {
             e.printStackTrace()
-            mProgressDialog!!.dismiss()
+            if (!ConfigConstants.SAAS_VERIFY_BEFORE_LOGIN) {
+                mProgressDialog!!.dismiss()
+            }
             ToastUtils.show(this, e.localizedMessage)
         }
 
@@ -438,7 +492,9 @@ class LoginActivity : FragmentActivity() {
                                     val objectId = pageLinkManagerSP.getString("objectId", "")
                                     val templateId = pageLinkManagerSP.getString("templateId", "")
                                     val objectType = pageLinkManagerSP.getString("objectType", "")
-                                    PageLinkManage.pageLink(this@LoginActivity, objTitle, link, objectId, templateId, objectType)
+                                    PageLinkManage.pageLink(this@LoginActivity,
+                                            objTitle ?: "", link ?: "",
+                                            objectId ?: "-1", templateId ?: "-1", objectType ?: "-1")
                                 } else {
                                     // 跳转至主界面
                                     this@LoginActivity.startActivity(Intent(this@LoginActivity, DashboardActivity::class.java))

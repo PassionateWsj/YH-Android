@@ -164,7 +164,7 @@ class UserFragment : BaseFragment(), UserContract.View {
         setViewVisible(ll_single_value, ConfigConstants.USER_CUSTOM)
 //        setViewVisible(ll_yh_custom_user, ConfigConstants.USER_CUSTOM)
         setViewVisible(rl_favorite, ConfigConstants.USER_CUSTOM)
-        setViewVisible(rl_message, ConfigConstants.USER_CUSTOM)
+//        setViewVisible(rl_message, ConfigConstants.USER_CUSTOM)
         setViewVisible(rl_password_alter, ConfigConstants.USER_CUSTOM)
         setViewVisible(iv_mine_user_group_arrow, ConfigConstants.USER_GROUP_CONTENT)
     }

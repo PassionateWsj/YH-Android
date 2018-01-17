@@ -66,9 +66,6 @@ class DashboardActivity : BaseActivity(), ViewPager.OnPageChangeListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        if ("template" == BuildConfig.FLAVOR) {
-//            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
-//        }
 
         setContentView(R.layout.activity_dashboard)
         mGson = Gson()
@@ -82,6 +79,10 @@ class DashboardActivity : BaseActivity(), ViewPager.OnPageChangeListener {
 
     }
 
+    override fun onRestart() {
+        super.onRestart()
+        mViewPager?.adapter?.notifyDataSetChanged()
+    }
     /**
      *
      */
@@ -101,7 +102,7 @@ class DashboardActivity : BaseActivity(), ViewPager.OnPageChangeListener {
             initTabShowAndPagerData(mTabWorkBox!!, mTabView, itemFragment, mPagerData)
         }
 
-        if ("template" == BuildConfig.FLAVOR) {
+        if ("template" == BuildConfig.FLAVOR || "baozhentv" == BuildConfig.FLAVOR) {
             view_shadow.visibility = View.GONE
             toolBar.visibility = View.GONE
         } else {
@@ -304,7 +305,9 @@ class DashboardActivity : BaseActivity(), ViewPager.OnPageChangeListener {
             val objectType = items.objectType
             val paramsMappingBean = items.paramsMappingBean ?: HashMap()
 
-            PageLinkManage.pageLink(this, objTitle!!, link!!, objectId!!, templateId!!, objectType!!, paramsMappingBean)
+            PageLinkManage.pageLink(this, objTitle?:"",
+                    link?:"", objectId?:"-1",
+                    templateId?:"-1", objectType?:"-1", paramsMappingBean)
         } else {
             ToastUtils.show(this, "没有指定链接")
         }

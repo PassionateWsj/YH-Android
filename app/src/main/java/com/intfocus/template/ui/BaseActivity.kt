@@ -51,20 +51,6 @@ open class BaseActivity : AppCompatActivity() {
         if (supportActionBar != null) {
             supportActionBar!!.hide()
         }
-//        if (BuildConfig.FLAVOR == "template") {
-//            Thread(Runnable {
-//                while (true) {
-//                    try {
-//                        Thread.sleep(5000)
-//                    } catch (e: InterruptedException) {
-//                        e.printStackTrace()
-//                    }
-//
-//                    val aaa = window.decorView.findFocus()
-//                    LogUtil.d(this, "focus on :: " + aaa.toString())
-//                }
-//            }).start()
-//        }
     }
 
     protected fun showDialog(context: Context) {

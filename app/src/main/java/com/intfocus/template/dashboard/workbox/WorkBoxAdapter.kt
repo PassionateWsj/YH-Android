@@ -57,9 +57,10 @@ class WorkBoxAdapter(var ctx: Context, val datas: List<WorkBoxItem>?) : BaseAdap
             viewTag = convertView.tag as WorkBoxAdapter.ItemViewTag
         }
         viewTag.mName.text = datas!![position].name
-//        x.image().bind(viewTag.mIcon, datas!![position].icon_link)
         Glide.with(ctx)
                 .load(datas[position].icon_link)
+                .placeholder(R.drawable.default_icon)
+                .error(R.drawable.default_icon)
                 .into(viewTag.mIcon)
         viewTag.rlItem.setOnClickListener(object : NoDoubleClickListener() {
             override fun onNoDoubleClick(v: View?) {
@@ -75,7 +76,7 @@ class WorkBoxAdapter(var ctx: Context, val datas: List<WorkBoxItem>?) : BaseAdap
             }
             false
         }
-        if (BuildConfig.FLAVOR == "template" ) {
+        if ("template" == BuildConfig.FLAVOR || "baozhentv" == BuildConfig.FLAVOR) {
             viewTag.rlItem.requestFocus()
         }
         LogUtil.d(this, "pos :" + position + " hasFocus :" + viewTag.rlItem.hasFocus())

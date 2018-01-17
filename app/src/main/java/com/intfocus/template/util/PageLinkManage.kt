@@ -65,14 +65,16 @@ object PageLinkManage {
      */
     fun pageLink(context: Context, items: DashboardItem?) {
         if (items != null) {
-            val link = items.obj_link
-            val objTitle = items.obj_title
-            val objectId = items.obj_id
-            val templateId = items.template_id
-            val objectType = items.objectType
+            val link = items.obj_link ?: ""
+            val objTitle = items.obj_title ?: ""
+            val objectId = items.obj_id ?: "-1"
+            val templateId = items.template_id ?: "-1"
+            val objectType = items.objectType ?: "-1"
             val paramsMappingBean = items.paramsMappingBean ?: HashMap()
 
-            PageLinkManage.pageLink(context, objTitle!!, link!!, objectId!!, templateId!!, objectType!!, paramsMappingBean)
+            PageLinkManage.pageLink(context, objTitle, link,
+                    objectId, templateId,
+                    objectType, paramsMappingBean)
         } else {
             ToastUtils.show(context, "没有指定链接")
         }
@@ -100,7 +102,7 @@ object PageLinkManage {
         val userNum = userSP.getString(USER_NUM, "")
 
         if (userNum != "") {
-            pageLink(context, pushMsg.title, pushMsg.url, pushMsg.obj_id, templateId, "4", paramsMappingBean, true)
+            pageLink(context, pushMsg.title ?: "标题", pushMsg.url ?: "", pushMsg.obj_id ?: "-1", templateId, "4", paramsMappingBean ?: HashMap(), true)
         } else {
             ToastUtils.show(context, "请先登录")
         }
@@ -122,11 +124,11 @@ object PageLinkManage {
 //        pageLink(context, objTitle, link, objectId, templateId, objectType, paramsMappingBean, false)
 //    }
 
-    fun pageLink(context: Context, objTitle: String? = "标题",
-                 link: String? = "http://shengyiplus.com/", objectId: String? = "-1",
-                 templateId: String = "-1", objectType: String? = "-1",
-                 paramsMappingBean: HashMap<String, String>? = HashMap(),
-                 fromPushMsg: Boolean? = false) {
+    fun pageLink(context: Context, objTitle: String = "标题",
+                 link: String = "http://shengyiplus.com/", objectId: String = "-1",
+                 templateId: String = "-1", objectType: String = "-1",
+                 paramsMappingBean: HashMap<String, String> = HashMap(),
+                 fromPushMsg: Boolean = false) {
         try {
             val userSP = context.getSharedPreferences(USER_BEAN, Context.MODE_PRIVATE)
             val groupID = userSP.getString(GROUP_ID, "0")
@@ -142,10 +144,10 @@ object PageLinkManage {
                 TEMPLATE_SEVEN -> {
                     mClickTemplateName = "模板七"
                     intent = Intent(context, MyConcernActivity::class.java)
-                    intent.flags = if (fromPushMsg!!) {
+                    intent.flags = if (fromPushMsg) {
                         Intent.FLAG_ACTIVITY_NEW_TASK
                     } else {
-                        savePageLink(context, objTitle!!, link!!, objectId!!, templateId, objectType!!)
+                        savePageLink(context, objTitle, link, objectId, templateId, objectType)
                         Intent.FLAG_ACTIVITY_SINGLE_TOP
                     }
                     intent.putExtra(GROUP_ID, groupID)
@@ -158,9 +160,9 @@ object PageLinkManage {
                 }
                 TEMPLATE_ONE -> {
                     mClickTemplateName = "模板一"
-                    savePageLink(context, objTitle!!, link!!, objectId!!, templateId, objectType!!)
+                    savePageLink(context, objTitle, link, objectId, templateId, objectType)
                     intent = Intent(context, NativeReportActivity::class.java)
-                    intent.flags = if (fromPushMsg!!) {
+                    intent.flags = if (fromPushMsg) {
                         Intent.FLAG_ACTIVITY_NEW_TASK
                     } else {
                         Intent.FLAG_ACTIVITY_SINGLE_TOP
@@ -175,9 +177,9 @@ object PageLinkManage {
                 }
                 TEMPLATE_TEN -> {
                     mClickTemplateName = "模板十"
-                    savePageLink(context, objTitle!!, link!!, objectId!!, templateId, objectType!!)
+                    savePageLink(context, objTitle, link, objectId, templateId, objectType)
                     intent = Intent(context, NativeReportActivity::class.java)
-                    intent.flags = if (fromPushMsg!!) {
+                    intent.flags = if (fromPushMsg) {
                         Intent.FLAG_ACTIVITY_NEW_TASK
                     } else {
                         Intent.FLAG_ACTIVITY_SINGLE_TOP
@@ -192,9 +194,9 @@ object PageLinkManage {
                 }
                 TEMPLATE_TWO -> {
                     mClickTemplateName = "模板二"
-                    savePageLink(context, objTitle!!, link!!, objectId!!, templateId, objectType!!)
+                    savePageLink(context, objTitle, link, objectId, templateId, objectType)
                     intent = Intent(context, WebPageActivity::class.java)
-                    if (fromPushMsg!!) {
+                    if (fromPushMsg) {
                         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
                     }
                     intent.putExtra(GROUP_ID, groupID)
@@ -208,10 +210,10 @@ object PageLinkManage {
                 TEMPLATE_FOUR -> {
                     mClickTemplateName = "模板四"
                     intent = Intent(context, WebPageActivity::class.java)
-                    if (fromPushMsg!!) {
+                    if (fromPushMsg) {
                         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
                     } else {
-                        savePageLink(context, objTitle!!, link!!, objectId!!, templateId, objectType!!)
+                        savePageLink(context, objTitle, link, objectId, templateId, objectType)
                     }
                     intent.putExtra(GROUP_ID, groupID)
                     intent.putExtra(TEMPLATE_ID, templateId)
@@ -224,10 +226,10 @@ object PageLinkManage {
                 TEMPLATE_THREE -> {
                     mClickTemplateName = "模板三"
                     intent = Intent(context, MultiIndexActivity::class.java)
-                    intent.flags = if (fromPushMsg!!) {
+                    intent.flags = if (fromPushMsg) {
                         Intent.FLAG_ACTIVITY_NEW_TASK
                     } else {
-                        savePageLink(context, objTitle!!, link!!, objectId!!, templateId, objectType!!)
+                        savePageLink(context, objTitle, link, objectId, templateId, objectType)
                         Intent.FLAG_ACTIVITY_SINGLE_TOP
                     }
                     intent.putExtra(GROUP_ID, groupID)
@@ -241,10 +243,10 @@ object PageLinkManage {
                 TEMPLATE_NINE -> {
                     mClickTemplateName = "模板九"
                     intent = Intent(context, CollectionActivity::class.java)
-                    intent.flags = if (fromPushMsg!!) {
+                    intent.flags = if (fromPushMsg) {
                         Intent.FLAG_ACTIVITY_NEW_TASK
                     } else {
-                        savePageLink(context, objTitle!!, link!!, objectId!!, templateId, objectType!!)
+                        savePageLink(context, objTitle, link, objectId, templateId, objectType)
                         Intent.FLAG_ACTIVITY_SINGLE_TOP
                     }
                     intent.putExtra(GROUP_ID, groupID)
@@ -257,14 +259,14 @@ object PageLinkManage {
                 }
                 EXTERNAL_LINK, TEMPLATE_SIX -> {
                     mClickTemplateName = "外部链接"
-                    urlString = link!!
+                    urlString = link
 //                    urlString = "https://datav.aliyun.com/share/31ae546cd064046699a979b24607a9d5"
-                    for ((key, value) in paramsMappingBean!!) {
+                    for ((key, value) in paramsMappingBean) {
                         urlString = splitUrl(userSP, urlString, key, value)
                     }
-                    savePageLink(context, objTitle!!, urlString, objectId!!, templateId, objectType!!)
+                    savePageLink(context, objTitle, urlString, objectId, templateId, objectType)
                     intent = Intent(context, WebPageActivity::class.java)
-                    if (fromPushMsg!!) {
+                    if (fromPushMsg) {
                         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
                     }
                     intent.putExtra(GROUP_ID, groupID)
@@ -277,13 +279,13 @@ object PageLinkManage {
                 }
                 SCANNER -> {
                     mClickTemplateName = "扫一扫"
-                    urlString = link!!
-                    for ((key, value) in paramsMappingBean!!) {
+                    urlString = link
+                    for ((key, value) in paramsMappingBean) {
                         urlString = splitUrl(userSP, urlString, key, value)
                     }
-                    savePageLink(context, objTitle!!, urlString, objectId!!, templateId, objectType!!)
+                    savePageLink(context, objTitle, urlString, objectId, templateId, objectType)
                     intent = Intent(context, BarCodeScannerActivity::class.java)
-                    intent.flags = if (fromPushMsg!!) {
+                    intent.flags = if (fromPushMsg) {
                         Intent.FLAG_ACTIVITY_NEW_TASK
                     } else {
                         Intent.FLAG_ACTIVITY_SINGLE_TOP
@@ -295,10 +297,10 @@ object PageLinkManage {
                 PUSH_MESSAGE_LIST -> {
                     mClickTemplateName = "消息列表"
                     intent = Intent(context, ShowPushMessageActivity::class.java)
-                    intent.flags = if (fromPushMsg!!) {
+                    intent.flags = if (fromPushMsg) {
                         Intent.FLAG_ACTIVITY_NEW_TASK
                     } else {
-                        savePageLink(context, objTitle!!, link!!, objectId!!, templateId, objectType!!)
+                        savePageLink(context, objTitle, link, objectId, templateId, objectType)
                         Intent.FLAG_ACTIVITY_SINGLE_TOP
                     }
                     context.startActivity(intent)
@@ -306,10 +308,10 @@ object PageLinkManage {
                 FEEDBACK -> {
                     mClickTemplateName = "问题反馈"
                     intent = Intent(context, FeedbackActivity::class.java)
-                    intent.flags = if (fromPushMsg!!) {
+                    intent.flags = if (fromPushMsg) {
                         Intent.FLAG_ACTIVITY_NEW_TASK
                     } else {
-                        savePageLink(context, objTitle!!, link!!, objectId!!, templateId, objectType!!)
+                        savePageLink(context, objTitle, link, objectId, templateId, objectType)
                         Intent.FLAG_ACTIVITY_SINGLE_TOP
                     }
                     context.startActivity(intent)
@@ -323,9 +325,9 @@ object PageLinkManage {
 
         val logParams = JSONObject()
         if ("-1" == templateId && "-1" != objectType) {
-            logParams.put(ACTION, "点击/" + objectTypeName[objectType!!.toInt() - 1] + "/" + mClickTemplateName)
+            logParams.put(ACTION, "点击/" + objectTypeName[objectType.toInt() - 1] + "/" + mClickTemplateName)
         } else if ("-1" != objectType) {
-            logParams.put(ACTION, "点击/" + objectTypeName[objectType!!.toInt() - 1] + "/" + mClickTemplateName)
+            logParams.put(ACTION, "点击/" + objectTypeName[objectType.toInt() - 1] + "/" + mClickTemplateName)
         }
 
         logParams.put(OBJECT_TITLE, objTitle)

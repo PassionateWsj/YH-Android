@@ -24,11 +24,11 @@ class DiaLogActivity : Activity() {
 
         val pushMsg = PushMsgBean()
 
-        pushMsg.body_title = intent.getStringExtra("body_title")
-        pushMsg.title = intent.getStringExtra("title")
-        pushMsg.url = intent.getStringExtra("url")
-        pushMsg.obj_id = intent.getStringExtra("obj_id")
-        pushMsg.template_id = intent.getStringExtra("template_id")
+        pushMsg.body_title = intent.getStringExtra("body_title") ?: ""
+        pushMsg.title = intent.getStringExtra("title") ?: ""
+        pushMsg.url = intent.getStringExtra("url") ?: ""
+        pushMsg.obj_id = intent.getStringExtra("obj_id") ?: "-1"
+        pushMsg.template_id = intent.getStringExtra("template_id") ?: "-1"
         pushMsg.params_mapping = intent.getStringExtra("params_mapping")
 
         val selfDialog = SelfDialog(this)
@@ -45,7 +45,7 @@ class DiaLogActivity : Activity() {
                 this.finish()
             }
         } else {
-            selfDialog.setYesOnclickListener("知道了"){
+            selfDialog.setYesOnclickListener("知道了") {
                 selfDialog.dismiss()
                 this.finish()
             }
