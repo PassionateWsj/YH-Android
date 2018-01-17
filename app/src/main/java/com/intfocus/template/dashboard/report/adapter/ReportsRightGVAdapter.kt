@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.intfocus.template.R
 import com.intfocus.template.dashboard.report.mode.GroupDataBean
 import com.intfocus.template.listener.NoDoubleClickListener
@@ -47,8 +48,10 @@ class ReportsRightGVAdapter(var ctx: Context, var datas: List<GroupDataBean>?) :
 //        x.image().bind(viewTag.mIcon, datas!![position].icon_link)
         Glide.with(ctx)
                 .load(datas!![position].icon_link)
-                .placeholder(R.drawable.default_icon)
-                .error(R.drawable.default_icon)
+                .diskCacheStrategy(DiskCacheStrategy.RESULT)
+//                .placeholder(R.drawable.default_icon)
+//                .error(R.drawable.default_icon)
+                .fitCenter()
                 .into(viewTag.mIcon)
 
         viewTag.llItem.setOnClickListener(object : NoDoubleClickListener() {

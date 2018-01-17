@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.intfocus.template.BuildConfig
 import com.intfocus.template.ConfigConstants
 import com.intfocus.template.R
@@ -59,8 +60,10 @@ class WorkBoxAdapter(var ctx: Context, val datas: List<WorkBoxItem>?) : BaseAdap
         viewTag.mName.text = datas!![position].name
         Glide.with(ctx)
                 .load(datas[position].icon_link)
-                .placeholder(R.drawable.default_icon)
-                .error(R.drawable.default_icon)
+                .diskCacheStrategy(DiskCacheStrategy.RESULT)
+//                .placeholder(R.drawable.default_icon)
+//                .error(R.drawable.default_icon)
+                .fitCenter()
                 .into(viewTag.mIcon)
         viewTag.rlItem.setOnClickListener(object : NoDoubleClickListener() {
             override fun onNoDoubleClick(v: View?) {

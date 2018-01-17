@@ -360,12 +360,15 @@ class LoginActivity : FragmentActivity() {
                                 "saas-api/api/portal/custom?" +
                                 "repCode=REP_000000&dateSourceCode=DATA_000000&user_num=%s&password=%s&platform=app", userNum, loginPwd), object : OKHttpUtils.OnReusltListener {
                     override fun onFailure(call: Call?, e: IOException?) {
-
+                        ToastUtils.show(this@LoginActivity,"网络错误")
                     }
 
                     override fun onSuccess(call: Call?, response: String?) {
                         val data = Gson().fromJson(response, SaaSCustomResult::class.java)
-
+                        if (data.code == null || data.code != "0") {
+                            data.message?.let { ToastUtils.show(this@LoginActivity, it) }
+                            return
+                        }
                         if (data.data.size == 1 && data.data[0].app_ip != null && data.data[0].app_ip != "") {
                             mProgressDialog = ProgressDialog.show(this@LoginActivity, "稍等", "验证用户信息...")
 
@@ -389,6 +392,8 @@ class LoginActivity : FragmentActivity() {
 
                                             data.data[which].app_ip?.let { RetrofitUtil.getInstance(this@LoginActivity).changeableBaseUrlInterceptor.setHost(it) }
                                             userLogin(loginPwd)
+                                        } else {
+                                            ToastUtils.show(this@LoginActivity, "该应用未启用 APP 服务")
                                         }
                                     })
                                     .create()
