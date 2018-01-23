@@ -96,4 +96,8 @@ class ReportFragment : BaseFragment(), ReportContract.View, ReportsLeftListAdapt
         reportsRightAdapter.setData(datas!![position].data)
         reportsLeftAdapter.refreshListItemState(position)
     }
+
+    override fun loadDataFailure() {
+        swipe_container.isRefreshing = false
+    }
 }

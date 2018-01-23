@@ -31,6 +31,7 @@ class WorkBoxPresenter(
             }
 
             override fun onDataNotAvailable(e: Throwable) {
+                mView.loadDataFailure()
             }
         })
     }

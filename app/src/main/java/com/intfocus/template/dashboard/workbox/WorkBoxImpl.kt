@@ -58,7 +58,7 @@ class WorkBoxImpl : WorkBoxModel {
                 .compose(RetrofitUtil.CommonOptions<WorkBoxResult>())
                 .subscribe(object : CodeHandledSubscriber<WorkBoxResult>() {
                     override fun onError(apiException: ApiException?) {
-                        callBack.onDataNotAvailable(apiException!!)
+                         callBack.onDataNotAvailable(apiException!!)
                     }
 
                     override fun onBusinessNext(data: WorkBoxResult?) {

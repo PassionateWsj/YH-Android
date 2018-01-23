@@ -33,6 +33,7 @@ class ReportPresenter(
             }
 
             override fun onDataNotAvailable(e: Throwable) {
+                mView.loadDataFailure()
             }
         })
     }

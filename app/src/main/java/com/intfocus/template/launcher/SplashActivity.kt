@@ -22,6 +22,8 @@ import android.widget.Toast
 import com.intfocus.template.BuildConfig
 import com.intfocus.template.ConfigConstants
 import com.intfocus.template.R
+import com.intfocus.template.constant.Params.APP_HOST
+import com.intfocus.template.constant.Params.SETTING_PREFERENCE
 import com.intfocus.template.constant.Params.USER_BEAN
 import com.intfocus.template.listener.NoDoubleClickListener
 import com.intfocus.template.login.LoginActivity
@@ -53,7 +55,7 @@ class SplashActivity : Activity(), Animation.AnimationListener {
         requestWindowFeature(Window.FEATURE_NO_TITLE)
         setContentView(R.layout.activity_splash)
 
-        TempHost.setHost(BuildConfig.BASE_URL)
+        getSharedPreferences(USER_BEAN, Context.MODE_PRIVATE).getString(APP_HOST, BuildConfig.BASE_URL)?.let { TempHost.setHost(it) }
     }
 
     override fun onStart() {
@@ -137,7 +139,7 @@ class SplashActivity : Activity(), Animation.AnimationListener {
      * 初始化数据
      */
     private fun initData() {
-        mSettingSP = getSharedPreferences("SettingPreference", Context.MODE_PRIVATE)
+        mSettingSP = getSharedPreferences(SETTING_PREFERENCE, Context.MODE_PRIVATE)
         mUserSP = getSharedPreferences(USER_BEAN, Context.MODE_PRIVATE)
         try {
             packageInfo = packageManager.getPackageInfo(packageName, 0)

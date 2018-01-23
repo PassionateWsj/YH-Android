@@ -28,7 +28,6 @@ import com.intfocus.template.ui.view.CustomLinearLayoutManager
 import com.intfocus.template.ui.view.DefaultRefreshView
 import com.intfocus.template.util.DisplayUtil
 import com.intfocus.template.util.ErrorUtils
-import com.intfocus.template.util.HttpUtil
 import com.intfocus.template.util.ToastUtils
 import kotlinx.android.synthetic.main.fragment_kpi.*
 import org.xutils.x
@@ -100,16 +99,16 @@ class KpiFragment : RefreshFragment(), KpiAdapter.HomePageListener {
     }
 
     override fun getData(isShowDialog: Boolean) {
-        if (!HttpUtil.isConnected(mActivity)) {
-            ToastUtils.show(mActivity, "请检查网络链接")
-            finishRequest()
-            isEmpty = mKpiData == null || mKpiData!!.size == 0
-            ErrorUtils.viewProcessing(refreshLayout, llError, llRetry, "无更多文章了", tvErrorMsg, ivError,
-                    isEmpty!!, false, R.drawable.pic_3, {
-                getData(true)
-            })
-            return
-        }
+//        if (!HttpUtil.isConnected(mActivity)) {
+//            ToastUtils.show(mActivity, "请检查网络链接")
+//            finishRequest()
+//            isEmpty = mKpiData == null || mKpiData!!.size == 0
+//            ErrorUtils.viewProcessing(refreshLayout, llError, llRetry, "无更多文章了", tvErrorMsg, ivError,
+//                    isEmpty!!, false, R.drawable.pic_3, {
+//                getData(true)
+//            })
+//            return
+//        }
         if (isShowDialog) {
             if (loadingDialog == null || !loadingDialog!!.isShowing) {
                 showLoading()
@@ -200,16 +199,16 @@ class KpiFragment : RefreshFragment(), KpiAdapter.HomePageListener {
     }
 
     fun getHomeMsg() {
-        if (!HttpUtil.isConnected(mActivity)) {
-            ToastUtils.show(mActivity, "请检查网络链接")
-            finishRequest()
-            isEmpty = mKpiData == null || mKpiData!!.size == 0
-            ErrorUtils.viewProcessing(refreshLayout, llError, llRetry, "无更多文章了", tvErrorMsg, ivError,
-                    isEmpty!!, false, R.drawable.pic_3, {
-                getData(true)
-            })
-            return
-        }
+//        if (!HttpUtil.isConnected(mActivity)) {
+//            ToastUtils.show(mActivity, "请检查网络链接")
+//            finishRequest()
+//            isEmpty = mKpiData == null || mKpiData!!.size == 0
+//            ErrorUtils.viewProcessing(refreshLayout, llError, llRetry, "无更多文章了", tvErrorMsg, ivError,
+//                    isEmpty!!, false, R.drawable.pic_3, {
+//                getData(true)
+//            })
+//            return
+//        }
         RetrofitUtil.getHttpService(context).getHomeMsg(queryMap)
                 .compose(RetrofitUtil.CommonOptions<HomeMsgResult>())
                 .subscribe(object : CodeHandledSubscriber<HomeMsgResult>() {

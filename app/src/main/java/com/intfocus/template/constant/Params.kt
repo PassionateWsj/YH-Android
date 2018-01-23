@@ -44,6 +44,7 @@ object Params {
     const val PLATFORM = "platform"
     const val SETTING = "setting"
 
+    const val APP_HOST = "app_host"
     const val ROLD_ID = "role_id"
     const val GROUP_ID = "group_id"
     const val CODE_INFO = "code_info"

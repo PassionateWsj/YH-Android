@@ -18,6 +18,7 @@ interface WorkBoxContract {
 
     interface View : BaseView<Presenter> {
         fun dataLoaded(data: WorkBoxResult)
+        fun loadDataFailure()
     }
 
     interface Presenter : BasePresenter {

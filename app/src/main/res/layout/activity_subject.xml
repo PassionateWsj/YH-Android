@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".subject.two.WebPageActivity">
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context=".subject.two.WebPageActivity">
 
     <include layout="@layout/item_action_bar"></include>
 
@@ -19,7 +19,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
-            android:background="@color/co9_syr" />
+            android:background="@color/co9_syr"/>
 
         <RelativeLayout
             android:id="@+id/rl_address_filter"
@@ -42,7 +42,7 @@
                 android:paddingLeft="16dp"
                 android:textColor="@color/co15_syr"
                 android:textColorHint="@color/co4_syr"
-                android:textSize="14sp" />
+                android:textSize="14sp"/>
 
             <TextView
                 android:id="@+id/tv_address_filter"
@@ -55,13 +55,13 @@
                 android:paddingRight="16dp"
                 android:text="筛选"
                 android:textColor="@color/co6_syr"
-                android:textSize="15sp" />
+                android:textSize="15sp"/>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
                 android:layout_alignParentBottom="true"
-                android:background="@color/co9_syr" />
+                android:background="@color/co9_syr"/>
         </RelativeLayout>
 
         <android.support.v7.widget.RecyclerView
@@ -69,7 +69,7 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:background="@color/white"
-            android:visibility="gone" />
+            android:visibility="gone"/>
 
         <View
             android:id="@+id/view_line"
@@ -79,40 +79,46 @@
             android:visibility="gone"/>
     </LinearLayout>
 
-    <FrameLayout
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/srl_activity_subject"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/ll_filter">
 
         <FrameLayout
-            android:id="@+id/browser"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@id/actionBar"
-            android:visibility="visible" />
+            android:layout_height="match_parent">
 
-        <RelativeLayout
-            android:id="@+id/anim_loading"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/white">
+            <FrameLayout
+                android:id="@+id/browser"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/actionBar"
+                android:visibility="visible"/>
 
-            <com.wang.avi.AVLoadingIndicatorView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:visibility="visible"
-                app:indicatorColor="@color/loading"
-                app:indicatorName="BallPulseIndicator" />
-        </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/anim_loading"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white">
 
-    </FrameLayout>
+                <com.wang.avi.AVLoadingIndicatorView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:visibility="visible"
+                    app:indicatorColor="@color/loading"
+                    app:indicatorName="BallPulseIndicator"/>
+            </RelativeLayout>
+
+        </FrameLayout>
+    </android.support.v4.widget.SwipeRefreshLayout>
 
     <com.github.barteksc.pdfviewer.PDFView
         android:id="@+id/pdfview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/rl_action_bar"
-        android:visibility="gone" />
+        android:visibility="gone"/>
 
 </RelativeLayout>

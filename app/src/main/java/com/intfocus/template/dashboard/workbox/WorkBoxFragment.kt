@@ -13,9 +13,7 @@ import com.intfocus.template.subject.one.WorkBoxContract
 import com.intfocus.template.subject.one.WorkBoxImpl
 import com.intfocus.template.subject.one.WorkBoxPresenter
 import com.intfocus.template.ui.BaseFragment
-import com.intfocus.template.util.HttpUtil
 import com.intfocus.template.util.LogUtil
-import com.intfocus.template.util.ToastUtils
 import kotlinx.android.synthetic.main.fragment_work_box.*
 
 /**
@@ -72,12 +70,12 @@ class WorkBoxFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener, Wo
     }
 
     override fun onRefresh() {
-        if (HttpUtil.isConnected(context)) {
-            presenter.loadData(ctx)
-        } else {
-            swipe_container.isRefreshing = false
-            ToastUtils.show(context!!, "请检查网络")
-        }
+//        if (HttpUtil.isConnected(context)) {
+        presenter.loadData(ctx)
+//        } else {
+//            swipe_container.isRefreshing = false
+//            ToastUtils.show(context!!, "请检查网络")
+//        }
     }
 
 
@@ -101,6 +99,10 @@ class WorkBoxFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener, Wo
 //        }
         gv_work_box.adapter = WorkBoxAdapter(ctx, datas)
 //        LogUtil.d(this, "gv_work_box hasFocus :" + gv_work_box.hasFocus())
+        swipe_container.isRefreshing = false
+    }
+
+    override fun loadDataFailure() {
         swipe_container.isRefreshing = false
     }
 }

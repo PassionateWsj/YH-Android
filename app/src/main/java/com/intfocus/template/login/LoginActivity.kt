@@ -26,6 +26,7 @@ import com.google.gson.Gson
 import com.intfocus.template.ConfigConstants
 import com.intfocus.template.R
 import com.intfocus.template.constant.Params.ACTION
+import com.intfocus.template.constant.Params.APP_HOST
 import com.intfocus.template.constant.Params.DATA
 import com.intfocus.template.constant.Params.GROUP_ID
 import com.intfocus.template.constant.Params.GROUP_NAME
@@ -360,7 +361,7 @@ class LoginActivity : FragmentActivity() {
                                 "saas-api/api/portal/custom?" +
                                 "repCode=REP_000000&dateSourceCode=DATA_000000&user_num=%s&password=%s&platform=app", userNum, loginPwd), object : OKHttpUtils.OnReusltListener {
                     override fun onFailure(call: Call?, e: IOException?) {
-                        ToastUtils.show(this@LoginActivity,"网络错误")
+                        ToastUtils.show(this@LoginActivity, "网络错误")
                     }
 
                     override fun onSuccess(call: Call?, response: String?) {
@@ -372,7 +373,11 @@ class LoginActivity : FragmentActivity() {
                         if (data.data.size == 1 && data.data[0].app_ip != null && data.data[0].app_ip != "") {
                             mProgressDialog = ProgressDialog.show(this@LoginActivity, "稍等", "验证用户信息...")
 
-                            data.data[0].app_ip?.let { RetrofitUtil.getInstance(this@LoginActivity).changeableBaseUrlInterceptor.setHost(it) }
+                            data.data[0].app_ip?.let {
+                                mUserSPEdit!!.putString(APP_HOST,it).apply()
+                                TempHost.setHost(it)
+                                RetrofitUtil.getInstance(this@LoginActivity).changeableBaseUrlInterceptor.setHost(it)
+                            }
                             userLogin(loginPwd)
                         } else {
                             val items = arrayOfNulls<String>(data.data.size)
@@ -405,8 +410,9 @@ class LoginActivity : FragmentActivity() {
 //                                                    PackageManager.DONT_KILL_APP)
 
                                             data.data[which].app_ip?.let {
-                                                RetrofitUtil.getInstance(this@LoginActivity).changeableBaseUrlInterceptor.setHost(it)
+                                                mUserSPEdit!!.putString(APP_HOST,it).apply()
                                                 TempHost.setHost(it)
+                                                RetrofitUtil.getInstance(this@LoginActivity).changeableBaseUrlInterceptor.setHost(it)
                                             }
                                             userLogin(loginPwd)
                                         } else {

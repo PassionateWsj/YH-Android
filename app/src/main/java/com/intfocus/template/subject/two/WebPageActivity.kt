@@ -31,6 +31,7 @@ import com.intfocus.template.filter.FilterDialogFragment
 import com.intfocus.template.model.response.filter.MenuItem
 import com.intfocus.template.model.response.filter.MenuResult
 import com.intfocus.template.ui.BaseActivity
+import com.intfocus.template.ui.view.WebView4Scroll
 import com.intfocus.template.ui.view.addressselector.FilterPopupWindow
 import com.intfocus.template.util.*
 import com.tencent.smtt.sdk.*
@@ -60,7 +61,7 @@ class WebPageActivity : BaseActivity(), WebPageContract.View, OnPageErrorListene
     lateinit var groupId: String
     lateinit var url: String
     lateinit var objectType: String
-    private var mWebView: WebView? = null
+    private var mWebView: WebView4Scroll? = null
     private var mOverrideKeyCodes = intArrayOf(
             KeyEvent.KEYCODE_DPAD_CENTER,
             KeyEvent.KEYCODE_DPAD_UP,
@@ -186,16 +187,20 @@ class WebPageActivity : BaseActivity(), WebPageContract.View, OnPageErrorListene
             }
             initWebView()
         }
+        srl_activity_subject.setOnRefreshListener {
+            refresh()
+        }
     }
 
     @SuppressLint("SetJavaScriptEnabled")
     private fun initWebView() {
-        mWebView = WebView(this)
+        mWebView = WebView4Scroll(this,srl_activity_subject)
         browser.addView(mWebView)
 
         val webSettings = mWebView?.settings
         // 允许 JS 执行
         webSettings?.javaScriptEnabled = true
+        // 允许点击三方下载链接 弹出本地浏览器选择框
         mWebView?.setDownloadListener { url, userAgent, contentDisposition, mimetype, contentLength ->
             LogUtil.d(this, "url=" + url)
             LogUtil.d(this, "userAgent=" + userAgent)
@@ -205,8 +210,24 @@ class WebPageActivity : BaseActivity(), WebPageContract.View, OnPageErrorListene
             val uri = Uri.parse(url)
             startActivity(Intent(Intent.ACTION_VIEW, uri))
         }
-        // 缓存模式为无缓存
-        webSettings?.cacheMode = WebSettings.LOAD_NO_CACHE
+        webSettings?.cacheMode = if (HttpUtil.isConnected(this)) {
+            // 缓存模式为无缓存
+            WebSettings.LOAD_NO_CACHE
+        } else {
+            WebSettings.LOAD_CACHE_ELSE_NETWORK
+        }
+        val cacheDir = File(cacheDir, "webviewCache")
+        //设置数据库缓存路径
+        webSettings?.databasePath = cacheDir.absolutePath
+        //设置 应用 缓存目录
+        webSettings?.setAppCachePath(cacheDir.absolutePath)
+        //开启 DOM 存储功能
+        webSettings?.domStorageEnabled = true
+        //开启 数据库 存储功能
+        webSettings?.databaseEnabled = true
+        //开启 应用缓存 功能
+        webSettings?.setAppCacheEnabled(true)
+
         webSettings?.domStorageEnabled = true
         // 允许访问文件
         webSettings?.allowFileAccess = true
@@ -215,7 +236,7 @@ class WebPageActivity : BaseActivity(), WebPageContract.View, OnPageErrorListene
         // 设置网页自适应屏幕大小
         webSettings?.loadWithOverviewMode = true
         // 显示网页滚动条
-        mWebView?.isHorizontalScrollBarEnabled = false
+        mWebView?.x5WebViewExtension?.setScrollBarFadingEnabled(false)
         // 添加 javascript 接口
         mWebView?.addJavascriptInterface(CustomJavaScriptsInterface(this), JAVASCRIPT_INTERFACE_NAME)
         // 设置是否支持缩放
@@ -255,7 +276,7 @@ class WebPageActivity : BaseActivity(), WebPageContract.View, OnPageErrorListene
             }
 
             override fun onPageFinished(view: WebView, url: String) {
-
+                super.onPageFinished(view, url)
                 //是否有筛选数据，有就显示出来
                 if (locationDataList.isNotEmpty()) {
                     rl_address_filter.visibility = View.VISIBLE
@@ -272,6 +293,7 @@ class WebPageActivity : BaseActivity(), WebPageContract.View, OnPageErrorListene
                     filter_recycler_view.visibility = View.GONE
                     view_line.visibility = View.GONE
                 }
+                srl_activity_subject.isRefreshing = false
                 setLoadingVisibility(View.GONE)
             }
         }
@@ -343,6 +365,7 @@ class WebPageActivity : BaseActivity(), WebPageContract.View, OnPageErrorListene
      * 刷新
      */
     override fun refresh() {
+        srl_activity_subject.isRefreshing = false
         setLoadingVisibility(View.VISIBLE)
         show(url)
     }
@@ -351,6 +374,7 @@ class WebPageActivity : BaseActivity(), WebPageContract.View, OnPageErrorListene
      * 刷新
      */
     fun refreshWithClearCache() {
+        srl_activity_subject.isRefreshing = false
         setLoadingVisibility(View.VISIBLE)
         CacheCleanManager.clearAppUserCache(this, this)
     }
@@ -570,6 +594,7 @@ class WebPageActivity : BaseActivity(), WebPageContract.View, OnPageErrorListene
             ll_filter.post { ll_filter.visibility = View.VISIBLE }
         }
     }
+
     override fun dispatchKeyEvent(event: KeyEvent): Boolean {
         if (event.keyCode == KeyEvent.KEYCODE_R) {
             refresh()
