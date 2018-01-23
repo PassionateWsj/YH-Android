@@ -5,8 +5,6 @@ import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
-import com.intfocus.template.BuildConfig;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -85,7 +83,7 @@ public class HttpUtil {
         Request baseRequest = builder.build();
 
         //提取api_path
-        String apiPath = baseRequest.url().toString().replace(BuildConfig.BASE_URL, "");
+        String apiPath = baseRequest.url().toString().replace(TempHost.getHost(), "");
         if (apiPath.contains("?")) {
             apiPath = apiPath.substring(0, apiPath.indexOf("?"));
         }
@@ -300,7 +298,7 @@ public class HttpUtil {
     public static String urlToFileName(String urlString) {
         String path = "default";
         try {
-            urlString = urlString.replace(BuildConfig.BASE_URL, "");
+            urlString = urlString.replace(TempHost.getHost(), "");
             URI uri = new URI(urlString);
             path = uri.getPath().replace("/", "_");
         } catch (Exception e) {

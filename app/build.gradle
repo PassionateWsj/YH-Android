@@ -131,8 +131,8 @@ android {
                                     BUGLY_APP_ID        : TEMPLATE_BUGLY_APP_ID,
                                     WX_APP_ID           : TEMPLATE_WX_APP_ID,
                                     WX_APP_Secret       : TEMPLATE_WX_APP_Secret,
-                                    TELEVISION          : "true",
-                                    SCREEN_ORIENTATION  : "landscape",
+                                    TELEVISION          : "false",
+                                    SCREEN_ORIENTATION  : "portrait",
                                     APPLICATIONID       : applicationId]
 
             signingConfig signingConfigs.template
@@ -498,6 +498,9 @@ dependencies {
 
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.30'
     implementation 'com.github.anzaizai:EasySwipeMenuLayout:1.1.2'
+
+    //Utils
+    implementation 'com.blankj:utilcode:1.12.0'
 }
 
 greendao {

@@ -3,7 +3,6 @@ package com.intfocus.template.subject.one
 import android.util.Log
 import com.alibaba.fastjson.JSON
 import com.alibaba.fastjson.JSONReader
-import com.intfocus.template.BuildConfig
 import com.intfocus.template.SYPApplication.globalContext
 import com.intfocus.template.model.DaoUtil
 import com.intfocus.template.model.entity.Report
@@ -11,11 +10,8 @@ import com.intfocus.template.model.entity.ReportModule
 import com.intfocus.template.model.gen.ReportDao
 import com.intfocus.template.subject.model.ReportModelImpl
 import com.intfocus.template.subject.one.entity.Filter
-import com.intfocus.template.util.ApiHelper
+import com.intfocus.template.util.*
 import com.intfocus.template.util.ApiHelper.clearResponseHeader
-import com.intfocus.template.util.FileUtil
-import com.intfocus.template.util.K
-import com.intfocus.template.util.LogUtil
 import rx.Observable
 import rx.Subscriber
 import rx.Subscription
@@ -88,7 +84,7 @@ class ModeImpl : ReportModelImpl() {
         this.groupId = groupId
         uuid = reportId + templateId + groupId
         jsonFileName = String.format("group_%s_template_%s_report_%s.json", groupId, templateId, reportId)
-        urlString = String.format(K.API_REPORT_JSON_ZIP, BuildConfig.BASE_URL, groupId, templateId, reportId)
+        urlString = String.format(K.API_REPORT_JSON_ZIP, TempHost.getHost(), groupId, templateId, reportId)
 
         LogUtil.d(this@ModeImpl, "报表 url ::: " + urlString)
         checkReportData(callback)

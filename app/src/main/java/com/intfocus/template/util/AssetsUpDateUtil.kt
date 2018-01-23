@@ -87,7 +87,7 @@ object AssetsUpDateUtil {
                                     if (!assetsMD5sMap[assetName + "_md5"].equals(mAssetsSP.getString(assetName + "_md5", ""))) {
                                         val fileUrl = K.K_DOWNLOAD_ASSETS_ZIP + "?api_token=d93c1a0dc03fe4ffad55a82febd1c94f&filename=" + assetName + ".zip"
                                         val response = Retrofit.Builder()
-                                                .baseUrl(BuildConfig.BASE_URL)
+                                                .baseUrl(TempHost.getHost())
                                                 .build()
                                                 .create(HttpService::class.java).downloadFileWithDynamicUrlSync(fileUrl).execute()
                                         LogUtil.d(TAG, assetName + "下载完成")

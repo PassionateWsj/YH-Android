@@ -176,7 +176,7 @@ class DataCollegeFragment : RefreshFragment(), InstituteAdapter.NoticeItemListen
      * 详情
      */
     override fun itemClick(instituteDataBean: InstituteDataBean) {
-        val link = String.format("%s/mobile/v2/user/%s/article/%s", BuildConfig.BASE_URL, mUserSP.getString(K.K_USER_ID, "0").toString(), instituteDataBean.id.toString())
+        val link = String.format("%s/mobile/v2/user/%s/article/%s", TempHost.getHost(), mUserSP.getString(K.K_USER_ID, "0").toString(), instituteDataBean.id.toString())
         PageLinkManage.pageLink(context!!, instituteDataBean.title!!, link)
     }
 

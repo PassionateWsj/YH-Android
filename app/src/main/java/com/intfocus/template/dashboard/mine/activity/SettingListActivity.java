@@ -13,10 +13,10 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.intfocus.template.BuildConfig;
 import com.intfocus.template.R;
 import com.intfocus.template.dashboard.mine.adapter.SimpleListAdapter;
 import com.intfocus.template.ui.BaseActivity;
+import com.intfocus.template.util.TempHost;
 import com.intfocus.template.util.ToastUtils;
 import com.intfocus.template.util.VersionUtil;
 import com.umeng.message.PushAgent;
@@ -58,7 +58,7 @@ public class SettingListActivity extends BaseActivity {
                 }
                 String appName = getString(getApplicationInfo().labelRes);
                 String deviceInfo = String.format("%s(Android %s)", TextUtils.split(android.os.Build.MODEL, " - ")[0], Build.VERSION.RELEASE);
-                String apiDomain = BuildConfig.BASE_URL.replace("http://", "").replace("https://", "");
+                String apiDomain = TempHost.getHost().replace("http://", "").replace("https://", "");
                 String versionInfo = String.format("%s(%d)", packageInfo.versionName, packageInfo.versionCode);
                 String appPackageInfo = packageInfo.packageName;
                 mItemNameList = new String[]{"应用名称", "检测更新", "设备型号", "数据接口", "应用标识"};

@@ -71,9 +71,9 @@ class WebPageModelImpl : ReportModelImpl() {
         if (Integer.valueOf(templateId) == 4) {
             groupId = "0"
         }
-        jsUrl = String.format(K.K_REPORT_ZIP_DATA, BuildConfig.BASE_URL, URLs.MD5(K.ANDROID_API_KEY + K.K_REPORT_BASE_API + K.ANDROID_API_KEY), groupId, templateId, reportId)
+        jsUrl = String.format(K.K_REPORT_ZIP_DATA, TempHost.getHost(), URLs.MD5(K.ANDROID_API_KEY + K.K_REPORT_BASE_API + K.ANDROID_API_KEY), groupId, templateId, reportId)
         jsFileName = String.format("group_%s_template_%s_report_%s.js", groupId, templateId, reportId)
-        htmlUrl = String.format(K.K_REPORT_HTML, BuildConfig.BASE_URL, groupId, templateId, reportId)
+        htmlUrl = String.format(K.K_REPORT_HTML, TempHost.getHost(), groupId, templateId, reportId)
 
         observable = Observable.just(jsFileName)
                 .subscribeOn(Schedulers.io())

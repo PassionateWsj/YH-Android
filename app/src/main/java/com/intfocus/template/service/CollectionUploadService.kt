@@ -4,7 +4,6 @@ import android.app.IntentService
 import android.content.Context
 import android.content.Intent
 import com.google.gson.Gson
-import com.intfocus.template.BuildConfig
 import com.intfocus.template.SYPApplication.globalContext
 import com.intfocus.template.constant.Module.UPLOAD_IMAGES
 import com.intfocus.template.constant.Params.USER_BEAN
@@ -16,6 +15,7 @@ import com.intfocus.template.model.gen.CollectionDao
 import com.intfocus.template.model.gen.SourceDao
 import com.intfocus.template.subject.nine.entity.CollectionRequestBody
 import com.intfocus.template.util.K
+import com.intfocus.template.util.TempHost
 import com.intfocus.template.util.URLs
 import com.intfocus.template.util.Utils
 import okhttp3.*
@@ -95,7 +95,7 @@ class CollectionUploadService : IntentService("collection_upload") {
             }
 
             val request = Request.Builder()
-                    .url(BuildConfig.BASE_URL + K.API_IMAGE_UPLOAD)
+                    .url(TempHost.getHost() + K.API_IMAGE_UPLOAD)
                     .post(requestBody.build())
                     .build()
 

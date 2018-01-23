@@ -383,14 +383,31 @@ class LoginActivity : FragmentActivity() {
                             }
                             AlertDialog.Builder(this@LoginActivity)
                                     //设置标题
-                                    .setTitle("请选择")
+//                                    .setTitle("请选择")
                                     //设置图标
-                                    .setIcon(R.drawable.app)
+//                                    .setIcon(R.drawable.app)
                                     .setItems(items, DialogInterface.OnClickListener { dialog, which ->
                                         if (data.data[which].app_ip != null && data.data[which].app_ip != "") {
                                             mProgressDialog = ProgressDialog.show(this@LoginActivity, "稍等", "验证用户信息...")
 
-                                            data.data[which].app_ip?.let { RetrofitUtil.getInstance(this@LoginActivity).changeableBaseUrlInterceptor.setHost(it) }
+
+//                                            val pm = applicationContext.packageManager
+//                                            println(componentName)
+//                                            //去除旧图标，不去除的话会出现2个App图标
+//                                            pm.setComponentEnabledSetting(componentName,
+//                                                    PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+//                                                    PackageManager.DONT_KILL_APP)
+//                                            //显示新图标
+//                                            pm.setComponentEnabledSetting(ComponentName(
+//                                                    this@LoginActivity,
+//                                                    "com.intfocus.template.YhSplashActivity"),
+//                                                    PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+//                                                    PackageManager.DONT_KILL_APP)
+
+                                            data.data[which].app_ip?.let {
+                                                RetrofitUtil.getInstance(this@LoginActivity).changeableBaseUrlInterceptor.setHost(it)
+                                                TempHost.setHost(it)
+                                            }
                                             userLogin(loginPwd)
                                         } else {
                                             ToastUtils.show(this@LoginActivity, "该应用未启用 APP 服务")

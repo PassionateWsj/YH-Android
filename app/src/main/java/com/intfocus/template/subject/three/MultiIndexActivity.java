@@ -39,7 +39,6 @@ import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.intfocus.template.BuildConfig;
 import com.intfocus.template.R;
 import com.intfocus.template.subject.three.adapter.MetricsAdapter;
 import com.intfocus.template.subject.three.adapter.ProductListAdapter;
@@ -49,6 +48,7 @@ import com.intfocus.template.util.ImageUtil;
 import com.intfocus.template.util.K;
 import com.intfocus.template.util.LogUtil;
 import com.intfocus.template.util.PageLinkManage;
+import com.intfocus.template.util.TempHost;
 import com.intfocus.template.util.ToastUtils;
 import com.intfocus.template.util.ValueFormatter;
 import com.umeng.socialize.ShareAction;
@@ -222,7 +222,7 @@ public class MultiIndexActivity extends AppCompatActivity implements ProductList
         objectID = intent.getStringExtra(OBJECT_ID);
         objectType = intent.getStringExtra(OBJECT_TYPE);
 
-        urlString = String.format(K.API_REPORT_JSON_ZIP, BuildConfig.BASE_URL, groupID, "3", objectID);
+        urlString = String.format(K.API_REPORT_JSON_ZIP, TempHost.getHost(), groupID, "3", objectID);
 
         tvTitle.setText(tvBannerName);
         new LoadReportData().execute();

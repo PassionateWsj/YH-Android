@@ -145,7 +145,7 @@ class FavoriteArticleActivity : RefreshActivity(), InstituteAdapter.NoticeItemLi
     }
 
     override fun itemClick(instituteDataBean: InstituteDataBean) {
-        val link = String.format("%s/mobile/v2/user/%s/article/%s", BuildConfig.BASE_URL, mUserSP.getString(K.K_USER_ID, "0").toString(), instituteDataBean.acticleId.toString())
+        val link = String.format("%s/mobile/v2/user/%s/article/%s", TempHost.getHost(), mUserSP.getString(K.K_USER_ID, "0").toString(), instituteDataBean.acticleId.toString())
         PageLinkManage.pageLink(this, instituteDataBean.title!!, link)
     }
 

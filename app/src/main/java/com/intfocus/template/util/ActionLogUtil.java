@@ -4,7 +4,6 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 
-import com.intfocus.template.BuildConfig;
 import com.intfocus.template.general.PriorityRunnable;
 
 import org.json.JSONException;
@@ -49,7 +48,7 @@ public class ActionLogUtil {
         priorityThreadPool.execute(new PriorityRunnable(1) {
             @Override
             public void doSth() {
-                String urlString = String.format(K.K_SCREEN_LOCK_API_PATH, BuildConfig.BASE_URL);
+                String urlString = String.format(K.K_SCREEN_LOCK_API_PATH, TempHost.getHost());
 
                 Map<String, String> params = new HashMap<>();
                 params.put("screen_lock_state", "1");
@@ -102,7 +101,7 @@ public class ActionLogUtil {
 
                     params.put("api_token", ApiHelper.checkApiToken("/api/v1.1/device/logger"));
 
-                    String urlString = String.format(K.K_ACTION_LOG, BuildConfig.BASE_URL);
+                    String urlString = String.format(K.K_ACTION_LOG, TempHost.getHost());
                     HttpUtil.httpPost(urlString, params);
 
                 } catch (JSONException | PackageManager.NameNotFoundException e) {
@@ -131,7 +130,7 @@ public class ActionLogUtil {
                     params.put("action_log", param);
                     params.put("api_token", ApiHelper.checkApiToken("/api/v1.1/device/logger"));
 
-                    String urlString = String.format(K.K_ACTION_LOG, BuildConfig.BASE_URL);
+                    String urlString = String.format(K.K_ACTION_LOG, TempHost.getHost());
                     HttpUtil.httpPost(urlString, params);
                 } catch (JSONException | PackageManager.NameNotFoundException e) {
                     e.printStackTrace();

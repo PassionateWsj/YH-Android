@@ -19,15 +19,13 @@ import android.view.WindowManager
 import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
 import android.widget.Toast
+import com.intfocus.template.BuildConfig
 import com.intfocus.template.ConfigConstants
 import com.intfocus.template.R
 import com.intfocus.template.constant.Params.USER_BEAN
 import com.intfocus.template.listener.NoDoubleClickListener
 import com.intfocus.template.login.LoginActivity
-import com.intfocus.template.util.AssetsUpDateUtil
-import com.intfocus.template.util.HttpUtil
-import com.intfocus.template.util.LogUtil
-import com.intfocus.template.util.OnCheckAssetsUpdateResultListener
+import com.intfocus.template.util.*
 import kotlinx.android.synthetic.main.activity_splash.*
 import kotlinx.android.synthetic.main.toast.*
 import java.util.*
@@ -55,6 +53,7 @@ class SplashActivity : Activity(), Animation.AnimationListener {
         requestWindowFeature(Window.FEATURE_NO_TITLE)
         setContentView(R.layout.activity_splash)
 
+        TempHost.setHost(BuildConfig.BASE_URL)
     }
 
     override fun onStart() {

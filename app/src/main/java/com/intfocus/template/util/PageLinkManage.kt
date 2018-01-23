@@ -6,7 +6,6 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
 import com.alibaba.fastjson.TypeReference
-import com.intfocus.template.BuildConfig
 import com.intfocus.template.ConfigConstants
 import com.intfocus.template.constant.Params.ACTION
 import com.intfocus.template.constant.Params.BANNER_NAME
@@ -342,7 +341,7 @@ object PageLinkManage {
         builder.setTitle("温馨提示")
                 .setMessage("当前版本暂不支持该模板, 请升级应用后查看")
                 .setPositiveButton("前去升级") { _, _ ->
-                    val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(BuildConfig.BASE_URL))
+                    val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(TempHost.getHost()))
                     context.startActivity(browserIntent)
                 }
                 .setNegativeButton("稍后升级") { _, _ ->

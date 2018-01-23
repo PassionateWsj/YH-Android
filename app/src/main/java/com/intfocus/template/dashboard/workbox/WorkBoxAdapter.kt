@@ -79,7 +79,7 @@ class WorkBoxAdapter(var ctx: Context, val datas: List<WorkBoxItem>?) : BaseAdap
             }
             false
         }
-        if ("template" == BuildConfig.FLAVOR || "baozhentv" == BuildConfig.FLAVOR) {
+        if ("baozhentv" == BuildConfig.FLAVOR) {
             viewTag.rlItem.requestFocus()
         }
         LogUtil.d(this, "pos :" + position + " hasFocus :" + viewTag.rlItem.hasFocus())

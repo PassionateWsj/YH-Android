@@ -5,7 +5,6 @@ import android.content.SharedPreferences
 import android.graphics.Bitmap
 import android.os.Environment
 import com.google.gson.Gson
-import com.intfocus.template.BuildConfig
 import com.intfocus.template.dashboard.mine.bean.IssueCommitInfo
 import com.intfocus.template.dashboard.mine.bean.IssueCommitRequest
 import com.intfocus.template.dashboard.mine.bean.IssueListBean
@@ -141,7 +140,7 @@ class IssueMode(var ctx: Context) : AbstractMode() {
         }
 
         val request = Request.Builder()
-                .url(BuildConfig.BASE_URL + K.K_FEED_BACK)
+                .url(TempHost.getHost() + K.K_FEED_BACK)
                 .post(requestBody.build())
                 .build()
 

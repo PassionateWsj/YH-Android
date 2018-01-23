@@ -21,6 +21,7 @@ public class K implements Serializable {
      * http://yonghui-test.idata.mobi/api/v1/group/165/template/1/report/2/jzip
      * http://shengyiplus.com/api/v1/group/165/template/1/report/35/jzip
      * http://112.74.180.14:8085/api/v1/group/401/template/1/report/1/jzip
+     * http://yonghui.idata.mobi/api/v1/group/165/template/1/report/7/jzip
      */
     public final static String API_REPORT_JSON_ZIP = "%s/api/v1/group/%s/template/%s/report/%s/jzip";
     public final static String API_BAR_CODE_SCAN_VIEW = "%s/mobile/v2/store/%s/barcode/%s/view";

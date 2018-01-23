@@ -282,7 +282,7 @@ class BarCodeScannerActivity : AppCompatActivity(), QRCodeView.Delegate, View.On
         when {
             type.contains("ruishang") -> {
                 var urlString = intent.getStringExtra(LINK)
-                // val link = BuildConfig.BASE_URL + "/websites/cav/quan.html?" + "uid=" + mUserSP.getString("userNum", "") + "&code=" + result + "&groupName=" + mUserSP.getString(URLs.kGroupName, "") + "&groupId=" + mUserSP.getString(URLs.kGroupId, "")
+                // val link = TempHost.getHost() + "/websites/cav/quan.html?" + "uid=" + mUserSP.getString("userNum", "") + "&code=" + result + "&groupName=" + mUserSP.getString(URLs.kGroupName, "") + "&groupId=" + mUserSP.getString(URLs.kGroupId, "")
                 val appendParams = String.format("code=%s", result)
                 val splitString = if (urlString.contains("?")) "&" else "?"
                 urlString = String.format("%s%s%s", urlString, splitString, appendParams)

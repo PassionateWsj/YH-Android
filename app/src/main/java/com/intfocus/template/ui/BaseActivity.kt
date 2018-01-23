@@ -12,17 +12,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.PopupWindow
-import com.intfocus.template.BuildConfig
 import com.intfocus.template.R
 import com.intfocus.template.SYPApplication
 import com.intfocus.template.constant.Params.USER_BEAN
 import com.intfocus.template.listener.UMSharedListener
-import com.intfocus.template.util.ActionLogUtil
-import com.intfocus.template.util.ImageUtil
+import com.intfocus.template.util.*
 import com.intfocus.template.util.K.API_COMMENT_MOBILE_PATH
-import com.intfocus.template.util.LoadingUtils
 import com.intfocus.template.util.PageLinkManage.pageLink
-import com.intfocus.template.util.ToastUtils
 import com.umeng.socialize.ShareAction
 import com.umeng.socialize.bean.SHARE_MEDIA
 import com.umeng.socialize.media.UMImage
@@ -98,7 +94,7 @@ open class BaseActivity : AppCompatActivity() {
      * 报表基础功能 -> 评论
      */
     fun comment(activity: Activity, objectId: String, objectType: String, objectTitle: String) {
-        val link = String.format(API_COMMENT_MOBILE_PATH, BuildConfig.BASE_URL, "v2", objectId, objectType)
+        val link = String.format(API_COMMENT_MOBILE_PATH, TempHost.getHost(), "v2", objectId, objectType)
         pageLink(activity, objectTitle, link, objectId, "-1", objectType)
     }
 

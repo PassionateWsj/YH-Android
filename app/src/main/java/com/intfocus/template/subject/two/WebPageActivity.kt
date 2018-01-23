@@ -91,7 +91,7 @@ class WebPageActivity : BaseActivity(), WebPageContract.View, OnPageErrorListene
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if ("template" == BuildConfig.FLAVOR || "baozhentv" == BuildConfig.FLAVOR) {
+        if ("baozhentv" == BuildConfig.FLAVOR) {
             window.setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         }
 
@@ -101,7 +101,7 @@ class WebPageActivity : BaseActivity(), WebPageContract.View, OnPageErrorListene
 
         presenter.load(reportId, templateId, groupId, url)
 
-        if ("template" == BuildConfig.FLAVOR || "baozhentv" == BuildConfig.FLAVOR) {
+        if ("baozhentv" == BuildConfig.FLAVOR) {
             rl_action_bar.post { setBannerVisibility(View.GONE) }
             ll_filter.post { ll_filter.visibility = View.GONE }
         }
@@ -226,7 +226,7 @@ class WebPageActivity : BaseActivity(), WebPageContract.View, OnPageErrorListene
         webSettings?.defaultTextEncodingName = "utf-8"
 
         // 变更 UserAgent
-        if ("template" == BuildConfig.FLAVOR || "baozhentv" == BuildConfig.FLAVOR) {
+        if ("baozhentv" == BuildConfig.FLAVOR) {
             val userAgentWithNewChromeVersion = Regex("Chrome/[0-9.]*\\s+").replace(webSettings?.userAgentString!!, "Chrome/63.0.3239.132 ")
             LogUtil.d(this, "UserAgent ::: $userAgentWithNewChromeVersion ")
             webSettings.setUserAgent(userAgentWithNewChromeVersion.replace("MQQBrowser/6.2 TBS/043805 ", "").replace("Version/4.0 ", "").replace("; wv", ""))
