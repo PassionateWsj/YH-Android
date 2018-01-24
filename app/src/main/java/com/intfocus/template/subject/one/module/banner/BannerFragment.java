@@ -56,6 +56,12 @@ public class BannerFragment extends BaseFragment {
         fragment.setArguments(args);
         return fragment;
     }
+    public static BannerFragment newInstance() {
+        BannerFragment fragment = new BannerFragment();
+        Bundle args = new Bundle();
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -80,7 +86,7 @@ public class BannerFragment extends BaseFragment {
     }
 
     private void initPopup(ViewGroup container) {
-        View contentView = LayoutInflater.from(ctx).inflate(R.layout.item_bannerinfo, container, false);
+        View contentView = LayoutInflater.from(getCtx()).inflate(R.layout.item_bannerinfo, container, false);
         tv_name = contentView.findViewById(R.id.tv_name_bannerInfo);
         tv_count = contentView.findViewById(R.id.tv_count_bannerInfo);
         imgbtn_close = contentView.findViewById(R.id.imgBtn_ColsPopupWindow_bannerInfo);

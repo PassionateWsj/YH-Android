@@ -1,6 +1,8 @@
 package com.intfocus.template.subject.two
 
-import com.intfocus.template.subject.nine.callback.LoadDataCallback
+import com.intfocus.template.SYPApplication
+import com.intfocus.template.model.callback.LoadDataCallback
+import com.intfocus.template.util.FileUtil
 
 /**
  * @author liuruilin
@@ -40,7 +42,8 @@ class WebPagePresenter(
         }
 
         override fun onError(e: Throwable) {
-
+            var errorPagePath = FileUtil.sharedPath(SYPApplication.globalContext) + "/loading/400.html"
+            mView.showError("file://" + errorPagePath)
         }
 
         override fun onComplete() {}

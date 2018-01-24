@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color8"
+    android:fitsSystemWindows="true"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/rl_action_bar"
+        style="@style/TitleStyle"
+        android:layout_width="match_parent">
+
+        <ImageView
+            style="@style/BackStyle"
+            android:onClick="dismissActivity"/>
+
+        <TextView
+            android:id="@+id/tv_collection_title"
+            style="@style/TitleText"
+            android:text="数据采集列表"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_collection_list_search"
+        android:layout_width="match_parent"
+        android:layout_height="32dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/background_white_radius_border_white"
+        android:gravity="center"
+        android:paddingLeft="12dp">
+
+        <ImageView
+            android:id="@+id/iv_collection_list_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:src="@drawable/icon_search1"/>
+
+        <EditText
+            android:id="@+id/edit_collection_list_search"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@+id/iv_collection_list_search"
+            android:background="@drawable/background_white_radius_border_white"
+            android:gravity="center_vertical"
+            android:hint="搜索关键字"
+            android:imeOptions="actionSearch"
+            android:inputType="text"
+            android:maxLines="1"
+            android:textColorHint="@color/co4_syr"
+            android:textCursorDrawable="@drawable/login_edit_cursor"
+            android:textSize="14dp"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout
+            android:id="@+id/refresh_collection_list_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:tr_enable_loadmore="false">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_collection_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="5dp"
+                android:overScrollMode="never"/>
+        </com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout>
+
+
+    </RelativeLayout>
+
+</LinearLayout>

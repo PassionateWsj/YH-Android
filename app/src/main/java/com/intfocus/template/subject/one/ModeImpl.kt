@@ -1,23 +1,23 @@
 package com.intfocus.template.subject.one
 
+import android.util.Log
 import com.alibaba.fastjson.JSON
 import com.alibaba.fastjson.JSONReader
-import com.intfocus.template.ConfigConstants
+import com.intfocus.template.SYPApplication.globalContext
 import com.intfocus.template.model.DaoUtil
 import com.intfocus.template.model.entity.Report
 import com.intfocus.template.model.entity.ReportModule
 import com.intfocus.template.model.gen.ReportDao
 import com.intfocus.template.subject.model.ReportModelImpl
 import com.intfocus.template.subject.one.entity.Filter
+import com.intfocus.template.util.*
 import com.intfocus.template.util.ApiHelper.clearResponseHeader
-import com.intfocus.template.util.K
-import com.intfocus.template.util.LogUtil
-import com.zbl.lib.baseframe.utils.TimeUtil
 import rx.Observable
 import rx.Subscriber
 import rx.Subscription
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
+import java.io.File
 import java.io.StringReader
 
 /**
@@ -30,7 +30,8 @@ import java.io.StringReader
  * ****************************************************
  */
 class ModeImpl : ReportModelImpl() {
-    lateinit private var pageTitleList: List<String>
+    private val sqlDistinctPageTitle = "SELECT DISTINCT " + ReportDao.Properties.Page_title.columnName + " FROM " + ReportDao.TABLENAME
+    private var pageTitleList: MutableList<String> = arrayListOf()
     private var reportDao: ReportDao = DaoUtil.getReportDao()
     lateinit private var filterObject: Filter
     private var urlString: String = ""
@@ -38,6 +39,8 @@ class ModeImpl : ReportModelImpl() {
     private var groupId: String = ""
     private var templateId: String = ""
     private var reportId: String = ""
+
+    private var count = 0
 
     companion object {
         private val TAG = "ModeImpl"
@@ -61,6 +64,9 @@ class ModeImpl : ReportModelImpl() {
         @JvmStatic
         fun destroyInstance() {
             unSubscribe()
+            observable?.let {
+                Log.d(TAG, "取消订阅 ::: " + it.isUnsubscribed)
+            }
             INSTANCE = null
         }
 
@@ -78,105 +84,36 @@ class ModeImpl : ReportModelImpl() {
         this.groupId = groupId
         uuid = reportId + templateId + groupId
         jsonFileName = String.format("group_%s_template_%s_report_%s.json", groupId, templateId, reportId)
-        urlString = String.format(K.API_REPORT_JSON_ZIP, ConfigConstants.kBaseUrl, groupId, templateId, reportId)
+        urlString = String.format(K.API_REPORT_JSON_ZIP, TempHost.getHost(), groupId, templateId, reportId)
+
+        LogUtil.d(this@ModeImpl, "报表 url ::: " + urlString)
         checkReportData(callback)
     }
 
     private fun checkReportData(callback: ModeModel.LoadDataCallback) {
-        when {
-            check(urlString) -> analysisData(callback)
-            available(uuid) -> {
-                observable = Observable.just(uuid)
-                        .subscribeOn(Schedulers.io())
-                        .map {
-                            pageTitleList = generatePageList(queryDateBase(it))
-                            pageTitleList
-                        }
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(object : Subscriber<List<String>>() {
-                            override fun onCompleted() {
-                            }
-
-                            override fun onNext(t: List<String>?) {
-                                t?.let { callback.onDataLoaded(it, filterObject) }
-                            }
-
-                            override fun onError(e: Throwable?) {
-                                delete(uuid)
-                                clearResponseHeader(urlString)
-                                callback.onDataNotAvailable(e!!)
-                            }
-                        })
-            }
-            else -> analysisData(callback)
-        }
-    }
-
-    private fun analysisData(callback: ModeModel.LoadDataCallback) {
-        LogUtil.d(TAG, "ModeImpl 表格数据开始转为对象")
-        var startTime = System.currentTimeMillis()
-        observable = Observable.just(jsonFileName)
+        observable = Observable.just(uuid)
                 .subscribeOn(Schedulers.io())
                 .map {
-                    delete(uuid)
-                    val response: String?
-//                    val jsonFilePath = FileUtil.dirPath(globalContext, K.K_CACHED_DIR_NAME, it)
-//                    val dataState = ApiHelper.reportJsonData(globalContext, groupId, templateId, reportId)
-//                    if (dataState || File(jsonFilePath).exists()) {
-//                        response = FileUtil.readFile(jsonFilePath)
-//                    } else {
-//                        throw Throwable("获取数据失败")
-//                    }
-                    response = getAssetsJsonData("template1_06.json")
-
-                    val stringReader = StringReader(response)
-                    val reader = JSONReader(stringReader)
-
-                    reader.startObject()
-                    while (reader.hasNext()) {
-                        val configKey = reader.readString()
-                        when (configKey) {
-                            "filter" -> {
-                                filterObject = JSON.parseObject(reader.readObject().toString(), Filter::class.java)
-                                val report = Report()
-                                report.id = null
-                                report.uuid = uuid
-                                report.name = filterObject.display
-                                report.type = "filter"
-                                report.config = JSON.toJSONString(filterObject)
-                                reportDao.insert(report)
-                            }
-                            "parts" -> {
-                                reader.startArray()
-                                var i = 0
-                                while (reader.hasNext()) {
-                                    val partsItem = JSON.parseObject(reader.readObject().toString(), ReportModule::class.java)
-                                    val report = Report()
-                                    report.id = null
-                                    report.uuid = uuid
-                                    report.name = partsItem.name ?: "name"
-                                    report.page_title = partsItem.page_title ?: "page_title"
-                                    report.index = i
-                                    report.type = partsItem.type ?: "unknown_type"
-                                    report.config = partsItem.config ?: "null_config"
-                                    reportDao.insert(report)
-                                    i++
-                                }
-                                reader.endArray()
-                            }
+                    when {
+                        check(urlString) -> {
+                            LogUtil.d(this@ModeImpl, "网络数据")
+                            analysisData()
+                        }
+                        available(uuid) -> {
+                            LogUtil.d(this@ModeImpl, "本地数据")
+                            queryFilter(uuid)
+                            generatePageList()
+                        }
+                        else -> {
+                            LogUtil.d(this@ModeImpl, "报表数据有缓存，数据库无数据")
+                            analysisData()
                         }
                     }
-                    reader.endObject()
-                    LogUtil.d(TAG, "analysisDataEndTime:" + TimeUtil.getNowTime())
-                    pageTitleList = generatePageList(queryDateBase(uuid))
-                    pageTitleList
                 }
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(object : Subscriber<List<String>>() {
                     override fun onCompleted() {
-                        LogUtil.d(TAG, "ModeImpl 表格数据转为对象结束")
-                        LogUtil.d(TAG, "ModeImpl 转换耗时 ::: " + (System.currentTimeMillis() - startTime) + " 毫秒")
-                        startTime = System.currentTimeMillis()
+
                     }
 
                     override fun onNext(t: List<String>?) {
@@ -184,35 +121,87 @@ class ModeImpl : ReportModelImpl() {
                     }
 
                     override fun onError(e: Throwable?) {
-                        LogUtil.d(TAG, "analysisData onError ::: " + e!!.message)
-                        callback.onDataNotAvailable(e)
+                        delete(uuid)
+                        clearResponseHeader(urlString)
+                        callback.onDataNotAvailable(e!!)
                     }
                 })
     }
 
+    private fun analysisData(): List<String> {
+        LogUtil.d(TAG, "ModeImpl 报表数据开始转为对象")
+        delete(uuid)
+        val response: String?
+        val jsonFilePath = FileUtil.dirPath(globalContext, K.K_CACHED_DIR_NAME, jsonFileName)
+        val dataState = ApiHelper.reportJsonData(globalContext, groupId, templateId, reportId)
+        if (dataState || File(jsonFilePath).exists()) {
+            response = FileUtil.readFile(jsonFilePath)
+        } else {
+            throw Throwable("获取数据失败")
+        }
+
+//        response = LoadAssetsJsonUtil.getAssetsJsonData("group_165_template_1_report_31.json")
+
+        val stringReader = StringReader(response)
+        val reader = JSONReader(stringReader)
+
+        reader.startObject()
+        var report: Report
+        val reportDataList = mutableListOf<Report>()
+        while (reader.hasNext()) {
+            val configKey = reader.readString()
+            when (configKey) {
+                "filter" -> {
+                    filterObject = JSON.parseObject(reader.readObject().toString(), Filter::class.java)
+                    report = Report()
+                    report.id = null
+                    report.uuid = uuid
+                    report.name = filterObject.display
+                    report.index = 0
+                    report.type = "filter"
+                    report.page_title = "filter"
+                    report.config = JSON.toJSONString(filterObject)
+                    reportDataList.add(report)
+//                    reportDao.insert(report)
+                }
+                "parts" -> {
+                    reader.startArray()
+                    var i = 0
+                    while (reader.hasNext()) {
+                        val partsItem = JSON.parseObject(reader.readObject().toString(), ReportModule::class.java)
+                        report = Report()
+                        report.id = null
+                        report.uuid = uuid
+                        report.name = partsItem.name ?: "name"
+                        report.page_title = partsItem.page_title ?: "page_title"
+                        report.index = partsItem.control_index ?: i
+                        report.type = partsItem.type ?: "unknown_type"
+                        report.config = partsItem.config ?: "null_config"
+//                        reportDao.insert(report)
+                        reportDataList.add(report)
+                        i++
+                    }
+                    reader.endArray()
+                }
+            }
+        }
+        reader.endObject()
+        reportDao.insertInTx(reportDataList)
+        LogUtil.d(TAG, "ModeImpl 报表数据解析完成")
+        return generatePageList()
+    }
+
     /**
-     * 查询该 uuid 对应的报表的所有数据
+     * 查询筛选条件
      * @uuid  报表唯一标识
-     * @return 单只报表所有数据
+     * @return 筛选实体类
      */
-    private fun queryDateBase(uuid: String): List<Report> {
+    private fun queryFilter(uuid: String) {
         val reportDao = DaoUtil.getReportDao()
         val filter = reportDao.queryBuilder()
                 .where(reportDao.queryBuilder()
                         .and(ReportDao.Properties.Uuid.eq(uuid), ReportDao.Properties.Type.eq("filter"))).unique()
-
         filterObject = JSON.parseObject(filter.config, Filter::class.java)
-
-        return if (null == filterObject.data) {
-            reportDao.queryBuilder()
-                    .where(ReportDao.Properties.Uuid.eq(uuid))
-                    .list() ?: mutableListOf()
-        } else {
-            reportDao.queryBuilder()
-                    .where(reportDao.queryBuilder()
-                            .and(ReportDao.Properties.Uuid.eq(uuid), ReportDao.Properties.Name.eq(filterObject.display)))
-                    .list() ?: mutableListOf()
-        }
     }
 
     /**
@@ -220,7 +209,7 @@ class ModeImpl : ReportModelImpl() {
      * @pageId 页面id
      * @return pageId 对应页面的所有报表组件
      */
-    fun queryPageData(pageId: Int): List<Report> {
+    fun queryPageData(uuid: String, pageId: Int): List<Report> {
         val reportDao = DaoUtil.getReportDao()
         return if (null == filterObject.data) {
             reportDao.queryBuilder()
@@ -269,23 +258,44 @@ class ModeImpl : ReportModelImpl() {
                 .where(reportDao.queryBuilder()
                         .and(ReportDao.Properties.Uuid.eq(uuid), ReportDao.Properties.Type.eq("filter"))).unique()
 
-        filter.name = display
-        filter.config = JSON.toJSONString(filterObject)
+        filter?.name = display
+        filter?.config = JSON.toJSONString(filterObject)
 
-        reportDao.update(filter)
-        checkReportData(callback)
+        filter?.let {
+            reportDao.update(it)
+            checkReportData(callback)
+        }
     }
 
     /**
-     * 获取所有根页签, 并去重
+     * 根页签去重
      * @reports 当前报表所有数据
-     * @return 当前报表所有的根页签
+     * @return 去重后的根页签
      */
-    private fun generatePageList(reports: List<Report>): List<String> {
-        val pageSet = HashSet<String>()
-        reports
-                .filter { null != it.page_title }
-                .mapTo(pageSet) { it.page_title }
-        return pageSet.toList()
+    private fun generatePageList(): List<String> {
+        pageTitleList.clear()
+
+        var distinctPageTitle = sqlDistinctPageTitle
+
+        if (null != filterObject.data) {
+            distinctPageTitle = sqlDistinctPageTitle + " WHERE " + ReportDao.Properties.Name.columnName + " = \'" + filterObject.display + "\' AND " + ReportDao.Properties.Uuid.columnName + " = \'" + uuid + "\'"
+        }
+
+        val cursor = DaoUtil.getDaoSession()!!.database.rawQuery(distinctPageTitle, null)
+
+        cursor.use {
+            if (it.moveToFirst()) {
+                do {
+                    val pageTitle = it.getString(0)
+                    if (pageTitle != null && "" != pageTitle && "filter" != pageTitle) {
+                        pageTitleList.add(pageTitle)
+                    }
+                } while (it.moveToNext())
+            }
+        }
+        if (pageTitleList.size == 0) {
+            pageTitleList.add("")
+        }
+        return pageTitleList
     }
 }

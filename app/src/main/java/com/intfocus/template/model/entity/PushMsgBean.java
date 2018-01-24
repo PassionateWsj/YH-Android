@@ -1,8 +1,8 @@
 package com.intfocus.template.model.entity;
 
 import org.greenrobot.greendao.annotation.Entity;
-import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.Generated;
+import org.greenrobot.greendao.annotation.Id;
 
 /**
  * ****************************************************
@@ -47,50 +47,48 @@ public class PushMsgBean {
      */
 
     /*
-    {
-        "type":"report",
-        "url":"/mobile/v2/group/%@/template/1/report/7",
-        "title": "第二集群生鲜销售概况",
-        "obj_id": "7",
-        "template_id": "1",
-        "obj_type": "3",
-        "params_mapping": {
-          "user_num": "user_num"
-        },
-        "debug_timestamp":"2017-08-01 15:50:51 +0800"
-    }
+        {
+            "title":"第二集群生鲜销售概况",
+            "url":"/mobile/v2/group/7/template/1/report/7",
+            "obj_id":"7",
+            "template_id":"1",
+            "params_mapping":{
+                "user_num":"user_num"
+            },
+            "debug_timestamp":"2017-08-01 15:50:51 +0800"
+        }
     */
 
     String ticker;
     String body_title;
+    String user_num;
     String text;
 
     String type;
-    String url;
     String title;
+    String url;
     String obj_id;
     String template_id;
-    String obj_type;
     String params_mapping;
     String debug_timestamp;
 
-    boolean new_msg;
+    boolean new_msg = true;
 
-    @Generated(hash = 2009287025)
-    public PushMsgBean(Long id, String ticker, String body_title, String text,
-            String type, String url, String title, String obj_id,
-            String template_id, String obj_type, String params_mapping,
-            String debug_timestamp, boolean new_msg) {
+    @Generated(hash = 1469926615)
+    public PushMsgBean(Long id, String ticker, String body_title, String user_num,
+            String text, String type, String title, String url, String obj_id,
+            String template_id, String params_mapping, String debug_timestamp,
+            boolean new_msg) {
         this.id = id;
         this.ticker = ticker;
         this.body_title = body_title;
+        this.user_num = user_num;
         this.text = text;
         this.type = type;
-        this.url = url;
         this.title = title;
+        this.url = url;
         this.obj_id = obj_id;
         this.template_id = template_id;
-        this.obj_type = obj_type;
         this.params_mapping = params_mapping;
         this.debug_timestamp = debug_timestamp;
         this.new_msg = new_msg;
@@ -140,20 +138,20 @@ public class PushMsgBean {
         this.type = type;
     }
 
-    public String getUrl() {
-        return this.url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
     public String getTitle() {
         return this.title;
     }
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getUrl() {
+        return this.url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     public String getObj_id() {
@@ -170,14 +168,6 @@ public class PushMsgBean {
 
     public void setTemplate_id(String template_id) {
         this.template_id = template_id;
-    }
-
-    public String getObj_type() {
-        return this.obj_type;
-    }
-
-    public void setObj_type(String obj_type) {
-        this.obj_type = obj_type;
     }
 
     public String getParams_mapping() {
@@ -203,5 +193,14 @@ public class PushMsgBean {
     public void setNew_msg(boolean new_msg) {
         this.new_msg = new_msg;
     }
+
+    public String getUser_num() {
+        return this.user_num;
+    }
+
+    public void setUser_num(String user_num) {
+        this.user_num = user_num;
+    }
+
 
 }

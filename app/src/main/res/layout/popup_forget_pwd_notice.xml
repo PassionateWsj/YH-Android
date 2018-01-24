@@ -34,7 +34,7 @@
             android:padding="15dp"
             android:text="用户不存在，找平台申请开通帐号！"
             android:textColor="@color/co3_syr"
-            android:textSize="13sp"/>
+            android:textSize="12sp"/>
 
         <View
             android:layout_width="match_parent"

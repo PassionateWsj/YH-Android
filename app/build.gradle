@@ -5,26 +5,17 @@ apply from: 'tinkerpatch.gradle'
 apply plugin: 'org.greenrobot.greendao'
 
 android {
-    signingConfigs {
-    }
-    compileSdkVersion 26
-    buildToolsVersion '26.0.2'
+    compileSdkVersion Integer.parseInt(COMPILE_SDK_VERSION)
+    buildToolsVersion BUILDTOOLS_VERSION
     defaultConfig {
-        applicationId 'com.intfocus.template'
-        minSdkVersion 19
-        targetSdkVersion 26
+        minSdkVersion Integer.parseInt(MIN_SDK_VERSION)
+        targetSdkVersion Integer.parseInt(TARGET_SDK_VERSION)
         multiDexEnabled true
-        versionCode 58
-        versionName "1.6.08"
 
         ndk {
             // 设置支持的SO库架构
-            abiFilters 'armeabi-v7a','arm64-v8a'
-        }
-        javaCompileOptions {
-            annotationProcessorOptions {
-                includeCompileClasspath = true
-            }
+            abiFilters 'armeabi' , 'x86', 'armeabi-v7a', 'mips'
+//            abiFilters 'armea、bi-v7a','arm64-v8a'
         }
         javaCompileOptions {
             annotationProcessorOptions {
@@ -33,29 +24,345 @@ android {
         }
     }
 
-    // 签名配置
     signingConfigs {
-        release {
-            try {
-                keyAlias 'yh'
-                keyPassword '123456'
-                storeFile file('/Users/liuruilin/AndroidProject/YH-Android/key-store/yh.jks')
-                storePassword '123456'
-            }
-            catch (ex) {
-                throw new Exception("You should define KEYSTORE_PASSWORD and KEY_PASSWORD in gradle.properties")
-            }
+        template {
+            keyAlias TEMPLATE_ALIAS
+            keyPassword TEMPLATE_KEY_PWD
+            storeFile file(TEMPLATE_STORE_FILE)
+            storePassword TEMPLATE_KEYSTORE_PWD
+            v1SigningEnabled true
+            v2SigningEnabled false
+        }
+        shengyiplus {
+            keyAlias SHENGYIPLUS_ALIAS
+            keyPassword SHENGYIPLUS_KEY_PWD
+            storeFile file(SHENGYIPLUS_STORE_FILE)
+            storePassword SHENGYIPLUS_KEYSTORE_PWD
+            v1SigningEnabled true
+            v2SigningEnabled false
+        }
+        yhdev {
+            keyAlias YHDEV_ALIAS
+            keyPassword YHDEV_KEY_PWD
+            storeFile file(YHDEV_STORE_FILE)
+            storePassword YHDEV_KEYSTORE_PWD
+            v1SigningEnabled true
+            v2SigningEnabled false
+        }
+        yonghuitest {
+            keyAlias YONGHUITEST_ALIAS
+            keyPassword YONGHUITEST_KEY_PWD
+            storeFile file(YONGHUITEST_STORE_FILE)
+            storePassword YONGHUITEST_KEYSTORE_PWD
+            v1SigningEnabled true
+            v2SigningEnabled false
+        }
+        yh_android {
+            keyAlias YH_ANDROID_ALIAS
+            keyPassword YH_ANDROID_KEY_PWD
+            storeFile file(YH_ANDROID_STORE_FILE)
+            storePassword YH_ANDROID_KEYSTORE_PWD
+            v1SigningEnabled true
+            v2SigningEnabled false
+        }
+        hxtest {
+            keyAlias HXTEST_ALIAS
+            keyPassword HXTEST_KEY_PWD
+            storeFile file(HXTEST_STORE_FILE)
+            storePassword HXTEST_KEYSTORE_PWD
+            v1SigningEnabled true
+            v2SigningEnabled false
+        }
+        hx {
+            keyAlias HX_ALIAS
+            keyPassword HX_KEY_PWD
+            storeFile file(HX_STORE_FILE)
+            storePassword HX_KEYSTORE_PWD
+            v1SigningEnabled true
+            v2SigningEnabled false
+        }
+        baozhen {
+            keyAlias BZ_ALIAS
+            keyPassword BZ_KEY_PWD
+            storeFile file(BZ_STORE_FILE)
+            storePassword BZ_KEYSTORE_PWD
+            v1SigningEnabled true
+            v2SigningEnabled true
+        }
+        baozhentv {
+            keyAlias BZTV_ALIAS
+            keyPassword BZTV_KEY_PWD
+            storeFile file(BZTV_STORE_FILE)
+            storePassword BZTV_KEYSTORE_PWD
+            v1SigningEnabled true
+            v2SigningEnabled true
         }
     }
 
     buildTypes {
         release {
-            proguardFiles 'proguard-rules.pro' //getDefaultProguardFile('proguard-android.txt'),
-            signingConfig signingConfigs.release
+            minifyEnabled false
+            zipAlignEnabled true
         }
         debug {
-
+            signingConfig null
         }
+    }
+
+    flavorDimensions "APP"
+
+    productFlavors {
+        template {
+            applicationId 'com.intfocus.template'
+            versionCode 2
+            versionName "1.0.02"
+
+            buildConfigField "String", "BASE_URL", TEMPLATE_BASE_URL
+            buildConfigField "String", "PGYER_URL", TEMPLATE_PGYER_URL
+            buildConfigField "String", "AMAP_KEY", "\"" + TEMPLATE_AMAP_KEY + "\""
+            buildConfigField "String", "BUGLY_APP_ID", "\"" + TEMPLATE_BUGLY_APP_ID + "\""
+            buildConfigField "String", "WX_APP_ID", "\"" + TEMPLATE_WX_APP_ID + "\""
+            buildConfigField "String", "WX_APP_Secret", "\"" + TEMPLATE_WX_APP_Secret + "\""
+            manifestPlaceholders = [AMAP_KEY            : TEMPLATE_AMAP_KEY,
+                                    PGYER_APPID         : TEMPLATE_PGYER_APPID,
+                                    PGYER_URL           : TEMPLATE_PGYER_URL,
+                                    UMENG_APPKEY        : TEMPLATE_UMENG_APPKEY,
+                                    UMENG_MESSAGE_SECRET: TEMPLATE_UMENG_MESSAGE_SECRET,
+                                    BUGLY_APP_ID        : TEMPLATE_BUGLY_APP_ID,
+                                    WX_APP_ID           : TEMPLATE_WX_APP_ID,
+                                    WX_APP_Secret       : TEMPLATE_WX_APP_Secret,
+                                    TELEVISION          : "false",
+                                    SCREEN_ORIENTATION  : "portrait",
+                                    APPLICATIONID       : applicationId]
+
+            signingConfig signingConfigs.template
+        }
+        shengyiplus {
+            dimension "APP"
+
+            applicationId 'com.intfocus.shengyiplus'
+            versionCode 72
+            versionName "1.7.02"
+
+            buildConfigField "String", "BASE_URL", SHENGYIPLUS_BASE_URL
+            buildConfigField "String", "PGYER_URL", SHENGYIPLUS_PGYER_URL
+            buildConfigField "String", "AMAP_KEY", "\"" + SHENGYIPLUS_AMAP_KEY + "\""
+            buildConfigField "String", "BUGLY_APP_ID", "\"" + SHENGYIPLUS_BUGLY_APP_ID + "\""
+            buildConfigField "String", "WX_APP_ID", "\"" + SHENGYIPLUS_WX_APP_ID + "\""
+            buildConfigField "String", "WX_APP_Secret", "\"" + SHENGYIPLUS_WX_APP_Secret + "\""
+            proguardFiles 'proguard-rules.pro' //getDefaultProguardFile('proguard-android.txt'),
+            manifestPlaceholders = [AMAP_KEY            : SHENGYIPLUS_AMAP_KEY,
+                                    PGYER_APPID         : SHENGYIPLUS_PGYER_APPID,
+                                    PGYER_URL           : SHENGYIPLUS_PGYER_URL,
+                                    UMENG_APPKEY        : SHENGYIPLUS_UMENG_APPKEY,
+                                    UMENG_MESSAGE_SECRET: SHENGYIPLUS_UMENG_MESSAGE_SECRET,
+                                    BUGLY_APP_ID        : SHENGYIPLUS_BUGLY_APP_ID,
+                                    WX_APP_ID           : SHENGYIPLUS_WX_APP_ID,
+                                    WX_APP_Secret       : SHENGYIPLUS_WX_APP_Secret,
+                                    TELEVISION          : "false",
+                                    SCREEN_ORIENTATION  : "portrait",
+                                    APPLICATIONID       : applicationId]
+
+            signingConfig signingConfigs.shengyiplus
+        }
+        yhdev {
+            dimension "APP"
+
+            applicationId 'com.intfocus.yhdev'
+            versionCode 10
+            versionName "1.0.30"
+
+            buildConfigField "String", "BASE_URL", YHDEV_BASE_URL
+            buildConfigField "String", "PGYER_URL", YHDEV_PGYER_URL
+            buildConfigField "String", "AMAP_KEY", "\"" + YHDEV_AMAP_KEY + "\""
+            buildConfigField "String", "BUGLY_APP_ID", "\"" + YHDEV_BUGLY_APP_ID + "\""
+            buildConfigField "String", "WX_APP_ID", "\"" + YHDEV_WX_APP_ID + "\""
+            buildConfigField "String", "WX_APP_Secret", "\"" + YHDEV_WX_APP_Secret + "\""
+            manifestPlaceholders = [AMAP_KEY            : YHDEV_AMAP_KEY,
+                                    PGYER_APPID         : YHDEV_PGYER_APPID,
+                                    PGYER_URL           : YHDEV_PGYER_URL,
+                                    UMENG_APPKEY        : YHDEV_UMENG_APPKEY,
+                                    UMENG_MESSAGE_SECRET: YHDEV_UMENG_MESSAGE_SECRET,
+                                    BUGLY_APP_ID        : YHDEV_BUGLY_APP_ID,
+                                    WX_APP_ID           : YHDEV_WX_APP_ID,
+                                    WX_APP_Secret       : YHDEV_WX_APP_Secret,
+                                    TELEVISION          : "false",
+                                    SCREEN_ORIENTATION  : "portrait",
+                                    APPLICATIONID       : applicationId]
+
+            signingConfig signingConfigs.yhdev
+        }
+        yonghuitest {
+            dimension "APP"
+
+            applicationId 'com.intfocus.yonghuitest'
+            versionCode 694
+            versionName "3.1.44"
+
+            buildConfigField "String", "BASE_URL", YONGHUITEST_BASE_URL
+            buildConfigField "String", "PGYER_URL", YONGHUITEST_PGYER_URL
+            buildConfigField "String", "AMAP_KEY", "\"" + YONGHUITEST_AMAP_KEY + "\""
+            buildConfigField "String", "BUGLY_APP_ID", "\"" + YONGHUITEST_BUGLY_APP_ID + "\""
+            buildConfigField "String", "WX_APP_ID", "\"" + YONGHUITEST_WX_APP_ID + "\""
+            buildConfigField "String", "WX_APP_Secret", "\"" + YONGHUITEST_WX_APP_Secret + "\""
+            manifestPlaceholders = [AMAP_KEY            : YONGHUITEST_AMAP_KEY,
+                                    PGYER_APPID         : YONGHUITEST_PGYER_APPID,
+                                    PGYER_URL           : YONGHUITEST_PGYER_URL,
+                                    UMENG_APPKEY        : YONGHUITEST_UMENG_APPKEY,
+                                    UMENG_MESSAGE_SECRET: YONGHUITEST_UMENG_MESSAGE_SECRET,
+                                    BUGLY_APP_ID        : YONGHUITEST_BUGLY_APP_ID,
+                                    WX_APP_ID           : YONGHUITEST_WX_APP_ID,
+                                    WX_APP_Secret       : YONGHUITEST_WX_APP_Secret,
+                                    TELEVISION          : 'false',
+                                    SCREEN_ORIENTATION  : "portrait",
+                                    APPLICATIONID       : applicationId]
+
+            signingConfig signingConfigs.yonghuitest
+        }
+        yh_android {
+            dimension "APP"
+
+            applicationId 'com.intfocus.yh_android'
+            versionCode 548
+            versionName "2.2.28"
+
+            buildConfigField "String", "BASE_URL", YH_ANDROID_BASE_URL
+            buildConfigField "String", "PGYER_URL", YH_PGYER_URL
+            buildConfigField "String", "AMAP_KEY", "\"" + YH_ANDROID_AMAP_KEY + "\""
+            buildConfigField "String", "BUGLY_APP_ID", "\"" + YH_BUGLY_APP_ID + "\""
+            buildConfigField "String", "WX_APP_ID", "\"" + YH_WX_APP_ID + "\""
+            buildConfigField "String", "WX_APP_Secret", "\"" + YH_WX_APP_Secret + "\""
+            proguardFiles 'proguard-rules.pro' //getDefaultProguardFile('proguard-android.txt'),
+            manifestPlaceholders = [AMAP_KEY            : YH_ANDROID_AMAP_KEY,
+                                    PGYER_APPID         : YH_ANDROID_PGYER_APPID,
+                                    PGYER_URL           : YH_PGYER_URL,
+                                    UMENG_APPKEY        : YH_ANDROID_UMENG_APPKEY,
+                                    UMENG_MESSAGE_SECRET: YH_ANDROID_UMENG_MESSAGE_SECRET,
+                                    BUGLY_APP_ID        : YH_BUGLY_APP_ID,
+                                    WX_APP_ID           : YH_WX_APP_ID,
+                                    WX_APP_Secret       : YH_WX_APP_Secret,
+                                    TELEVISION          : 'false',
+                                    SCREEN_ORIENTATION  : "portrait",
+                                    APPLICATIONID       : applicationId]
+
+            signingConfig signingConfigs.yh_android
+        }
+        hxtest {
+            dimension "APP"
+
+            applicationId 'com.intfocus.hxtest'
+            versionCode 208
+            versionName "2.0.8"
+
+            buildConfigField "String", "BASE_URL", HXTEST_BASE_URL
+            buildConfigField "String", "PGYER_URL", HXTEST_PGYER_URL
+            buildConfigField "String", "AMAP_KEY", "\"" + HXTEST_AMAP_KEY + "\""
+            buildConfigField "String", "BUGLY_APP_ID", "\"" + HXTEST_BUGLY_APP_ID + "\""
+            buildConfigField "String", "WX_APP_ID", "\"" + HXTEST_WX_APP_ID + "\""
+            buildConfigField "String", "WX_APP_Secret", "\"" + HXTEST_WX_APP_Secret + "\""
+            manifestPlaceholders = [AMAP_KEY            : HXTEST_AMAP_KEY,
+                                    PGYER_APPID         : HXTEST_PGYER_APPID,
+                                    PGYER_URL           : HXTEST_PGYER_URL,
+                                    UMENG_APPKEY        : HXTEST_UMENG_APPKEY,
+                                    UMENG_MESSAGE_SECRET: HXTEST_UMENG_MESSAGE_SECRET,
+                                    BUGLY_APP_ID        : HXTEST_BUGLY_APP_ID,
+                                    WX_APP_ID           : HXTEST_WX_APP_ID,
+                                    WX_APP_Secret       : HXTEST_WX_APP_Secret,
+                                    TELEVISION          : 'false',
+                                    SCREEN_ORIENTATION  : "portrait",
+                                    APPLICATIONID       : applicationId]
+
+            signingConfig signingConfigs.hxtest
+        }
+        hx {
+            dimension "APP"
+
+            applicationId 'com.intfocus.hx'
+            versionCode 201
+            versionName "2.0.1"
+
+            buildConfigField "String", "BASE_URL", HX_BASE_URL
+            buildConfigField "String", "PGYER_URL", HX_PGYER_URL
+            buildConfigField "String", "AMAP_KEY", "\"" + HX_AMAP_KEY + "\""
+            buildConfigField "String", "BUGLY_APP_ID", "\"" + HX_BUGLY_APP_ID + "\""
+            buildConfigField "String", "WX_APP_ID", "\"" + HX_WX_APP_ID + "\""
+            buildConfigField "String", "WX_APP_Secret", "\"" + HX_WX_APP_Secret + "\""
+            manifestPlaceholders = [AMAP_KEY            : HX_AMAP_KEY,
+                                    PGYER_APPID         : HX_PGYER_APPID,
+                                    PGYER_URL           : HX_PGYER_URL,
+                                    UMENG_APPKEY        : HX_UMENG_APPKEY,
+                                    UMENG_MESSAGE_SECRET: HX_UMENG_MESSAGE_SECRET,
+                                    BUGLY_APP_ID        : HX_BUGLY_APP_ID,
+                                    WX_APP_ID           : HX_WX_APP_ID,
+                                    WX_APP_Secret       : HX_WX_APP_Secret,
+                                    TELEVISION          : 'false',
+                                    SCREEN_ORIENTATION  : "portrait",
+                                    APPLICATIONID       : applicationId]
+
+            signingConfig signingConfigs.hx
+        }
+        baozhen {
+            dimension "APP"
+
+            applicationId 'com.intfocus.shenzhenpoly'
+            versionCode 1
+            versionName "1.0.0"
+
+            buildConfigField "String", "BASE_URL", BZ_BASE_URL
+            buildConfigField "String", "PGYER_URL", BZ_PGYER_URL
+            buildConfigField "String", "AMAP_KEY", "\"" + BZ_AMAP_KEY + "\""
+            buildConfigField "String", "BUGLY_APP_ID", "\"" + BZ_BUGLY_APP_ID + "\""
+            buildConfigField "String", "WX_APP_ID", "\"" + BZ_WX_APP_ID + "\""
+            buildConfigField "String", "WX_APP_Secret", "\"" + BZ_WX_APP_Secret + "\""
+            manifestPlaceholders = [AMAP_KEY            : BZ_AMAP_KEY,
+                                    PGYER_APPID         : BZ_PGYER_APPID,
+                                    PGYER_URL           : BZ_PGYER_URL,
+                                    UMENG_APPKEY        : BZ_UMENG_APPKEY,
+                                    UMENG_MESSAGE_SECRET: BZ_UMENG_MESSAGE_SECRET,
+                                    BUGLY_APP_ID        : BZ_BUGLY_APP_ID,
+                                    WX_APP_ID           : BZ_WX_APP_ID,
+                                    WX_APP_Secret       : BZ_WX_APP_Secret,
+                                    TELEVISION          : 'false',
+                                    SCREEN_ORIENTATION  : "portrait",
+                                    APPLICATIONID       : applicationId]
+
+            signingConfig signingConfigs.baozhen
+        }
+        baozhentv {
+            dimension "APP"
+
+            applicationId 'com.intfocus.shenzhenpolytv'
+            versionCode 1
+            versionName "1.0.0"
+
+            buildConfigField "String", "BASE_URL", BZTV_BASE_URL
+            buildConfigField "String", "PGYER_URL", BZTV_PGYER_URL
+            buildConfigField "String", "AMAP_KEY", "\"" + BZTV_AMAP_KEY + "\""
+            buildConfigField "String", "BUGLY_APP_ID", "\"" + BZTV_BUGLY_APP_ID + "\""
+            buildConfigField "String", "WX_APP_ID", "\"" + BZTV_WX_APP_ID + "\""
+            buildConfigField "String", "WX_APP_Secret", "\"" + BZTV_WX_APP_Secret + "\""
+            manifestPlaceholders = [AMAP_KEY            : BZTV_AMAP_KEY,
+                                    PGYER_APPID         : BZTV_PGYER_APPID,
+                                    PGYER_URL           : BZTV_PGYER_URL,
+                                    UMENG_APPKEY        : BZTV_UMENG_APPKEY,
+                                    UMENG_MESSAGE_SECRET: BZTV_UMENG_MESSAGE_SECRET,
+                                    BUGLY_APP_ID        : BZTV_BUGLY_APP_ID,
+                                    WX_APP_ID           : BZTV_WX_APP_ID,
+                                    WX_APP_Secret       : BZTV_WX_APP_Secret,
+                                    TELEVISION          : "true",
+                                    SCREEN_ORIENTATION  : "landscape",
+                                    APPLICATIONID       : applicationId]
+
+            signingConfig signingConfigs.baozhentv
+        }
+
+    }
+
+    android.applicationVariants.all { variant ->
+        variant.outputs.all {
+            outputFileName = "${variant.flavorName}_v${variant.versionName}_${releaseTime()}.apk"
+        }
+
     }
 
     allprojects {
@@ -79,13 +386,14 @@ repositories {
     google()
 }
 
-def SUPPORT_VERSION = "27.0.0"
+def SUPPORT_VERSION = "27.0.2"
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'com.android.support:appcompat-v7:' + SUPPORT_VERSION
-    implementation 'com.android.support:support-v4:' + SUPPORT_VERSION
-    implementation 'com.android.support:design:' + SUPPORT_VERSION
+    implementation "com.android.support:appcompat-v7:${SUPPORT_LIB_VERSION}"
+    implementation "com.android.support:support-v4:${SUPPORT_LIB_VERSION}"
+    implementation "com.android.support:design:${SUPPORT_LIB_VERSION}"
+    implementation "com.android.support:cardview-v7:${SUPPORT_LIB_VERSION}"
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     implementation 'commons-io:commons-io:2.5'
     implementation 'com.android.support:multidex:1.0.2'
@@ -93,13 +401,13 @@ dependencies {
     implementation 'com.google.guava:guava:23.5-android'
 
     // Kotlin
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
     // Json 解析
     implementation 'com.google.code.gson:gson:2.8.1'
 
     // PDF 阅读
-    compile 'com.github.barteksc:android-pdf-viewer:2.8.1'
+    implementation 'com.github.barteksc:android-pdf-viewer:2.8.1'
 
     // 模板三相关
     implementation project(':HomeMetrics')
@@ -174,16 +482,35 @@ dependencies {
     implementation "org.greenrobot:greendao:$rootProject.greenDAO_version"
     implementation 'com.j256.ormlite:ormlite-android:5.0'
 
-    // 腾讯 TBS 浏览器
-    implementation files('libs/tbs_sdk_3.5.jar')
+//    // 腾讯 TBS 浏览器
+//    implementation files('libs/tbs_sdk_3.5.jar')
 
     // 事件
     implementation 'org.greenrobot:eventbus:3.0.0'
+
+    //stetho 调试
+    implementation 'com.facebook.stetho:stetho:1.5.0'
+    implementation 'com.facebook.stetho:stetho-okhttp3:1.5.0'
+
+    // JakeWharton大神的Scalpel
+    implementation 'com.jakewharton.scalpel:scalpel:1.1.2'
+//    implementation 'com.squareup.okhttp3:okhttp:3.8.1'
+
+    implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.30'
+    implementation 'com.github.anzaizai:EasySwipeMenuLayout:1.1.2'
+
+    //Utils
+    implementation 'com.blankj:utilcode:1.12.0'
 }
 
 greendao {
     schemaVersion 1
     daoPackage 'com.intfocus.template.model.gen'
     targetGenDir 'src/main/java'
+}
+
+static def releaseTime() {
+//    return new Date().format("yyyy-MM-dd_HH-mm", TimeZone.getTimeZone("Asia/Shanghai"))
+    return new Date().format("yyyy-MM-dd", TimeZone.getTimeZone("Asia/Shanghai"))
 }
 

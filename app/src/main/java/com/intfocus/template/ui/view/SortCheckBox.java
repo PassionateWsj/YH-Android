@@ -64,7 +64,7 @@ public class SortCheckBox extends View {
     private SortViewSizeListener sizeListener;
 
     public void setText(String text) {
-        this.text = text;
+        this.text = text.replace("<br/>","\n");
     }
 
     public void setBoxWidth(int w) {
@@ -137,7 +137,7 @@ public class SortCheckBox extends View {
         TypedArray array = ctx.getTheme().obtainStyledAttributes(attrs,
                 attrsArray, 0, 0);
         textColor = array.getColor(0, Color.BLACK);
-        textSize = array.getDimensionPixelSize(1, 11);
+        textSize = array.getDimensionPixelSize(1, 12);
         textSize = DisplayUtil.sp2px(getContext(), textSize);
         text = array.getString(2);
         drawablePadding = array.getDimensionPixelSize(3, 0);
@@ -229,15 +229,13 @@ public class SortCheckBox extends View {
         switch (event.getAction()) {
             case MotionEvent.ACTION_UP:
                 if (x + getLeft() < getRight() && y + getTop() < getBottom()) {
-                    if (ischecked) {
-                        ischecked = false;
-                    } else {
-                        ischecked = true;
-                    }
+                    ischecked = !ischecked;
 
                     setChecked(ischecked);
                 }
                 break;
+                default:
+                    break;
         }
         return true;
     }

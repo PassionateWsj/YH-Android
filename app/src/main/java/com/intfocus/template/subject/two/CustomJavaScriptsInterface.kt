@@ -6,11 +6,15 @@ import android.text.TextUtils
 import android.view.View
 import android.webkit.JavascriptInterface
 import com.google.gson.Gson
+import com.intfocus.template.SYPApplication
 import com.intfocus.template.SYPApplication.globalContext
 import com.intfocus.template.constant.Params.ACTION
 import com.intfocus.template.constant.Params.OBJECT_ID
 import com.intfocus.template.constant.Params.OBJECT_TITLE
 import com.intfocus.template.constant.Params.OBJECT_TYPE
+import com.intfocus.template.constant.Params.USER_BEAN
+import com.intfocus.template.constant.Params.USER_ID
+import com.intfocus.template.constant.Params.USER_LOCATION
 import com.intfocus.template.constant.Params.USER_NUM
 import com.intfocus.template.constant.ToastColor
 import com.intfocus.template.general.net.ApiException
@@ -34,11 +38,15 @@ import java.io.File
 class CustomJavaScriptsInterface constructor(
         var mView: WebPageActivity
 ) {
+
     /**
-     * javascript 异常时通知原生代码，或提交服务器，或 popup 提示用户
+     * javascript 异常时通知原生代码，提交服务器
      */
     @JavascriptInterface
     fun jsException(ex: String) {
+        var errorPagePath = FileUtil.sharedPath(SYPApplication.globalContext) + "/loading/400.html"
+        mView.showError("file://" + errorPagePath)
+
         /*
          * 用户行为记录, 单独异常处理，不可影响用户体验
          */
@@ -99,7 +107,14 @@ class CustomJavaScriptsInterface constructor(
      * @return location
      */
     @JavascriptInterface
-    fun getLocation(): String = globalContext.getSharedPreferences("UserBean", Context.MODE_PRIVATE).getString("location", "0,0")
+    fun getLocation(): String = globalContext.getSharedPreferences(USER_BEAN, Context.MODE_PRIVATE).getString(USER_LOCATION, "0,0")
+
+    /**
+     * 获取 user_id
+     * @return location
+     */
+    @JavascriptInterface
+    fun getUserId(): String = globalContext.getSharedPreferences(USER_BEAN, Context.MODE_PRIVATE).getString(USER_ID, "0")
 
     @JavascriptInterface
     fun goBack(info: String) {
@@ -209,7 +224,7 @@ class CustomJavaScriptsInterface constructor(
     @JavascriptInterface
     fun writeComment(content: String) {
         val commentBody = CommentBody()
-        commentBody.user_num = globalContext.getSharedPreferences("UserBean", Context.MODE_PRIVATE).getString(USER_NUM, "0")
+        commentBody.user_num = globalContext.getSharedPreferences(USER_BEAN, Context.MODE_PRIVATE).getString(USER_NUM, "0")
         commentBody.content = content
         commentBody.object_type = mView.objectType
         commentBody.object_id = mView.reportId

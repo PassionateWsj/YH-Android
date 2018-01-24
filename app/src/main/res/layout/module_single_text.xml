@@ -29,6 +29,7 @@
         android:layout_toRightOf="@id/iv_single_text_element"
         android:layout_below="@id/tv_single_text_title"
         android:background="@drawable/background_item_fillet"
+        android:textColor="@android:color/black"
         android:layout_marginTop="8dp"
         android:textSize="12sp"
         android:singleLine="true"/>

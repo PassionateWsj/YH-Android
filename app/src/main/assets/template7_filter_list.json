@@ -1,0 +1,151 @@
+{
+  "user_num":"13111111111",
+  "updated_at":"1534234523",
+  "concern_list": [
+    {
+      "concern_item_id": "00134567",
+      "concern_item_name": "车厘子",
+      "concerned": false
+    },
+    {
+      "concern_item_id": "00133467",
+      "concern_item_name": "车厘子1",
+      "concerned": false
+    },
+    {
+      "concern_item_id": "61134567",
+      "concern_item_name": "车1234厘子",
+      "concerned": false
+    },
+    {
+      "concern_item_id": "00132467",
+      "concern_item_name": "车厘子3",
+      "concerned": false
+    },
+    {
+      "concern_item_id": "00642567",
+      "concern_item_name": "车厘子4",
+      "concerned": false
+    },
+    {
+      "concern_item_id": "00534567",
+      "concern_item_name": "车厘6子",
+      "concerned": true
+    },
+    {
+      "concern_item_id": "02434567",
+      "concern_item_name": "车7厘子",
+      "concerned": false
+    },
+    {
+      "concern_item_id": "12341345",
+      "concern_item_name": "车厘子",
+      "concerned": false
+    },
+    {
+      "concern_item_id": "23455632",
+      "concern_item_name": "车厘子1",
+      "concerned": false
+    },
+    {
+      "concern_item_id": "25346536",
+      "concern_item_name": "车1234厘子",
+      "concerned": false
+    },
+    {
+      "concern_item_id": "23452345",
+      "concern_item_name": "车厘子3",
+      "concerned": false
+    },
+    {
+      "concern_item_id": "12343522",
+      "concern_item_name": "车厘子4",
+      "concerned": false
+    },
+    {
+      "concern_item_id": "34125324",
+      "concern_item_name": "车厘6子",
+      "concerned": false
+    },
+    {
+      "concern_item_id": "123415623",
+      "concern_item_name": "车7厘子",
+      "concerned": false
+    },
+    {
+      "concern_item_id": "12341234",
+      "concern_item_name": "车厘子",
+      "concerned": true
+    },
+    {
+      "concern_item_id": "23452363",
+      "concern_item_name": "车厘子1",
+      "concerned": false
+    },
+    {
+      "concern_item_id": "23452356",
+      "concern_item_name": "车1234厘子",
+      "concerned": false
+    },
+    {
+      "concern_item_id": "645323564",
+      "concern_item_name": "车厘子3",
+      "concerned": false
+    },
+    {
+      "concern_item_id": "12345643",
+      "concern_item_name": "车厘子4",
+      "concerned": false
+    },
+    {
+      "concern_item_id": "234532456",
+      "concern_item_name": "车厘6子",
+      "concerned": false
+    },
+    {
+      "concern_item_id": "345623422",
+      "concern_item_name": "车7厘子",
+      "concerned": false
+    },
+    {
+      "concern_item_id": "23451234",
+      "concern_item_name": "车厘子",
+      "concerned": false
+    },
+    {
+      "concern_item_id": "23423452",
+      "concern_item_name": "车厘子1",
+      "concerned": false
+    },
+    {
+      "concern_item_id": "67534236",
+      "concern_item_name": "车1234厘子",
+      "concerned": false
+    },
+    {
+      "concern_item_id": "74563678",
+      "concern_item_name": "车厘子3",
+      "concerned": false
+    },
+    {
+      "concern_item_id": "45672353",
+      "concern_item_name": "车厘子4",
+      "concerned": false
+    },
+    {
+      "concern_item_id": "45634562",
+      "concern_item_name": "车厘6子",
+      "concerned": false
+    },
+    {
+      "concern_item_id": "4562325234",
+      "concern_item_name": "车7厘子",
+      "concerned": false
+    },
+    {
+      "concern_item_id": "00564567",
+      "concern_item_name": "车2厘子",
+      "concerned": false
+    }
+  ]
+}

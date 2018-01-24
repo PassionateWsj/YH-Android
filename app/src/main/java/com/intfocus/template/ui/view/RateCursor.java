@@ -14,11 +14,18 @@ import static android.animation.ObjectAnimator.ofFloat;
  */
 public class RateCursor extends android.support.v7.widget.AppCompatImageView {
 
-    private int[] sources = new int[]{R.drawable.icon_redarrow,
-            R.drawable.icon_yellowarrow, R.drawable.icon_greenarrow};
+    private int[] sources = new int[]{
+            R.drawable.icon_redarrow_up,
+            R.drawable.icon_yellowarrow_up,
+            R.drawable.icon_greenarrow_up,
+            R.drawable.icon_redarrow_down,
+            R.drawable.icon_yellowarrow_down,
+            R.drawable.icon_greenarrow_down
+    };
     boolean currAnim;
     private ObjectAnimator downAnimator;
     private ObjectAnimator upAnimator;
+    private boolean animOn = true;
 
     public RateCursor(Context context) {
         super(context);
@@ -44,12 +51,11 @@ public class RateCursor extends android.support.v7.widget.AppCompatImageView {
     }
 
     public void setCursorState(int state, boolean isAnim) {
-        if (state == -1 || state >= sources.length) {
+        if (state < 0) {
             setImageResource(0);
-            return;
+        } else {
+            setImageResource(sources[state % sources.length]);
         }
-
-        setImageResource(sources[state]);
 
         if (currAnim != isAnim) {
             if (isAnim) {

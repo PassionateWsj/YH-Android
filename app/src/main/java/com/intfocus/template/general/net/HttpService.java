@@ -1,6 +1,5 @@
 package com.intfocus.template.general.net;
 
-import com.intfocus.template.subject.nine.entity.CollectionRequestBody;
 import com.intfocus.template.login.bean.Device;
 import com.intfocus.template.login.bean.DeviceRequest;
 import com.intfocus.template.login.bean.NewUser;
@@ -15,11 +14,14 @@ import com.intfocus.template.model.response.home.KpiResult;
 import com.intfocus.template.model.response.home.ReportListResult;
 import com.intfocus.template.model.response.home.WorkBoxResult;
 import com.intfocus.template.model.response.login.RegisterResult;
+import com.intfocus.template.model.response.mine_page.FeedbackContent;
+import com.intfocus.template.model.response.mine_page.FeedbackList;
 import com.intfocus.template.model.response.mine_page.NoticeContentResult;
 import com.intfocus.template.model.response.mine_page.UserInfoResult;
 import com.intfocus.template.model.response.notice.NoticesResult;
 import com.intfocus.template.model.response.scanner.NearestStoresResult;
 import com.intfocus.template.model.response.scanner.StoreListResult;
+import com.intfocus.template.subject.nine.entity.CollectionRequestBody;
 import com.intfocus.template.util.K;
 
 import java.util.Map;
@@ -340,7 +342,7 @@ public interface HttpService {
      * @return
      */
     @GET(K.K_REPORT_JSON_DATA)
-    Call<ResponseBody> getJsonReportData(@Query("report_id") String reportId, @Query("template_id") String templateId, @Query("group_id") String groupId);
+    Call<ResponseBody> getJsonReportData(@Query("disposition") String disposition,@Query("report_id") String reportId, @Query("template_id") String templateId, @Query("group_id") String groupId);
 
     /**
      * 上传采集信息
@@ -348,7 +350,7 @@ public interface HttpService {
      * POST
      * /api/v1.1/acquisition/data
      *
-     * @return
+     * @param collectionRequestBody
      */
     @POST(K.API_COLLECTION_UPLOAD)
     Call<BaseResult> submitCollection(@Body CollectionRequestBody collectionRequestBody);
@@ -359,12 +361,13 @@ public interface HttpService {
      * POST
      * /api/v1.1/user/reset_password
      *
-     * @param userNum
      * @param mobile
+     * @param type
+     * @param value
      * @return
      */
     @POST(K.K_NEW_RESET_PWD)
-    Observable<BaseResult> resetPwd(@Query("user_num") String userNum, @Query("mobile") String mobile);
+    Observable<BaseResult> resetPwd(@Query("mobile") String mobile,@Query("type") String type,@Query("value") String value);
 
     /**
      * 用户信息
@@ -404,7 +407,19 @@ public interface HttpService {
     @GET(K.K_NEAREST_STORES)
     Observable<NearestStoresResult> getNearestStores(@Query("limit") int limit, @Query("distance") double distance, @Query("location") String location);
 
-//    @GET(K.API_FEEDBACK_LIST)
-//    Observable<> getFeedbackList();
+    /**
+     * 获取用户反馈列表
+     * @param userNum
+     * @return
+     */
+    @GET(K.API_FEEDBACK_USER_LIST)
+    Observable<FeedbackList> getFeedbackList(@Query("user_num") String userNum);
 
+    /**
+     * 获取用户反馈详情
+     * @param id
+     * @return
+     */
+    @GET(K.API_FEEDBACK)
+    Observable<FeedbackContent> getFeedbackContent(@Query("id") int id);
 }

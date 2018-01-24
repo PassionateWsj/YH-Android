@@ -1,0 +1,96 @@
+{
+  "id": 1000,
+  "title": "问题反馈",
+  "content": [
+    {
+      "name": "",
+      "parts": [
+        {
+          "type": "single_text",
+          "key": "test_01",
+          "is_show": 1,
+          "is_list": 1,
+          "is_filter": 0,
+          "is_must": 1,
+          "config": {
+            "element_type": "",
+            "title": "问题反馈标题",
+            "sub_title": "",
+            "hint": "问题简单描述",
+            "value": ""
+          }
+        },
+        {
+          "type": "drop_options",
+          "key": "test_02",
+          "is_show": 1,
+          "is_list": 2,
+          "is_filter": 0,
+          "is_must": 1,
+          "config": {
+            "element_type": "",
+            "title": "问题类型",
+            "sub_title": "选择你要反馈的问题类型",
+            "hint": "",
+            "options": [
+              "显示错误",
+              "数据错误",
+              "应用闪退"
+            ],
+            "value": "显示错误"
+          }
+        },
+        {
+          "type": "multi_text",
+          "key": "test_03",
+          "is_show": 1,
+          "is_list": 3,
+          "is_filter": 0,
+          "is_must": 1,
+          "config": {
+            "element_type": "",
+            "title": "问题修改及改进意见",
+            "sub_title": "选择你要反馈的问题类型",
+            "hint": "请描述您遇到的问题(1-500字)",
+            "value": ""
+          }
+        },
+        {
+          "type": "upload_images",
+          "key": "test_04",
+          "is_show": 1,
+          "is_list": 4,
+          "is_filter": 0,
+          "is_must": 1,
+          "config": {
+            "title": "页面截图(最多3张)",
+            "sub_title": "",
+            "hint": "",
+            "limit": 3,
+            "value": [
+              "",
+              ""
+            ]
+          }
+        },
+        {
+          "type": "submit",
+          "key": "test_05",
+          "is_show": 1,
+          "is_list": 5,
+          "is_filter": 0,
+          "is_must": 1,
+          "config": {
+            "title": "",
+            "sub_title": "",
+            "hint": "",
+            "value": "提交"
+          }
+        }
+      ]
+    }
+  ],
+  "description": "",
+  "created_at": 1514802945,
+  "updated_at": 1514802945
+}

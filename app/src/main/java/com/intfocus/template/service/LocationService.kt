@@ -52,7 +52,7 @@ class LocationService : Service(), AMapLocationListener {
      * *
      * @since 2.8.0
      */
-    val defaultOption: AMapLocationClientOption
+    private val defaultOption: AMapLocationClientOption
         get() {
             val mOption = AMapLocationClientOption()
             //可选，设置定位模式，可选的模式有高精度、仅设备、仅网络。默认为高精度模式

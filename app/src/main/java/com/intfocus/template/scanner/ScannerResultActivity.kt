@@ -17,7 +17,10 @@ import com.intfocus.template.constant.Params.CODE_INFO
 import com.intfocus.template.constant.Params.JAVASCRIPT_INTERFACE_NAME
 import com.intfocus.template.constant.Params.STORE
 import com.intfocus.template.constant.Params.STORE_ID
-import com.intfocus.template.util.*
+import com.intfocus.template.util.FileUtil
+import com.intfocus.template.util.ImageUtil
+import com.intfocus.template.util.LogUtil
+import com.intfocus.template.util.ToastUtils
 import com.tencent.smtt.sdk.WebSettings
 import com.tencent.smtt.sdk.WebView
 import com.tencent.smtt.sdk.WebViewClient

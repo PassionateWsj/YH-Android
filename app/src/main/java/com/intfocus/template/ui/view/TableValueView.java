@@ -18,7 +18,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 /**
- * Created by zbaoliang on 17-5-21.
+ * @author zbaoliang
+ * @date 17-5-21
  */
 public class TableValueView extends View {
 
@@ -27,7 +28,7 @@ public class TableValueView extends View {
     private int[] colors = Colors.INSTANCE.getColorsRGY();
 
     public int dividerHeight = 1;
-    public int textSize = 14;
+    public int textSize = 16;
     public int textColor = 0x73737373;
     public int dividerColor = 0x73737373;
 
@@ -95,7 +96,7 @@ public class TableValueView extends View {
         for (Integer headerLength : headerLenghts) {
             totalWidth += headerLength;
         }
-        setMeasuredDimension(totalWidth, tableValues.size() * itemHeight);
+        setMeasuredDimension(totalWidth, tableValues.size() * (itemHeight + 1));
     }
 
     @Override
@@ -114,7 +115,7 @@ public class TableValueView extends View {
             canvas.drawColor(Color.WHITE);
             int nlSize = tableValues.size();
             float endX = getWidth();
-            for (int i = 0; i < nlSize; i++) {
+            for (int i = 1; i < nlSize; i++) {
                 float startY = itemHeight * (i + dividerHeight / 2) + (i + dividerHeight / 2);
                 canvas.drawLine(0, startY, endX, startY, dividerPaint);
             }
@@ -129,6 +130,8 @@ public class TableValueView extends View {
                     JSONObject rowData = new JSONObject(tabRowValues[n + 1]);
                     if (!"-1".equals(rowData.getString("color"))) {
                         textPaint.setColor(colors[Integer.parseInt(rowData.getString("color"))]);
+                    } else {
+                        textPaint.setColor(textColor);
                     }
                     String value = formatValue(rowData.getString("value"));
                     canvas.drawText(value, x, y, textPaint);
@@ -179,11 +182,6 @@ public class TableValueView extends View {
             float width = upxPointLs + headerLenghts.get(i);
 
             float centerPwidth;
-//            float currValue = (float) (headerLenghts.get(i) / 2);
-//            if (i == 0)
-//                centerPwidth = currValue;
-//            else
-//                centerPwidth = width - currValue;
             centerPwidth = width - DisplayUtil.dip2px(getContext(), 10);
             XAxesCenterPoint.put(i, centerPwidth);
 
@@ -192,11 +190,9 @@ public class TableValueView extends View {
 
         //TODO 计算文本对应的Y轴中心点
         int nlSize = tableValues.size();
-        float itemHeight2 = (float) (itemHeight / 2);
+        float centerPHeight = -(float) (itemHeight / 2);
         for (int i = 0; i < nlSize; i++) {
-            float height;
-            height = itemHeight * (i + 1);
-            float centerPHeight = height - itemHeight2;
+            centerPHeight += itemHeight + 1f;
             YAxesCenterPoint.put(i, centerPHeight);
         }
     }

@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
-import com.alibaba.fastjson.TypeReference
 import com.google.gson.Gson
 import com.intfocus.template.R
 import com.intfocus.template.dashboard.mine.adapter.ShowPushMessageAdapter
@@ -12,11 +11,12 @@ import com.intfocus.template.dashboard.mine.presenter.PushMessagePresenter
 import com.intfocus.template.dashboard.mine.view.PushMessageView
 import com.intfocus.template.model.entity.PushMsgBean
 import com.intfocus.template.model.entity.User
-import com.intfocus.template.util.*
+import com.intfocus.template.util.FileUtil
+import com.intfocus.template.util.K
+import com.intfocus.template.util.PageLinkManage
+import com.intfocus.template.util.ToastUtils
 import kotlinx.android.synthetic.main.activity_show_push_message.*
-import rx.Subscription
 import java.io.File
-import java.util.*
 
 /**
  * ****************************************************
@@ -38,16 +38,14 @@ class ShowPushMessageActivity : AppCompatActivity(), PushMessageView, ShowPushMe
      * 显示消息的 mAdapter
      */
     val adapter = ShowPushMessageAdapter(this, this)
-    /**
-     * RxBus 接收推送消息的类，需要手动取消注册释放资源
-     */
-    lateinit var subscribe: Subscription
+//    /**
+//     * RxBus 接收推送消息的类，需要手动取消注册释放资源
+//     */
+//    lateinit var subscribe: Subscription
     /**
      * mPresenter 类
      */
     lateinit var presenter: PushMessagePresenter
-
-    private var objectTypeName = arrayOf("生意概况", "报表", "工具箱")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,10 +71,10 @@ class ShowPushMessageActivity : AppCompatActivity(), PushMessageView, ShowPushMe
         presenter.loadData()
 
         // RxBus接收到推送信息，处理数据列表更新
-        subscribe = RxBusUtil.getInstance().toObservable(String::class.java)
-                .subscribe { msg ->
-                    if ("UpDatePushMessage" == msg) presenter.loadData()
-                }
+//        subscribe = RxBusUtil.getInstance().toObservable(String::class.java)
+//                .subscribe {
+//                    if ("UpDatePushMessage" == it) presenter.loadData()
+//                }
     }
 
     private fun initAdapter() {
@@ -107,26 +105,27 @@ class ShowPushMessageActivity : AppCompatActivity(), PushMessageView, ShowPushMe
         // 更新点击状态
         val pushMsg = adapter.mData[position]
 
-        // 重新获取数据
-        presenter.loadData()
-
-        // 通知 mAdapter 刷新数据
-        adapter.notifyDataSetChanged()
-        val paramsMappingBean = com.alibaba.fastjson.JSONObject.parseObject(pushMsg.params_mapping, object : TypeReference<HashMap<String, String>>() {
-        })
-        var templateId = ""
-        if (pushMsg.template_id == null || "" == pushMsg.template_id) {
-            val temp = pushMsg.url.split("/".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
-            for (i in temp.indices) {
-                if ("template" == temp[i] && i + 1 < temp.size) {
-                    templateId = temp[i + 1]
-                    break
-                }
-            }
-        } else {
-            templateId = pushMsg.template_id
-        }
-        PageLinkManage.pageLink(this, pushMsg.title, pushMsg.url, pushMsg.obj_id, templateId, "2", paramsMappingBean, false)
+        PageLinkManage.pageLink(this, pushMsg)
+//        // 重新获取数据
+//        presenter.loadData()
+//
+//        // 通知 mAdapter 刷新数据
+//        adapter.notifyDataSetChanged()
+//        val paramsMappingBean = com.alibaba.fastjson.JSONObject.parseObject(pushMsg.params_mapping, object : TypeReference<HashMap<String, String>>() {
+//        })
+//        var templateId = ""
+//        if (pushMsg.template_id == null || "" == pushMsg.template_id) {
+//            val temp = pushMsg.url.split("/".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+//            for (i in temp.indices) {
+//                if ("template" == temp[i] && i + 1 < temp.size) {
+//                    templateId = temp[i + 1]
+//                    break
+//                }
+//            }
+//        } else {
+//            templateId = pushMsg.template_id
+//        }
+//        PageLinkManage.pageLink(this, pushMsg.title, pushMsg.url, pushMsg.obj_id, templateId, "4", paramsMappingBean, false)
 
     }
 
@@ -134,13 +133,13 @@ class ShowPushMessageActivity : AppCompatActivity(), PushMessageView, ShowPushMe
     fun back(v: View?) {
         finish()
     }
-
-    /**
-     * 释放资源
-     */
-    override fun onDestroy() {
-        super.onDestroy()
-        if (subscribe.isUnsubscribed)
-            subscribe.unsubscribe()
-    }
+//
+//    /**
+//     * 释放资源
+//     */
+//    override fun onDestroy() {
+//        super.onDestroy()
+//        if (subscribe.isUnsubscribed)
+//            subscribe.unsubscribe()
+//    }
 }

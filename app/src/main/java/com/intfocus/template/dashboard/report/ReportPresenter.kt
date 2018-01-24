@@ -1,7 +1,10 @@
-package com.intfocus.template.subject.one
+package com.intfocus.template.dashboard.report
 
 import android.content.Context
 import com.intfocus.template.model.response.home.ReportListResult
+import com.intfocus.template.subject.one.ReportContract
+import com.intfocus.template.subject.one.ReportImpl
+import com.intfocus.template.subject.one.ReportModel
 
 /**
  * ****************************************************
@@ -16,7 +19,6 @@ class ReportPresenter(
         private val mModel: ReportImpl,
         private val mView: ReportContract.View
 ) : ReportContract.Presenter {
-
     init {
         mView.presenter = this
     }
@@ -31,6 +33,7 @@ class ReportPresenter(
             }
 
             override fun onDataNotAvailable(e: Throwable) {
+                mView.loadDataFailure()
             }
         })
     }

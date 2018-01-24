@@ -1,5 +1,6 @@
 package com.intfocus.template.subject.two
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.ClipboardManager
@@ -9,9 +10,12 @@ import android.content.pm.ActivityInfo
 import android.net.Uri
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
+import android.view.KeyEvent
 import android.view.View
+import android.view.WindowManager
 import com.github.barteksc.pdfviewer.listener.OnPageErrorListener
 import com.github.barteksc.pdfviewer.scroll.DefaultScrollHandle
+import com.intfocus.template.BuildConfig
 import com.intfocus.template.R
 import com.intfocus.template.constant.Params
 import com.intfocus.template.constant.Params.BANNER_NAME
@@ -27,6 +31,7 @@ import com.intfocus.template.filter.FilterDialogFragment
 import com.intfocus.template.model.response.filter.MenuItem
 import com.intfocus.template.model.response.filter.MenuResult
 import com.intfocus.template.ui.BaseActivity
+import com.intfocus.template.ui.view.WebView4Scroll
 import com.intfocus.template.ui.view.addressselector.FilterPopupWindow
 import com.intfocus.template.util.*
 import com.tencent.smtt.sdk.*
@@ -43,8 +48,12 @@ import java.io.File
  * @data 2017/11/15
  * @describe
  */
-class WebPageActivity : BaseActivity(), WebPageContract.View, OnPageErrorListener, FilterMenuAdapter.FilterMenuListener, FilterPopupWindow.MenuLisenter, FilterDialogFragment.FilterListener {
+class WebPageActivity : BaseActivity(), WebPageContract.View, OnPageErrorListener,
+        FilterMenuAdapter.FilterMenuListener, FilterPopupWindow.MenuLisenter,
+        FilterDialogFragment.FilterListener, CleanCacheCallback {
+
     private val REQUEST_CODE_CHOOSE = 1
+    private var errorCount: Int = 0
     override lateinit var presenter: WebPageContract.Presenter
     lateinit var bannerName: String
     lateinit var reportId: String
@@ -52,7 +61,14 @@ class WebPageActivity : BaseActivity(), WebPageContract.View, OnPageErrorListene
     lateinit var groupId: String
     lateinit var url: String
     lateinit var objectType: String
-    private var webView: WebView?=null
+    private var mWebView: WebView4Scroll? = null
+    private var mOverrideKeyCodes = intArrayOf(
+            KeyEvent.KEYCODE_DPAD_CENTER,
+            KeyEvent.KEYCODE_DPAD_UP,
+            KeyEvent.KEYCODE_DPAD_LEFT,
+            KeyEvent.KEYCODE_DPAD_DOWN,
+            KeyEvent.KEYCODE_DPAD_RIGHT
+    )
 
     /**
      * 图片上传接收参数
@@ -76,11 +92,20 @@ class WebPageActivity : BaseActivity(), WebPageContract.View, OnPageErrorListene
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        if ("baozhentv" == BuildConfig.FLAVOR) {
+            window.setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        }
+
         setContentView(R.layout.activity_subject)
         init()
         WebPagePresenter(WebPageModelImpl.getInstance(), this)
 
         presenter.load(reportId, templateId, groupId, url)
+
+        if ("baozhentv" == BuildConfig.FLAVOR) {
+            rl_action_bar.post { setBannerVisibility(View.GONE) }
+            ll_filter.post { ll_filter.visibility = View.GONE }
+        }
     }
 
     override fun setBannerTitle(title: String) {
@@ -117,7 +142,7 @@ class WebPageActivity : BaseActivity(), WebPageContract.View, OnPageErrorListene
 
     override fun onDestroy() {
         super.onDestroy()
-        webView?.destroy()
+        mWebView?.destroy()
     }
 
     override fun dismissActivity(v: View) {
@@ -162,18 +187,47 @@ class WebPageActivity : BaseActivity(), WebPageContract.View, OnPageErrorListene
             }
             initWebView()
         }
+        srl_activity_subject.setOnRefreshListener {
+            refresh()
+        }
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
     private fun initWebView() {
-        webView = WebView(this)
-        browser.addView(webView)
+        mWebView = WebView4Scroll(this,srl_activity_subject)
+        browser.addView(mWebView)
 
-        val webSettings = webView?.settings
+        val webSettings = mWebView?.settings
         // 允许 JS 执行
         webSettings?.javaScriptEnabled = true
-        webView?.addJavascriptInterface(CustomJavaScriptsInterface(this), JAVASCRIPT_INTERFACE_NAME)
-        // 缓存模式为无缓存
-        webSettings?.cacheMode = WebSettings.LOAD_NO_CACHE
+        // 允许点击三方下载链接 弹出本地浏览器选择框
+        mWebView?.setDownloadListener { url, userAgent, contentDisposition, mimetype, contentLength ->
+            LogUtil.d(this, "url=" + url)
+            LogUtil.d(this, "userAgent=" + userAgent)
+            LogUtil.d(this, "contentDisposition=" + contentDisposition)
+            LogUtil.d(this, "mimetype=" + mimetype)
+            LogUtil.d(this, "contentLength=" + contentLength)
+            val uri = Uri.parse(url)
+            startActivity(Intent(Intent.ACTION_VIEW, uri))
+        }
+        webSettings?.cacheMode = if (HttpUtil.isConnected(this)) {
+            // 缓存模式为无缓存
+            WebSettings.LOAD_NO_CACHE
+        } else {
+            WebSettings.LOAD_CACHE_ELSE_NETWORK
+        }
+        val cacheDir = File(cacheDir, "webviewCache")
+        //设置数据库缓存路径
+        webSettings?.databasePath = cacheDir.absolutePath
+        //设置 应用 缓存目录
+        webSettings?.setAppCachePath(cacheDir.absolutePath)
+        //开启 DOM 存储功能
+        webSettings?.domStorageEnabled = true
+        //开启 数据库 存储功能
+        webSettings?.databaseEnabled = true
+        //开启 应用缓存 功能
+        webSettings?.setAppCacheEnabled(true)
+
         webSettings?.domStorageEnabled = true
         // 允许访问文件
         webSettings?.allowFileAccess = true
@@ -182,17 +236,23 @@ class WebPageActivity : BaseActivity(), WebPageContract.View, OnPageErrorListene
         // 设置网页自适应屏幕大小
         webSettings?.loadWithOverviewMode = true
         // 显示网页滚动条
-        webView?.isHorizontalScrollBarEnabled = false
+        mWebView?.x5WebViewExtension?.setScrollBarFadingEnabled(false)
         // 添加 javascript 接口
-        webView?.addJavascriptInterface(null, null)
+        mWebView?.addJavascriptInterface(CustomJavaScriptsInterface(this), JAVASCRIPT_INTERFACE_NAME)
         // 设置是否支持缩放
         webSettings?.setSupportZoom(false)
         // 设置是否支持对网页进行长按操作
-        webView?.setOnKeyListener { _, _, _ -> return@setOnKeyListener false }
+        mWebView?.setOnKeyListener { _, _, _ -> return@setOnKeyListener false }
         // 设置网页默认编码
         webSettings?.defaultTextEncodingName = "utf-8"
 
-        webView?.webChromeClient = object : WebChromeClient() {
+        // 变更 UserAgent
+        if ("baozhentv" == BuildConfig.FLAVOR) {
+            val userAgentWithNewChromeVersion = Regex("Chrome/[0-9.]*\\s+").replace(webSettings?.userAgentString!!, "Chrome/63.0.3239.132 ")
+            LogUtil.d(this, "UserAgent ::: $userAgentWithNewChromeVersion ")
+            webSettings.setUserAgent(userAgentWithNewChromeVersion.replace("MQQBrowser/6.2 TBS/043805 ", "").replace("Version/4.0 ", "").replace("; wv", ""))
+        }
+        mWebView?.webChromeClient = object : WebChromeClient() {
             // For Android  > 4.1.1
             override fun openFileChooser(uploadMsg: ValueCallback<Uri>, acceptType: String?, capture: String?) {
                 uploadFile = uploadMsg
@@ -209,13 +269,14 @@ class WebPageActivity : BaseActivity(), WebPageContract.View, OnPageErrorListene
             }
         }
 
-        webView?.webViewClient = object : WebViewClient() {
+        mWebView?.webViewClient = object : WebViewClient() {
             override fun shouldOverrideUrlLoading(p0: WebView?, p1: String?): Boolean {
-                p0!!.loadUrl(url)
+                p0!!.loadUrl(p1)
                 return true
             }
 
             override fun onPageFinished(view: WebView, url: String) {
+                super.onPageFinished(view, url)
                 //是否有筛选数据，有就显示出来
                 if (locationDataList.isNotEmpty()) {
                     rl_address_filter.visibility = View.VISIBLE
@@ -232,11 +293,12 @@ class WebPageActivity : BaseActivity(), WebPageContract.View, OnPageErrorListene
                     filter_recycler_view.visibility = View.GONE
                     view_line.visibility = View.GONE
                 }
+                srl_activity_subject.isRefreshing = false
                 setLoadingVisibility(View.GONE)
             }
         }
-    }
 
+    }
 
     /**
      * 渲染报表
@@ -246,7 +308,36 @@ class WebPageActivity : BaseActivity(), WebPageContract.View, OnPageErrorListene
         if (url.toLowerCase().endsWith(".pdf")) {
             showPDF(url)
         }
-        webView?.loadUrl(url)
+        mWebView?.loadUrl(url)
+    }
+
+    /**
+     * 错误页面
+     */
+    override fun showError(errorPagePath: String) {
+        errorCount += 1
+        when (errorCount) {
+            1, 2 -> {
+                ApiHelper.deleteHeadersFile()
+                mWebView?.loadUrl(errorPagePath)
+            }
+            3 -> {
+                AlertDialog.Builder(this)
+                        .setTitle("提示")
+                        .setMessage("报表多次加载错误, 是否清理缓存后继续加载?")
+                        .setPositiveButton("确定") { _, _ ->
+                            CacheCleanManager.clearAppUserCache(this)
+                            errorCount = 0
+                        }
+                        .setNegativeButton("下一次") { dialog, _ ->
+                            errorCount = 2
+                            dialog.dismiss()
+                        }
+                        .setCancelable(false)
+                        .show()
+                mWebView?.loadUrl(errorPagePath)
+            }
+        }
     }
 
     /**
@@ -274,8 +365,25 @@ class WebPageActivity : BaseActivity(), WebPageContract.View, OnPageErrorListene
      * 刷新
      */
     override fun refresh() {
+        srl_activity_subject.isRefreshing = false
         setLoadingVisibility(View.VISIBLE)
         show(url)
+    }
+
+    /**
+     * 刷新
+     */
+    fun refreshWithClearCache() {
+        srl_activity_subject.isRefreshing = false
+        setLoadingVisibility(View.VISIBLE)
+        CacheCleanManager.clearAppUserCache(this, this)
+    }
+
+    override fun onCleanCacheSuccess() {
+        presenter.load(reportId, templateId, groupId, url)
+    }
+
+    override fun onCleanCacheFailure() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, intent: Intent) {
@@ -305,7 +413,7 @@ class WebPageActivity : BaseActivity(), WebPageContract.View, OnPageErrorListene
     }
 
     override fun goBack() {
-        webView?.goBack()
+        mWebView?.goBack()
     }
 
     private fun imageSelect() {
@@ -416,12 +524,12 @@ class WebPageActivity : BaseActivity(), WebPageContract.View, OnPageErrorListene
             R.id.ll_share -> share(this, url)
             R.id.ll_comment -> comment(this, reportId, objectType, bannerName)
             R.id.ll_copylink -> actionCopyLink()
-            R.id.ll_refresh -> refresh()
+            R.id.ll_refresh -> refreshWithClearCache()
             else -> {
             }
         }
-        if (popupWindow!!.isShowing) {
-            popupWindow!!.dismiss()
+        if (popupWindow.isShowing) {
+            popupWindow.dismiss()
         }
     }
 
@@ -432,5 +540,76 @@ class WebPageActivity : BaseActivity(), WebPageContract.View, OnPageErrorListene
         val clipboardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
         clipboardManager.text = url
         ToastUtils.show(this, "链接已拷贝", ToastColor.SUCCESS)
+    }
+
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+        when (keyCode) {
+            KeyEvent.KEYCODE_BACK -> {
+//                mWebView?.let {
+//                    return if (it.canGoBack()) {
+//                        it.goBack()
+//                        true
+//                    } else {
+//                        onBackPressed()
+//                        super.onKeyDown(keyCode, event)
+//                    }
+//                }
+                if (mWebView != null && mWebView!!.canGoBack()) {
+                    mWebView?.goBack()
+                    return true
+                }
+            }
+        }
+        return super.onKeyDown(keyCode, event)
+    }
+
+    /**
+     * Given a key code, this method will pass it into the web view to handle
+     * accordingly
+     *
+     * @param keycode Native Android KeyCode
+     */
+    fun handleKeyInjection(keycode: Int) {
+        val jsSend = ("javascript:mAKHandler.handleUri('nativewebsample://KEY_EVENT;"
+                + keycode + ";');")
+        loadJavascriptAction(jsSend)
+    }
+
+    private fun loadJavascriptAction(jsSend: String) {
+        mWebView?.loadUrl(jsSend)
+    }
+
+    private fun addAndroidKeyHandler() {
+        val androidKeyHandler = LoadAssetsJsonUtil.getAssetsJsonData("androidKeyHandler.js")
+        mWebView?.loadUrl("javascript:(function(){$androidKeyHandler})()")
+    }
+
+    override fun onContentChanged() {
+        super.onContentChanged()
+        if (requestedOrientation == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
+            rl_action_bar.post { setBannerVisibility(View.GONE) }
+            ll_filter.post { ll_filter.visibility = View.GONE }
+        } else {
+            rl_action_bar.post { setBannerVisibility(View.VISIBLE) }
+            ll_filter.post { ll_filter.visibility = View.VISIBLE }
+        }
+    }
+
+    override fun dispatchKeyEvent(event: KeyEvent): Boolean {
+        if (event.keyCode == KeyEvent.KEYCODE_R) {
+            refresh()
+        }
+
+        val eventKeyCode = event.keyCode
+        for (i in 0 until mOverrideKeyCodes.size) {
+            if (eventKeyCode == mOverrideKeyCodes[i]) {
+                if (event.action == KeyEvent.ACTION_UP) {
+                    handleKeyInjection(eventKeyCode)
+                }
+                return true
+            }
+        }
+
+        return super.dispatchKeyEvent(event)
     }
 }

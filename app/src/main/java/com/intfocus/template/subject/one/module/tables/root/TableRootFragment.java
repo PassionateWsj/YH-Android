@@ -111,8 +111,8 @@ public class TableRootFragment extends BaseFragment implements TableTitleAdapter
     private void init() {
         mPresenter.loadData(suRootID, index);
         datas = new ArrayList<>();
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-        adapter = new TableTitleAdapter(getContext(), datas, this);
+        recyclerView.setLayoutManager(new LinearLayoutManager(ctx, LinearLayoutManager.HORIZONTAL, false));
+        adapter = new TableTitleAdapter(ctx, datas, this);
         recyclerView.setAdapter(adapter);
     }
 
@@ -133,13 +133,16 @@ public class TableRootFragment extends BaseFragment implements TableTitleAdapter
 
     private void bindData(MDetailRootPageRequestResult entity) {
         this.entity = entity;
-        if (entity != null && entity.datas != null) {
-            datas = entity.datas;
-            adapter.setData(datas);
+        if (entity != null && entity.getDatas() != null) {
+            datas = entity.getDatas();
+            if (datas.size() > 0 && "".equals(datas.get(0).getTitle())) {
+                recyclerView.setVisibility(View.GONE);
+            }
+//            adapter.setData(datas);
 
             switchFragment(0);
         } else {
-            ToastUtil.showToast(ctx, "数据实体为空");
+            ToastUtil.showToast(getCtx(), "数据实体为空");
         }
     }
 
@@ -167,12 +170,12 @@ public class TableRootFragment extends BaseFragment implements TableTitleAdapter
 
         if (toFragment == null) {
             toFragment = TablesContentFragment.newInstance(suRootID, index);
-            TempSubData.setData(index, entity.datas.get(checkId).getTable());
+            TempSubData.setData(index, entity.getDatas().get(checkId).getTable());
             new TableContentPresenter(TableImpl.getInstance(), (TablesContentFragment) toFragment);
         }
 
         FragmentTransaction ft = fm.beginTransaction();
-        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        ft.setTransition(FragmentTransaction.TRANSIT_NONE);
 
         // 选中的页面 添加加载过
         if (!toFragment.isAdded()) {

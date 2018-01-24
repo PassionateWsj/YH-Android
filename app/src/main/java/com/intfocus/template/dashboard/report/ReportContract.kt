@@ -18,6 +18,7 @@ interface ReportContract {
 
     interface View : BaseView<Presenter> {
         fun dataLoaded(data: ReportListResult)
+        fun loadDataFailure()
     }
 
     interface Presenter : BasePresenter {

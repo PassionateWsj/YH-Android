@@ -9,6 +9,7 @@ class CollectionRequestBody {
     var data: Data? = null
 
     class Data {
+        var uuid: String = ""
         var report_id: String = ""
         var content: String = ""
         var template_id: String = "9"
@@ -18,7 +19,7 @@ class CollectionRequestBody {
         var h3: String = ""
         var h4: String = ""
         var h5: String = ""
-        var local_created_at: String = ""
-        var local_updated_at: String = ""
+        var created_at: String = ""
+        var updated_at: String = ""
     }
 }

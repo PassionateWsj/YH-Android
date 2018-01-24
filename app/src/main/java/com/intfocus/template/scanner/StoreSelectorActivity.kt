@@ -10,11 +10,11 @@ import android.view.inputmethod.InputMethodManager
 import com.intfocus.template.R
 import com.intfocus.template.constant.Params.STORE
 import com.intfocus.template.constant.Params.STORE_ID
+import com.intfocus.template.model.response.scanner.StoreItem
 import com.intfocus.template.scanner.adapter.SelectorListAdapter
 import com.intfocus.template.scanner.presenter.StoreSelectorPresenter
 import com.intfocus.template.scanner.view.StoreSelectorView
 import com.intfocus.template.ui.BaseActivity
-import com.intfocus.template.model.response.scanner.StoreItem
 import kotlinx.android.synthetic.main.activity_store_selector.*
 
 /**

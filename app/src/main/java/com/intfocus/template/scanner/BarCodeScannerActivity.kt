@@ -20,22 +20,20 @@ import android.widget.PopupWindow
 import android.widget.RelativeLayout
 import android.widget.TextView
 import cn.bingoogolapple.qrcode.core.QRCodeView
-import com.intfocus.template.R
 import com.intfocus.template.ConfigConstants
-import com.intfocus.template.constant.Params.BANNER_NAME
+import com.intfocus.template.R
 import com.intfocus.template.constant.Params.CODE_INFO
 import com.intfocus.template.constant.Params.CODE_TYPE
 import com.intfocus.template.constant.Params.LINK
 import com.intfocus.template.constant.Params.STORE
 import com.intfocus.template.constant.Params.STORE_ID
-import com.intfocus.template.model.response.scanner.NearestStoresResult
-import com.intfocus.template.model.response.scanner.StoreItem
-import com.intfocus.template.model.OrmDBHelper
-import com.intfocus.template.listener.NoDoubleClickListener
 import com.intfocus.template.general.net.ApiException
 import com.intfocus.template.general.net.CodeHandledSubscriber
 import com.intfocus.template.general.net.RetrofitUtil
-import com.intfocus.template.subject.two.WebPageActivity
+import com.intfocus.template.listener.NoDoubleClickListener
+import com.intfocus.template.model.OrmDBHelper
+import com.intfocus.template.model.response.scanner.NearestStoresResult
+import com.intfocus.template.model.response.scanner.StoreItem
 import com.intfocus.template.util.*
 import com.taobao.accs.ACCSManager.mContext
 import com.zhihu.matisse.Matisse
@@ -64,6 +62,10 @@ class BarCodeScannerActivity : AppCompatActivity(), QRCodeView.Delegate, View.On
     companion object {
         val TAG = "hjjzz"
         val REQUEST_CODE_CHOOSE = 1
+        val RESULT_CODE_SCAN = 200
+        val RESULT_CALLBACK = 101
+        val RESULT_TO_URL = 102
+        val INTENT_FOR_RESULT = "intent_for_result"
     }
 
     /**
@@ -106,6 +108,10 @@ class BarCodeScannerActivity : AppCompatActivity(), QRCodeView.Delegate, View.On
      * 是否开启定位权限
      */
     private var openPositioningPermissionsFilter = false
+    /**
+     * 扫码结果是否返回
+     */
+    private var intentForResult = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -119,14 +125,9 @@ class BarCodeScannerActivity : AppCompatActivity(), QRCodeView.Delegate, View.On
         initScanner()
     }
 
-    private fun initScanner() {
-
-        zbarview_barcode_scanner.setDelegate(this)
-        zbarview_barcode_scanner.startSpot()
-
-    }
-
     private fun initData() {
+        intentForResult = intent.getBooleanExtra(INTENT_FOR_RESULT, true)
+
         tv_barcode_local_position.visibility = if (ConfigConstants.SCAN_LOCATION) {
             tv_barcode_local_position.text = "正在定位"
             getLocation()
@@ -136,6 +137,10 @@ class BarCodeScannerActivity : AppCompatActivity(), QRCodeView.Delegate, View.On
         }
     }
 
+    private fun initScanner() {
+        zbarview_barcode_scanner.setDelegate(this)
+        zbarview_barcode_scanner.startSpot()
+    }
 
     override fun onStart() {
         super.onStart()
@@ -180,7 +185,6 @@ class BarCodeScannerActivity : AppCompatActivity(), QRCodeView.Delegate, View.On
         tvInputBarcodeLight = view!!.findViewById(R.id.tv_input_barcode_light)
         cbInputBarcodeLight = view!!.findViewById(R.id.cb_input_barcode_light)
     }
-
 
     private fun initShow() {
         if (ConfigConstants.SCAN_BY_PHOTO_ALBUM) {
@@ -254,12 +258,8 @@ class BarCodeScannerActivity : AppCompatActivity(), QRCodeView.Delegate, View.On
                 ToastUtils.show(this, "请输入条码")
                 return@setOnClickListener
             }
-
-//            zbarview_barcode_scanner.closeFlashlight()
-//            isLightOn = false
             isStartActivity = true
-//            checkLightStatus(isLightOn, view!!.tv_input_barcode_light, view!!.cb_input_barcode_light)
-            goToUrl(trim, "input", ConfigConstants.kAppCode)
+            dealWithResultCode(trim, "input", ConfigConstants.kAppCode)
 
         }
 
@@ -270,8 +270,6 @@ class BarCodeScannerActivity : AppCompatActivity(), QRCodeView.Delegate, View.On
         }
         popupWindow!!.setOnDismissListener {
             if (!isStartActivity) {
-//                finish()
-//            } else {
                 checkLightStatus(isLightOn, tvBarcodeLight!!, cbBarcodeLight!!)
                 zbarview_barcode_scanner.showScanRect()
                 zbarview_barcode_scanner.startSpot()
@@ -279,22 +277,30 @@ class BarCodeScannerActivity : AppCompatActivity(), QRCodeView.Delegate, View.On
         }
     }
 
-    private fun goToUrl(result: String, codeType: String, type: String) {
-//        val mUserSP = getSharedPreferences("UserBean", Context.MODE_PRIVATE)
+    private fun dealWithResultCode(result: String, codeType: String, type: String) {
+//        val mUserSP = getSharedPreferences(USER_BEAN, Context.MODE_PRIVATE)
         when {
             type.contains("ruishang") -> {
                 var urlString = intent.getStringExtra(LINK)
-                // val link = ConfigConstants.kBaseUrl + "/websites/cav/quan.html?" + "uid=" + mUserSP.getString("userNum", "") + "&code=" + result + "&groupName=" + mUserSP.getString(URLs.kGroupName, "") + "&groupId=" + mUserSP.getString(URLs.kGroupId, "")
+                // val link = TempHost.getHost() + "/websites/cav/quan.html?" + "uid=" + mUserSP.getString("userNum", "") + "&code=" + result + "&groupName=" + mUserSP.getString(URLs.kGroupName, "") + "&groupId=" + mUserSP.getString(URLs.kGroupId, "")
                 val appendParams = String.format("code=%s", result)
                 val splitString = if (urlString.contains("?")) "&" else "?"
                 urlString = String.format("%s%s%s", urlString, splitString, appendParams)
                 PageLinkManage.pageLink(this, "核销奖券", urlString)
             }
             else -> {
-                val intent = Intent(this, ScannerResultActivity::class.java)
-                intent.putExtra(CODE_INFO, result)
-                intent.putExtra(CODE_TYPE, codeType)
-                startActivity(intent)
+                if (intentForResult) {
+                    val intent = Intent()
+                    intent.putExtra(CODE_INFO, result)
+                    intent.putExtra(CODE_TYPE, codeType)
+                    setResult(RESULT_CODE_SCAN, intent)
+                    finish()
+                } else {
+                    val intent = Intent(this, ScannerResultActivity::class.java)
+                    intent.putExtra(CODE_INFO, result)
+                    intent.putExtra(CODE_TYPE, codeType)
+                    startActivity(intent)
+                }
             }
         }
         popupWindow!!.dismiss()
@@ -315,10 +321,6 @@ class BarCodeScannerActivity : AppCompatActivity(), QRCodeView.Delegate, View.On
                         .forResult(BarCodeScannerActivity.REQUEST_CODE_CHOOSE)
             }
         }
-    }
-
-    override fun onBackPressed() {
-        super.onBackPressed()
     }
 
     override fun onScanQRCodeOpenCameraError() {
@@ -349,12 +351,7 @@ class BarCodeScannerActivity : AppCompatActivity(), QRCodeView.Delegate, View.On
                 "qrcode"
             }
         }
-        goToUrl(result, codeType, ConfigConstants.kAppCode)
-//        val intent = Intent(this, ScannerResultActivity::class.java)
-//        intent.putExtra(URLs.kCodeInfo, result)
-//        intent.putExtra(URLs.kCodeType, codeType)
-//        startActivity(intent)
-//        finish()
+        dealWithResultCode(result, codeType, ConfigConstants.kAppCode)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

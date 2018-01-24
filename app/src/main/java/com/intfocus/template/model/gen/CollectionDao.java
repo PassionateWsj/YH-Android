@@ -30,6 +30,13 @@ public class CollectionDao extends AbstractDao<Collection, Long> {
         public final static Property DJson = new Property(3, String.class, "dJson", false, "D_JSON");
         public final static Property Status = new Property(4, int.class, "status", false, "STATUS");
         public final static Property ImageStatus = new Property(5, int.class, "imageStatus", false, "IMAGE_STATUS");
+        public final static Property Created_at = new Property(6, Long.class, "created_at", false, "CREATED_AT");
+        public final static Property Updated_at = new Property(7, Long.class, "updated_at", false, "UPDATED_AT");
+        public final static Property H1 = new Property(8, String.class, "h1", false, "H1");
+        public final static Property H2 = new Property(9, String.class, "h2", false, "H2");
+        public final static Property H3 = new Property(10, String.class, "h3", false, "H3");
+        public final static Property H4 = new Property(11, String.class, "h4", false, "H4");
+        public final static Property H5 = new Property(12, String.class, "h5", false, "H5");
     }
 
 
@@ -50,7 +57,14 @@ public class CollectionDao extends AbstractDao<Collection, Long> {
                 "\"UUID\" TEXT," + // 2: uuid
                 "\"D_JSON\" TEXT," + // 3: dJson
                 "\"STATUS\" INTEGER NOT NULL ," + // 4: status
-                "\"IMAGE_STATUS\" INTEGER NOT NULL );"); // 5: imageStatus
+                "\"IMAGE_STATUS\" INTEGER NOT NULL ," + // 5: imageStatus
+                "\"CREATED_AT\" INTEGER," + // 6: created_at
+                "\"UPDATED_AT\" INTEGER," + // 7: updated_at
+                "\"H1\" TEXT," + // 8: h1
+                "\"H2\" TEXT," + // 9: h2
+                "\"H3\" TEXT," + // 10: h3
+                "\"H4\" TEXT," + // 11: h4
+                "\"H5\" TEXT);"); // 12: h5
     }
 
     /** Drops the underlying database table. */
@@ -84,6 +98,41 @@ public class CollectionDao extends AbstractDao<Collection, Long> {
         }
         stmt.bindLong(5, entity.getStatus());
         stmt.bindLong(6, entity.getImageStatus());
+ 
+        Long created_at = entity.getCreated_at();
+        if (created_at != null) {
+            stmt.bindLong(7, created_at);
+        }
+ 
+        Long updated_at = entity.getUpdated_at();
+        if (updated_at != null) {
+            stmt.bindLong(8, updated_at);
+        }
+ 
+        String h1 = entity.getH1();
+        if (h1 != null) {
+            stmt.bindString(9, h1);
+        }
+ 
+        String h2 = entity.getH2();
+        if (h2 != null) {
+            stmt.bindString(10, h2);
+        }
+ 
+        String h3 = entity.getH3();
+        if (h3 != null) {
+            stmt.bindString(11, h3);
+        }
+ 
+        String h4 = entity.getH4();
+        if (h4 != null) {
+            stmt.bindString(12, h4);
+        }
+ 
+        String h5 = entity.getH5();
+        if (h5 != null) {
+            stmt.bindString(13, h5);
+        }
     }
 
     @Override
@@ -111,6 +160,41 @@ public class CollectionDao extends AbstractDao<Collection, Long> {
         }
         stmt.bindLong(5, entity.getStatus());
         stmt.bindLong(6, entity.getImageStatus());
+ 
+        Long created_at = entity.getCreated_at();
+        if (created_at != null) {
+            stmt.bindLong(7, created_at);
+        }
+ 
+        Long updated_at = entity.getUpdated_at();
+        if (updated_at != null) {
+            stmt.bindLong(8, updated_at);
+        }
+ 
+        String h1 = entity.getH1();
+        if (h1 != null) {
+            stmt.bindString(9, h1);
+        }
+ 
+        String h2 = entity.getH2();
+        if (h2 != null) {
+            stmt.bindString(10, h2);
+        }
+ 
+        String h3 = entity.getH3();
+        if (h3 != null) {
+            stmt.bindString(11, h3);
+        }
+ 
+        String h4 = entity.getH4();
+        if (h4 != null) {
+            stmt.bindString(12, h4);
+        }
+ 
+        String h5 = entity.getH5();
+        if (h5 != null) {
+            stmt.bindString(13, h5);
+        }
     }
 
     @Override
@@ -126,7 +210,14 @@ public class CollectionDao extends AbstractDao<Collection, Long> {
             cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // uuid
             cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // dJson
             cursor.getInt(offset + 4), // status
-            cursor.getInt(offset + 5) // imageStatus
+            cursor.getInt(offset + 5), // imageStatus
+            cursor.isNull(offset + 6) ? null : cursor.getLong(offset + 6), // created_at
+            cursor.isNull(offset + 7) ? null : cursor.getLong(offset + 7), // updated_at
+            cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8), // h1
+            cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9), // h2
+            cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10), // h3
+            cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11), // h4
+            cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12) // h5
         );
         return entity;
     }
@@ -139,6 +230,13 @@ public class CollectionDao extends AbstractDao<Collection, Long> {
         entity.setDJson(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
         entity.setStatus(cursor.getInt(offset + 4));
         entity.setImageStatus(cursor.getInt(offset + 5));
+        entity.setCreated_at(cursor.isNull(offset + 6) ? null : cursor.getLong(offset + 6));
+        entity.setUpdated_at(cursor.isNull(offset + 7) ? null : cursor.getLong(offset + 7));
+        entity.setH1(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
+        entity.setH2(cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9));
+        entity.setH3(cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10));
+        entity.setH4(cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11));
+        entity.setH5(cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12));
      }
     
     @Override

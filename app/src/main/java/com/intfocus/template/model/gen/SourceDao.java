@@ -34,6 +34,7 @@ public class SourceDao extends AbstractDao<Source, Long> {
         public final static Property IsList = new Property(7, int.class, "isList", false, "IS_LIST");
         public final static Property IsFilter = new Property(8, int.class, "isFilter", false, "IS_FILTER");
         public final static Property Value = new Property(9, String.class, "value", false, "VALUE");
+        public final static Property PageIndex = new Property(10, int.class, "pageIndex", false, "PAGE_INDEX");
     }
 
 
@@ -58,7 +59,8 @@ public class SourceDao extends AbstractDao<Source, Long> {
                 "\"IS_SHOW\" INTEGER NOT NULL ," + // 6: isShow
                 "\"IS_LIST\" INTEGER NOT NULL ," + // 7: isList
                 "\"IS_FILTER\" INTEGER NOT NULL ," + // 8: isFilter
-                "\"VALUE\" TEXT);"); // 9: value
+                "\"VALUE\" TEXT," + // 9: value
+                "\"PAGE_INDEX\" INTEGER NOT NULL );"); // 10: pageIndex
     }
 
     /** Drops the underlying database table. */
@@ -108,6 +110,7 @@ public class SourceDao extends AbstractDao<Source, Long> {
         if (value != null) {
             stmt.bindString(10, value);
         }
+        stmt.bindLong(11, entity.getPageIndex());
     }
 
     @Override
@@ -151,6 +154,7 @@ public class SourceDao extends AbstractDao<Source, Long> {
         if (value != null) {
             stmt.bindString(10, value);
         }
+        stmt.bindLong(11, entity.getPageIndex());
     }
 
     @Override
@@ -170,7 +174,8 @@ public class SourceDao extends AbstractDao<Source, Long> {
             cursor.getInt(offset + 6), // isShow
             cursor.getInt(offset + 7), // isList
             cursor.getInt(offset + 8), // isFilter
-            cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9) // value
+            cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9), // value
+            cursor.getInt(offset + 10) // pageIndex
         );
         return entity;
     }
@@ -187,6 +192,7 @@ public class SourceDao extends AbstractDao<Source, Long> {
         entity.setIsList(cursor.getInt(offset + 7));
         entity.setIsFilter(cursor.getInt(offset + 8));
         entity.setValue(cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9));
+        entity.setPageIndex(cursor.getInt(offset + 10));
      }
     
     @Override

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="5dp"
+    android:layout_marginTop="5dp"
+    android:background="@color/co10_syr"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/ll_indicator_list"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:paddingVertical="5dp"
+        android:paddingHorizontal="22.5dp">
+
+        <TextView
+            android:id="@+id/tv_indicator_list_single_value_title"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:gravity="center"
+            android:text="差异"
+            android:textColor="#666666"
+            android:textSize="14sp"/>
+
+        <TextView
+            android:id="@+id/tv_indicator_list_title"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toLeftOf="@id/tv_indicator_list_single_value_title"
+            android:gravity="center_vertical"
+            android:text="我关注的单品"
+            android:textColor="#324408"
+            android:textSize="20sp"/>
+
+    </RelativeLayout>
+
+    <com.intfocus.template.ui.view.CustomExpandableListView
+        android:id="@+id/elv_indicator_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ll_indicator_list"/>
+</LinearLayout>

@@ -137,7 +137,7 @@ public class PlusMinusChart extends View implements ValueAnimator.AnimatorUpdate
         float selectXIncrement = 16;
         float selectYIncrement = 8;
         for (int i = 0; i < mDsize; i++) {
-            float value = Float.parseFloat(lt_data.get(i).data.replace("%", ""));
+            float value = Float.parseFloat(lt_data.get(i).getData().replace("%", ""));
 
             float length = (value * (1 + (ratio - 1))) * xScale;
             float y = yPoint + yScale * (i + 1) - yOffset;
@@ -174,7 +174,7 @@ public class PlusMinusChart extends View implements ValueAnimator.AnimatorUpdate
             }*/
 
             int cursorIndex;
-            int color = lt_data.get(i).color;
+            int color = lt_data.get(i).getColor();
             switch (color) {
                 case 0:
                 case 3:
@@ -255,8 +255,8 @@ public class PlusMinusChart extends View implements ValueAnimator.AnimatorUpdate
         Collections.sort(datas, new BargraphDataComparator());
 
 
-        float minData = Float.parseFloat(datas.get(0).data.replace("%", ""));
-        float maxData = Float.parseFloat(datas.get(datasize - 1).data.replace("%", ""));
+        float minData = Float.parseFloat(datas.get(0).getData().replace("%", ""));
+        float maxData = Float.parseFloat(datas.get(datasize - 1).getData().replace("%", ""));
 
         float count;
         if (minData > 0 || maxData < 0) {

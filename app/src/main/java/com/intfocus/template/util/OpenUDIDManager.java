@@ -1,14 +1,5 @@
 package com.intfocus.template.util;
 
-import java.math.BigInteger;
-import java.security.SecureRandom;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.TreeMap;
-
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -21,6 +12,15 @@ import android.os.IBinder;
 import android.os.RemoteException;
 import android.provider.Settings.Secure;
 import android.util.Log;
+
+import java.math.BigInteger;
+import java.security.SecureRandom;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+import java.util.TreeMap;
 
 
 public class OpenUDIDManager implements ServiceConnection {

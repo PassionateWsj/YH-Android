@@ -7,22 +7,18 @@ import android.content.SharedPreferences
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.PopupWindow
-import com.intfocus.template.ConfigConstants
 import com.intfocus.template.R
 import com.intfocus.template.SYPApplication
+import com.intfocus.template.constant.Params.USER_BEAN
 import com.intfocus.template.listener.UMSharedListener
-import com.intfocus.template.util.ActionLogUtil
-import com.intfocus.template.util.ImageUtil
+import com.intfocus.template.util.*
 import com.intfocus.template.util.K.API_COMMENT_MOBILE_PATH
-import com.intfocus.template.util.LoadingUtils
 import com.intfocus.template.util.PageLinkManage.pageLink
-import com.intfocus.template.util.ToastUtils
 import com.umeng.socialize.ShareAction
 import com.umeng.socialize.bean.SHARE_MEDIA
 import com.umeng.socialize.media.UMImage
@@ -43,7 +39,7 @@ open class BaseActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         mApp = application as SYPApplication
         mAppContext = mApp.applicationContext
-        mUserSP = getSharedPreferences("UserBean", Context.MODE_PRIVATE)
+        mUserSP = getSharedPreferences(USER_BEAN, Context.MODE_PRIVATE)
     }
 
     override fun onResume() {
@@ -98,14 +94,14 @@ open class BaseActivity : AppCompatActivity() {
      * 报表基础功能 -> 评论
      */
     fun comment(activity: Activity, objectId: String, objectType: String, objectTitle: String) {
-        val link = String.format(API_COMMENT_MOBILE_PATH, ConfigConstants.kBaseUrl, "v2", objectId, objectType)
+        val link = String.format(API_COMMENT_MOBILE_PATH, TempHost.getHost(), "v2", objectId, objectType)
         pageLink(activity, objectTitle, link, objectId, "-1", objectType)
     }
 
     /**
      * 报表基础功能 -> 分享
      */
-    fun share(activity: Activity, url: String) {
+    open fun share(activity: Activity, url: String) {
         if (url.toLowerCase().endsWith(".pdf")) {
             ToastUtils.show(activity, "暂不支持 PDF 分享")
             return

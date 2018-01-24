@@ -35,6 +35,7 @@ import okhttp3.ResponseBody;
 
 import static com.intfocus.template.constant.Params.ASSETS;
 import static com.intfocus.template.constant.Params.LOADING;
+import static com.intfocus.template.constant.Params.USER_BEAN;
 import static com.intfocus.template.util.K.K_USER_ID;
 
 public class FileUtil {
@@ -46,7 +47,7 @@ public class FileUtil {
     }
 
     public static String userspace(Context context) {
-        SharedPreferences mUserSP = context.getSharedPreferences("UserBean", Context.MODE_PRIVATE);
+        SharedPreferences mUserSP = context.getSharedPreferences(USER_BEAN, Context.MODE_PRIVATE);
         String spacePath = "";
 
         spacePath = String.format("%s/User-%s", FileUtil.basePath(context), mUserSP.getString(K_USER_ID, "0"));
@@ -527,7 +528,7 @@ public class FileUtil {
      */
     public static void checkVersionUpgrade(Context ctx, String assetsPath, String sharedPath) {
         try {
-            SharedPreferences mUserSP = ctx.getSharedPreferences("UserBean", Context.MODE_PRIVATE);
+            SharedPreferences mUserSP = ctx.getSharedPreferences(USER_BEAN, Context.MODE_PRIVATE);
             String versionConfigPath = String.format("%s/%s", assetsPath, K.K_CURRENT_VERSION_FILE_NAME);
             PackageInfo packageInfo = ctx.getPackageManager().getPackageInfo(ctx.getPackageName(), 0);
 

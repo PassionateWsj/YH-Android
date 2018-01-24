@@ -117,14 +117,14 @@ public class SingleValueFragment extends BaseFragment implements SingleValueCont
     public void showData(@NotNull SingleValue data) {
         coCursor = getResources().getIntArray(R.array.co_cursor);
         DecimalFormat df = new DecimalFormat("###,###.##");
-        int state = data.state.color;
+        int state = data.getState().getColor() % coCursor.length;
         int color = coCursor[state];
 
-        tvD1name.setText(data.main_data.name);
-        tvD2name.setText(data.sub_data.name);
-        mainValue = Float.parseFloat(data.main_data.data.replace("%", ""));
+        tvD1name.setText(data.getMain_data().getName());
+        tvD2name.setText(data.getSub_data().getName());
+        mainValue = Float.parseFloat(data.getMain_data().getData().replace("%", ""));
         tvD1.setText(df.format(mainValue));
-        float subData = Float.parseFloat(data.sub_data.data.replace("%", ""));
+        float subData = Float.parseFloat(data.getSub_data().getData().replace("%", ""));
         tvD2.setText(df.format(subData));
 
         tvD1.setTextColor(color);
@@ -135,14 +135,7 @@ public class SingleValueFragment extends BaseFragment implements SingleValueCont
         diffRate = new DecimalFormat(".##%").format(rate);
         tvRate.setText(mainValue + "");
 
-        float absmv = Math.abs(rate);
-        boolean isPlus;
-        if (absmv <= 0.1f) {
-            isPlus = rate <= 0;
-        } else {
-            isPlus = !(rate < -0.1f);
-        }
-        rateCursor.setCursorState(state, isPlus);
+        rateCursor.setCursorState(data.getState().getColor(), true);
         rateCursor.setDrawingCacheEnabled(true);
     }
 

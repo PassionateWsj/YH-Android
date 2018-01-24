@@ -10,4 +10,5 @@ class ReportModule {
     var page_title: String? = null
     var type: String? = null
     var config: String? = null
+    var control_index: Int? = null
 }

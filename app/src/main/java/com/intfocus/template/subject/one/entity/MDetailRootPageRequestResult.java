@@ -8,9 +8,17 @@ import java.util.List;
  * Created by zbaoliang on 17-4-28.
  */
 public class MDetailRootPageRequestResult {
-    public List<MDetailUnitEntity> datas;
+    private List<MDetailUnitEntity> datas;
 
     public MDetailRootPageRequestResult(List<MDetailUnitEntity> datas) {
+        this.datas = datas;
+    }
+
+    public List<MDetailUnitEntity> getDatas() {
+        return datas;
+    }
+
+    public void setDatas(List<MDetailUnitEntity> datas) {
         this.datas = datas;
     }
 }

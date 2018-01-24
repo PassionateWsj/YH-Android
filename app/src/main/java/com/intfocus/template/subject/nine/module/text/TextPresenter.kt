@@ -1,6 +1,6 @@
 package com.intfocus.template.subject.nine.module.text
 
-import com.intfocus.template.subject.nine.callback.LoadDataCallback
+import com.intfocus.template.model.callback.LoadDataCallback
 
 /**
  * @author liuruilin
@@ -32,7 +32,7 @@ class TextPresenter(
         })
     }
 
-    override fun update(entity: TextEntity, key: String) {
-        mModel.insertDb(entity.value, key)
+    override fun update(entity: TextEntity, key: String, listItemType: Int) {
+        mModel.insertDb(entity.value, key, listItemType)
     }
 }

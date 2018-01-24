@@ -1,6 +1,6 @@
 package com.intfocus.template.subject.nine.module.options
 
-import com.intfocus.template.subject.nine.callback.LoadDataCallback
+import com.intfocus.template.model.callback.LoadDataCallback
 
 /**
  * @author liuruilin
@@ -18,8 +18,8 @@ class OptionsPresenter(
     override fun start() {
     }
 
-    override fun update(entity: OptionsEntity, key: String) {
-        mModel.insertDb(entity.value, key)
+    override fun update(entity: OptionsEntity, key: String, listItemType: Int) {
+        mModel.insertDb(entity.value, key,listItemType)
     }
 
     override fun loadData(mParam: String) {

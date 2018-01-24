@@ -1,8 +1,8 @@
 package com.intfocus.template.subject.templateone.singlevalue
 
-import com.intfocus.template.subject.one.entity.SingleValue
 import com.intfocus.template.base.BasePresenter
 import com.intfocus.template.base.BaseView
+import com.intfocus.template.subject.one.entity.SingleValue
 
 /**
  * ****************************************************

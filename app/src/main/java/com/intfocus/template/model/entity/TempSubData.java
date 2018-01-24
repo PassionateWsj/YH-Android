@@ -7,7 +7,7 @@ import java.util.Map;
 
 /**
  * ****************************************************
- * author jameswong
+ * @author jameswong
  * created on: 17/11/16 下午4:46
  * e-mail: PassionateWsj@outlook.com
  * name:
@@ -20,7 +20,7 @@ public enum TempSubData {
     private Map<String, Tables> mObjectList;
 
     public static boolean hasData(int index) {
-        return INSTANCE.mObjectList.get("" + index) != null;
+        return INSTANCE.mObjectList != null && INSTANCE.mObjectList.get("" + index) != null;
     }
 
     public static void setData(int index, Tables objectList) {

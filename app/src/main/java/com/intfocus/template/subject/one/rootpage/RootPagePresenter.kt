@@ -1,6 +1,8 @@
 package com.intfocus.template.subject.templateone.rootpage
 
 import com.intfocus.template.model.entity.Report
+import com.intfocus.template.subject.one.rootpage.RootPageContract
+import com.intfocus.template.subject.one.rootpage.RootPageImpl
 
 /**
  * ****************************************************

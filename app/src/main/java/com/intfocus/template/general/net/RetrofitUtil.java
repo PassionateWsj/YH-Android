@@ -3,10 +3,10 @@ package com.intfocus.template.general.net;
 import android.annotation.SuppressLint;
 import android.content.Context;
 
-import com.intfocus.template.SYPApplication;
-import com.intfocus.template.ConfigConstants;
-import com.intfocus.template.util.HttpUtil;
+import com.facebook.stetho.okhttp3.StethoInterceptor;
+import com.intfocus.template.util.TempHost;
 
+import java.io.File;
 import java.security.SecureRandom;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
@@ -19,6 +19,7 @@ import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
+import okhttp3.Cache;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
@@ -30,13 +31,38 @@ import rx.functions.Action0;
 import rx.schedulers.Schedulers;
 
 /**
- * Created by admin on 2016/6/28.
+ * @author admin
+ * @date 2016/6/28
  */
 public class RetrofitUtil {
     private static final int DEFAULT_TIME_OUT = 2 * 1000;
-    private static final String DEFAULT_BASE_URL = ConfigConstants.kBaseUrl;
+    private static final String DEFAULT_BASE_URL = TempHost.getHost();
     private HttpService httpService;
     private Context ctx;
+    private ChangeableBaseUrlInterceptor changeableBaseUrlInterceptor;
+
+    private static RetrofitUtil mInstance = null;
+
+    /**
+     * 双重校验锁单例模式
+     *
+     * @param context
+     * @return
+     */
+    public static synchronized RetrofitUtil getInstance(Context context) {
+        if (mInstance == null) {
+            synchronized (RetrofitUtil.class) {
+                if (mInstance == null) {
+                    mInstance = new RetrofitUtil(context);
+                }
+            }
+        }
+        return mInstance;
+    }
+
+    public static synchronized void destroyInstance() {
+        mInstance = null;
+    }
 
     private RetrofitUtil(Context ctx) {
         this.ctx = ctx;
@@ -57,12 +83,18 @@ public class RetrofitUtil {
         return getInstance(ctx).httpService;
     }
 
-    public static RetrofitUtil getInstance(Context ctx) {
-        return RetrofitHolder.retrofitUtil(ctx);
-    }
+//    public static RetrofitUtil getInstance(Context ctx) {
+//        return RetrofitHolder.retrofitUtil(ctx);
+//    }
 
     public OkHttpClient.Builder getClientBuilder() {
         OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder();
+
+        File cacheDir = new File(ctx.getCacheDir(), "response");
+        //缓存的最大尺寸10m
+        Cache cache = new Cache(cacheDir, 1024 * 1024 * 10);
+        clientBuilder.cache(cache);
+
         clientBuilder.hostnameVerifier(new TrustAllHostnameVerifier());
         try {
             // 自定义一个信任所有证书的TrustManager，添加SSLSocketFactory的时候要用到
@@ -75,11 +107,21 @@ public class RetrofitUtil {
         }
 //        clientBuilder.sslSocketFactory(createSSLSocketFactory());
         //Http状态码处理,针对已知状态码的处理
+        clientBuilder.addInterceptor(getChangeableBaseUrlInterceptor());
         clientBuilder.addInterceptor(new HttpStateInterceptor());
         clientBuilder.addInterceptor(new BaseParamsInterceptor(ctx));
         clientBuilder.addInterceptor(new NetworkInterceptor());
+        clientBuilder.addInterceptor(new CacheInterceptor());
+        clientBuilder.addNetworkInterceptor(new StethoInterceptor());
         clientBuilder.connectTimeout(DEFAULT_TIME_OUT, TimeUnit.SECONDS);
         return clientBuilder;
+    }
+
+    public ChangeableBaseUrlInterceptor getChangeableBaseUrlInterceptor() {
+        if (changeableBaseUrlInterceptor == null) {
+            changeableBaseUrlInterceptor = new ChangeableBaseUrlInterceptor();
+        }
+        return changeableBaseUrlInterceptor;
     }
 
     private static class RetrofitHolder {
@@ -98,9 +140,9 @@ public class RetrofitUtil {
                     .doOnSubscribe(new Action0() {
                         @Override
                         public void call() {
-                            if (!HttpUtil.isConnected(SYPApplication.globalContext)) {
-                                throw new NetStatusException(9000, "网络未连接");
-                            }
+//                            if (!HttpUtil.isConnected(SYPApplication.globalContext)) {
+//                                throw new NetStatusException(9000, "网络未连接");
+//                            }
                         }
                     })
                     .subscribeOn(AndroidSchedulers.mainThread())

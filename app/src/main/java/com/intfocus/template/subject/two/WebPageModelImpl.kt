@@ -1,12 +1,13 @@
 package com.intfocus.template.subject.two
 
 import android.util.Log
+import com.intfocus.template.BuildConfig
 import com.intfocus.template.SYPApplication.globalContext
-import com.intfocus.template.subject.model.ReportModelImpl
-import com.intfocus.template.subject.nine.callback.LoadDataCallback
-import com.intfocus.template.ConfigConstants
 import com.intfocus.template.constant.Params.BODY
 import com.intfocus.template.constant.Params.CODE
+import com.intfocus.template.constant.Params.PATH
+import com.intfocus.template.model.callback.LoadDataCallback
+import com.intfocus.template.subject.model.ReportModelImpl
 import com.intfocus.template.util.*
 import com.intfocus.template.util.ApiHelper.deleteHeadersFile
 import rx.Observable
@@ -70,18 +71,18 @@ class WebPageModelImpl : ReportModelImpl() {
         if (Integer.valueOf(templateId) == 4) {
             groupId = "0"
         }
-        jsUrl = String.format(K.K_REPORT_ZIP_DATA, ConfigConstants.kBaseUrl, URLs.MD5(K.ANDROID_API_KEY + K.K_REPORT_BASE_API + K.ANDROID_API_KEY), groupId, templateId, reportId)
+        jsUrl = String.format(K.K_REPORT_ZIP_DATA, TempHost.getHost(), URLs.MD5(K.ANDROID_API_KEY + K.K_REPORT_BASE_API + K.ANDROID_API_KEY), groupId, templateId, reportId)
         jsFileName = String.format("group_%s_template_%s_report_%s.js", groupId, templateId, reportId)
-        htmlUrl = String.format(K.K_REPORT_HTML, ConfigConstants.kBaseUrl, groupId, templateId, reportId)
+        htmlUrl = String.format(K.K_REPORT_HTML, TempHost.getHost(), groupId, templateId, reportId)
 
         observable = Observable.just(jsFileName)
                 .subscribeOn(Schedulers.io())
                 .map {
-                    val reportPath: String
+                    var reportPath: String? = null
 
                     val htmlResponse = generateHtml()
-                    reportPath = htmlResponse["path"] ?: ""
-                    if (reportPath.isNotEmpty()) {
+                    if (File(htmlResponse["path"]).exists()) {
+                        reportPath = htmlResponse["path"]
                         if (check(jsUrl)) {
                             getData(callback)
                         }
@@ -100,6 +101,7 @@ class WebPageModelImpl : ReportModelImpl() {
 
                     override fun onError(e: Throwable?) {
                         Log.i(TAG, e.toString())
+                        callback.onError(e!!)
                     }
 
                 })
@@ -192,6 +194,7 @@ class WebPageModelImpl : ReportModelImpl() {
         val statusCode = response[CODE] ?: "400"
         var htmlContent = response[BODY] ?: ""
         retMap.put(CODE, statusCode)
+        retMap.put(PATH, htmlPath)
 
         when (statusCode) {
             "200" -> {
@@ -202,10 +205,6 @@ class WebPageModelImpl : ReportModelImpl() {
                 htmlContent = htmlContent.replace("/stylesheets/", String.format("%s/stylesheets/", relativeAssetsPath))
                 htmlContent = htmlContent.replace("/images/", String.format("%s/images/", relativeAssetsPath))
                 FileUtil.writeFile(htmlPath, htmlContent)
-                retMap.put("path", htmlPath)
-            }
-            "304" -> {
-                retMap.put("path", htmlPath)
             }
             else -> {
             }

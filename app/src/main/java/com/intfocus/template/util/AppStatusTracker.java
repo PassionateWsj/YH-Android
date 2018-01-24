@@ -7,9 +7,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import com.intfocus.template.ConfigConstants;
 import com.intfocus.template.login.LoginActivity;
 
 import static com.intfocus.template.constant.Params.IS_LOGIN;
+import static com.intfocus.template.constant.Params.USER_BEAN;
 
 /**
  * ****************************************************
@@ -53,7 +55,7 @@ public class AppStatusTracker implements Application.ActivityLifecycleCallbacks 
 
 
     private AppStatusTracker(Application application) {
-        mUserSP = application.getSharedPreferences("UserBean", Context.MODE_PRIVATE);
+        mUserSP = application.getSharedPreferences(USER_BEAN, Context.MODE_PRIVATE);
         mUserSPEdit = mUserSP.edit();
         this.application = application;
         application.registerActivityLifecycleCallbacks(this);
@@ -84,7 +86,7 @@ public class AppStatusTracker implements Application.ActivityLifecycleCallbacks 
             timestamp = System.currentTimeMillis() - timestamp;
             boolean isLogin = mUserSP.getBoolean(IS_LOGIN, false);
             LogUtil.e(LogUtil.TAG, "isLogin:::" + isLogin);
-            if (timestamp < TEN_YEAR_TIMEMILLIS && timestamp > MAX_INTERVAL && isLogin) {
+            if (timestamp < TEN_YEAR_TIMEMILLIS && timestamp > MAX_INTERVAL && isLogin&& ConfigConstants.LOGOUT_WITHIN_ONE_HOUR) {
                 mUserSPEdit.putBoolean(IS_LOGIN, false).apply();
                 ToastUtils.INSTANCE.show(activity, "登录过期");
                 Intent intent = new Intent(activity, LoginActivity.class);

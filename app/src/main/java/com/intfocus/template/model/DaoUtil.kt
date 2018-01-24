@@ -36,4 +36,7 @@ object DaoUtil {
     fun getReportDao(): ReportDao = daoSession!!.reportDao
 
     fun getPushMsgDao(): PushMsgBeanDao = daoSession!!.pushMsgBeanDao
+
+    fun getAttentionItemDao(): AttentionItemDao = daoSession!!.attentionItemDao
+
 }

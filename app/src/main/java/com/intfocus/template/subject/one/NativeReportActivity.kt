@@ -1,10 +1,10 @@
 package com.intfocus.template.subject.one
 
+import android.app.Activity
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentTransaction
-import android.util.Log
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
@@ -16,21 +16,24 @@ import com.intfocus.template.constant.Params.OBJECT_ID
 import com.intfocus.template.constant.Params.OBJECT_TYPE
 import com.intfocus.template.constant.Params.TEMPLATE_ID
 import com.intfocus.template.filter.FilterDialogFragment
+import com.intfocus.template.listener.UMSharedListener
 import com.intfocus.template.model.response.filter.MenuItem
 import com.intfocus.template.subject.one.entity.EventRefreshTableRect
 import com.intfocus.template.subject.one.entity.Filter
 import com.intfocus.template.subject.one.rootpage.RootPageFragment
-import com.intfocus.template.subject.templateone.rootpage.RootPageImpl
+import com.intfocus.template.subject.one.rootpage.RootPageImpl
 import com.intfocus.template.subject.templateone.rootpage.RootPagePresenter
 import com.intfocus.template.ui.BaseActivity
 import com.intfocus.template.ui.view.RootScrollView
-import com.intfocus.template.util.DisplayUtil
-import com.intfocus.template.util.LogUtil
-import com.intfocus.template.util.PageLinkManage
+import com.intfocus.template.util.*
+import com.umeng.socialize.ShareAction
+import com.umeng.socialize.bean.SHARE_MEDIA
+import com.umeng.socialize.media.UMImage
 import kotlinx.android.synthetic.main.actvity_meter_detal.*
 import kotlinx.android.synthetic.main.item_action_bar.*
 import org.greenrobot.eventbus.EventBus
 import java.util.*
+
 
 /**
  * 模块一页面
@@ -76,9 +79,15 @@ class NativeReportActivity : BaseActivity(), ModeContract.View, FilterDialogFrag
     override lateinit var presenter: ModeContract.Presenter
     private var reportPages: MutableList<String>? = null
 
+    companion object {
+        private val fragmentTag = "android:switcher:" + R.layout.actvity_meter_detal + ":"
+        var lastCheckId: Int = 0
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.actvity_meter_detal)
+
         showDialog(this)
         mFragmentManager = supportFragmentManager
         mTlTitleContainer = findViewById(R.id.rl_mdetal_title_container)
@@ -90,8 +99,8 @@ class NativeReportActivity : BaseActivity(), ModeContract.View, FilterDialogFrag
     }
 
     override fun onBackPressed() {
-        PageLinkManage.pageBackIntent(this)
         ModeImpl.destroyInstance()
+        PageLinkManage.pageBackIntent(this)
         finish()
     }
 
@@ -162,7 +171,7 @@ class NativeReportActivity : BaseActivity(), ModeContract.View, FilterDialogFrag
                     rbtn.isChecked = true
                 }
             }
-        } else if (dataSize == 1) {
+        } else {
             hs_page_btn.visibility = View.GONE
             mTlTitleContainer!!.visibility = View.GONE
             switchFragment(0)
@@ -200,6 +209,8 @@ class NativeReportActivity : BaseActivity(), ModeContract.View, FilterDialogFrag
      * 筛选完成回调
      */
     override fun complete(data: ArrayList<MenuItem>) {
+        EventBus.getDefault().post(EventRefreshTableRect(lastCheckId))
+
         var addStr = ""
         val size = data.size
         for (i in 0 until size) {
@@ -267,8 +278,8 @@ class NativeReportActivity : BaseActivity(), ModeContract.View, FilterDialogFrag
             R.id.ll_comment -> comment(this, reportId, objectType, bannerName)
             R.id.ll_refresh -> refresh()
         }
-        if (popupWindow!!.isShowing) {
-            popupWindow!!.dismiss()
+        if (popupWindow.isShowing) {
+            popupWindow.dismiss()
         }
     }
 
@@ -285,8 +296,51 @@ class NativeReportActivity : BaseActivity(), ModeContract.View, FilterDialogFrag
         presenter.loadData(this, groupId, templateId, reportId)
     }
 
-    companion object {
-        private val fragmentTag = "android:switcher:" + R.layout.actvity_meter_detal + ":"
-        var lastCheckId: Int = 0
+
+    /**
+     * 报表基础功能 -> 分享
+     */
+    override fun share(activity: Activity, url: String) {
+//        val file = ScreenShot.shoot(rootScrollView, "ScreenShot" + System.currentTimeMillis()+".jpg")
+        val shareBitmap = ScreenShot.shoot(rootScrollView)
+        val image = UMImage(activity, shareBitmap)
+        ShareAction(activity)
+                .withText("截图分享")
+                .setPlatform(SHARE_MEDIA.WEIXIN)
+                .setDisplayList(SHARE_MEDIA.WEIXIN)
+                .withMedia(image)
+                .setCallback(UMSharedListener())
+                .open()
+//        Luban.with(this)
+//                .load(file)                                   // 传人要压缩的图片列表
+////                .ignoreBy(100)                                  // 忽略不压缩图片的大小
+////                .setTargetDir(getPath())                        // 设置压缩后文件存储位置
+//                .setCompressListener(object : OnCompressListener { //设置回调
+//                    override fun onStart() {
+//                        showDialog(this@NativeReportActivity)
+//                    }
+//
+//                    override fun onSuccess(file: File) {
+//                        hideLoading()
+//                        val image = UMImage(activity, file)
+//                        ShareAction(activity)
+//                                .withText("截图分享")
+//                                .setPlatform(SHARE_MEDIA.WEIXIN)
+//                                .setDisplayList(SHARE_MEDIA.WEIXIN)
+//                                .withMedia(image)
+//                                .setCallback(UMSharedListener())
+//                                .open()
+//                    }
+//
+//                    override fun onError(e: Throwable) {
+//                        hideLoading()
+//                        ToastUtils.show(activity, "分享失败")
+//                    }
+//                }).launch()    //启动压缩
+
+        /*
+         * 用户行为记录, 单独异常处理，不可影响用户体验
+         */
+        ActionLogUtil.actionLog("分享")
     }
 }

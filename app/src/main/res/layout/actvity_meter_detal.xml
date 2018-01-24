@@ -1,6 +1,7 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
     <include layout="@layout/item_action_bar"></include>
 
@@ -85,8 +86,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/size_default_medium"
                 android:background="@color/co10_syr"
-                android:paddingRight="@dimen/space_default_large_xxs"
                 android:paddingLeft="@dimen/space_default_large_xxs"
+                android:paddingRight="@dimen/space_default_large_xxs"
                 android:scrollbars="none">
 
                 <RelativeLayout
@@ -109,5 +110,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/ll_filter"/>
-
 </RelativeLayout>
+
+
+

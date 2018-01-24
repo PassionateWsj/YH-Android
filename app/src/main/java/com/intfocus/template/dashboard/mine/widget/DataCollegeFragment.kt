@@ -1,7 +1,6 @@
 package com.intfocus.template.dashboard.mine.widget
 
 import android.content.Context
-import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
@@ -10,22 +9,20 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
+import com.intfocus.template.BuildConfig
 import com.intfocus.template.R
-import com.intfocus.template.dashboard.mine.adapter.InstituteAdapter
-import com.intfocus.template.dashboard.mine.bean.InstituteDataBean
-import com.intfocus.template.ui.RefreshFragment
-import com.intfocus.template.ConfigConstants
-import com.intfocus.template.constant.Params.BANNER_NAME
-import com.intfocus.template.constant.Params.LINK
+import com.intfocus.template.constant.Params.USER_BEAN
 import com.intfocus.template.constant.Params.USER_NUM
 import com.intfocus.template.constant.ToastColor
-import com.intfocus.template.model.request.RequestFavourite
-import com.intfocus.template.model.response.BaseResult
-import com.intfocus.template.model.response.article.ArticleResult
+import com.intfocus.template.dashboard.mine.adapter.InstituteAdapter
+import com.intfocus.template.dashboard.mine.bean.InstituteDataBean
 import com.intfocus.template.general.net.ApiException
 import com.intfocus.template.general.net.CodeHandledSubscriber
 import com.intfocus.template.general.net.RetrofitUtil
-import com.intfocus.template.subject.two.WebPageActivity
+import com.intfocus.template.model.request.RequestFavourite
+import com.intfocus.template.model.response.BaseResult
+import com.intfocus.template.model.response.article.ArticleResult
+import com.intfocus.template.ui.RefreshFragment
 import com.intfocus.template.util.*
 import com.lcodecore.tkrefreshlayout.footer.LoadingView
 import com.lcodecore.tkrefreshlayout.header.SinaRefreshView
@@ -52,7 +49,7 @@ class DataCollegeFragment : RefreshFragment(), InstituteAdapter.NoticeItemListen
         x.view().inject(this, mView)
         setRefreshLayout()
         initView()
-        mUserSP = mActivity.getSharedPreferences("UserBean", Context.MODE_PRIVATE)
+        mUserSP = mActivity.getSharedPreferences(USER_BEAN, Context.MODE_PRIVATE)
         userNum = mUserSP.getString(USER_NUM, "")
         getData(true)
         return mView
@@ -179,7 +176,7 @@ class DataCollegeFragment : RefreshFragment(), InstituteAdapter.NoticeItemListen
      * 详情
      */
     override fun itemClick(instituteDataBean: InstituteDataBean) {
-        val link = String.format("%s/mobile/v2/user/%s/article/%s", ConfigConstants.kBaseUrl, mUserSP.getString(K.K_USER_ID, "0").toString(), instituteDataBean.id.toString())
+        val link = String.format("%s/mobile/v2/user/%s/article/%s", TempHost.getHost(), mUserSP.getString(K.K_USER_ID, "0").toString(), instituteDataBean.id.toString())
         PageLinkManage.pageLink(context!!, instituteDataBean.title!!, link)
     }
 

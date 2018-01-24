@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.intfocus.template.R
 import com.intfocus.template.dashboard.report.mode.GroupDataBean
 import com.intfocus.template.listener.NoDoubleClickListener
@@ -17,9 +18,6 @@ import com.intfocus.template.util.PageLinkManage
  * Created by liuruilin on 2017/6/17.
  */
 class ReportsRightGVAdapter(var ctx: Context, var datas: List<GroupDataBean>?) : BaseAdapter() {
-    var mInflater: LayoutInflater = LayoutInflater.from(ctx)
-    var laryoutParams = AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, DisplayUtil.dip2px(ctx, 100f))
-
     override fun getCount(): Int = datas!!.size
 
     override fun getItem(position: Int): Any = datas!![position]
@@ -31,14 +29,14 @@ class ReportsRightGVAdapter(var ctx: Context, var datas: List<GroupDataBean>?) :
         val viewTag: ItemViewTag
 
         if (convertView == null) {
-            convertView = mInflater.inflate(R.layout.item_reports_right_gv, null)
+            convertView = LayoutInflater.from(ctx).inflate(R.layout.item_reports_right_gv, parent,false)
 
             viewTag = ItemViewTag(convertView!!.findViewById(R.id.ll_reports_right_item),
                     convertView.findViewById(R.id.iv_reports_item_img),
                     convertView.findViewById(R.id.tv_reports_item_name))
             convertView.tag = viewTag
             if (convertView.layoutParams == null)
-                convertView.layoutParams = laryoutParams
+                convertView.layoutParams = AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, DisplayUtil.dip2px(ctx, 100f))
             else
                 convertView.layoutParams.height = DisplayUtil.dip2px(ctx, 100f)
             convertView.layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT
@@ -50,6 +48,10 @@ class ReportsRightGVAdapter(var ctx: Context, var datas: List<GroupDataBean>?) :
 //        x.image().bind(viewTag.mIcon, datas!![position].icon_link)
         Glide.with(ctx)
                 .load(datas!![position].icon_link)
+                .diskCacheStrategy(DiskCacheStrategy.RESULT)
+//                .placeholder(R.drawable.default_icon)
+//                .error(R.drawable.default_icon)
+                .fitCenter()
                 .into(viewTag.mIcon)
 
         viewTag.llItem.setOnClickListener(object : NoDoubleClickListener() {

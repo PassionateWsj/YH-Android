@@ -3,14 +3,15 @@ package com.intfocus.template.dashboard.mine.model
 import android.content.Context
 import android.content.SharedPreferences
 import com.google.gson.Gson
+import com.intfocus.template.constant.Params.USER_BEAN
 import com.intfocus.template.dashboard.mine.bean.NoticeContentBean
 import com.intfocus.template.dashboard.mine.bean.NoticeContentRequest
-import com.intfocus.template.ConfigConstants
-import com.intfocus.template.model.response.mine_page.NoticeContentResult
 import com.intfocus.template.general.net.ApiException
 import com.intfocus.template.general.net.CodeHandledSubscriber
 import com.intfocus.template.general.net.RetrofitUtil
+import com.intfocus.template.model.response.mine_page.NoticeContentResult
 import com.intfocus.template.util.K
+import com.intfocus.template.util.TempHost
 import com.zbl.lib.baseframe.core.AbstractMode
 import org.greenrobot.eventbus.EventBus
 import org.json.JSONException
@@ -23,12 +24,12 @@ class NoticeContentMode(var ctx: Context) : AbstractMode() {
     lateinit var urlString: String
     var result: String? = null
     val mNoticeContentSP: SharedPreferences = ctx.getSharedPreferences("NoticeContent", Context.MODE_PRIVATE)
-    var mUserSP = ctx.getSharedPreferences("UserBean", Context.MODE_PRIVATE)
+    var mUserSP = ctx.getSharedPreferences(USER_BEAN, Context.MODE_PRIVATE)
     var gson = Gson()
     var id = ""
 
     fun getUrl(): String {
-        val url = ConfigConstants.kBaseUrl + "/api/v1/user/" + mUserSP.getString(K.K_USER_ID, "0") + "/notice/" + id
+        val url = TempHost.getHost() + "/api/v1/user/" + mUserSP.getString(K.K_USER_ID, "0") + "/notice/" + id
         return url
     }
 

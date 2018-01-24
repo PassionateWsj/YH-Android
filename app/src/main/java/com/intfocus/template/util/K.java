@@ -17,6 +17,12 @@ public class K implements Serializable {
     /**
      * API#paths
      */
+    /**
+     * http://yonghui-test.idata.mobi/api/v1/group/165/template/1/report/2/jzip
+     * http://shengyiplus.com/api/v1/group/165/template/1/report/35/jzip
+     * http://112.74.180.14:8085/api/v1/group/401/template/1/report/1/jzip
+     * http://yonghui.idata.mobi/api/v1/group/165/template/1/report/7/jzip
+     */
     public final static String API_REPORT_JSON_ZIP = "%s/api/v1/group/%s/template/%s/report/%s/jzip";
     public final static String API_BAR_CODE_SCAN_VIEW = "%s/mobile/v2/store/%s/barcode/%s/view";
     public final static String API_BAR_CODE_SCAN_DATA = "%s/mobile/v2/store/%s/barcode/%s/attachment";
@@ -85,9 +91,14 @@ public class K implements Serializable {
      * 加密所需api key
      */
     public final static String ANDROID_API_KEY = "578905f6e0c4189caa344ee4b1e460e5";
-
-    public final static String API_COLLECTION_UPLOAD = "/api/v1.1/acquisition/data"; //提交采集数据
-    public final static String API_IMAGE_UPLOAD = "/api/v1.1/upload/images"; //上传图片
+    /**
+     * 提交采集数据
+     */
+    public final static String API_COLLECTION_UPLOAD = "/api/v1.1/acquisition/data";
+    /**
+     * 上传图片
+     */
+    public final static String API_IMAGE_UPLOAD = "/api/v1.1/upload/images";
 
 
     /**
@@ -157,7 +168,7 @@ public class K implements Serializable {
     /**
      * 重置密码
      */
-    public final static String K_NEW_RESET_PWD = "/api/v1.1/user/reset_password";
+    public final static String K_NEW_RESET_PWD = "/api/v1.1/custom/user/reset_password";
     /**
      * 发表评论
      */
@@ -209,7 +220,7 @@ public class K implements Serializable {
     /**
      * 报表 Json 数据
      */
-    public final static String K_REPORT_JSON_DATA = "/api/v1.1/report/data?disposition=json";
+    public final static String K_REPORT_JSON_DATA = "/api/v1.1/report/data";
 
     /**
      * 上传设备

@@ -1,11 +1,10 @@
 package com.intfocus.template.subject.nine.root
 
 import com.alibaba.fastjson.JSONReader
-import com.intfocus.template.subject.nine.CollectionModelImpl.Companion.insertData
-import com.intfocus.template.subject.nine.callback.LoadDataCallback
+import com.intfocus.template.constant.StateParams.STATE_CODE_SUCCESS
+import com.intfocus.template.model.callback.LoadDataCallback
 import com.intfocus.template.subject.nine.entity.Content
 import com.intfocus.template.subject.nine.entity.RootPageRequestResult
-import com.intfocus.template.constant.StateParams.STATE_CODE_SUCCESS
 import com.intfocus.template.util.LogUtil
 import rx.Observable
 import rx.Observer
@@ -76,13 +75,13 @@ class RootPageModelImpl : RootPageModel<RootPageRequestResult> {
 
                                 "key" -> entity.key = reader.readObject().toString()
 
-                                "is_show" -> entity.is_show = reader.readInteger()
+                                "is_show" -> entity.show = reader.readInteger()
 
-                                "is_list" -> entity.is_list = reader.readInteger()
+                                "is_list" -> entity.list = reader.readInteger()
 
-                                "is_filter" -> entity.is_filter = reader.readInteger()
+                                "is_filter" -> entity.filter = reader.readInteger()
 
-                                "is_must" -> entity.is_must = reader.readInteger()
+                                "is_must" -> entity.must = reader.readInteger()
 
                                 "config" -> entity.config = reader.readObject().toString()
 
@@ -98,14 +97,16 @@ class RootPageModelImpl : RootPageModel<RootPageRequestResult> {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(object : Observer<ArrayList<Content>> {
                     override fun onError(e: Throwable?) {
-                        callback.onError(e!!)
+                        e?.let {
+                            callback.onError(it)
+                        }
                     }
 
                     override fun onNext(t: ArrayList<Content>?) {
-                        if (null != t && t.size != 0) {
-                            callback.onSuccess(RootPageRequestResult(true, STATE_CODE_SUCCESS, t))
+                        t?.let {
+                            callback.onSuccess(RootPageRequestResult(true, STATE_CODE_SUCCESS, it))
+//                            insertData(datas)
                         }
-                        insertData(datas)
                     }
 
                     override fun onCompleted() {

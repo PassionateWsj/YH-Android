@@ -11,12 +11,12 @@ import android.view.View
 import android.view.ViewGroup
 import com.intfocus.template.R
 import com.intfocus.template.SYPApplication
-import com.intfocus.template.dashboard.mine.activity.FeedbackActivity
-import com.intfocus.template.util.GifSizeFilter
-import com.intfocus.template.util.ImageUtil
-import com.intfocus.template.ui.BaseModuleFragment
 import com.intfocus.template.constant.Params
 import com.intfocus.template.constant.Params.REQUEST_CODE_CHOOSE
+import com.intfocus.template.dashboard.feedback.FeedbackInputActivity
+import com.intfocus.template.ui.BaseModuleFragment
+import com.intfocus.template.util.GifSizeFilter
+import com.intfocus.template.util.ImageUtil
 import com.zhihu.matisse.Matisse
 import com.zhihu.matisse.MimeType
 import com.zhihu.matisse.engine.impl.GlideEngine
@@ -30,19 +30,24 @@ import kotlinx.android.synthetic.main.module_image.*
  */
 class ImageFragment : BaseModuleFragment(), ImageModuleContract.View, ImageDisplayAdapter.ImageItemClickListener {
     override lateinit var presenter: ImageModuleContract.Presenter
-    lateinit var key: String
-    lateinit var param: String
+    private var param: String? = null
+    private var key: String? = null
+    private var listItemType: Int = 0
     var rootView: View? = null
     lateinit var datas: ImageEntity
     lateinit var adapter: ImageDisplayAdapter
     private var mSelected: List<Uri>? = null
 
     companion object {
-        fun newInstance(param: String?, key: String?): ImageFragment {
+
+        private val LIST_ITEM_TYPE = "list_item_type"
+
+        fun newInstance(param: String?, key: String?, listItemType: Int): ImageFragment {
             val fragment = ImageFragment()
             val args = Bundle()
             args.putString(Params.ARG_PARAM, param)
             args.putString(Params.KEY, key)
+            args.putInt(LIST_ITEM_TYPE, listItemType)
             fragment.arguments = args
             return fragment
         }
@@ -53,6 +58,8 @@ class ImageFragment : BaseModuleFragment(), ImageModuleContract.View, ImageDispl
         if (arguments != null) {
             param = arguments!!.getString(Params.ARG_PARAM)
             key = arguments!!.getString(Params.KEY)
+
+            listItemType = arguments!!.getInt(LIST_ITEM_TYPE)
         }
     }
 
@@ -66,7 +73,7 @@ class ImageFragment : BaseModuleFragment(), ImageModuleContract.View, ImageDispl
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initView()
-        presenter.loadData(param)
+        param?.let { presenter.loadData(it) }
     }
 
     override fun onDestroy() {
@@ -98,11 +105,12 @@ class ImageFragment : BaseModuleFragment(), ImageModuleContract.View, ImageDispl
                 .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
                 .thumbnailScale(0.85f)
                 .imageEngine(GlideEngine())
-                .forResult(FeedbackActivity.REQUEST_CODE_CHOOSE)
+                .forResult(FeedbackInputActivity.REQUEST_CODE_CHOOSE)
     }
 
     override fun deleteImage(pos: Int) {
         adapter.deleteImageWithPos(pos)
+        updateImgData(adapter.mData)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -110,10 +118,16 @@ class ImageFragment : BaseModuleFragment(), ImageModuleContract.View, ImageDispl
         if (requestCode == REQUEST_CODE_CHOOSE && resultCode == RESULT_OK) {
             mSelected = Matisse.obtainResult(data)
             adapter.setData(mSelected)
-            var imagePathList: MutableList<String> = arrayListOf()
-            mSelected?.mapTo(imagePathList) { ImageUtil.handleImageOnKitKat(it, SYPApplication.globalContext) }
-            datas.value = imagePathList
-            presenter.update(datas, key)
+            updateImgData(mSelected)
+        }
+    }
+
+    private fun updateImgData(data: List<Uri>?) {
+        val imagePathList: MutableList<String> = arrayListOf()
+        data?.mapTo(imagePathList) { ImageUtil.handleImageOnKitKat(it, SYPApplication.globalContext) }
+        datas.value = imagePathList
+        key?.let {
+            presenter.update(datas, it, listItemType)
         }
     }
 }

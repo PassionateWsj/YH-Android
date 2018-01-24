@@ -86,9 +86,7 @@ abstract class RefreshFragment : Fragment() {
                 getData(false)
             }
         })
-
     }
-
 
     /**
      * 获取数据

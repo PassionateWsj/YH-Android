@@ -2,25 +2,22 @@ package com.intfocus.template.subject.nine
 
 import android.content.Context
 import android.content.Intent
-import android.util.Log
-import com.alibaba.fastjson.JSONReader
-import com.intfocus.template.SYPApplication.globalContext
+import com.alibaba.fastjson.JSON
+import com.intfocus.template.model.DaoUtil
+import com.intfocus.template.model.callback.LoadDataCallback
 import com.intfocus.template.model.entity.Collection
 import com.intfocus.template.model.entity.Source
-import com.intfocus.template.general.net.RetrofitUtil
-import com.intfocus.template.model.DaoUtil
+import com.intfocus.template.model.gen.CollectionDao
 import com.intfocus.template.service.CollectionUploadService
-import com.intfocus.template.util.*
-import com.intfocus.template.subject.nine.callback.LoadDataCallback
 import com.intfocus.template.subject.nine.entity.CollectionEntity
 import com.intfocus.template.subject.nine.entity.Content
+import com.intfocus.template.util.LoadAssetsJsonUtil
+import com.intfocus.template.util.LogUtil
 import rx.Observable
 import rx.Subscriber
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
-import java.io.*
 import java.util.*
-import kotlin.collections.ArrayList
 
 /**
  * @author liuruilin
@@ -28,10 +25,11 @@ import kotlin.collections.ArrayList
  * @describe
  */
 class CollectionModelImpl : CollectionModel<CollectionEntity> {
+    val mCollectionDao = DaoUtil.getCollectionDao()
+
     companion object {
-        private val TAG = CollectionModelImpl::class.java.simpleName
         lateinit var uuid: String
-        lateinit var reportId: String
+        private val TAG = CollectionModelImpl::class.java.simpleName
 
         private var INSTANCE: CollectionModelImpl? = null
         /**
@@ -52,89 +50,21 @@ class CollectionModelImpl : CollectionModel<CollectionEntity> {
             INSTANCE = null
         }
 
-        @JvmStatic
-        fun insertData(entityList: ArrayList<Content>) {
-            for (entity in entityList) {
-                var sourceDao = DaoUtil.getSourceDao()
-                var sourceDb = Source()
-                sourceDb.id = null
-                sourceDb.reportId = reportId
-                sourceDb.uuid = uuid
-                sourceDb.type = entity.type
-                sourceDb.isList = entity.is_list
-                sourceDb.isShow = entity.is_show
-                sourceDb.isFilter = entity.is_filter
-                sourceDb.config = entity.config
-                sourceDb.key = entity.key
-                sourceDb.value = entity.value
 
-
-                sourceDao.insert(sourceDb)
-            }
-
-            var collectionDb = Collection()
-            collectionDb.id = null
-            collectionDb.reportId = reportId
-            collectionDb.uuid = uuid
-            collectionDb.dJson = ""
-            collectionDb.status = 0
-            collectionDb.imageStatus = 0
-
-            DaoUtil.getCollectionDao().insert(collectionDb)
-        }
     }
 
-    override fun getData(reportId: String, templateID: String, groupId: String, callback: LoadDataCallback<CollectionEntity>) {
+    override fun getData(ctx: Context, reportId: String, templateID: String, groupId: String, callback: LoadDataCallback<CollectionEntity>) {
         uuid = UUID.randomUUID().toString()
         Observable.just("")
                 .subscribeOn(Schedulers.io())
                 .map {
-                    val response = RetrofitUtil.getHttpService(globalContext).getJsonReportData(reportId, templateID, groupId).execute()
-                    var responseString = response.body()!!.string()
-                    val stringReader = StringReader(responseString)
-                    val reader = JSONReader(stringReader)
-                    reader.startObject()
-                    val entity = CollectionEntity()
-                    entity.data = ArrayList()
-                    LogUtil.d(TAG, "analysisDataReaderTime2:")
+//                    val response = RetrofitUtil.getHttpService(ctx).getJsonReportData("json", reportId, templateID, groupId).execute()
+//                    val responseString = response.body()!!.string()
 
-                    while (reader.hasNext()) {
-                        val key = reader.readString()
-                        when (key) {
-                            "title" -> {
-                                entity.name = reader.readObject().toString()
-                                LogUtil.d(TAG, "name:")
-                            }
+                    val responseString = LoadAssetsJsonUtil.getAssetsJsonData("collection1.json")
 
-                            "content" -> {
-                                LogUtil.d(TAG, "dataStart:")
-                                reader.startArray()
-
-                                while (reader.hasNext()) {
-                                    reader.startObject()
-                                    val data = CollectionEntity.PageData()
-                                    while (reader.hasNext()) {
-                                        val dataKey = reader.readString()
-                                        when (dataKey) {
-                                            "parts" -> data.content = reader.readObject().toString()
-
-                                            "name" -> data.title = reader.readObject().toString()
-                                        }
-                                    }
-                                    reader.endObject()
-                                    entity.data!!.add(data)
-                                }
-                                reader.endArray()
-                                LogUtil.d(TAG, "dataEnd:")
-                            }
-                            "id" -> Companion.reportId = reader.readString()
-                            else -> {
-                                Log.i("testlog", key + reader.readString() + " is error reason")
-                            }
-                        }
-                    }
-                    reader.endObject()
-                    LogUtil.d(TAG, "analysisDataEndTime:")
+                    val entity = JSON.parseObject(responseString, CollectionEntity::class.java)
+                    LogUtil.d(this@CollectionModelImpl, responseString)
                     entity
                 }
                 .observeOn(AndroidSchedulers.mainThread())
@@ -143,8 +73,12 @@ class CollectionModelImpl : CollectionModel<CollectionEntity> {
                     }
 
                     override fun onNext(t: CollectionEntity?) {
-                        t?.let { callback.onSuccess(it) }
-
+                        t?.let {
+                            callback.onSuccess(it)
+                            it.content?.forEachIndexed { index, item ->
+                                insertData(uuid, reportId, index, item.parts!!)
+                            }
+                        }
                     }
 
                     override fun onError(e: Throwable?) {
@@ -154,8 +88,73 @@ class CollectionModelImpl : CollectionModel<CollectionEntity> {
                 })
     }
 
+    fun insertData(uuid: String, reportId: String, pageIndex: Int, entityList: ArrayList<Content>) {
+        for (entity in entityList) {
+            val sourceDao = DaoUtil.getSourceDao()
+            val sourceDb = Source()
+            sourceDb.id = null
+            sourceDb.reportId = reportId
+            sourceDb.uuid = uuid
+            sourceDb.pageIndex = pageIndex
+            entity.type?.let {
+                sourceDb.type = it
+            }
+            entity.list?.let {
+                sourceDb.isList = it
+            }
+            entity.show?.let {
+                sourceDb.isShow = it
+            }
+            entity.filter?.let {
+                sourceDb.isFilter = it
+            }
+            sourceDb.config = entity.config ?: ""
+            sourceDb.key = entity.key ?: ""
+            sourceDb.value = entity.value ?: ""
+
+            sourceDao.insert(sourceDb)
+        }
+
+        val collectionDb = Collection()
+        collectionDb.reportId = reportId
+        collectionDb.uuid = uuid
+        collectionDb.dJson = ""
+        collectionDb.status = -1
+        collectionDb.imageStatus = 0
+        val currentTime = System.currentTimeMillis()
+        collectionDb.created_at = currentTime
+        collectionDb.updated_at = currentTime
+        mCollectionDao.insert(collectionDb)
+    }
+
+    fun updateCollectionData(index: Int, data: String) {
+        val collectionItem = mCollectionDao.queryBuilder().where(CollectionDao.Properties.Uuid.eq(uuid)).unique()
+        when (index) {
+            1 -> {
+                collectionItem.h1 = data
+            }
+            2 -> {
+                collectionItem.h2 = data
+            }
+            3 -> {
+                collectionItem.h3 = data
+            }
+            4 -> {
+                collectionItem.h4 = data
+            }
+            5 -> {
+                collectionItem.h5 = data
+            }
+        }
+        mCollectionDao.update(collectionItem)
+    }
+
+    fun updateModifyTime() {
+        mCollectionDao.queryBuilder().unique()
+    }
+
     override fun upload(ctx: Context) {
-        var intent = Intent(ctx, CollectionUploadService::class.java)
+        val intent = Intent(ctx, CollectionUploadService::class.java)
         ctx.startService(intent)
     }
 }

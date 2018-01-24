@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rl_indicator_group_container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/co10_syr"
+    android:paddingBottom="5dp"
+    android:paddingLeft="22.5dp"
+    android:paddingRight="22.5dp"
+    android:layout_marginBottom="5dp"
+    android:paddingTop="5dp">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_indicator_group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+</RelativeLayout>

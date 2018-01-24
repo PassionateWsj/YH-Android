@@ -15,6 +15,6 @@ interface OptionsModuleContract {
 
     interface Presenter : BasePresenter {
         fun loadData(mParam: String)
-        fun update(entity: OptionsEntity, key: String)
+        fun update(entity: OptionsEntity, key: String,listItemType:Int)
     }
 }

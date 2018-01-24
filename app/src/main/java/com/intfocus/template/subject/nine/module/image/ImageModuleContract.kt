@@ -15,6 +15,6 @@ interface ImageModuleContract {
 
     interface Presenter : BasePresenter {
         fun loadData(mParam: String)
-        fun update(imageEntity: ImageEntity, key: String)
+        fun update(imageEntity: ImageEntity, key: String, listItemType: Int)
     }
 }

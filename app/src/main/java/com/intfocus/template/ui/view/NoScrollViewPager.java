@@ -7,6 +7,7 @@ import android.view.MotionEvent;
 
 import com.intfocus.template.ConfigConstants;
 
+
 /**
  * Created by liuruilin on 2017/7/27.
  */

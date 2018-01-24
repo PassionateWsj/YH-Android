@@ -8,8 +8,8 @@ import android.view.ViewGroup
 import android.widget.ListView
 import android.widget.TextView
 import com.intfocus.template.R
-import com.intfocus.template.ui.BaseModuleFragment
 import com.intfocus.template.constant.Params
+import com.intfocus.template.ui.BaseModuleFragment
 import kotlinx.android.synthetic.main.module_drop_options.*
 
 /**
@@ -21,17 +21,22 @@ class DropOptionsFragment : BaseModuleFragment(), OptionsModuleContract.View, Si
     override lateinit var presenter: OptionsModuleContract.Presenter
     private lateinit var adapter: SingleOptionsAdapter
     private lateinit var datas: OptionsEntity
-    private lateinit var param: String
-    private lateinit var key: String
+    private var param: String? = null
+    private var key: String? = null
+    private var listItemType: Int = 0
     private lateinit var optionsDialog: AlertDialog
     private var rootView: View? = null
 
     companion object {
-        fun newInstance(param: String?, key: String?): DropOptionsFragment {
+
+        private val LIST_ITEM_TYPE = "list_item_type"
+
+        fun newInstance(param: String?, key: String?, listItemType: Int): DropOptionsFragment {
             val fragment = DropOptionsFragment()
             val args = Bundle()
             args.putString(Params.ARG_PARAM, param)
             args.putString(Params.KEY, key)
+            args.putInt(LIST_ITEM_TYPE, listItemType)
             fragment.arguments = args
             return fragment
         }
@@ -42,6 +47,8 @@ class DropOptionsFragment : BaseModuleFragment(), OptionsModuleContract.View, Si
         if (arguments != null) {
             param = arguments!!.getString(Params.ARG_PARAM)
             key = arguments!!.getString(Params.KEY)
+
+            listItemType = arguments!!.getInt(LIST_ITEM_TYPE)
         }
     }
 
@@ -54,7 +61,9 @@ class DropOptionsFragment : BaseModuleFragment(), OptionsModuleContract.View, Si
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        presenter.loadData(param)
+        param?.let {
+            presenter.loadData(it)
+        }
     }
 
     override fun onDestroy() {
@@ -87,7 +96,9 @@ class DropOptionsFragment : BaseModuleFragment(), OptionsModuleContract.View, Si
     override fun onItemSelected(value: String) {
         datas.value = value
         tv_drop_options_value.text = value
-        presenter.update(datas, key)
+        key?.let {
+            presenter.update(datas, it, listItemType)
+        }
         optionsDialog.dismiss()
     }
 }

@@ -2,10 +2,11 @@ package com.intfocus.template.scanner
 
 import android.content.Context
 import com.google.gson.Gson
-import com.intfocus.template.ConfigConstants
+import com.intfocus.template.constant.Params.USER_BEAN
 import com.intfocus.template.util.FileUtil
 import com.intfocus.template.util.HttpUtil
 import com.intfocus.template.util.K
+import com.intfocus.template.util.TempHost
 import com.zbl.lib.baseframe.core.AbstractMode
 import org.greenrobot.eventbus.EventBus
 import org.xutils.common.Callback
@@ -24,7 +25,7 @@ import java.util.*
  */
 class ScannerMode(var ctx: Context) : AbstractMode() {
     var result: String? = null
-    var mUserSP = ctx.getSharedPreferences("UserBean", Context.MODE_PRIVATE)
+    var mUserSP = ctx.getSharedPreferences(USER_BEAN, Context.MODE_PRIVATE)
     var gson = Gson()
     var jsUrl = ""
     var htmlUrl = ""
@@ -33,8 +34,8 @@ class ScannerMode(var ctx: Context) : AbstractMode() {
 
     fun requestData(barcode: String, storeId: String) {
         currentBarcode = barcode
-        jsUrl = String.format(K.API_BAR_CODE_SCAN_DATA, ConfigConstants.kBaseUrl, storeId, barcode)
-        htmlUrl = String.format(K.API_BAR_CODE_SCAN_VIEW, ConfigConstants.kBaseUrl, storeId, barcode)
+        jsUrl = String.format(K.API_BAR_CODE_SCAN_DATA, TempHost.getHost(), storeId, barcode)
+        htmlUrl = String.format(K.API_BAR_CODE_SCAN_VIEW, TempHost.getHost(), storeId, barcode)
         store_id = storeId
         requestData()
     }

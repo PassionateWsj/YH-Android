@@ -1,14 +1,20 @@
 package com.intfocus.template.dashboard.workbox
 
 import android.content.Context
+import android.content.res.Configuration
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.intfocus.template.BuildConfig
+import com.intfocus.template.ConfigConstants
 import com.intfocus.template.R
 import com.intfocus.template.listener.NoDoubleClickListener
 import com.intfocus.template.model.entity.DashboardItem
+import com.intfocus.template.util.LogUtil
 import com.intfocus.template.util.PageLinkManage
 import com.zbl.lib.baseframe.utils.PhoneUtil
 
@@ -17,7 +23,12 @@ import com.zbl.lib.baseframe.utils.PhoneUtil
  */
 class WorkBoxAdapter(var ctx: Context, val datas: List<WorkBoxItem>?) : BaseAdapter() {
     var mInflater: LayoutInflater = LayoutInflater.from(ctx)
-    var laryoutParams = AbsListView.LayoutParams(PhoneUtil.getScreenWidth(ctx) / 3, PhoneUtil.getScreenWidth(ctx) / 3)
+    var itemCount = if (ctx.resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+        ConfigConstants.WORK_BOX_NUM_COLUMNS_LAND
+    } else {
+        ConfigConstants.WORK_BOX_NUM_COLUMNS_PORT
+    }
+    var laryoutParams = AbsListView.LayoutParams(PhoneUtil.getScreenWidth(ctx) / itemCount, PhoneUtil.getScreenWidth(ctx) / itemCount)
 
     override fun getCount(): Int = datas!!.size
 
@@ -41,17 +52,18 @@ class WorkBoxAdapter(var ctx: Context, val datas: List<WorkBoxItem>?) : BaseAdap
             if (convertView.layoutParams == null)
                 convertView.layoutParams = laryoutParams
             else
-                convertView.layoutParams.height = PhoneUtil.getScreenWidth(ctx) / 3
-            convertView.layoutParams.width = PhoneUtil.getScreenWidth(ctx) / 3
-
+                convertView.layoutParams.height = PhoneUtil.getScreenWidth(ctx) / itemCount
+            convertView.layoutParams.width = PhoneUtil.getScreenWidth(ctx) / itemCount
         } else {
             viewTag = convertView.tag as WorkBoxAdapter.ItemViewTag
         }
-
         viewTag.mName.text = datas!![position].name
-//        x.image().bind(viewTag.mIcon, datas!![position].icon_link)
         Glide.with(ctx)
                 .load(datas[position].icon_link)
+                .diskCacheStrategy(DiskCacheStrategy.RESULT)
+//                .placeholder(R.drawable.default_icon)
+//                .error(R.drawable.default_icon)
+                .fitCenter()
                 .into(viewTag.mIcon)
         viewTag.rlItem.setOnClickListener(object : NoDoubleClickListener() {
             override fun onNoDoubleClick(v: View?) {
@@ -59,7 +71,18 @@ class WorkBoxAdapter(var ctx: Context, val datas: List<WorkBoxItem>?) : BaseAdap
                         datas[position].obj_id ?: "KotlinNullPointerException", datas[position].template_id ?: "-100", "3", datas[position].params_mapping ?: HashMap()))
             }
         })
-
+        viewTag.rlItem.setOnKeyListener { _, keyCode, event ->
+            if (event.action == KeyEvent.ACTION_DOWN && (keyCode == KeyEvent.KEYCODE_DPAD_CENTER || keyCode == KeyEvent.KEYCODE_ENTER)) {
+                PageLinkManage.pageLink(ctx, DashboardItem(datas[position].obj_link ?: "KotlinNullPointerException", datas[position].obj_title ?: "KotlinNullPointerException",
+                        datas[position].obj_id ?: "KotlinNullPointerException", datas[position].template_id ?: "-100", "3", datas[position].params_mapping ?: HashMap()))
+                return@setOnKeyListener true
+            }
+            false
+        }
+        if ("baozhentv" == BuildConfig.FLAVOR) {
+            viewTag.rlItem.requestFocus()
+        }
+        LogUtil.d(this, "pos :" + position + " hasFocus :" + viewTag.rlItem.hasFocus())
         return convertView
     }
 

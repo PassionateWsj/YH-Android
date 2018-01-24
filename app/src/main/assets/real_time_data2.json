@@ -1,0 +1,17 @@
+{
+  "state": {
+    "color": "67"
+  },
+  "main_data": {
+    "name": "今日销售额",
+    "data": 456734,
+    "format": "int",
+    "percentage": 1
+  },
+  "sub_data": {
+    "name": "对比数据",
+    "data": 3456345,
+    "format": "int",
+    "percentage": 1
+  }
+}

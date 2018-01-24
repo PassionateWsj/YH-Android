@@ -1,7 +1,7 @@
 package com.intfocus.template.subject.nine
 
 import android.content.Context
-import com.intfocus.template.subject.nine.callback.LoadDataCallback
+import com.intfocus.template.model.callback.LoadDataCallback
 
 /**
  * @author liuruilin
@@ -9,6 +9,6 @@ import com.intfocus.template.subject.nine.callback.LoadDataCallback
  * @describe
  */
 interface CollectionModel<out T> {
-    fun getData(reportId: String, templateID: String, groupId: String, callback: LoadDataCallback<T>)
+    fun getData(ctx: Context,reportId: String, templateID: String, groupId: String, callback: LoadDataCallback<T>)
     fun upload(ctx: Context)
 }

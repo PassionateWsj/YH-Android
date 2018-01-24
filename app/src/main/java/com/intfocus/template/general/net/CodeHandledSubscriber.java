@@ -1,6 +1,7 @@
 package com.intfocus.template.general.net;
 
 import android.net.ParseException;
+import android.util.Log;
 
 import com.google.gson.JsonParseException;
 import com.intfocus.template.model.response.BaseResult;
@@ -100,6 +101,7 @@ public abstract class CodeHandledSubscriber<T> extends Subscriber<T> {
             ex.setDisplayMessage(httpStateException.getMsg());
             onError(ex);
         } else {
+            Log.e("请求错误",e.getMessage());
             /*未知错误*/
             ex = new ApiException(e, ApiException.UNKNOWN);
             ex.setDisplayMessage(unknownMsg);

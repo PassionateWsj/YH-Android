@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Bitmap
 import com.google.gson.Gson
 import com.intfocus.template.ConfigConstants
+import com.intfocus.template.constant.Params.USER_BEAN
 import com.intfocus.template.constant.Params.USER_NUM
 import com.intfocus.template.constant.ToastColor
 import com.intfocus.template.general.net.ApiException
@@ -33,7 +34,7 @@ import java.util.*
 class UserInfoMode(var ctx: Context) : AbstractMode() {
     lateinit var urlString: String
     var result: String? = null
-    var mUserSP = ctx.getSharedPreferences("UserBean", Context.MODE_PRIVATE)
+    var mUserSP = ctx.getSharedPreferences(USER_BEAN, Context.MODE_PRIVATE)
     var gson = Gson()
 
     override fun requestData() {

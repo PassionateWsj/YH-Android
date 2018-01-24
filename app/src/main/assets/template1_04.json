@@ -296,7 +296,6 @@
     {
       "name": "加工",
       "page_title": "",
-  
       "type": "chart",
       "config": {
         "chart_type": "line-or-bar",
@@ -359,8 +358,7 @@
               "243000",
               "280000",
               "200000",
-              "165000",
-              "90000"
+              "165000"
             ]
           }
         ]
@@ -664,7 +662,6 @@
     {
       "name": "加工",
       "page_title": "",
-      "index": 6,
       "type": "chart",
       "config": {
         "chart_type": "line-or-bar",
@@ -737,7 +734,6 @@
     {
       "name": "加工",
       "page_title": "",
-      "index": 7,
       "type": "bargraph",
       "config": {
         "series": {
@@ -791,7 +787,6 @@
     {
       "name": "加工",
       "page_title": "",
-      "index": 8,
       "type": "tables",
       "config": [
         {

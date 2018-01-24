@@ -9,8 +9,6 @@ import com.intfocus.template.dashboard.mine.bean.IssueCommitInfo
 import com.intfocus.template.dashboard.mine.bean.IssueCommitRequest
 import com.intfocus.template.dashboard.mine.bean.IssueListBean
 import com.intfocus.template.dashboard.mine.bean.IssueListRequest
-import com.intfocus.template.ConfigConstants
-import com.intfocus.template.constant.Params.ACTION
 import com.intfocus.template.util.*
 import com.zbl.lib.baseframe.core.AbstractMode
 import com.zbl.lib.baseframe.utils.StringUtil
@@ -142,7 +140,7 @@ class IssueMode(var ctx: Context) : AbstractMode() {
         }
 
         val request = Request.Builder()
-                .url(ConfigConstants.kBaseUrl + K.K_FEED_BACK)
+                .url(TempHost.getHost() + K.K_FEED_BACK)
                 .post(requestBody.build())
                 .build()
 

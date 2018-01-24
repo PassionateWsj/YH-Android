@@ -92,8 +92,8 @@ public class BargraptAdapter extends BaseAdapter {
             viewHolder.img_cursor.setImageResource(0);
         }
 
-        viewHolder.tv_name.setText(ltdata.get(position).name);
-        viewHolder.tv_percentage.setText(ltdata.get(position).data);
+        viewHolder.tv_name.setText(ltdata.get(position).getName());
+        viewHolder.tv_percentage.setText(ltdata.get(position).getData());
         return convertView;
     }
 

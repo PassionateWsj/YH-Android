@@ -4,21 +4,23 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentTransaction
-import android.support.v7.app.AppCompatActivity
+import android.util.TypedValue
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.CompoundButton
+import android.widget.RadioButton
 import android.widget.RadioGroup
 import com.intfocus.template.R
 import com.intfocus.template.constant.Params.BANNER_NAME
 import com.intfocus.template.constant.Params.GROUP_ID
 import com.intfocus.template.constant.Params.OBJECT_ID
 import com.intfocus.template.constant.Params.TEMPLATE_ID
-import com.intfocus.template.util.PageLinkManage
-import com.intfocus.template.ui.BaseModuleFragment
 import com.intfocus.template.subject.nine.entity.CollectionEntity
 import com.intfocus.template.subject.nine.root.RootPageFragment
-import com.intfocus.template.subject.nine.root.RootPageModelImpl
-import com.intfocus.template.subject.nine.root.RootPagePresenter
+import com.intfocus.template.ui.BaseActivity
+import com.intfocus.template.ui.BaseModuleFragment
+import com.intfocus.template.util.DisplayUtil
+import com.intfocus.template.util.PageLinkManage
 import kotlinx.android.synthetic.main.activity_collection.*
 
 /**
@@ -26,7 +28,7 @@ import kotlinx.android.synthetic.main.activity_collection.*
  * @data 2017/10/31
  * @describe 信息采集模板
  */
-class CollectionActivity : AppCompatActivity(), CollectionContract.View {
+class CollectionActivity : BaseActivity(), CollectionContract.View {
     var lastCheckId: Int = 0
     private var currentFtName: String? = null
     private val fragmentTag = "android:switcher:"
@@ -67,11 +69,12 @@ class CollectionActivity : AppCompatActivity(), CollectionContract.View {
         groupId = intent.getStringExtra(GROUP_ID)
 
         tv_collection_title.text = intent.getStringExtra(BANNER_NAME)
-        btn__submit.setOnClickListener {
+        btn_submit.setOnClickListener {
             presenter.submit(this)
             onBackPressed()
         }
-        presenter.loadData(reportId, templateId, groupId)
+        showDialog(this)
+        presenter.loadData(this, reportId, templateId, groupId)
     }
 
     fun back(v: View) {
@@ -89,9 +92,10 @@ class CollectionActivity : AppCompatActivity(), CollectionContract.View {
     }
 
     override fun initRootView(entity: CollectionEntity) {
+        hideLoading()
         this.mEntity = entity
-        val pageDataArrayList = entity.data
-        if (pageDataArrayList == null || pageDataArrayList.size == 0) {
+        val pageDataArrayList = entity.content
+        if (pageDataArrayList == null || pageDataArrayList.isEmpty()) {
             return
         }
 
@@ -100,9 +104,42 @@ class CollectionActivity : AppCompatActivity(), CollectionContract.View {
 
         // 多个根页签
         if (rootPageSize > 1) {
-            TODO("多个根页签时, 页面顶部显示可滑动的 root_tab 区域")
-        } else if (rootPageSize == 1) {
+            hs_page_btn.visibility = View.VISIBLE
+            rl_mdetal_title_container.visibility = View.VISIBLE
+            val scrollTitle = LayoutInflater.from(this)
+                    .inflate(R.layout.item_mdetal_scroll_title, null)
+            rl_mdetal_title_container.addView(scrollTitle)
+            radioGroup = scrollTitle.findViewById(R.id.radioGroup)
 
+            for (i in 0 until rootPageSize) {
+                val rbtn = RadioButton(this)
+                val paramsRb = RadioGroup.LayoutParams(
+                        RadioGroup.LayoutParams.WRAP_CONTENT,
+                        DisplayUtil.dip2px(this, 25f))
+                paramsRb.setMargins(50, 0, 0, 0)
+
+                rbtn.tag = i
+                rbtn.setPadding(DisplayUtil.dip2px(this, 15f), 0, DisplayUtil.dip2px(this, 15f), 0)
+                rbtn.buttonDrawable = null
+                rbtn.setBackgroundResource(R.drawable.selector_mdetal_act_rbtn)
+                rbtn.setTextSize(TypedValue.COMPLEX_UNIT_PX, resources.getDimension(R.dimen.font_medium))
+                val colorStateList = resources.getColorStateList(R.color.color_mdetal_act_rbtn)
+                rbtn.setTextColor(colorStateList)
+                rbtn.text = pageDataArrayList[i].name
+                radioGroup!!.addView(rbtn, paramsRb)
+                rbtn.setOnCheckedChangeListener { buttonView, isChecked ->
+                    if (isChecked) {
+                        val tag = buttonView.tag as Int
+                        switchFragment(tag)
+                    }
+                }
+                if (i == 0) {
+                    rbtn.isChecked = true
+                }
+            }
+        } else if (rootPageSize == 1) {
+            hs_page_btn.visibility = View.GONE
+            rl_mdetal_title_container.visibility = View.GONE
             switchFragment(0)
         }
     }
@@ -126,10 +163,10 @@ class CollectionActivity : AppCompatActivity(), CollectionContract.View {
         if (supportFragmentManager.findFragmentByTag(currentFtName) != null) {
             mToFragment = supportFragmentManager.findFragmentByTag(currentFtName) as BaseModuleFragment
         } else {
-            val pageDataArrayList = mEntity!!.data
-            if (pageDataArrayList != null && pageDataArrayList.size > 0) {
-                mToFragment = RootPageFragment.newInstance(checkId, pageDataArrayList[checkId].content!!)
-                RootPagePresenter(RootPageModelImpl.getInstance(), mToFragment as RootPageFragment)
+            val pageDataArrayList = mEntity!!.content
+            if (pageDataArrayList != null && pageDataArrayList.isNotEmpty()) {
+                mToFragment = RootPageFragment.newInstance(checkId, pageDataArrayList[checkId].parts!!)
+//                RootPagePresenter(RootPageModelImpl.getInstance(), mToFragment as RootPageFragment)
             }
         }
 

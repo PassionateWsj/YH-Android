@@ -1,9 +1,9 @@
 package com.intfocus.template.subject.nine.root
 
 
-import com.intfocus.template.subject.nine.entity.RootPageRequestResult
 import com.intfocus.template.base.BasePresenter
 import com.intfocus.template.base.BaseView
+import com.intfocus.template.subject.nine.entity.RootPageRequestResult
 
 /**
  * ****************************************************

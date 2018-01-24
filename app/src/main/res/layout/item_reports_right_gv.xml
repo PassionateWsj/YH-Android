@@ -14,15 +14,9 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="23dp"
         android:layout_marginBottom="10dp"
+        android:scaleType="fitCenter"
         android:src="@drawable/default_icon"/>
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="5dp"
-        android:src="@drawable/ic_line_green"
-        android:visibility="gone"/>
 
     <TextView
         android:id="@+id/tv_reports_item_name"

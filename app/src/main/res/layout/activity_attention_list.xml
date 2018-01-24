@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/rl_attention_list_layout"
+                android:layout_width="match_parent"
+                android:onClick="onClick"
+                android:layout_height="match_parent"
+                tools:context=".subject.seven.concernlist.ConcernListActivity">
+
+    <RelativeLayout
+        android:id="@+id/actionBar"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@color/actionBar">
+
+        <ImageView
+            android:id="@+id/bannerBack"
+            style="@style/BannerBackButton"
+            android:onClick="backPress"/>
+
+        <!--<TextView-->
+        <!--android:id="@+id/bannerTitle"-->
+        <!--style="@style/BannerTitle"-->
+        <!--android:text="关注列表"/>-->
+
+        <TextView
+            android:id="@+id/tv_attention_list_attention_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="6dp"
+            android:background="@drawable/bg_radius_fill_blue"
+            android:onClick="onClick"
+            android:paddingBottom="3dp"
+            android:paddingEnd="10dp"
+            android:paddingStart="10dp"
+            android:paddingTop="3dp"
+            android:scaleType="center"
+            android:text="+关注"
+            android:textColor="@color/co10_syr"
+            android:textSize="12sp"/>
+
+        <TextView
+            android:id="@+id/tv_attention_list_attentioned_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_margin="6dp"
+            android:layout_toLeftOf="@id/tv_attention_list_attention_btn"
+            android:background="@drawable/bg_radius_sold"
+            android:onClick="onClick"
+            android:paddingBottom="3dp"
+            android:paddingEnd="10dp"
+            android:paddingStart="10dp"
+            android:paddingTop="3dp"
+            android:scaleType="center"
+            android:text="已关注"
+            android:textColor="@color/co3_syr"
+            android:textSize="12sp"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/actionBar">
+
+        <RelativeLayout
+            android:id="@+id/rl_attention_list_input_container"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginEnd="15dp"
+            android:visibility="gone"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/bg_radius_sold">
+
+
+            <ImageView
+                android:id="@+id/iv_attention_list_scan"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:onClick="onClick"
+                android:paddingEnd="18dp"
+                android:paddingStart="18dp"
+                android:scaleType="center"
+                android:src="@drawable/barcode_scan"/>
+
+            <EditText
+                android:id="@+id/ed_attention_list_search"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_toLeftOf="@id/iv_attention_list_scan"
+                android:background="@color/transparent"
+                android:hint="@string/text_input_hint"
+                android:paddingStart="18dp"
+                android:singleLine="true"/>
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_attention_list_head"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/rl_attention_list_input_container"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/lightgray"
+                android:padding="5dp"
+                android:text="所有选项"
+                android:textSize="14sp"/>
+        </LinearLayout>
+
+        <ListView
+            android:id="@+id/lv_attention_list_item"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/ll_attention_list_head">
+        </ListView>
+    </RelativeLayout>
+
+
+</RelativeLayout>

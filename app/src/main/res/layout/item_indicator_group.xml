@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:autofit="http://schemas.android.com/apk/res-auto"
+    android:layout_width="100dp"
+    android:layout_height="100dp"
+    android:id="@+id/rl_item_indicator_group_container"
+    android:layout_marginEnd="2.5dp"
+    android:layout_marginStart="2.5dp"
+    android:background="@drawable/bg_radius_sold"
+    android:padding="5dp">
+
+    <TextView
+        android:id="@+id/tv_item_indicator_group_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textColor="@color/black_51_51_51"
+        android:textSize="12sp"/>
+
+    <com.intfocus.template.ui.view.autofittextview.AutofitTextView
+        android:id="@+id/tv_item_indicator_group_main_data"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/img_item_indicator_group_ratiocursor"
+        android:layout_below="@id/tv_item_indicator_group_title"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:maxLines="1"
+        android:text="@string/loading_text"
+        android:textColor="@color/black"
+        android:textSize="36sp"
+        android:singleLine="true"
+        autofit:minTextSize="8sp"/>
+
+
+    <TextView
+        android:id="@+id/tv_item_indicator_group_rate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:text=""
+        android:maxLines="1"
+        android:textColor="@color/black_51_51_51"
+        android:textSize="10sp"/>
+
+    <com.intfocus.template.ui.view.autofittextview.AutofitTextView
+        android:id="@+id/tv_item_indicator_group_sub_data"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginRight="5dp"
+        android:layout_toLeftOf="@id/tv_item_indicator_group_rate"
+        android:text=""
+        android:maxLines="1"
+        android:textColor="@color/black_51_51_51"
+        android:textSize="10sp"
+        autofit:minTextSize="6sp"/>
+
+    <com.intfocus.template.ui.view.RateCursor
+        android:id="@+id/img_item_indicator_group_ratiocursor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/tv_item_indicator_group_rate"
+        android:layout_alignEnd="@+id/tv_item_indicator_group_rate"
+        android:layout_gravity="center"/>
+
+</RelativeLayout>

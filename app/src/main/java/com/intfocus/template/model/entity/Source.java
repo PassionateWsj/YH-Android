@@ -1,8 +1,8 @@
 package com.intfocus.template.model.entity;
 
 import org.greenrobot.greendao.annotation.Entity;
-import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.Generated;
+import org.greenrobot.greendao.annotation.Id;
 
 /**
  * @author liuruilin
@@ -63,9 +63,16 @@ public class Source {
      */
     String value;
 
-    @Generated(hash = 2142487226)
+    /**
+     * 页签
+     */
+    int pageIndex;
+
+
+    @Generated(hash = 350385043)
     public Source(Long id, String reportId, String uuid, String key, String config,
-                  String type, int isShow, int isList, int isFilter, String value) {
+                  String type, int isShow, int isList, int isFilter, String value,
+                  int pageIndex) {
         this.id = id;
         this.reportId = reportId;
         this.uuid = uuid;
@@ -76,6 +83,7 @@ public class Source {
         this.isList = isList;
         this.isFilter = isFilter;
         this.value = value;
+        this.pageIndex = pageIndex;
     }
 
     @Generated(hash = 615387317)
@@ -160,5 +168,13 @@ public class Source {
 
     public void setValue(String value) {
         this.value = value;
+    }
+
+    public int getPageIndex() {
+        return this.pageIndex;
+    }
+
+    public void setPageIndex(int pageIndex) {
+        this.pageIndex = pageIndex;
     }
 }

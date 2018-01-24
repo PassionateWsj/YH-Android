@@ -2,8 +2,8 @@ package com.intfocus.template.scanner.model;
 
 import android.content.Context;
 
-import com.intfocus.template.model.response.scanner.StoreItem;
 import com.intfocus.template.model.OrmDBHelper;
+import com.intfocus.template.model.response.scanner.StoreItem;
 import com.j256.ormlite.dao.Dao;
 
 import java.sql.SQLException;
@@ -18,11 +18,11 @@ import rx.schedulers.Schedulers;
  * ****************************************************
  *
  * @author JamesWong
- *         created on: 17/08/22 上午10:00
- *         e-mail: PassionateWsj@outlook.com
- *         name:
- *         desc:
- *         ****************************************************
+ * created on: 17/08/22 上午10:00
+ * e-mail: PassionateWsj@outlook.com
+ * name:
+ * desc:
+ * ****************************************************
  */
 
 public class StoreSelectorImpl implements StoreSelectorModel {

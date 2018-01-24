@@ -4,7 +4,6 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 
-import com.intfocus.template.ConfigConstants;
 import com.intfocus.template.general.PriorityRunnable;
 
 import org.json.JSONException;
@@ -17,6 +16,7 @@ import static android.content.Context.MODE_PRIVATE;
 import static com.intfocus.template.SYPApplication.globalContext;
 import static com.intfocus.template.SYPApplication.priorityThreadPool;
 import static com.intfocus.template.constant.Params.ACTION;
+import static com.intfocus.template.constant.Params.USER_BEAN;
 import static com.intfocus.template.constant.Params.USER_ID;
 import static com.intfocus.template.constant.Params.USER_NAME;
 import static com.intfocus.template.constant.Params.USER_NUM;
@@ -48,7 +48,7 @@ public class ActionLogUtil {
         priorityThreadPool.execute(new PriorityRunnable(1) {
             @Override
             public void doSth() {
-                String urlString = String.format(K.K_SCREEN_LOCK_API_PATH, ConfigConstants.kBaseUrl);
+                String urlString = String.format(K.K_SCREEN_LOCK_API_PATH, TempHost.getHost());
 
                 Map<String, String> params = new HashMap<>();
                 params.put("screen_lock_state", "1");
@@ -80,7 +80,7 @@ public class ActionLogUtil {
             @Override
             public void doSth() {
                 try {
-                    SharedPreferences mUserSP = globalContext.getApplicationContext().getSharedPreferences("UserBean", MODE_PRIVATE);
+                    SharedPreferences mUserSP = globalContext.getApplicationContext().getSharedPreferences(USER_BEAN, MODE_PRIVATE);
 
                     param.put(USER_ID, mUserSP.getString(USER_ID, ""));
                     param.put(USER_NUM, mUserSP.getString(USER_NUM, ""));
@@ -101,7 +101,7 @@ public class ActionLogUtil {
 
                     params.put("api_token", ApiHelper.checkApiToken("/api/v1.1/device/logger"));
 
-                    String urlString = String.format(K.K_ACTION_LOG, ConfigConstants.kBaseUrl);
+                    String urlString = String.format(K.K_ACTION_LOG, TempHost.getHost());
                     HttpUtil.httpPost(urlString, params);
 
                 } catch (JSONException | PackageManager.NameNotFoundException e) {
@@ -120,7 +120,7 @@ public class ActionLogUtil {
             @Override
             public void doSth() {
                 try {
-                    SharedPreferences mUserSP = globalContext.getApplicationContext().getSharedPreferences("UserBean", MODE_PRIVATE);
+                    SharedPreferences mUserSP = globalContext.getApplicationContext().getSharedPreferences(USER_BEAN, MODE_PRIVATE);
 
                     PackageInfo packageInfo = globalContext.getPackageManager().getPackageInfo(globalContext.getPackageName(), 0);
                     param.put(K_APP_VERSION, String.format("a%s", packageInfo.versionName));
@@ -130,7 +130,7 @@ public class ActionLogUtil {
                     params.put("action_log", param);
                     params.put("api_token", ApiHelper.checkApiToken("/api/v1.1/device/logger"));
 
-                    String urlString = String.format(K.K_ACTION_LOG, ConfigConstants.kBaseUrl);
+                    String urlString = String.format(K.K_ACTION_LOG, TempHost.getHost());
                     HttpUtil.httpPost(urlString, params);
                 } catch (JSONException | PackageManager.NameNotFoundException e) {
                     e.printStackTrace();

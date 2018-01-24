@@ -1,6 +1,5 @@
 package com.intfocus.template.dashboard.mine.activity
 
-import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -9,12 +8,8 @@ import android.view.View
 import android.widget.CompoundButton
 import com.intfocus.template.R
 import com.intfocus.template.ui.BaseActivity
-import com.intfocus.template.constant.ToastColor
-import com.intfocus.template.util.*
+import com.intfocus.template.util.CacheCleanManager
 import kotlinx.android.synthetic.main.activity_setting_preference.*
-import rx.Observable
-import rx.android.schedulers.AndroidSchedulers
-import rx.schedulers.Schedulers
 
 /**
  * Created by liuruilin on 2017/3/28.
@@ -78,52 +73,9 @@ class SettingPreferenceActivity : BaseActivity() {
     private val mSwitchReportCopyListener = CompoundButton.OnCheckedChangeListener { _, isChecked -> mSharedPreferences!!.edit().putBoolean("ReportCopy", isChecked).apply() }
 
     /**
-     * 清理缓存
+     *  清理缓存
      */
-    fun clearUserCache(v: View) {
-        val mProgressDialog = ProgressDialog.show(this@SettingPreferenceActivity, "稍等", "正在清理缓存...")
-        if (!HttpUtil.isConnected(this))
-            return
-
-        val sharedPath = FileUtil.sharedPath(this)
-        val cachePath = String.format("%s/%s", FileUtil.basePath(this), K.K_CACHED_DIR_NAME)
-        Observable.just(sharedPath)
-                .subscribeOn(Schedulers.io())
-                .map { path ->
-                    val isClearSpSuccess = getSharedPreferences("AssetsMD5", Context.MODE_PRIVATE).edit().clear().commit()
-                    val isCleanSharedPathSuccess = FileUtil.deleteDirectory(path)
-                    val isCleanCacheSuccess = FileUtil.deleteDirectory(cachePath)
-                    isClearSpSuccess && isCleanSharedPathSuccess && isCleanCacheSuccess
-                }
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { isClear ->
-                    if (isClear) {
-                        AssetsUpDateUtil.checkFirstSetup(this, object : OnCheckAssetsUpdateResultListener {
-                            override fun onResultSuccess() {
-                                AssetsUpDateUtil.checkAssetsUpdate(this@SettingPreferenceActivity, object : OnCheckAssetsUpdateResultListener {
-                                    override fun onResultSuccess() {
-                                        ToastUtils.show(applicationContext, "清除缓存成功", ToastColor.SUCCESS)
-                                        mProgressDialog.dismiss()
-                                    }
-
-                                    override fun onFailure(errorMsg: Throwable) {
-                                        AssetsUpDateUtil.unSubscribe()
-                                        ToastUtils.show(applicationContext, "清除缓存失败，请重试")
-                                        mProgressDialog.dismiss()
-                                    }
-                                })
-                            }
-
-                            override fun onFailure(errorMsg: Throwable) {
-                            }
-                        })
-
-                    } else {
-                        mProgressDialog.dismiss()
-                        ToastUtils.show(applicationContext, "清除缓存失败，请重试")
-                    }
-                }
-
-
+    fun clearUserCache(view: View) {
+        CacheCleanManager.clearAppUserCache(this)
     }
 }
