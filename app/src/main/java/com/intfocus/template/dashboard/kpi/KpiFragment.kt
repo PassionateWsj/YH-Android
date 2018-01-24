@@ -229,8 +229,13 @@ class KpiFragment : RefreshFragment(), KpiAdapter.HomePageListener {
 
                         mKpiData!!
                                 .filter { 1 == it.index }
-                                .forEach { it.data = data!!.data }
-
+                                .forEach {
+                                    if (data?.data?.isNotEmpty()!!) {
+                                        it.data = data.data
+                                    } else {
+                                        mKpiData?.remove(it)
+                                    }
+                                }
 //                        ListUtils.sort(mKpiData, true, "index")
                         mAdapter.setData(mKpiData)
 

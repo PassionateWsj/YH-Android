@@ -54,7 +54,7 @@ class IndicatorGroupAdapter(val context: Context, private var mData: List<Single
         if (data.isReal_time) {
 //            data.real_time_api?.let {
             testApi.let {
-                OKHttpUtils.newInstance().getAsyncData(it, object : OKHttpUtils.OnReusltListener {
+                OKHttpUtils.newInstance().getAsyncData(it, object : OKHttpUtils.OnResultListener {
                     override fun onFailure(call: Call?, e: IOException?) {
 
                     }

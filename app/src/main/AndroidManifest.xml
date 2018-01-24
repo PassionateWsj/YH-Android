@@ -5,7 +5,9 @@
           android:hardwareAccelerated="false"
           android:largeHeap="true">
 
-    <uses-feature android:name="android.hardware.type.television" android:required="${TELEVISION}" />
+    <uses-feature
+        android:name="android.hardware.type.television"
+        android:required="${TELEVISION}"/>
     <!-- 扫描条形码或二维码 -->
     <uses-permission android:name="android.permission.CAMERA"/>
 
@@ -74,6 +76,34 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+
+        <!--<activity-alias-->
+            <!--android:name="com.intfocus.template.SYPSplashActivity"-->
+            <!--android:enabled="true"-->
+            <!--android:icon="@mipmap/ic_launcher"-->
+            <!--android:label="@string/app_name"-->
+            <!--android:screenOrientation="${SCREEN_ORIENTATION}"-->
+            <!--android:targetActivity=".launcher.SplashActivity"-->
+            <!--android:theme="@style/LauncherTheme">-->
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN"/>-->
+                <!--<category android:name="android.intent.category.LAUNCHER"/>-->
+            <!--</intent-filter>-->
+        <!--</activity-alias>-->
+        <!--<activity-alias-->
+            <!--android:name="com.intfocus.template.YhSplashActivity"-->
+            <!--android:enabled="false"-->
+            <!--android:icon="@mipmap/ic_launcher_yh"-->
+            <!--android:label="永辉永辉"-->
+            <!--android:screenOrientation="${SCREEN_ORIENTATION}"-->
+            <!--android:targetActivity=".launcher.SplashActivity"-->
+            <!--android:theme="@style/LauncherTheme">-->
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN"/>-->
+                <!--<category android:name="android.intent.category.LAUNCHER"/>-->
+            <!--</intent-filter>-->
+        <!--</activity-alias>-->
+
         <!-- 模板三 -->
         <activity
             android:name=".subject.three.MultiIndexActivity"

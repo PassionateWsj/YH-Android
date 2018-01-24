@@ -68,7 +68,7 @@ public class OKHttpUtils {
     // 1. 把结果集想办法发送到主线程中   ---> Hanlder
     // 2. 如何把结果集返回给调用者   ---> 接口回调方式
     //=======================================================================
-    public void getAsyncData(String url, final OnReusltListener listener) {
+    public void getAsyncData(String url, final OnResultListener listener) {
         Request request = new Request.Builder()
                 .url(url)
                 .build();
@@ -106,7 +106,7 @@ public class OKHttpUtils {
     //=======================================================================
     // Post请求方式
     //=======================================================================
-    public void postAsnycData(Map<String, String> map, String url, final OnReusltListener listener) {
+    public void postAsnycData(Map<String, String> map, String url, final OnResultListener listener) {
         FormBody.Builder builder = new FormBody.Builder();
         for (Map.Entry<String, String> entry : map.entrySet()) {
             builder.add(entry.getKey(), entry.getValue());
@@ -217,7 +217,7 @@ public class OKHttpUtils {
     }
 
     //返回给调用者
-    public interface OnReusltListener {
+    public interface OnResultListener {
         void onFailure(Call call, IOException e);
 
         void onSuccess(Call call, String response);

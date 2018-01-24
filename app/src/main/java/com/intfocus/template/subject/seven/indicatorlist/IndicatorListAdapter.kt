@@ -93,7 +93,7 @@ class IndicatorListAdapter(private val mCtx: Context, val fragment: Fragment, va
                     if (data.isReal_time) {
 //            data.real_time_api?.let {
                         testApi.let {
-                            OKHttpUtils.newInstance().getAsyncData(it, object : OKHttpUtils.OnReusltListener {
+                            OKHttpUtils.newInstance().getAsyncData(it, object : OKHttpUtils.OnResultListener {
                                 override fun onFailure(call: Call?, e: IOException?) {
 
                                 }

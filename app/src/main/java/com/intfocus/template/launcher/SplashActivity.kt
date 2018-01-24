@@ -176,7 +176,13 @@ class SplashActivity : Activity(), Animation.AnimationListener {
                 showUpdateAssetsErrorDetail(errorMsg)
             }
         } else {
-            showUpdateAssetsErrorDetail("请检查网络")
+            ToastUtils.show(this,"网络不可用")
+            LogUtil.d("hjjzzsb:::isClickable", "" + rl_splash_container.isClickable)
+            LogUtil.d("hjjzzsb:::isDefaultStart", "" + isDefaultStart)
+            rl_splash_container.isClickable = false
+            tv_splash_status.text = "正在下载报表样式文件.."
+            firstUnZipAssets()
+//            showUpdateAssetsErrorDetail("请检查网络")
         }
     }
 
@@ -261,7 +267,13 @@ class SplashActivity : Activity(), Animation.AnimationListener {
 
             AssetsUpDateUtil.checkFirstSetup(ctx, object : OnCheckAssetsUpdateResultListener {
                 override fun onResultSuccess() {
-                    checkAssets()
+                    if (HttpUtil.isConnected(ctx)) {
+                        checkAssets()
+                    } else {
+                        number_progress_bar_splash.progress += 90
+                        tv_splash_status.text = "离线资源加载完成"
+                        enter()
+                    }
                 }
 
                 override fun onFailure(errorMsg: Throwable) {

@@ -27,11 +27,14 @@ import com.intfocus.template.ConfigConstants
 import com.intfocus.template.R
 import com.intfocus.template.constant.Params.ACTION
 import com.intfocus.template.constant.Params.APP_HOST
+import com.intfocus.template.constant.Params.APP_ID
+import com.intfocus.template.constant.Params.APP_NAME
 import com.intfocus.template.constant.Params.DATA
 import com.intfocus.template.constant.Params.GROUP_ID
 import com.intfocus.template.constant.Params.GROUP_NAME
 import com.intfocus.template.constant.Params.IS_LOGIN
 import com.intfocus.template.constant.Params.OBJECT_TITLE
+import com.intfocus.template.constant.Params.PASSWORD
 import com.intfocus.template.constant.Params.PUSH_MESSAGE
 import com.intfocus.template.constant.Params.ROLD_ID
 import com.intfocus.template.constant.Params.ROLD_NAME
@@ -136,7 +139,7 @@ class LoginActivity : FragmentActivity() {
                 mProgressDialog = ProgressDialog.show(this@LoginActivity, "稍等", "验证用户信息...")
                 mProgressDialog?.show()
                 userNum = mUserSP!!.getString(USER_NUM, "")
-                userLogin(mUserSP!!.getString("password", ""))
+                userLogin(mUserSP!!.getString(PASSWORD, ""))
                 return
             }
         }
@@ -244,8 +247,6 @@ class LoginActivity : FragmentActivity() {
             }
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-//                if ( ) {
-//                }
                 loginWithLastPwd = false
                 LogUtil.d("LoginActivity:1", "密码输入框 文本变化监听 loginWithLastPwd ::: " + loginWithLastPwd)
             }
@@ -349,7 +350,7 @@ class LoginActivity : FragmentActivity() {
             mUserSPEdit!!.putString("os_version", "android" + Build.VERSION.RELEASE)
             mUserSPEdit!!.putString("device_info", android.os.Build.MODEL).apply()
             val loginPwd = if (loginWithLastPwd) {
-                mUserSP!!.getString("password", "")
+                mUserSP!!.getString(PASSWORD, "")
             } else {
                 URLs.MD5(userPass)
             }
@@ -359,12 +360,17 @@ class LoginActivity : FragmentActivity() {
                 OKHttpUtils.newInstance().getAsyncData(
                         String.format("http://47.96.170.148:8081/" +
                                 "saas-api/api/portal/custom?" +
-                                "repCode=REP_000000&dateSourceCode=DATA_000000&user_num=%s&password=%s&platform=app", userNum, loginPwd), object : OKHttpUtils.OnReusltListener {
+                                "repCode=REP_000000&dataSourceCode=DATA_000000&user_num=%s&password=%s&platform=app", userNum, loginPwd), object : OKHttpUtils.OnResultListener {
                     override fun onFailure(call: Call?, e: IOException?) {
                         ToastUtils.show(this@LoginActivity, "网络错误")
                     }
 
                     override fun onSuccess(call: Call?, response: String?) {
+                        val result = Gson().fromJson(response, BaseResult::class.java)
+                        if (result.code == "1") {
+                            result.msg?.let { ToastUtils.show(this@LoginActivity, it) }
+                            return
+                        }
                         val data = Gson().fromJson(response, SaaSCustomResult::class.java)
                         if (data.code == null || data.code != "0") {
                             data.message?.let { ToastUtils.show(this@LoginActivity, it) }
@@ -373,8 +379,14 @@ class LoginActivity : FragmentActivity() {
                         if (data.data.size == 1 && data.data[0].app_ip != null && data.data[0].app_ip != "") {
                             mProgressDialog = ProgressDialog.show(this@LoginActivity, "稍等", "验证用户信息...")
 
+                            data.data[0].app_id?.let {
+                                mUserSPEdit!!.putString(APP_ID, it).apply()
+                            }
+                            data.data[0].app_name?.let {
+                                mUserSPEdit!!.putString(APP_NAME, it).apply()
+                            }
                             data.data[0].app_ip?.let {
-                                mUserSPEdit!!.putString(APP_HOST,it).apply()
+                                mUserSPEdit!!.putString(APP_HOST, it).apply()
                                 TempHost.setHost(it)
                                 RetrofitUtil.getInstance(this@LoginActivity).changeableBaseUrlInterceptor.setHost(it)
                             }
@@ -410,7 +422,7 @@ class LoginActivity : FragmentActivity() {
 //                                                    PackageManager.DONT_KILL_APP)
 
                                             data.data[which].app_ip?.let {
-                                                mUserSPEdit!!.putString(APP_HOST,it).apply()
+                                                mUserSPEdit!!.putString(APP_HOST, it).apply()
                                                 TempHost.setHost(it)
                                                 RetrofitUtil.getInstance(this@LoginActivity).changeableBaseUrlInterceptor.setHost(it)
                                             }

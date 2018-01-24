@@ -141,8 +141,8 @@ android {
             dimension "APP"
 
             applicationId 'com.intfocus.shengyiplus'
-            versionCode 72
-            versionName "1.7.02"
+            versionCode 74
+            versionName "1.7.04"
 
             buildConfigField "String", "BASE_URL", SHENGYIPLUS_BASE_URL
             buildConfigField "String", "PGYER_URL", SHENGYIPLUS_PGYER_URL
