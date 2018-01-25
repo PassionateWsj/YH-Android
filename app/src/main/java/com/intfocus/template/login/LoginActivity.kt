@@ -135,13 +135,13 @@ class LoginActivity : FragmentActivity() {
             etPassword!!.setText("1234567890")
             cb_login_keep_pwd.isChecked = true
 //            ll_etPassword_clear.visibility = View.GONE
-            if (ConfigConstants.LOGIN_WITH_LAST_USER) {
-                mProgressDialog = ProgressDialog.show(this@LoginActivity, "稍等", "验证用户信息...")
-                mProgressDialog?.show()
-                userNum = mUserSP!!.getString(USER_NUM, "")
-                userLogin(mUserSP!!.getString(PASSWORD, ""))
-                return
-            }
+//            if (ConfigConstants.LOGIN_WITH_LAST_USER) {
+//                mProgressDialog = ProgressDialog.show(this@LoginActivity, "稍等", "验证用户信息...")
+//                mProgressDialog?.show()
+//                userNum = mUserSP!!.getString(USER_NUM, "")
+//                userLogin(mUserSP!!.getString(PASSWORD, ""))
+//                return
+//            }
         }
         // 初始化监听
         initListener()

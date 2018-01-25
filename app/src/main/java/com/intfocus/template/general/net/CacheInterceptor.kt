@@ -20,26 +20,26 @@ class CacheInterceptor : Interceptor {
         var request = chain.request()
         val netAvailable = HttpUtil.isConnected(SYPApplication.globalContext)
 
-        if (netAvailable) {
-            request = request.newBuilder()
+        request = if (netAvailable) {
+            request.newBuilder()
                     //网络可用 强制从网络获取数据
                     .cacheControl(CacheControl.FORCE_NETWORK)
                     .build()
         } else {
-            request = request.newBuilder()
+            request.newBuilder()
                     //网络不可用 从缓存获取
                     .cacheControl(CacheControl.FORCE_CACHE)
                     .build()
         }
         var response = chain.proceed(request)
-        if (netAvailable) {
-            response = response.newBuilder()
+        response = if (netAvailable) {
+            response.newBuilder()
                     .removeHeader("Pragma")
                     // 有网络时 设置缓存超时时间1个小时
                     .header("Cache-Control", "public, max-age=" + 60)
                     .build()
         } else {
-            response = response.newBuilder()
+            response.newBuilder()
                     .removeHeader("Pragma")
                     // 无网络时，设置超时为2周
                     .header("Cache-Control", "public, only-if-cached, max-stale=" + 14 * 24 * 60 * 60)

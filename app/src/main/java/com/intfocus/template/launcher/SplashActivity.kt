@@ -23,8 +23,10 @@ import com.intfocus.template.BuildConfig
 import com.intfocus.template.ConfigConstants
 import com.intfocus.template.R
 import com.intfocus.template.constant.Params.APP_HOST
+import com.intfocus.template.constant.Params.IS_LOGIN
 import com.intfocus.template.constant.Params.SETTING_PREFERENCE
 import com.intfocus.template.constant.Params.USER_BEAN
+import com.intfocus.template.dashboard.DashboardActivity
 import com.intfocus.template.listener.NoDoubleClickListener
 import com.intfocus.template.login.LoginActivity
 import com.intfocus.template.util.*
@@ -176,7 +178,7 @@ class SplashActivity : Activity(), Animation.AnimationListener {
                 showUpdateAssetsErrorDetail(errorMsg)
             }
         } else {
-            ToastUtils.show(this,"网络不可用")
+            ToastUtils.show(this, "网络不可用")
             LogUtil.d("hjjzzsb:::isClickable", "" + rl_splash_container.isClickable)
             LogUtil.d("hjjzzsb:::isDefaultStart", "" + isDefaultStart)
             rl_splash_container.isClickable = false
@@ -252,8 +254,11 @@ class SplashActivity : Activity(), Animation.AnimationListener {
                 finish()
             }
             else -> {
-
-                intent = Intent(this, LoginActivity::class.java)
+                intent = if (mUserSP.getBoolean(IS_LOGIN, false) && ConfigConstants.LOGIN_WITH_LAST_USER) {
+                    Intent(this, DashboardActivity::class.java)
+                } else {
+                    Intent(this, LoginActivity::class.java)
+                }
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK and Intent.FLAG_ACTIVITY_SINGLE_TOP)
                 this.startActivity(intent)
 
@@ -267,13 +272,7 @@ class SplashActivity : Activity(), Animation.AnimationListener {
 
             AssetsUpDateUtil.checkFirstSetup(ctx, object : OnCheckAssetsUpdateResultListener {
                 override fun onResultSuccess() {
-                    if (HttpUtil.isConnected(ctx)) {
-                        checkAssets()
-                    } else {
-                        number_progress_bar_splash.progress += 90
-                        tv_splash_status.text = "离线资源加载完成"
-                        enter()
-                    }
+                    checkAssets()
                 }
 
                 override fun onFailure(errorMsg: Throwable) {
@@ -285,7 +284,13 @@ class SplashActivity : Activity(), Animation.AnimationListener {
                 }
             })
         } else {
-            checkAssets()
+            if (HttpUtil.isConnected(ctx)) {
+                checkAssets()
+            } else {
+                number_progress_bar_splash.progress += 90
+                tv_splash_status.text = "离线资源加载完成"
+                enter()
+            }
         }
     }
 

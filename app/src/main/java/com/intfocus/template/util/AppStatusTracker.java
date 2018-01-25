@@ -86,7 +86,7 @@ public class AppStatusTracker implements Application.ActivityLifecycleCallbacks 
             timestamp = System.currentTimeMillis() - timestamp;
             boolean isLogin = mUserSP.getBoolean(IS_LOGIN, false);
             LogUtil.e(LogUtil.TAG, "isLogin:::" + isLogin);
-            if (timestamp < TEN_YEAR_TIMEMILLIS && timestamp > MAX_INTERVAL && isLogin&& ConfigConstants.LOGOUT_WITHIN_ONE_HOUR) {
+            if (timestamp < TEN_YEAR_TIMEMILLIS && timestamp > MAX_INTERVAL && isLogin && ConfigConstants.LOGOUT_WITHIN_ONE_HOUR) {
                 mUserSPEdit.putBoolean(IS_LOGIN, false).apply();
                 ToastUtils.INSTANCE.show(activity, "登录过期");
                 Intent intent = new Intent(activity, LoginActivity.class);
@@ -125,7 +125,7 @@ public class AppStatusTracker implements Application.ActivityLifecycleCallbacks 
 
     @Override
     public void onActivityDestroyed(Activity activity) {
-        if (activeCount == 0) {
+        if (activeCount == 0 && !ConfigConstants.LOGIN_WITH_LAST_USER) {
             mUserSPEdit.putBoolean(IS_LOGIN, false).apply();
         }
     }

@@ -2,7 +2,6 @@ package com.intfocus.template.general.net;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.SharedPreferences;
 
 import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.intfocus.template.util.TempHost;
@@ -30,10 +29,6 @@ import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action0;
 import rx.schedulers.Schedulers;
-
-import static com.intfocus.template.constant.Params.APP_ID;
-import static com.intfocus.template.constant.Params.USER_BEAN;
-import static com.intfocus.template.constant.Params.USER_ID;
 
 /**
  * @author admin
@@ -95,8 +90,9 @@ public class RetrofitUtil {
     public OkHttpClient.Builder getClientBuilder() {
         OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder();
 
-        SharedPreferences mUserSP = ctx.getSharedPreferences(USER_BEAN, Context.MODE_PRIVATE);
-        File cacheDir = new File(ctx.getCacheDir(), mUserSP.getString(APP_ID, "") + mUserSP.getString(USER_ID, ""));
+//        SharedPreferences mUserSP = ctx.getSharedPreferences(USER_BEAN, Context.MODE_PRIVATE);
+//        File cacheDir = new File(ctx.getCacheDir(), mUserSP.getString(APP_ID, "") + mUserSP.getString(USER_ID, ""));
+        File cacheDir = new File(ctx.getCacheDir(), "response");
         //缓存的最大尺寸10m
         Cache cache = new Cache(cacheDir, 1024 * 1024 * 10);
         clientBuilder.cache(cache);
