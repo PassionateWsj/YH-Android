@@ -1,19 +1,20 @@
 package com.intfocus.template.dashboard.mine.activity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.BarUtils;
+import com.intfocus.template.ConfigConstants;
 import com.intfocus.template.R;
 import com.intfocus.template.ui.BaseActivity;
-
-import org.xutils.x;
 
 import java.util.ArrayList;
 
@@ -26,17 +27,29 @@ public class SettingActivity extends BaseActivity {
     ListView mListItem;
 
     private ArrayAdapter<String> mListAdapter;
-    private Context mContext;
     private SharedPreferences mSharedPreferences;
+    private RelativeLayout mActionBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
-        x.view().inject(this);
-        mContext = this;
+//        x.view().inject(this);
+        mActionBar = (RelativeLayout) findViewById(R.id.rl_action_bar);
+        initShow();
         mSharedPreferences = getSharedPreferences("SettingPreference", MODE_PRIVATE);
         initSettingListItem();
+    }
+
+    private void initShow() {
+        if (Build.VERSION.SDK_INT >= 21 && ConfigConstants.ENABLE_FULL_SCREEN_UI) {
+            mActionBar.post(new Runnable() {
+                @Override
+                public void run() {
+                    BarUtils.addMarginTopEqualStatusBarHeight(mActionBar);
+                }
+            });
+        }
     }
 
     /**
@@ -66,13 +79,13 @@ public class SettingActivity extends BaseActivity {
             TextView mItemText = (TextView) arg1.findViewById(R.id.item_setting);
             switch (mItemText.getText().toString()) {
                 case "基本信息":
-                    Intent appInfoIntent = new Intent(mContext, SettingListActivity.class);
+                    Intent appInfoIntent = new Intent(SettingActivity.this, SettingListActivity.class);
                     appInfoIntent.putExtra("type", "基本信息");
                     startActivity(appInfoIntent);
                     break;
 
                 case "消息推送":
-                    Intent pushIntent = new Intent(mContext, SettingListActivity.class);
+                    Intent pushIntent = new Intent(SettingActivity.this, SettingListActivity.class);
                     pushIntent.putExtra("type", "消息推送");
                     startActivity(pushIntent);
                     break;
@@ -82,7 +95,7 @@ public class SettingActivity extends BaseActivity {
                     break;
 
                 case "选项配置":
-                    Intent settingPreferenceIntent = new Intent(mContext, SettingPreferenceActivity.class);
+                    Intent settingPreferenceIntent = new Intent(SettingActivity.this, SettingPreferenceActivity.class);
                     startActivity(settingPreferenceIntent);
                     break;
 

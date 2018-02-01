@@ -2,6 +2,7 @@ package com.intfocus.template.subject.seven.concernlist
 
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.text.Editable
@@ -9,6 +10,8 @@ import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
+import com.blankj.utilcode.util.BarUtils
+import com.intfocus.template.ConfigConstants
 import com.intfocus.template.R
 import com.intfocus.template.constant.Params
 import com.intfocus.template.constant.ToastColor
@@ -44,9 +47,18 @@ class ConcernListActivity : BaseActivity(), ConcernListContract.View, ConcernLis
         setContentView(R.layout.activity_attention_list)
         presenter = ConcernListPresenter(ConcernListModelImpl.getInstance(), this)
 
+        initShow()
         initAdapter()
         initData()
         initListener()
+    }
+
+    private fun initShow() {
+        if (Build.VERSION.SDK_INT >= 21 && ConfigConstants.ENABLE_FULL_SCREEN_UI) {
+            action_bar.post {
+                BarUtils.addMarginTopEqualStatusBarHeight(action_bar)
+            }
+        }
     }
 
     private fun initAdapter() {

@@ -8,14 +8,17 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.view.KeyEvent
 import android.view.View
 import android.view.WindowManager
+import com.blankj.utilcode.util.BarUtils
 import com.github.barteksc.pdfviewer.listener.OnPageErrorListener
 import com.github.barteksc.pdfviewer.scroll.DefaultScrollHandle
 import com.intfocus.template.BuildConfig
+import com.intfocus.template.ConfigConstants
 import com.intfocus.template.R
 import com.intfocus.template.constant.Params
 import com.intfocus.template.constant.Params.BANNER_NAME
@@ -102,9 +105,16 @@ class WebPageActivity : BaseActivity(), WebPageContract.View, OnPageErrorListene
 
         presenter.load(reportId, templateId, groupId, url)
 
+        initShow()
+    }
+
+    private fun initShow() {
         if ("baozhentv" == BuildConfig.FLAVOR) {
             rl_action_bar.post { setBannerVisibility(View.GONE) }
             ll_filter.post { ll_filter.visibility = View.GONE }
+        }
+        if (Build.VERSION.SDK_INT >= 21 && ConfigConstants.ENABLE_FULL_SCREEN_UI) {
+            rl_action_bar.post { BarUtils.addMarginTopEqualStatusBarHeight(rl_action_bar) }
         }
     }
 
@@ -194,7 +204,7 @@ class WebPageActivity : BaseActivity(), WebPageContract.View, OnPageErrorListene
 
     @SuppressLint("SetJavaScriptEnabled")
     private fun initWebView() {
-        mWebView = WebView4Scroll(this,srl_activity_subject)
+        mWebView = WebView4Scroll(this, srl_activity_subject)
         browser.addView(mWebView)
 
         val webSettings = mWebView?.settings
@@ -212,7 +222,7 @@ class WebPageActivity : BaseActivity(), WebPageContract.View, OnPageErrorListene
         }
         webSettings?.cacheMode = if (HttpUtil.isConnected(this)) {
             // 缓存模式为无缓存
-            WebSettings.LOAD_NO_CACHE
+            WebSettings.LOAD_DEFAULT
         } else {
             WebSettings.LOAD_CACHE_ELSE_NETWORK
         }
@@ -228,7 +238,6 @@ class WebPageActivity : BaseActivity(), WebPageContract.View, OnPageErrorListene
         //开启 应用缓存 功能
         webSettings?.setAppCacheEnabled(true)
 
-        webSettings?.domStorageEnabled = true
         // 允许访问文件
         webSettings?.allowFileAccess = true
         // 使用 WebView 推荐的窗口
@@ -267,6 +276,31 @@ class WebPageActivity : BaseActivity(), WebPageContract.View, OnPageErrorListene
                 imageSelect()
                 return true
             }
+
+            override fun onProgressChanged(p0: WebView?, p1: Int) {
+                super.onProgressChanged(p0, p1)
+                if (p1 == 100) {
+                    //是否有筛选数据，有就显示出来
+                    if (locationDataList.isNotEmpty()) {
+                        rl_address_filter.visibility = View.VISIBLE
+                        LogUtil.d("location", locationDataList.size.toString())
+                    } else {
+                        rl_address_filter.visibility = View.GONE
+                    }
+                    if (menuDatas.isNotEmpty()) {
+                        LogUtil.d("faster_select", menuDatas.size.toString())
+                        filter_recycler_view.visibility = View.VISIBLE
+                        view_line.visibility = View.VISIBLE
+                        menuAdapter.setData(menuDatas)
+                    } else {
+                        filter_recycler_view.visibility = View.GONE
+                        view_line.visibility = View.GONE
+                    }
+                    srl_activity_subject.isRefreshing = false
+                    setLoadingVisibility(View.GONE)
+                }
+
+            }
         }
 
         mWebView?.webViewClient = object : WebViewClient() {
@@ -275,27 +309,28 @@ class WebPageActivity : BaseActivity(), WebPageContract.View, OnPageErrorListene
                 return true
             }
 
-            override fun onPageFinished(view: WebView, url: String) {
-                super.onPageFinished(view, url)
-                //是否有筛选数据，有就显示出来
-                if (locationDataList.isNotEmpty()) {
-                    rl_address_filter.visibility = View.VISIBLE
-                    LogUtil.d("location", locationDataList.size.toString())
-                } else {
-                    rl_address_filter.visibility = View.GONE
-                }
-                if (menuDatas.isNotEmpty()) {
-                    LogUtil.d("faster_select", menuDatas.size.toString())
-                    filter_recycler_view.visibility = View.VISIBLE
-                    view_line.visibility = View.VISIBLE
-                    menuAdapter.setData(menuDatas)
-                } else {
-                    filter_recycler_view.visibility = View.GONE
-                    view_line.visibility = View.GONE
-                }
-                srl_activity_subject.isRefreshing = false
-                setLoadingVisibility(View.GONE)
-            }
+//            override fun onPageFinished(view: WebView, url: String) {
+//                super.onPageFinished(view, url)
+//                //是否有筛选数据，有就显示出来
+//                if (locationDataList.isNotEmpty()) {
+//                    rl_address_filter.visibility = View.VISIBLE
+//                    LogUtil.d("location", locationDataList.size.toString())
+//                } else {
+//                    rl_address_filter.visibility = View.GONE
+//                }
+//                if (menuDatas.isNotEmpty()) {
+//                    LogUtil.d("faster_select", menuDatas.size.toString())
+//                    filter_recycler_view.visibility = View.VISIBLE
+//                    view_line.visibility = View.VISIBLE
+//                    menuAdapter.setData(menuDatas)
+//                } else {
+//                    filter_recycler_view.visibility = View.GONE
+//                    view_line.visibility = View.GONE
+//                }
+//                srl_activity_subject.isRefreshing = false
+//                setLoadingVisibility(View.GONE)
+
+//            }
         }
 
     }
@@ -303,12 +338,16 @@ class WebPageActivity : BaseActivity(), WebPageContract.View, OnPageErrorListene
     /**
      * 渲染报表
      */
-    override fun show(path: String) {
+    override fun show(path: String, reload: Boolean) {
         url = path
         if (url.toLowerCase().endsWith(".pdf")) {
             showPDF(url)
         }
-        mWebView?.loadUrl(url)
+        if (reload) {
+            mWebView?.reload()
+        } else {
+            mWebView?.loadUrl(url)
+        }
     }
 
     /**
@@ -367,7 +406,7 @@ class WebPageActivity : BaseActivity(), WebPageContract.View, OnPageErrorListene
     override fun refresh() {
         srl_activity_subject.isRefreshing = false
         setLoadingVisibility(View.VISIBLE)
-        show(url)
+        show(url,true)
     }
 
     /**

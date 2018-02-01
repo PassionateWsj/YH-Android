@@ -3,6 +3,7 @@ package com.intfocus.template.dashboard.mine.activity
 import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.text.TextUtils
@@ -12,6 +13,8 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.CheckBox
 import android.widget.EditText
+import com.blankj.utilcode.util.BarUtils
+import com.intfocus.template.ConfigConstants
 import com.intfocus.template.R
 import com.intfocus.template.constant.Params.PASSWORD
 import com.intfocus.template.constant.Params.USER_NUM
@@ -35,7 +38,16 @@ class AlterPasswordActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_password_alter)
+        initShow()
         initListener()
+    }
+
+    private fun initShow() {
+        if (Build.VERSION.SDK_INT >= 21 && ConfigConstants.ENABLE_FULL_SCREEN_UI) {
+            action_bar.post{
+                BarUtils.addMarginTopEqualStatusBarHeight(action_bar)
+            }
+        }
     }
 
     private fun initListener() {

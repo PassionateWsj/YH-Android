@@ -1,4 +1,4 @@
-package com.intfocus.template.launcher.adapter
+package com.intfocus.template.splash.adapter
 
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager

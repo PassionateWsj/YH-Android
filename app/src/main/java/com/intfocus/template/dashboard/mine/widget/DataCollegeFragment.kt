@@ -8,8 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
-import android.widget.EditText
-import com.intfocus.template.BuildConfig
 import com.intfocus.template.R
 import com.intfocus.template.constant.Params.USER_BEAN
 import com.intfocus.template.constant.Params.USER_NUM
@@ -26,7 +24,8 @@ import com.intfocus.template.ui.RefreshFragment
 import com.intfocus.template.util.*
 import com.lcodecore.tkrefreshlayout.footer.LoadingView
 import com.lcodecore.tkrefreshlayout.header.SinaRefreshView
-import org.xutils.x
+import kotlinx.android.synthetic.main.common_error_view.*
+import kotlinx.android.synthetic.main.fragment_instiute.*
 
 /**
  * Created by CANC on 2017/7/31.
@@ -40,37 +39,37 @@ class DataCollegeFragment : RefreshFragment(), InstituteAdapter.NoticeItemListen
     private lateinit var statusMap: MutableMap<String, String>
     lateinit var userNum: String
     private var keyWord: String? = ""
-    private lateinit var editSearch: EditText
     lateinit var mUserSP: SharedPreferences
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         mView = inflater.inflate(R.layout.fragment_instiute, container, false)
-        x.view().inject(this, mView)
+        return mView
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         setRefreshLayout()
         initView()
         mUserSP = mActivity.getSharedPreferences(USER_BEAN, Context.MODE_PRIVATE)
         userNum = mUserSP.getString(USER_NUM, "")
         getData(true)
-        return mView
     }
-
     fun initView() {
         queryMap = mutableMapOf()
         statusMap = mutableMapOf()
-        editSearch = mView!!.findViewById(R.id.edit_search)
         val mLayoutManager = LinearLayoutManager(mActivity)
         mLayoutManager.orientation = LinearLayoutManager.VERTICAL
-        recyclerView.layoutManager = mLayoutManager
+        recycler_view.layoutManager = mLayoutManager
         adapter = InstituteAdapter(mActivity, null, this)
-        recyclerView.adapter = adapter
+        recycler_view.adapter = adapter
         val headerView = SinaRefreshView(mActivity)
         headerView.setArrowResource(R.drawable.loading_up)
         val bottomView = LoadingView(mActivity)
-        refreshLayout.setHeaderView(headerView)
-        refreshLayout.setBottomView(bottomView)
+        refresh_layout.setHeaderView(headerView)
+        refresh_layout.setBottomView(bottomView)
 
-        editSearch.setOnEditorActionListener({ textView, actionId, _ ->
+        edit_search.setOnEditorActionListener({ textView, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 keyWord = textView.text.toString().trim()
                 getData(true)
@@ -87,7 +86,7 @@ class DataCollegeFragment : RefreshFragment(), InstituteAdapter.NoticeItemListen
             ToastUtils.show(mActivity, "请检查网络链接")
             finshRequest()
             isEmpty = datas == null || datas!!.size == 0
-            ErrorUtils.viewProcessing(refreshLayout, llError, llRetry, "无更多文章了", tvErrorMsg, ivError,
+            ErrorUtils.viewProcessing(refresh_layout, ll_empty, ll_retry, "无更多文章了", tv_errorMsg, iv_error,
                     isEmpty!!, false, R.drawable.pic_3, {
                 getData(true)
             })
@@ -129,7 +128,7 @@ class DataCollegeFragment : RefreshFragment(), InstituteAdapter.NoticeItemListen
                         datas!!.addAll(data.data)
                         adapter.setData(datas)
                         isEmpty = datas == null || datas!!.size == 0
-                        ErrorUtils.viewProcessing(refreshLayout, llError, llRetry, "无更多文章了", tvErrorMsg, ivError,
+                        ErrorUtils.viewProcessing(refresh_layout, ll_empty, ll_retry, "无更多文章了", tv_errorMsg, iv_error,
                                 isEmpty!!, true, R.drawable.pic_3, null)
                     }
                 })
@@ -167,8 +166,8 @@ class DataCollegeFragment : RefreshFragment(), InstituteAdapter.NoticeItemListen
     }
 
     fun finshRequest() {
-        refreshLayout.finishRefreshing()
-        refreshLayout.finishLoadmore()
+        refresh_layout.finishRefreshing()
+        refresh_layout.finishLoadmore()
         dismissLoading()
     }
 

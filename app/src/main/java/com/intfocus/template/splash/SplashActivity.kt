@@ -1,4 +1,4 @@
-package com.intfocus.template.launcher
+package com.intfocus.template.splash
 
 import android.Manifest
 import android.app.Activity
@@ -22,8 +22,8 @@ import android.widget.Toast
 import com.intfocus.template.BuildConfig
 import com.intfocus.template.ConfigConstants
 import com.intfocus.template.R
+import com.intfocus.template.constant.Params
 import com.intfocus.template.constant.Params.APP_HOST
-import com.intfocus.template.constant.Params.IS_LOGIN
 import com.intfocus.template.constant.Params.SETTING_PREFERENCE
 import com.intfocus.template.constant.Params.USER_BEAN
 import com.intfocus.template.dashboard.DashboardActivity
@@ -56,7 +56,6 @@ class SplashActivity : Activity(), Animation.AnimationListener {
         window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
         requestWindowFeature(Window.FEATURE_NO_TITLE)
         setContentView(R.layout.activity_splash)
-
         getSharedPreferences(USER_BEAN, Context.MODE_PRIVATE).getString(APP_HOST, BuildConfig.BASE_URL)?.let { TempHost.setHost(it) }
     }
 
@@ -254,14 +253,29 @@ class SplashActivity : Activity(), Animation.AnimationListener {
                 finish()
             }
             else -> {
-                intent = if (mUserSP.getBoolean(IS_LOGIN, false) && ConfigConstants.LOGIN_WITH_LAST_USER) {
-                    Intent(this, DashboardActivity::class.java)
-                } else {
-                    Intent(this, LoginActivity::class.java)
-                }
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK and Intent.FLAG_ACTIVITY_SINGLE_TOP)
-                this.startActivity(intent)
 
+                if (ConfigConstants.LOGIN_WITH_LAST_USER && mUserSP.getBoolean(Params.IS_LOGIN, false) && mSettingSP.getBoolean(Params.AUTO_LOGIN, false)) {
+                    val pageLinkManagerSP = this@SplashActivity.getSharedPreferences("PageLinkManager", Context.MODE_PRIVATE)
+                    val pageSaved = pageLinkManagerSP.getBoolean("pageSaved", false)
+                    if (ConfigConstants.REVIEW_LAST_PAGE && pageSaved) {
+                        val objTitle = pageLinkManagerSP.getString("objTitle", "")
+                        val link = pageLinkManagerSP.getString("link", "")
+                        val objectId = pageLinkManagerSP.getString("objectId", "-1")
+                        val templateId = pageLinkManagerSP.getString("templateId", "-1")
+                        val objectType = pageLinkManagerSP.getString("objectType", "-1")
+                        PageLinkManage.pageLink(this@SplashActivity,
+                                objTitle ?: "", link ?: "",
+                                objectId ?: "-1", templateId ?: "-1", objectType ?: "-1")
+                    } else {
+                        intent = Intent(this, DashboardActivity::class.java)
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK and Intent.FLAG_ACTIVITY_SINGLE_TOP)
+                        this.startActivity(intent)
+                    }
+                } else {
+                    intent = Intent(this, LoginActivity::class.java)
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK and Intent.FLAG_ACTIVITY_SINGLE_TOP)
+                    this.startActivity(intent)
+                }
                 finish()
             }
         }

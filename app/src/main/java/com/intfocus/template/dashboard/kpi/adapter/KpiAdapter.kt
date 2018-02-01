@@ -2,6 +2,7 @@ package com.intfocus.template.dashboard.mine.adapter
 
 import android.content.Context
 import android.graphics.Typeface
+import android.os.Build
 import android.support.v4.view.ViewPager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -11,7 +12,10 @@ import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.TranslateAnimation
 import android.widget.LinearLayout
+import android.widget.RelativeLayout
 import android.widget.TextView
+import com.blankj.utilcode.util.BarUtils
+import com.intfocus.template.ConfigConstants
 import com.intfocus.template.R
 import com.intfocus.template.dashboard.kpi.adapter.MyViewPagerAdapter
 import com.intfocus.template.dashboard.kpi.bean.KpiBean
@@ -95,7 +99,7 @@ class KpiAdapter(val context: Context,
         val homeData = data!![position]
         when (holder) {
             is ViewPagerHolder -> {
-                if (homeData.data!!.isNotEmpty()) {
+                if (homeData.data != null && homeData.data!!.isNotEmpty()) {
                     val views: MutableList<View>? = ArrayList()
                     views!!.clear()
                     val mTypeface = Typeface.createFromAsset(context.assets, "ALTGOT2N.TTF")
@@ -107,6 +111,7 @@ class KpiAdapter(val context: Context,
                         val tvNumberOneSubTitle = contentView.findViewById<TextView>(R.id.tv_number_one_sub_title)
                         val tvNumberOneSub = contentView.findViewById<TextView>(R.id.tv_number_one_sub)
                         val rlKpiNumberOne = contentView.findViewById<LinearLayout>(R.id.rl_kpi_number_one)
+                        val llNumberOneTubTitle = contentView.findViewById<LinearLayout>(R.id.ll_number_one_tub_title)
 
                         tvNumberOneTitle.text = themeItem.memo2
                         val number = themeItem.data!!.high_light!!.number
@@ -115,12 +120,21 @@ class KpiAdapter(val context: Context,
                         tvNumberOneUnit.text = "(" + themeItem.unit + ")"
                         tvNumberOneSubTitle.text = themeItem.memo1
                         tvNumberOneSub.text = themeItem.data!!.high_light!!.compare
-                        rlKpiNumberOne.setOnClickListener(object :NoDoubleClickListener(){
+                        rlKpiNumberOne.setOnClickListener(object : NoDoubleClickListener() {
                             override fun onNoDoubleClick(v: View?) {
-                            PageLinkManage.pageLink(context, (DashboardItem(themeItem.obj_link!!, themeItem.obj_title!!,
-                                    themeItem.obj_id!!, themeItem.template_id!!, "1")))
+                                PageLinkManage.pageLink(context, (DashboardItem(themeItem.obj_link!!, themeItem.obj_title!!,
+                                        themeItem.obj_id!!, themeItem.template_id!!, "1")))
                             }
                         })
+                        if (Build.VERSION.SDK_INT >= 21 && ConfigConstants.ENABLE_FULL_SCREEN_UI) {
+//                        rlKpiNumberOne.post {
+//                            val titleTopParams = ViewPager.LayoutParams()
+//                            titleTopParams.width = rlKpiNumberOne.layoutParams.width
+//                            titleTopParams.height = rlKpiNumberOne.height + BarUtils.getStatusBarHeight()
+//                            rlKpiNumberOne.layoutParams = titleTopParams
+//                        }
+                            BarUtils.addMarginTopEqualStatusBarHeight(llNumberOneTubTitle)
+                        }
                         views.add(contentView)
                     }
                     val myViewPagerAdapter = MyViewPagerAdapter(views, context)
@@ -200,8 +214,7 @@ class KpiAdapter(val context: Context,
                     holder.tvNotice.setOnClickListener {
                         EventBus.getDefault().post(NoticeBoardRequest(true))
                     }
-                }
-                else {
+                } else {
                     holder.itemView.visibility = View.GONE
                 }
             }
@@ -228,6 +241,7 @@ class KpiAdapter(val context: Context,
     class ViewPagerHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var viewPager: AutoScrollViewPager = itemView.findViewById(R.id.vp_icons)
         var layoutDot: LinearLayout = itemView.findViewById(R.id.layout_dot)
+        var layoutThemeCarousel: RelativeLayout = itemView.findViewById(R.id.layout_theme_carousel)
     }
 
     /**

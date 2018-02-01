@@ -11,8 +11,11 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.BarUtils;
+import com.intfocus.template.ConfigConstants;
 import com.intfocus.template.R;
 import com.intfocus.template.dashboard.mine.adapter.SimpleListAdapter;
 import com.intfocus.template.ui.BaseActivity;
@@ -32,6 +35,7 @@ public class SettingListActivity extends BaseActivity {
     private SimpleListAdapter mSimpleAdapter;
     private String[] mItemNameList;
     private String[] mItemContentList;
+    private RelativeLayout mActionBar;
     private TextView mBannerTitle;
     private String mListType;
     private long mLastExitTime;
@@ -42,9 +46,22 @@ public class SettingListActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting_list);
         mBannerTitle = (TextView) findViewById(R.id.bannerTitle);
+        mActionBar = (RelativeLayout) findViewById(R.id.rl_action_bar);
         mListType = getIntent().getStringExtra("type");
         mBannerTitle.setText(mListType);
+        initShow();
         initListInfo(mListType);
+    }
+
+    private void initShow() {
+        if (Build.VERSION.SDK_INT >= 21 && ConfigConstants.ENABLE_FULL_SCREEN_UI) {
+            mActionBar.post(new Runnable() {
+                @Override
+                public void run() {
+                    BarUtils.addMarginTopEqualStatusBarHeight(mActionBar);
+                }
+            });
+        }
     }
 
     private void initListInfo(String type) {

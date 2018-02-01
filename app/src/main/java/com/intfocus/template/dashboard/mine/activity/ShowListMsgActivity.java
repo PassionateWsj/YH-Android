@@ -2,10 +2,14 @@ package com.intfocus.template.dashboard.mine.activity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.BarUtils;
+import com.intfocus.template.ConfigConstants;
 import com.intfocus.template.R;
 import com.intfocus.template.dashboard.mine.adapter.SimpleListAdapter;
 import com.intfocus.template.ui.BaseActivity;
@@ -28,6 +32,7 @@ public class ShowListMsgActivity extends BaseActivity {
     private SimpleListAdapter mSimpleAdapter;
     private String response;
     private String type;
+    private RelativeLayout mActionBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +41,18 @@ public class ShowListMsgActivity extends BaseActivity {
 
         pushListView = (ListView) findViewById(R.id.pushListView);
         bannerTitle = (TextView) findViewById(R.id.bannerTitle);
+        bannerTitle = (TextView) findViewById(R.id.bannerTitle);
+        mActionBar = (RelativeLayout) findViewById(R.id.rl_action_bar);
+
+        if (Build.VERSION.SDK_INT >= 21 && ConfigConstants.ENABLE_FULL_SCREEN_UI) {
+            mActionBar.post(new Runnable() {
+                @Override
+                public void run() {
+                    BarUtils.addMarginTopEqualStatusBarHeight(mActionBar);
+                }
+            });
+        }
+
         listItem = new ArrayList<>();
         Intent intent = getIntent();
         bannerTitle.setText(intent.getStringExtra("title"));

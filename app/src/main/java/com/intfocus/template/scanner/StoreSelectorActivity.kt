@@ -2,11 +2,14 @@ package com.intfocus.template.scanner
 
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import com.blankj.utilcode.util.BarUtils
+import com.intfocus.template.ConfigConstants
 import com.intfocus.template.R
 import com.intfocus.template.constant.Params.STORE
 import com.intfocus.template.constant.Params.STORE_ID
@@ -38,9 +41,16 @@ class StoreSelectorActivity : BaseActivity(), StoreSelectorView {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_store_selector)
 
+        initShow()
         initAdapter()
         initData()
         initListener()
+    }
+
+    private fun initShow() {
+        if (Build.VERSION.SDK_INT >= 21 && ConfigConstants.ENABLE_FULL_SCREEN_UI) {
+            action_bar.post { BarUtils.addMarginTopEqualStatusBarHeight(action_bar) }
+        }
     }
 
     private fun initAdapter() {

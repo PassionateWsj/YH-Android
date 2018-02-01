@@ -4,7 +4,9 @@ import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.content.SharedPreferences
+import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
+import android.os.Build
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.LayoutInflater
@@ -12,6 +14,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.PopupWindow
+import com.intfocus.template.ConfigConstants
 import com.intfocus.template.R
 import com.intfocus.template.SYPApplication
 import com.intfocus.template.constant.Params.USER_BEAN
@@ -37,6 +40,12 @@ open class BaseActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        if (Build.VERSION.SDK_INT >= 21 && ConfigConstants.ENABLE_FULL_SCREEN_UI) {
+            val decorView = window.decorView
+            val option = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+            decorView.systemUiVisibility = option
+            window.statusBarColor = Color.TRANSPARENT
+        }
         mApp = application as SYPApplication
         mAppContext = mApp.applicationContext
         mUserSP = getSharedPreferences(USER_BEAN, Context.MODE_PRIVATE)

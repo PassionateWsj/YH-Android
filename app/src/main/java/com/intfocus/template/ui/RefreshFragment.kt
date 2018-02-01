@@ -4,11 +4,7 @@ import android.app.Activity
 import android.app.Dialog
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.support.v7.widget.RecyclerView
 import android.view.View
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
 import com.intfocus.template.R
 import com.intfocus.template.util.LoadingUtils
 import com.intfocus.template.util.ToastUtils
@@ -23,12 +19,7 @@ abstract class RefreshFragment : Fragment() {
     var loadingDialog: Dialog? = null
 
     lateinit var refreshLayout: TwinklingRefreshLayout
-    lateinit var recyclerView: RecyclerView
     //错误界面
-    lateinit var llError: LinearLayout
-    lateinit var tvErrorMsg: TextView
-    lateinit var ivError: ImageView
-    lateinit var llRetry: LinearLayout
     //是否是空数据
     var isEmpty: Boolean? = true
     //页码信息
@@ -59,12 +50,6 @@ abstract class RefreshFragment : Fragment() {
 
     fun setRefreshLayout() {
         refreshLayout = mView!!.findViewById(R.id.refresh_layout)
-        recyclerView = mView!!.findViewById(R.id.recycler_view)
-        llError = mView!!.findViewById(R.id.ll_empty)
-        tvErrorMsg = mView!!.findViewById(R.id.tv_errorMsg)
-        ivError = mView!!.findViewById(R.id.iv_error)
-        llRetry = mView!!.findViewById(R.id.ll_retry)
-
         refreshLayout.setOnRefreshListener(object : RefreshListenerAdapter() {
             override fun onRefresh(refreshLayout: TwinklingRefreshLayout?) {
                 super.onRefresh(refreshLayout)

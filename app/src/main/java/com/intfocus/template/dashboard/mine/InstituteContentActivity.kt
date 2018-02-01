@@ -1,8 +1,11 @@
 package com.intfocus.template.dashboard.mine
 
 import android.content.Context
+import android.os.Build
 import android.os.Bundle
 import android.view.View
+import com.blankj.utilcode.util.BarUtils
+import com.intfocus.template.ConfigConstants
 import com.intfocus.template.R
 import com.intfocus.template.ui.BaseActivity
 import com.intfocus.template.util.K
@@ -21,6 +24,10 @@ class InstituteContentActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_institute_content)
         ctx = this
+        if (Build.VERSION.SDK_INT >= 21 && ConfigConstants.ENABLE_FULL_SCREEN_UI) {
+            action_bar.post { BarUtils.addMarginTopEqualStatusBarHeight(action_bar) }
+        }
+
         initWebView()
         var intent = intent
         institute_id = intent.getStringExtra("id")

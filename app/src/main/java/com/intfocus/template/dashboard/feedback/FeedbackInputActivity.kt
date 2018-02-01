@@ -5,11 +5,15 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.ActivityInfo
+import android.graphics.Color
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.text.TextUtils
 import android.view.View
+import com.blankj.utilcode.util.BarUtils
+import com.intfocus.template.ConfigConstants
 import com.intfocus.template.R
 import com.intfocus.template.constant.Params.USER_BEAN
 import com.intfocus.template.constant.Params.USER_NUM
@@ -56,9 +60,20 @@ class FeedbackInputActivity : AbstractActivity<IssueMode>(), View.OnClickListene
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_feedback_deprecated)
 
+        initShow()
         initData()
         initView()
         initAdapter()
+    }
+
+    private fun initShow() {
+        if (Build.VERSION.SDK_INT >= 21 && ConfigConstants.ENABLE_FULL_SCREEN_UI) {
+            val decorView = window.decorView
+            val option = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+            decorView.systemUiVisibility = option
+            window.statusBarColor = Color.TRANSPARENT
+            rl_feedback_actionBar.post { BarUtils.addMarginTopEqualStatusBarHeight(rl_feedback_actionBar) }
+        }
     }
 
     private fun initData() {

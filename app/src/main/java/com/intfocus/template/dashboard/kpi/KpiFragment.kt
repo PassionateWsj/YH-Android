@@ -2,12 +2,14 @@ package com.intfocus.template.dashboard.kpi
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.os.Build
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
+import android.widget.FrameLayout
+import com.blankj.utilcode.util.BarUtils
 import com.intfocus.template.BuildConfig
 import com.intfocus.template.ConfigConstants
 import com.intfocus.template.R
@@ -29,15 +31,14 @@ import com.intfocus.template.ui.view.DefaultRefreshView
 import com.intfocus.template.util.DisplayUtil
 import com.intfocus.template.util.ErrorUtils
 import com.intfocus.template.util.ToastUtils
+import kotlinx.android.synthetic.main.common_error_view.*
 import kotlinx.android.synthetic.main.fragment_kpi.*
-import org.xutils.x
 import java.util.*
 
 /**
  * Created by CANC on 2017/7/27.
  */
 class KpiFragment : RefreshFragment(), KpiAdapter.HomePageListener {
-    lateinit var titleTop: LinearLayout
     lateinit var mAdapter: KpiAdapter
     var mKpiData: MutableList<KpiBean>? = null
     lateinit var mUserSP: SharedPreferences
@@ -55,20 +56,20 @@ class KpiFragment : RefreshFragment(), KpiAdapter.HomePageListener {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         mView = inflater.inflate(R.layout.fragment_kpi, container, false)
-        x.view().inject(this, mView)
+//        x.view().inject(this, mView)
         setRefreshLayout()
         mUserSP = mActivity.getSharedPreferences(USER_BEAN, Context.MODE_PRIVATE)
         userId = mUserSP.getString(USER_NUM, "")
         roleId = mUserSP.getString(ROLD_ID, "0")
         groupId = mUserSP.getString(GROUP_ID, "0")
-        initView()
-
-        getData(true)
         return mView
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initView()
+
+        getData(true)
         initShow()
     }
 
@@ -84,18 +85,26 @@ class KpiFragment : RefreshFragment(), KpiAdapter.HomePageListener {
         queryMap = mutableMapOf()
         queryMap.put(GROUP_ID, groupId)
         queryMap.put(ROLD_ID, roleId)
-        titleTop = mView!!.findViewById(R.id.title_top)
-        recyclerView.layoutManager = CustomLinearLayoutManager(context!!)
+        if (Build.VERSION.SDK_INT >= 21 && ConfigConstants.ENABLE_FULL_SCREEN_UI) {
+            fl_title.post {
+                val titleTopParams = FrameLayout.LayoutParams(fl_title.layoutParams.width, fl_title.layoutParams.height + BarUtils.getStatusBarHeight())
+                fl_title.layoutParams = titleTopParams
+            }
+            rl_action_bar.post {
+                BarUtils.addMarginTopEqualStatusBarHeight(rl_action_bar)
+            }
+        }
+        recycler_view.layoutManager = CustomLinearLayoutManager(context!!)
         mAdapter = KpiAdapter(context!!, mKpiData, this)
 
-        recyclerView.adapter = mAdapter
+        recycler_view.adapter = mAdapter
 
         val headerView = DefaultRefreshView(mActivity)
         headerView.setArrowResource(R.drawable.loading_up)
-        refreshLayout.setHeaderView(headerView)
-        refreshLayout.setEnableLoadmore(false)
+        refresh_layout.setHeaderView(headerView)
+        refresh_layout.setEnableLoadmore(false)
         //监听
-        recyclerView.addOnScrollListener(KpiScrollerListener(context!!, recyclerView, titleTop))
+        recycler_view.addOnScrollListener(KpiScrollerListener(context!!, recycler_view, title_top))
     }
 
     override fun getData(isShowDialog: Boolean) {
@@ -103,7 +112,7 @@ class KpiFragment : RefreshFragment(), KpiAdapter.HomePageListener {
 //            ToastUtils.show(mActivity, "请检查网络链接")
 //            finishRequest()
 //            isEmpty = mKpiData == null || mKpiData!!.size == 0
-//            ErrorUtils.viewProcessing(refreshLayout, llError, llRetry, "无更多文章了", tvErrorMsg, ivError,
+//            ErrorUtils.viewProcessing(refresh_layout, ll_empty, ll_retry, "无更多文章了", tv_errorMsg, iv_error,
 //                    isEmpty!!, false, R.drawable.pic_3, {
 //                getData(true)
 //            })
@@ -203,7 +212,7 @@ class KpiFragment : RefreshFragment(), KpiAdapter.HomePageListener {
 //            ToastUtils.show(mActivity, "请检查网络链接")
 //            finishRequest()
 //            isEmpty = mKpiData == null || mKpiData!!.size == 0
-//            ErrorUtils.viewProcessing(refreshLayout, llError, llRetry, "无更多文章了", tvErrorMsg, ivError,
+//            ErrorUtils.viewProcessing(refresh_layout, ll_empty, ll_retry, "无更多文章了", tv_errorMsg, iv_error,
 //                    isEmpty!!, false, R.drawable.pic_3, {
 //                getData(true)
 //            })
@@ -230,7 +239,7 @@ class KpiFragment : RefreshFragment(), KpiAdapter.HomePageListener {
                         mKpiData!!
                                 .filter { 1 == it.index }
                                 .forEach {
-                                    if (data?.data?.isNotEmpty()!!) {
+                                    if (data?.data != null && data.data!!.isNotEmpty()) {
                                         it.data = data.data
                                     } else {
                                         mKpiData?.remove(it)
@@ -242,7 +251,7 @@ class KpiFragment : RefreshFragment(), KpiAdapter.HomePageListener {
                         resetTitleView()
 
                         isEmpty = mKpiData == null || mKpiData!!.size == 0
-                        ErrorUtils.viewProcessing(refreshLayout, llError, llRetry, "无更多文章了", tvErrorMsg, ivError,
+                        ErrorUtils.viewProcessing(refresh_layout, ll_empty, ll_retry, "无更多文章了", tv_errorMsg, iv_error,
                                 isEmpty!!, true, R.drawable.pic_3, {
                             getData(true)
                         })
@@ -256,7 +265,12 @@ class KpiFragment : RefreshFragment(), KpiAdapter.HomePageListener {
             tv_banner_title.setTextColor(ContextCompat.getColor(ctx, R.color.co10_syr))
             bannerSetting.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.nav_scan))
         } else {
-            ll_kpi_content.setPadding(0, DisplayUtil.dip2px(context, 44f), 0, 0)
+            val contentPadding = if (Build.VERSION.SDK_INT >= 21 && ConfigConstants.ENABLE_FULL_SCREEN_UI) {
+                DisplayUtil.dip2px(context, 48f) + BarUtils.getStatusBarHeight()
+            } else {
+                DisplayUtil.dip2px(context, 48f)
+            }
+            ll_kpi_content.setPadding(0, contentPadding, 0, 0)
             rl_action_bar.setBackgroundColor(ContextCompat.getColor(ctx, R.color.co10_syr))
             tv_banner_title.setTextColor(ContextCompat.getColor(ctx, R.color.color6))
             bannerSetting.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.nav_scanback))
@@ -264,8 +278,8 @@ class KpiFragment : RefreshFragment(), KpiAdapter.HomePageListener {
     }
 
     fun finishRequest() {
-        refreshLayout.finishRefreshing()
-        refreshLayout.finishLoadmore()
+        refresh_layout.finishRefreshing()
+        refresh_layout.finishLoadmore()
         dismissLoading()
     }
 

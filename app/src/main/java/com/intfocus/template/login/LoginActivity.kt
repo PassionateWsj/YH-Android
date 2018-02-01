@@ -13,7 +13,6 @@ import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
-import android.support.v4.app.FragmentActivity
 import android.support.v4.content.ContextCompat
 import android.text.Editable
 import android.text.TextWatcher
@@ -23,16 +22,19 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import com.google.gson.Gson
+import com.intfocus.template.BuildConfig
 import com.intfocus.template.ConfigConstants
 import com.intfocus.template.R
 import com.intfocus.template.constant.Params.ACTION
 import com.intfocus.template.constant.Params.APP_HOST
 import com.intfocus.template.constant.Params.APP_ID
 import com.intfocus.template.constant.Params.APP_NAME
+import com.intfocus.template.constant.Params.AUTO_LOGIN
 import com.intfocus.template.constant.Params.DATA
 import com.intfocus.template.constant.Params.GROUP_ID
 import com.intfocus.template.constant.Params.GROUP_NAME
 import com.intfocus.template.constant.Params.IS_LOGIN
+import com.intfocus.template.constant.Params.KEEP_PWD
 import com.intfocus.template.constant.Params.OBJECT_TITLE
 import com.intfocus.template.constant.Params.PASSWORD
 import com.intfocus.template.constant.Params.PUSH_MESSAGE
@@ -57,6 +59,7 @@ import com.intfocus.template.login.bean.NewUser
 import com.intfocus.template.model.response.BaseResult
 import com.intfocus.template.model.response.login.RegisterResult
 import com.intfocus.template.model.response.login.SaaSCustomResult
+import com.intfocus.template.ui.BaseActivity
 import com.intfocus.template.util.*
 import com.intfocus.template.util.K.K_CURRENT_UI_VERSION
 import com.intfocus.template.util.K.K_PUSH_DEVICE_TOKEN
@@ -80,11 +83,10 @@ import java.util.*
  * desc:
  * ****************************************************
  */
-class LoginActivity : FragmentActivity() {
+class LoginActivity : BaseActivity() {
     private var userNum: String? = null
     private var userPass: String? = null
     private var mDeviceRequest: DeviceRequest? = null
-    private var mUserSP: SharedPreferences? = null
     private var mUserSPEdit: SharedPreferences.Editor? = null
     private var mPushSP: SharedPreferences? = null
     private var mSettingSP: SharedPreferences? = null
@@ -95,7 +97,7 @@ class LoginActivity : FragmentActivity() {
     private var assetsPath: String? = null
     private var sharedPath: String? = null
     private var loginWithLastPwd = false
-    private var loginWithLastUser = false
+    private var autoLoginWithLastUser = false
     /**
      * 最短点击间隔时长 ms
      */
@@ -124,7 +126,8 @@ class LoginActivity : FragmentActivity() {
 
         initShow()
         LogUtil.d("LoginActivity:1", "onCreate()")
-        loginWithLastPwd = mSettingSP!!.getBoolean("keep_pwd", false)
+        loginWithLastPwd = mSettingSP!!.getBoolean(KEEP_PWD, false)
+        autoLoginWithLastUser = mSettingSP!!.getBoolean(AUTO_LOGIN, false)
         LogUtil.d("LoginActivity:1", "loginWithLastPwd ::: " + loginWithLastPwd)
         // 显示记住用户名称
         if ("" != mUserSP!!.getString(USER_NUM, "")) {
@@ -143,10 +146,11 @@ class LoginActivity : FragmentActivity() {
 //                return
 //            }
         }
+        if (autoLoginWithLastUser) {
+            cb_login_auto.isChecked = true
+        }
         // 初始化监听
         initListener()
-
-
     }
 
     private fun initShow() {
@@ -159,6 +163,9 @@ class LoginActivity : FragmentActivity() {
             ll_unable_login.visibility = View.VISIBLE
         } else {
             ll_unable_login.visibility = View.GONE
+        }
+        if (ConfigConstants.LOGIN_WITH_LAST_USER) {
+            cb_login_auto.visibility = View.VISIBLE
         }
     }
 
@@ -215,7 +222,9 @@ class LoginActivity : FragmentActivity() {
                 etPassword.setText("")
                 ll_etPassword_clear.visibility = View.GONE
                 cb_login_keep_pwd.isChecked = false
+                cb_login_auto.isChecked = false
                 loginWithLastPwd = false
+                autoLoginWithLastUser = false
                 LogUtil.d("LoginActivity:1", "用户名输入框 文本变化监听 loginWithLastPwd ::: " + loginWithLastPwd)
 //                }
                 if (s.toString().isNotEmpty()) {
@@ -284,6 +293,12 @@ class LoginActivity : FragmentActivity() {
             }
         })
 
+        // 记住密码复选框监听
+        cb_login_keep_pwd.setOnCheckedChangeListener { _, isChecked ->
+            if (!isChecked) {
+                cb_login_auto.isChecked = false
+            }
+        }
     }
 
     /**
@@ -330,7 +345,7 @@ class LoginActivity : FragmentActivity() {
             userNum = etUsername.text.toString()
             userPass = etPassword.text.toString()
 
-            mUserSP!!.edit().putString(USER_NUM, userNum).apply()
+            mUserSP.edit().putString(USER_NUM, userNum).apply()
 
             if (userNum!!.isEmpty() || userPass!!.isEmpty()) {
                 ToastUtils.show(this@LoginActivity, "请输入用户名与密码")
@@ -350,7 +365,7 @@ class LoginActivity : FragmentActivity() {
             mUserSPEdit!!.putString("os_version", "android" + Build.VERSION.RELEASE)
             mUserSPEdit!!.putString("device_info", android.os.Build.MODEL).apply()
             val loginPwd = if (loginWithLastPwd) {
-                mUserSP!!.getString(PASSWORD, "")
+                mUserSP.getString(PASSWORD, "")
             } else {
                 URLs.MD5(userPass)
             }
@@ -407,19 +422,12 @@ class LoginActivity : FragmentActivity() {
                                         if (data.data[which].app_ip != null && data.data[which].app_ip != "") {
                                             mProgressDialog = ProgressDialog.show(this@LoginActivity, "稍等", "验证用户信息...")
 
-
-//                                            val pm = applicationContext.packageManager
-//                                            println(componentName)
-//                                            //去除旧图标，不去除的话会出现2个App图标
-//                                            pm.setComponentEnabledSetting(componentName,
-//                                                    PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-//                                                    PackageManager.DONT_KILL_APP)
-//                                            //显示新图标
-//                                            pm.setComponentEnabledSetting(ComponentName(
-//                                                    this@LoginActivity,
-//                                                    "com.intfocus.template.YhSplashActivity"),
-//                                                    PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
-//                                                    PackageManager.DONT_KILL_APP)
+                                            if (BuildConfig.APPLICATION_ID == "com.intfocus.shengyiplus" || BuildConfig.APPLICATION_ID == "com.intfocus.template") {
+                                                data.data[which].app_id?.let {
+                                                    AppEntranceChangeUtils.getInstance(this@LoginActivity).changeEntrance(it)
+                                                    AppEntranceChangeUtils.destroyInstance()
+                                                }
+                                            }
 
                                             data.data[which].app_ip?.let {
                                                 mUserSPEdit!!.putString(APP_HOST, it).apply()
@@ -451,11 +459,12 @@ class LoginActivity : FragmentActivity() {
 
     }
 
+
     /**
      * 登录验证
      */
     private fun userLogin(loginPwd: String?) {
-        RetrofitUtil.getHttpService(ctx).userLogin(userNum, loginPwd, mUserSP!!.getString(USER_LOCATION, "0,0"))
+        RetrofitUtil.getHttpService(ctx).userLogin(userNum, loginPwd, mUserSP.getString(USER_LOCATION, "0,0"))
                 .compose(RetrofitUtil.CommonOptions())
                 .subscribe(object : CodeHandledSubscriber<NewUser>() {
 
@@ -488,16 +497,10 @@ class LoginActivity : FragmentActivity() {
                      */
                     override fun onBusinessNext(data: NewUser) {
                         if (!loginWithLastPwd) {
-                            mUserSPEdit!!.putString("password", URLs.MD5(userPass))
+                            mUserSPEdit!!.putString(PASSWORD, URLs.MD5(userPass))
                         }
-                        when {
-                            cb_login_keep_pwd.isChecked -> {
-                                mSettingSPEdit!!.putBoolean("keep_pwd", true).apply()
-                            }
-                            !cb_login_keep_pwd.isChecked -> {
-                                mSettingSPEdit!!.putBoolean("keep_pwd", false).apply()
-                            }
-                        }
+                        mSettingSPEdit!!.putBoolean(KEEP_PWD, cb_login_keep_pwd.isChecked).apply()
+                        mSettingSPEdit!!.putBoolean(AUTO_LOGIN, cb_login_auto.isChecked).apply()
 
                         upLoadDevice() //上传设备信息
 
@@ -522,23 +525,18 @@ class LoginActivity : FragmentActivity() {
                         } else {
                             // 检测用户空间，版本是否升级版本是否升级
                             FileUtil.checkVersionUpgrade(ctx, assetsPath, sharedPath)
+                            val pageLinkManagerSP = this@LoginActivity.getSharedPreferences("PageLinkManager", Context.MODE_PRIVATE)
+                            val pageSaved = pageLinkManagerSP.getBoolean("pageSaved", false)
                             // 在报表页面结束应用，再次登录时是否自动跳转上次报表页面
-                            if (ConfigConstants.REVIEW_LAST_PAGE) {
-                                val pageLinkManagerSP = this@LoginActivity.getSharedPreferences("PageLinkManager", Context.MODE_PRIVATE)
-                                val pageSaved = pageLinkManagerSP.getBoolean("pageSaved", false)
-                                if (pageSaved) {
-                                    val objTitle = pageLinkManagerSP.getString("objTitle", "")
-                                    val link = pageLinkManagerSP.getString("link", "")
-                                    val objectId = pageLinkManagerSP.getString("objectId", "")
-                                    val templateId = pageLinkManagerSP.getString("templateId", "")
-                                    val objectType = pageLinkManagerSP.getString("objectType", "")
-                                    PageLinkManage.pageLink(this@LoginActivity,
-                                            objTitle ?: "", link ?: "",
-                                            objectId ?: "-1", templateId ?: "-1", objectType ?: "-1")
-                                } else {
-                                    // 跳转至主界面
-                                    this@LoginActivity.startActivity(Intent(this@LoginActivity, DashboardActivity::class.java))
-                                }
+                            if (ConfigConstants.REVIEW_LAST_PAGE && pageSaved) {
+                                val objTitle = pageLinkManagerSP.getString("objTitle", "")
+                                val link = pageLinkManagerSP.getString("link", "")
+                                val objectId = pageLinkManagerSP.getString("objectId", "")
+                                val templateId = pageLinkManagerSP.getString("templateId", "")
+                                val objectType = pageLinkManagerSP.getString("objectType", "")
+                                PageLinkManage.pageLink(this@LoginActivity,
+                                        objTitle ?: "", link ?: "",
+                                        objectId ?: "-1", templateId ?: "-1", objectType ?: "-1")
                             } else {
                                 // 跳转至主界面
                                 this@LoginActivity.startActivity(Intent(this@LoginActivity, DashboardActivity::class.java))
@@ -593,9 +591,13 @@ class LoginActivity : FragmentActivity() {
                         RetrofitUtil.getHttpService(ctx).putPushToken(data.mResult!!.device_uuid, mPushSP!!.getString(K_PUSH_DEVICE_TOKEN, ""))
                                 .compose(RetrofitUtil.CommonOptions())
                                 .subscribe(object : CodeHandledSubscriber<BaseResult>() {
-                                    override fun onError(apiException: ApiException) {}
+                                    override fun onError(apiException: ApiException) {
+                                        LogUtil.d(this@LoginActivity, apiException.displayMessage)
+                                    }
 
-                                    override fun onBusinessNext(data: BaseResult) {}
+                                    override fun onBusinessNext(data: BaseResult) {
+                                        LogUtil.d(this@LoginActivity, data.msg)
+                                    }
 
                                     override fun onCompleted() {
 

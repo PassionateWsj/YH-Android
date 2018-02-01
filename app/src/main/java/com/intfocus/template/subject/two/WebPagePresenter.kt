@@ -30,7 +30,7 @@ class WebPagePresenter(
                 if (url.toLowerCase().endsWith(".pdf")) {
                     mModel.getPdfFilePath(url, LoadDataCallBack())
                 } else {
-                    mView.show(url)
+                    mView.show(url,false)
                 }
             }
         }
@@ -38,11 +38,11 @@ class WebPagePresenter(
 
     inner class LoadDataCallBack : LoadDataCallback<String> {
         override fun onSuccess(path: String) {
-            mView.show(path)
+            mView.show(path,false)
         }
 
         override fun onError(e: Throwable) {
-            var errorPagePath = FileUtil.sharedPath(SYPApplication.globalContext) + "/loading/400.html"
+            val errorPagePath = FileUtil.sharedPath(SYPApplication.globalContext) + "/loading/400.html"
             mView.showError("file://" + errorPagePath)
         }
 

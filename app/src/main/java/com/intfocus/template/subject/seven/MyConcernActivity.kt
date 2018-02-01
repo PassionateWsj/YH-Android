@@ -1,6 +1,7 @@
 package com.intfocus.template.subject.seven
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.support.design.widget.AppBarLayout
 import android.support.v4.app.Fragment
@@ -8,6 +9,8 @@ import android.support.v4.app.FragmentTransaction
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import com.blankj.utilcode.util.BarUtils
+import com.intfocus.template.ConfigConstants
 import com.intfocus.template.R
 import com.intfocus.template.constant.Params.BANNER_NAME
 import com.intfocus.template.constant.Params.GROUP_ID
@@ -72,6 +75,15 @@ class MyConcernActivity : BaseActivity(), MyConcernContract.View, FilterDialogFr
         MyConcernPresenter(MyConcernModelImpl.getInstance(), this)
         initData()
         initView()
+        initShow()
+    }
+
+    private fun initShow() {
+        if (Build.VERSION.SDK_INT >= 21 && ConfigConstants.ENABLE_FULL_SCREEN_UI) {
+            rl_action_bar.post{
+                BarUtils.addMarginTopEqualStatusBarHeight(rl_action_bar)
+            }
+        }
     }
 
 

@@ -35,7 +35,7 @@ class ShowPushMessageAdapter(val mContext: Context, val listener: OnPushMessageL
             holder.tvPushMsgTime.text = mData[position].debug_timestamp.substring(0, 19)
 
             holder.llPushMsgItem.setOnClickListener {
-                listener.onItemClick(position)
+                mData[position].template_id?.let { listener.onItemClick(position) }
             }
         } else {
             ToastUtil.showToast(mContext, "暂无消息")

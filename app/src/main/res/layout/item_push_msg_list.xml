@@ -3,7 +3,7 @@
               android:id="@+id/ll_push_msg_item"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:background="@color/white"
+              android:background="@drawable/color_btn_forget_pwd_submit_background"
               android:orientation="vertical">
 
     <View

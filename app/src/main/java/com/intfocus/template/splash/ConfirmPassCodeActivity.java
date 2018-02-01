@@ -1,4 +1,4 @@
-package com.intfocus.template.launcher;
+package com.intfocus.template.splash;
 
 import android.app.Activity;
 import android.content.Context;

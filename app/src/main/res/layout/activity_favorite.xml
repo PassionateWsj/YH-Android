@@ -6,6 +6,7 @@
     android:orientation="vertical">
 
     <RelativeLayout
+        android:id="@+id/rl_action_bar"
         style="@style/TitleStyle"
         android:layout_width="match_parent">
 

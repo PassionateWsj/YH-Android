@@ -92,7 +92,6 @@ class DashboardActivity : BaseActivity(), ViewPager.OnPageChangeListener {
         if (ConfigConstants.KPI_SHOW) {
             itemFragment = KpiFragment()
             initTabShowAndPagerData(mTabKPI!!, mTabView, itemFragment, mPagerData)
-//                KpiPresenter(KpiImpl.getInstance(),itemFragment)
         }
         if (ConfigConstants.REPORT_SHOW) {
             itemFragment = ReportFragment()
@@ -181,6 +180,7 @@ class DashboardActivity : BaseActivity(), ViewPager.OnPageChangeListener {
             }
             else -> {
                 val barCodeScannerIntent = Intent(this, BarCodeScannerActivity::class.java)
+                barCodeScannerIntent.putExtra(BarCodeScannerActivity.INTENT_FOR_RESULT, false)
                 startActivity(barCodeScannerIntent)
                 ActionLogUtil.actionLog("点击/扫一扫")
             }

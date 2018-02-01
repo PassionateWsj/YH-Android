@@ -4,8 +4,10 @@ import android.content.Context;
 
 import com.intfocus.template.model.DaoUtil;
 import com.intfocus.template.model.entity.PushMsgBean;
+import com.intfocus.template.util.TimeUtils;
 
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import rx.Observable;
@@ -32,7 +34,13 @@ public class PushMessageModelImpl implements PushMessageModel {
             @Override
             public void call(Subscriber<? super List<PushMsgBean>> subscriber) {
                 List<PushMsgBean> list = DaoUtil.INSTANCE.getPushMsgDao().queryBuilder().build().list();
-                Collections.reverse(list);
+                Collections.sort(list, new Comparator<PushMsgBean>() {
+                    @Override
+                    public int compare(PushMsgBean o1, PushMsgBean o2) {
+
+                        return (int) (TimeUtils.getTimeMillisByString(o2.getDebug_timestamp()) - TimeUtils.getTimeMillisByString(o1.getDebug_timestamp()));
+                    }
+                });
                 subscriber.onNext(list);
                 subscriber.onCompleted();
             }

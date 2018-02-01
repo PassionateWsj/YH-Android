@@ -1,5 +1,6 @@
 package com.intfocus.template.dashboard.mine
 
+import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
@@ -7,6 +8,7 @@ import android.support.v4.view.ViewPager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.blankj.utilcode.util.BarUtils
 import com.intfocus.template.ConfigConstants
 import com.intfocus.template.R
 import com.intfocus.template.dashboard.mine.adapter.MinePageVPAdapter
@@ -26,6 +28,15 @@ class MineFragment : Fragment(), ViewPager.OnPageChangeListener {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
             inflater.inflate(R.layout.fragment_mine, container, false)
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initShow()
+    }
+
+    private fun initShow() {
+
+    }
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         initViewPager()
@@ -34,6 +45,11 @@ class MineFragment : Fragment(), ViewPager.OnPageChangeListener {
     fun initViewPager() {
         if (!ConfigConstants.ONLY_USER_SHOW) {
             actionBar.visibility = View.GONE
+            if (Build.VERSION.SDK_INT >= 21 && ConfigConstants.ENABLE_FULL_SCREEN_UI) {
+                rl_fragment_mine_container.post {
+                    BarUtils.addMarginTopEqualStatusBarHeight(rl_fragment_mine_container)
+                }
+            }
             fragmentList.add(AnnouncementWarningFragment())
             fragmentList.add(DataCollegeFragment())
             titleList.add("公告预警")
@@ -86,8 +102,13 @@ class MineFragment : Fragment(), ViewPager.OnPageChangeListener {
             })
         } else {
             actionBar.visibility = View.VISIBLE
+            if (Build.VERSION.SDK_INT >= 21 && ConfigConstants.ENABLE_FULL_SCREEN_UI) {
+                actionBar.post {
+                    BarUtils.addMarginTopEqualStatusBarHeight(actionBar)
+                }
+            }
             val itemFragment = UserFragment()
-            childFragmentManager.beginTransaction().add(R.id.rl_fragment_mine_container,itemFragment).commit()
+            childFragmentManager.beginTransaction().add(R.id.rl_fragment_mine_container, itemFragment).commit()
         }
     }
 

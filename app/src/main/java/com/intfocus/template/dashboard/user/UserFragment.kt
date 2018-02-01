@@ -263,7 +263,7 @@ class UserFragment : BaseFragment(), UserContract.View {
 
                     override fun onBusinessNext(data: RegisterResult) {
                         if (data.data!!.contains("http")) {
-                            PageLinkManage.pageLink(ctx!!, "归属部门", data.data!!)
+                            PageLinkManage.pageLink(ctx, "归属部门", data.data!!)
                         } else {
                             ToastUtils.show(ctx, data.data!!)
                         }
@@ -281,8 +281,9 @@ class UserFragment : BaseFragment(), UserContract.View {
         //设置弹出框的宽度和高度
         val popupWindow = PopupWindow(contentView,
                 ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT)
-        popupWindow.isFocusable = true// 取得焦点
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                true)
+//        popupWindow.isFocusable = true// 取得焦点
         //注意  要是点击外部空白处弹框消息  那么必须给弹框设置一个背景色  不然是不起作用的
         popupWindow.setBackgroundDrawable(BitmapDrawable())
         //点击外部消失
@@ -290,6 +291,9 @@ class UserFragment : BaseFragment(), UserContract.View {
         //设置可以点击
         popupWindow.isTouchable = true
         popupWindow.animationStyle = R.style.anim_popup_bottombar
+        if (Build.VERSION.SDK_INT >= 21 && ConfigConstants.ENABLE_FULL_SCREEN_UI) {
+            popupWindow.isClippingEnabled = false
+        }
         popupWindow.showAtLocation(this.view, Gravity.BOTTOM, 0, contentView.height)
 
         rl_logout_confirm = contentView.findViewById(R.id.rl_logout_confirm)

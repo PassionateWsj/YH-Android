@@ -1,10 +1,12 @@
 package com.intfocus.template.dashboard.mine.activity
 
 import android.content.Context
+import android.os.Build
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
-import com.intfocus.template.BuildConfig
+import com.blankj.utilcode.util.BarUtils
+import com.intfocus.template.ConfigConstants
 import com.intfocus.template.R
 import com.intfocus.template.constant.Params.USER_BEAN
 import com.intfocus.template.constant.Params.USER_NUM
@@ -22,6 +24,7 @@ import com.intfocus.template.ui.view.CommonPopupWindow
 import com.intfocus.template.util.*
 import com.lcodecore.tkrefreshlayout.footer.LoadingView
 import com.lcodecore.tkrefreshlayout.header.SinaRefreshView
+import kotlinx.android.synthetic.main.activity_favorite.*
 
 class FavoriteArticleActivity : RefreshActivity(), InstituteAdapter.NoticeItemListener {
 
@@ -34,22 +37,29 @@ class FavoriteArticleActivity : RefreshActivity(), InstituteAdapter.NoticeItemLi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_favorite)
+        initShow()
         setRefreshLayout()
-        userNum = mActivity.getSharedPreferences(USER_BEAN, Context.MODE_PRIVATE).getString(USER_NUM, "")
+        userNum = getSharedPreferences(USER_BEAN, Context.MODE_PRIVATE).getString(USER_NUM, "")
         init()
+    }
+
+    private fun initShow() {
+        if (Build.VERSION.SDK_INT >= 21 && ConfigConstants.ENABLE_FULL_SCREEN_UI) {
+            rl_action_bar.post{BarUtils.addMarginTopEqualStatusBarHeight(rl_action_bar)}
+        }
     }
 
     fun init() {
         statusMap = mutableMapOf()
         queryMap = mutableMapOf()
-        val mLayoutManager = LinearLayoutManager(mActivity)
+        val mLayoutManager = LinearLayoutManager(this)
         mLayoutManager.orientation = LinearLayoutManager.VERTICAL
         recyclerView.layoutManager = mLayoutManager
-        adapter = InstituteAdapter(mActivity, null, this)
+        adapter = InstituteAdapter(this, null, this)
         recyclerView.adapter = adapter
-        val headerView = SinaRefreshView(mActivity)
+        val headerView = SinaRefreshView(this)
         headerView.setArrowResource(R.drawable.loading_up)
-        val bottomView = LoadingView(mActivity)
+        val bottomView = LoadingView(this)
         refreshLayout.setHeaderView(headerView)
         refreshLayout.setBottomView(bottomView)
         getData(true)
@@ -59,14 +69,14 @@ class FavoriteArticleActivity : RefreshActivity(), InstituteAdapter.NoticeItemLi
      * 获取数据
      */
     override fun getData(isShowDialog: Boolean) {
-        if (!HttpUtil.isConnected(mActivity)) {
+        if (!HttpUtil.isConnected(this)) {
             finishRequest()
             isEmpty = datas == null || datas!!.size == 0
             ErrorUtils.viewProcessing(refreshLayout, llError, llRetry, "无更多文章了", tvErrorMsg, ivError,
                     isEmpty!!, false, R.drawable.pic_3, {
                 getData(true)
             })
-            ToastUtils.show(mActivity, "请检查网络链接")
+            ToastUtils.show(this, "请检查网络链接")
             return
         }
         if (isShowDialog && (null == loadingDialog || !loadingDialog!!.isShowing)) {
@@ -84,7 +94,7 @@ class FavoriteArticleActivity : RefreshActivity(), InstituteAdapter.NoticeItemLi
 
                     override fun onError(apiException: ApiException) {
                         finishRequest()
-                        ToastUtils.show(mActivity, apiException.displayMessage)
+                        ToastUtils.show(this@FavoriteArticleActivity, apiException.displayMessage)
                     }
 
                     override fun onBusinessNext(data: ArticleResult) {
@@ -117,8 +127,8 @@ class FavoriteArticleActivity : RefreshActivity(), InstituteAdapter.NoticeItemLi
      * 操作收藏/取消收藏
      */
     fun articleOperating(articleId: String, status: String) {
-        if (!HttpUtil.isConnected(mActivity)) {
-            ToastUtils.show(mActivity, "请检查网络链接")
+        if (!HttpUtil.isConnected(this)) {
+            ToastUtils.show(this, "请检查网络链接")
             return
         }
         showDialog(this)
@@ -134,12 +144,12 @@ class FavoriteArticleActivity : RefreshActivity(), InstituteAdapter.NoticeItemLi
 
                     override fun onError(apiException: ApiException) {
                         hideLoading()
-                        ToastUtils.show(mActivity, apiException.displayMessage)
+                        ToastUtils.show(this@FavoriteArticleActivity, apiException.displayMessage)
                     }
 
                     override fun onBusinessNext(data: BaseResult) {
                         getData(true)
-                        ToastUtils.show(mActivity, data.message + "", ToastColor.SUCCESS)
+                        ToastUtils.show(this@FavoriteArticleActivity, data.message + "", ToastColor.SUCCESS)
                     }
                 })
     }
@@ -160,7 +170,7 @@ class FavoriteArticleActivity : RefreshActivity(), InstituteAdapter.NoticeItemLi
      * 取消收藏
      */
     override fun cancelCollection(instituteDataBean: InstituteDataBean) {
-        CommonPopupWindow().showPopupWindow(mActivity, "取消收藏", R.color.co11_syr, "继续收藏", R.color.co3_syr,
+        CommonPopupWindow().showPopupWindow(this, "取消收藏", R.color.co11_syr, "继续收藏", R.color.co3_syr,
                 object : CommonPopupWindow.ButtonLisenter {
                     override fun btn1Click() {
                         articleOperating(instituteDataBean.acticleId.toString(), "2")

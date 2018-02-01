@@ -1,4 +1,4 @@
-package com.intfocus.template.launcher
+package com.intfocus.template.splash
 
 import android.Manifest
 import android.app.AlertDialog
@@ -14,8 +14,8 @@ import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.view.WindowManager
 import com.intfocus.template.R
-import com.intfocus.template.launcher.adapter.GuidePagerAdapter
-import com.intfocus.template.launcher.widget.GuideFragment
+import com.intfocus.template.splash.adapter.GuidePagerAdapter
+import com.intfocus.template.splash.widget.GuideFragment
 import kotlinx.android.synthetic.main.activity_guide.*
 
 class GuideActivity : AppCompatActivity() {

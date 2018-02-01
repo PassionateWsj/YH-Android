@@ -28,13 +28,18 @@ class DiaLogActivity : Activity() {
         pushMsg.title = intent.getStringExtra("title") ?: ""
         pushMsg.url = intent.getStringExtra("url") ?: ""
         pushMsg.obj_id = intent.getStringExtra("obj_id") ?: "-1"
-        pushMsg.template_id = intent.getStringExtra("template_id") ?: "-1"
+        pushMsg.template_id = intent.getStringExtra("template_id") ?: ""
+        pushMsg.text = intent.getStringExtra("text") ?: ""
         pushMsg.params_mapping = intent.getStringExtra("params_mapping")
 
         val selfDialog = SelfDialog(this)
         selfDialog.setTitle("收到通知")
-        selfDialog.setMessage(pushMsg.body_title)
-        if (pushMsg.template_id != null && pushMsg.template_id != "") {
+        if (pushMsg.text != null && pushMsg.text.isNotEmpty()) {
+            selfDialog.setMessage(pushMsg.text)
+        } else {
+            selfDialog.setMessage(pushMsg.body_title)
+        }
+        if (pushMsg.template_id != null && pushMsg.template_id.isNotEmpty()) {
             selfDialog.setYesOnclickListener("查看") {
                 PageLinkManage.pageLink(this, pushMsg)
                 selfDialog.dismiss()

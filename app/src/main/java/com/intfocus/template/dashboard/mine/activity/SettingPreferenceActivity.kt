@@ -3,9 +3,12 @@ package com.intfocus.template.dashboard.mine.activity
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.CompoundButton
+import com.blankj.utilcode.util.BarUtils
+import com.intfocus.template.ConfigConstants
 import com.intfocus.template.R
 import com.intfocus.template.ui.BaseActivity
 import com.intfocus.template.util.CacheCleanManager
@@ -22,8 +25,15 @@ class SettingPreferenceActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_setting_preference)
 
+        initShow()
         initSwitchPreference()
         initListener()
+    }
+
+    private fun initShow() {
+        if (Build.VERSION.SDK_INT >= 21 && ConfigConstants.ENABLE_FULL_SCREEN_UI) {
+            action_bar.post { BarUtils.addMarginTopEqualStatusBarHeight(action_bar) }
+        }
     }
 
     override fun onResume() {

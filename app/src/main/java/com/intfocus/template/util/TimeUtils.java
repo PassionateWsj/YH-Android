@@ -1,5 +1,6 @@
 package com.intfocus.template.util;
 
+import java.text.ParseException;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -33,6 +34,16 @@ public class TimeUtils {
         re_StrTime = sdf.format(new Date(lcc_time * 1000L));
 
         return re_StrTime;
+    }
+
+    public static long getTimeMillisByString(String formatData) {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        try {
+            return formatter.parse(formatData).getTime() / 1000;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return 0L;
     }
 
     /**

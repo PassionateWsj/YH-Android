@@ -1,4 +1,4 @@
-package com.intfocus.template.launcher.widget
+package com.intfocus.template.splash.widget
 
 import android.content.Context
 import android.content.Intent

@@ -1,7 +1,5 @@
 package com.intfocus.template.ui
 
-import android.app.Activity
-import android.os.Bundle
 import android.support.v7.widget.RecyclerView
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -15,7 +13,7 @@ import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout
  * Created by CANC on 2017/7/31.
  */
 abstract class RefreshActivity : BaseActivity() {
-    lateinit var mActivity: Activity
+//    lateinit var mActivity: Activity
     lateinit var refreshLayout: TwinklingRefreshLayout
     lateinit var recyclerView: RecyclerView
     //错误界面
@@ -34,10 +32,10 @@ abstract class RefreshActivity : BaseActivity() {
     //是否最后一页
     var isLasePage: Boolean? = true
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        mActivity = this
-    }
+//    override fun onCreate(savedInstanceState: Bundle?) {
+//        super.onCreate(savedInstanceState)
+//        mActivity = this
+//    }
 
     fun setRefreshLayout() {
         refreshLayout = findViewById(R.id.refresh_layout)
@@ -58,7 +56,7 @@ abstract class RefreshActivity : BaseActivity() {
             override fun onLoadMore(refreshLayout: TwinklingRefreshLayout?) {
                 super.onLoadMore(refreshLayout)
                 if (isLasePage!!) {
-                    ToastUtils.show(mActivity, "已经是最后一页")
+                    ToastUtils.show(this@RefreshActivity, "已经是最后一页")
                     refreshLayout!!.finishRefreshing()
                     refreshLayout.finishLoadmore()
                     return

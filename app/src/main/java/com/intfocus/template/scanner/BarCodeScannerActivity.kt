@@ -4,9 +4,11 @@ import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
 import android.content.pm.ActivityInfo
+import android.graphics.Color
 import android.graphics.Typeface
 import android.graphics.drawable.BitmapDrawable
 import android.os.AsyncTask
+import android.os.Build
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
@@ -20,6 +22,7 @@ import android.widget.PopupWindow
 import android.widget.RelativeLayout
 import android.widget.TextView
 import cn.bingoogolapple.qrcode.core.QRCodeView
+import com.blankj.utilcode.util.BarUtils
 import com.intfocus.template.ConfigConstants
 import com.intfocus.template.R
 import com.intfocus.template.constant.Params.CODE_INFO
@@ -93,6 +96,11 @@ class BarCodeScannerActivity : AppCompatActivity(), QRCodeView.Delegate, View.On
      */
     private var cbInputBarcodeLight: CheckBox? = null
     /**
+     * PopupWindow action_bar
+     */
+    private var rl_action_bar: RelativeLayout? = null
+
+    /**
      * 扫描二维码页面 闪光灯按钮文本
      */
     private var tvBarcodeLight: TextView? = null
@@ -115,6 +123,14 @@ class BarCodeScannerActivity : AppCompatActivity(), QRCodeView.Delegate, View.On
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        if (Build.VERSION.SDK_INT >= 21 && ConfigConstants.ENABLE_FULL_SCREEN_UI) {
+            val decorView = window.decorView
+            val option = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+            decorView.systemUiVisibility = option
+            window.statusBarColor = Color.TRANSPARENT
+        }
+
         setContentView(R.layout.activity_bar_code_scanner)
 
         initData()
@@ -178,12 +194,14 @@ class BarCodeScannerActivity : AppCompatActivity(), QRCodeView.Delegate, View.On
         cbBarcodeLight = findViewById(R.id.cb_barcode_light)
 
         view = LayoutInflater.from(this).inflate(R.layout.popup_input_barcode, null)
-        popupWindow = PopupWindow(view, RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT, true)
+        popupWindow = PopupWindow(view, RelativeLayout.LayoutParams.MATCH_PARENT,
+                RelativeLayout.LayoutParams.MATCH_PARENT, true)
         popupWindow!!.setBackgroundDrawable(BitmapDrawable())
         val mTypeFace = Typeface.createFromAsset(this.assets, "ALTGOT2N.TTF")
         view!!.et_input_barcode.typeface = mTypeFace
         tvInputBarcodeLight = view!!.findViewById(R.id.tv_input_barcode_light)
         cbInputBarcodeLight = view!!.findViewById(R.id.cb_input_barcode_light)
+        rl_action_bar = view!!.findViewById(R.id.rl_action_bar)
     }
 
     private fun initShow() {
@@ -196,6 +214,15 @@ class BarCodeScannerActivity : AppCompatActivity(), QRCodeView.Delegate, View.On
             view!!.et_input_barcode.inputType = EditorInfo.TYPE_CLASS_NUMBER
         } else {
             view!!.et_input_barcode.inputType = EditorInfo.TYPE_CLASS_TEXT
+        }
+        if (Build.VERSION.SDK_INT >= 21 && ConfigConstants.ENABLE_FULL_SCREEN_UI) {
+            popupWindow?.isClippingEnabled = false
+            rl_barcode_actionbar.post { BarUtils.addMarginTopEqualStatusBarHeight(rl_barcode_actionbar) }
+            rl_action_bar?.let {
+                it.post {
+                    BarUtils.addMarginTopEqualStatusBarHeight(it)
+                }
+            }
         }
     }
 
@@ -415,7 +442,7 @@ class BarCodeScannerActivity : AppCompatActivity(), QRCodeView.Delegate, View.On
                                 }
 
                                 override fun onBusinessNext(data: NearestStoresResult?) {
-                                    if (data!!.data!!.isNotEmpty()) {
+                                    if (data!!.data != null && data.data!!.isNotEmpty()) {
                                         tv_barcode_local_position.text = data.data!![0].store_name!!
                                         nearestStoreName = data.data!![0].store_name!!
                                         contractStore(data.data!![0].store_name!!)

@@ -79,11 +79,12 @@ object PageLinkManage {
         }
     }
 
+    @JvmStatic
     fun pageLink(context: Context, pushMsg: PushMsgBean) {
         val paramsMappingBean = com.alibaba.fastjson.JSONObject.parseObject(pushMsg.params_mapping, object : TypeReference<java.util.HashMap<String, String>>() {
         })
         var templateId = ""
-        if (pushMsg.template_id == null || "" == pushMsg.template_id) {
+        if (pushMsg.template_id != null && pushMsg.template_id.isEmpty() && pushMsg.url != null && pushMsg.url.isNotEmpty()) {
             val temp = pushMsg.url.split("/")
             for (i in 0..temp.size) {
                 if ("template" == temp[i] && i + 1 < temp.size) {
@@ -92,20 +93,21 @@ object PageLinkManage {
                 }
             }
         } else {
-            templateId = pushMsg.template_id
+            pushMsg.template_id?.let { templateId = it }
         }
-        if (templateId == "") {
-            return
-        }
+
         val userSP = context.getSharedPreferences(USER_BEAN, Context.MODE_PRIVATE)
         val userNum = userSP.getString(USER_NUM, "")
 
         if (userNum != "") {
-            pageLink(context, pushMsg.title ?: "标题", pushMsg.url ?: "", pushMsg.obj_id ?: "-1", templateId, "4", paramsMappingBean ?: HashMap(), true)
+            if (templateId == "") {
+                pageLink(context, pushMsg.title ?: "标题", pushMsg.url ?: "", pushMsg.obj_id ?: "-1", PUSH_MESSAGE_LIST, "4", paramsMappingBean ?: HashMap(), true)
+            } else {
+                pageLink(context, pushMsg.title ?: "标题", pushMsg.url ?: "", pushMsg.obj_id ?: "-1", templateId, "4", paramsMappingBean ?: HashMap(), true)
+            }
         } else {
             ToastUtils.show(context, "请先登录")
         }
-
     }
 
     /**
@@ -115,14 +117,6 @@ object PageLinkManage {
         pageLink(context, objTitle, link, "-1", "-1", "-1")
     }
 
-//    fun pageLink(context: Context, objTitle: String, link: String, objectId: String, templateId: String, objectType: String) {
-//        pageLink(context, objTitle, link, objectId, templateId, objectType, HashMap())
-//    }
-
-//    fun pageLink(context: Context, objTitle: String, link: String, objectId: String, templateId: String, objectType: String, paramsMappingBean: HashMap<String, String>) {
-//        pageLink(context, objTitle, link, objectId, templateId, objectType, paramsMappingBean, false)
-//    }
-
     fun pageLink(context: Context, objTitle: String = "标题",
                  link: String = "http://shengyiplus.com/", objectId: String = "-1",
                  templateId: String = "-1", objectType: String = "-1",
@@ -131,12 +125,12 @@ object PageLinkManage {
         try {
             val userSP = context.getSharedPreferences(USER_BEAN, Context.MODE_PRIVATE)
             val groupID = userSP.getString(GROUP_ID, "0")
-            userSP.edit().putString(TIME_STAMP, "" + System.currentTimeMillis()).commit()
+            userSP.edit().putString(TIME_STAMP, "" + System.currentTimeMillis()).apply()
             //更新本地定位信息
             MapUtil.getInstance(context).updateSPLocation()
 
             var urlString: String
-            val intent: Intent
+            var intent: Intent? = null
 
             when (templateId) {
 //                TEMPLATE_TWO -> {
@@ -155,7 +149,7 @@ object PageLinkManage {
                     intent.putExtra(LINK, link)
                     intent.putExtra(OBJECT_ID, objectId)
                     intent.putExtra(OBJECT_TYPE, objectType)
-                    context.startActivity(intent)
+//                    context.startActivity(intent)
                 }
                 TEMPLATE_ONE -> {
                     mClickTemplateName = "模板一"
@@ -172,7 +166,7 @@ object PageLinkManage {
                     intent.putExtra(LINK, link)
                     intent.putExtra(OBJECT_ID, objectId)
                     intent.putExtra(OBJECT_TYPE, objectType)
-                    context.startActivity(intent)
+//                    context.startActivity(intent)
                 }
                 TEMPLATE_TEN -> {
                     mClickTemplateName = "模板十"
@@ -189,7 +183,7 @@ object PageLinkManage {
                     intent.putExtra(LINK, link)
                     intent.putExtra(OBJECT_ID, objectId)
                     intent.putExtra(OBJECT_TYPE, objectType)
-                    context.startActivity(intent)
+//                    context.startActivity(intent)
                 }
                 TEMPLATE_TWO -> {
                     mClickTemplateName = "模板二"
@@ -204,7 +198,7 @@ object PageLinkManage {
                     intent.putExtra(LINK, link)
                     intent.putExtra(OBJECT_ID, objectId)
                     intent.putExtra(OBJECT_TYPE, objectType)
-                    context.startActivity(intent)
+//                    context.startActivity(intent)
                 }
                 TEMPLATE_FOUR -> {
                     mClickTemplateName = "模板四"
@@ -220,7 +214,7 @@ object PageLinkManage {
                     intent.putExtra(LINK, link)
                     intent.putExtra(OBJECT_ID, objectId)
                     intent.putExtra(OBJECT_TYPE, objectType)
-                    context.startActivity(intent)
+//                    context.startActivity(intent)
                 }
                 TEMPLATE_THREE -> {
                     mClickTemplateName = "模板三"
@@ -237,7 +231,7 @@ object PageLinkManage {
                     intent.putExtra(LINK, link)
                     intent.putExtra(OBJECT_ID, objectId)
                     intent.putExtra(OBJECT_TYPE, objectType)
-                    context.startActivity(intent)
+//                    context.startActivity(intent)
                 }
                 TEMPLATE_NINE -> {
                     mClickTemplateName = "模板九"
@@ -254,7 +248,7 @@ object PageLinkManage {
                     intent.putExtra(LINK, link)
                     intent.putExtra(OBJECT_ID, objectId)
                     intent.putExtra(OBJECT_TYPE, objectType)
-                    context.startActivity(intent)
+//                    context.startActivity(intent)
                 }
                 EXTERNAL_LINK, TEMPLATE_SIX -> {
                     mClickTemplateName = "外部链接"
@@ -274,7 +268,7 @@ object PageLinkManage {
                     intent.putExtra(LINK, urlString)
                     intent.putExtra(OBJECT_ID, objectId)
                     intent.putExtra(OBJECT_TYPE, objectType)
-                    context.startActivity(intent)
+//                    context.startActivity(intent)
                 }
                 SCANNER -> {
                     mClickTemplateName = "扫一扫"
@@ -291,7 +285,7 @@ object PageLinkManage {
                     }
                     intent.putExtra(BarCodeScannerActivity.INTENT_FOR_RESULT, false)
                     intent.putExtra(LINK, urlString)
-                    context.startActivity(intent)
+//                    context.startActivity(intent)
                 }
                 PUSH_MESSAGE_LIST -> {
                     mClickTemplateName = "消息列表"
@@ -302,7 +296,7 @@ object PageLinkManage {
                         savePageLink(context, objTitle, link, objectId, templateId, objectType)
                         Intent.FLAG_ACTIVITY_SINGLE_TOP
                     }
-                    context.startActivity(intent)
+//                    context.startActivity(intent)
                 }
                 FEEDBACK -> {
                     mClickTemplateName = "问题反馈"
@@ -313,10 +307,13 @@ object PageLinkManage {
                         savePageLink(context, objTitle, link, objectId, templateId, objectType)
                         Intent.FLAG_ACTIVITY_SINGLE_TOP
                     }
-                    context.startActivity(intent)
+//                    context.startActivity(intent)
                 }
 
                 else -> showTemplateErrorDialog(context)
+            }
+            intent?.let {
+                context.startActivity(it)
             }
         } catch (e: JSONException) {
             e.printStackTrace()

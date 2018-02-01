@@ -1,6 +1,7 @@
 package com.intfocus.template.subject.one
 
 import android.app.Activity
+import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
@@ -9,6 +10,8 @@ import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.*
+import com.blankj.utilcode.util.BarUtils
+import com.intfocus.template.ConfigConstants
 import com.intfocus.template.R
 import com.intfocus.template.constant.Params.BANNER_NAME
 import com.intfocus.template.constant.Params.GROUP_ID
@@ -88,6 +91,7 @@ class NativeReportActivity : BaseActivity(), ModeContract.View, FilterDialogFrag
         super.onCreate(savedInstanceState)
         setContentView(R.layout.actvity_meter_detal)
 
+        initShow()
         showDialog(this)
         mFragmentManager = supportFragmentManager
         mTlTitleContainer = findViewById(R.id.rl_mdetal_title_container)
@@ -96,6 +100,12 @@ class NativeReportActivity : BaseActivity(), ModeContract.View, FilterDialogFrag
         ModePresenter(ModeImpl.getInstance(), this)
         init()
         initListener()
+    }
+
+    private fun initShow() {
+        if (Build.VERSION.SDK_INT >= 21 && ConfigConstants.ENABLE_FULL_SCREEN_UI) {
+            rl_action_bar.post { BarUtils.addMarginTopEqualStatusBarHeight(rl_action_bar) }
+        }
     }
 
     override fun onBackPressed() {

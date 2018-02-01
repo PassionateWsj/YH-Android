@@ -8,7 +8,7 @@
                 tools:context=".subject.seven.concernlist.ConcernListActivity">
 
     <RelativeLayout
-        android:id="@+id/actionBar"
+        android:id="@+id/action_bar"
         android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="45dp"
@@ -65,7 +65,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/actionBar">
+        android:layout_below="@+id/action_bar">
 
         <RelativeLayout
             android:id="@+id/rl_attention_list_input_container"

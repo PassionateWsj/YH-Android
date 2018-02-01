@@ -4,7 +4,6 @@ import android.content.Context
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.intfocus.template.ui.view.CustomLinearLayoutManager
-import com.yonghui.homemetrics.utils.Utils
 
 /**
  * Created by CANC on 2017/7/28.
@@ -13,7 +12,7 @@ import com.yonghui.homemetrics.utils.Utils
 class KpiScrollerListener(val context: Context,
                           val recyclerView: RecyclerView,
                           val titleTop: View) : RecyclerView.OnScrollListener() {
-    private val statusBarHeight: Int = Utils.getStatusBarHeight(context)
+//    private val statusBarHeight: Int = Utils.getStatusBarHeight(context)
     private val mLinearLayoutManager: CustomLinearLayoutManager = recyclerView.layoutManager as CustomLinearLayoutManager
 
 
@@ -33,8 +32,8 @@ class KpiScrollerListener(val context: Context,
         val firstVisibleItem = mLinearLayoutManager.findFirstVisibleItemPosition()
         if (firstVisibleItem == 0 && recyclerView.getChildAt(firstVisibleItem) != null) {
             recyclerView.getChildAt(firstVisibleItem).getLocationOnScreen(loc)
-            if (loc[1] <= statusBarHeight) {
-                val alpha = Math.abs(loc[1] - statusBarHeight) * 1.0f / titleTop
+            if (loc[1] < 0) {
+                val alpha = Math.abs(loc[1] - 0) * 1.0f / titleTop
                         .measuredHeight
                 titleTop.alpha = alpha
             } else {

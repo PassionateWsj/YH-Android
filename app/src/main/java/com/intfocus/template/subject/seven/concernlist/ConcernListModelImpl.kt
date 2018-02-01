@@ -58,12 +58,12 @@ class ConcernListModelImpl : ConcernListModel {
         observable = Observable.just(keyWord)
                 .subscribeOn(Schedulers.io())
                 .map {
-                    queryBuilder.where(queryBuilder.and(AttentionItemDao.Properties.IsAttentioned.eq(concerned),queryBuilder.or(AttentionItemDao.Properties.Attention_item_id.like("%$keyWord%"),
+                    queryBuilder.where(queryBuilder.and(AttentionItemDao.Properties.IsAttentioned.eq(concerned), queryBuilder.or(AttentionItemDao.Properties.Attention_item_id.like("%$keyWord%"),
                             AttentionItemDao.Properties.Attention_item_name.like("%$keyWord%")))).list()
                 }
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
-                    if (it.isNotEmpty()) {
+                    if (it != null && it.isNotEmpty()) {
                         LogUtil.d(this@ConcernListModelImpl, "数据库处理成功,获取数据条数 ::: " + it.size)
                         callback.onDataLoaded(it)
                     } else {

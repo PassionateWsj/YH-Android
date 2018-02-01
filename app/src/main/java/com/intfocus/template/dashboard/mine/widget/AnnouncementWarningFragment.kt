@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
@@ -28,7 +27,8 @@ import com.intfocus.template.util.HttpUtil
 import com.intfocus.template.util.ToastUtils
 import com.lcodecore.tkrefreshlayout.footer.LoadingView
 import com.lcodecore.tkrefreshlayout.header.SinaRefreshView
-import org.xutils.x
+import kotlinx.android.synthetic.main.common_error_view.*
+import kotlinx.android.synthetic.main.fragment_notice.*
 
 /**
  * Created by liuruilin on 2017/6/7.
@@ -44,19 +44,21 @@ class AnnouncementWarningFragment : RefreshFragment(), NoticeListAdapter.NoticeI
     /**
      *菜单
      */
-    private lateinit var menuRecyclerView: RecyclerView
     private lateinit var noticeMenuAdapter: NoticeMenuAdapter //筛选适配器
     private var noticeMenuDatas: MutableList<NoticeMenuBean>? = null//筛选数据
     private var typeStr: String? = null //筛选条件
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         mView = inflater.inflate(R.layout.fragment_notice, container, false)
-        x.view().inject(this, mView)
+        return mView
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         setRefreshLayout()
         userId = mActivity.getSharedPreferences(USER_BEAN, Context.MODE_PRIVATE).getString(USER_NUM, "")
         initView()
         getData(true)
-        return mView
     }
 
     fun initView() {
@@ -67,14 +69,14 @@ class AnnouncementWarningFragment : RefreshFragment(), NoticeListAdapter.NoticeI
 
         val mLayoutManager = LinearLayoutManager(mActivity)
         mLayoutManager.orientation = LinearLayoutManager.VERTICAL
-        recyclerView.layoutManager = mLayoutManager
+        recycler_view.layoutManager = mLayoutManager
         adapter = NoticeListAdapter(mActivity, null, this)
-        recyclerView.adapter = adapter
+        recycler_view.adapter = adapter
         val headerView = SinaRefreshView(mActivity)
         headerView.setArrowResource(R.drawable.loading_up)
         val bottomView = LoadingView(mActivity)
-        refreshLayout.setHeaderView(headerView)
-        refreshLayout.setBottomView(bottomView)
+        refresh_layout.setHeaderView(headerView)
+        refresh_layout.setBottomView(bottomView)
 
         //数据为空(即第一次打开此界面)才初始化Menu数据）,默认全部选中
         if (noticeMenuDatas == null || noticeMenuDatas!!.size == 0) {
@@ -88,12 +90,11 @@ class AnnouncementWarningFragment : RefreshFragment(), NoticeListAdapter.NoticeI
             noticeMenuDatas!!.add(noticeMenuBean2)
             noticeMenuDatas!!.add(noticeMenuBean3)
         }
-        menuRecyclerView = mView!!.findViewById(R.id.menu_recycler_view)
         val mMenuLayoutManager = LinearLayoutManager(mActivity)
         mMenuLayoutManager.orientation = LinearLayoutManager.HORIZONTAL
-        menuRecyclerView.layoutManager = mMenuLayoutManager
+        menu_recycler_view.layoutManager = mMenuLayoutManager
         noticeMenuAdapter = NoticeMenuAdapter(mActivity, noticeMenuDatas, this)
-        menuRecyclerView.adapter = noticeMenuAdapter
+        menu_recycler_view.adapter = noticeMenuAdapter
     }
 
     override fun getData(isShowDialog: Boolean) {
@@ -101,7 +102,7 @@ class AnnouncementWarningFragment : RefreshFragment(), NoticeListAdapter.NoticeI
             ToastUtils.show(mActivity, "请检查网络链接")
             finishRequest()
             isEmpty = datas == null || datas!!.size == 0
-            ErrorUtils.viewProcessing(refreshLayout, llError, llRetry, "无更多公告", tvErrorMsg, ivError,
+            ErrorUtils.viewProcessing(refresh_layout, ll_empty, ll_retry, "无更多公告", tv_errorMsg, iv_error,
                     isEmpty!!, false, R.drawable.pic_3, {
                 getData(true)
             })
@@ -142,15 +143,15 @@ class AnnouncementWarningFragment : RefreshFragment(), NoticeListAdapter.NoticeI
                         datas!!.addAll(data.data)
                         adapter.setData(datas)
                         isEmpty = datas == null || datas!!.size == 0
-                        ErrorUtils.viewProcessing(refreshLayout, llError, llRetry, "无更多文章了", tvErrorMsg, ivError,
+                        ErrorUtils.viewProcessing(refresh_layout, ll_empty, ll_retry, "无更多文章了", tv_errorMsg, iv_error,
                                 isEmpty!!, true, R.drawable.pic_3, null)
                     }
                 })
     }
 
     fun finishRequest() {
-        refreshLayout.finishRefreshing()
-        refreshLayout.finishLoadmore()
+        refresh_layout.finishRefreshing()
+        refresh_layout.finishLoadmore()
         dismissLoading()
     }
 

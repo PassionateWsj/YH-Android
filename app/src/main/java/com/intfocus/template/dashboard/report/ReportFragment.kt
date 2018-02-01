@@ -1,5 +1,6 @@
 package com.intfocus.template.dashboard.report
 
+import android.os.Build
 import android.os.Bundle
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.LinearLayoutManager
@@ -7,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import com.blankj.utilcode.util.BarUtils
 import com.intfocus.template.ConfigConstants
 import com.intfocus.template.R
 import com.intfocus.template.dashboard.report.adapter.ReportsLeftListAdapter
@@ -60,6 +62,11 @@ class ReportFragment : BaseFragment(), ReportContract.View, ReportsLeftListAdapt
             View.VISIBLE
         } else {
             View.GONE
+        }
+        if (Build.VERSION.SDK_INT >= 21 && ConfigConstants.ENABLE_FULL_SCREEN_UI) {
+            actionBar.post {
+                BarUtils.addMarginTopEqualStatusBarHeight(actionBar)
+            }
         }
     }
 

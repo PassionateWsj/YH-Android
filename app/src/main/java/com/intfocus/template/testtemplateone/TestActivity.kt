@@ -2,11 +2,14 @@ package com.intfocus.template.testtemplateone
 
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
+import com.blankj.utilcode.util.BarUtils
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
+import com.intfocus.template.ConfigConstants
 import com.intfocus.template.R
 import com.intfocus.template.constant.Params
 import com.intfocus.template.model.DaoUtil
@@ -55,6 +58,10 @@ class TestActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_test)
+
+        if (Build.VERSION.SDK_INT >= 21 && ConfigConstants.ENABLE_FULL_SCREEN_UI) {
+            rl_test.post { BarUtils.addMarginTopEqualStatusBarHeight(rl_test) }
+        }
 
         val adapter = TestListAdapter(this)
         rl_test.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)

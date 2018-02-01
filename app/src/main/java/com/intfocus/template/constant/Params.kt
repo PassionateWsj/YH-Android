@@ -72,6 +72,8 @@ object Params {
     const val USE_GESTURE_PASSWORD = "use_gesture_password"
     const val GESTURE_PASSWORD = "gesture_password"
     const val IS_LOGIN = "is_login"
+    const val KEEP_PWD = "keep_pwd"
+    const val AUTO_LOGIN = "auto_login"
 
     const val CODE = "code"
     const val PATH = "path"

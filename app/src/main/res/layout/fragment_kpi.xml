@@ -38,7 +38,7 @@
         <LinearLayout
             android:id="@+id/title_top"
             android:layout_width="match_parent"
-            android:layout_height="44dp"
+            android:layout_height="match_parent"
             android:alpha="0.0"
             android:background="@color/co6_syr"
             android:orientation="horizontal" />

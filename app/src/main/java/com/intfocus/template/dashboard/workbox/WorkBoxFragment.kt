@@ -1,11 +1,13 @@
 package com.intfocus.template.dashboard.workbox
 
 import android.content.res.Configuration
+import android.os.Build
 import android.os.Bundle
 import android.support.v4.widget.SwipeRefreshLayout
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.blankj.utilcode.util.BarUtils
 import com.intfocus.template.ConfigConstants
 import com.intfocus.template.R
 import com.intfocus.template.model.response.home.WorkBoxResult
@@ -58,6 +60,11 @@ class WorkBoxFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener, Wo
             View.VISIBLE
         } else {
             View.GONE
+        }
+        if (Build.VERSION.SDK_INT >= 21 && ConfigConstants.ENABLE_FULL_SCREEN_UI) {
+            actionBar.post {
+                BarUtils.addMarginTopEqualStatusBarHeight(actionBar)
+            }
         }
     }
 

@@ -7,7 +7,7 @@
                 tools:context=".scanner.StoreSelectorActivity">
 
     <RelativeLayout
-        android:id="@+id/actionBar"
+        android:id="@+id/action_bar"
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:background="@color/actionBar">
@@ -26,7 +26,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/actionBar">
+        android:layout_below="@+id/action_bar">
 
         <LinearLayout
             android:id="@+id/llStoreSearchView"

@@ -1,6 +1,7 @@
 package com.intfocus.template.subject.nine.collectionlist
 
 import android.animation.ObjectAnimator
+import android.os.Build
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
@@ -8,6 +9,8 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.view.animation.LinearInterpolator
+import com.blankj.utilcode.util.BarUtils
+import com.intfocus.template.ConfigConstants
 import com.intfocus.template.R
 import com.intfocus.template.listener.NoDoubleClickListener
 import com.intfocus.template.model.entity.Collection
@@ -35,9 +38,16 @@ class CollectionListActivity : BaseActivity(), CollectionListContract.View {
         setContentView(R.layout.activity_collection_list)
 
         initView()
+        initShow()
         initAdapter()
         initListener()
         initData()
+    }
+
+    private fun initShow() {
+        if (Build.VERSION.SDK_INT >= 21 && ConfigConstants.ENABLE_FULL_SCREEN_UI) {
+            rl_action_bar.post { BarUtils.addMarginTopEqualStatusBarHeight(rl_action_bar) }
+        }
     }
 
     private fun initView() {

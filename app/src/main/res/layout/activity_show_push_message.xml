@@ -20,9 +20,10 @@
             style="@style/TitleText"
             android:text="消息"/>
     </RelativeLayout>
+
     <android.support.v7.widget.RecyclerView
-        android:layout_width="match_parent"
         android:id="@+id/rv_show_push_message"
-        android:layout_height="wrap_content"/>
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
 </LinearLayout>

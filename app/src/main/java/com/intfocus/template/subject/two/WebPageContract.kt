@@ -10,7 +10,7 @@ import com.intfocus.template.base.BaseView
  */
 interface WebPageContract {
     interface View : BaseView<Presenter> {
-        fun show(path: String)
+        fun show(path: String, reload: Boolean)
         fun showError(errorPagePath: String)
         fun showPDF(path: String)
         fun refresh()

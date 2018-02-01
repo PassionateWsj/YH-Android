@@ -2,6 +2,7 @@ package com.intfocus.template.login;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -13,6 +14,8 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.BarUtils;
+import com.intfocus.template.ConfigConstants;
 import com.intfocus.template.R;
 import com.intfocus.template.general.net.ApiException;
 import com.intfocus.template.general.net.CodeHandledSubscriber;
@@ -28,6 +31,7 @@ public class ForgetPasswordActivity extends BaseActivity {
     private ImageButton mBackBtn;
     private EditText mEtEmployeeId;
     private TextView mBtnSubmit;
+    private RelativeLayout mRlFindPwdActionBar;
     private EditText mEtEmployeePhoneNum;
     private ProgressDialog mRequestDialog;
 
@@ -36,8 +40,10 @@ public class ForgetPasswordActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_forget_password);
         initView();
+        initShow();
         initListener();
     }
+
 
     /**
      * 初始化视图
@@ -46,6 +52,18 @@ public class ForgetPasswordActivity extends BaseActivity {
         mBackBtn = (ImageButton) findViewById(R.id.ibtn_find_pwd_back);
         mEtEmployeePhoneNum = (EditText) findViewById(R.id.et_find_pwd_employee_phone_num);
         mBtnSubmit = (TextView) findViewById(R.id.tv_btn_find_pwd_submit);
+        mRlFindPwdActionBar = (RelativeLayout) findViewById(R.id.rl_find_pwd_action_bar);
+    }
+
+    private void initShow() {
+        if (Build.VERSION.SDK_INT >= 21 && ConfigConstants.ENABLE_FULL_SCREEN_UI) {
+            mRlFindPwdActionBar.post(new Runnable() {
+                @Override
+                public void run() {
+                    BarUtils.addMarginTopEqualStatusBarHeight(mRlFindPwdActionBar);
+                }
+            });
+        }
     }
 
     /**
@@ -82,11 +100,12 @@ public class ForgetPasswordActivity extends BaseActivity {
 
     /**
      * 发起 post 请求
+     *
      * @param mobile
      */
     public void startPost(String mobile) {
         mRequestDialog = ProgressDialog.show(this, "稍等", "正在重置密码...");
-        RetrofitUtil.getHttpService(getApplicationContext()).resetPwd(mobile,"mobile",mobile)
+        RetrofitUtil.getHttpService(getApplicationContext()).resetPwd(mobile, "mobile", mobile)
                 .compose(new RetrofitUtil.CommonOptions<BaseResult>())
                 .subscribe(new CodeHandledSubscriber<BaseResult>() {
                     @Override

@@ -163,9 +163,9 @@ class CustomJavaScriptsInterface constructor(
     fun reportSearchItemsV2(arrayString: String) {
         if (!TextUtils.isEmpty(arrayString)) {
             val msg = Gson().fromJson(arrayString, MenuResult::class.java)
-            if (msg != null && msg.data.isNotEmpty()) {
+            if (msg?.data != null && msg.data.isNotEmpty()) {
                 for (menu in msg.data) {
-                    if (menu.data!!.isNotEmpty()) {
+                    if (menu.data != null && menu.data!!.isNotEmpty()) {
                         if ("location" == menu.type) {
                             mView.locationDataList = menu.data!!
                             val selectedItemPath = String.format("%s.selected_item", FileUtil.reportJavaScriptDataPath(globalContext, mView.groupId, mView.templateId, mView.reportId))
