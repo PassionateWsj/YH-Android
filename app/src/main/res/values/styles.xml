@@ -22,7 +22,7 @@
         <item name="android:windowNoTitle">true</item>
         <item name="actionBarSize">50dp</item>
         <!-- 将 Activity 的 Theme 设置成透明 -->
-        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowIsTranslucent">false</item>
     </style>
 
     <!-- Application theme. -->

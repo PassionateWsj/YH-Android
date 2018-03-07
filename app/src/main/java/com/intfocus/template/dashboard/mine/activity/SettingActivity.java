@@ -17,6 +17,7 @@ import com.intfocus.template.R;
 import com.intfocus.template.ui.BaseActivity;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * @author liuruilin
@@ -35,7 +36,7 @@ public class SettingActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
 //        x.view().inject(this);
-        mActionBar = (RelativeLayout) findViewById(R.id.rl_action_bar);
+        mActionBar = findViewById(R.id.rl_action_bar);
         initShow();
         mSharedPreferences = getSharedPreferences("SettingPreference", MODE_PRIVATE);
         initSettingListItem();
@@ -59,9 +60,7 @@ public class SettingActivity extends BaseActivity {
         ArrayList<String> listItem = new ArrayList<>();
         String[] itemName = {"基本信息", "选项配置", "消息推送", "更新日志"};
 
-        for (int i = 0; i < itemName.length; i++) {
-            listItem.add(itemName[i]);
-        }
+        Collections.addAll(listItem, itemName);
 
         mListAdapter = new ArrayAdapter(this, R.layout.list_item_setting, R.id.item_setting, listItem);
 

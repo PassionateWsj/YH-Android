@@ -25,37 +25,28 @@ import java.util.Map;
  */
 public class DaoSession extends AbstractDaoSession {
 
-    private final DaoConfig collectionDaoConfig;
-    private final DaoConfig pushMsgBeanDaoConfig;
-    private final DaoConfig reportDaoConfig;
-    private final DaoConfig sourceDaoConfig;
+    private final DaoConfig concernFilterBeanDaoConfig;
     private final DaoConfig attentionedItemDaoConfig;
     private final DaoConfig attentionItemDaoConfig;
-    private final DaoConfig concernFilterBeanDaoConfig;
+    private final DaoConfig collectionDaoConfig;
+    private final DaoConfig pushMsgBeanDaoConfig;
+    private final DaoConfig sourceDaoConfig;
+    private final DaoConfig reportDaoConfig;
 
-    private final CollectionDao collectionDao;
-    private final PushMsgBeanDao pushMsgBeanDao;
-    private final ReportDao reportDao;
-    private final SourceDao sourceDao;
+    private final ConcernFilterBeanDao concernFilterBeanDao;
     private final AttentionedItemDao attentionedItemDao;
     private final AttentionItemDao attentionItemDao;
-    private final ConcernFilterBeanDao concernFilterBeanDao;
+    private final CollectionDao collectionDao;
+    private final PushMsgBeanDao pushMsgBeanDao;
+    private final SourceDao sourceDao;
+    private final ReportDao reportDao;
 
     public DaoSession(Database db, IdentityScopeType type, Map<Class<? extends AbstractDao<?, ?>>, DaoConfig>
             daoConfigMap) {
         super(db);
 
-        collectionDaoConfig = daoConfigMap.get(CollectionDao.class).clone();
-        collectionDaoConfig.initIdentityScope(type);
-
-        pushMsgBeanDaoConfig = daoConfigMap.get(PushMsgBeanDao.class).clone();
-        pushMsgBeanDaoConfig.initIdentityScope(type);
-
-        reportDaoConfig = daoConfigMap.get(ReportDao.class).clone();
-        reportDaoConfig.initIdentityScope(type);
-
-        sourceDaoConfig = daoConfigMap.get(SourceDao.class).clone();
-        sourceDaoConfig.initIdentityScope(type);
+        concernFilterBeanDaoConfig = daoConfigMap.get(ConcernFilterBeanDao.class).clone();
+        concernFilterBeanDaoConfig.initIdentityScope(type);
 
         attentionedItemDaoConfig = daoConfigMap.get(AttentionedItemDao.class).clone();
         attentionedItemDaoConfig.initIdentityScope(type);
@@ -63,50 +54,47 @@ public class DaoSession extends AbstractDaoSession {
         attentionItemDaoConfig = daoConfigMap.get(AttentionItemDao.class).clone();
         attentionItemDaoConfig.initIdentityScope(type);
 
-        concernFilterBeanDaoConfig = daoConfigMap.get(ConcernFilterBeanDao.class).clone();
-        concernFilterBeanDaoConfig.initIdentityScope(type);
+        collectionDaoConfig = daoConfigMap.get(CollectionDao.class).clone();
+        collectionDaoConfig.initIdentityScope(type);
 
-        collectionDao = new CollectionDao(collectionDaoConfig, this);
-        pushMsgBeanDao = new PushMsgBeanDao(pushMsgBeanDaoConfig, this);
-        reportDao = new ReportDao(reportDaoConfig, this);
-        sourceDao = new SourceDao(sourceDaoConfig, this);
+        pushMsgBeanDaoConfig = daoConfigMap.get(PushMsgBeanDao.class).clone();
+        pushMsgBeanDaoConfig.initIdentityScope(type);
+
+        sourceDaoConfig = daoConfigMap.get(SourceDao.class).clone();
+        sourceDaoConfig.initIdentityScope(type);
+
+        reportDaoConfig = daoConfigMap.get(ReportDao.class).clone();
+        reportDaoConfig.initIdentityScope(type);
+
+        concernFilterBeanDao = new ConcernFilterBeanDao(concernFilterBeanDaoConfig, this);
         attentionedItemDao = new AttentionedItemDao(attentionedItemDaoConfig, this);
         attentionItemDao = new AttentionItemDao(attentionItemDaoConfig, this);
-        concernFilterBeanDao = new ConcernFilterBeanDao(concernFilterBeanDaoConfig, this);
+        collectionDao = new CollectionDao(collectionDaoConfig, this);
+        pushMsgBeanDao = new PushMsgBeanDao(pushMsgBeanDaoConfig, this);
+        sourceDao = new SourceDao(sourceDaoConfig, this);
+        reportDao = new ReportDao(reportDaoConfig, this);
 
-        registerDao(Collection.class, collectionDao);
-        registerDao(PushMsgBean.class, pushMsgBeanDao);
-        registerDao(Report.class, reportDao);
-        registerDao(Source.class, sourceDao);
+        registerDao(ConcernFilterBean.class, concernFilterBeanDao);
         registerDao(AttentionedItem.class, attentionedItemDao);
         registerDao(AttentionItem.class, attentionItemDao);
-        registerDao(ConcernFilterBean.class, concernFilterBeanDao);
+        registerDao(Collection.class, collectionDao);
+        registerDao(PushMsgBean.class, pushMsgBeanDao);
+        registerDao(Source.class, sourceDao);
+        registerDao(Report.class, reportDao);
     }
     
     public void clear() {
-        collectionDaoConfig.clearIdentityScope();
-        pushMsgBeanDaoConfig.clearIdentityScope();
-        reportDaoConfig.clearIdentityScope();
-        sourceDaoConfig.clearIdentityScope();
+        concernFilterBeanDaoConfig.clearIdentityScope();
         attentionedItemDaoConfig.clearIdentityScope();
         attentionItemDaoConfig.clearIdentityScope();
-        concernFilterBeanDaoConfig.clearIdentityScope();
+        collectionDaoConfig.clearIdentityScope();
+        pushMsgBeanDaoConfig.clearIdentityScope();
+        sourceDaoConfig.clearIdentityScope();
+        reportDaoConfig.clearIdentityScope();
     }
 
-    public CollectionDao getCollectionDao() {
-        return collectionDao;
-    }
-
-    public PushMsgBeanDao getPushMsgBeanDao() {
-        return pushMsgBeanDao;
-    }
-
-    public ReportDao getReportDao() {
-        return reportDao;
-    }
-
-    public SourceDao getSourceDao() {
-        return sourceDao;
+    public ConcernFilterBeanDao getConcernFilterBeanDao() {
+        return concernFilterBeanDao;
     }
 
     public AttentionedItemDao getAttentionedItemDao() {
@@ -117,8 +105,20 @@ public class DaoSession extends AbstractDaoSession {
         return attentionItemDao;
     }
 
-    public ConcernFilterBeanDao getConcernFilterBeanDao() {
-        return concernFilterBeanDao;
+    public CollectionDao getCollectionDao() {
+        return collectionDao;
+    }
+
+    public PushMsgBeanDao getPushMsgBeanDao() {
+        return pushMsgBeanDao;
+    }
+
+    public SourceDao getSourceDao() {
+        return sourceDao;
+    }
+
+    public ReportDao getReportDao() {
+        return reportDao;
     }
 
 }
