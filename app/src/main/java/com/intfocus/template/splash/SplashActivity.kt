@@ -257,7 +257,7 @@ class SplashActivity : Activity(), Animation.AnimationListener {
                 if (ConfigConstants.LOGIN_WITH_LAST_USER && mUserSP.getBoolean(Params.IS_LOGIN, false) && mSettingSP.getBoolean(Params.AUTO_LOGIN, false)) {
                     val pageLinkManagerSP = this@SplashActivity.getSharedPreferences("PageLinkManager", Context.MODE_PRIVATE)
                     val pageSaved = pageLinkManagerSP.getBoolean("pageSaved", false)
-                    if (ConfigConstants.REVIEW_LAST_PAGE && pageSaved) {
+                    if (ConfigConstants.REVIEW_LAST_PAGE && pageSaved && mSettingSP.getBoolean(Params.REVIEW_LAST_PAGE, false)) {
                         val objTitle = pageLinkManagerSP.getString("objTitle", "")
                         val link = pageLinkManagerSP.getString("link", "")
                         val objectId = pageLinkManagerSP.getString("objectId", "-1")

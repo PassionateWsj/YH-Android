@@ -2,7 +2,7 @@ package com.intfocus.template.subject.seven.indicatorlist
 
 import com.intfocus.template.base.BasePresenter
 import com.intfocus.template.base.BaseView
-import com.intfocus.template.model.response.attention.ConcernedListData
+import com.intfocus.template.subject.seven.bean.ConcernItemsBean
 
 /**
  * ****************************************************
@@ -16,13 +16,12 @@ import com.intfocus.template.model.response.attention.ConcernedListData
 interface IndicatorListContract {
     interface View : BaseView<Presenter> {
         // 展示数据
-        fun showConcernedListData(data: ConcernedListData)
-        fun updateConcernedListTitle(title: String)
+        fun showConcernedListData(data: List<ConcernItemsBean.ConcernItem>)
     }
 
     interface Presenter : BasePresenter {
-        fun loadConcernedList()
+        fun loadConcernedList(id: String, rep: String)
         fun updateConcernedList()
-        fun loadConcernedListData(filterId:String, concernedId:Array<String>)
+        fun loadConcernedListData(filterId: String, concernedId: Array<String>)
     }
 }

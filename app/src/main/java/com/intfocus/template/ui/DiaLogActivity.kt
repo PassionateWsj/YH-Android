@@ -1,6 +1,7 @@
 package com.intfocus.template.ui
 
 import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import com.intfocus.template.R
 import com.intfocus.template.model.entity.PushMsgBean
@@ -21,7 +22,10 @@ class DiaLogActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dialog)
+        intent?.let { initDiaLog(it) }
+    }
 
+    private fun initDiaLog(intent: Intent) {
         val pushMsg = PushMsgBean()
 
         pushMsg.body_title = intent.getStringExtra("body_title") ?: ""
@@ -56,5 +60,10 @@ class DiaLogActivity : Activity() {
             }
         }
         selfDialog.show()
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        intent?.let { initDiaLog(it) }
     }
 }

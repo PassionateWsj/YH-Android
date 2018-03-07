@@ -20,7 +20,7 @@ public class PushMsgBean {
     Long id;
 
     /**
-     * AmIpKqkMdFACG4PW7M128GZxjznNYM2I1B292EokC0Vg
+     * AmIpKqkMdFACG4PW7M128Gao-zt1uhf6zzupgqYk6xpF
      * {
      * "msg_id":"ul42751150157385157100",
      * "display_type":"notification",

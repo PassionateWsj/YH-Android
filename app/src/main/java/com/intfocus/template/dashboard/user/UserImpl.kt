@@ -12,7 +12,6 @@ import com.intfocus.template.general.net.RetrofitUtil
 import com.intfocus.template.model.response.BaseResult
 import com.intfocus.template.model.response.mine_page.UserInfoResult
 import com.intfocus.template.util.*
-import com.taobao.accs.utl.UtilityImpl
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -115,7 +114,7 @@ class UserImpl : UserModel {
     override fun logout(ctx: Context, callBack: UserModel.LogoutCallback) {
         val mUserSP = ctx.getSharedPreferences(USER_BEAN, Context.MODE_PRIVATE)
         // 判断有无网络
-        if (!UtilityImpl.isNetworkConnected(ctx)) {
+        if (!HttpUtil.isConnected(ctx)) {
             callBack.logoutFailure("未连接网络, 无法退出")
             return
         }

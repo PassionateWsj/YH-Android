@@ -19,11 +19,11 @@ import com.intfocus.template.constant.Params.OBJECT_TYPE
 import com.intfocus.template.constant.Params.TEMPLATE_ID
 import com.intfocus.template.constant.Params.USER_NUM
 import com.intfocus.template.filter.FilterDialogFragment
-import com.intfocus.template.model.entity.Report
+import com.intfocus.template.model.response.attention.Test2
 import com.intfocus.template.model.response.filter.MenuItem
 import com.intfocus.template.subject.nine.CollectionModelImpl.Companion.uuid
 import com.intfocus.template.subject.one.entity.Filter
-import com.intfocus.template.subject.one.module.banner.BannerFragment
+import com.intfocus.template.subject.seven.bean.ConcernComponentBean
 import com.intfocus.template.subject.seven.concernlist.ConcernListActivity
 import com.intfocus.template.subject.seven.indicatorgroup.IndicatorGroupFragment
 import com.intfocus.template.subject.seven.indicatorlist.IndicatorListFragment
@@ -80,7 +80,7 @@ class MyConcernActivity : BaseActivity(), MyConcernContract.View, FilterDialogFr
 
     private fun initShow() {
         if (Build.VERSION.SDK_INT >= 21 && ConfigConstants.ENABLE_FULL_SCREEN_UI) {
-            rl_action_bar.post{
+            rl_action_bar.post {
                 BarUtils.addMarginTopEqualStatusBarHeight(rl_action_bar)
             }
         }
@@ -99,7 +99,7 @@ class MyConcernActivity : BaseActivity(), MyConcernContract.View, FilterDialogFr
 
         uuid = reportId + templateId + groupId
 
-        presenter.loadData(this, groupId, templateId, reportId)
+        presenter.loadFilterData()
     }
 
     private fun initView() {
@@ -112,28 +112,37 @@ class MyConcernActivity : BaseActivity(), MyConcernContract.View, FilterDialogFr
         }
     }
 
-    override fun generateReportItemView(reports: List<Report>) {
-
-        Observable.from(reports)
+    override fun generateReportItemViews(data: List<ConcernComponentBean.ConcernComponent>) {
+        Observable.from(data)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
                     when (it.type) {
-                        //标题栏
-                        "banner" -> {
-                            addItemView(BannerFragment.newInstance(0, it.index))
+                    //标题栏
+//                        "banner" -> {
+//                            addItemView(BannerFragment.newInstance(0, data.indexOf(it)))
+//                        }
+                    // 横向滑动单值组件列表
+                        "concern_group" -> {
+                            if (it.control_id != null && it.rep_code != null) {
+                                addItemView(IndicatorGroupFragment().newInstance(it.control_id, it.rep_code))
+                            }
                         }
-                        // 横向滑动单值组件列表
-                        "concern_group"->{
-                            addItemView(IndicatorGroupFragment().newInstance(it.config))
-                        }
-                        // 可拓展的关注单品列表，拓展内容为 横向滑动单值组件列表
-                        "concern_list"->{
-                            val indicatorListFragment = IndicatorListFragment().newInstance()
-                            addItemView(indicatorListFragment)
-                            IndicatorListPresenter(IndicatorListModelImpl.getInstance(),indicatorListFragment)
+                    // 可拓展的关注单品列表，拓展内容为 横向滑动单值组件列表
+                        "concern_list" -> {
+                            if (it.control_id != null && it.rep_code != null) {
+                                val indicatorListFragment = IndicatorListFragment().newInstance(it.control_id, it.rep_code)
+                                addItemView(indicatorListFragment)
+                                IndicatorListPresenter(IndicatorListModelImpl.getInstance(), indicatorListFragment)
+                            }
                         }
                     }
                 }
+    }
+
+    override fun initFilterView(data: Test2, filter: Filter) {
+        if (null != filter.data) {
+            initFilter(filter)
+        }
 
     }
 
@@ -167,9 +176,16 @@ class MyConcernActivity : BaseActivity(), MyConcernContract.View, FilterDialogFr
      * 初始化筛选框
      */
     private fun initFilter(filter: Filter) {
-        filter.data?.let { it[0].id?.let { currentFilterId = it } }
-        this.filterDataList = filter.data!!
-        this.filterDisplay = filter.display!!
+        filter.data?.let {
+            filterDataList = it
+            it[0].id?.let { currentFilterId = it }
+        }
+        filter.default_id?.let {
+            currentFilterId = it
+        }
+        filter.display?.let {
+            filterDisplay = it
+        }
         if (filterDataList.isEmpty()) {
             ll_filter.visibility = View.GONE
         } else {

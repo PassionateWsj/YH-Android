@@ -141,8 +141,8 @@ android {
             dimension "APP"
 
             applicationId 'com.intfocus.shengyiplus'
-            versionCode 76
-            versionName "1.7.06"
+            versionCode 80
+            versionName "1.7.10"
 
             buildConfigField "String", "BASE_URL", SHENGYIPLUS_BASE_URL
             buildConfigField "String", "PGYER_URL", SHENGYIPLUS_PGYER_URL
@@ -482,8 +482,9 @@ dependencies {
     implementation "org.greenrobot:greendao:$rootProject.greenDAO_version"
     implementation 'com.j256.ormlite:ormlite-android:5.0'
 
-//    // 腾讯 TBS 浏览器
-//    implementation files('libs/tbs_sdk_3.5.jar')
+    //    // 腾讯 TBS 浏览器
+
+    //    implementation files('libs/tbs_sdk_3.5.jar')
 
     // 事件
     implementation 'org.greenrobot:eventbus:3.0.0'
@@ -494,13 +495,14 @@ dependencies {
 
     // JakeWharton大神的Scalpel
     implementation 'com.jakewharton.scalpel:scalpel:1.1.2'
-//    implementation 'com.squareup.okhttp3:okhttp:3.8.1'
 
+    //    implementation 'com.squareup.okhttp3:okhttp:3.8.1'
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.30'
     implementation 'com.github.anzaizai:EasySwipeMenuLayout:1.1.2'
 
     //Utils
     implementation 'com.blankj:utilcode:1.12.0'
+    implementation files('libs/commons-codec-1.11.jar')
 }
 
 greendao {

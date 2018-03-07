@@ -9,6 +9,7 @@ import java.util.*
  * @describe
  */
 class Filter {
+    var default_id: String? = null
     var display: String? = null
     var data: ArrayList<MenuItem>? = null
 }

@@ -3,8 +3,9 @@ package com.intfocus.template.subject.seven
 import android.content.Context
 import com.intfocus.template.base.BasePresenter
 import com.intfocus.template.base.BaseView
-import com.intfocus.template.model.entity.Report
+import com.intfocus.template.model.response.attention.Test2
 import com.intfocus.template.subject.one.entity.Filter
+import com.intfocus.template.subject.seven.bean.ConcernComponentBean
 
 /**
  * ****************************************************
@@ -19,12 +20,14 @@ interface MyConcernContract {
     interface View : BaseView<Presenter> {
         // 检查数据是否有更新
         fun initFilterView(filter: Filter)
-        fun generateReportItemView(reports: List<Report>)
+        fun initFilterView(data: Test2, filter: Filter)
+        fun generateReportItemViews(data: List<ConcernComponentBean.ConcernComponent>)
     }
 
     interface Presenter : BasePresenter {
         fun loadData(ctx: Context, groupId: String, templateId: String, reportId: String)
         fun loadData(userNum: String)
-        fun loadData(userNum: String, filterId: String)
+        fun loadFilterData()
+        fun loadData(uuid: String, obj_num: String)
     }
 }

@@ -133,24 +133,6 @@ object PageLinkManage {
             var intent: Intent? = null
 
             when (templateId) {
-//                TEMPLATE_TWO -> {
-                TEMPLATE_SEVEN -> {
-                    mClickTemplateName = "模板七"
-                    intent = Intent(context, MyConcernActivity::class.java)
-                    intent.flags = if (fromPushMsg) {
-                        Intent.FLAG_ACTIVITY_NEW_TASK
-                    } else {
-                        savePageLink(context, objTitle, link, objectId, templateId, objectType)
-                        Intent.FLAG_ACTIVITY_SINGLE_TOP
-                    }
-                    intent.putExtra(GROUP_ID, groupID)
-                    intent.putExtra(TEMPLATE_ID, templateId)
-                    intent.putExtra(BANNER_NAME, objTitle)
-                    intent.putExtra(LINK, link)
-                    intent.putExtra(OBJECT_ID, objectId)
-                    intent.putExtra(OBJECT_TYPE, objectType)
-//                    context.startActivity(intent)
-                }
                 TEMPLATE_ONE -> {
                     mClickTemplateName = "模板一"
                     savePageLink(context, objTitle, link, objectId, templateId, objectType)
@@ -166,7 +148,6 @@ object PageLinkManage {
                     intent.putExtra(LINK, link)
                     intent.putExtra(OBJECT_ID, objectId)
                     intent.putExtra(OBJECT_TYPE, objectType)
-//                    context.startActivity(intent)
                 }
                 TEMPLATE_TEN -> {
                     mClickTemplateName = "模板十"
@@ -183,7 +164,6 @@ object PageLinkManage {
                     intent.putExtra(LINK, link)
                     intent.putExtra(OBJECT_ID, objectId)
                     intent.putExtra(OBJECT_TYPE, objectType)
-//                    context.startActivity(intent)
                 }
                 TEMPLATE_TWO -> {
                     mClickTemplateName = "模板二"
@@ -198,7 +178,6 @@ object PageLinkManage {
                     intent.putExtra(LINK, link)
                     intent.putExtra(OBJECT_ID, objectId)
                     intent.putExtra(OBJECT_TYPE, objectType)
-//                    context.startActivity(intent)
                 }
                 TEMPLATE_FOUR -> {
                     mClickTemplateName = "模板四"
@@ -214,7 +193,6 @@ object PageLinkManage {
                     intent.putExtra(LINK, link)
                     intent.putExtra(OBJECT_ID, objectId)
                     intent.putExtra(OBJECT_TYPE, objectType)
-//                    context.startActivity(intent)
                 }
                 TEMPLATE_THREE -> {
                     mClickTemplateName = "模板三"
@@ -231,7 +209,22 @@ object PageLinkManage {
                     intent.putExtra(LINK, link)
                     intent.putExtra(OBJECT_ID, objectId)
                     intent.putExtra(OBJECT_TYPE, objectType)
-//                    context.startActivity(intent)
+                }
+                TEMPLATE_SEVEN -> {
+                    mClickTemplateName = "模板七"
+                    intent = Intent(context, MyConcernActivity::class.java)
+                    intent.flags = if (fromPushMsg) {
+                        Intent.FLAG_ACTIVITY_NEW_TASK
+                    } else {
+                        savePageLink(context, objTitle, link, objectId, templateId, objectType)
+                        Intent.FLAG_ACTIVITY_SINGLE_TOP
+                    }
+                    intent.putExtra(GROUP_ID, groupID)
+                    intent.putExtra(TEMPLATE_ID, templateId)
+                    intent.putExtra(BANNER_NAME, objTitle)
+                    intent.putExtra(LINK, link)
+                    intent.putExtra(OBJECT_ID, objectId)
+                    intent.putExtra(OBJECT_TYPE, objectType)
                 }
                 TEMPLATE_NINE -> {
                     mClickTemplateName = "模板九"
@@ -248,7 +241,6 @@ object PageLinkManage {
                     intent.putExtra(LINK, link)
                     intent.putExtra(OBJECT_ID, objectId)
                     intent.putExtra(OBJECT_TYPE, objectType)
-//                    context.startActivity(intent)
                 }
                 EXTERNAL_LINK, TEMPLATE_SIX -> {
                     mClickTemplateName = "外部链接"
@@ -268,7 +260,6 @@ object PageLinkManage {
                     intent.putExtra(LINK, urlString)
                     intent.putExtra(OBJECT_ID, objectId)
                     intent.putExtra(OBJECT_TYPE, objectType)
-//                    context.startActivity(intent)
                 }
                 SCANNER -> {
                     mClickTemplateName = "扫一扫"
@@ -285,7 +276,6 @@ object PageLinkManage {
                     }
                     intent.putExtra(BarCodeScannerActivity.INTENT_FOR_RESULT, false)
                     intent.putExtra(LINK, urlString)
-//                    context.startActivity(intent)
                 }
                 PUSH_MESSAGE_LIST -> {
                     mClickTemplateName = "消息列表"
@@ -296,7 +286,6 @@ object PageLinkManage {
                         savePageLink(context, objTitle, link, objectId, templateId, objectType)
                         Intent.FLAG_ACTIVITY_SINGLE_TOP
                     }
-//                    context.startActivity(intent)
                 }
                 FEEDBACK -> {
                     mClickTemplateName = "问题反馈"
@@ -307,7 +296,6 @@ object PageLinkManage {
                         savePageLink(context, objTitle, link, objectId, templateId, objectType)
                         Intent.FLAG_ACTIVITY_SINGLE_TOP
                     }
-//                    context.startActivity(intent)
                 }
 
                 else -> showTemplateErrorDialog(context)

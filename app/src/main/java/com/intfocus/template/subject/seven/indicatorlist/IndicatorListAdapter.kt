@@ -12,8 +12,8 @@ import android.widget.BaseExpandableListAdapter
 import android.widget.TextView
 import com.alibaba.fastjson.JSON
 import com.intfocus.template.R
-import com.intfocus.template.model.response.attention.Test2
-import com.intfocus.template.subject.one.entity.SingleValue
+import com.intfocus.template.subject.seven.bean.ConcernGroupBean
+import com.intfocus.template.subject.seven.bean.ConcernItemsBean
 import com.intfocus.template.subject.seven.indicatorgroup.IndicatorGroupAdapter
 import com.intfocus.template.subject.seven.listener.EventRefreshIndicatorListItemData
 import com.intfocus.template.subject.seven.listener.IndicatorListItemDataUpdateListener
@@ -37,7 +37,7 @@ import java.io.IOException
  * desc:
  * ****************************************************
  */
-class IndicatorListAdapter(private val mCtx: Context, val fragment: Fragment, val data: List<Test2.DataBeanXX.AttentionedDataBean>) : BaseExpandableListAdapter(), IndicatorListItemDataUpdateListener {
+class IndicatorListAdapter(private val mCtx: Context, val fragment: Fragment, private var mGroupData: MutableList<ConcernItemsBean.ConcernItem>? = null) : BaseExpandableListAdapter(), IndicatorListItemDataUpdateListener {
     companion object {
         val CODE_EVENT_REFRESH_INDICATOR_LIST_ITEM_DATA = 1
     }
@@ -60,10 +60,10 @@ class IndicatorListAdapter(private val mCtx: Context, val fragment: Fragment, va
 
     override fun getGroupId(groupPosition: Int): Long = groupPosition.toLong()
 
-    override fun getGroupCount(): Int = data.size
+    override fun getGroupCount(): Int = mGroupData?.size ?: 0
 
 
-    override fun getGroup(groupPosition: Int): Test2.DataBeanXX.AttentionedDataBean = data[groupPosition]
+    override fun getGroup(groupPosition: Int): ConcernItemsBean.ConcernItem = mGroupData?.get(groupPosition) ?: ConcernItemsBean.ConcernItem()
 
     override fun getGroupView(groupPosition: Int, isExpanded: Boolean, convertView: View?, parent: ViewGroup?): View {
         var view: View? = null
@@ -79,8 +79,8 @@ class IndicatorListAdapter(private val mCtx: Context, val fragment: Fragment, va
             groupHolder.tvValue = view.findViewById(R.id.tv_item_indicator_list_group_value)
             view.tag = groupHolder
         }
-        getGroup(groupPosition).attention_item_name?.let { groupHolder.tvName?.text = it }
-        getGroup(groupPosition).attention_item_id?.let { groupHolder.tvId?.text = it }
+        groupHolder.tvName?.text = getGroup(groupPosition).obj_name
+        groupHolder.tvId?.text = getGroup(groupPosition).obj_id
         RxBusUtil.getInstance().toObservable(EventRefreshIndicatorListItemData::class.java)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -90,7 +90,8 @@ class IndicatorListAdapter(private val mCtx: Context, val fragment: Fragment, va
                     firstUpdateData = false
 
                     val data = getChild(groupPosition, 0)[event.childPosition]
-                    if (data.isReal_time) {
+//                    if (data.real_time) {
+                    if (false) {
 //            data.real_time_api?.let {
                         testApi.let {
                             OKHttpUtils.newInstance().getAsyncData(it, object : OKHttpUtils.OnResultListener {
@@ -99,18 +100,20 @@ class IndicatorListAdapter(private val mCtx: Context, val fragment: Fragment, va
                                 }
 
                                 override fun onSuccess(call: Call?, response: String?) {
-                                    val itemData = JSON.parseObject(LoadAssetsJsonUtil.getAssetsJsonData(data.real_time_api), SingleValue::class.java)
-                                    data.main_data = itemData.main_data
-                                    data.sub_data = itemData.sub_data
-                                    data.state = itemData.state
-                                    data.isReal_time = false
+                                    val itemData = JSON.parseObject(LoadAssetsJsonUtil.getAssetsJsonData(data.real_time_api!!), ConcernGroupBean.ConcernGroup::class.java)
+                                    data.main_data_data = itemData.main_data_data
+                                    data.sub_data_data = itemData.sub_data_data
+                                    data.state_color = itemData.state_color
+                                    data.real_time = false
                                     data.let {
-                                        groupHolder.tvValue?.text = it.main_data.data
-                                        groupHolder.tvValue?.setTextColor(coCursor[it.state.color % coCursor.size])
-                                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                                            groupHolder.tvValue?.background = mCtx.getDrawable(bgList[it.state.color % coCursor.size])
-                                        } else {
-                                            groupHolder.tvValue?.background = mCtx.resources.getDrawable(bgList[it.state.color % coCursor.size])
+                                        groupHolder.tvValue?.text = it.main_data_data.toString()
+                                        it.state_color?.let {
+                                            groupHolder.tvValue?.setTextColor(coCursor[it.rem(coCursor.size)])
+                                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                                groupHolder.tvValue?.background = mCtx.getDrawable(bgList[it.rem(coCursor.size)])
+                                            } else {
+                                                groupHolder.tvValue?.background = mCtx.resources.getDrawable(bgList[it.rem(coCursor.size)])
+                                            }
                                         }
                                         currentItemDataIndex = event.childPosition
                                     }
@@ -119,12 +122,18 @@ class IndicatorListAdapter(private val mCtx: Context, val fragment: Fragment, va
                         }
                     } else {
                         data.let {
-                            groupHolder.tvValue?.text = it.main_data.data
-                            groupHolder.tvValue?.setTextColor(coCursor[it.state.color % coCursor.size])
+                            groupHolder.tvValue?.text = it.main_data_data.toString()
+                            it.state_color?.let {
+                                groupHolder.tvValue?.setTextColor(coCursor[it.rem(coCursor.size)])
+                            }
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                                groupHolder.tvValue?.background = mCtx.getDrawable(bgList[it.state.color % coCursor.size])
+                                it.state_color?.let {
+                                    groupHolder.tvValue?.background = mCtx.getDrawable(bgList[it.rem(coCursor.size)])
+                                }
                             } else {
-                                groupHolder.tvValue?.background = mCtx.resources.getDrawable(bgList[it.state.color % coCursor.size])
+                                it.state_color?.let {
+                                    groupHolder.tvValue?.background = mCtx.resources.getDrawable(bgList[it.rem(coCursor.size)])
+                                }
                             }
                             currentItemDataIndex = event.childPosition
                         }
@@ -132,12 +141,14 @@ class IndicatorListAdapter(private val mCtx: Context, val fragment: Fragment, va
                 }
 //        if (firstUpdateData) {
         val itemData = getChild(groupPosition, 0)[currentItemDataIndex]
-        groupHolder.tvValue?.text = itemData.main_data.data
-        groupHolder.tvValue?.setTextColor(coCursor[itemData.state.color % coCursor.size])
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            groupHolder.tvValue?.background = mCtx.getDrawable(bgList[itemData.state.color % coCursor.size])
-        } else {
-            groupHolder.tvValue?.background = mCtx.resources.getDrawable(bgList[itemData.state.color % coCursor.size])
+        groupHolder.tvValue?.text = itemData.main_data_data.toString()
+        itemData.state_color?.let {
+            groupHolder.tvValue?.setTextColor(coCursor[it.rem(coCursor.size)])
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                groupHolder.tvValue?.background = mCtx.getDrawable(bgList[it.rem(coCursor.size)])
+            } else {
+                groupHolder.tvValue?.background = mCtx.resources.getDrawable(bgList[it.rem(coCursor.size)])
+            }
         }
         groupHolder.tvValue?.setOnClickListener {
             currentItemDataIndex += 1
@@ -147,9 +158,11 @@ class IndicatorListAdapter(private val mCtx: Context, val fragment: Fragment, va
         return view
     }
 
-    override fun getChildrenCount(groupPosition: Int): Int = 1
+    override fun getChildrenCount(groupPosition: Int): Int = if (0 != mGroupData?.get(groupPosition)?.concern_item_group_list?.size ?: 0) 1 else 0
 
-    override fun getChild(groupPosition: Int, childPosition: Int): List<SingleValue> = getGroup(groupPosition).attention_item_data
+    override
+
+    fun getChild(groupPosition: Int, childPosition: Int): List<ConcernGroupBean.ConcernGroup> = mGroupData?.get(groupPosition)?.concern_item_group_list ?: mutableListOf()
 
     override fun getChildId(groupPosition: Int, childPosition: Int): Long = childPosition.toLong()
 
@@ -172,8 +185,11 @@ class IndicatorListAdapter(private val mCtx: Context, val fragment: Fragment, va
         return view
     }
 
-    fun setData() {
-
+    fun setGroupData(groupData: List<ConcernItemsBean.ConcernItem>) {
+        mGroupData = mGroupData ?: mutableListOf()
+        mGroupData?.clear()
+        mGroupData?.addAll(groupData)
+        notifyDataSetChanged()
     }
 
     override fun dataUpdated(pos: Int) {

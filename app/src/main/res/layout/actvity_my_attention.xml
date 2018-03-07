@@ -18,6 +18,7 @@
             android:onClick="dismissActivity"/>
 
         <ImageView
+            android:visibility="gone"
             android:id="@+id/iv_attention"
             style="@style/BannerRightButton"
             android:layout_centerVertical="true"
@@ -44,7 +45,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/rl_action_bar"
         android:orientation="vertical"
-        android:visibility="visible">
+        android:visibility="gone">
 
         <View
             android:layout_width="match_parent"
@@ -130,7 +131,7 @@
                     android:text="2017/05/27 13:24"
                     android:textColor="@color/black_51_51_51"
                     android:textSize="12sp"
-                    android:visibility="visible"/>
+                    android:visibility="gone"/>
 
             </LinearLayout>
 

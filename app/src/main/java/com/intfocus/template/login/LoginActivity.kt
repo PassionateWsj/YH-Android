@@ -22,9 +22,9 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import com.google.gson.Gson
-import com.intfocus.template.BuildConfig
 import com.intfocus.template.ConfigConstants
 import com.intfocus.template.R
+import com.intfocus.template.constant.Params
 import com.intfocus.template.constant.Params.ACTION
 import com.intfocus.template.constant.Params.APP_HOST
 import com.intfocus.template.constant.Params.APP_ID
@@ -422,12 +422,12 @@ class LoginActivity : BaseActivity() {
                                         if (data.data[which].app_ip != null && data.data[which].app_ip != "") {
                                             mProgressDialog = ProgressDialog.show(this@LoginActivity, "稍等", "验证用户信息...")
 
-                                            if (BuildConfig.APPLICATION_ID == "com.intfocus.shengyiplus" || BuildConfig.APPLICATION_ID == "com.intfocus.template") {
-                                                data.data[which].app_id?.let {
-                                                    AppEntranceChangeUtils.getInstance(this@LoginActivity).changeEntrance(it)
-                                                    AppEntranceChangeUtils.destroyInstance()
-                                                }
-                                            }
+//                                            if (BuildConfig.APPLICATION_ID == "com.intfocus.shengyiplus" || BuildConfig.APPLICATION_ID == "com.intfocus.template") {
+//                                                data.data[which].app_id?.let {
+//                                                    AppEntranceChangeUtils.getInstance(this@LoginActivity).changeEntrance(it)
+//                                                    AppEntranceChangeUtils.destroyInstance()
+//                                                }
+//                                            }
 
                                             data.data[which].app_ip?.let {
                                                 mUserSPEdit!!.putString(APP_HOST, it).apply()
@@ -528,7 +528,7 @@ class LoginActivity : BaseActivity() {
                             val pageLinkManagerSP = this@LoginActivity.getSharedPreferences("PageLinkManager", Context.MODE_PRIVATE)
                             val pageSaved = pageLinkManagerSP.getBoolean("pageSaved", false)
                             // 在报表页面结束应用，再次登录时是否自动跳转上次报表页面
-                            if (ConfigConstants.REVIEW_LAST_PAGE && pageSaved) {
+                            if (ConfigConstants.REVIEW_LAST_PAGE && pageSaved && mSettingSP!!.getBoolean(Params.REVIEW_LAST_PAGE, false)) {
                                 val objTitle = pageLinkManagerSP.getString("objTitle", "")
                                 val link = pageLinkManagerSP.getString("link", "")
                                 val objectId = pageLinkManagerSP.getString("objectId", "")

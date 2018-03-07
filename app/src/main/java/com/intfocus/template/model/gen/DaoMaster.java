@@ -27,6 +27,7 @@ public class DaoMaster extends AbstractDaoMaster {
         SourceDao.createTable(db, ifNotExists);
         AttentionedItemDao.createTable(db, ifNotExists);
         AttentionItemDao.createTable(db, ifNotExists);
+        ConcernFilterBeanDao.createTable(db, ifNotExists);
     }
 
     /** Drops underlying database table using DAOs. */
@@ -37,6 +38,7 @@ public class DaoMaster extends AbstractDaoMaster {
         SourceDao.dropTable(db, ifExists);
         AttentionedItemDao.dropTable(db, ifExists);
         AttentionItemDao.dropTable(db, ifExists);
+        ConcernFilterBeanDao.dropTable(db, ifExists);
     }
 
     /**
@@ -61,6 +63,7 @@ public class DaoMaster extends AbstractDaoMaster {
         registerDaoClass(SourceDao.class);
         registerDaoClass(AttentionedItemDao.class);
         registerDaoClass(AttentionItemDao.class);
+        registerDaoClass(ConcernFilterBeanDao.class);
     }
 
     public DaoSession newSession() {

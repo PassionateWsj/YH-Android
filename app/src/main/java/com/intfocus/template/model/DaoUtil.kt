@@ -39,4 +39,6 @@ object DaoUtil {
 
     fun getAttentionItemDao(): AttentionItemDao = daoSession!!.attentionItemDao
 
+    fun getConcernFilterBeanDao(): ConcernFilterBeanDao = daoSession!!.concernFilterBeanDao
+
 }

@@ -111,4 +111,5 @@
     <string name="status_item_collection_list_draft">草稿</string>
     <string name="title_item_collection_list">问题反馈</string>
     <string name="auto_login">自动登录</string>
+    <string name="save_last_report">报表自动跳转</string>
 </resources>

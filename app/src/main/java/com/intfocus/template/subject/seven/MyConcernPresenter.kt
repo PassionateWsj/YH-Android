@@ -1,8 +1,10 @@
 package com.intfocus.template.subject.seven
 
 import android.content.Context
+import com.intfocus.template.model.callback.LoadDataCallback
 import com.intfocus.template.model.entity.Report
 import com.intfocus.template.subject.one.entity.Filter
+import com.intfocus.template.subject.seven.bean.ConcernComponentBean
 
 /**
  * ****************************************************
@@ -14,7 +16,7 @@ import com.intfocus.template.subject.one.entity.Filter
  * ****************************************************
  */
 class MyConcernPresenter(
-        private val mModel: MyConcernModel,
+        private val mModel: MyConcernModel<List<ConcernComponentBean.ConcernComponent>>,
         private val mView: MyConcernContract.View
 ) : MyConcernContract.Presenter {
     init {
@@ -29,21 +31,40 @@ class MyConcernPresenter(
         loadData(userNum, "")
     }
 
-    override fun loadData(userNum: String, filterId: String) {
-//        mModel.getData(userNum, filterId, object : MyConcernModel.LoadDataCallback {
-//            override fun onDataLoaded(data: Test2, filter: Filter) {
-//                mView.initFilterView(data, filter)
-//            }
-//
-//            override fun onDataNotAvailable(e: Throwable) {
-//            }
-//        })
+    override fun loadFilterData() {
+        mModel.getFilterData(object : LoadDataCallback<Filter> {
+            override fun onSuccess(data: Filter) {
+                mView.initFilterView(data)
+                data.default_id?.let { loadData("", it) }
+            }
+
+            override fun onError(e: Throwable) {
+            }
+
+            override fun onComplete() {
+            }
+
+        })
+    }
+
+    override fun loadData(uuid: String, obj_num: String) {
+        mModel.getData(uuid, obj_num, object : LoadDataCallback<List<ConcernComponentBean.ConcernComponent>> {
+            override fun onSuccess(data: List<ConcernComponentBean.ConcernComponent>) {
+                mView.generateReportItemViews(data)
+            }
+
+            override fun onError(e: Throwable) {
+            }
+
+            override fun onComplete() {
+            }
+
+        })
     }
 
     override fun loadData(ctx: Context, groupId: String, templateId: String, reportId: String) {
-        mModel.getData(ctx, groupId, templateId, reportId,object : MyConcernModel.LoadReportsDataCallback{
+        mModel.getData(ctx, groupId, templateId, reportId, object : MyConcernModel.LoadReportsDataCallback {
             override fun onReportsDataLoaded(reports: List<Report>) {
-                mView.generateReportItemView(reports)
             }
 
             override fun onFilterDataLoaded(filter: Filter) {
@@ -54,14 +75,5 @@ class MyConcernPresenter(
 
             }
         })
-//        mModel.getData(reportId, templateId, groupId, object : ModeModel.LoadDataCallback {
-//            override fun onDataLoaded(reports: List<String>, filter: Filter) {
-//                mView.initFilterView(filter)
-//                mModel.queryPageData(reportId + templateId + groupId,pageId)
-//            }
-//
-//            override fun onDataNotAvailable(e: Throwable) {
-//            }
-//        })
     }
 }

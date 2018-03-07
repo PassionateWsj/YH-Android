@@ -104,6 +104,30 @@ public class OKHttpUtils {
     }
 
     //=======================================================================
+    // GET同步方式
+    //  因为结果集也就是,自带的两个回调方法是在子线程中执行的,所以每次我们调用都得发送到主线程
+    // 1. 把结果集想办法发送到主线程中   ---> Hanlder
+    // 2. 如何把结果集返回给调用者   ---> 接口回调方式
+    //=======================================================================
+    public String getSyncData(String url) {
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+        final Call call = mOkHttpClient.newCall(request);
+        Response response = null;
+        try {
+            response = call.execute();
+            String result = response.body().string();
+            if (result != null && !"".equals(result)) {
+                return result;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+    //=======================================================================
     // Post请求方式
     //=======================================================================
     public void postAsnycData(Map<String, String> map, String url, final OnResultListener listener) {

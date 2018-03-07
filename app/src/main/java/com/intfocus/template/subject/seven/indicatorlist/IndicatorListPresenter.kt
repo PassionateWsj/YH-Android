@@ -1,5 +1,8 @@
 package com.intfocus.template.subject.seven.indicatorlist
 
+import com.intfocus.template.subject.seven.bean.ConcernGroupBean
+import com.intfocus.template.subject.seven.bean.ConcernItemsBean
+
 /**
  * ****************************************************
  * author jameswong
@@ -21,8 +24,18 @@ class IndicatorListPresenter(
 
     }
 
-    override fun loadConcernedList() {
-        mModel.getConcernedListByUser()
+    override fun loadConcernedList(id: String, rep: String) {
+        mModel.getConcernedListByUser(id, rep, object : IndicatorListModel.OnConcernedListResult {
+            override fun onLoadListDataSuccess(data: List<ConcernItemsBean.ConcernItem>) {
+                mView.showConcernedListData(data)
+            }
+
+            override fun onLoadItemListDataSuccess(data: List<List<ConcernGroupBean.ConcernGroup>>) {
+            }
+
+            override fun onLoadDataFailure(e: Throwable) {
+            }
+        })
     }
 
     override fun loadConcernedListData(filterId: String, concernedId: Array<String>) {

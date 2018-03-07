@@ -85,6 +85,46 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/rl_auto_login"
+            style="@style/SettingGroupOptionSetting"
+            android:visibility="gone">
+
+            <TextView
+                style="@style/SettingKey"
+                android:text="@string/auto_login"/>
+
+            <Switch
+                android:id="@+id/switch_auto_login"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"/>
+
+            <View style="@style/OptionSettingDivider"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_review_last_page"
+            style="@style/SettingGroupOptionSetting"
+            android:visibility="gone">
+
+            <TextView
+                style="@style/SettingKey"
+                android:text="@string/save_last_report"/>
+
+            <Switch
+                android:id="@+id/switch_review_last_page"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"/>
+
+            <View style="@style/OptionSettingDivider"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
             style="@style/SettingGroupOptionSetting"
             android:visibility="gone">
 

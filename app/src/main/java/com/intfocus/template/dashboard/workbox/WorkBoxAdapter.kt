@@ -67,6 +67,16 @@ class WorkBoxAdapter(var ctx: Context, val datas: List<WorkBoxItem>?) : BaseAdap
                 .into(viewTag.mIcon)
         viewTag.rlItem.setOnClickListener(object : NoDoubleClickListener() {
             override fun onNoDoubleClick(v: View?) {
+//                if (datas[position].id == 12) {
+//                    val currentTime = System.currentTimeMillis()
+//                    datas[position].obj_link =
+//                            "http://datav.aliyun.com/share/5371896ce7d6c64e9d0720ebb0688481?_datav_time=" +
+////                                    "1517561668000" +
+//                                    currentTime +
+//                                    "&_datav_signature=" +
+////                                    Base64.encodeURIComponent(1517561668000)
+//                                    Base64.encodeURIComponent(currentTime)
+//                }
                 PageLinkManage.pageLink(ctx, DashboardItem(datas[position].obj_link ?: "KotlinNullPointerException", datas[position].obj_title ?: "KotlinNullPointerException",
                         datas[position].obj_id ?: "KotlinNullPointerException", datas[position].template_id ?: "-100", "3", datas[position].params_mapping ?: HashMap()))
             }
@@ -87,4 +97,6 @@ class WorkBoxAdapter(var ctx: Context, val datas: List<WorkBoxItem>?) : BaseAdap
     }
 
     internal inner class ItemViewTag(var rlItem: RelativeLayout, var mIcon: ImageView, var mName: TextView)
+
+
 }

@@ -7,9 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import com.alibaba.fastjson.JSON
 import com.intfocus.template.R
-import com.intfocus.template.subject.one.entity.SingleValue
+import com.intfocus.template.subject.seven.bean.ConcernGroupBean
 import com.intfocus.template.ui.BaseFragment
+import com.intfocus.template.util.OKHttpUtils
 import kotlinx.android.synthetic.main.fragment_indicator_group.*
+import okhttp3.Call
+import java.io.IOException
 
 /**
  * ****************************************************
@@ -22,23 +25,37 @@ import kotlinx.android.synthetic.main.fragment_indicator_group.*
  */
 class IndicatorGroupFragment : BaseFragment() {
 
-    private var mData: List<SingleValue>? = null
+    private var mData: List<ConcernGroupBean.ConcernGroup>? = null
 
-    fun newInstance(data: String): IndicatorGroupFragment {
+    fun newInstance(control_id: String?, rep_code: String?): IndicatorGroupFragment {
         val args = Bundle()
         val fragment = IndicatorGroupFragment()
-        args.putString("data", data)
+        args.putString("control_id", control_id)
+        args.putString("rep_code", rep_code)
         fragment.arguments = args
         return fragment
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mData = JSON.parseArray(JSON
-                .parseObject(arguments?.getString("data"))
-                .getJSONArray("main_concern_data")
-                .toJSONString()
-                , SingleValue::class.java)
+        val control_id = arguments?.getString("control_id")
+        val rep_code = arguments?.getString("rep_code")
+
+        val url = "http://47.96.170.148:8081/saas-api/api/portal/custom?repCode=$rep_code&dataSourceCode=DATA_000007&controlId=$control_id"
+        OKHttpUtils.newInstance().getAsyncData(url,
+                object : OKHttpUtils.OnResultListener {
+                    override fun onSuccess(call: Call?, response: String?) {
+                        mData = JSON.parseObject(
+                                response
+                                , ConcernGroupBean::class.java).data
+                        mData?.let {
+                            rv_indicator_group.adapter = IndicatorGroupAdapter(ctx, it)
+                        }
+                    }
+
+                    override fun onFailure(call: Call?, e: IOException?) {
+                    }
+                })
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
@@ -47,8 +64,6 @@ class IndicatorGroupFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         rv_indicator_group.layoutManager = LinearLayoutManager(ctx, LinearLayoutManager.HORIZONTAL, false)
-        mData?.let {
-            rv_indicator_group.adapter = IndicatorGroupAdapter(ctx, it)
-        }
+
     }
 }

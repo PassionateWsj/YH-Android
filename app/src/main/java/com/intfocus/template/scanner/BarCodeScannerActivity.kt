@@ -38,7 +38,6 @@ import com.intfocus.template.model.OrmDBHelper
 import com.intfocus.template.model.response.scanner.NearestStoresResult
 import com.intfocus.template.model.response.scanner.StoreItem
 import com.intfocus.template.util.*
-import com.taobao.accs.ACCSManager.mContext
 import com.zhihu.matisse.Matisse
 import com.zhihu.matisse.MimeType
 import com.zhihu.matisse.engine.impl.GlideEngine
@@ -475,7 +474,7 @@ class BarCodeScannerActivity : AppCompatActivity(), QRCodeView.Delegate, View.On
 
     private fun contractStore(keyWord: String) {
         try {
-            val storeItemDao = OrmDBHelper.getInstance(mContext).storeItemDao
+            val storeItemDao = OrmDBHelper.getInstance(this).storeItemDao
             Observable.create(Observable.OnSubscribe<List<StoreItem>> { subscriber ->
                 try {
                     val storeItems = storeItemDao.queryBuilder().where().like("name", keyWord).query()

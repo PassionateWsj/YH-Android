@@ -98,14 +98,13 @@ class WebPageActivity : BaseActivity(), WebPageContract.View, OnPageErrorListene
         if ("baozhentv" == BuildConfig.FLAVOR) {
             window.setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         }
-
         setContentView(R.layout.activity_subject)
+        initShow()
         init()
         WebPagePresenter(WebPageModelImpl.getInstance(), this)
 
         presenter.load(reportId, templateId, groupId, url)
 
-        initShow()
     }
 
     private fun initShow() {
