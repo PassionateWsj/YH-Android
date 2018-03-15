@@ -12,10 +12,12 @@ import android.widget.FrameLayout
 import com.blankj.utilcode.util.BarUtils
 import com.intfocus.template.ConfigConstants
 import com.intfocus.template.R
+import com.intfocus.template.constant.Params
 import com.intfocus.template.constant.Params.BANNER_NAME
 import com.intfocus.template.constant.Params.GROUP_ID
 import com.intfocus.template.constant.Params.OBJECT_ID
 import com.intfocus.template.constant.Params.OBJECT_TYPE
+import com.intfocus.template.constant.Params.REPORT_ID
 import com.intfocus.template.constant.Params.TEMPLATE_ID
 import com.intfocus.template.constant.Params.USER_NUM
 import com.intfocus.template.filter.FilterDialogFragment
@@ -31,6 +33,7 @@ import com.intfocus.template.subject.seven.indicatorlist.IndicatorListModelImpl
 import com.intfocus.template.subject.seven.indicatorlist.IndicatorListPresenter
 import com.intfocus.template.ui.BaseActivity
 import com.intfocus.template.util.LogUtil
+import com.intfocus.template.util.ToastUtils
 import kotlinx.android.synthetic.main.actvity_my_attention.*
 import rx.Observable
 import rx.android.schedulers.AndroidSchedulers
@@ -60,6 +63,7 @@ class MyConcernActivity : BaseActivity(), MyConcernContract.View, FilterDialogFr
     lateinit var objectType: String
     lateinit var bannerName: String
     lateinit var templateId: String
+    lateinit var repCode: String
 
     /**
      * 地址选择
@@ -72,10 +76,19 @@ class MyConcernActivity : BaseActivity(), MyConcernContract.View, FilterDialogFr
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.actvity_my_attention)
+
         MyConcernPresenter(MyConcernModelImpl.getInstance(), this)
+
+        initListener()
         initData()
         initView()
         initShow()
+    }
+
+    private fun initListener() {
+        srl_my_attention.setOnRefreshListener {
+            refreshData()
+        }
     }
 
     private fun initShow() {
@@ -86,7 +99,6 @@ class MyConcernActivity : BaseActivity(), MyConcernContract.View, FilterDialogFr
         }
     }
 
-
     fun initData() {
         mUserNum = mUserSP.getString(USER_NUM, "")
 
@@ -96,10 +108,11 @@ class MyConcernActivity : BaseActivity(), MyConcernContract.View, FilterDialogFr
         objectType = intent.getStringExtra(OBJECT_TYPE)
         bannerName = intent.getStringExtra(BANNER_NAME)
         templateId = intent.getStringExtra(TEMPLATE_ID)
+        repCode = intent.getStringExtra(Params.LINK)
 
         uuid = reportId + templateId + groupId
 
-        presenter.loadFilterData()
+        presenter.loadFilterData(repCode, reportId)
     }
 
     private fun initView() {
@@ -112,7 +125,15 @@ class MyConcernActivity : BaseActivity(), MyConcernContract.View, FilterDialogFr
         }
     }
 
+    override fun showErrorMsg(msg: String) {
+        if (srl_my_attention.isRefreshing) {
+            srl_my_attention.isRefreshing = false
+        }
+        ToastUtils.show(this,msg)
+    }
+
     override fun generateReportItemViews(data: List<ConcernComponentBean.ConcernComponent>) {
+        srl_my_attention.isRefreshing = false
         Observable.from(data)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
@@ -124,7 +145,7 @@ class MyConcernActivity : BaseActivity(), MyConcernContract.View, FilterDialogFr
                     // 横向滑动单值组件列表
                         "concern_group" -> {
                             if (it.control_id != null && it.rep_code != null) {
-                                addItemView(IndicatorGroupFragment().newInstance(it.control_id, it.rep_code))
+                                addItemView(IndicatorGroupFragment().newInstance(reportId, it.control_id, it.rep_code))
                             }
                         }
                     // 可拓展的关注单品列表，拓展内容为 横向滑动单值组件列表
@@ -164,7 +185,10 @@ class MyConcernActivity : BaseActivity(), MyConcernContract.View, FilterDialogFr
     fun menuOnClicked(view: View) {
         when (view.id) {
             R.id.iv_attention -> {
-                startActivityForResult(Intent(this, ConcernListActivity::class.java), REQUEST_CODE)
+
+                val intent = Intent(this, ConcernListActivity::class.java)
+                intent.putExtra(REPORT_ID, reportId)
+                startActivityForResult(intent, REQUEST_CODE)
             }
             R.id.tv_address_filter -> {
                 showDialogFragment()
@@ -222,8 +246,7 @@ class MyConcernActivity : BaseActivity(), MyConcernContract.View, FilterDialogFr
         tv_location_address.text = addStr
         menuItems[menuItems.size - 1].id?.let {
             currentFilterId = it
-            ll_my_attention_container.removeAllViews()
-            presenter.loadData(mUserNum, currentFilterId)
+            refreshData()
         }
         LogUtil.d(this, "Filter FullName ::: " + addStr)
         LogUtil.d(this, "Filter ItemName ::: " + menuItems[menuItems.size - 1].name)
@@ -236,7 +259,12 @@ class MyConcernActivity : BaseActivity(), MyConcernContract.View, FilterDialogFr
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_CODE && resultCode == ConcernListActivity.RESPONSE_CODE) {
-            presenter.loadData(mUserNum, currentFilterId)
+            refreshData()
         }
+    }
+
+    private fun refreshData() {
+        ll_my_attention_container.removeAllViews()
+        presenter.loadData(reportId, currentFilterId)
     }
 }

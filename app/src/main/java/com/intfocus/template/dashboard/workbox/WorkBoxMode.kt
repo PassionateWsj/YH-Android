@@ -2,7 +2,7 @@ package com.intfocus.template.dashboard.workbox
 
 import android.content.Context
 import com.intfocus.template.constant.Params.GROUP_ID
-import com.intfocus.template.constant.Params.ROLD_ID
+import com.intfocus.template.constant.Params.ROLE_ID
 import com.intfocus.template.constant.Params.USER_BEAN
 import com.intfocus.template.general.net.ApiException
 import com.intfocus.template.general.net.CodeHandledSubscriber
@@ -18,7 +18,7 @@ class WorkBoxMode(var ctx: Context) : AbstractMode() {
     var mUserSP = ctx.getSharedPreferences(USER_BEAN, Context.MODE_PRIVATE)
 
     override fun requestData() {
-        RetrofitUtil.getHttpService(ctx).getWorkBox(mUserSP.getString(GROUP_ID, "0"), mUserSP.getString(ROLD_ID, "0"))
+        RetrofitUtil.getHttpService(ctx).getWorkBox(mUserSP.getString(GROUP_ID, "0"), mUserSP.getString(ROLE_ID, "0"))
                 .compose(RetrofitUtil.CommonOptions<WorkBoxResult>())
                 .subscribe(object : CodeHandledSubscriber<WorkBoxResult>() {
                     override fun onError(apiException: ApiException?) {

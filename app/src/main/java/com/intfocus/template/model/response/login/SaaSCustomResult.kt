@@ -22,5 +22,6 @@ class SaaSCustomResult : BaseResult() {
         var app_ip: String? = null
         var user_name: String? = null
         var app_id: String? = null
+        var datasource_id: String? = null
     }
 }

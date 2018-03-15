@@ -254,7 +254,7 @@ class UserFragment : BaseFragment(), UserContract.View {
     }
 
     private fun startUserLocationPage() {
-        RetrofitUtil.getHttpService(ctx).getRegister("sypc_000103")
+        RetrofitUtil.getHttpService(ctx).register
                 .compose(RetrofitUtil.CommonOptions())
                 .subscribe(object : CodeHandledSubscriber<RegisterResult>() {
                     override fun onError(apiException: ApiException) {

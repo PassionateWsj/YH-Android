@@ -27,21 +27,23 @@ class IndicatorGroupFragment : BaseFragment() {
 
     private var mData: List<ConcernGroupBean.ConcernGroup>? = null
 
-    fun newInstance(control_id: String?, rep_code: String?): IndicatorGroupFragment {
+    fun newInstance(reportId: String?,controlId: String?, repCode: String?): IndicatorGroupFragment {
         val args = Bundle()
         val fragment = IndicatorGroupFragment()
-        args.putString("control_id", control_id)
-        args.putString("rep_code", rep_code)
+        args.putString("report_id", reportId)
+        args.putString("control_id", controlId)
+        args.putString("rep_code", repCode)
         fragment.arguments = args
         return fragment
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val control_id = arguments?.getString("control_id")
-        val rep_code = arguments?.getString("rep_code")
+        val reportId = arguments?.getString("report_id")
+        val controlId = arguments?.getString("control_id")
+        val repCode = arguments?.getString("rep_code")
 
-        val url = "http://47.96.170.148:8081/saas-api/api/portal/custom?repCode=$rep_code&dataSourceCode=DATA_000007&controlId=$control_id"
+        val url = "http://shengyiplus.idata.mobi/saas-api/api/portal/custom?repCode=$repCode&dataSourceCode=DATA_000007&control_id=$controlId"
         OKHttpUtils.newInstance().getAsyncData(url,
                 object : OKHttpUtils.OnResultListener {
                     override fun onSuccess(call: Call?, response: String?) {

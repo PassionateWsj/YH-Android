@@ -44,8 +44,8 @@ class IndicatorListFragment : BaseFragment(), IndicatorListContract.View {
 
     var mData: List<ConcernItemsBean.ConcernItem> = ArrayList()
     val testApi = "https://api.douban.com/v2/book/search?q=%E7%BC%96%E7%A8%8B%E8%89%BA%E6%9C%AF"
-    var concern_items_list_rep = ""
-    var concern_items_list_id = ""
+    private var concern_items_list_rep = ""
+    private var concern_items_list_id = ""
 
     fun newInstance(control_id: String?, rep_code: String?): IndicatorListFragment {
         val args = Bundle()

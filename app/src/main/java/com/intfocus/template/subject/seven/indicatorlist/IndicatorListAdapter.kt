@@ -80,7 +80,7 @@ class IndicatorListAdapter(private val mCtx: Context, val fragment: Fragment, pr
             view.tag = groupHolder
         }
         groupHolder.tvName?.text = getGroup(groupPosition).obj_name
-        groupHolder.tvId?.text = getGroup(groupPosition).obj_id
+        groupHolder.tvId?.text = getGroup(groupPosition).obj_num
         RxBusUtil.getInstance().toObservable(EventRefreshIndicatorListItemData::class.java)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -139,7 +139,6 @@ class IndicatorListAdapter(private val mCtx: Context, val fragment: Fragment, pr
                         }
                     }
                 }
-//        if (firstUpdateData) {
         val itemData = getChild(groupPosition, 0)[currentItemDataIndex]
         groupHolder.tvValue?.text = itemData.main_data_data.toString()
         itemData.state_color?.let {
@@ -154,7 +153,6 @@ class IndicatorListAdapter(private val mCtx: Context, val fragment: Fragment, pr
             currentItemDataIndex += 1
             RxBusUtil.getInstance().post(EventRefreshIndicatorListItemData(currentItemDataIndex % getChild(groupPosition, 0).size))
         }
-//        }
         return view
     }
 

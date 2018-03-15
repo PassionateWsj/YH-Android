@@ -2,7 +2,7 @@ package com.intfocus.template.subject.seven.concernlist
 
 import com.intfocus.template.base.BasePresenter
 import com.intfocus.template.base.BaseView
-import com.intfocus.template.model.response.attention.AttentionItem
+import com.intfocus.template.subject.seven.bean.ConcernListBean
 
 /**
  * ****************************************************
@@ -27,15 +27,15 @@ interface ConcernListContract {
          *
          * @param data 关键字
          */
-        fun onResultSuccess(data: List<AttentionItem>)
+        fun onResultSuccess(data: List<ConcernListBean>)
 
         fun concernOrCancelConcernResult(isConcernSuccess: Boolean)
 
     }
 
     interface Presenter : BasePresenter {
-        fun loadData(concerned: Boolean)
-        fun loadData(keyWord: String, concerned: Boolean)
-        fun concernOrCancelConcern(attentionItemId: String, attentionItemName: String)
+        fun loadData(concerned: Boolean, reportId: String)
+        fun loadData(keyWord: String, concerned: Boolean,reportId: String)
+        fun concernOrCancelConcern( attentionItemId: String, attentionItemName: String,reportId: String)
     }
 }

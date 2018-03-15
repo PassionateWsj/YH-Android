@@ -9,7 +9,7 @@ import android.widget.BaseAdapter
 import android.widget.CheckBox
 import android.widget.TextView
 import com.intfocus.template.R
-import com.intfocus.template.model.response.attention.AttentionItem
+import com.intfocus.template.subject.seven.bean.ConcernListBean
 import com.intfocus.template.subject.seven.listener.ConcernListItemClickListener
 import java.util.*
 
@@ -24,7 +24,7 @@ import java.util.*
  */
 
 class ConcernListItemAdapter(private val mContext: Context, private val listener: ConcernListItemClickListener) : BaseAdapter() {
-    private var items: MutableList<AttentionItem>? = null
+    private var items: MutableList<ConcernListBean>? = null
 
     override fun getCount(): Int = if (items == null) 0 else items!!.size
 
@@ -35,24 +35,24 @@ class ConcernListItemAdapter(private val mContext: Context, private val listener
     @SuppressLint("SetTextI18n")
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         var convertView = convertView
-        var holder: AttentionItemListHolder? = null
+        var holder: ConcernListBeanListHolder? = null
         if (convertView == null) {
             convertView = LayoutInflater.from(mContext).inflate(R.layout.list_item_attention, parent, false)
-            holder = AttentionItemListHolder(convertView)
+            holder = ConcernListBeanListHolder(convertView)
             convertView!!.tag = holder
         } else {
-            holder = convertView.tag as AttentionItemListHolder
+            holder = convertView.tag as ConcernListBeanListHolder
         }
         items?.let {
-            holder.tvItemAttentionListName.text = items!![position].attention_item_name
-            holder.tvItemAttentionListId.text = items!![position].attention_item_id
+            holder.tvItemAttentionListName.text = items!![position].obj_name
+            holder.tvItemAttentionListId.text = items!![position].obj_num
         }
 
-        holder.cbItemAttentionListCheck.isChecked = items!![position].isAttentioned
+        holder.cbItemAttentionListCheck.isChecked = items!![position].type==1
         holder.cbItemAttentionListCheck.setOnCheckedChangeListener { _, isChecked ->
             holder.cbItemAttentionListCheck.text = getText(isChecked)
         }
-        holder.cbItemAttentionListCheck.text = getText(items!![position].isAttentioned)
+        holder.cbItemAttentionListCheck.text = getText(items!![position].type==1)
         holder.cbItemAttentionListCheck.setOnClickListener {
             listener.itemClick(position)
         }
@@ -66,7 +66,7 @@ class ConcernListItemAdapter(private val mContext: Context, private val listener
     }
 
 
-    fun setData(data: List<AttentionItem>) {
+    fun setData(data: List<ConcernListBean>) {
         if (items == null) {
             items = ArrayList()
         }
@@ -83,9 +83,9 @@ class ConcernListItemAdapter(private val mContext: Context, private val listener
         notifyDataSetChanged()
     }
 
-    fun getSelectItem(pos: Int): AttentionItem = items!![pos]
+    fun getSelectItem(pos: Int): ConcernListBean = items!![pos]
 
-    class AttentionItemListHolder(convertView: View) {
+    class ConcernListBeanListHolder(convertView: View) {
         val cbItemAttentionListCheck: CheckBox = convertView.findViewById(R.id.cb_item_attention_list_check)
         val tvItemAttentionListName: TextView = convertView.findViewById(R.id.tv_item_attention_list_name)
         val tvItemAttentionListId: TextView = convertView.findViewById(R.id.tv_item_attention_list_id)

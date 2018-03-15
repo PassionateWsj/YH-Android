@@ -1,7 +1,22 @@
 package com.intfocus.template.subject.seven.concernlist
 
+import android.content.Context
+import com.intfocus.template.SYPApplication
+import com.intfocus.template.constant.Params.DATASOURCE_CODE
+import com.intfocus.template.constant.Params.GROUP_ID
+import com.intfocus.template.constant.Params.ROLE_ID
+import com.intfocus.template.constant.Params.USER_BEAN
+import com.intfocus.template.constant.Params.USER_NUM
+import com.intfocus.template.general.net.ApiException
+import com.intfocus.template.general.net.CodeHandledSubscriber
+import com.intfocus.template.general.net.RetrofitUtil
+import com.intfocus.template.general.net.SaaSRetrofitUtil
 import com.intfocus.template.model.DaoUtil
-import com.intfocus.template.model.gen.AttentionItemDao
+import com.intfocus.template.model.callback.LoadDataCallback
+import com.intfocus.template.model.gen.ConcernListBeanDao
+import com.intfocus.template.model.response.BaseResult
+import com.intfocus.template.subject.seven.bean.ConcernListResponse
+import com.intfocus.template.subject.seven.bean.ConcernOrCancelConcernRequest
 import com.intfocus.template.util.LogUtil
 import rx.Observable
 import rx.Subscription
@@ -19,7 +34,8 @@ import rx.schedulers.Schedulers
  */
 class ConcernListModelImpl : ConcernListModel {
 
-    private val mDao = DaoUtil.getAttentionItemDao()
+    private val mDao = DaoUtil.getConcernListBeanDao()
+    private var mUuid = ""
 
     companion object {
         private val TAG = "ConcernListModelImpl"
@@ -53,13 +69,53 @@ class ConcernListModelImpl : ConcernListModel {
         }
     }
 
-    override fun getData(keyWord: String, concerned: Boolean, callback: ConcernListModel.LoadDataCallback) {
+    override fun updateConcernListData(reportId: String, callback: LoadDataCallback<Boolean>) {
+        val mUserSP = SYPApplication.globalContext.getSharedPreferences(USER_BEAN, Context.MODE_PRIVATE)
+        val userNum = mUserSP.getString(USER_NUM, "0")
+        val roleId = mUserSP.getString(ROLE_ID, "0")
+        val groupId = mUserSP.getString(GROUP_ID, "0")
+        mUuid = String.format("%s-%s-%s-%s", userNum, roleId, groupId, reportId)
+
+        SaaSRetrofitUtil.getHttpServiceKotlin(SYPApplication.globalContext)
+                .getConcernListData( reportId)
+                .compose(RetrofitUtil.CommonOptions<ConcernListResponse>())
+                .subscribe(object : CodeHandledSubscriber<ConcernListResponse>() {
+                    override fun onCompleted() {
+
+                    }
+
+                    override fun onError(apiException: ApiException?) {
+                    }
+
+                    override fun onBusinessNext(data: ConcernListResponse?) {
+                        observable = Observable.just(data)
+                                .subscribeOn(Schedulers.io())
+                                .map {
+                                    // 删除关注单品数据库表中
+                                    DaoUtil.getConcernListBeanDao().deleteInTx(
+                                            DaoUtil.getConcernListBeanDao()
+                                                    .queryBuilder()
+                                                    .where(ConcernListBeanDao.Properties.Uuid.eq(mUuid))
+                                                    .list())
+                                    it?.let { mDao.insertInTx(it.data) }
+                                }
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe {
+                                    callback.onSuccess(true)
+                                }
+                    }
+                })
+    }
+
+    override fun getData(keyWord: String, concerned: Boolean, reportId: String, callback: ConcernListModel.LoadDataCallback) {
         val queryBuilder = mDao.queryBuilder()
         observable = Observable.just(keyWord)
                 .subscribeOn(Schedulers.io())
                 .map {
-                    queryBuilder.where(queryBuilder.and(AttentionItemDao.Properties.IsAttentioned.eq(concerned), queryBuilder.or(AttentionItemDao.Properties.Attention_item_id.like("%$keyWord%"),
-                            AttentionItemDao.Properties.Attention_item_name.like("%$keyWord%")))).list()
+                    queryBuilder.where(queryBuilder.and(ConcernListBeanDao.Properties.Type.eq(if (concerned) 1 else 0),
+                            ConcernListBeanDao.Properties.Uuid.eq(mUuid),
+                            queryBuilder.or(ConcernListBeanDao.Properties.Obj_num.like("%$keyWord%"),
+                                    ConcernListBeanDao.Properties.Obj_name.like("%$keyWord%")))).list()
                 }
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
@@ -73,19 +129,44 @@ class ConcernListModelImpl : ConcernListModel {
                 }
     }
 
-    override fun concernOrCancelConcern(attentionItemId: String, attentionItemName: String, callback: ConcernListModel.ConcernCallback) {
+    override fun concernOrCancelConcern(attentionItemId: String, attentionItemName: String, reportId: String, callback: ConcernListModel.ConcernCallback) {
         val queryBuilder = mDao.queryBuilder()
         observable = Observable.just(listOf(attentionItemId, attentionItemName))
                 .subscribeOn(Schedulers.io())
                 .map {
-                    queryBuilder.where(queryBuilder.and(AttentionItemDao.Properties.Attention_item_id.eq(it[0]),
-                            AttentionItemDao.Properties.Attention_item_name.eq(it[1]))).unique()
+                    queryBuilder.where(queryBuilder.and(ConcernListBeanDao.Properties.Obj_num.eq(it[0]),
+                            ConcernListBeanDao.Properties.Obj_name.eq(it[1]))).unique()
                 }
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
-                    it.isAttentioned = !it.isAttentioned
-                    mDao.update(it)
-                    callback.onConcernResult(it.isAttentioned)
+                    if (it == null)
+                        return@subscribe
+                    val mUserSP = SYPApplication.globalContext.getSharedPreferences(USER_BEAN, Context.MODE_PRIVATE)
+                    val userNum = mUserSP.getString(USER_NUM, "0")
+                    val roleId = mUserSP.getString(ROLE_ID, "0")
+                    val groupId = mUserSP.getString(GROUP_ID, "0")
+                    val dataSourceCode = mUserSP.getString(DATASOURCE_CODE, "0")
+
+                    SaaSRetrofitUtil.getHttpServiceKotlin(SYPApplication.globalContext)
+                            .concernOrCancelConcern(ConcernOrCancelConcernRequest("REP_000090", dataSourceCode, roleId, groupId, userNum, reportId, it.obj_num, if (it.type == 1) 0 else 1))
+                            .compose(RetrofitUtil.CommonOptions<BaseResult>())
+                            .subscribe(object : CodeHandledSubscriber<BaseResult>() {
+                                override fun onCompleted() {
+
+                                }
+
+                                override fun onError(apiException: ApiException?) {
+                                }
+
+                                override fun onBusinessNext(data: BaseResult?) {
+                                    if (data != null && data.code == "0") {
+                                        it.type = if (it.type == 1) 0 else 1
+                                        val isSelected = it.type == 1
+                                        mDao.update(it)
+                                        callback.onConcernResult(isSelected)
+                                    }
+                                }
+                            })
                 }
     }
 }

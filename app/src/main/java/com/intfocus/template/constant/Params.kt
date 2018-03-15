@@ -47,7 +47,7 @@ object Params {
     const val APP_HOST = "app_host"
     const val APP_ID = "app_id"
     const val APP_NAME = "app_name"
-    const val ROLD_ID = "role_id"
+    const val ROLE_ID = "role_id"
     const val GROUP_ID = "group_id"
     const val CODE_INFO = "code_info"
     const val CODE_TYPE = "code_type"
@@ -82,4 +82,6 @@ object Params {
     const val BODY = "body"
     const val ETAG = "ETag"
     const val LAST_MODIFIED = "Last-Modified"
+
+    const val DATASOURCE_CODE = "dataSourceCode"
 }

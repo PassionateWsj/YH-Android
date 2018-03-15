@@ -13,6 +13,7 @@ import java.util.concurrent.TimeUnit;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.FormBody;
+import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -136,6 +137,45 @@ public class OKHttpUtils {
             builder.add(entry.getKey(), entry.getValue());
         }
         RequestBody requestBody = builder.build();
+
+        Request request = new Request.Builder()
+                .url(url)
+                .post(requestBody)
+                .build();
+        Call call = mOkHttpClient.newCall(request);
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(final Call call, final IOException e) {
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (listener != null) {
+                            listener.onFailure(call, e);
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void onResponse(final Call call, Response response) throws IOException {
+                final String result = response.body().string();
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (listener != null) {
+                            listener.onSuccess(call, result);
+                        }
+                    }
+                });
+            }
+        });
+    }
+
+    //=======================================================================
+    // Post请求方式 json 传参方式
+    //=======================================================================
+    public void postAsnycJsonData(String json, String url, final OnResultListener listener) {
+        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"),json);
 
         Request request = new Request.Builder()
                 .url(url)

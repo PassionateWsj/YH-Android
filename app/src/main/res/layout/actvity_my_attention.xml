@@ -18,13 +18,14 @@
             android:onClick="dismissActivity"/>
 
         <ImageView
-            android:visibility="gone"
             android:id="@+id/iv_attention"
             style="@style/BannerRightButton"
+            android:layout_height="match_parent"
             android:layout_centerVertical="true"
             android:layout_marginRight="6dp"
             android:onClick="menuOnClicked"
-            android:src="@drawable/attention"/>
+            android:src="@drawable/attention"
+            android:visibility="visible"/>
 
         <TextView
             android:id="@+id/tv_banner_title"
@@ -103,6 +104,7 @@
     </LinearLayout>
 
     <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/srl_my_attention"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/ll_filter">

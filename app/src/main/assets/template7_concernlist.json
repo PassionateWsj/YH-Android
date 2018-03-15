@@ -1,0 +1,62 @@
+{
+  "msg": "请求数据成功!",
+  "code": 0,
+  "data": [
+    {
+      "uuid": "123123123-123-97-1232",
+      "obj_id": "005-2",
+      "obj_name": "火龙果",
+      "obj_num": "2",
+      "isSelected":true
+    },
+    {
+      "uuid": "123123123-123-97-1232",
+      "obj_id": "005-3",
+      "obj_name": "车厘子",
+      "obj_num": "3",
+      "isSelected":true
+    },
+    {
+      "uuid": "123123123-123-97-1232",
+      "obj_id": "005-4",
+      "obj_name": "芒果",
+      "obj_num": "4",
+      "isSelected":true
+    },
+    {
+      "uuid": "123123123-123-97-1232",
+      "obj_id": "005-5",
+      "obj_name": "草莓",
+      "obj_num": "5",
+      "isSelected":true
+    },
+    {
+      "uuid": "123123123-123-97-1232",
+      "obj_id": "005-6",
+      "obj_name": "番茄",
+      "obj_num": "6",
+      "isSelected":false
+    },
+    {
+      "uuid": "123123123-123-97-1232",
+      "obj_id": "005-7",
+      "obj_name": "榴莲",
+      "obj_num": "7",
+      "isSelected":false
+    },
+    {
+      "uuid": "123123123-123-97-1232",
+      "obj_id": "005-8",
+      "obj_name": "增磊",
+      "obj_num": "8",
+      "isSelected":false
+    },
+    {
+      "uuid": "123123123-123-97-1232",
+      "obj_id": "005-9",
+      "obj_name": "橙子",
+      "obj_num": "9",
+      "isSelected":false
+    }
+  ]
+}

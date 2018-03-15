@@ -274,4 +274,9 @@ public class K implements Serializable {
     public final static String K_DOWNLOAD_ASSETS_ZIP = "/api/v1.1/download/assets";
     public final static String K_NEAREST_STORES = "/api/v1.1/nearest_stores";
     public final static String KCollectionConfig = "/api/v1.1/acquisition/config";
+
+    /**
+     * SaaS 统一接口
+     */
+    public final static String K_SAAS_API = "/saas-api/api/portal/custom";
 }

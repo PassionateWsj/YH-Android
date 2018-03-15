@@ -19,5 +19,5 @@ interface IndicatorListModel {
         fun onLoadDataFailure(e: Throwable)
     }
 
-    fun getConcernedListByUser(id: String, rep: String, callback: OnConcernedListResult)
+    fun getConcernedListByUser(controlId: String, repCode: String, callback: OnConcernedListResult)
 }

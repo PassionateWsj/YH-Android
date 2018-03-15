@@ -20,6 +20,7 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
 import okhttp3.Cache;
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
@@ -38,7 +39,7 @@ public class RetrofitUtil {
     private static final int DEFAULT_TIME_OUT = 2 * 1000;
     private static final String DEFAULT_BASE_URL = TempHost.getHost();
     private HttpService httpService;
-    private Context ctx;
+    Context ctx;
     private ChangeableBaseUrlInterceptor changeableBaseUrlInterceptor;
 
     private static RetrofitUtil mInstance = null;
@@ -62,6 +63,9 @@ public class RetrofitUtil {
 
     public static synchronized void destroyInstance() {
         mInstance = null;
+    }
+
+    public RetrofitUtil() {
     }
 
     private RetrofitUtil(Context ctx) {
@@ -111,7 +115,7 @@ public class RetrofitUtil {
         //Http状态码处理,针对已知状态码的处理
         clientBuilder.addInterceptor(getChangeableBaseUrlInterceptor());
         clientBuilder.addInterceptor(new HttpStateInterceptor());
-        clientBuilder.addInterceptor(new BaseParamsInterceptor(ctx));
+        clientBuilder.addInterceptor(setBaseParamsInterceptor());
         clientBuilder.addInterceptor(new NetworkInterceptor());
         clientBuilder.addInterceptor(new CacheInterceptor());
         clientBuilder.addNetworkInterceptor(new StethoInterceptor());
@@ -124,6 +128,10 @@ public class RetrofitUtil {
             changeableBaseUrlInterceptor = new ChangeableBaseUrlInterceptor();
         }
         return changeableBaseUrlInterceptor;
+    }
+
+    public Interceptor setBaseParamsInterceptor() {
+        return new BaseParamsInterceptor(ctx);
     }
 
     private static class RetrofitHolder {

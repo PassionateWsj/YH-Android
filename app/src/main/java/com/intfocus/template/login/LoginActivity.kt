@@ -21,7 +21,6 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
-import com.google.gson.Gson
 import com.intfocus.template.ConfigConstants
 import com.intfocus.template.R
 import com.intfocus.template.constant.Params
@@ -31,6 +30,7 @@ import com.intfocus.template.constant.Params.APP_ID
 import com.intfocus.template.constant.Params.APP_NAME
 import com.intfocus.template.constant.Params.AUTO_LOGIN
 import com.intfocus.template.constant.Params.DATA
+import com.intfocus.template.constant.Params.DATASOURCE_CODE
 import com.intfocus.template.constant.Params.GROUP_ID
 import com.intfocus.template.constant.Params.GROUP_NAME
 import com.intfocus.template.constant.Params.IS_LOGIN
@@ -38,8 +38,8 @@ import com.intfocus.template.constant.Params.KEEP_PWD
 import com.intfocus.template.constant.Params.OBJECT_TITLE
 import com.intfocus.template.constant.Params.PASSWORD
 import com.intfocus.template.constant.Params.PUSH_MESSAGE
-import com.intfocus.template.constant.Params.ROLD_ID
 import com.intfocus.template.constant.Params.ROLD_NAME
+import com.intfocus.template.constant.Params.ROLE_ID
 import com.intfocus.template.constant.Params.SETTING_PREFERENCE
 import com.intfocus.template.constant.Params.USER_BEAN
 import com.intfocus.template.constant.Params.USER_ID
@@ -52,6 +52,7 @@ import com.intfocus.template.dashboard.DashboardActivity
 import com.intfocus.template.general.net.ApiException
 import com.intfocus.template.general.net.CodeHandledSubscriber
 import com.intfocus.template.general.net.RetrofitUtil
+import com.intfocus.template.general.net.SaaSRetrofitUtil
 import com.intfocus.template.listener.NoDoubleClickListener
 import com.intfocus.template.login.bean.Device
 import com.intfocus.template.login.bean.DeviceRequest
@@ -67,7 +68,6 @@ import com.pgyersdk.update.PgyUpdateManager
 import com.pgyersdk.update.UpdateManagerListener
 import com.tencent.smtt.sdk.WebView
 import kotlinx.android.synthetic.main.activity_login.*
-import okhttp3.Call
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.IOException
@@ -84,8 +84,13 @@ import java.util.*
  * ****************************************************
  */
 class LoginActivity : BaseActivity() {
+    /**
+     * 默认 SaaS 数据源库
+     */
+    private val SAAS_DEFAULT_DATASOURCE_CODE = "DATA_000000"
+
     private var userNum: String? = null
-    private var userPass: String? = null
+    private var userPwd: String? = null
     private var mDeviceRequest: DeviceRequest? = null
     private var mUserSPEdit: SharedPreferences.Editor? = null
     private var mPushSP: SharedPreferences? = null
@@ -181,7 +186,7 @@ class LoginActivity : BaseActivity() {
 
         // 注册监听
         findViewById<View>(R.id.applyRegistTv).setOnClickListener {
-            RetrofitUtil.getHttpService(ctx).getRegister("sypc_000005")
+            RetrofitUtil.getHttpService(ctx).register
                     .compose(RetrofitUtil.CommonOptions())
                     .subscribe(object : CodeHandledSubscriber<RegisterResult>() {
                         override fun onError(apiException: ApiException) {
@@ -343,11 +348,11 @@ class LoginActivity : BaseActivity() {
     fun actionSubmit(v: View) {
         try {
             userNum = etUsername.text.toString()
-            userPass = etPassword.text.toString()
+            userPwd = etPassword.text.toString()
 
-            mUserSP.edit().putString(USER_NUM, userNum).apply()
+            mUserSP.edit().putString(USER_NUM, userNum).commit()
 
-            if (userNum!!.isEmpty() || userPass!!.isEmpty()) {
+            if (userNum!!.isEmpty() || userPwd!!.isEmpty()) {
                 ToastUtils.show(this@LoginActivity, "请输入用户名与密码")
                 return
             }
@@ -367,60 +372,63 @@ class LoginActivity : BaseActivity() {
             val loginPwd = if (loginWithLastPwd) {
                 mUserSP.getString(PASSWORD, "")
             } else {
-                URLs.MD5(userPass)
+                URLs.MD5(userPwd)
             }
 
             // SaaS验证
             if (ConfigConstants.SAAS_VERIFY_BEFORE_LOGIN) {
-                OKHttpUtils.newInstance().getAsyncData(
-                        String.format("http://47.96.170.148:8081/" +
-                                "saas-api/api/portal/custom?" +
-                                "repCode=REP_000000&dataSourceCode=DATA_000000&user_num=%s&password=%s&platform=app", userNum, loginPwd), object : OKHttpUtils.OnResultListener {
-                    override fun onFailure(call: Call?, e: IOException?) {
-                        ToastUtils.show(this@LoginActivity, "网络错误")
-                    }
+                mUserSPEdit!!.putString(DATASOURCE_CODE, SAAS_DEFAULT_DATASOURCE_CODE).commit()
+                SaaSRetrofitUtil.getHttpServiceKotlin(this)
+                        .saasLoginApi()
+                        .compose(RetrofitUtil.CommonOptions<SaaSCustomResult>())
+                        .subscribe(object : CodeHandledSubscriber<SaaSCustomResult>() {
+                            override fun onCompleted() {
 
-                    override fun onSuccess(call: Call?, response: String?) {
-                        val result = Gson().fromJson(response, BaseResult::class.java)
-                        if (result.code == "1") {
-                            result.msg?.let { ToastUtils.show(this@LoginActivity, it) }
-                            return
-                        }
-                        val data = Gson().fromJson(response, SaaSCustomResult::class.java)
-                        if (data.code == null || data.code != "0") {
-                            data.message?.let { ToastUtils.show(this@LoginActivity, it) }
-                            return
-                        }
-                        if (data.data.size == 1 && data.data[0].app_ip != null && data.data[0].app_ip != "") {
-                            mProgressDialog = ProgressDialog.show(this@LoginActivity, "稍等", "验证用户信息...")
+                            }
 
-                            data.data[0].app_id?.let {
-                                mUserSPEdit!!.putString(APP_ID, it).apply()
+                            override fun onError(apiException: ApiException?) {
+                                apiException?.let { ToastUtils.show(this@LoginActivity, it.displayMessage) }
                             }
-                            data.data[0].app_name?.let {
-                                mUserSPEdit!!.putString(APP_NAME, it).apply()
-                            }
-                            data.data[0].app_ip?.let {
-                                mUserSPEdit!!.putString(APP_HOST, it).apply()
-                                TempHost.setHost(it)
-                                RetrofitUtil.getInstance(this@LoginActivity).changeableBaseUrlInterceptor.setHost(it)
-                            }
-                            userLogin(loginPwd)
-                        } else {
-                            val items = arrayOfNulls<String>(data.data.size)
-                            data?.let {
-                                it.data.forEachIndexed { index, saaSCustomItem ->
-                                    items[index] = saaSCustomItem.app_name
-                                }
-                            }
-                            AlertDialog.Builder(this@LoginActivity)
-                                    //设置标题
+
+                            override fun onBusinessNext(result: SaaSCustomResult?) {
+                                result?.let { data ->
+                                    //                                    if (data.code == null || data.code != "0") {
+//                                        data.message?.let { ToastUtils.show(this@LoginActivity, it) }
+//                                        return
+//                                    }
+                                    if (data.data.size == 1 && data.data[0].app_ip != null && data.data[0].app_ip != "") {
+                                        mProgressDialog = ProgressDialog.show(this@LoginActivity, "稍等", "验证用户信息...")
+
+                                        data.data[0].app_id?.let {
+                                            mUserSPEdit!!.putString(APP_ID, it).apply()
+                                        }
+                                        data.data[0].app_name?.let {
+                                            mUserSPEdit!!.putString(APP_NAME, it).apply()
+                                        }
+                                        data.data[0].app_ip?.let {
+                                            mUserSPEdit!!.putString(APP_HOST, it).apply()
+                                            TempHost.setHost(it)
+                                            RetrofitUtil.getInstance(this@LoginActivity).changeableBaseUrlInterceptor.setHost(it)
+                                        }
+                                        data.data[0].datasource_id?.let {
+                                            mUserSPEdit!!.putString(DATASOURCE_CODE, it).apply()
+                                        }
+                                        userLogin(loginPwd)
+                                    } else {
+                                        val items = arrayOfNulls<String>(data.data.size)
+                                        data.let {
+                                            it.data.forEachIndexed { index, saaSCustomItem ->
+                                                items[index] = saaSCustomItem.app_name
+                                            }
+                                        }
+                                        AlertDialog.Builder(this@LoginActivity)
+                                                //设置标题
 //                                    .setTitle("请选择")
-                                    //设置图标
+                                                //设置图标
 //                                    .setIcon(R.drawable.app)
-                                    .setItems(items, DialogInterface.OnClickListener { dialog, which ->
-                                        if (data.data[which].app_ip != null && data.data[which].app_ip != "") {
-                                            mProgressDialog = ProgressDialog.show(this@LoginActivity, "稍等", "验证用户信息...")
+                                                .setItems(items, DialogInterface.OnClickListener { dialog, which ->
+                                                    if (data.data[which].app_ip != null && data.data[which].app_ip != "") {
+                                                        mProgressDialog = ProgressDialog.show(this@LoginActivity, "稍等", "验证用户信息...")
 
 //                                            if (BuildConfig.APPLICATION_ID == "com.intfocus.shengyiplus" || BuildConfig.APPLICATION_ID == "com.intfocus.template") {
 //                                                data.data[which].app_id?.let {
@@ -429,21 +437,25 @@ class LoginActivity : BaseActivity() {
 //                                                }
 //                                            }
 
-                                            data.data[which].app_ip?.let {
-                                                mUserSPEdit!!.putString(APP_HOST, it).apply()
-                                                TempHost.setHost(it)
-                                                RetrofitUtil.getInstance(this@LoginActivity).changeableBaseUrlInterceptor.setHost(it)
-                                            }
-                                            userLogin(loginPwd)
-                                        } else {
-                                            ToastUtils.show(this@LoginActivity, "该应用未启用 APP 服务")
-                                        }
-                                    })
-                                    .create()
-                                    .show()
-                        }
-                    }
-                })
+                                                        data.data[which].app_ip?.let {
+                                                            mUserSPEdit!!.putString(APP_HOST, it).apply()
+                                                            TempHost.setHost(it)
+                                                            RetrofitUtil.getInstance(this@LoginActivity).changeableBaseUrlInterceptor.setHost(it)
+                                                        }
+                                                        data.data[which].datasource_id?.let {
+                                                            mUserSPEdit!!.putString(DATASOURCE_CODE, it).apply()
+                                                        }
+                                                        userLogin(loginPwd)
+                                                    } else {
+                                                        ToastUtils.show(this@LoginActivity, "该应用未启用 APP 服务")
+                                                    }
+                                                })
+                                                .create()
+                                                .show()
+                                    }
+                                }
+                            }
+                        })
             }
             // 登录验证
             if (!ConfigConstants.SAAS_VERIFY_BEFORE_LOGIN) {
@@ -481,7 +493,7 @@ class LoginActivity : BaseActivity() {
                         try {
                             logParams = JSONObject()
                             logParams.put(ACTION, "unlogin")
-                            logParams.put(USER_NAME, userNum + "|;|" + userPass)
+                            logParams.put(USER_NAME, userNum + "|;|" + userPwd)
                             logParams.put(OBJECT_TITLE, apiException.displayMessage)
                             ActionLogUtil.actionLoginLog(logParams)
                         } catch (e: Exception) {
@@ -497,7 +509,7 @@ class LoginActivity : BaseActivity() {
                      */
                     override fun onBusinessNext(data: NewUser) {
                         if (!loginWithLastPwd) {
-                            mUserSPEdit!!.putString(PASSWORD, URLs.MD5(userPass))
+                            mUserSPEdit!!.putString(PASSWORD, URLs.MD5(userPwd))
                         }
                         mSettingSPEdit!!.putBoolean(KEEP_PWD, cb_login_keep_pwd.isChecked).apply()
                         mSettingSPEdit!!.putBoolean(AUTO_LOGIN, cb_login_auto.isChecked).apply()
@@ -507,7 +519,7 @@ class LoginActivity : BaseActivity() {
                         mUserSPEdit!!.putBoolean(IS_LOGIN, true)
                         mUserSPEdit!!.putString(USER_NAME, data.data!!.user_name)
                         mUserSPEdit!!.putString(GROUP_ID, data.data!!.group_id)
-                        mUserSPEdit!!.putString(ROLD_ID, data.data!!.role_id)
+                        mUserSPEdit!!.putString(ROLE_ID, data.data!!.role_id)
                         mUserSPEdit!!.putString(USER_ID, data.data!!.user_id)
                         mUserSPEdit!!.putString(ROLD_NAME, data.data!!.role_name)
                         mUserSPEdit!!.putString(GROUP_NAME, data.data!!.group_name)

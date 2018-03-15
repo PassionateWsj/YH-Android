@@ -15,5 +15,6 @@ data class ConcernItemsBean(var data: List<ConcernItem>? = null) : BaseResult() 
     data class ConcernItem(var obj_id: String? = null,
                            var obj_name: String? = null,
                            var rep_code: String? = null,
+                           var obj_num: String? = null,
                            var concern_item_group_list: List<ConcernGroupBean.ConcernGroup>? = null)
 }

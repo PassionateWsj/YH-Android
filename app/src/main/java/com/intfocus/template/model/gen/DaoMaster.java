@@ -23,22 +23,22 @@ public class DaoMaster extends AbstractDaoMaster {
     public static void createAllTables(Database db, boolean ifNotExists) {
         ConcernFilterBeanDao.createTable(db, ifNotExists);
         AttentionedItemDao.createTable(db, ifNotExists);
-        AttentionItemDao.createTable(db, ifNotExists);
         CollectionDao.createTable(db, ifNotExists);
         PushMsgBeanDao.createTable(db, ifNotExists);
         SourceDao.createTable(db, ifNotExists);
         ReportDao.createTable(db, ifNotExists);
+        ConcernListBeanDao.createTable(db, ifNotExists);
     }
 
     /** Drops underlying database table using DAOs. */
     public static void dropAllTables(Database db, boolean ifExists) {
         ConcernFilterBeanDao.dropTable(db, ifExists);
         AttentionedItemDao.dropTable(db, ifExists);
-        AttentionItemDao.dropTable(db, ifExists);
         CollectionDao.dropTable(db, ifExists);
         PushMsgBeanDao.dropTable(db, ifExists);
         SourceDao.dropTable(db, ifExists);
         ReportDao.dropTable(db, ifExists);
+        ConcernListBeanDao.dropTable(db, ifExists);
     }
 
     /**
@@ -59,11 +59,11 @@ public class DaoMaster extends AbstractDaoMaster {
         super(db, SCHEMA_VERSION);
         registerDaoClass(ConcernFilterBeanDao.class);
         registerDaoClass(AttentionedItemDao.class);
-        registerDaoClass(AttentionItemDao.class);
         registerDaoClass(CollectionDao.class);
         registerDaoClass(PushMsgBeanDao.class);
         registerDaoClass(SourceDao.class);
         registerDaoClass(ReportDao.class);
+        registerDaoClass(ConcernListBeanDao.class);
     }
 
     public DaoSession newSession() {

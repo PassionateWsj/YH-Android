@@ -2,6 +2,7 @@ package com.intfocus.template.model.response.attention;
 
 import com.intfocus.template.subject.one.entity.Filter;
 import com.intfocus.template.subject.one.entity.SingleValue;
+import com.intfocus.template.subject.seven.bean.ConcernListBean;
 
 import java.io.Serializable;
 import java.util.List;
@@ -68,7 +69,7 @@ public class Test2 implements Serializable {
         private Filter filter;
         private List<SingleValue> main_attention_data;
         private List<AttentionedDataBean> attentioned_data;
-        private List<AttentionItem> attention_list;
+        private List<ConcernListBean> attention_list;
 
         public String getUpdated_at() {
             return updated_at;
@@ -118,11 +119,11 @@ public class Test2 implements Serializable {
             this.attentioned_data = attentioned_data;
         }
 
-        public List<AttentionItem> getAttention_list() {
+        public List<ConcernListBean> getAttention_list() {
             return attention_list;
         }
 
-        public void setAttention_list(List<AttentionItem> attention_list) {
+        public void setAttention_list(List<ConcernListBean> attention_list) {
             this.attention_list = attention_list;
         }
 

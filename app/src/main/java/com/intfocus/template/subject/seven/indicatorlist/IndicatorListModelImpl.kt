@@ -1,16 +1,19 @@
 package com.intfocus.template.subject.seven.indicatorlist
 
 import com.alibaba.fastjson.JSON
+import com.intfocus.template.SYPApplication
+import com.intfocus.template.general.net.ApiException
+import com.intfocus.template.general.net.CodeHandledSubscriber
+import com.intfocus.template.general.net.RetrofitUtil
+import com.intfocus.template.general.net.SaaSRetrofitUtil
 import com.intfocus.template.subject.seven.bean.ConcernGroupBean
 import com.intfocus.template.subject.seven.bean.ConcernItemsBean
 import com.intfocus.template.util.OKHttpUtils
-import okhttp3.Call
 import rx.Observable
 import rx.Observer
 import rx.Subscription
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
-import java.io.IOException
 
 /**
  * ****************************************************
@@ -60,42 +63,53 @@ class IndicatorListModelImpl : IndicatorListModel {
         }
     }
 
-    override fun getConcernedListByUser(id: String, rep: String, callback: IndicatorListModel.OnConcernedListResult) {
-        val url = "http://47.96.170.148:8081/saas-api/api/portal/custom?repCode=$rep&dataSourceCode=DATA_000007&controlId=$id"
-        OKHttpUtils.newInstance().getAsyncData(url, object : OKHttpUtils.OnResultListener {
-            override fun onFailure(call: Call?, e: IOException?) {
-            }
+    override fun getConcernedListByUser(controlId: String, repCode: String, callback: IndicatorListModel.OnConcernedListResult) {
+        SaaSRetrofitUtil.getHttpServiceKotlin(SYPApplication.globalContext)
+                .getConcernItemsListData(repCode,  controlId)
+                .compose(RetrofitUtil.CommonOptions<ConcernItemsBean>())
+                .subscribe(object : CodeHandledSubscriber<ConcernItemsBean>() {
+                    override fun onError(apiException: ApiException?) {
 
-            override fun onSuccess(call: Call?, response: String?) {
-                observable = Observable.just(response)
-                        .subscribeOn(Schedulers.io())
-                        .map {
-                            val data = JSON.parseObject(it,
-                                    ConcernItemsBean::class.java).data!!
-                            data.forEach {
-                                val itemUrl = "http://47.96.170.148:8081/saas-api/api/portal/custom?repCode=${it.rep_code}&dataSourceCode=DATA_000007&objId=${it.obj_id}"
-                                val itemListData = JSON.parseObject(
-                                        OKHttpUtils.newInstance().getSyncData(itemUrl),
-                                        ConcernGroupBean::class.java)
-                                it.concern_item_group_list = itemListData.data
-                            }
-                            data
+                    }
+
+                    override fun onBusinessNext(data: ConcernItemsBean?) {
+                        data?.data?.let {
+                            observable = Observable.just(it)
+                                    .subscribeOn(Schedulers.io())
+                                    .map {
+                                        it.forEach {
+                                            val itemUrl = "http://shengyiplus.idata.mobi/saas-api/api/portal/custom?repCode=${it.rep_code}&dataSourceCode=DATA_000007&obj_id=${it.obj_id}"
+                                            val itemListData: ConcernGroupBean?
+                                            try {
+                                                itemListData = JSON.parseObject(
+                                                        OKHttpUtils.newInstance().getSyncData(itemUrl),
+                                                        ConcernGroupBean::class.java)
+                                                it.concern_item_group_list = itemListData.data
+                                            } catch (e: Exception) {
+                                                onError(Throwable(e))
+                                            }
+                                        }
+                                        it
+                                    }
+                                    .observeOn(AndroidSchedulers.mainThread())
+                                    .subscribe(object : Observer<List<ConcernItemsBean.ConcernItem>> {
+                                        override fun onCompleted() {
+
+                                        }
+
+                                        override fun onNext(t: List<ConcernItemsBean.ConcernItem>?) {
+                                            t?.let { callback.onLoadListDataSuccess(it) }
+                                        }
+
+                                        override fun onError(e: Throwable?) {
+                                        }
+                                    })
                         }
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(object : Observer<List<ConcernItemsBean.ConcernItem>> {
-                            override fun onCompleted() {
+                    }
 
-                            }
+                    override fun onCompleted() {
+                    }
 
-                            override fun onNext(t: List<ConcernItemsBean.ConcernItem>?) {
-                                t?.let { callback.onLoadListDataSuccess(it) }
-                            }
-
-                            override fun onError(e: Throwable?) {
-                            }
-                        })
-            }
-        }
-        )
+                })
     }
 }

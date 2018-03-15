@@ -14,9 +14,10 @@ import com.blankj.utilcode.util.BarUtils
 import com.intfocus.template.ConfigConstants
 import com.intfocus.template.R
 import com.intfocus.template.constant.Params
+import com.intfocus.template.constant.Params.REPORT_ID
 import com.intfocus.template.constant.ToastColor
-import com.intfocus.template.model.response.attention.AttentionItem
 import com.intfocus.template.scanner.BarCodeScannerActivity
+import com.intfocus.template.subject.seven.bean.ConcernListBean
 import com.intfocus.template.subject.seven.listener.ConcernListItemClickListener
 import com.intfocus.template.ui.BaseActivity
 import com.intfocus.template.util.ToastUtils
@@ -41,6 +42,7 @@ class ConcernListActivity : BaseActivity(), ConcernListContract.View, ConcernLis
     override lateinit var presenter: ConcernListContract.Presenter
     private lateinit var mItemAdapter: ConcernListItemAdapter
     var loadConcernedData: Boolean = false
+    var reportId: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,7 +70,10 @@ class ConcernListActivity : BaseActivity(), ConcernListContract.View, ConcernLis
 
 
     private fun initData() {
-        presenter.loadData(loadConcernedData)
+        intent.extras.getString(REPORT_ID)?.let {
+            reportId = it
+            presenter.loadData(loadConcernedData, it)
+        }
     }
 
     private fun initListener() {
@@ -84,7 +89,7 @@ class ConcernListActivity : BaseActivity(), ConcernListContract.View, ConcernLis
         // 文本输入框内容监听
         ed_attention_list_search.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
-                presenter.loadData(p0.toString(), loadConcernedData)
+                presenter.loadData(p0.toString(), loadConcernedData, reportId)
             }
 
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -99,13 +104,13 @@ class ConcernListActivity : BaseActivity(), ConcernListContract.View, ConcernLis
         mItemAdapter.clearData()
     }
 
-    override fun onResultSuccess(data: List<AttentionItem>) {
+    override fun onResultSuccess(data: List<ConcernListBean>) {
         mItemAdapter.setData(data)
     }
 
     override fun itemClick(pos: Int) {
         val attentionItem = mItemAdapter.getSelectItem(pos)
-        presenter.concernOrCancelConcern(attentionItem.attention_item_id, attentionItem.attention_item_name)
+        presenter.concernOrCancelConcern(attentionItem.obj_num, attentionItem.obj_name, reportId)
         hideKeyboard()
     }
 
@@ -124,13 +129,13 @@ class ConcernListActivity : BaseActivity(), ConcernListContract.View, ConcernLis
                 changeStyle(tv_attention_list_attentioned_btn, tv_attention_list_attention_btn)
 //                rl_attention_list_input_container.visibility = View.GONE
                 loadConcernedData = true
-                presenter.loadData(ed_attention_list_search.text.toString(), loadConcernedData)
+                presenter.loadData(ed_attention_list_search.text.toString(), loadConcernedData, reportId)
             }
             R.id.tv_attention_list_attention_btn -> {
                 changeStyle(tv_attention_list_attention_btn, tv_attention_list_attentioned_btn)
 //                rl_attention_list_input_container.visibility = View.VISIBLE
                 loadConcernedData = false
-                presenter.loadData(ed_attention_list_search.text.toString(), loadConcernedData)
+                presenter.loadData(ed_attention_list_search.text.toString(), loadConcernedData, reportId)
             }
             R.id.iv_attention_list_scan -> {
                 intent = Intent(this, BarCodeScannerActivity::class.java)

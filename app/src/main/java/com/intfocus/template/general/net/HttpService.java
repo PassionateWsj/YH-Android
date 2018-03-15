@@ -51,11 +51,11 @@ public interface HttpService {
      * GET
      * /api/v1.1/config/info
      *
-     * @param keyName keyname
+     * keyName keyname
      * @return RegisterResult
      */
-    @GET(K.K_REGISTER)
-    Observable<RegisterResult> getRegister(@Query("keyname") String keyName);
+    @GET(K.K_REGISTER + "?keyname=sypc_000005")
+    Observable<RegisterResult> getRegister();
 
     /**
      * 推送 push_token
@@ -342,7 +342,7 @@ public interface HttpService {
      * @return
      */
     @GET(K.K_REPORT_JSON_DATA)
-    Call<ResponseBody> getJsonReportData(@Query("disposition") String disposition,@Query("report_id") String reportId, @Query("template_id") String templateId, @Query("group_id") String groupId);
+    Call<ResponseBody> getJsonReportData(@Query("disposition") String disposition, @Query("report_id") String reportId, @Query("template_id") String templateId, @Query("group_id") String groupId);
 
     /**
      * 上传采集信息
@@ -367,7 +367,7 @@ public interface HttpService {
      * @return
      */
     @POST(K.K_NEW_RESET_PWD)
-    Observable<BaseResult> resetPwd(@Query("mobile") String mobile,@Query("type") String type,@Query("value") String value);
+    Observable<BaseResult> resetPwd(@Query("mobile") String mobile, @Query("type") String type, @Query("value") String value);
 
     /**
      * 用户信息
@@ -409,6 +409,7 @@ public interface HttpService {
 
     /**
      * 获取用户反馈列表
+     *
      * @param userNum
      * @return
      */
@@ -417,9 +418,11 @@ public interface HttpService {
 
     /**
      * 获取用户反馈详情
+     *
      * @param id
      * @return
      */
     @GET(K.API_FEEDBACK)
     Observable<FeedbackContent> getFeedbackContent(@Query("id") int id);
+
 }

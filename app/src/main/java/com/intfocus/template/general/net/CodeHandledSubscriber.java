@@ -28,7 +28,7 @@ public abstract class CodeHandledSubscriber<T> extends Subscriber<T> {
     private static final int GATEWAY_TIMEOUT = 504;
     private static final String INVALID_TOKEN = "10005";
     public static final String REQUEST_SUCCESS = "200";//---------------------一般请求的 成功状态码
-    public static final String REQUEST_SUCCESS_ONE = "0";//---------------------获取收藏列表的 成功状态码
+    public static final String REQUEST_SUCCESS_ONE = "0";//--------------------- 成功状态码 为 0
     public static final String REQUEST_SUCCESS_TWO = "201";//---------------------操作收藏的 成功状态码
     private static final String REQUEST_SUCCESS_NEED_NEXT = "-600";
     private static final int GUO_TIME = -300;
@@ -101,7 +101,7 @@ public abstract class CodeHandledSubscriber<T> extends Subscriber<T> {
             ex.setDisplayMessage(httpStateException.getMsg());
             onError(ex);
         } else {
-            Log.e("请求错误",e.getMessage());
+            Log.e("请求错误", e.getMessage());
             /*未知错误*/
             ex = new ApiException(e, ApiException.UNKNOWN);
             ex.setDisplayMessage(unknownMsg);
@@ -117,7 +117,7 @@ public abstract class CodeHandledSubscriber<T> extends Subscriber<T> {
     public void onNext(T t) {
         if (t instanceof BaseResult) {
             BaseResult baseResultEntity = (BaseResult) t;
-            if (REQUEST_SUCCESS.equals(baseResultEntity.getCode())) {
+            if (REQUEST_SUCCESS.equals(baseResultEntity.getCode()) || REQUEST_SUCCESS_ONE.equals(baseResultEntity.getCode())) {
                 onBusinessNext(t);
             } else {
                 onError(new ApiException(Integer.parseInt(baseResultEntity.getCode()), baseResultEntity.getMessage()));

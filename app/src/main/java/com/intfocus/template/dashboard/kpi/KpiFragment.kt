@@ -14,7 +14,7 @@ import com.intfocus.template.BuildConfig
 import com.intfocus.template.ConfigConstants
 import com.intfocus.template.R
 import com.intfocus.template.constant.Params.GROUP_ID
-import com.intfocus.template.constant.Params.ROLD_ID
+import com.intfocus.template.constant.Params.ROLE_ID
 import com.intfocus.template.constant.Params.USER_BEAN
 import com.intfocus.template.constant.Params.USER_NUM
 import com.intfocus.template.dashboard.kpi.bean.KpiBean
@@ -60,7 +60,7 @@ class KpiFragment : RefreshFragment(), KpiAdapter.HomePageListener {
         setRefreshLayout()
         mUserSP = mActivity.getSharedPreferences(USER_BEAN, Context.MODE_PRIVATE)
         userId = mUserSP.getString(USER_NUM, "")
-        roleId = mUserSP.getString(ROLD_ID, "0")
+        roleId = mUserSP.getString(ROLE_ID, "0")
         groupId = mUserSP.getString(GROUP_ID, "0")
         return mView
     }
@@ -84,7 +84,7 @@ class KpiFragment : RefreshFragment(), KpiAdapter.HomePageListener {
     fun initView() {
         queryMap = mutableMapOf()
         queryMap.put(GROUP_ID, groupId)
-        queryMap.put(ROLD_ID, roleId)
+        queryMap.put(ROLE_ID, roleId)
         if (Build.VERSION.SDK_INT >= 21 && ConfigConstants.ENABLE_FULL_SCREEN_UI) {
             fl_title.post {
                 val titleTopParams = FrameLayout.LayoutParams(fl_title.layoutParams.width, fl_title.layoutParams.height + BarUtils.getStatusBarHeight())

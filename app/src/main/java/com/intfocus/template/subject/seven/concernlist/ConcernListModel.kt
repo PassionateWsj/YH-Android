@@ -1,6 +1,6 @@
 package com.intfocus.template.subject.seven.concernlist
 
-import com.intfocus.template.model.response.attention.AttentionItem
+import com.intfocus.template.subject.seven.bean.ConcernListBean
 
 /**
  * ****************************************************
@@ -13,7 +13,7 @@ import com.intfocus.template.model.response.attention.AttentionItem
  */
 interface ConcernListModel {
     interface LoadDataCallback {
-        fun onDataLoaded(dataList: List<AttentionItem>)
+        fun onDataLoaded(dataList: List<ConcernListBean>)
         fun onDataNotAvailable(e: Throwable)
     }
 
@@ -21,7 +21,7 @@ interface ConcernListModel {
         fun onConcernResult(isConcernSuccess: Boolean)
     }
 
-    fun getData(keyWord: String, concerned: Boolean, callback: LoadDataCallback)
-    fun concernOrCancelConcern(attentionItemId: String, attentionItemName: String, callback: ConcernCallback)
-//    fun cancelConcern(attentionItemId:String, attentionItemName:String,callback: ConcernCallback)
+    fun getData(keyWord: String, concerned: Boolean, reportId: String, callback: LoadDataCallback)
+    fun concernOrCancelConcern(attentionItemId: String, attentionItemName: String, reportId: String, callback: ConcernCallback)
+    fun updateConcernListData(reportId: String, callback: com.intfocus.template.model.callback.LoadDataCallback<Boolean>)
 }

@@ -6,4 +6,5 @@ package com.intfocus.template.model.response
 class BaseResultMember {
     var code: Int = 0
     var message: String? = null
+    var msg: String? = null
 }

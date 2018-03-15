@@ -54,7 +54,7 @@ class WorkBoxImpl : WorkBoxModel {
 
     override fun getData(ctx: Context, callBack: WorkBoxModel.LoadDataCallback) {
         val mUserSP = ctx.getSharedPreferences(USER_BEAN, Context.MODE_PRIVATE)
-        RetrofitUtil.getHttpService(ctx).getWorkBox(mUserSP.getString(Params.GROUP_ID, "0"), mUserSP.getString(Params.ROLD_ID, "0"))
+        RetrofitUtil.getHttpService(ctx).getWorkBox(mUserSP.getString(Params.GROUP_ID, "0"), mUserSP.getString(Params.ROLE_ID, "0"))
                 .compose(RetrofitUtil.CommonOptions<WorkBoxResult>())
                 .subscribe(object : CodeHandledSubscriber<WorkBoxResult>() {
                     override fun onError(apiException: ApiException?) {
