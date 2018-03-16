@@ -120,7 +120,7 @@ class MyConcernActivity : BaseActivity(), MyConcernContract.View, FilterDialogFr
     }
 
     override fun initFilterView(filter: Filter) {
-        if (null != filter.data) {
+        if (filter.data != null) {
             initFilter(filter)
         }
     }
@@ -129,7 +129,7 @@ class MyConcernActivity : BaseActivity(), MyConcernContract.View, FilterDialogFr
         if (srl_my_attention.isRefreshing) {
             srl_my_attention.isRefreshing = false
         }
-        ToastUtils.show(this,msg)
+        ToastUtils.show(this, msg)
     }
 
     override fun generateReportItemViews(data: List<ConcernComponentBean.ConcernComponent>) {
@@ -161,10 +161,9 @@ class MyConcernActivity : BaseActivity(), MyConcernContract.View, FilterDialogFr
     }
 
     override fun initFilterView(data: Test2, filter: Filter) {
-        if (null != filter.data) {
+        if (filter.data != null) {
             initFilter(filter)
         }
-
     }
 
     private fun addItemView(fragment: Fragment) {

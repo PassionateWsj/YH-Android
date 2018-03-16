@@ -157,11 +157,19 @@ class ConcernListActivity : BaseActivity(), ConcernListContract.View, ConcernLis
      * 返回监听
      */
     fun backPress(v: View) {
-        hideKeyboard()
-        setResult(RESPONSE_CODE)
+        finishAct()
         finish()
     }
 
+    private fun finishAct() {
+        hideKeyboard()
+        setResult(RESPONSE_CODE)
+    }
+
+    override fun onBackPressed() {
+        finishAct()
+        super.onBackPressed()
+    }
     /**
      * 隐藏软件盘
      */
